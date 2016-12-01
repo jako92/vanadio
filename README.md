@@ -1,2 +1,0 @@
-# brasa2
-Aplicaciones
