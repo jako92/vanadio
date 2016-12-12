@@ -53,7 +53,8 @@ class CapacitacionTipoController extends Controller
         }
         $arCapacitacionTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionTipo')->findAll();
-        $arCapacitacionTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arCapacitacionTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/CapacitacionTipo:listar.html.twig', array(
                     'arCapacitacionTipos' => $arCapacitacionTipos,

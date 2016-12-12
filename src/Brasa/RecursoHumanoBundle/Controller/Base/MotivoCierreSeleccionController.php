@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuMotivoCierreSeleccionType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 //use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 //use Doctrine\DBAL\Driver\PDOException;
@@ -20,9 +21,8 @@ class MotivoCierreSeleccionController extends Controller
     /**
      * @Route("/rhu/base/motivocierre/seleccion/listar", name="brs_rhu_base_motivocierre_seleccion_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 131, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
@@ -30,8 +30,8 @@ class MotivoCierreSeleccionController extends Controller
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
             //->add('BtnPdf', 'submit', array('label'  => 'PDF'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -108,7 +108,8 @@ class MotivoCierreSeleccionController extends Controller
         }
         $arMotivos = new \Brasa\RecursoHumanoBundle\Entity\RhuMotivoCierreSeleccion();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion')->findAll();
-        $arMotivos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arMotivos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/MotivoCierreSeleccion:listar.html.twig', array(
                     'arMotivos' => $arMotivos,
@@ -120,9 +121,8 @@ class MotivoCierreSeleccionController extends Controller
     /**
      * @Route("/rhu/base/motivocierre/seleccion/nuevo/{codigoMotivoCierreSeleccionPk}", name="brs_rhu_base_motivocierre_seleccion_nuevo")
      */
-    public function nuevoAction($codigoMotivoCierreSeleccionPk) {
+    public function nuevoAction(Request $request, $codigoMotivoCierreSeleccionPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arMotivo = new \Brasa\RecursoHumanoBundle\Entity\RhuMotivoCierreSeleccion();
         if ($codigoMotivoCierreSeleccionPk != 0)
         {

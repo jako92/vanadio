@@ -50,8 +50,8 @@ class CartaTipoController extends Controller
                   }    
             }                        
         }
-        
-        $arCartaTipos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);        
+        $arCartaTipos = $paginator->paginate($em->createQuery($session->get('dqlLista')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCartaTipos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);        
         return $this->render('BrasaRecursoHumanoBundle:Base/CartaTipo:listar.html.twig', array(
                     'arCartaTipos' => $arCartaTipos,
                     'form'=> $form->createView()

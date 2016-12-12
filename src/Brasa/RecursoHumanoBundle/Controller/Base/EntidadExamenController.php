@@ -114,7 +114,8 @@ class EntidadExamenController extends Controller
         }
         $arEntidadesExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadExamen();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadExamen')->findAll();
-        $arEntidadesExamen = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arEntidadesExamen = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/EntidadExamen:listar.html.twig', array(
                     'arEntidadesExamen' => $arEntidadesExamen,

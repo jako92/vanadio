@@ -2,11 +2,11 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoConceptoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
@@ -51,7 +51,8 @@ class DesempenoConceptoController extends Controller
         }
         $arDesempenoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempenoConcepto();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConcepto')->findAll();
-        $arDesempenoConceptos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),100);
+        $arDesempenoConceptos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arDesempenoConceptos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),100);
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DesempenoConcepto:listar.html.twig', array(
                     'arDesempenoConceptos' => $arDesempenoConceptos,
@@ -70,7 +71,7 @@ class DesempenoConceptoController extends Controller
         {
             $arDesempenoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConcepto')->find($codigoDesempenoConcepto);
         }    
-        $form = $this->createForm(new RhuDesempenoConceptoType(), $arDesempenoConceptos);
+        $form = $this->createForm(RhuDesempenoConceptoType::class, $arDesempenoConceptos); 
         $form->handleRequest($request);
         if ($form->isValid())
         {

@@ -122,7 +122,8 @@ class HorarioController extends Controller
         }
         $arHorarios = new \Brasa\RecursoHumanoBundle\Entity\RhuHorario();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorario')->findAll();
-        $arHorarios = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arHorarios = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Horario:listar.html.twig', array(
                     'arHorarios' => $arHorarios,

@@ -108,7 +108,7 @@ class MotivoDescarteAspiranteController extends Controller
         }
         $arMotivos = new \Brasa\RecursoHumanoBundle\Entity\RhuMotivoDescarteRequisicionAspirante();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante')->findAll();
-        $arMotivos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arMotivos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
 
         return $this->render('BrasaRecursoHumanoBundle:Base/MotivoDescarteAspirante:listar.html.twig', array(
                     'arMotivos' => $arMotivos,

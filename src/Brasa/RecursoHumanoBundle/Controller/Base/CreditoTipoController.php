@@ -113,7 +113,8 @@ class CreditoTipoController extends Controller
         }
         $arCreditoTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuCreditoTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuCreditoTipo')->findAll();
-        $arCreditoTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arCreditoTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/CreditoTipo:listar.html.twig', array(
                     'arCreditoTipos' => $arCreditoTipos,

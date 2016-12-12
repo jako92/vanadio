@@ -47,8 +47,9 @@ class ClienteController extends Controller
             $session->set('dqlCliente', $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->ListaDQL(
                     $session->get('filtroNombreCliente')
                     ));                          
-        }             
-        $arClientes = $paginator->paginate($em->createQuery($session->get('dqlCliente')), $this->get('Request')->query->get('page', 1), 50);
+        } 
+        $arClientes = $paginator->paginate($em->createQuery($session->get('dqlCliente')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arClientes = $paginator->paginate($em->createQuery($session->get('dqlCliente')), $this->get('Request')->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Base/Cliente:lista.html.twig', array(
             'arClientes' => $arClientes,
             'form' => $form->createView()));

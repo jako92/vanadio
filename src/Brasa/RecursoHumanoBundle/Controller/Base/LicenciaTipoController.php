@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuLicenciaTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 /**
@@ -19,17 +20,16 @@ class LicenciaTipoController extends Controller
     /**
      * @Route("/rhu/base/licenciatipo/listar", name="brs_rhu_base_licenciatipo_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 41, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arLicenciaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuLicenciaTipo();
@@ -111,7 +111,8 @@ class LicenciaTipoController extends Controller
         }
         $arLicenciaTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuLicenciaTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicenciaTipo')->findAll();
-        $arLicenciaTipos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arLicenciaTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/LicenciaTipo:listar.html.twig', array(
                     'arLicenciaTipos' => $arLicenciaTipos,
@@ -123,9 +124,8 @@ class LicenciaTipoController extends Controller
     /**
      * @Route("/rhu/base/licenciatipo/nuevo/{codigoLicenciaTipoPk}", name="brs_rhu_base_licenciatipo_nuevo")
      */
-    public function nuevoAction($codigoLicenciaTipoPk) {
+    public function nuevoAction(Request $request, $codigoLicenciaTipoPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arLicenciaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuLicenciaTipo();
         if ($codigoLicenciaTipoPk != 0)
         {

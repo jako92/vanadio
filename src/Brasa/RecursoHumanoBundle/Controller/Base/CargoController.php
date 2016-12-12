@@ -67,8 +67,8 @@ class CargoController extends Controller
                 $this->listar();
             }    
         }
-      
-        $arCargos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
+        $arCartaTipos = $paginator->paginate($em->createQuery($session->get('dqlLista')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCargos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Base/Cargo:listar.html.twig', array(
                     'arCargos' => $arCargos,
                     'form'=> $form->createView()

@@ -106,7 +106,8 @@ class DotacionElementoController extends Controller
         }
         $arDotacionElementos = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionElemento();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionElemento')->findAll();
-        $arDotacionElementos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),50);
+        $arDotacionElementos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DotacionElementos:listar.html.twig', array(
                     'arDotacionElementos' => $arDotacionElementos,

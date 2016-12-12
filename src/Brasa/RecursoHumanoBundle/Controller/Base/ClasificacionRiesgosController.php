@@ -105,7 +105,8 @@ class ClasificacionRiesgosController extends Controller
         }
         $arClasificaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuClasificacionRiesgo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuClasificacionRiesgo')->findAll();
-        $arClasificaciones = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arClasificaciones = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arClasificaciones = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Clasificacion:listar.html.twig', array(
                     'arClasificaciones' => $arClasificaciones,

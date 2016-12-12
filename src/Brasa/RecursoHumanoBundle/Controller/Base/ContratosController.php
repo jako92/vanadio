@@ -85,7 +85,6 @@ class ContratosController extends Controller
                 }                
             }
         }
-        
         $arContratos = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 20);
         
         return $this->render('BrasaRecursoHumanoBundle:Base/Contrato:lista.html.twig', array(

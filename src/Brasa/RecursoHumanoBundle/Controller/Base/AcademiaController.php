@@ -117,7 +117,8 @@ class AcademiaController extends Controller
         }
         $arAcademias = new \Brasa\RecursoHumanoBundle\Entity\RhuAcademia();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcademia')->findAll();
-        $arAcademias = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),40);
+        $arAcademias = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arAcademias = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),40);
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Academia:listar.html.twig', array(
                     'arAcademias' => $arAcademias,

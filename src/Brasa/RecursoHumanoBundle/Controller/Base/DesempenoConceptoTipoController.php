@@ -54,7 +54,8 @@ class DesempenoConceptoTipoController extends Controller
         }
         $arDesempenoConceptoTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempenoConceptoTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConceptoTipo')->findAll();
-        $arDesempenoConceptoTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arDesempenoConceptoTipos = $paginator->paginate($em->createQuery($query), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arDesempenoConceptoTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DesempenoConceptoTipo:listar.html.twig', array(
                     'arDesempenoConceptoTipos' => $arDesempenoConceptoTipos,

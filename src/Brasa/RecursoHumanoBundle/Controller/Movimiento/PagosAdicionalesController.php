@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAdicionalPagoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
-use Symfony\Component\HttpFoundation\Request;
 
 class PagosAdicionalesController extends Controller
 {

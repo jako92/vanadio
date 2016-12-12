@@ -98,7 +98,8 @@ class DepartamentoEmpresaController extends Controller
         }
         $arDepartamentosEmpresa = new \Brasa\RecursoHumanoBundle\Entity\RhuDepartamentoEmpresa();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa')->findAll();
-        $arDepartamentosEmpresa = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),50);
+        $arDepartamentosEmpresa = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DepartamentosEmpresa:listar.html.twig', array(
                     'arDepartamentosEmpresa' => $arDepartamentosEmpresa,

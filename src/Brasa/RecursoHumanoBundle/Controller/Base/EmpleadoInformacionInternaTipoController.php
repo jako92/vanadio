@@ -54,7 +54,7 @@ class EmpleadoInformacionInternaTipoController extends Controller
         }
         $arEmpleadoInformacionInternaTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoInformacionInternaTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo')->findAll();
-        $arEmpleadoInformacionInternaTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arEmpleadoInformacionInternaTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
 
         return $this->render('BrasaRecursoHumanoBundle:Base/EmpleadoInformacionInternaTipo:listar.html.twig', array(
                     'arEmpleadoInformacionInternaTipos' => $arEmpleadoInformacionInternaTipos,

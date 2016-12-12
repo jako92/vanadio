@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDotacionElementoTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuDotacionElementoTipo controller.
@@ -17,17 +18,16 @@ class DotacionElementoTipoController extends Controller
     /**
      * @Route("/rhu/base/dotacion/elemento/tipo/lista", name="brs_rhu_base_dotacion_elemento_tipo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 95, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arDotacionElementosTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionElementoTipo();
@@ -95,7 +95,7 @@ class DotacionElementoTipoController extends Controller
         }
         $arDotacionElementosTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionElementoTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionElementoTipo')->findAll();
-        $arDotacionElementosTipos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),50);
+        $arDotacionElementosTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DotacionElementosTipos:listar.html.twig', array(
                     'arDotacionElementosTipos' => $arDotacionElementosTipos,
@@ -106,9 +106,8 @@ class DotacionElementoTipoController extends Controller
     /**
      * @Route("/rhu/base/dotacion/elemento/tipo/nuevo/{codigoDotacionElementoTipo}", name="brs_rhu_base_dotacion_elemento_tipo_nuevo")
      */
-    public function nuevoAction($codigoDotacionElementoTipo) {
+    public function nuevoAction(Request $request, $codigoDotacionElementoTipo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arDotacionElementoTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionElementoTipo();
         if ($codigoDotacionElementoTipo != 0)
         {

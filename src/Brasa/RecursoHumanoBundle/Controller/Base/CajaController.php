@@ -108,7 +108,7 @@ class CajaController extends Controller
         }
         $arEntidadesCaja = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadCaja')->findAll();
-        $arEntidadesCaja = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),30);
+        $arEntidadesCaja = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/CajaCompensacion:listar.html.twig', array(
                     'arEntidadesCaja' => $arEntidadesCaja,

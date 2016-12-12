@@ -75,7 +75,7 @@ class CentroCostoController extends Controller
                     $session->get('filtroNombreCentroCosto')
                     ));                          
         } 
-        $arCentrosCostos = $paginator->paginate($em->createQuery($session->get('dqlCentroCosto')), $request->query->getInt('page', 1)/*page number*/,10/*limit per page*/);        
+        $arCentrosCostos = $paginator->paginate($em->createQuery($session->get('dqlCentroCosto')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
         //$arCentrosCostos = $paginator->paginate($em->createQuery($session->get('dqlCentroCosto')), $this->get('Request')->query->get('page', 1), 20);
         return $this->render('BrasaRecursoHumanoBundle:Base/CentroCosto:lista.html.twig', array(
             'arCentrosCostos' => $arCentrosCostos,

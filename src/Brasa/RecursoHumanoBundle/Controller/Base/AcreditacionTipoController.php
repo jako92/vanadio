@@ -110,7 +110,7 @@ class AcreditacionTipoController extends Controller
         }
         $arAcreditacionTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacionTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacionTipo')->findAll();
-        $arAcreditacionTipo = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),40);
+        $arAcreditacionTipo = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/AcreditacionTipo:listar.html.twig', array(
                     'arAcreditacionTipo' => $arAcreditacionTipo,

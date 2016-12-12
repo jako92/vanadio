@@ -126,7 +126,8 @@ class BancoController extends Controller
         }
         $arBancos = new \Brasa\RecursoHumanoBundle\Entity\RhuBanco();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuBanco')->findAll();
-        $arBancos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arBancos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Banco:listar.html.twig', array(
                     'arBancos' => $arBancos,

@@ -53,7 +53,8 @@ class EmpleadoEstudioTipoController extends Controller
         }
         $arTipoEstudios = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudioTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudioTipo')->findAll();
-        $arTipoEstudios = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
+        $arTipoEstudios = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+      
 
         return $this->render('BrasaRecursoHumanoBundle:Base/EmpleadoEstudioTipo:listar.html.twig', array(
                     'arTipoEstudios' => $arTipoEstudios,
