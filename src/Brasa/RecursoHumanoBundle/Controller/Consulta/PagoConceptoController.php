@@ -6,6 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class PagoConceptoController extends Controller
@@ -15,9 +21,9 @@ class PagoConceptoController extends Controller
     /**
      * @Route("/rhu/consulta/pago/concepto", name="brs_rhu_consulta_pago_concepto")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();       
+               
         $paginator  = $this->get('knp_paginator');
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 94)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -51,7 +57,7 @@ class PagoConceptoController extends Controller
     }     
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsultaPagoConcepto')->listaDql();
     }  
@@ -64,10 +70,10 @@ class PagoConceptoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('pc')
                     ->orderBy('pc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoPagoConcepto')) {
@@ -86,13 +92,13 @@ class PagoConceptoController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()                                    
-            ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto)                        
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                
-            ->add('BtnGenerar', 'submit', array('label'  => 'Filtrar'))                                        
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-                ->add('BtnExcelResumen', 'submit', array('label'  => 'Excel resumen',))
+            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto)                        
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                
+            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Filtrar'))                                        
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnExcelResumen', SubmitType::class, array('label'  => 'Excel resumen',))
             ->getForm();        
         return $form;
     }
@@ -102,14 +108,13 @@ class PagoConceptoController extends Controller
         $session = $this->get('session');        
         $strSql = "DELETE FROM rhu_consulta_pago_concepto WHERE 1";
         $em->getConnection()->executeQuery($strSql);        
-        
-        $controles = $request->request->get('form');                
+                                
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());        
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
         $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
-        $session->set('filtroCodigoPagoConcepto', $controles['pagoConceptoRel']);
+        $session->set('filtroCodigoPagoConcepto', $form->get('pagoConceptoRel')->getData());
         $dql = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->listaDetalleDql(
                     "",
                     "",

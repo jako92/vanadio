@@ -5,6 +5,12 @@ namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AdicionalesPagoController extends Controller
 {
@@ -17,9 +23,9 @@ class AdicionalesPagoController extends Controller
     /**
      * @Route("/rhu/consultas/adicionales/pago", name="brs_rhu_consultas_adicionales_pago")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 12)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
@@ -48,7 +54,7 @@ class AdicionalesPagoController extends Controller
     }        
     
     private function listar($form) {
-        $session = $this->getRequest()->getSession();         
+        $session = new Session;         
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->listaConsultaDql(                    
             $this->nombre,
@@ -59,23 +65,23 @@ class AdicionalesPagoController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();            
+        $session = new Session;            
         $form = $this->createFormBuilder()
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->nombre))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificaciín','data' => $this->identificacion))
-            ->add('centroCostoRel', 'entity', array(
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->nombre))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificaciín','data' => $this->identificacion))
+            ->add('centroCostoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""))
-            ->add('aplicaDiaLaborado', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))                
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('aplicaDiaLaborado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))                
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }           
@@ -99,7 +105,7 @@ class AdicionalesPagoController extends Controller
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

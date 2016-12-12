@@ -5,6 +5,13 @@ namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ConsultasController extends Controller
 {
@@ -27,9 +34,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/pago/pendientes/banco", name="brs_rhu_consultas_pago_pendientes_banco")
      */
-    public function PagoPendientesBancoAction() {
+    public function PagoPendientesBancoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 30)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -67,9 +74,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/creditos/general", name="brs_rhu_consultas_creditos_general")
      */
-    public function creditosGeneralAction() {
+    public function creditosGeneralAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 19)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -107,9 +114,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/pago", name="brs_rhu_consultas_pago")
      */
-    public function PagoAction() {
+    public function PagoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 20)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -148,9 +155,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/servicios/cobrar", name="brs_rhu_consultas_servicios_cobrar")
      */
-    public function serviciosCobrarAction() {
+    public function serviciosCobrarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 38)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -188,9 +195,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/incapacidades/lista/", name="brs_rhu_consultas_incapacidades_lista")
      */
-    public function IncapacidadesAction() {
+    public function IncapacidadesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 22)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -228,9 +235,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/incapacidades/cobrar/pago", name="brs_rhu_consultas_incapacidades_cobrar_pago")
      */
-    public function IncapacidadesCobrarAction() {
+    public function IncapacidadesCobrarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 23)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -268,9 +275,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/procesos/disciplinarios", name="brs_rhu_consultas_procesos_disciplinarios")
      */
-    public function ProcesosDisciplinariosAction() {
+    public function ProcesosDisciplinariosAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 33)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -308,9 +315,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/sso/aportes", name="brs_rhu_consultas_sso_aportes")
      */
-    public function AportesAction() {
+    public function AportesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 24)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -348,9 +355,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/contrato/vacaciones/pagar", name="brs_rhu_consultas_contrato_vacaciones_pagar")
      */
-    public function VacacionesPagarAction() {
+    public function VacacionesPagarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 28)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -383,9 +390,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/contrato/fecha/terminacion", name="brs_rhu_consultas_contrato_fecha_terminacion")
      */
-    public function FechaTerminacionAction() {
+    public function FechaTerminacionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 26)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -416,9 +423,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/contrato/fecha/ingreso", name="brs_rhu_consultas_contrato_fecha_ingreso")
      */
-    public function FechaIngresoAction() {
+    public function FechaIngresoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 25)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -451,9 +458,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/contrato/periodo", name="brs_rhu_consultas_contrato_periodo")
      */
-    public function ContratoPeriodoAction() {
+    public function ContratoPeriodoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 27)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -485,14 +492,14 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/empleado", name="brs_rhu_consultas_empleado")
      */
-    public function EmpleadoAction() {
+    public function EmpleadoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 14)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->formularioEmpleadoLista();
         $form->handleRequest($request);
         $this->EmpleadoListar();
@@ -526,9 +533,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/dotacion/pendiente", name="brs_rhu_consultas_dotacion_pendiente")
      */
-    public function DotacionesPendientesAction() {
+    public function DotacionesPendientesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 39)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -561,9 +568,9 @@ class ConsultasController extends Controller
     /**
      * @Route("/rhu/consultas/empleado/detalle/{codigoEmpleado}", name="brs_rhu_consultas_empleado_detalle")
      */
-    public function EmpleadodetalleAction($codigoEmpleado) {
+    public function EmpleadodetalleAction(Request $request, $codigoEmpleado) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder()
             ->getForm();
@@ -590,15 +597,24 @@ class ConsultasController extends Controller
         $arEmpleadoDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado));
         if($form->isValid()) {
         }
-        $arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('request')->query->get('page', 1),5);
-        $arVacaciones = $paginator->paginate($arVacaciones, $this->get('request')->query->get('page', 1),5);
-        $arLicencias = $paginator->paginate($arLicencias, $this->get('request')->query->get('page', 1),5);
-        $arContratos = $paginator->paginate($arContratos, $this->get('request')->query->get('page', 1),5);
-        $arCreditos = $paginator->paginate($arCreditos, $this->get('request')->query->get('page', 1),5);
-        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('request')->query->get('page', 1),5);
-        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('request')->query->get('page', 1),6);
-        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('request')->query->get('page', 1),8);
-        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $this->get('request')->query->get('page', 1),8);
+        //$arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('request')->query->get('page', 1),5);
+        $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1),5);
+        //$arVacaciones = $paginator->paginate($arVacaciones, $this->get('request')->query->get('page', 1),5);
+        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1),5);
+        //$arLicencias = $paginator->paginate($arLicencias, $this->get('request')->query->get('page', 1),5);
+        $arLicencias = $paginator->paginate($arLicencias, $request->query->getInt('page', 1),5);
+        //$arContratos = $paginator->paginate($arContratos, $this->get('request')->query->get('page', 1),5);
+        $arContratos = $paginator->paginate($arContratos, $request->query->getInt('page', 1),5);
+        //$arCreditos = $paginator->paginate($arCreditos, $this->get('request')->query->get('page', 1),5);
+        $arCreditos = $paginator->paginate($arCreditos, $request->query->getInt('page', 1),5);
+        //$arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('request')->query->get('page', 1),5);
+        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $request->query->getInt('page', 1),5);
+        //$arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('request')->query->get('page', 1),6);
+        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $request->query->getInt('page', 1),5);
+        //$arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('request')->query->get('page', 1),8);
+        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $request->query->getInt('page', 1),5);
+        //$arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $this->get('request')->query->get('page', 1),8);
+        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $request->query->getInt('page', 1),5);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:detalle.html.twig', array(
                     'arEmpleado' => $arEmpleado,
                     'arIncapacidades' => $arIncapacidades,
@@ -615,7 +631,7 @@ class ConsultasController extends Controller
     }  
 
     private function listarPagoPendientesBanco() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlPagoPendientesBancoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaPagoPendientesBancoDql(
 
@@ -627,7 +643,7 @@ class ConsultasController extends Controller
     }
 
     private function CreditosListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlCreditoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->listaDQL(
                     $session->get('filtroIdentificacion'),
@@ -637,7 +653,7 @@ class ConsultasController extends Controller
     }
 
     private function ServiciosPorCobrarListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlServiciosPorCobrarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->listaServiciosPorCobrarDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -648,7 +664,7 @@ class ConsultasController extends Controller
     }
 
     private function PagoListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlPagoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaConsultaPagosDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -661,7 +677,7 @@ class ConsultasController extends Controller
 
     private function EmpleadoListar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $this->strSqlEmpleadosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaDQL(
                 $session->get('filtroEmpleadoNombre'),
                 $session->get('filtroCodigoCentroCosto'),
@@ -673,7 +689,7 @@ class ConsultasController extends Controller
     }
 
     private function AportesListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlAportesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoAporte')->listaAportesDQL(
                     $session->get('filtroRhuAnio'),
@@ -683,7 +699,7 @@ class ConsultasController extends Controller
     }
 
     private function VacacionesPagarListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlVacacionesPagarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosVacacionCumplidaDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -693,7 +709,7 @@ class ConsultasController extends Controller
     }
     
     private function contratosIngresosListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIngresosContratosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaIngresosContratosDQL(
             $session->get('filtroCodigoContratoTipo'),
@@ -708,7 +724,7 @@ class ConsultasController extends Controller
     }
 
     private function contratosPeriodoListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         if($session->get('filtroDesde') == "") {
             $fecha = new \DateTime('now');
@@ -733,7 +749,7 @@ class ConsultasController extends Controller
     }    
     
     private function IncapacidadesListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIncapacidadesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -745,7 +761,7 @@ class ConsultasController extends Controller
     }
 
     private function IncapacidadesCobrarListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIncapacidadesCobrarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesCobrarDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -757,7 +773,7 @@ class ConsultasController extends Controller
     }
 
     private function ProcesosDisciplinariosListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlProcesosDisciplinariosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinario')->listaProcesosDisciplinariosDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -768,7 +784,7 @@ class ConsultasController extends Controller
     }
     
     private function DotacionesPendientesListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlDotacionesPendientesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->listaDotacionesPendientesDQL(
                     $session->get('filtroCodigoCentroCosto'),
@@ -779,7 +795,7 @@ class ConsultasController extends Controller
     }
     
     private function FechaTerminacionListar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlFechaTerminacionLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosFechaTerminacionDQL(
                     $session->get('filtroCodigoContratoTipo'),
@@ -795,90 +811,90 @@ class ConsultasController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDF', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDF', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioPagoPendientesBancoLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDF', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDF', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioCreditosLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
 
 
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarCredito', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelCredito', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDFCredito', 'submit', array('label'  => 'PDF',))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarCredito', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelCredito', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDFCredito', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioPagoLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -886,30 +902,30 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('codigoPago', 'text', array('label'  => 'codigoPago'))
-            ->add('BtnFiltrarPago', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelPago', 'submit', array('label'  => 'Excel',))
-            //->add('BtnPDFPago', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('codigoPago', TextType::class, array('label'  => 'codigoPago'))
+            ->add('BtnFiltrarPago', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelPago', SubmitType::class, array('label'  => 'Excel',))
+            //->add('BtnPDFPago', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioServiciosPorCobrarLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -917,72 +933,72 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarServiciosPorCobrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelServiciosPorCobrar', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDFServiciosPorCobrar', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarServiciosPorCobrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelServiciosPorCobrar', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDFServiciosPorCobrar', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioAportesLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
 
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('TxtAnio','number', array('label'  => 'Anio','data' => $session->get('filtroRhuAnio')))
             ->add('TxtMes','number', array('label'  => 'Mes','data' => $session->get('filtroRhuMes')))            
-            ->add('BtnFiltrarAportes', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelAportes', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrarAportes', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelAportes', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function formularioEmpleadoLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('estadoActivo', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVOS', '0' => 'INACTIVOS')))
-            ->add('estadoContratado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO')))    
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
+            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('TODOS' => '', 'SI' => '1', 'NO' => '0')))    
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function formularioIncapacidadesLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -994,10 +1010,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('es')
                     ->orderBy('es.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEntidadSalud')) {
@@ -1005,30 +1021,30 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('entidadSaludRel', 'entity', $arrayPropiedadesEntidadSalud)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarIncapacidades', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelIncapacidades', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDFIncapacidades', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarIncapacidades', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelIncapacidades', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDFIncapacidades', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioIncapacidadesCobrarLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1040,10 +1056,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('es')
                     ->orderBy('es.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEntidadSalud')) {
@@ -1051,30 +1067,30 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('entidadSaludRel', 'entity', $arrayPropiedadesEntidadSalud)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarIncapacidadesCobrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelIncapacidadesCobrar', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPDFIncapacidadesCobrar', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarIncapacidadesCobrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelIncapacidadesCobrar', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPDFIncapacidadesCobrar', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
 
     private function formularioProcesosDisciplinariosLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1082,29 +1098,29 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarProcesosDisciplinarios', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelProcesosDisciplinarios', 'submit', array('label'  => 'Excel',))
-            //->add('BtnPDFProcesosDisciplinarios', 'submit', array('label'  => 'PDF',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarProcesosDisciplinarios', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelProcesosDisciplinarios', SubmitType::class, array('label'  => 'Excel',))
+            //->add('BtnPDFProcesosDisciplinarios', SubmitType::class, array('label'  => 'PDF',))
             ->getForm();
         return $form;
     }
     
     private function formularioDotacionesPendientesLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1112,28 +1128,28 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarDotacionesPendientes', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelDotacionesPendientes', 'submit', array('label'  => 'Excel',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarDotacionesPendientes', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelDotacionesPendientes', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function formularioVacacionesPagarLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1141,27 +1157,27 @@ class ConsultasController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarVacacionesPagar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelVacacionesPagar', 'submit', array('label'  => 'Excel',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarVacacionesPagar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelVacacionesPagar', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
     
     private function formularioFechaTerminacionLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1172,10 +1188,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEmpleadoTipo')) {
@@ -1186,10 +1202,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {
@@ -1200,10 +1216,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoSubzona')) {
@@ -1214,42 +1230,42 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('contratoTipoRel', 'entity', $arrayPropiedadesTipoContrato)
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)    
-            ->add('empleadoTipoRel', 'entity', $arrayPropiedadesTipo)
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)
-            ->add('subZonaRel', 'entity', $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarFechaTerminacion', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelFechaTerminacion', 'submit', array('label'  => 'Excel',))
+            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)    
+            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarFechaTerminacion', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelFechaTerminacion', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function formularioIngresosContratosLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedadesTipo = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEmpleadoTipo')) {
@@ -1260,10 +1276,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {
@@ -1274,10 +1290,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoSubzona')) {
@@ -1288,43 +1304,43 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('contratoTipoRel', 'entity', $arrayPropiedadesTipoContrato)    
-            ->add('empleadoTipoRel', 'entity', $arrayPropiedadesTipo)
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)
-            ->add('subZonaRel', 'entity', $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('TxtContrato', 'text', array('label'  => 'Contrato','data' => $session->get('filtroCodigoContrato')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarIngresosContratos', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelIngresosContratos', 'submit', array('label'  => 'Excel',))
+            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)    
+            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('TxtContrato', TextType::class, array('label'  => 'Contrato','data' => $session->get('filtroCodigoContrato')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarIngresosContratos', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelIngresosContratos', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function formularioContratoPeriodo() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -1335,10 +1351,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEmpleadoTipo')) {
@@ -1349,10 +1365,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {
@@ -1363,10 +1379,10 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoSubzona')) {
@@ -1377,35 +1393,34 @@ class ConsultasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)    
-            ->add('contratoTipoRel', 'entity', $arrayPropiedadesTipoContrato)    
-            ->add('empleadoTipoRel', 'entity', $arrayPropiedadesTipo)
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)
-            ->add('subZonaRel', 'entity', $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))            
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrarContratosPeriodo', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcelContratosPeriodo', 'submit', array('label'  => 'Excel',))
+            ->add('centroCostoRel', EntityType::Class, $arrayPropiedades)    
+            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)    
+            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))            
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('BtnFiltrarContratosPeriodo', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcelContratosPeriodo', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }    
     
     private function filtrarPagoPendientesBancoLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1420,9 +1435,7 @@ class ConsultasController extends Controller
     }
 
     private function filtrarCreditoLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
+        $session = new Session;                
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
@@ -1439,10 +1452,9 @@ class ConsultasController extends Controller
     }
 
     private function filtrarPagoLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
@@ -1460,10 +1472,9 @@ class ConsultasController extends Controller
     }
 
     private function filtrarEmpleadoLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroEmpleadoActivo', $form->get('estadoActivo')->getData());
@@ -1471,14 +1482,13 @@ class ConsultasController extends Controller
     }
 
     private function filtrarIncapacidadesLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        $session->set('filtroCodigoEntidadSalud', $controles['entidadSaludRel']);
+        $session->set('filtroCodigoEntidadSalud', $form->get('entidadSaludRel')->getData());
         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -1492,14 +1502,13 @@ class ConsultasController extends Controller
     }
 
     private function filtrarIncapacidadesCobrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        $session->set('filtroCodigoEntidadSalud', $controles['entidadSaludRel']);
+        $session->set('filtroCodigoEntidadSalud', $form->get('entidadSaludRel')->getData());
         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -1513,10 +1522,9 @@ class ConsultasController extends Controller
     }
 
     private function filtrarProcesosDisciplinariosLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1531,10 +1539,9 @@ class ConsultasController extends Controller
     }
     
     private function filtrarDotacionesPendientesLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1549,18 +1556,17 @@ class ConsultasController extends Controller
     }
 
     private function filtrarAportesLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();        
+        $session = new Session;
+                
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());        
         $session->set('filtroRhuAnio', $form->get('TxtAnio')->getData());        
         $session->set('filtroRhuMes', $form->get('TxtMes')->getData());        
     }
 
     private function filtrarServiciosPorCobrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
@@ -1577,10 +1583,9 @@ class ConsultasController extends Controller
     }
 
     private function filtrarVacacionesPagarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
         
@@ -1593,14 +1598,13 @@ class ConsultasController extends Controller
     }
     
     private function filtrarFechaTerminacionLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoContratoTipo', $controles['contratoTipoRel']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoEmpleadoTipo', $controles['empleadoTipoRel']);
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
-        $session->set('filtroCodigoSubzona', $controles['subZonaRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
+        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
+        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1615,13 +1619,12 @@ class ConsultasController extends Controller
     }
     
     private function filtrarIngresosContratosLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoContratoTipo', $controles['contratoTipoRel']);
-        $session->set('filtroCodigoEmpleadoTipo', $controles['empleadoTipoRel']);
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
-        $session->set('filtroCodigoSubzona', $controles['subZonaRel']);
+        $session = new Session;
+                
+        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
+        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
+        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
+        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
         $session->set('filtroCodigoContrato', $form->get('TxtContrato')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1636,9 +1639,8 @@ class ConsultasController extends Controller
     }
 
     private function filtrarContratosPeriodoLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');    
+        $session = new Session;
+                
         $fechaDesde = $form->get('fechaDesde')->getData();
         $fechaHasta = $form->get('fechaHasta')->getData();
         if(!$fechaDesde) {
@@ -1647,14 +1649,14 @@ class ConsultasController extends Controller
         if(!$fechaHasta) {
             $fechaHasta = new \DateTime('now');
         }        
-        $session->set('filtroCodigoContratoTipo', $controles['contratoTipoRel']);
-        $session->set('filtroCodigoEmpleadoTipo', $controles['empleadoTipoRel']);
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
-        $session->set('filtroCodigoSubzona', $controles['subZonaRel']);        
+        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
+        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
+        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
+        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
         $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
     }    
     
     private function generarExcel() {
@@ -1662,7 +1664,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -1776,7 +1778,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -1867,7 +1869,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -1937,7 +1939,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2026,7 +2028,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2150,7 +2152,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2193,6 +2195,11 @@ class ConsultasController extends Controller
                     $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arPagos as $arPago) {
+            $fechaDesdePago = '';
+            if ($arPago->getFechaDesdePago() != null){
+                $fechaDesdePago = $arPago->getFechaDesdePago()->format('Y/m/d');
+            }
+            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPago->getCodigoPagoPk())
                     ->setCellValue('B' . $i, $arPago->getNumero())
@@ -2200,7 +2207,7 @@ class ConsultasController extends Controller
                     ->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('F' . $i, $arPago->getCentroCostoRel()->getNombre())
-                    ->setCellValue('G' . $i, $arPago->getFechaDesdePago()->format('Y/m/d'))
+                    ->setCellValue('G' . $i, $fechaDesdePago)
                     ->setCellValue('H' . $i, $arPago->getFechaDesde()->format('Y/m/d'))
                     ->setCellValue('I' . $i, $arPago->getFechaHasta()->format('Y/m/d'))
                     ->setCellValue('J' . $i, $arPago->getVrSalario())
@@ -2236,7 +2243,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2332,7 +2339,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2428,7 +2435,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2515,7 +2522,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2869,7 +2876,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -3068,7 +3075,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -3152,7 +3159,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -3246,7 +3253,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -3333,7 +3340,7 @@ class ConsultasController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

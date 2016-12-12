@@ -15,9 +15,8 @@ class VisitaFechaVencimientoController extends Controller
     /**
      * @Route("/rhu/consulta/visita/fechavencimiento", name="brs_rhu_consulta_visita_fechavencimiento")
      */    
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 96)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         

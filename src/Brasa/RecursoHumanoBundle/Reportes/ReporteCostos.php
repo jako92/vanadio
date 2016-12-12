@@ -1,5 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Reportes;
+
 class ReporteCostos extends \FPDF_FPDF {
     public static $em;
     public static $strDql;    

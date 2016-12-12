@@ -21,9 +21,8 @@ class PermisosController extends Controller
     /**
      * @Route("/rhu/consultas/permisos", name="brs_rhu_consultas_permisos")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 34)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         

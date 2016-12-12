@@ -6,6 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class EmpleadoCentroCostoMesController extends Controller
@@ -15,9 +21,8 @@ class EmpleadoCentroCostoMesController extends Controller
     /**
      * @Route("/rhu/consulta/empleado/centro/costo/mes", name="brs_rhu_consulta_empleado_centro_costo_mes")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         //if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 94)) {
         //    return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
@@ -45,7 +50,7 @@ class EmpleadoCentroCostoMesController extends Controller
     }
 
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoCentroCosto')->listaDql(
                 $session->get('filtroRhuAnio'),
@@ -56,10 +61,10 @@ class EmpleadoCentroCostoMesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
         $form = $this->createFormBuilder()
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('TxtAnio', 'text')
-            ->add('TxtMes', 'text')
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('TxtAnio', TextType::class)
+            ->add('TxtMes', TextType::class)
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }

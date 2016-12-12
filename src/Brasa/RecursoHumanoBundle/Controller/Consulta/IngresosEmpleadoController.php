@@ -5,6 +5,7 @@ namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class IngresosEmpleadoController extends Controller
 {
@@ -13,9 +14,8 @@ class IngresosEmpleadoController extends Controller
     /**
      * @Route("/rhu/consultas/costos/ingresos/empleado", name="brs_rhu_consultas_costos_ingresos_empleado")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 15)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         

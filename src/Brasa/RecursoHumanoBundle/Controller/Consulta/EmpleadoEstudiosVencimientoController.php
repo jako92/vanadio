@@ -5,6 +5,13 @@ namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EmpleadoEstudiosVencimientoController extends Controller
 {
@@ -15,9 +22,8 @@ class EmpleadoEstudiosVencimientoController extends Controller
     /**
      * @Route("/rhu/consultas/empleado/estudios/vencimiento", name="brs_rhu_consultas_empleado_estudios_vencimiento")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 17)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -52,7 +58,7 @@ class EmpleadoEstudiosVencimientoController extends Controller
     }        
     
     private function listar() {        
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->listaDql(
                 $session->get('filtroIdentificacion'),
@@ -63,23 +69,23 @@ class EmpleadoEstudiosVencimientoController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         
         $form = $this->createFormBuilder()
-            ->add('TxtNumeroIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fecha','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
-            ->add('fechaAcreditacion','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnExcelInforme', 'submit', array('label'  => 'Informe'))    
+            ->add('TxtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fecha',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
+            ->add('fechaAcreditacion',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnExcelInforme', SubmitType::class, array('label'  => 'Informe'))    
             ->getForm();
         return $form;
     }           
     
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');        
+        $session = new Session;
+        //$request = $this->getRequest();
+        //$controles = $request->request->get('form');        
         $session->set('filtroIdentificacion', $form->get('TxtNumeroIdentificacion')->getData());        
         $dateFechaHasta = $form->get('fecha')->getData();
         $dateFechaHastaAcreditacion = $form->get('fechaAcreditacion')->getData();

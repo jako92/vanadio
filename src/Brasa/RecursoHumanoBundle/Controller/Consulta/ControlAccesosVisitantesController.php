@@ -5,6 +5,7 @@ namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class ControlAccesosVisitantesController extends Controller
 {
@@ -12,9 +13,9 @@ class ControlAccesosVisitantesController extends Controller
     /**
      * @Route("/rhu/consultas/control/acceso/visitantes", name="brs_rhu_consultas_control_acceso_visitantes")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 41)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -70,7 +71,7 @@ class ControlAccesosVisitantesController extends Controller
 
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtNumeroIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
