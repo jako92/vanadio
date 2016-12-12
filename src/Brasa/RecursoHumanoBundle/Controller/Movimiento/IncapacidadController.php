@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +14,9 @@ class IncapacidadController extends Controller
     /**
      * @Route("/rhu/movimiento/incapacidad/", name="brs_rhu_movimiento_incapacidad")
      */     
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -81,8 +82,8 @@ class IncapacidadController extends Controller
     /**
      * @Route("/rhu/movimiento/incapacidad/nuevo/{codigoIncapacidad}", name="brs_rhu_movimiento_incapacidad_nuevo")
      */    
-    public function nuevoAction($codigoIncapacidad = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoIncapacidad = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arIncapacidad = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();       
@@ -277,7 +278,7 @@ class IncapacidadController extends Controller
     
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');        
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);                
         $session->set('filtroRhuIncapacidadTipo', $controles['incapacidadTipoRel']);                

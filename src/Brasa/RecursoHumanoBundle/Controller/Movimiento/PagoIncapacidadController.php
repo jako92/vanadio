@@ -1,6 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +13,9 @@ class PagoIncapacidadController extends Controller
     /**
      * @Route("/rhu/incapacidades/pagos/lista", name="brs_rhu_incapacidades_pagos_lista")
      */
-    public function listaAction() {        
+    public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 13, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -47,8 +47,8 @@ class PagoIncapacidadController extends Controller
     /**
      * @Route("/rhu/incapacidades/pagos/nuevo/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_nuevo")
      */
-    public function nuevoAction($codigoIncapacidadPago) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoIncapacidadPago) {
+        
         $em = $this->getDoctrine()->getManager();
         $arIncapacidadPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
         if($codigoIncapacidadPago != 0) {
@@ -76,9 +76,9 @@ class PagoIncapacidadController extends Controller
     /**
      * @Route("/rhu/incapacidades/pagos/detalle/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_detalle")
      */
-    public function detalleAction($codigoIncapacidadPago) {
+    public function detalleAction(Request $request, $codigoIncapacidadPago) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();    
+            
         $objMensaje = $this->get('mensajes_brasa');  
         $arIncapacidadPago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
         $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);        
@@ -155,8 +155,8 @@ class PagoIncapacidadController extends Controller
     /**
      * @Route("/rhu/incapacidades/pagos/detalle/nuevo/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoIncapacidadPago) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoIncapacidadPago) {
+        
         $em = $this->getDoctrine()->getManager();
         $arIncapacidadPago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
         $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
@@ -200,7 +200,7 @@ class PagoIncapacidadController extends Controller
     }
     
     private function filtrar ($form) {
-        $request = $this->getRequest();
+        
         $session = $this->getRequest()->getSession();
         $controles = $request->request->get('form');
         $session->set('filtroCodigoIncapacidadPago', $controles['entidadSaludRel']);                               

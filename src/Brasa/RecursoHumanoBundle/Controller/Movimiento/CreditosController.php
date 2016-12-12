@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCreditoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,9 +17,9 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/creditos/lista", name="brs_rhu_creditos_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 15, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -78,8 +79,8 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/creditos/nuevo/{codigoCredito}", name="brs_rhu_creditos_nuevo")
      */
-    public function nuevoAction($codigoCredito = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoCredito = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();    
@@ -149,9 +150,9 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/creditos/detalle/{codigoCredito}", name="brs_rhu_credito_detalle")
      */
-    public function detalleAction($codigoCredito) {
+    public function detalleAction(Request $request, $codigoCredito) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
         $arCredito = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($codigoCredito);        
         $form = $this->formularioDetalle($arCredito);
@@ -185,8 +186,8 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/creditos/detalle/nuevo/{codigoCreditoPk}", name="brs_rhu_credito_nuevo_detalle")
      */
-    public function nuevoDetalleAction($codigoCreditoPk) {
-        $request = $this->getRequest();
+    public function nuevoDetalleAction(Request $request, $codigoCreditoPk) {
+        
         $em = $this->getDoctrine()->getManager();
         $mensaje = 0;
         $arCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
@@ -242,9 +243,9 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/cargar/creditos", name="brs_rhu_cargar_creditos")
      */
-    public function cargarAction() {
+    public function cargarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
@@ -323,8 +324,8 @@ class CreditosController extends Controller
     /**
      * @Route("/rhu/creditos/refinanciar/{codigoCredito}", name="brs_rhu_creditos_refinanciar")
      */
-    public function refinanciarAction($codigoCredito) {
-        $request = $this->getRequest();
+    public function refinanciarAction(Request $request, $codigoCredito) {
+        
         $em = $this->getDoctrine()->getManager();
         $formCredito = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_creditos_refinanciar', array('codigoCredito' => $codigoCredito)))
@@ -407,7 +408,7 @@ class CreditosController extends Controller
     
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $arrControles = $request->request->All();
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());

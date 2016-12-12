@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -16,9 +16,9 @@ class DotacionController extends Controller
     /**
      * @Route("/rhu/base/empleado/dotacion/lista", name="brs_rhu_dotacion_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 17, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -71,8 +71,8 @@ class DotacionController extends Controller
     /**
      * @Route("/rhu/base/empleado/dotacion/nuevo/{codigoDotacion}", name="brs_rhu_dotacion_nuevo")
      */
-    public function nuevoAction($codigoDotacion = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoDotacion = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();    
@@ -138,9 +138,9 @@ class DotacionController extends Controller
     /**
      * @Route("/rhu/base/empleado/dotacion/detalle/{codigoDotacion}", name="brs_rhu_dotacion_detalle")
      */
-    public function detalleAction($codigoDotacion) {
+    public function detalleAction(Request $request, $codigoDotacion) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();
         $arDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->find($codigoDotacion);
@@ -223,8 +223,8 @@ class DotacionController extends Controller
     /**
      * @Route("/rhu/base/empleado/dotacion/detalle/nuevo/{codigoDotacion}", name="brs_rhu_dotacion_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoDotacion) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoDotacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();
         $arDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->find($codigoDotacion);
@@ -273,8 +273,8 @@ class DotacionController extends Controller
     /**
      * @Route("/rhu/base/empleado/dotacion/detalle/devolucion/{codigoDotacion}", name="brs_rhu_dotacion_detalle_devolucion")
      */
-    public function detalleDevolucionAction($codigoDotacion) {
-        $request = $this->getRequest();
+    public function detalleDevolucionAction(Request $request, $codigoDotacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();
         $arDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->find($codigoDotacion);
@@ -360,7 +360,7 @@ class DotacionController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());

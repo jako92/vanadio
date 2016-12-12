@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuVacacionType;
@@ -15,10 +15,10 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/", name="brs_rhu_movimiento_vacacion")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 14, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -82,8 +82,8 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/nuevo/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_nuevo")
      */
-    public function nuevoAction($codigoVacacion = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoVacacion = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
@@ -190,9 +190,9 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/detalle/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_detalle")
      */
-    public function detalleAction($codigoVacacion) {
+    public function detalleAction(Request $request, $codigoVacacion) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
@@ -288,8 +288,8 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/detalle/credito/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_detalle_credito")
      */
-    public function detalleCreditoAction($codigoVacacion) {
-        $request = $this->getRequest();
+    public function detalleCreditoAction(Request $request, $codigoVacacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
@@ -336,8 +336,8 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/detalle/descuento/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_detalle_descuento")
      */
-    public function detalleDescuentoAction($codigoVacacion) {
-        $request = $this->getRequest();
+    public function detalleDescuentoAction(Request $request, $codigoVacacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
@@ -377,8 +377,8 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/detalle/bonificacion/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_detalle_bonificacion")
      */
-    public function detalleBonificacionAction($codigoVacacion) {
-        $request = $this->getRequest();
+    public function detalleBonificacionAction(Request $request, $codigoVacacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
@@ -422,8 +422,8 @@ class VacacionesController extends Controller
     /**
      * @Route("/rhu/movimiento/vacacion/modificar/{codigoVacacion}", name="brs_rhu_movimiento_vacacion_modificar")
      */
-    public function modificarInformacionAction($codigoVacacion) {
-        $request = $this->getRequest();
+    public function modificarInformacionAction(Request $request, $codigoVacacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),112)){
@@ -540,7 +540,7 @@ class VacacionesController extends Controller
 
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroPagado', $controles['estadoPagado']);

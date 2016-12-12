@@ -18,9 +18,9 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/listar", name="brs_rhu_examen_listar")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 5, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -51,8 +51,8 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/nuevo/{codigoExamen}", name="brs_rhu_examen_nuevo")
      */
-    public function nuevoAction($codigoExamen) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoExamen) {
+        
         $em = $this->getDoctrine()->getManager();
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
@@ -117,8 +117,8 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/nuevo/control/{codigoExamen}", name="brs_rhu_examen_nuevo_control")
      */
-    public function nuevoControlAction($codigoExamen) {
-        $request = $this->getRequest();
+    public function nuevoControlAction(Request $request, $codigoExamen) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
@@ -167,9 +167,9 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/detalle/{codigoExamen}", name="brs_rhu_examen_detalle")
      */
-    public function detalleAction($codigoExamen) {
+    public function detalleAction(Request $request, $codigoExamen) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
         $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
@@ -295,8 +295,8 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/detalle/nuevo/{codigoExamen}", name="brs_rhu_examen_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoExamen) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoExamen) {
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();
         $arExamenTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenTipo')->findAll();
@@ -343,8 +343,8 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/detalle/nuevo/comentario/{codigoExamenDetalle}", name="brs_rhu_examen_detalle_nuevo_comentario")
      */
-    public function detalleNuevoComentarioAction($codigoExamenDetalle) {
-        $request = $this->getRequest();
+    public function detalleNuevoComentarioAction(Request $request, $codigoExamenDetalle) {
+        
         $em = $this->getDoctrine()->getManager();
         $arExamenDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
         $arExamenDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenDetalle')->find($codigoExamenDetalle);
@@ -363,9 +363,9 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/restriccion/medica/agregar/{codigoExamen}/{codigoRestriccionMedica}", name="brs_rhu_examen_restriccion_medica_agregar")
      */
-    public function agregarRestriccionMedicaAction($codigoExamen,$codigoRestriccionMedica) {
+    public function agregarRestriccionMedicaAction(Request $request, $codigoExamen,$codigoRestriccionMedica) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
         $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
@@ -417,9 +417,9 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/restriccion/medica/editar/{codigoExamen}/{codigoRestriccionMedica}", name="brs_rhu_examen_restriccion_medica_editar")
      */
-    public function editarRestriccionMedicaAction($codigoExamen,$codigoRestriccionMedica) {
+    public function editarRestriccionMedicaAction(Request $request, $codigoExamen,$codigoRestriccionMedica) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
         $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
         $arExamenRestriccionMedica = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenRestriccionMedica();
@@ -490,9 +490,9 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/restriccion/medica/detalle/{codigoRestriccionMedica}", name="brs_rhu_examen_restriccion_medica_detalle")
      */
-    public function detalleRestriccionMedicaAction($codigoRestriccionMedica) {
+    public function detalleRestriccionMedicaAction(Request $request, $codigoRestriccionMedica) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arExamenRestriccionMedica = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenRestriccionMedica();
         $arExamenRestriccionMedica = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenRestriccionMedica')->find($codigoRestriccionMedica);
@@ -533,7 +533,7 @@ class ExamenController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuExamenEstadoAutorizado', $form->get('estadoAutorizado')->getData());

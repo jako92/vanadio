@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +13,9 @@ class ProgramacionesPagoCargarSoporteHorarioController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/cargar/soporte/horario/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_cargar_soporte_horario")
      */
-    public function cargarAction($codigoProgramacionPago) {
+    public function cargarAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();                
         $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
         $form = $this->createFormBuilder()                        

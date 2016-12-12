@@ -17,9 +17,9 @@ class EmpleadoInformacionInternaController extends Controller
     /**
      * @Route("/rhu/empleado/informacion/interna/lista", name="brs_rhu_empleado_informacion_interna_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 19, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -59,8 +59,8 @@ class EmpleadoInformacionInternaController extends Controller
     /**
      * @Route("/rhu/empleado/informacion/interna/nuevo/{codigoInformacionInterna}", name="brs_rhu_empleado_informacion_interna_nuevo")
      */
-    public function nuevoAction($codigoInformacionInterna = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoInformacionInterna = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()

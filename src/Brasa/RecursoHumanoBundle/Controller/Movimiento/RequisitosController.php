@@ -14,9 +14,9 @@ class RequisitosController extends Controller
     /**
      * @Route("/rhu/requisito/lista", name="brs_rhu_requisito_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 7, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -59,10 +59,10 @@ class RequisitosController extends Controller
     /**
      * @Route("/rhu/requisito/detalle/{codigoRequisito}", name="brs_rhu_requisito_detalle")
      */
-    public function detalleAction($codigoRequisito) {
+    public function detalleAction(Request $request, $codigoRequisito) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisito();
         $arRequisito = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->find($codigoRequisito);
@@ -192,8 +192,8 @@ class RequisitosController extends Controller
     /**
      * @Route("/rhu/requisito/detalle/nuevo/{codigoRequisito}", name="brs_rhu_requisito_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoRequisito) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoRequisito) {
+        
         $em = $this->getDoctrine()->getManager();
         $arRequisito = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->find($codigoRequisito);
         $form = $this->createFormBuilder()
@@ -239,8 +239,8 @@ class RequisitosController extends Controller
     /**
      * @Route("/rhu/requisito/nuevo/{codigoRequisito}", name="brs_rhu_requisito_nuevo")
      */
-    public function nuevoAction($codigoRequisito) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoRequisito) {
+        
         $em = $this->getDoctrine()->getManager();
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisito();
         $arRequisito->setFecha(new \DateTime('now'));
@@ -345,7 +345,7 @@ class RequisitosController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
     }

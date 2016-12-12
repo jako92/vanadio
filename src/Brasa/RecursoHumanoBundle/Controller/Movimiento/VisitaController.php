@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -15,9 +15,9 @@ class VisitaController extends Controller
     /**
      * @Route("/rhu/movimiento/visita", name="brs_rhu_movimiento_visita")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 120, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -66,8 +66,8 @@ class VisitaController extends Controller
     /**
      * @Route("/rhu/movimiento/visita/nuevo/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo")
      */
-    public function nuevoAction($codigoVisita = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoVisita = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();    
@@ -116,9 +116,9 @@ class VisitaController extends Controller
     /**
      * @Route("/rhu/movimiento/visita/detalle/{codigoVisita}", name="brs_rhu_movimiento_visita_detalle")
      */
-    public function detalleAction($codigoVisita) {
+    public function detalleAction(Request $request, $codigoVisita) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
         $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
@@ -238,7 +238,7 @@ class VisitaController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());

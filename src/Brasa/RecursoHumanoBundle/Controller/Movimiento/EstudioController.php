@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -15,9 +15,9 @@ class EstudioController extends Controller
     /**
      * @Route("/rhu/estudio/lista", name="brs_rhu_estudio_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 36, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -65,8 +65,8 @@ class EstudioController extends Controller
     /**
      * @Route("/rhu/estudio/nuevo/{codigoEstudio}", name="brs_rhu_estudio_nuevo")
      */
-    public function nuevoAction($codigoEstudio = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoEstudio = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arEstudio = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudio();
@@ -120,9 +120,9 @@ class EstudioController extends Controller
     /**
      * @Route("/rhu/estudio/detalle/{codigoEstudio}", name="brs_rhu_estudio_detalle")
      */
-    public function detalleAction($codigoEstudio) {
+    public function detalleAction(Request $request, $codigoEstudio) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arEstudio = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudio();
         $arEstudio = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->find($codigoEstudio);
@@ -185,7 +185,7 @@ class EstudioController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());

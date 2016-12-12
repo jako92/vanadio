@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -15,9 +15,9 @@ class PermisoController extends Controller
     /**
      * @Route("/rhu/permiso/lista", name="brs_rhu_permiso_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 24, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -64,8 +64,8 @@ class PermisoController extends Controller
     /**
      * @Route("/rhu/permiso/nuevo/{codigoPermiso}", name="brs_rhu_permiso_nuevo")
      */
-    public function nuevoAction($codigoPermiso = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoPermiso = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPermiso = new \Brasa\RecursoHumanoBundle\Entity\RhuPermiso();
@@ -124,9 +124,9 @@ class PermisoController extends Controller
     /**
      * @Route("/rhu/permiso/detalle/{codigoPermiso}", name="brs_rhu_permiso_detalle")
      */
-    public function detalleAction($codigoPermiso) {
+    public function detalleAction(Request $request, $codigoPermiso) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arPermiso = new \Brasa\RecursoHumanoBundle\Entity\RhuPermiso();
         $arPermiso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPermiso')->find($codigoPermiso);
@@ -206,7 +206,7 @@ class PermisoController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());

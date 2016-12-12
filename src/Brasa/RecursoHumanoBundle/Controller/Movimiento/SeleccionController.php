@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -16,9 +16,9 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/lista", name="brs_rhu_seleccion_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 4, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -78,8 +78,8 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/nuevo/{codigoSeleccion}", name="brs_rhu_seleccion_nuevo")
      */
-    public function nuevoAction($codigoSeleccion) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoSeleccion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         if($codigoSeleccion != 0) {
@@ -118,9 +118,8 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/detalle/{codigoSeleccion}", name="brs_rhu_seleccion_detalle")
      */
-    public function detalleAction($codigoSeleccion) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function detalleAction(Request $request, $codigoSeleccion) {
+        $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
@@ -260,9 +259,9 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/agregar/referencia/{codigoSeleccion}/{codigoSeleccionReferencia}", name="brs_rhu_seleccion_agregar_referencia")
      */
-    public function agregarReferenciaAction($codigoSeleccion, $codigoSeleccionReferencia) {
+    public function agregarReferenciaAction(Request $request, $codigoSeleccion, $codigoSeleccionReferencia) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
         $arSeleccionReferencia = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionReferencia();
@@ -298,9 +297,9 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/agregar/prueba/{codigoSeleccion}/{codigoSeleccionPrueba}", name="brs_rhu_seleccion_agregar_prueba")
      */
-    public function agregarPruebaAction($codigoSeleccion, $codigoSeleccionPrueba) {
+    public function agregarPruebaAction(Request $request, $codigoSeleccion, $codigoSeleccionPrueba) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
         $arSeleccionPrueba = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionPrueba();
@@ -334,9 +333,9 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/agregar/visita/{codigoSeleccion}/{codigoSeleccionVisita}", name="brs_rhu_seleccion_agregar_visita")
      */
-    public function agregarVisitaAction($codigoSeleccion, $codigoSeleccionVisita) {
+    public function agregarVisitaAction(Request $request, $codigoSeleccion, $codigoSeleccionVisita) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
         $arSeleccionVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionVisita();
@@ -370,9 +369,9 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/agregar/entrevista/{codigoSeleccion}/{codigoSeleccionEntrevista}", name="brs_rhu_seleccion_agregar_entrevista")
      */
-    public function agregarEntrevistaAction($codigoSeleccion, $codigoSeleccionEntrevista) {
+    public function agregarEntrevistaAction(Request $request, $codigoSeleccion, $codigoSeleccionEntrevista) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
         $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
@@ -411,8 +410,8 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/cerrar/{codigoSeleccion}", name="brs_rhu_seleccion_cerrar")
      */
-    public function cerrarAction($codigoSeleccion) {
-        $request = $this->getRequest();
+    public function cerrarAction(Request $request, $codigoSeleccion) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
@@ -578,7 +577,7 @@ class SeleccionController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroCodigoRequisicion', $controles['requisicionRel']);

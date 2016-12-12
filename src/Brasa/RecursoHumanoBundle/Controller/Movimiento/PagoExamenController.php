@@ -1,6 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +13,9 @@ class PagoExamenController extends Controller
     /**
      * @Route("/rhu/pago/examen/lista", name="brs_rhu_pago_examen_lista")
      */
-    public function listaAction() {        
+    public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 6, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -47,8 +47,8 @@ class PagoExamenController extends Controller
     /**
      * @Route("/rhu/pago/examen/nuevo/{codigoPagoExamen}", name="brs_rhu_pago_examen_nuevo")
      */
-    public function nuevoAction($codigoPagoExamen) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoPagoExamen) {
+        
         $em = $this->getDoctrine()->getManager();
         $arPagoExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoExamen();
         if($codigoPagoExamen != 0) {
@@ -74,9 +74,9 @@ class PagoExamenController extends Controller
     /**
      * @Route("/rhu/pago/examen/detalle/{codigoPagoExamen}", name="brs_rhu_pago_examen_detalle")
      */
-    public function detalleAction($codigoPagoExamen) {
+    public function detalleAction(Request $request, $codigoPagoExamen) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();    
+            
         $objMensaje = $this->get('mensajes_brasa');                     
         $arPagoExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoExamen();
         $arPagoExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoExamen')->find($codigoPagoExamen);        
@@ -132,8 +132,8 @@ class PagoExamenController extends Controller
     /**
      * @Route("/rhu/pago/examen/detalle/nuevo/{codigoPagoExamen}", name="brs_rhu_pago_examen_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoPagoExamen) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoPagoExamen) {
+        
         $em = $this->getDoctrine()->getManager();
         $arPagoExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoExamen();
         $arPagoExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoExamen')->find($codigoPagoExamen);
@@ -183,7 +183,7 @@ class PagoExamenController extends Controller
     }
     
     private function filtrar ($form) {
-        $request = $this->getRequest();
+        
         $session = $this->getRequest()->getSession();
         $controles = $request->request->get('form');
         $session->set('filtroCodigoEntidadExamen', $controles['entidadExamenRel']);                               

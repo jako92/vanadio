@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +14,9 @@ class ReclamoController extends Controller
     /**
      * @Route("/rhu/movimiento/reclamo/", name="brs_rhu_movimiento_reclamo")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }*/
@@ -65,8 +66,8 @@ class ReclamoController extends Controller
     /**
      * @Route("/rhu/movimiento/reclamo/nuevo/{codigoReclamo}", name="brs_rhu_movimiento_reclamo_nuevo")
      */
-    public function nuevoAction($codigoReclamo = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoReclamo = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arReclamo = new \Brasa\RecursoHumanoBundle\Entity\RhuReclamo();
@@ -171,7 +172,7 @@ class ReclamoController extends Controller
 
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuReclamoEstadoRechazado', $form->get('estadoRechazado')->getData());

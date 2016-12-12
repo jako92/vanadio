@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +13,9 @@ class AspiranteController extends Controller
     /**
      * @Route("/rhu/movimientos/aspirante/lista", name="brs_rhu_movimiento_aspirante_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 35, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -62,8 +62,8 @@ class AspiranteController extends Controller
     /**
      * @Route("/rhu/movimientos/aspirante/nuevo/{codigoAspirante}", name="brs_rhu_movimiento_aspirante_nuevo")
      */
-    public function nuevoAction($codigoAspirante) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAspirante) {
+        
         $em = $this->getDoctrine()->getManager();
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
         if($codigoAspirante != 0) {
@@ -110,8 +110,8 @@ class AspiranteController extends Controller
     /**
      * @Route("/rhu/movimientos/aspirante/aplicar/{codigoAspirante}", name="brs_rhu_movimiento_aspirante_aplicar")
      */
-    public function aplicarAction($codigoAspirante) {
-        $request = $this->getRequest();
+    public function aplicarAction(Request $request, $codigoAspirante) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
@@ -181,8 +181,8 @@ class AspiranteController extends Controller
      /**
      * @Route("/rhu/movimientos/aspirante/desbloquear/{codigoAspirante}", name="brs_rhu_movimiento_aspirante_desbloquear")
      */
-    public function desbloquearAction($codigoAspirante) {
-        $request = $this->getRequest();
+    public function desbloquearAction(Request $request, $codigoAspirante) {
+        
         $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
@@ -225,8 +225,8 @@ class AspiranteController extends Controller
     /**
      * @Route("/rhu/movimientos/aspirante/historial/{codigoAspirante}", name="brs_rhu_movimiento_aspirante_historial")
      */
-    public function historialAction($codigoAspirante) {
-        $request = $this->getRequest();
+    public function historialAction(Request $request, $codigoAspirante) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
@@ -261,9 +261,9 @@ class AspiranteController extends Controller
     /**
      * @Route("/rhu/movimientos/aspirante/detalle/{codigoAspirante}", name="brs_rhu_movimiento_aspirante_detalle")
      */
-    public function detalleAction($codigoAspirante) {
+    public function detalleAction(Request $request, $codigoAspirante) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
         $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigoAspirante);
@@ -364,7 +364,7 @@ class AspiranteController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroNombreAspirante', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacionAspirante', $form->get('TxtIdentificacion')->getData());

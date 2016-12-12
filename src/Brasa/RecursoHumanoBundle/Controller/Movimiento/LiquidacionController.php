@@ -14,9 +14,9 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/", name="brs_rhu_movimiento_liquidacion")
      */     
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 9, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -62,8 +62,8 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/nuevo/{codigoLiquidacion}", name="brs_rhu_movimiento_liquidacion_nuevo")
      */     
-    public function nuevoAction($codigoLiquidacion = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoLiquidacion = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();        
@@ -91,10 +91,10 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/detalle/{codigoLiquidacion}", name="brs_rhu_movimiento_liquidacion_detalle")
      */    
-    public function detalleAction($codigoLiquidacion) {
+    public function detalleAction(Request $request, $codigoLiquidacion) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
@@ -200,8 +200,8 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/adicional/{codigoLiquidacion}/{codigoLiquidacionAdicional}/{tipo}/", name="brs_rhu_movimiento_liquidacion_adicional")
      */     
-    public function detalleAdicionalAction($codigoLiquidacion, $codigoLiquidacionAdicional, $tipo) {
-        $request = $this->getRequest();
+    public function detalleAdicionalAction(Request $request, $codigoLiquidacion, $codigoLiquidacionAdicional, $tipo) {
+        
         $em = $this->getDoctrine()->getManager();        
         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
@@ -262,8 +262,8 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/detalle/credito/{codigoLiquidacion}", name="brs_rhu_movimiento_liquidacion_detalle_credito")
      */     
-    public function detalleCreditoAction($codigoLiquidacion) {
-        $request = $this->getRequest();
+    public function detalleCreditoAction(Request $request, $codigoLiquidacion) {
+        
         $em = $this->getDoctrine()->getManager();        
         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
@@ -310,8 +310,8 @@ class LiquidacionController extends Controller
     /**
      * @Route("/rhu/movimiento/liquidacion/parametros/{codigoLiquidacion}", name="brs_rhu_movimiento_liquidacion_parametros")
      */    
-    public function parametrosAction($codigoLiquidacion) {
-        $request = $this->getRequest();
+    public function parametrosAction(Request $request, $codigoLiquidacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
@@ -448,7 +448,7 @@ class LiquidacionController extends Controller
     
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroGenerado', $controles['estadoGenerado']);

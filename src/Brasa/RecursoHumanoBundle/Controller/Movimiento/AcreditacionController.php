@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +14,8 @@ class AcreditacionController extends Controller
     /**
      * @Route("/rhu/movimiento/acreditacion/", name="brs_rhu_movimiento_acreditacion")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }*/
@@ -65,8 +65,7 @@ class AcreditacionController extends Controller
     /**
      * @Route("/rhu/movimiento/acreditacion/nuevo/{codigoAcreditacion}", name="brs_rhu_movimiento_acreditacion_nuevo")
      */
-    public function nuevoAction($codigoAcreditacion = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAcreditacion = 0) {       
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAcreditacion = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacion();
@@ -114,10 +113,10 @@ class AcreditacionController extends Controller
     /**
      * @Route("/rhu/movimiento/acreditacion/cargar/validacion/", name="brs_rhu_movimiento_acreditacion_cargar_validacion")
      */
-    public function cargarValidacionAction() {
+    public function cargarValidacionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $request = $this->getRequest();
+        
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
@@ -177,10 +176,10 @@ class AcreditacionController extends Controller
     /**
      * @Route("/rhu/movimiento/acreditacion/cargar/acreditacion/", name="brs_rhu_movimiento_acreditacion_cargar_acreditacion")
      */
-    public function cargarAcreditacionAction() {
+    public function cargarAcreditacionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $request = $this->getRequest();
+        
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
@@ -299,7 +298,7 @@ class AcreditacionController extends Controller
 
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuAcreditacionEstadoRechazado', $form->get('estadoRechazado')->getData());

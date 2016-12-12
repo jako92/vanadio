@@ -16,9 +16,9 @@ class SeleccionRequisicionAspiranteController extends Controller
     /**
      * @Route("/rhu/requisicionaspirante/lista", name="brs_rhu_requisicionaspirante_lista")
      */
-    public function listaAction() {        
+    public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();    
+            
         $paginator  = $this->get('knp_paginator');        
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        
@@ -38,9 +38,9 @@ class SeleccionRequisicionAspiranteController extends Controller
     /**
      * @Route("/rhu/requisicionaspirante/detalle/{codigoSeleccionRequisito}", name="brs_rhu_requisicionaspirante_detalle")
      */
-    public function detalleAction($codigoSeleccionRequisito) {
+    public function detalleAction(Request $request, $codigoSeleccionRequisito) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arRequisicion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
         $arRequisicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($codigoSeleccionRequisito);

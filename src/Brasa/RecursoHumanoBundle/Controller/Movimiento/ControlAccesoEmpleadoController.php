@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuControlAccesoEmpleadoType;
@@ -15,9 +15,9 @@ class ControlAccesoEmpleadoController extends Controller
     /**
      * @Route("/rhu/control/acceso/empleado/lista", name="brs_rhu_control_acceso_empleado_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 23, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -93,7 +93,7 @@ class ControlAccesoEmpleadoController extends Controller
 
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtNumeroIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
@@ -114,7 +114,7 @@ class ControlAccesoEmpleadoController extends Controller
      */
     public function nuevoAction($codigoHorarioAcceso) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();       
+               
         $arHorarioAcceso = new \Brasa\RecursoHumanoBundle\Entity\RhuHorarioAcceso();                
         $arHorarioAcceso = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioAcceso')->find($codigoHorarioAcceso);
         $arTurno = new \Brasa\RecursoHumanoBundle\Entity\RhuTurno();

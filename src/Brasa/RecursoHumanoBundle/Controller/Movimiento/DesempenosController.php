@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoObservacionesType;
@@ -16,9 +17,9 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/lista", name="brs_rhu_desempeno_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 22, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -71,8 +72,8 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/nuevo/{codigoDesempeno}", name="brs_rhu_desempeno_nuevo")
      */
-    public function nuevoAction($codigoDesempeno = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoDesempeno = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDesempeno = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempeno();    
@@ -126,10 +127,10 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/detalle/{codigoDesempeno}", name="brs_rhu_desempeno_detalle")
      */
-    public function detalleAction($codigoDesempeno) {
+    public function detalleAction(Request $request, $codigoDesempeno) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDesempeno = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempeno();
         $arDesempeno = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempeno')->find($codigoDesempeno);
@@ -493,8 +494,8 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/detalle/nuevo/{codigoDesempeno}", name="brs_rhu_desempeno_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoDesempeno) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoDesempeno) {
+        
         $em = $this->getDoctrine()->getManager();
         $arDesempenoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConcepto')->findAll();
         $arDesempeno = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempeno();
@@ -528,8 +529,8 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/detalle/nuevo/comentario/{codigoDesempeno}", name="brs_rhu_desempeno_detalle_nuevo_observacion")
      */
-    public function detalleNuevoObservacionAction($codigoDesempeno) {
-        $request = $this->getRequest();
+    public function detalleNuevoObservacionAction(Request $request, $codigoDesempeno) {
+        
         $em = $this->getDoctrine()->getManager();        
         $arDesempeno = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempeno();
         $arDesempeno = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempeno')->find($codigoDesempeno);
@@ -548,8 +549,8 @@ class DesempenosController extends Controller
     /**
      * @Route("/rhu/desempeno/detalle/nuevo/aspectosMejorar/{codigoDesempeno}", name="brs_rhu_desempeno_detalle_nuevo_aspectosMejorar")
      */
-    public function detalleNuevoAspectosMejorarAction($codigoDesempeno) {
-        $request = $this->getRequest();
+    public function detalleNuevoAspectosMejorarAction(Request $request, $codigoDesempeno) {
+        
         $em = $this->getDoctrine()->getManager();        
         $arDesempeno = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempeno();
         $arDesempeno = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempeno')->find($codigoDesempeno);
@@ -572,7 +573,7 @@ class DesempenosController extends Controller
     
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
     }
 

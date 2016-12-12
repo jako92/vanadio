@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionType;
@@ -16,9 +16,9 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/lista", name="brs_rhu_capacitacion_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 21, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -69,10 +69,10 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/detalle/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle")
      */
-    public function detalleAction($codigoCapacitacion) {
+    public function detalleAction(Request $request, $codigoCapacitacion) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCapacitacion = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
@@ -269,8 +269,8 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/detalle/nuevo/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoCapacitacion) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoCapacitacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
@@ -294,8 +294,8 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/detalle/nuevo/empleado/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo_empleado")
      */
-    public function detalleNuevoEmpleadoAction($codigoCapacitacion) {
-        $request = $this->getRequest();
+    public function detalleNuevoEmpleadoAction(Request $request, $codigoCapacitacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
@@ -346,8 +346,8 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/detalle/nuevo/nota/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo_nota")
      */
-    public function detalleNuevoNotaAction($codigoCapacitacion) {
-        $request = $this->getRequest();
+    public function detalleNuevoNotaAction(Request $request, $codigoCapacitacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionNota = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionNota();
@@ -371,8 +371,8 @@ class CapacitacionesController extends Controller
     /**
      * @Route("/rhu/capacitacion/nuevo/{codigoCapacitacion}", name="brs_rhu_capacitacion_nuevo")
      */
-    public function nuevoAction($codigoCapacitacion) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoCapacitacion) {
+        
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion();
         if ($codigoCapacitacion != 0)
@@ -570,7 +570,7 @@ class CapacitacionesController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroTipo', $controles['capacitacionTipoRel']);
         $session->set('filtroTema', $form->get('TxtTema')->getData());
@@ -589,7 +589,7 @@ class CapacitacionesController extends Controller
 
     private function filtrarDetalleNuevoEmpleado($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCargo', $controles['cargoRel']);
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);

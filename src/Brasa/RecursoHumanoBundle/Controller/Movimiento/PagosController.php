@@ -93,7 +93,7 @@ class PagosController extends Controller
     /**
      * @Route("/rhu/pagos/detalle/{codigoPago}", name="brs_rhu_pagos_detalle")
      */ 
-    public function detalleAction($codigoPago, Request $request) {
+    public function detalleAction(Request $request, $codigoPago) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $objMensaje = $this->get('mensajes_brasa');        
@@ -170,9 +170,9 @@ class PagosController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/resumen/turno/{codigoPago}", name="brs_rhu_movimiento_pago_resumen_turno")
      */    
-    public function verResumenTurnosAction($codigoPago) {
+    public function verResumenTurnosAction(Request $request, $codigoPago) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();

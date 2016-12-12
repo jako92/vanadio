@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuFacturaType;
@@ -14,9 +14,9 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/lista", name="brs_rhu_facturas_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 16, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -63,9 +63,9 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/nuevo/{codigoFactura}", name="brs_rhu_facturas_nuevo")
      */
-    public function nuevoAction($codigoFactura) {
+    public function nuevoAction(Request $request, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         if ($codigoFactura != 0) {
             $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
@@ -100,9 +100,9 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/detalle/{codigoFactura}", name="brs_rhu_facturas_detalle")
      */
-    public function detalleAction($codigoFactura) {
+    public function detalleAction(Request $request, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();                 
+                         
         $form = $this->createFormBuilder()                        
             ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))            
             ->add('BtnEliminarDetalleServicio', 'submit', array('label'  => 'Eliminar',))            
@@ -182,8 +182,8 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/detalle/nuevo/servicio/{codigoFactura}", name="brs_rhu_facturas_detalle_nuevo_servicio")
      */
-    public function detalleNuevoServicioAction($codigoFactura) {
-        $request = $this->getRequest();
+    public function detalleNuevoServicioAction(Request $request, $codigoFactura) {
+        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
@@ -265,8 +265,8 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/detalle/nuevo/examen/{codigoFactura}", name="brs_rhu_facturas_detalle_nuevo_examen")
      */
-    public function detalleNuevoExamenAction($codigoFactura) {
-        $request = $this->getRequest();
+    public function detalleNuevoExamenAction(Request $request, $codigoFactura) {
+        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
@@ -305,8 +305,8 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/detalle/nuevo/seleccion/{codigoFactura}", name="brs_rhu_facturas_detalle_nuevo_seleccion")
      */
-    public function detalleNuevoSeleccionAction($codigoFactura) {
-        $request = $this->getRequest();
+    public function detalleNuevoSeleccionAction(Request $request, $codigoFactura) {
+        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
@@ -356,7 +356,7 @@ class FacturasController extends Controller
     
     private function filtrar($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoTerceros', $controles['terceroRel']);
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);

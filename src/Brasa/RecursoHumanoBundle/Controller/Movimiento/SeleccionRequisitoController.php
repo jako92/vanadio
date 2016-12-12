@@ -15,9 +15,9 @@ class SeleccionRequisitoController extends Controller
     /**
      * @Route("/rhu/seleccionrequisito/lista", name="brs_rhu_seleccionrequisito_lista")
      */
-    public function listaAction() {        
+    public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 3, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -55,8 +55,8 @@ class SeleccionRequisitoController extends Controller
     /**
      * @Route("/rhu/seleccionrequisito/nuevo/{codigoSeleccionRequisito}", name="brs_rhu_seleccionrequisito_nuevo")
      */
-    public function nuevoAction($codigoSeleccionRequisito) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoSeleccionRequisito) {
+        
         $em = $this->getDoctrine()->getManager();
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
         if($codigoSeleccionRequisito != 0) {
@@ -89,9 +89,9 @@ class SeleccionRequisitoController extends Controller
     /**
      * @Route("/rhu/seleccionrequisito/detalle/{codigoSeleccionRequisito}", name="brs_rhu_seleccionrequisito_detalle")
      */
-    public function detalleAction($codigoSeleccionRequisito) {
+    public function detalleAction(Request $request, $codigoSeleccionRequisito) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();    
+            
         $objMensaje = $this->get('mensajes_brasa');
         $arRequisicion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
         $arRequisicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($codigoSeleccionRequisito);
@@ -248,8 +248,8 @@ class SeleccionRequisitoController extends Controller
     /**
      * @Route("/rhu/seleccionrequisicion/descartaraspirante/{codigoSelReqAsp}", name="brs_rhu_descartar_aspirante")
      */
-    public function descartarAction($codigoSelReqAsp) {
-        $request = $this->getRequest();
+    public function descartarAction(Request $request, $codigoSelReqAsp) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         

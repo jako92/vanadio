@@ -1,6 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -16,9 +16,9 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/", name="brs_rhu_movimiento_pago_banco")
      */    
-    public function listaAction() {        
+    public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 8, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -61,8 +61,8 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_nuevo")
      */    
-    public function nuevoAction($codigoPagoBanco) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoPagoBanco) {
+        
         $em = $this->getDoctrine()->getManager();
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         if($codigoPagoBanco != 0) {
@@ -96,11 +96,11 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle")
      */      
-    public function detalleAction($codigoPagoBanco) {
+    public function detalleAction(Request $request, $codigoPagoBanco) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
-        $request = $this->getRequest();            
+                    
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);                
         $form = $this->formularioDetalle($arPagoBanco);
@@ -233,8 +233,8 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_nuevo")
      */    
-    public function detalleNuevoAction($codigoPagoBanco) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoPagoBanco) {
+        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $session = $this->getRequest()->getSession();        
@@ -369,8 +369,8 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/vacacion/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_vacacion_nuevo")
      */    
-    public function detalleVacacionNuevoAction($codigoPagoBanco) {
-        $request = $this->getRequest();
+    public function detalleVacacionNuevoAction(Request $request, $codigoPagoBanco) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
@@ -418,8 +418,8 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/liquidacion/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_liquidacion_nuevo")
      */    
-    public function detalleLiquidacionNuevoAction($codigoPagoBanco) {
-        $request = $this->getRequest();
+    public function detalleLiquidacionNuevoAction(Request $request, $codigoPagoBanco) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
@@ -467,8 +467,8 @@ class PagoBancoController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/seguridad/social/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_seguridad_social_nuevo")
      */    
-    public function detalleSeguridadSocialNuevoAction($codigoPagoBanco) {
-        $request = $this->getRequest();
+    public function detalleSeguridadSocialNuevoAction(Request $request, $codigoPagoBanco) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
@@ -522,7 +522,7 @@ class PagoBancoController extends Controller
     }     
     
     private function filtrar ($form) {
-        $request = $this->getRequest();
+        
         $session = $this->getRequest()->getSession();
         $controles = $request->request->get('form');
         $dateFecha = $form->get('fecha')->getData();

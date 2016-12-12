@@ -106,7 +106,7 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/nuevo/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_nuevo")
      */
-    public function nuevoAction($codigoProgramacionPago, Request $request) {
+    public function nuevoAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
         if($codigoProgramacionPago != 0) {
@@ -138,7 +138,7 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/detalle/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_detalle")
      */
-    public function detalleAction($codigoProgramacionPago, Request $request) {
+    public function detalleAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = $this->get('mensajes_brasa');
         $paginator  = $this->get('knp_paginator');
@@ -243,7 +243,7 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/detalle/prima/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_detalle_prima")
      */
-    public function detallePrimaAction($codigoProgramacionPago, Request $request) {
+    public function detallePrimaAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = $this->get('mensajes_brasa');
         $paginator  = $this->get('knp_paginator');
@@ -317,7 +317,7 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/agregar/empleado/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_agregar_empleado")
      */
-    public function agregarEmpleadoAction($codigoProgramacionPago, Request $request) {
+    public function agregarEmpleadoAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createFormBuilder()
             ->add('numeroIdentificacion', 'text', array('required' => true))
@@ -372,7 +372,7 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programaciones/pago/inconsistencias/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_inconsistencias")
      */
-    public function inconsistenciasAction ($codigoProgramacionPago, Request $request) {
+    public function inconsistenciasAction (Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder()    
@@ -401,9 +401,9 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/programacion/pago/resumen/turno/ver/{codigoProgramacionPagoDetalle}", name="brs_rhu_programacion_pago_resumen_turno_ver")
      */    
-    public function verResumenTurnosAction($codigoProgramacionPagoDetalle) {
+    public function verResumenTurnosAction(Request $request, $codigoProgramacionPagoDetalle) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();        
@@ -617,8 +617,8 @@ class ProgramacionesPagoController extends Controller
     /**
      * @Route("/rhu/movimiento/programacion/pago/detalle/parametros/prima/{codigoProgramacionPagoDetalle}", name="brs_rhu_movimiento_programacion_pago_detalle_parametros_prima")
      */    
-    public function parametrosPrimaAction($codigoProgramacionPagoDetalle) {
-        $request = $this->getRequest();
+    public function parametrosPrimaAction(Request $request, $codigoProgramacionPagoDetalle) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();

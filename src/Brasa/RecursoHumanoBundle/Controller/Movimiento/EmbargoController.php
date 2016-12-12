@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -13,9 +14,9 @@ class EmbargoController extends Controller
     /**
      * @Route("/rhu/movimiento/embargo/", name="brs_rhu_movimiento_embargo")
      */     
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }*/
@@ -59,8 +60,8 @@ class EmbargoController extends Controller
     /**
      * @Route("/rhu/movimiento/embargo/nuevo/{codigoEmbargo}", name="brs_rhu_movimiento_embargo_nuevo")
      */    
-    public function nuevoAction($codigoEmbargo = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoEmbargo = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arEmbargo = new \Brasa\RecursoHumanoBundle\Entity\RhuEmbargo();       
@@ -142,7 +143,7 @@ class EmbargoController extends Controller
     
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());        
         $session->set('filtroEmbargoNumero', $form->get('TxtNumero')->getData());

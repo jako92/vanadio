@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -20,9 +20,9 @@ class PagosAdicionalesController extends Controller
     /**
      * @Route("/rhu/pagos/adicionales/lista/{modalidad}/{periodo}", name="brs_rhu_pagos_adicionales_lista")
      */
-    public function listaAction($modalidad, $periodo) {
+    public function listaAction(Request $request, $modalidad, $periodo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 10, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -97,9 +97,9 @@ class PagosAdicionalesController extends Controller
     /**
      * @Route("/rhu/pagos/adicionales/fecha/lista/{modalidad}", name="brs_rhu_pagos_adicionales_lista_fecha")
      */
-    public function listaFechaAction($modalidad) {
+    public function listaFechaAction(Request $request, $modalidad) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 34, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -187,8 +187,8 @@ class PagosAdicionalesController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/adicional/periodo/nuevo/{codigoPagoAdicionalPeriodo}", name="brs_rhu_movimiento_pago_adicional_periodo_nuevo")
      */    
-    public function nuevoPeriodoAction($codigoPagoAdicionalPeriodo = 0) {
-        $request = $this->getRequest();
+    public function nuevoPeriodoAction(Request $request, $codigoPagoAdicionalPeriodo = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arPagoAdicionalPeriodo = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicionalPeriodo();       
@@ -214,9 +214,9 @@ class PagosAdicionalesController extends Controller
     /**
      * @Route("/rhu/movimiento/pago/adicional/detalle/{codigoPagoAdicional}", name="brs_rhu_movimiento_pago_adicional_detalle")
      */    
-    public function detalleAdicionalAction($codigoPagoAdicional) {
+    public function detalleAdicionalAction(Request $request, $codigoPagoAdicional) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = $this->get('mensajes_brasa');
         $arPagoAdicional = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicional();
@@ -315,7 +315,7 @@ class PagosAdicionalesController extends Controller
     }
 
     private function filtrarLista($form) {
-        $request = $this->getRequest();
+        
         $session = $this->getRequest()->getSession();
         $controles = $request->request->get('form');
         $arrControles = $request->request->All();
@@ -331,7 +331,7 @@ class PagosAdicionalesController extends Controller
      */ 
     public function detalleAction($codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = $this->get('mensajes_brasa');
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
@@ -403,7 +403,7 @@ class PagosAdicionalesController extends Controller
      */
     public function generarMasivoListaAction() {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
         $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->findBy(array('estadoGenerado' => 0));
 
@@ -425,7 +425,7 @@ class PagosAdicionalesController extends Controller
      */
     public function generarMasivoSuplementarioDetalleAction($codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $session = $this->get('session');
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -563,7 +563,7 @@ class PagosAdicionalesController extends Controller
     
     public function generarMasivoValorDetalleAction($codigoCentroCosto) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $paginator  = $this->get('knp_paginator');
 

@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -14,9 +14,9 @@ class LicenciasController extends Controller
     /**
      * @Route("/rhu/licencias/lista", name="brs_rhu_licencias_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 11, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -59,8 +59,8 @@ class LicenciasController extends Controller
     /**
      * @Route("/rhu/licencias/nuevo/{codigoLicencia}", name="brs_rhu_licencias_nuevo")
      */
-    public function nuevoAction($codigoLicencia = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoLicencia = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
         $arLicencia = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();
@@ -198,7 +198,7 @@ class LicenciasController extends Controller
     
     private function filtrarLista($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');        
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);                
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());

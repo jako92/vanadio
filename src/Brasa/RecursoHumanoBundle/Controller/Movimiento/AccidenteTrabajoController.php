@@ -1,7 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAccidenteTrabajoType;
@@ -15,9 +15,8 @@ class AccidenteTrabajoController extends Controller
     /**
      * @Route("/rhu/movimiento/accidente/trabajo/lista", name="brs_rhu_movimiento_accidente_trabajo_lista")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();       
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 18, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -92,8 +91,7 @@ class AccidenteTrabajoController extends Controller
     /**
      * @Route("/rhu/movimiento/accidente/trabajo/nuevo/{codigoAccidenteTrabajo}", name="brs_rhu_movimiento_accidente_trabajo_nuevo")
      */
-    public function nuevoAction($codigoAccidenteTrabajo = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAccidenteTrabajo = 0) {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAccidenteTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuAccidenteTrabajo();    
@@ -145,9 +143,8 @@ class AccidenteTrabajoController extends Controller
     /**
      * @Route("/rhu/movimiento/accidente/trabajo/detalle/{codigoAccidenteTrabajo}", name="brs_rhu_movimiento_accidente_trabajo_detalle")
      */
-    public function detalleAction($codigoAccidenteTrabajo) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function detalleAction(Request $request, $codigoAccidenteTrabajo) {
+        $em = $this->getDoctrine()->getManager();        
         $form = $this->createFormBuilder()
             ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))    
             ->getForm();
@@ -211,8 +208,7 @@ class AccidenteTrabajoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        $session = $this->getRequest()->getSession();        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());

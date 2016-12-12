@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
@@ -15,9 +16,9 @@ class DisciplinarioController extends Controller
     /**
      * @Route("/rhu/movimiento/disciplinario/", name="brs_rhu_movimiento_disciplinario")
      */     
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 20, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -69,8 +70,8 @@ class DisciplinarioController extends Controller
     /**
      * @Route("/rhu/movimiento/disciplinario/nuevo/{codigoDisciplinario}", name="brs_rhu_movimiento_disciplinario_nuevo")
      */    
-    public function nuevoAction($codigoDisciplinario = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoDisciplinario = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDisciplinario = new \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario();
@@ -149,9 +150,9 @@ class DisciplinarioController extends Controller
     /**
      * @Route("/rhu/movimiento/disciplinario/detalle/{codigoDisciplinario}", name="brs_rhu_movimiento_disciplinario_detalle")
      */    
-    public function detalleAction($codigoDisciplinario) {
+    public function detalleAction(Request $request, $codigoDisciplinario) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $arrSeleccionados = $request->request->get('ChkSeleccionarDescargo');
         $objMensaje = $this->get('mensajes_brasa');
         $arProcesoDisciplinario = new \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario();
@@ -270,9 +271,9 @@ class DisciplinarioController extends Controller
      * @Route("/rhu/movimiento/disciplinario/descargo/nuevo/{codigoDisciplinario}/{codigoDisciplinarioDescargo}", name="brs_rhu_movimiento_disciplinario_descargo_nuevo")
      */ 
     
-    public function nuevoDescargoAction($codigoDisciplinario, $codigoDisciplinarioDescargo) {
+    public function nuevoDescargoAction(Request $request, $codigoDisciplinario, $codigoDisciplinarioDescargo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDisciplinario = new \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario();
         $arDisciplinario = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinario')->find($codigoDisciplinario);
@@ -392,7 +393,7 @@ class DisciplinarioController extends Controller
 
     private function filtrar ($form) {
         $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         $session->set('filtroCodigoZona', $controles['zonaRel']);
