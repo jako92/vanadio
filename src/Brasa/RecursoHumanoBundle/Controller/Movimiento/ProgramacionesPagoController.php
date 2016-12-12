@@ -7,6 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuProgramacionPagoType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class ProgramacionesPagoController extends Controller
 {
@@ -96,8 +101,8 @@ class ProgramacionesPagoController extends Controller
             }
 
         }
-
-        $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
+        $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/*page number*/,50/*limit per page*/);        
+        //$arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:lista.html.twig', array(
             'arProgramacionPago' => $arProgramacionPago,
             'form' => $form->createView()));
@@ -653,10 +658,10 @@ class ProgramacionesPagoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -667,24 +672,24 @@ class ProgramacionesPagoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoPagoTipo')) {
             $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoTipo", $session->get('filtroCodigoPagoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentroCosto)
-            ->add('pagoTipoRel', 'entity', $arrayPropiedadesTipo)
-            ->add('estadoGenerado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'GENERADO', '0' => 'SIN GENERAR'), 'data' => $session->get('filtroEstadoGenerado')))
-            ->add('estadoPagado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'PAGADOS', '0' => 'SIN PAGAR'), 'data' => $session->get('filtroEstadoPagado')))
-            ->add('fechaHasta', 'date', array('required' => true, 'widget' => 'single_text'))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminarPago', 'submit', array('label'  => 'Eliminar',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
+            ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+            ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'GENERADO', '0' => 'SIN GENERAR'), 'data' => $session->get('filtroEstadoGenerado')))
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'PAGADOS', '0' => 'SIN PAGAR'), 'data' => $session->get('filtroEstadoPagado')))
+            ->add('fechaHasta', DateType::class, array('required' => true, 'widget' => 'single_text'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminarPago', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }
@@ -796,7 +801,7 @@ class ProgramacionesPagoController extends Controller
                     );
     }
 
-    private function filtrarLista($form, Request $request) {
+    private function filtrarLista(Request $request, $form) {
         $session = $this->get('session');
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
