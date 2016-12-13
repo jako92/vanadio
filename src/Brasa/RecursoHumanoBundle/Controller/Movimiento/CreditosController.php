@@ -410,11 +410,7 @@ class CreditosController extends Controller
     
     private function filtrarLista($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
-        $arrControles = $request->request->All();
-        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
-                
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());                
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){

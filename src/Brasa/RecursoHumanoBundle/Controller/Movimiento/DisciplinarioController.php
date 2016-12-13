@@ -386,8 +386,8 @@ class DisciplinarioController extends Controller
             ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
             ->add('operacionRel', EntityType::class, $arrayPropiedadesOperacion)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroEstadoCerrado')))                                        
-            ->add('estadoProcede', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroEstadoProcede')))                                        
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroEstadoCerrado')))                                        
+            ->add('estadoProcede', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroEstadoProcede')))                                        
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -398,12 +398,19 @@ class DisciplinarioController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
-        $session->set('filtroCodigoOperacion', $controles['operacionRel']);
+        $session = new session;                
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }        
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
+        }
+        if($form->get('operacionRel')->getData()) {
+            $codigoOperacion = $form->get('operacionRel')->getData()->getCodigoOperacionPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroCodigoZona', $codigoZona);
+        $session->set('filtroCodigoOperacion', $codigoOperacion);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroEstadoCerrado', $form->get('estadoCerrado')->getData());
         $session->set('filtroEstadoProcede', $form->get('estadoProcede')->getData());

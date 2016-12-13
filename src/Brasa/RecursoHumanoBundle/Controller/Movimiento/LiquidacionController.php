@@ -11,6 +11,8 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuLiquidacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class LiquidacionController extends Controller
@@ -237,7 +239,7 @@ class LiquidacionController extends Controller
         
         $form = $this->createFormBuilder()
             ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto) 
-            ->add('TxtValor', 'number', array('required' => true, 'data' => $valor))                             
+            ->add('TxtValor', NumberType::class, array('required' => true, 'data' => $valor))                             
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
@@ -324,15 +326,15 @@ class LiquidacionController extends Controller
         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_movimiento_liquidacion_parametros', array('codigoLiquidacion' => $codigoLiquidacion)))            
-            ->add('porcentajeIbp', 'number', array('data' =>$arLiquidacion->getPorcentajeIbp() ,'required' => false))      
-            ->add('liquidarSalario', 'checkbox', array('required'  => false, 'data' =>$arLiquidacion->getLiquidarSalario()))
-            ->add('vrIndemnizacion', 'number', array('data' =>$arLiquidacion->getVrIndemnizacion() ,'required' => false))                      
-            ->add('diasAusentismoAdicional', 'number', array('data' =>$arLiquidacion->getDiasAusentismoAdicional() ,'required' => false))                      
-            ->add('diasAusentismoPropuesto', 'number', array('data' =>$arLiquidacion->getDiasAusentismoPropuesto() ,'required' => false))                                      
-            ->add('vrSalarioVacacionPropuesto', 'number', array('data' =>$arLiquidacion->getVrSalarioVacacionPropuesto() ,'required' => false))                      
-            ->add('vrSalarioPrimaPropuesto', 'number', array('data' =>$arLiquidacion->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
-            ->add('vrSalarioCesantiasPropuesto', 'number', array('data' =>$arLiquidacion->getVrSalarioCesantiasPropuesto() ,'required' => false))                                      
-            ->add('eliminarAusentismo', 'checkbox', array('required'  => false, 'data' =>$arLiquidacion->getEliminarAusentismo()))                
+            ->add('porcentajeIbp', NumberType::class, array('data' =>$arLiquidacion->getPorcentajeIbp() ,'required' => false))      
+            ->add('liquidarSalario', CheckboxType::class, array('required'  => false, 'data' =>$arLiquidacion->getLiquidarSalario()))
+            ->add('vrIndemnizacion', NumberType::class, array('data' =>$arLiquidacion->getVrIndemnizacion() ,'required' => false))                      
+            ->add('diasAusentismoAdicional', NumberType::class, array('data' =>$arLiquidacion->getDiasAusentismoAdicional() ,'required' => false))                      
+            ->add('diasAusentismoPropuesto', NumberType::class, array('data' =>$arLiquidacion->getDiasAusentismoPropuesto() ,'required' => false))                                      
+            ->add('vrSalarioVacacionPropuesto', NumberType::class, array('data' =>$arLiquidacion->getVrSalarioVacacionPropuesto() ,'required' => false))                      
+            ->add('vrSalarioPrimaPropuesto', NumberType::class, array('data' =>$arLiquidacion->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
+            ->add('vrSalarioCesantiasPropuesto', NumberType::class, array('data' =>$arLiquidacion->getVrSalarioCesantiasPropuesto() ,'required' => false))                                      
+            ->add('eliminarAusentismo', CheckboxType::class, array('required'  => false, 'data' =>$arLiquidacion->getEliminarAusentismo()))                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
@@ -411,8 +413,8 @@ class LiquidacionController extends Controller
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)    
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroGenerado')))
-            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroPagado')))
+            ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroGenerado')))
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroPagado')))
             ->add('BtnLiquidar', SubmitType::class, array('label'  => 'Liquidar'))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
@@ -453,13 +455,14 @@ class LiquidacionController extends Controller
     }        
     
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+        $session = new session;        
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }         
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
-        $session->set('filtroGenerado', $controles['estadoGenerado']);
-        $session->set('filtroPagado', $controles['estadoPagado']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session->set('filtroGenerado', $form->get('estadoGenerado')->getData());
+        $session->set('filtroPagado', $form->get('estadoPagado')->getData());
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
     }
 
     private function generarExcel() {

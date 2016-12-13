@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProgramacionesPagoController extends Controller
 {
@@ -630,8 +631,8 @@ class ProgramacionesPagoController extends Controller
         $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($codigoProgramacionPagoDetalle);        
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_movimiento_programacion_pago_detalle_parametros_prima', array('codigoProgramacionPagoDetalle' => $codigoProgramacionPagoDetalle)))            
-            ->add('porcentajeIbp', 'number', array('data' => $arProgramacionPagoDetalle->getPorcentajeIbp() ,'required' => false))      
-            ->add('vrSalarioPrimaPropuesto', 'number', array('data' => $arProgramacionPagoDetalle->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
+            ->add('porcentajeIbp', NumberType::class, array('data' => $arProgramacionPagoDetalle->getPorcentajeIbp() ,'required' => false))      
+            ->add('vrSalarioPrimaPropuesto', NumberType::class, array('data' => $arProgramacionPagoDetalle->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
@@ -684,8 +685,8 @@ class ProgramacionesPagoController extends Controller
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'GENERADO', '0' => 'SIN GENERAR'), 'data' => $session->get('filtroEstadoGenerado')))
-            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'PAGADOS', '0' => 'SIN PAGAR'), 'data' => $session->get('filtroEstadoPagado')))
+            ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'GENERADO' => '1', 'SIN GENERAR' => '0'), 'data' => $session->get('filtroEstadoGenerado')))
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroEstadoPagado')))
             ->add('fechaHasta', DateType::class, array('required' => true, 'widget' => 'single_text'))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
@@ -803,9 +804,14 @@ class ProgramacionesPagoController extends Controller
 
     private function filtrarLista(Request $request, $form) {
         $session = $this->get('session');
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoPagoTipo', $controles['pagoTipoRel']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        if($form->get('pagoTipoRel')->getData()) {
+            $codigoPagoTipo = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroCodigoPagoTipo', $codigoPagoTipo);
         $session->set('filtroEstadoGenerado', $form->get('estadoGenerado')->getData());
         $session->set('filtroEstadoPagado', $form->get('estadoPagado')->getData());
         if($form->get('fechaHasta')->getData()) {

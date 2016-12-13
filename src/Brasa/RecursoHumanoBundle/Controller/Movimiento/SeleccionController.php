@@ -14,6 +14,8 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionEntrevistaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SeleccionController extends Controller
@@ -427,14 +429,14 @@ class SeleccionController extends Controller
         }
         $formSeleccion = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_seleccion_cerrar', array('codigoSeleccion' => $codigoSeleccion)))
-            ->add('comentarios', 'textarea', array('data' =>$arSeleccion->getComentarios() ,'required' => true))                      
+            ->add('comentarios', TextareaType::class, array('data' =>$arSeleccion->getComentarios() ,'required' => true))                      
             ->add('fechaCierre', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoCierreSeleccionRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion',
                 'choice_label' => 'nombre',
             ))
-            ->add('bloqueado', 'checkbox', array('required'  => false))
-            ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
+            ->add('bloqueado', CheckboxType::class, array('required'  => false))
+            ->add('comentariosAspirante', TextareaType::class, array('required'  => false))                      
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formSeleccion->handleRequest($request);
@@ -524,8 +526,8 @@ class SeleccionController extends Controller
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('requisicionRel', EntityType::class, $arrayPropiedadesRequisicion)
-            ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAprobadoSeleccion')))
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccion')))
+            ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAprobadoSeleccion')))
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAbiertoSeleccion')))
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreSeleccion')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionSeleccion')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -582,10 +584,14 @@ class SeleccionController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoRequisicion', $controles['requisicionRel']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }                
+        if($form->get('requisicionRel')->getData()) {
+            $codigoRequisicion = $form->get('requisicionRel')->getData()->getCodigoRequisicionPk();
+        }         
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroCodigoRequisicion', $codigoRequisicion);
         $session->set('filtroNombreSeleccion', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacionSeleccion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroAbiertoSeleccion', $form->get('estadoCerrado')->getData());

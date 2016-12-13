@@ -27,8 +27,7 @@ class PagoBancoController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 8, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');
-        $strSqlLista = $this->getRequest()->getSession();        
+        $paginator  = $this->get('knp_paginator');        
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        
         $this->listar();          
@@ -525,17 +524,13 @@ class PagoBancoController extends Controller
                 $session->get('filtroRhuCodigoBanco'));        
     }     
     
-    private function filtrar ($form) {
-        
-        $session = new session;
-        $controles = $request->request->get('form');
+    private function filtrar ($form) {        
         $dateFecha = $form->get('fecha')->getData();
         if($dateFecha != null) {            
             $this->strFecha = $dateFecha->format('Y-m-d');
         } else {
             $this->strFecha = "";
-        }
-        
+        }        
     }
     
     private function filtrarNuevoDetalle ($form) {

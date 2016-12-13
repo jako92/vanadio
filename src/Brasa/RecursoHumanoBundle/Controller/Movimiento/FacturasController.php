@@ -24,8 +24,7 @@ class FacturasController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 16, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');
-        $strSqlLista = $this->getRequest()->getSession(); 
+        $paginator  = $this->get('knp_paginator');        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        

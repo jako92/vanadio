@@ -20,8 +20,7 @@ class IncapacidadController extends Controller
      * @Route("/rhu/movimiento/incapacidad/", name="brs_rhu_movimiento_incapacidad")
      */     
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -256,8 +255,8 @@ class IncapacidadController extends Controller
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)                                                       
             ->add('incapacidadTipoRel', EntityType::class, $arrayPropiedadesIncapacidadTipo)                                                                       
             ->add('TxtNumeroEps', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIncapacidadNumeroEps')))                                                        
-            ->add('estadoTranscripcion', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroIncapacidadEstadoTranscripcion')))                                                    
-            ->add('estadoLegalizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'LEGALIZADA', '0' => 'SIN LEGALIZAR'),'data' => $session->get('filtroIncapacidadEstadoLegalizado')))                                                    
+            ->add('estadoTranscripcion', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroIncapacidadEstadoTranscripcion')))                                                    
+            ->add('estadoLegalizado', ChoiceType::class, array('choices'   => array('TODOS' => 'TODOS', 'LEGALIZADA' => '1', 'SIN LEGALIZAR' => '0'),'data' => $session->get('filtroIncapacidadEstadoLegalizado')))                                                    
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
@@ -283,10 +282,14 @@ class IncapacidadController extends Controller
     
     private function filtrarLista($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');        
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);                
-        $session->set('filtroRhuIncapacidadTipo', $controles['incapacidadTipoRel']);                
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        } 
+        if($form->get('incapacidadTipoRel')->getData()) {
+            $codigoIncapacidadTipo = $form->get('incapacidadTipoRel')->getData()->getCodigoIncapacidadTipoPk();
+        }                
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);                
+        $session->set('filtroRhuIncapacidadTipo', $codigoIncapacidadTipo);                
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());        
         $session->set('filtroIncapacidadNumeroEps', $form->get('TxtNumeroEps')->getData());                
         $session->set('filtroIncapacidadEstadoTranscripcion', $form->get('estadoTranscripcion')->getData());                        

@@ -270,9 +270,7 @@ class PagosController extends Controller
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            //->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $strFechaDesde))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
-            //->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $strFechaHasta))                
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                            
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroPagoNumero')))                                                   
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
@@ -280,8 +278,7 @@ class PagosController extends Controller
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
-            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))
-            //->add('BtnExcelResumen', SubmitType::class, array('label'  => 'Excel resumen',))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;
     }      
@@ -301,9 +298,14 @@ class PagosController extends Controller
     
     private function filtrarLista($form, Request $request) {
         $session = $this->get('session');        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);                
-        $session->set('filtroCodigoPagoTipo', $controles['pagoTipoRel']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        if($form->get('pagoTipoRel')->getData()) {
+            $codigoPagoTipo = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);                
+        $session->set('filtroCodigoPagoTipo', $codigoPagoTipo);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $this->intNumero = $form->get('TxtNumero')->getData();
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -315,9 +317,6 @@ class PagosController extends Controller
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
             $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
         }
-        
-        //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
     }         
     
     private function generarExcel() {

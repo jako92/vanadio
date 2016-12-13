@@ -96,9 +96,7 @@ class ControlAccesoEmpleadoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+        $session = new session;        
         $session->set('filtroIdentificacion', $form->get('TxtNumeroIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
                 

@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAspiranteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AspiranteController extends Controller
@@ -195,7 +196,7 @@ class AspiranteController extends Controller
             $objMensaje->Mensaje("error", "No tiene permisos para desbloquear aspirantes, comuniquese con el administrador", $this);
         }
             $form = $this->createFormBuilder()
-                ->add('comentarios', 'textarea', array('data' =>$arAspirante->getComentarios() ,'required' => false))                          
+                ->add('comentarios', TextareaType::class, array('data' =>$arAspirante->getComentarios() ,'required' => false))                          
                 ->add('BtnDesbloquear', SubmitType::class, array('label'  => 'Desbloquear'))                              
                 ->add('BtnCancelar', SubmitType::class, array('label'  => 'Cancelar'))
                 ->getForm();
@@ -347,8 +348,8 @@ class AspiranteController extends Controller
         }            
         $form = $this->createFormBuilder()
             ->add('zonaRel', EntityType::class, $arrayPropiedades)
-            ->add('reintegro', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroReintegro')))
-            ->add('bloqueado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroBloqueado')))    
+            ->add('reintegro', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroReintegro')))
+            ->add('bloqueado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroBloqueado')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreAspirante')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionAspirante')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -367,14 +368,15 @@ class AspiranteController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+        $session = new session;        
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
+        }         
         $session->set('filtroNombreAspirante', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacionAspirante', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroBloqueado', $form->get('bloqueado')->getData());
         $session->set('filtroReintegro', $form->get('reintegro')->getData());
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
+        $session->set('filtroCodigoZona', $codigoZona);
     }
 
     private function generarExcel() {

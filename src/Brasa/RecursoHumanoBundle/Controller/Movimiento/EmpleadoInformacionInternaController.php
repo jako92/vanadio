@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuEmpleadoInformacionInternaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
@@ -51,8 +52,8 @@ class EmpleadoInformacionInternaController extends Controller
         }
         $arEmpleadoInformacionInterna = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoInformacionInterna();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInterna')->findAll();
-        $arEmpleadoInformacionInterna = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
-
+        //$arEmpleadoInformacionInterna = $paginator->paginate(, $this->get('request')->query->get('page', 1),20);
+        $arEmpleadoInformacionInterna = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/EmpleadoInformacionInterna:listar.html.twig', array(
                     'arEmpleadoInformacionInterna' => $arEmpleadoInformacionInterna,
                     'form'=> $form->createView()
@@ -74,7 +75,7 @@ class EmpleadoInformacionInternaController extends Controller
                         'choice_label' => 'nombre',
             ))    
             ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
-            ->add('comentarios', 'textarea', array('required' => true))
+            ->add('comentarios', TextareaType::class, array('required' => true))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);

@@ -349,8 +349,6 @@ class RequisitosController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
     }
 

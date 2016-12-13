@@ -454,7 +454,7 @@ class CapacitacionesController extends Controller
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
-            ->add('estado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroEstado')))
+            ->add('estado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroEstado')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
@@ -576,10 +576,11 @@ class CapacitacionesController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroTipo', $controles['capacitacionTipoRel']);
+        $session = new session;        
+        if($form->get('capacitacionTipoRel')->getData()) {
+            $codigoCapacitacionTipo = $form->get('capacitacionTipoRel')->getData()->getCodigoCapacitacionTipoPk();
+        } 
+        $session->set('filtroTipo', $codigoCapacitacionTipo);
         $session->set('filtroTema', $form->get('TxtTema')->getData());
         $session->set('filtroEstado', $form->get('estado')->getData());
 

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VacacionesController extends Controller
@@ -357,7 +358,7 @@ class VacacionesController extends Controller
                     ->orderBy('pc.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))
-            ->add('TxtValor', 'number', array('required' => true))
+            ->add('TxtValor', NumberType::class, array('required' => true))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
@@ -441,14 +442,14 @@ class VacacionesController extends Controller
             //->setAction($this->generateUrl('brs_rhu_movimiento_vacacion_modificar', array('codigoVacacion' => $codigoVacacion)))
             ->add('fechaDesdeDisfrute', DateType::class, array('label'  => 'Fecha desde', 'data' => $arVacacion->getFechaDesdeDisfrute()))
             ->add('fechaHastaDisfrute', DateType::class, array('label'  => 'Fecha hasta', 'data' => $arVacacion->getFechaHastaDisfrute()))
-            ->add('vrSalud', 'number', array('data' =>$arVacacion->getVrSalud() ,'required' => false))
-            ->add('vrPension', 'number', array('data' =>$arVacacion->getVrPension() ,'required' => false))            
-            ->add('vrVacacion', 'number', array('data' =>$arVacacion->getVrVacacion() ,'required' => false))                    
-            ->add('diasDisfrute', 'number', array('data' =>$arVacacion->getDiasDisfrutados() ,'required' => false))        
-            ->add('diasPagados', 'number', array('data' =>$arVacacion->getDiasPagados() ,'required' => false))            
-            ->add('vrSalarioPromedio', 'number', array('data' =>$arVacacion->getVrSalarioPromedio() ,'required' => false))            
-            ->add('totalVacaciones', 'number', array('data' =>$arVacacion->getVrVacacionBruto() ,'required' => false))                
-            ->add('vrRecargoNocturno', 'number', array('data' =>$arVacacion->getVrPromedioRecargoNocturno() ,'required' => false))                            
+            ->add('vrSalud', NumberType::class, array('data' =>$arVacacion->getVrSalud() ,'required' => false))
+            ->add('vrPension', NumberType::class, array('data' =>$arVacacion->getVrPension() ,'required' => false))            
+            ->add('vrVacacion', NumberType::class, array('data' =>$arVacacion->getVrVacacion() ,'required' => false))                    
+            ->add('diasDisfrute', NumberType::class, array('data' =>$arVacacion->getDiasDisfrutados() ,'required' => false))        
+            ->add('diasPagados', NumberType::class, array('data' =>$arVacacion->getDiasPagados() ,'required' => false))            
+            ->add('vrSalarioPromedio', NumberType::class, array('data' =>$arVacacion->getVrSalarioPromedio() ,'required' => false))            
+            ->add('totalVacaciones', NumberType::class, array('data' =>$arVacacion->getVrVacacionBruto() ,'required' => false))                
+            ->add('vrRecargoNocturno', NumberType::class, array('data' =>$arVacacion->getVrPromedioRecargoNocturno() ,'required' => false))                            
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
@@ -537,8 +538,8 @@ class VacacionesController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroPagado')))
-            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroAutorizado')))
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroPagado')))
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroAutorizado')))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
@@ -546,11 +547,12 @@ class VacacionesController extends Controller
 
     private function filtrarLista($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroPagado', $controles['estadoPagado']);
-        $session->set('filtroAutorizado', $controles['estadoAutorizado']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroPagado', $form->get('estadoPagado')->getData());
+        $session->set('filtroAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
     }
 

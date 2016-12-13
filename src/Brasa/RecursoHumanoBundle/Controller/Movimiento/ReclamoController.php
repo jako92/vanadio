@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -10,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ReclamoController extends Controller
 {
@@ -146,10 +148,10 @@ class ReclamoController extends Controller
         $form = $this->createFormBuilder()
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'CERRADO', '0' => 'SIN CERRAR'), 'data' => $session->get('filtroRhuReclamoEstadoCerrado')))
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'CERRADO' => '1', 'SIN CERRAR' => '0'), 'data' => $session->get('filtroRhuReclamoEstadoCerrado')))
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-            ->add('filtrarFecha', 'checkbox', array('required'  => false, 'data' => $session->get('filtroRhuReclamoFiltrarFecha')))
+            ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroRhuReclamoFiltrarFecha')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
@@ -175,13 +177,9 @@ class ReclamoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+        $session = new session;       
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
-        $session->set('filtroRhuReclamoEstadoRechazado', $form->get('estadoRechazado')->getData());
-        $session->set('filtroRhuReclamoEstadoValidado', $form->get('estadoValidado')->getData());
-        $session->set('filtroRhuReclamoEstadoAcreditado', $form->get('estadoAcreditado')->getData());
+        $session->set('filtroRhuReclamoEstadoCerrado', $form->get('estadoCerrado')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroRhuReclamoFechaDesde', $dateFechaDesde->format('Y/m/d'));

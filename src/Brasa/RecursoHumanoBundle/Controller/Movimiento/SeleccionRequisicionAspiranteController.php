@@ -97,13 +97,14 @@ class SeleccionRequisicionAspiranteController extends Controller
                 );  
     }
     
-    private function filtrar ($form, Request $request) {
+    private function filtrar($form) {
         $session = $this->get('session');        
-        $controles = $request->request->get('form');
-                
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();
+        }                
         $session->set('filtroNombreSeleccionRequisito', $form->get('TxtNombre')->getData());                
         $session->set('filtroAbiertoSeleccionRequisito', $form->get('estadoAbierto')->getData());
-        $session->set('filtroCodigoCargo', $controles['cargoRel']);
+        $session->set('filtroCodigoCargo', $codigoCargo);
         $session->set('filtroDesde', $form->get('fechaDesde')->getData());
         $session->set('filtroHasta', $form->get('fechaHasta')->getData());
     }
@@ -130,7 +131,7 @@ class SeleccionRequisicionAspiranteController extends Controller
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombreSeleccionRequisito')))
-            ->add('estadoAbierto', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccionRequisito')))             
+            ->add('estadoAbierto', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAbiertoSeleccionRequisito')))             
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;

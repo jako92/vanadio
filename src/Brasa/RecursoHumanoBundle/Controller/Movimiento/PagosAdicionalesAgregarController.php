@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagosAdicionalesAgregarController extends Controller
@@ -31,7 +32,7 @@ class PagosAdicionalesAgregarController extends Controller
                     ->orderBy('pc.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))
-            ->add('TxtValor', 'number', array('required' => true))                             
+            ->add('TxtValor', NumberType::class, array('required' => true))                             
             ->add('TxtDetalle', TextType::class, array('required' => false))            
             ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
@@ -215,7 +216,7 @@ class PagosAdicionalesAgregarController extends Controller
                 'choice_label' => 'nombreCorto',
                 'required' => true))    
             ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto)               
-            ->add('TxtValor', 'number', array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
+            ->add('TxtValor', NumberType::class, array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
             ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
             ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                

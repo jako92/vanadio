@@ -536,9 +536,7 @@ class ExamenController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+        $session = new session;       
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuExamenEstadoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroRhuExamenEstadoAprobado', $form->get('estadoAprobado')->getData());
@@ -565,9 +563,9 @@ class ExamenController extends Controller
         $form = $this->createFormBuilder()            
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADOS', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
-            ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'APROBADOS', '0' => 'SIN APROBAR'), 'data' => $session->get('filtroRhuExamenEstadoAprobado')))
-            ->add('controlPago', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroControlPago')))
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'AUTORIZADOS' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
+            ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'APROBADOS' => '1', 'SIN APROBAR' => '0'), 'data' => $session->get('filtroRhuExamenEstadoAprobado')))
+            ->add('controlPago', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroControlPago')))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

@@ -211,9 +211,11 @@ class AccidenteTrabajoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new session;        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new session;                
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();

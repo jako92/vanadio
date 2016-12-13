@@ -149,8 +149,6 @@ class EmbargoController extends Controller
     
     private function filtrarLista($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());        
         $session->set('filtroEmbargoNumero', $form->get('TxtNumero')->getData());
         

@@ -22,8 +22,7 @@ class PagoExamenController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 6, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');
-        $strSqlLista = $this->getRequest()->getSession();        
+        $paginator  = $this->get('knp_paginator');        
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        
         $this->listar();          
@@ -185,11 +184,12 @@ class PagoExamenController extends Controller
                 );        
     }
     
-    private function filtrar ($form) {
-        
+    private function filtrar ($form) {        
         $session = new session;
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoEntidadExamen', $controles['entidadExamenRel']);                               
+        if($form->get('entidadExamenRel')->getData()) {
+            $codigoEntidadExamen = $form->get('entidadExamenRel')->getData()->getCodigoEntidadExamenPk();
+        } 
+        $session->set('filtroCodigoEntidadExamen', $codigoEntidadExamen);                               
     }
     
     private function generarExcel() {

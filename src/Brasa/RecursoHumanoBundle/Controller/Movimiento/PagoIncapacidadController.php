@@ -22,8 +22,7 @@ class PagoIncapacidadController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 13, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');
-        $strSqlLista = $this->getRequest()->getSession();        
+        $paginator  = $this->get('knp_paginator');            
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        
         $this->listar();          
@@ -202,11 +201,12 @@ class PagoIncapacidadController extends Controller
                 );        
     }
     
-    private function filtrar ($form) {
-        
+    private function filtrar ($form) {        
         $session = new session;
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoIncapacidadPago', $controles['entidadSaludRel']);                               
+        if($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
+        }                 
+        $session->set('filtroCodigoIncapacidadPago', $codigoEntidadSalud);                               
     }
     
     private function generarExcel() {

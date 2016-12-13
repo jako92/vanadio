@@ -574,9 +574,7 @@ class DesempenosController extends Controller
     }
     
     private function filtrar ($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
+                
     }
 
     private function formularioLista() {

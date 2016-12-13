@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SeleccionRequisitoController extends Controller
@@ -265,14 +267,14 @@ class SeleccionRequisitoController extends Controller
         $codigoAspirante = $arSeleccionRequisicionAspirante->getCodigoAspiranteFk();
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_descartar_aspirante', array('codigoSelReqAsp' => $codigoSelReqAsp )))
-            ->add('comentarios', 'textarea', array('data' =>$arSeleccionRequisicionAspirante->getComentarios() ,'required' => true))                      
+            ->add('comentarios', TextareaType::class, array('data' =>$arSeleccionRequisicionAspirante->getComentarios() ,'required' => true))                      
             ->add('fechaDescarte', DateType::class, array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoDescarteRequisicionAspiranteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante',
                 'choice_label' => 'nombre',
             ))
-            ->add('bloqueado', 'checkbox', array('required'  => false))
-            ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
+            ->add('bloqueado', CheckboxType::class, array('required'  => false))
+            ->add('comentariosAspirante', TextareaType::class, array('required'  => false))                      
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);

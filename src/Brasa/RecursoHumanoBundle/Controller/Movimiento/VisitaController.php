@@ -230,7 +230,7 @@ class VisitaController extends Controller
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('visitaTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('validarVencimiento', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroValidarVencimiento')))    
+            ->add('validarVencimiento', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroValidarVencimiento')))    
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -242,12 +242,16 @@ class VisitaController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        if($form->get('visitaTipoRel')->getData()) {
+            $codigoVisitaTipo = $form->get('visitaTipoRel')->getData()->getCodigoVisitaTipoPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
-        $session->set('filtroCodigoVisitaTipo', $controles['visitaTipoRel']);
-        $session->set('filtroValidarVencimiento', $controles['validarVencimiento']);
+        $session->set('filtroCodigoVisitaTipo', $codigoVisitaTipo);
+        $session->set('filtroValidarVencimiento', $form->get('validarVencimiento')->getData());
     }    
     
     private function formularioDetalle($arVisita) {

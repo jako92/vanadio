@@ -287,8 +287,8 @@ class PagosAdicionalesController extends Controller
             ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesConcepto)    
             ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
-            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
-            ->add('estadoInactivo', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
+            ->add('estadoInactivo', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
@@ -318,15 +318,18 @@ class PagosAdicionalesController extends Controller
             );
     }
 
-    private function filtrarLista($form) {
-        
+    private function filtrarLista($form) {        
         $session = new session;
-        $controles = $request->request->get('form');
-        $arrControles = $request->request->All();
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        } 
+        if($form->get('pagoConceptoRel')->getData()) {
+            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroNumeroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroAplicarDiaLaborado', $form->get('aplicarDiaLaborado')->getData());
-        $session->set('filtroCodigoPagoConcepto', $controles['pagoConceptoRel']);
+        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
         $session->set('filtroPagoAdicionalEstadoInactivo', $form->get('estadoInactivo')->getData());
     }
 
