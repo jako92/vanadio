@@ -4,44 +4,52 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuEmpleadoEstudioType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('empleadoEstudioTipoRel', 'entity', array(
+            ->add('empleadoEstudioTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoEstudioTipo',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true
             ))
-            ->add('institucion', 'text', array('required' => false))
-            ->add('ciudadRel', 'entity', array(
+            ->add('institucion', TextType::class, array('required' => false))
+            ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('gradoBachillerRel', 'entity', array(
+            ->add('gradoBachillerRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuGradoBachiller',
                 'query_builder' => function (EntityRepository $er)  {
                 return $er->createQueryBuilder('c');},
-                'property' => 'grado',
+                'choice_label' => 'grado',
                 'required' => false))
-            ->add('fechaInicio','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
-            ->add('fechaTerminacion','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
-            ->add('validarVencimiento', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))
-            ->add('fechaVencimientoCurso','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
-            ->add('graduado', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))                
-            ->add('titulo', 'text', array('required' => false))
-            ->add('comentarios', 'textarea', array('required' => false))
-            ->add('numeroRegistro', 'text', array('required' => false))                    
-            ->add('guardar', 'submit')
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));
+            ->add('fechaInicio', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
+            ->add('fechaTerminacion', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
+            ->add('validarVencimiento', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))
+            ->add('fechaVencimientoCurso', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false,'attr' => array('class' => 'date',)))
+            ->add('graduado', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))                
+            ->add('titulo', TextType::class, array('required' => false))
+            ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('numeroRegistro', TextType::class, array('required' => false))                    
+            ->add('guardar', SubmitType::class)
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

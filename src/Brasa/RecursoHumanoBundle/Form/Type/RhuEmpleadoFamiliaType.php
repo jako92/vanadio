@@ -4,36 +4,41 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuEmpleadoFamiliaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('empleadoFamiliaParentescoRel', 'entity', array(
+            ->add('empleadoFamiliaParentescoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoFamiliaParentesco',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))               
-            ->add('nombres', 'text', array('required' => true))
-            ->add('entidadSaludRel', 'entity', array(
+            ->add('nombres', TextType::class, array('required' => true))
+            ->add('entidadSaludRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
             ))    
-            ->add('entidadCajaRel', 'entity', array(
+            ->add('entidadCajaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadCaja',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
             ))   
-            ->add('fechaNacimiento','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false, 'attr' => array('class' => 'date',)))                
-            ->add('ocupacion', 'text', array('required' => true))
-            ->add('telefono', 'text', array('required' => false))
-            ->add('codigoSexoFk', 'choice', array('choices'   => array('M' => 'MASCULINO', 'F' => 'FEMENINO')))
-            ->add('guardar', 'submit')  
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));
+            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'required' => false, 'attr' => array('class' => 'date',)))                
+            ->add('ocupacion', TextType::class, array('required' => true))
+            ->add('telefono', TextType::class, array('required' => false))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
+            ->add('guardar', SubmitType::class)  
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

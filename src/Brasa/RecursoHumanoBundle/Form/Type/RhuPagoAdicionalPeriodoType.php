@@ -4,6 +4,8 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuPagoAdicionalPeriodoType extends AbstractType
 {
@@ -11,11 +13,11 @@ class RhuPagoAdicionalPeriodoType extends AbstractType
     {
 
         $builder               
-            ->add('fecha', 'date', array('format' => 'yyyyMMdd'))
-            ->add('guardar', 'submit');            
+            ->add('fecha', DateType::class, array('format' => 'yyyyMMdd'))
+            ->add('guardar', SubmitType::class);            
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

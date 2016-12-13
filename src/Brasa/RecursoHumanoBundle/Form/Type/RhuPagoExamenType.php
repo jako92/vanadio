@@ -3,22 +3,25 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
  
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuPagoExamenType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder           
-            ->add('entidadExamenRel', 'entity', array(
+            ->add('entidadExamenRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadExamen',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))
-            ->add('numeroSoporte', 'text',array('required' => false))    
-            ->add('guardar', 'submit')
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));        
+            ->add('numeroSoporte', TextType::class,array('required' => false))    
+            ->add('guardar', SubmitType::class)
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));        
     }
  
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

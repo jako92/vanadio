@@ -25,7 +25,7 @@ class RhuSoportePagoHorarioType extends AbstractType
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

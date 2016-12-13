@@ -4,24 +4,31 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuEmpleadoExamenType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('examenTipoRel', 'entity', array(
+            ->add('examenTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuExamenTipo',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))               
-            ->add('fechaVencimiento', 'date')      
-            ->add('validarVencimiento', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))                                        
-            ->add('comentarios', 'textarea', array('required' => false))                
-            ->add('guardar', 'submit')
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));
+            ->add('fechaVencimiento', DateType::class)      
+            ->add('validarVencimiento', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))                                        
+            ->add('comentarios', TextareaType::class, array('required' => false))                
+            ->add('guardar', SubmitType::class)
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

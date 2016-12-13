@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
  
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuVacacionDisfruteType extends AbstractType
 {
@@ -10,13 +13,13 @@ class RhuVacacionDisfruteType extends AbstractType
     {
         $builder                        
             
-            ->add('fechaDesde','date')
-            ->add('fechaHasta','date')
-            ->add('comentarios', 'textarea', array('required' => false))    
-            ->add('guardar', 'submit');
+            ->add('fechaDesde', DateType::class)
+            ->add('fechaHasta', DateType::class)
+            ->add('comentarios', TextareaType::class, array('required' => false))    
+            ->add('guardar', SubmitType::class);
     }
  
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuSsoAporteType extends AbstractType
 {
@@ -13,24 +16,24 @@ class RhuSsoAporteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ingreso', 'text', array('required' => false))    
-            ->add('retiro', 'text', array('required' => false))    
-            ->add('ibcPension', 'number', array('required' => false))    
-            ->add('ibcSalud', 'number', array('required' => false))    
-            ->add('ibcRiesgosProfesionales', 'number', array('required' => false))                    
-            ->add('ibcCaja', 'number', array('required' => false))                    
-            ->add('diasCotizadosPension', 'number', array('required' => false))    
-            ->add('diasCotizadosSalud', 'number', array('required' => false))    
-            ->add('diasCotizadosRiesgosProfesionales', 'number', array('required' => false))                    
-            ->add('diasCotizadosCajaCompensacion', 'number', array('required' => false))                    
-            ->add('cotizacionPension', 'number', array('required' => false))    
-            ->add('cotizacionSalud', 'number', array('required' => false))    
-            ->add('cotizacionRiesgos', 'number', array('required' => false))                    
-            ->add('cotizacionCaja', 'number', array('required' => false))                                    
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'));
+            ->add('ingreso', TextType::class, array('required' => false))    
+            ->add('retiro', TextType::class, array('required' => false))    
+            ->add('ibcPension', NumberType::class, array('required' => false))    
+            ->add('ibcSalud', NumberType::class, array('required' => false))    
+            ->add('ibcRiesgosProfesionales', NumberType::class, array('required' => false))                    
+            ->add('ibcCaja', NumberType::class, array('required' => false))                    
+            ->add('diasCotizadosPension', NumberType::class, array('required' => false))    
+            ->add('diasCotizadosSalud', NumberType::class, array('required' => false))    
+            ->add('diasCotizadosRiesgosProfesionales', NumberType::class, array('required' => false))                    
+            ->add('diasCotizadosCajaCompensacion', NumberType::class, array('required' => false))                    
+            ->add('cotizacionPension', NumberType::class, array('required' => false))    
+            ->add('cotizacionSalud', NumberType::class, array('required' => false))    
+            ->add('cotizacionRiesgos', NumberType::class, array('required' => false))                    
+            ->add('cotizacionCaja', NumberType::class, array('required' => false))                                    
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

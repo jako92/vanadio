@@ -4,6 +4,10 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuRegistroVisitaType extends AbstractType
 {
@@ -13,18 +17,18 @@ class RhuRegistroVisitaType extends AbstractType
         $builder
 
             
-            ->add('departamentoEmpresaRel', 'entity', array(
+            ->add('departamentoEmpresaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))   
-            ->add('motivo', 'text', array('required' => false))        
-            ->add('codigoEscarapela', 'text', array('required' => false))
-            ->add('comentarios', 'textarea', array('required' => false))
-            ->add('buscar', 'submit')    
-            ->add('guardar', 'submit');
+            ->add('motivo', TextType::class, array('required' => false))        
+            ->add('codigoEscarapela', TextType::class, array('required' => false))
+            ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('buscar', SubmitType::class)    
+            ->add('guardar', SubmitType::class);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

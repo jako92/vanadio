@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuSoportePagoHorarioDetalleType extends AbstractType
 {
@@ -13,17 +16,17 @@ class RhuSoportePagoHorarioDetalleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                
-            ->add('dias', 'number', array('required' => true))
-            ->add('horas', 'number', array('required' => true))
-            ->add('horasDescanso', 'number', array('required' => true))
-            ->add('horasDiurnas', 'number', array('required' => true))
-            ->add('horasNocturnas', 'number', array('required' => true))
-            ->add('horasFestivasDiurnas', 'number', array('required' => true))
-            ->add('horasFestivasNocturnas', 'number', array('required' => true))
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('dias', NumberType::class, array('required' => true))
+            ->add('horas', NumberType::class, array('required' => true))
+            ->add('horasDescanso', NumberType::class, array('required' => true))
+            ->add('horasDiurnas', NumberType::class, array('required' => true))
+            ->add('horasNocturnas', NumberType::class, array('required' => true))
+            ->add('horasFestivasDiurnas', NumberType::class, array('required' => true))
+            ->add('horasFestivasNocturnas', NumberType::class, array('required' => true))
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

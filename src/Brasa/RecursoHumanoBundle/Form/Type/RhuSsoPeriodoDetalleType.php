@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuSsoPeriodoDetalleType extends AbstractType
 {
@@ -13,15 +16,15 @@ class RhuSsoPeriodoDetalleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ssoSucursalRel', 'entity', array(
+            ->add('ssoSucursalRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuSsoSucursal',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))
-            ->add('detalle', 'text', array('required' => false))    
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'));
+            ->add('detalle', TextType::class, array('required' => false))    
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

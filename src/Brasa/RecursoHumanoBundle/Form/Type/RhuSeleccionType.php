@@ -4,6 +4,12 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuSeleccionType extends AbstractType
 {
@@ -11,97 +17,97 @@ class RhuSeleccionType extends AbstractType
     {
         $builder
                 
-            ->add('seleccionTipoRel', 'entity', array(
+            ->add('seleccionTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuSeleccionTipo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                     ->orderBy('s.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true,           
             ))
-            ->add('seleccionRequisitoRel', 'entity', array(
+            ->add('seleccionRequisitoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuSeleccionRequisito',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false))                
-            ->add('tipoIdentificacionRel', 'entity', array(
+            ->add('tipoIdentificacionRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('ti')
                     ->orderBy('ti.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('centroCostoRel', 'entity', array(
+            ->add('centroCostoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('estadoCivilRel', 'entity', array(
+            ->add('estadoCivilRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true
             ))
-            ->add('rhRel', 'entity', array(
+            ->add('rhRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuRh',
-                'property' => 'tipo',
+                'choice_label' => 'tipo',
                 'required' => true
             ))
-            ->add('ciudadRel', 'entity', array(
+            ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('ciudadExpedicionRel', 'entity', array(
+            ->add('ciudadExpedicionRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('ciudadNacimientoRel', 'entity', array(
+            ->add('ciudadNacimientoRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('cargoRel', 'entity', array(
+            ->add('cargoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))   
             ->add('zonaRel', 'entity', array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuZona',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('z')
                     ->orderBy('z.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))                            
-            ->add('fechaNacimiento','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => new \DateTime('now'),'attr' => array('class' => 'date',)))
-            ->add('nombre1', 'text', array('required' => true))
-            ->add('nombre2', 'text', array('required' => false))
-            ->add('apellido1', 'text', array('required' => true))
-            ->add('apellido2', 'text', array('required' => false))
-            ->add('correo', 'text', array('required' => false))
-            ->add('telefono', 'text', array('required' => false))
-            ->add('celular', 'text', array('required' => false))
-            ->add('direccion', 'text', array('required' => false))
-            ->add('numeroIdentificacion', 'text', array('required' => true))
-            ->add('codigoSexoFk', 'choice', array('choices'   => array('M' => 'MASCULINO', 'F' => 'FEMENINO')))
-            ->add('comentarios', 'textarea', array('required' => false))
-            ->add('guardar', 'submit')
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));
+            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => new \DateTime('now'),'attr' => array('class' => 'date',)))
+            ->add('nombre1', TextType::class, array('required' => true))
+            ->add('nombre2', TextType::class, array('required' => false))
+            ->add('apellido1', TextType::class, array('required' => true))
+            ->add('apellido2', TextType::class, array('required' => false))
+            ->add('correo', TextType::class, array('required' => false))
+            ->add('telefono', TextType::class, array('required' => false))
+            ->add('celular', TextType::class, array('required' => false))
+            ->add('direccion', TextType::class, array('required' => false))
+            ->add('numeroIdentificacion', TextType::class, array('required' => true))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
+            ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('guardar', SubmitType::class)
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }
