@@ -1421,7 +1421,11 @@ class ConsultasController extends Controller
     private function filtrarPagoPendientesBancoLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1492,11 +1496,19 @@ class ConsultasController extends Controller
     private function filtrarIncapacidadesLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        $session->set('filtroCodigoEntidadSalud', $form->get('entidadSaludRel')->getData());
+                
+        $codigoEntidadSalud = "";
+        if($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();    
+        }
+        $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);
+        
         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -1512,11 +1524,18 @@ class ConsultasController extends Controller
     private function filtrarIncapacidadesCobrarLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        $session->set('filtroCodigoEntidadSalud', $form->get('entidadSaludRel')->getData());
+        
+        $codigoEntidadSalud = "";
+        if($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();    
+        }
+        $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);
         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -1532,7 +1551,11 @@ class ConsultasController extends Controller
     private function filtrarProcesosDisciplinariosLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1549,7 +1572,11 @@ class ConsultasController extends Controller
     private function filtrarDotacionesPendientesLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1597,7 +1624,11 @@ class ConsultasController extends Controller
     private function filtrarVacacionesPagarLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
         
@@ -1611,12 +1642,31 @@ class ConsultasController extends Controller
     
     private function filtrarFechaTerminacionLista($form) {
         $session = new Session;
-                
-        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
-        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
-        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
-        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
+        $codigoContratoTipo = "";
+        if($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        }
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $codigoEmpleadoTipo = "";
+        if($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        }
+        $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
+        $codigoZona = "";
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        }
+        $session->set('filtroCodigoZona', $codigoZona);
+        $codigoSubZona = "";
+        if($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        }
+        $session->set('filtroCodigoSubzona', $codigoZona);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1632,11 +1682,27 @@ class ConsultasController extends Controller
     
     private function filtrarIngresosContratosLista($form) {
         $session = new Session;
-                
-        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
-        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
-        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
-        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
+        $codigoContratoTipo = "";
+        if($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        }
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $codigoEmpleadoTipo = "";
+        if($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        }
+        $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
+        $codigoZona = "";
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        }
+        $session->set('filtroCodigoZona', $codigoZona);
+        $codigoSubZona = "";
+        if($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        }
+        $session->set('filtroCodigoSubzona', $codigoZona);                                
+        
         $session->set('filtroCodigoContrato', $form->get('TxtContrato')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -1661,14 +1727,34 @@ class ConsultasController extends Controller
         if(!$fechaHasta) {
             $fechaHasta = new \DateTime('now');
         }        
-        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
-        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
-        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
-        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());        
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
+        $codigoContratoTipo = "";
+        if($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        }
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $codigoEmpleadoTipo = "";
+        if($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        }
+        $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
+        $codigoZona = "";
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        }
+        $session->set('filtroCodigoZona', $codigoZona);
+        $codigoSubZona = "";
+        if($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        }
+        $session->set('filtroCodigoSubzona', $codigoZona);        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
-        $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));        
     }    
     
     private function generarExcel() {

@@ -104,9 +104,17 @@ class VisitaFechaVencimientoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new Session;        
-        $session->set('filtroCodigoVisitaTipo', $form->get('visitaTipoRel')->getData());
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $session = new Session;
+        $codigoTipoVisita = "";
+        if($form->get('visitaTipoRel')->getData()) {
+            $codigoTipoVisita = $form->get('visitaTipoRel')->getData()->getCodigoVisitaTipoPk();    
+        }        
+        $session->set('filtroCodigoVisitaTipo', $codigoTipoVisita);
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaVencimiento = $form->get('fechaVencimiento')->getData();

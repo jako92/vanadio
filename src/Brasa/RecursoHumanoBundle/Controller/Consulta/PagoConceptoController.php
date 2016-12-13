@@ -113,8 +113,12 @@ class PagoConceptoController extends Controller
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-        $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
-        $session->set('filtroCodigoPagoConcepto', $form->get('pagoConceptoRel')->getData());
+        $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));                
+        $codigoPagoConcepto = "";
+        if($form->get('pagoConceptoRel')->getData()) {
+            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();    
+        }                                                
+        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
         $dql = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->listaDetalleDql(
                     "",
                     "",

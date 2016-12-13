@@ -150,20 +150,23 @@ class PagoDetalleController extends Controller
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
         }
-        $session->set('filtroCodigoPagoTipo', $codigoCentroCosto);
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $codigoTipoPago = "";
         if($form->get('pagoTipoRel')->getData()) {
             $codigoTipoPago = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();    
         }                
-        $session->set('filtroCodigoPagoTipo', $codigoTipoPago);                
-        //$session->set('filtroCodigoPagoTipo', $form->get('pagoTipoRel')->getData());
+        $session->set('filtroCodigoPagoTipo', $codigoTipoPago);                        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $this->intNumero = $form->get('TxtNumero')->getData();
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
         $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
-        $session->set('filtroCodigoPagoConcepto', $form->get('pagoConceptoRel')->getData());
+        $codigoPagoConcepto = "";
+        if($form->get('pagoConceptoRel')->getData()) {
+            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();    
+        }                
+        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);        
     }
 
     private function generarExcel() {

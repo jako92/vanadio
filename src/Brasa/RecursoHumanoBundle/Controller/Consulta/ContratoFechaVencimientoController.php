@@ -153,15 +153,29 @@ class ContratoFechaVencimientoController extends Controller
 
     private function filtrarLista($form) {
         $session = new Session;
-        //$request = $this->getRequest();
-        //$controles = $request->request->get('form');
-        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
-        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
-        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
-        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+        
+        $codigoContratoTipo = "";
+        if($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        }
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $codigoEmpleadoTipo = "";
+        if($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        }
+        $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
+        $codigoZona = "";
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        }
+        $session->set('filtroCodigoZona', $codigoZona);
+        $codigoSubZona = "";
+        if($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        }
+        $session->set('filtroCodigoSubzona', $codigoZona);
+                        
+        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());                
         //$dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaVencimiento')->getData();
         if ($form->get('fechaVencimiento')->getData() == null ){
