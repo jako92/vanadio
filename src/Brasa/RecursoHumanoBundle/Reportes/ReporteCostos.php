@@ -5,9 +5,9 @@ class ReporteCostos extends \FPDF_FPDF {
     public static $em;
     public static $strDql;    
     
-    public function Generar($miThis, $dql) {        
-        ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+    public function Generar($miThis, $em, $dql) {        
+        ob_clean();        
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$strDql = $dql;
         $pdf = new ReporteCostos('L');
@@ -19,6 +19,7 @@ class ReporteCostos extends \FPDF_FPDF {
         $pdf->Output("ReporteCostos.pdf", 'D');        
         
     } 
+    
     public function Header() {
 
         $this->SetFillColor(236, 236, 236);        
@@ -32,7 +33,7 @@ class ReporteCostos extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         
-        $header = array('IDENTIFICACION', 'EMPLEADO', 'CENTRO COSTOS','PERIODO','IBC', 'AUX. TRANS', 'CESANTIAS','COSTO');
+        $header = array('IDENTIFICACION', 'EMPLEADO', 'CENTRO COSTOS','PERIODO','IBC', 'AUX. TRANS','COSTO');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -40,7 +41,7 @@ class ReporteCostos extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7);
 
         //creamos la cabecera de la tabla.
-        $w = array(23, 65, 95, 23, 20, 20,15,14);
+        $w = array(23, 65, 95, 23, 20, 20,14);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -70,13 +71,13 @@ class ReporteCostos extends \FPDF_FPDF {
             $pdf->Cell(23, 4, $arPago->getFechaDesde()->format('y-m-d') . "_" . $arPago->getFechaHasta()->format('y-m-d'), 1, 0, 'L');
             $pdf->Cell(20, 4, number_format($arPago->getVrIngresoBaseCotizacion(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arPago->getVrAuxilioTransporte(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(15, 4, number_format($arPago->getVrCesantias(), 2, '.', ','), 1, 0, 'R');
+            //$pdf->Cell(15, 4, number_format($arPago->getVrCesantias(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(14, 4, number_format($arPago->getVrCosto(), 2, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
             $douTotalIBC += $arPago->getVrIngresoBaseCotizacion();
             $douTotalAuxilioTransporte += $arPago->getVrAuxilioTransporte();
-            $douTotalCesantias += $arPago->getVrCesantias();
+            //$douTotalCesantias += $arPago->getVrCesantias();
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->Cell(23, 4, "", 1, 0, 'L');
@@ -85,7 +86,7 @@ class ReporteCostos extends \FPDF_FPDF {
         $pdf->Cell(23, 4, "", 1, 0, 'R');
         $pdf->Cell(20, 4, number_format($douTotalIBC, 2, '.', ','), 1, 0, 'R');
         $pdf->Cell(20, 4, number_format($douTotalAuxilioTransporte, 2, '.', ','), 1, 0, 'R');
-        $pdf->Cell(15, 4, number_format($douTotalCesantias, 2, '.', ','), 1, 0, 'R');
+        //$pdf->Cell(15, 4, number_format($douTotalCesantias, 2, '.', ','), 1, 0, 'R');
         $pdf->Cell(14, 4, "", 1, 0, 'R');
         $pdf->Ln();        
     }

@@ -7,6 +7,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionRequisitoType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SeleccionRequisitoController extends Controller
 {
@@ -55,8 +61,7 @@ class SeleccionRequisitoController extends Controller
     /**
      * @Route("/rhu/seleccionrequisito/nuevo/{codigoSeleccionRequisito}", name="brs_rhu_seleccionrequisito_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoSeleccionRequisito) {
-        
+    public function nuevoAction(Request $request, $codigoSeleccionRequisito) {        
         $em = $this->getDoctrine()->getManager();
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
         if($codigoSeleccionRequisito != 0) {
@@ -264,7 +269,7 @@ class SeleccionRequisitoController extends Controller
             ->add('fechaDescarte', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoDescarteRequisicionAspiranteRel', 'entity', array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))
             ->add('bloqueado', 'checkbox', array('required'  => false))
             ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
@@ -309,7 +314,7 @@ class SeleccionRequisitoController extends Controller
  
     private function listar() {
         $em = $this->getDoctrine()->getManager();                
-        $session = $this->get('session');
+        $session = new Session;
         
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->listaDQL(
                 $session->get('filtroNombreSeleccionRequisito'),
@@ -321,12 +326,11 @@ class SeleccionRequisitoController extends Controller
     }
     
     private function filtrar ($form, Request $request) {
-        $session = $this->get('session');        
-        $controles = $request->request->get('form');
+        $session = new Session;                
                 
         $session->set('filtroNombreSeleccionRequisito', $form->get('TxtNombre')->getData());                
         $session->set('filtroAbiertoSeleccionRequisito', $form->get('estadoCerrado')->getData());
-        $session->set('filtroCodigoCargo', $controles['cargoRel']);
+        $session->set('filtroCodigoCargo', $form->get('cargoRel')->getData());
         
         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -342,32 +346,32 @@ class SeleccionRequisitoController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();        
-        $session = $this->get('session');
+        $session = new Session;
         $arrayPropiedadesCargo = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCargo')) {
             $arrayPropiedadesCargo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCargo", $session->get('filtroCodigoCargo'));
         }
         $form = $this->createFormBuilder()
-            ->add('cargoRel', 'entity', $arrayPropiedadesCargo)
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $session->get('filtroNombreSeleccionRequisito')))
-            ->add('estadoCerrado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccionRequisito'))) 
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnEstadoAbierto', 'submit', array('label'  => 'Cerrar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnExcelDetalle', 'submit', array('label'  => 'Excel detalle',))    
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('cargoRel', EntityType::class, $arrayPropiedadesCargo)
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombreSeleccionRequisito')))
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAbiertoSeleccionRequisito'))) 
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnEstadoAbierto', SubmitType::class, array('label'  => 'Cerrar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))    
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }
@@ -396,7 +400,7 @@ class SeleccionRequisitoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $strSqlLista = $this->getRequest()->getSession();
+        //$strSqlLista = $this->getRequest()->getSession();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -593,7 +597,7 @@ class SeleccionRequisitoController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager(); 
-        $session = $this->get('session');
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

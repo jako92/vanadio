@@ -63,66 +63,7 @@
                     <td style="text-align: right">{{ arPago.vrAuxilioTransporteCotizacion | number_format(0, '.', ',') }}</td>
                 </tr>                                 
             </table> 
-                
-            <table width="100%" class="table table-condensed table-bordered">                
-                <tr>
-                    <td colspan="2" class="titulo" style="text-align: center">PRESTACIONES</td>                    
-                </tr>                                 
-                <tr>
-                    <td class="titulo">CESANTIAS:</td>
-                    <td style="text-align: right">{{ arPago.vrCesantias | number_format(0, '.', ',') }}</td>
-                </tr>                 
-                <tr>
-                    <td class="titulo">INTERESES:</td>
-                    <td style="text-align: right">{{ arPago.vrInteresesCesantias | number_format(0, '.', ',') }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">PRIMAS:</td>
-                    <td style="text-align: right">{{ arPago.vrPrimas | number_format(0, '.', ',') }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">VACACIONES:</td>
-                    <td style="text-align: right">{{ arPago.vrVacaciones | number_format(0, '.', ',') }}</td>
-                </tr>                
-            </table>  
-            <table width="100%" class="table table-condensed table-bordered">                
-                <tr>
-                    <td colspan="2" class="titulo" style="text-align: center">APORTES SEGURIDAD SOCIAL</td>                    
-                </tr>                                 
-                <tr>
-                    <td class="titulo">PENSION:</td>
-                    <td style="text-align: right">{{ arPago.vrPensionEmpleador | number_format(0, '.', ',') }}</td>
-                </tr>                 
-                <tr>
-                    <td class="titulo">SALUD:</td>
-                    <td style="text-align: right">{{ arPago.vrEpsEmpleador | number_format(0, '.', ',') }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">RIESGOS:({{ arPago.contratoRel.clasificacionRiesgoRel.nombre }})</td>
-                    <td style="text-align: right">{{ arPago.vrArp | number_format(0, '.', ',') }}</td>
-                </tr>                
-            </table>                
-            <table width="100%" class="table table-condensed table-bordered">                
-                <tr>
-                    <td colspan="2" class="titulo" style="text-align: center">PARAFISCALES</td>                    
-                </tr>                                 
-                <tr>
-                    <td class="titulo">CAJA:</td>
-                    <td style="text-align: right">{{ arPago.vrCaja | number_format(0, '.', ',') }}</td>
-                </tr>                
-                <tr>
-                    <td class="titulo">SENA:</td>
-                    <td style="text-align: right">{{ arPago.vrSena | number_format(0, '.', ',') }}</td>
-                </tr> 
-                <tr>
-                    <td class="titulo">ICBF:</td>
-                    <td style="text-align: right">{{ arPago.vrIcbf | number_format(0, '.', ',') }}</td>
-                </tr>                
-                <tr>
-                    <td class="titulo">VACACIONES:</td>
-                    <td style="text-align: right">{{ arPago.vrAporteVacaciones | number_format(0, '.', ',') }}</td>
-                </tr>                 
-            </table>                
+                                                                                     
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                

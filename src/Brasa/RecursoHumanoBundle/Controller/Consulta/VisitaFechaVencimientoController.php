@@ -6,7 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VisitaFechaVencimientoController extends Controller
 {
@@ -45,7 +50,7 @@ class VisitaFechaVencimientoController extends Controller
     }     
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->listaVisitasFechaVencimientoDQL(
             $session->get('filtroIdentificacion'),
@@ -57,16 +62,16 @@ class VisitaFechaVencimientoController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -78,32 +83,30 @@ class VisitaFechaVencimientoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoVisitaTipo')) {
             $arrayPropiedadesVisitaTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuVisitaTipo", $session->get('filtroCodigoVisitaTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('visitaTipoRel', 'entity', $arrayPropiedadesVisitaTipo)
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)    
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaVencimiento','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('visitaTipoRel', EntityType::class, $arrayPropiedadesVisitaTipo)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)    
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaVencimiento',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoVisitaTipo', $controles['visitaTipoRel']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new Session;        
+        $session->set('filtroCodigoVisitaTipo', $form->get('visitaTipoRel')->getData());
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         $dateFechaVencimiento = $form->get('fechaVencimiento')->getData();
@@ -120,7 +123,7 @@ class VisitaFechaVencimientoController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

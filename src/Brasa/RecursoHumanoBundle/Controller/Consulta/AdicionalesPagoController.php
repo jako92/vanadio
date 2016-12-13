@@ -79,7 +79,7 @@ class AdicionalesPagoController extends Controller
                 'empty_data' => "",
                 'placeholder' => "TODOS",
                 'data' => ""))
-            ->add('aplicaDiaLaborado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))                
+            ->add('aplicaDiaLaborado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1')))                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();

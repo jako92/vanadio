@@ -4,9 +4,9 @@ class ReporteCreditos extends \FPDF_FPDF {
     public static $em;
     public static $strDql;    
     
-    public function Generar($miThis, $dql) {        
+    public function Generar($miThis, $em, $dql) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$strDql = $dql;
         $pdf = new ReporteCreditos('L');
