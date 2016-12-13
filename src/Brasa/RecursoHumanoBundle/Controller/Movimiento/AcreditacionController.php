@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class AcreditacionController extends Controller
 {
@@ -123,7 +124,7 @@ class AcreditacionController extends Controller
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
             ->add('numero', TextType::class, array('required' => true))
-            ->add('fecha', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fecha', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
             ->add('attachment', 'file')
             ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
             ->getForm();
@@ -267,8 +268,8 @@ class AcreditacionController extends Controller
             ->add('estadoRechazado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'RECHAZADO', '0' => 'SIN RECHAZAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoRechazado')))
             ->add('estadoValidado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'VALIDADO', '0' => 'SIN VALIDAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoValidado')))
             ->add('estadoAcreditado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'ACREDITADO', '0' => 'SIN ACREDITAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoAcreditado')))
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
             ->add('filtrarFecha', 'checkbox', array('required'  => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFecha')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
             ->add('BtnExcel', 'submit', array('label'  => 'Excel',))

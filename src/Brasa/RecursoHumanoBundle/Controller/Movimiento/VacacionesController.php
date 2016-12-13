@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuVacacionType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class VacacionesController extends Controller
 {
@@ -435,8 +436,8 @@ class VacacionesController extends Controller
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
         $form = $this->createFormBuilder()
             //->setAction($this->generateUrl('brs_rhu_movimiento_vacacion_modificar', array('codigoVacacion' => $codigoVacacion)))
-            ->add('fechaDesdeDisfrute', 'date', array('label'  => 'Fecha desde', 'data' => $arVacacion->getFechaDesdeDisfrute()))
-            ->add('fechaHastaDisfrute', 'date', array('label'  => 'Fecha hasta', 'data' => $arVacacion->getFechaHastaDisfrute()))
+            ->add('fechaDesdeDisfrute', DateType::class, array('label'  => 'Fecha desde', 'data' => $arVacacion->getFechaDesdeDisfrute()))
+            ->add('fechaHastaDisfrute', DateType::class, array('label'  => 'Fecha hasta', 'data' => $arVacacion->getFechaHastaDisfrute()))
             ->add('vrSalud', 'number', array('data' =>$arVacacion->getVrSalud() ,'required' => false))
             ->add('vrPension', 'number', array('data' =>$arVacacion->getVrPension() ,'required' => false))            
             ->add('vrVacacion', 'number', array('data' =>$arVacacion->getVrVacacion() ,'required' => false))                    

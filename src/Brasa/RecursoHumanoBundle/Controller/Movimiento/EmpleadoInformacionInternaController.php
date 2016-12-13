@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuEmpleadoInformacionInternaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 /**
  * BaseEmpleadoInformacionInterna  Controller.
@@ -70,7 +71,7 @@ class EmpleadoInformacionInternaController extends Controller
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo',
                         'property' => 'nombre',
             ))    
-            ->add('fecha', 'date', array('data' => new \DateTime('now')))
+            ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
             ->add('comentarios', 'textarea', array('required' => true))
             ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
             ->getForm();

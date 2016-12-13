@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionDetalleType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionNotaType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CapacitacionesController extends Controller
 {
@@ -447,8 +448,8 @@ class CapacitacionesController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('capacitacionTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
             ->add('estado', 'choice', array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroEstado')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))

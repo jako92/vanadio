@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class SeleccionRequisitoController extends Controller
 {
@@ -266,7 +267,7 @@ class SeleccionRequisitoController extends Controller
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_descartar_aspirante', array('codigoSelReqAsp' => $codigoSelReqAsp )))
             ->add('comentarios', 'textarea', array('data' =>$arSeleccionRequisicionAspirante->getComentarios() ,'required' => true))                      
-            ->add('fechaDescarte', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
+            ->add('fechaDescarte', DateType::class, array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoDescarteRequisicionAspiranteRel', 'entity', array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante',
                 'choice_label' => 'nombre',
