@@ -129,7 +129,7 @@ class SedeController extends Controller
         {
             $arSede = $em->getRepository('BrasaRecursoHumanoBundle:RhuSede')->find($codigoSedePk);
         }
-        $form = $this->createForm(new RhuSedeType(), $arSede);
+        $form = $this->createForm(RhuSedeType::class, $arSede);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arrControles = $request->request->All();

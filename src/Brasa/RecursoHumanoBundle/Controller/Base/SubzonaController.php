@@ -84,19 +84,20 @@ class SubzonaController extends Controller
         if ($codigoSubZonaPk != 0)
         {
             $arSubZona = $em->getRepository('BrasaRecursoHumanoBundle:RhuSubzona')->find($codigoSubZonaPk);
-        }    
-        $formSubZona = $this->createForm(new RhuSubzonaType(), $arSubZona);
-        $formSubZona->handleRequest($request);
-        if ($formSubZona->isValid())
+        }
+        $form = $this->createForm(RhuSubzonaType::class, $arSubZona);
+        //$formSubZona = $this->createForm(new RhuSubzonaType(), $arSubZona);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arSubZona);
-            $arSubZona = $formSubZona->getData();
+            $arSubZona = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_subzona'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Subzona:nuevo.html.twig', array(
-            'formSubZona' => $formSubZona->createView(),
+            'formSubZona' => $form->createView(),
         ));
     }
     

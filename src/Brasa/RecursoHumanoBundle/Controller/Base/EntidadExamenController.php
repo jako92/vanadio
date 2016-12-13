@@ -133,10 +133,10 @@ class EntidadExamenController extends Controller
         if ($codigoEntidadExamenPk != 0)
         {
             $arEntidadExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadExamen')->find($codigoEntidadExamenPk);
-        }    
-        $formEntidadExamen = $this->createForm(new RhuEntidadExamenType(), $arEntidadExamen);
-        $formEntidadExamen->handleRequest($request);
-        if ($formEntidadExamen->isValid())
+        }
+        $form = $this->createForm(RhuEntidadExamenType::class, $arEntidadExamen);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $arUsuario = $this->get('security.context')->getToken()->getUser();
@@ -144,12 +144,12 @@ class EntidadExamenController extends Controller
                $arEntidadExamen->setCodigoUsuario($arUsuario->getUserName());
             }
             $em->persist($arEntidadExamen);
-            $arEntidadExamen = $formEntidadExamen->getData();
+            $arEntidadExamen = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_entidadexamen_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/EntidadExamen:nuevo.html.twig', array(
-            'formEntidadExamen' => $formEntidadExamen->createView(),
+            'formEntidadExamen' => $form->createView(),
         ));
     }
     

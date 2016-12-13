@@ -114,19 +114,20 @@ class SeleccionPruebaTipoController extends Controller
         if ($codigoSeleccionPruebaTipo != 0)
         {
             $arSeleccionPruebaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionPruebaTipo')->find($codigoSeleccionPruebaTipo);
-        }    
-        $formSeleccionPruebaTipo = $this->createForm(new RhuSeleccionPruebaTipoType(), $arSeleccionPruebaTipo);
-        $formSeleccionPruebaTipo->handleRequest($request);
-        if ($formSeleccionPruebaTipo->isValid())
+        }
+        $form = $this->createForm(RhuSeleccionPruebaTipoType::class, $arSeleccionPruebaTipo);
+        //$formSeleccionPruebaTipo = $this->createForm(new RhuSeleccionPruebaTipoType(), $arSeleccionPruebaTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arSeleccionPruebaTipo);
-            $arSeleccionPruebaTipo = $formSeleccionPruebaTipo->getData();
+            $arSeleccionPruebaTipo = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_seleccion_prueba_tipo_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/SeleccionPruebaTipo:nuevo.html.twig', array(
-            'formSeleccionPruebaTipo' => $formSeleccionPruebaTipo->createView(),
+            'formSeleccionPruebaTipo' => $form->createView(),
         ));
     }
 }

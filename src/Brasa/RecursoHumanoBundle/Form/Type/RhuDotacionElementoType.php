@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuDotacionElementoType extends AbstractType
 {
@@ -13,16 +16,16 @@ class RhuDotacionElementoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dotacion', 'text', array('required' => true))
-            ->add('dotacionElementoTipoRel', 'entity', array(
+            ->add('dotacion', TextType::class, array('required' => true))
+            ->add('dotacionElementoTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDotacionElementoTipo',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))    
-            ->add('guardar', 'submit', array('label' => 'Guardar'))
-            ->add('guardarynuevo', 'submit', array('label' => 'Guardar y nuevo'));
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'))
+            ->add('guardarynuevo', SubmitType::class, array('label' => 'Guardar y nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

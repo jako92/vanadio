@@ -15,7 +15,7 @@ class RhuDisciplinarioDescargoType extends AbstractType
             ->add('guardar', 'submit');
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

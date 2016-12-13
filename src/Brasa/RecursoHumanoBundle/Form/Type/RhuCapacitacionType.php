@@ -4,37 +4,44 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class RhuCapacitacionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder            
-            ->add('capacitacionTipoRel', 'entity', array(
+            ->add('capacitacionTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCapacitacionTipo',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))
-            ->add('capacitacionMetodologiaRel', 'entity', array(
+            ->add('capacitacionMetodologiaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCapacitacionMetodologia',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))
-            ->add('ciudadRel', 'entity', array(
+            ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))    
-            ->add('fechaCapacitacion', 'datetime', array('format' => 'yyyyMMdd'))
-            ->add('tema', 'text', array('required' => true))
-            ->add('numeroPersonasCapacitar', 'number', array('required' => true))
-            ->add('vrCapacitacion', 'text', array('required' => false))
-            ->add('lugar', 'text', array('required' => true))    
-            ->add('duracion', 'text', array('required' => true))
-            ->add('objetivo', 'textarea', array('required' => true))
-            ->add('contenido', 'textarea', array('required' => true))
-            ->add('facilitador', 'text', array('required' => true))
-            ->add('numeroIdentificacionFacilitador', 'text', array('required' => true))    
-            ->add('guardar', 'submit');        
+            ->add('fechaCapacitacion', DateTimeType::class, array('format' => 'yyyyMMdd'))
+            ->add('tema', TextType::class, array('required' => true))
+            ->add('numeroPersonasCapacitar', NumberType::class, array('required' => true))
+            ->add('vrCapacitacion', TextType::class, array('required' => false))
+            ->add('lugar', TextType::class, array('required' => true))    
+            ->add('duracion', TextType::class, array('required' => true))
+            ->add('objetivo', TextareaType::class, array('required' => true))
+            ->add('contenido', TextareaType::class, array('required' => true))
+            ->add('facilitador', TextType::class, array('required' => true))
+            ->add('numeroIdentificacionFacilitador', TextType::class, array('required' => true))    
+            ->add('guardar', SubmitType::class);        
     }
  
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

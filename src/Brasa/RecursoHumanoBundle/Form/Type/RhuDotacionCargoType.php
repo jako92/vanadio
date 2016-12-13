@@ -4,25 +4,28 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuDotacionCargoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder      
-            ->add('cargoRel', 'entity', array(
+            ->add('cargoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))                 
-            ->add('dotacionElementoRel', 'entity', array(
+            ->add('dotacionElementoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDotacionElemento',
-                'property' => 'dotacion',
+                'choice_label' => 'dotacion',
             ))
-            ->add('cantidadAsignada', 'number', array('required' => true))    
-            ->add('guardar', 'submit');        
+            ->add('cantidadAsignada', NumberType::classs, array('required' => true))    
+            ->add('guardar', SubmitType::class);        
     }
  
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

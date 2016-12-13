@@ -73,8 +73,8 @@ class DotacionCargoController extends Controller
         $arDotacionCargo = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionCargo();
         if ($codigoDotacionCargo != 0) {
             $arDotacionCargo = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionCargo')->find($codigoDotacionCargo);
-        }    
-        $form = $this->createForm(new RhuDotacionCargoType(), $arDotacionCargo);
+        }
+        $form = $this->createForm(RhuDotacionCargoType::class, $arDotacionCargo);
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arDotacionCargo = $form->getData();

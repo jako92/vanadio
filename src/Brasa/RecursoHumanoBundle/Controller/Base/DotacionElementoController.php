@@ -125,23 +125,23 @@ class DotacionElementoController extends Controller
         if ($codigoDotacionElemento != 0)
         {
             $arDotacionElemento = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionElemento')->find($codigoDotacionElemento);
-        }    
-        $formDotacionElemento = $this->createForm(new RhuDotacionElementoType(), $arDotacionElemento);
-        $formDotacionElemento->handleRequest($request);
-        if ($formDotacionElemento->isValid())
+        }
+        $form = $this->createForm(RhuDotacionElementoType::class, $arDotacionElemento);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arDotacionElemento);
-            $arDotacionElemento = $formDotacionElemento->getData();
+            $arDotacionElemento = $form->getData();
             $em->flush();
-            if($formDotacionElemento->get('guardarynuevo')->isClicked()) {
+            if($form->get('guardarynuevo')->isClicked()) {
                 return $this->redirect($this->generateUrl('brs_rhu_base_dotacion_elemento_nuevo', array('codigoDotacionElemento' => 0)));
             } else {
                 return $this->redirect($this->generateUrl('brs_rhu_base_dotacion_elemento_lista'));
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/DotacionElementos:nuevo.html.twig', array(
-            'formDotacionElemento' => $formDotacionElemento->createView(),
+            'formDotacionElemento' => $form->createView(),
         ));
     }
     

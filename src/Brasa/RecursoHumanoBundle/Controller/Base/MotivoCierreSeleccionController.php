@@ -127,19 +127,19 @@ class MotivoCierreSeleccionController extends Controller
         if ($codigoMotivoCierreSeleccionPk != 0)
         {
             $arMotivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion')->find($codigoMotivoCierreSeleccionPk);
-        }    
-        $formMotivo = $this->createForm(new RhuMotivoCierreSeleccionType(), $arMotivo);
-        $formMotivo->handleRequest($request);
-        if ($formMotivo->isValid())
+        }
+        $form = $this->createForm(RhuMotivoCierreSeleccionType::class, $arMotivo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arMotivo = $formMotivo->getData();
+            $arMotivo = $form->getData();
             $em->persist($arMotivo);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_motivocierre_seleccion_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/MotivoCierreSeleccion:nuevo.html.twig', array(
-            'formMotivo' => $formMotivo->createView(),
+            'formMotivo' => $form->createView(),
         ));
     }
     

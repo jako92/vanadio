@@ -112,23 +112,24 @@ class DotacionElementoTipoController extends Controller
         if ($codigoDotacionElementoTipo != 0)
         {
             $arDotacionElementoTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionElementoTipo')->find($codigoDotacionElementoTipo);
-        }    
-        $formDotacionElementoTipo = $this->createForm(new RhuDotacionElementoTipoType(), $arDotacionElementoTipo);
-        $formDotacionElementoTipo->handleRequest($request);
-        if ($formDotacionElementoTipo->isValid())
+        }
+        $form = $this->createForm(RhuDotacionElementoTipoType::class, $arDotacionElementoTipo);
+        //$formDotacionElementoTipo = $this->createForm(new RhuDotacionElementoTipoType(), $arDotacionElementoTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arDotacionElementoTipo);
-            $arDotacionElementoTipo = $formDotacionElementoTipo->getData();
+            $arDotacionElementoTipo = $form->getData();
             $em->flush();
-            if($formDotacionElementoTipo->get('guardarynuevo')->isClicked()) {
+            if($form->get('guardarynuevo')->isClicked()) {
                 return $this->redirect($this->generateUrl('brs_rhu_base_dotacion_elemento_tipo_nuevo', array('codigoDotacionElementoTipo' => 0)));
             } else {
                 return $this->redirect($this->generateUrl('brs_rhu_base_dotacion_elemento_tipo_lista'));
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/DotacionElementosTipos:nuevo.html.twig', array(
-            'formDotacionElementoTipo' => $formDotacionElementoTipo->createView(),
+            'formDotacionElementoTipo' => $form->createView(),
         ));
     }
     

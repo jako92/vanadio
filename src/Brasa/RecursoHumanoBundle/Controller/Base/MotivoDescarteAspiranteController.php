@@ -122,24 +122,24 @@ class MotivoDescarteAspiranteController extends Controller
      */
     public function nuevoAction(Request $request, $codigoMotivoDescarteAspirantePk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arMotivo = new \Brasa\RecursoHumanoBundle\Entity\RhuMotivoDescarteRequisicionAspirante();
         if ($codigoMotivoDescarteAspirantePk != 0)
         {
             $arMotivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante')->find($codigoMotivoDescarteAspirantePk);
-        }    
-        $formMotivo = $this->createForm(new RhuMotivoDescarteAspiranteType(), $arMotivo);
-        $formMotivo->handleRequest($request);
-        if ($formMotivo->isValid())
+        }
+        $form = $this->createForm(RhuMotivoDescarteAspiranteType::class, $arMotivo);
+        //$formMotivo = $this->createForm(new RhuMotivoDescarteAspiranteType(), $arMotivo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arMotivo = $formMotivo->getData();
+            $arMotivo = $form->getData();
             $em->persist($arMotivo);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_motivodescarte_aspirante_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/MotivoDescarteAspirante:nuevo.html.twig', array(
-            'formMotivo' => $formMotivo->createView(),
+            'formMotivo' => $form->createView(),
         ));
     }
     

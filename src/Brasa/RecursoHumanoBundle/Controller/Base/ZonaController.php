@@ -85,19 +85,19 @@ class ZonaController extends Controller
         if ($codigoZonaPk != 0)
         {
             $arZona = $em->getRepository('BrasaRecursoHumanoBundle:RhuZona')->find($codigoZonaPk);
-        }    
-        $formZona = $this->createForm(new RhuZonaType(), $arZona);
-        $formZona->handleRequest($request);
-        if ($formZona->isValid())
+        }
+        $form = $this->createForm(RhuZonaType::class, $arZona);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arZona);
-            $arZona = $formZona->getData();
+            $arZona = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_zona'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Zona:nuevo.html.twig', array(
-            'formZona' => $formZona->createView(),
+            'formZona' => $form->createView(),
         ));
     }
     

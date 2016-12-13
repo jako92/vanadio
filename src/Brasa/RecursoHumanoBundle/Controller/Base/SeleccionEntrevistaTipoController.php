@@ -114,19 +114,19 @@ class SeleccionEntrevistaTipoController extends Controller
         if ($codigoSeleccionEntrevistaTipo != 0)
         {
             $arSeleccionEntrevistaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevistaTipo')->find($codigoSeleccionEntrevistaTipo);
-        }    
-        $formSeleccionEntrevistaTipo = $this->createForm(new RhuSeleccionEntrevistaTipoType(), $arSeleccionEntrevistaTipo);
-        $formSeleccionEntrevistaTipo->handleRequest($request);
-        if ($formSeleccionEntrevistaTipo->isValid())
+        }
+        $form = $this->createForm(RhuSeleccionEntrevistaTipoType::class, $arSeleccionEntrevistaTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arSeleccionEntrevistaTipo);
-            $arSeleccionEntrevistaTipo = $formSeleccionEntrevistaTipo->getData();
+            $arSeleccionEntrevistaTipo = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_seleccion_entrevista_tipo_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/SeleccionEntrevistaTipo:nuevo.html.twig', array(
-            'formSeleccionEntrevistaTipo' => $formSeleccionEntrevistaTipo->createView(),
+            'formSeleccionEntrevistaTipo' => $form->createView(),
         ));
     }
 }
