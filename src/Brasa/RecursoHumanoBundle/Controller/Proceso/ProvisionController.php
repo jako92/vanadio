@@ -4,6 +4,10 @@ namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ProvisionController extends Controller
 {
@@ -11,9 +15,8 @@ class ProvisionController extends Controller
     /**
      * @Route("/rhu/proceso/provision/", name="brs_rhu_proceso_provision")
      */     
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 63)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -262,8 +265,7 @@ class ProvisionController extends Controller
     /**
      * @Route("/rhu/proceso/provision/nuevo/", name="brs_rhu_proceso_provision_nuevo")
      */
-    public function nuevoAction() {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/')."01";
@@ -272,9 +274,9 @@ class ProvisionController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))    
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))    
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -299,7 +301,7 @@ class ProvisionController extends Controller
     
     private function formularioLista() {
         $form = $this->createFormBuilder()                        
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))            
             ->getForm();        
         return $form;
     }                  

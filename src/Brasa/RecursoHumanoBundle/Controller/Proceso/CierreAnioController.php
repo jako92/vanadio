@@ -5,6 +5,9 @@ namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class CierreAnioController extends Controller
 {
@@ -13,9 +16,8 @@ class CierreAnioController extends Controller
     /**
      * @Route("/rhu/proceso/cierre/anio", name="brs_rhu_proceso_cierre_anio")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 62)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         } 
@@ -71,15 +73,14 @@ class CierreAnioController extends Controller
     /**
      * @Route("/rhu/proceso/cierre/anio/cerrar/{codigoCierreAnio}", name="brs_rhu_proceso_cierre_anio_cerrar")
      */
-    public function cerrarAction($codigoCierreAnio) {
-        $request = $this->getRequest();
+    public function cerrarAction(Request $request, $codigoCierreAnio) {        
         $em = $this->getDoctrine()->getManager();
         
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_proceso_cierre_anio_cerrar', array('codigoCierreAnio' => $codigoCierreAnio)))
-            ->add('salarioMinimo', 'number')
-            ->add('auxilioTransporte', 'number')            
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('salarioMinimo', NumberType::class)
+            ->add('auxilioTransporte', NumberType::class)            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         $arCierreAnio = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreAnio();

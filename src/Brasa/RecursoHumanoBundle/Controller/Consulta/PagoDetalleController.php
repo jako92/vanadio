@@ -146,8 +146,17 @@ class PagoDetalleController extends Controller
     private function filtrarLista($form) {
         $session = $this->get('session');        
         
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());                
-        $session->set('filtroCodigoPagoTipo', $form->get('pagoTipoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }
+        $session->set('filtroCodigoPagoTipo', $codigoCentroCosto);
+        $codigoTipoPago = "";
+        if($form->get('pagoTipoRel')->getData()) {
+            $codigoTipoPago = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();    
+        }                
+        $session->set('filtroCodigoPagoTipo', $codigoTipoPago);                
+        //$session->set('filtroCodigoPagoTipo', $form->get('pagoTipoRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $this->intNumero = $form->get('TxtNumero')->getData();
         $dateFechaDesde = $form->get('fechaDesde')->getData();

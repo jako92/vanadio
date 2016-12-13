@@ -6,22 +6,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class GenerarHorarioPeriodoController extends Controller
 {
     /**
      * @Route("/rhu/proceso/control/acceso/periodo/horario/lista", name="brs_rhu_proceso_control_acceso_horario_periodo_listar")
      */
-    public function listarAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 65)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arHorariosPeriodos = new \Brasa\RecursoHumanoBundle\Entity\RhuHorarioPeriodo();
@@ -60,8 +62,8 @@ class GenerarHorarioPeriodoController extends Controller
         }
         $arHorariosPeriodos = new \Brasa\RecursoHumanoBundle\Entity\RhuHorarioPeriodo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioPeriodo')->findAll();
-        $arHorariosPeriodos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),40);
-
+        //$arHorariosPeriodos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),40); 
+        $arHorariosPeriodos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
         return $this->render('BrasaRecursoHumanoBundle:Procesos/GenerarHorarioPeriodo:generar.html.twig', array(
                     'arHorariosPeriodos' => $arHorariosPeriodos,
                     'form'=> $form->createView()
@@ -72,17 +74,16 @@ class GenerarHorarioPeriodoController extends Controller
     /**
      * @Route("/rhu/proceso/control/acceso/periodo/horario/nuevo/{codigoHorarioPeriodo}", name="brs_rhu_proceso_control_acceso_horario_periodo_nuevo")
      */
-    public function nuevoAction($codigoHorarioPeriodo = 0) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoHorarioPeriodo = 0) {
+        $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arHorarioPeriodo = new \Brasa\RecursoHumanoBundle\Entity\RhuHorarioPeriodo();
         if ($codigoHorarioPeriodo != 0) {
             $arHorarioPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioPeriodo')->find($codigoHorarioPeriodo);
         }    
         $form = $this->createFormBuilder()
-            ->add('fechaPeriodo', 'date', array('data' => new \DateTime('now')))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('fechaPeriodo', DateType::class, array('data' => new \DateTime('now')))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {

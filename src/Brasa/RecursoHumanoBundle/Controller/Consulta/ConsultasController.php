@@ -1455,7 +1455,11 @@ class ConsultasController extends Controller
     private function filtrarPagoLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
@@ -1474,8 +1478,11 @@ class ConsultasController extends Controller
 
     private function filtrarEmpleadoLista($form) {
         $session = new Session;
-                
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroEmpleadoActivo', $form->get('estadoActivo')->getData());
@@ -1567,7 +1574,11 @@ class ConsultasController extends Controller
     private function filtrarServiciosPorCobrarLista($form) {
         $session = new Session;
                 
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());

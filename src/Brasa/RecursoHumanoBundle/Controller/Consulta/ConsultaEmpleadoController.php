@@ -159,9 +159,11 @@ class ConsultaEmpleadoController extends Controller
     
     private function filtrarEmpleadoLista($form) {
         $session = new Session;
-        
-        //$controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroEmpleadoActivo', $form->get('estadoActivo')->getData());

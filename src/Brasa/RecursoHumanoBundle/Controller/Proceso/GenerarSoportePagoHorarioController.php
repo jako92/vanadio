@@ -3,9 +3,12 @@ namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSoportePagoHorarioType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSoportePagoHorarioDetalleType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class GenerarSoportePagoHorarioController extends Controller
 {
     var $strListaDql = "";
@@ -13,9 +16,8 @@ class GenerarSoportePagoHorarioController extends Controller
     /**
      * @Route("/rhu/proceso/soporte/pago/horario", name="brs_rhu_proceso_soporte_pago_horario")
      */    
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 64)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -56,8 +58,7 @@ class GenerarSoportePagoHorarioController extends Controller
     /**
      * @Route("/rhu/proceso/soporte/pago/horario/nuevo/{codigoSoportePagoHorario}", name="brs_rhu_proceso_soporte_pago_horario_nuevo")
      */     
-    public function nuevoAction($codigoSoportePagoHorario) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoSoportePagoHorario) {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arSoportePagoHorario = new \Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorario();
@@ -66,8 +67,8 @@ class GenerarSoportePagoHorarioController extends Controller
         }else{
             $arSoportePagoHorario->setFechaDesde(new \DateTime('now'));            
             $arSoportePagoHorario->setFechaHasta(new \DateTime('now'));  
-        }
-        $form = $this->createForm(new RhuSoportePagoHorarioType(), $arSoportePagoHorario);
+        }        
+        $form = $this->createForm(RhuSoportePagoHorarioType::class, $arSoportePagoHorario);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arSoportePagoHorario = $form->getData();            
@@ -83,9 +84,8 @@ class GenerarSoportePagoHorarioController extends Controller
     /**
      * @Route("/rhu/proceso/soporte/pago/horario/detalle/{codigoSoportePagoHorario}", name="brs_rhu_proceso_soporte_pago_horario_detalle")
      */    
-    public function detalleAction($codigoSoportePagoHorario) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function detalleAction(Request $request, $codigoSoportePagoHorario) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioDetalle();
         $form->handleRequest($request);
@@ -111,9 +111,8 @@ class GenerarSoportePagoHorarioController extends Controller
     /**
      * @Route("/rhu/proceso/soporte/pago/horario/detalle/nuevo/{codigoSoportePagoHorarioDetalle}", name="brs_rhu_proceso_soporte_pago_horario_detalle_nuevo")
      */    
-    public function detalleNuevoAction($codigoSoportePagoHorarioDetalle) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoSoportePagoHorarioDetalle) {
+        $em = $this->getDoctrine()->getManager();        
         $arSoportePagoHorarioDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle();
         if($codigoSoportePagoHorarioDetalle != 0) {
             $arSoportePagoHorarioDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSoportePagoHorarioDetalle')->find($codigoSoportePagoHorarioDetalle);
@@ -134,9 +133,8 @@ class GenerarSoportePagoHorarioController extends Controller
     /**
      * @Route("/rhu/proceso/soporte/pago/horario/detalle/ver/{codigoSoportePagoHorarioDetalle}", name="brs_rhu_proceso_soporte_pago_horario_detalle_ver")
      */    
-    public function verAction($codigoSoportePagoHorarioDetalle) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function verAction(Request $request, $codigoSoportePagoHorarioDetalle) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');                        
         $arSoportePagoHorarioDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle();
         $arSoportePagoHorarioDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSoportePagoHorarioDetalle')->find($codigoSoportePagoHorarioDetalle);                        
@@ -162,15 +160,15 @@ class GenerarSoportePagoHorarioController extends Controller
     
     private function formularioLista() {
         $form = $this->createFormBuilder()
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))            
             ->getForm();
         return $form;
     }
     
     private function formularioDetalle() {
         $form = $this->createFormBuilder()
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))                        
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))                        
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))                        
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))                        
             ->getForm();
         return $form;
     }

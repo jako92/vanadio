@@ -5,6 +5,10 @@ namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ContabilizarPagoBancoController extends Controller
 {
@@ -13,9 +17,8 @@ class ContabilizarPagoBancoController extends Controller
     /**
      * @Route("/rhu/proceso/contabilizar/pago/banco/", name="brs_rhu_proceso_contabilizar_pago_banco")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 70)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -239,15 +242,14 @@ class ContabilizarPagoBancoController extends Controller
     /**
      * @Route("/rhu/proceso/descontabilizar/pago/banco/", name="brs_rhu_proceso_descontabilizar_pago_banco")
      */
-    public function descontabilizarPagoBancoAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession();
+    public function descontabilizarPagoBancoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
+        $session = new Session;
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-            ->add('pagoDesde', 'number', array('label'  => 'Pago desde'))
-            ->add('pagoHasta', 'number', array('label'  => 'Pago hasta'))
-            ->add('BtnDescontabilizar', 'submit', array('label'  => 'Descontabilizar',))
+            ->add('pagoDesde', NumberType::class, array('label'  => 'Pago desde'))
+            ->add('pagoHasta', NumberType::class, array('label'  => 'Pago hasta'))
+            ->add('BtnDescontabilizar', SubmitType::class, array('label'  => 'Descontabilizar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -276,7 +278,7 @@ class ContabilizarPagoBancoController extends Controller
 
     private function formularioLista() {
         $form = $this->createFormBuilder()
-            ->add('BtnContabilizar', 'submit', array('label'  => 'Contabilizar',))
+            ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();
         return $form;
     }

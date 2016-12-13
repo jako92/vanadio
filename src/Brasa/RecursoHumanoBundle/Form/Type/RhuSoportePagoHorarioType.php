@@ -3,6 +3,9 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class RhuSoportePagoHorarioType extends AbstractType
 {
@@ -13,13 +16,13 @@ class RhuSoportePagoHorarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('centroCostoRel', 'entity', array(
+            ->add('centroCostoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))                 
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd'))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd'))
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd'))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd'))
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
     public function getName()

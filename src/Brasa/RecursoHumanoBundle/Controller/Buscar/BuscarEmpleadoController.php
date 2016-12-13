@@ -5,6 +5,12 @@ namespace Brasa\RecursoHumanoBundle\Controller\Buscar;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class BuscarEmpleadoController extends Controller
 {
@@ -13,9 +19,8 @@ class BuscarEmpleadoController extends Controller
      /**
      * @Route("/rhu/buscar/empleado", name="brs_rhu_buscar_empleado")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
@@ -26,7 +31,7 @@ class BuscarEmpleadoController extends Controller
                 $this->listar();
             }
         }
-        $arEmpleados = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
+        $arEmpleados = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);        
         return $this->render('BrasaRecursoHumanoBundle:Buscar:empleado.html.twig', array(
             'arEmpleados' => $arEmpleados,
             'form' => $form->createView()
@@ -34,7 +39,7 @@ class BuscarEmpleadoController extends Controller
     }        
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->buscarDql(
                 $session->get('filtroEmpleadoNombre'), 
@@ -43,51 +48,53 @@ class BuscarEmpleadoController extends Controller
                 $session->get('filtroIdentificacion'),
                 $session->get('filtroRhuCodigoEmpleado')
                 ); 
-    }       
+    }    
     
-    private function formularioLista() {
-        $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
-        $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')                                        
-                    ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
-                'required' => false,  
-                'empty_data' => "",
-                'empty_value' => "TODOS",    
-                'data' => ""
-            );  
-        if($session->get('filtroCodigoCentroCosto')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));                                    
-        }
-        $form = $this->createFormBuilder()                        
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)                                           
-            ->add('estadoActivo', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVOS', '0' => 'INACTIVOS')))                            
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                            
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $session->get('filtroRhuCodigoEmpleado')))                                            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->getForm();        
-        return $form;
-    }           
-
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);        
+        $session = new Session;
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroEmpleadoActivo', $form->get('estadoActivo')->getData());
         $session->set('filtroRhuCodigoEmpleado', $form->get('TxtCodigo')->getData());
-    }    
+    }
+    
+    private function formularioLista() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;           
+        $arrayPropiedades = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCosto')) {
+            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
+        }
+        $form = $this->createFormBuilder()
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)                                           
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))                            
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                            
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroRhuCodigoEmpleado')))                                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->getForm();        
+        return $form;
+    }                   
     
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

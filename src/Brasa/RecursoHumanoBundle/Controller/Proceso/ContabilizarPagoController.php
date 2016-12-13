@@ -4,6 +4,11 @@ namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ContabilizarPagoController extends Controller
 {
@@ -11,9 +16,8 @@ class ContabilizarPagoController extends Controller
     /**
      * @Route("/rhu/proceso/contabilizar/pago/", name="brs_rhu_proceso_contabilizar_pago")
      */     
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 66)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -73,7 +77,7 @@ class ContabilizarPagoController extends Controller
     
     private function formularioLista() {
         $form = $this->createFormBuilder()                        
-            ->add('BtnContabilizar', 'submit', array('label'  => 'Contabilizar',))
+            ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();        
         return $form;
     }      
@@ -142,17 +146,16 @@ class ContabilizarPagoController extends Controller
      * @Route("/rhu/proceso/descontabilizar/pago/", name="brs_rhu_proceso_descontabilizar_pago")
      */
     
-    public function descontabilizarPagoNominaAction() {
+    public function descontabilizarPagoNominaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession(); 
+        $session = new Session; 
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-            ->add('numeroDesde', 'number', array('label'  => 'Numero desde'))
-            ->add('numeroHasta', 'number', array('label'  => 'Numero hasta'))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                                            
-            ->add('BtnDescontabilizar', 'submit', array('label'  => 'Descontabilizar',))    
+            ->add('numeroDesde', NumberType::class, array('label'  => 'Numero desde'))
+            ->add('numeroHasta', NumberType::class, array('label'  => 'Numero hasta'))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                                            
+            ->add('BtnDescontabilizar', SubmitType::class, array('label'  => 'Descontabilizar',))    
             ->getForm();
         $form->handleRequest($request);        
         if ($form->isValid()) {             

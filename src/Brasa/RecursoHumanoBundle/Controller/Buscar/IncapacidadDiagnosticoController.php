@@ -4,6 +4,10 @@ namespace Brasa\RecursoHumanoBundle\Controller\Buscar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class IncapacidadDiagnosticoController extends Controller
 {
@@ -12,9 +16,8 @@ class IncapacidadDiagnosticoController extends Controller
     /**
      * @Route("/rhu/buscar/incapacidad/diagnostico/", name="brs_rhu_buscar_incapacidad_diagnostico")
      */    
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
@@ -26,6 +29,7 @@ class IncapacidadDiagnosticoController extends Controller
             }
         }
         $arIncapacidadesDiagnosticos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
+        
         return $this->render('BrasaRecursoHumanoBundle:Buscar:incapacidadDiagnostico.html.twig', array(
             'arIncapacidadesDiagnosticos' => $arIncapacidadesDiagnosticos,
             'form' => $form->createView()
@@ -33,7 +37,7 @@ class IncapacidadDiagnosticoController extends Controller
     }        
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadDiagnostico')->listaDQL(
                 $session->get('filtroIncapacidadDiagnosticoNombre'), 
@@ -43,18 +47,18 @@ class IncapacidadDiagnosticoController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new Session;        
         $form = $this->createFormBuilder()                        
-            ->add('TxtNombreIncapacidadDiagnostico', 'text', array('label'  => 'Nombre','data' => $session->get('filtroIncapacidadDiagnosticoNombre')))
-            ->add('TxtCodigoIncapacidadDiagnostico', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroCodigoIncapacidadDiagnostico')))                            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombreIncapacidadDiagnostico', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroIncapacidadDiagnosticoNombre')))
+            ->add('TxtCodigoIncapacidadDiagnostico', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroCodigoIncapacidadDiagnostico')))                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }           
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();                        
+        $session = new Session;
+        
         $session->set('filtroIncapacidadDiagnosticoNombre', $form->get('TxtNombreIncapacidadDiagnostico')->getData());
         $session->set('filtroCodigoIncapacidadDiagnostico', $form->get('TxtCodigoIncapacidadDiagnostico')->getData());
     }    
@@ -62,7 +66,7 @@ class IncapacidadDiagnosticoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

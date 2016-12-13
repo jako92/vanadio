@@ -5,6 +5,10 @@ namespace Brasa\RecursoHumanoBundle\Controller\Buscar;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BuscarVisitanteController extends Controller
 {
@@ -15,9 +19,8 @@ class BuscarVisitanteController extends Controller
      /**
      * @Route("/rhu/buscar/visitante", name="brs_rhu_buscar_visitante")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
@@ -46,9 +49,9 @@ class BuscarVisitanteController extends Controller
     
     private function formularioLista() {                
         $form = $this->createFormBuilder()                                                
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $this->strIdentificacion))                            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $this->strIdentificacion))                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }           
