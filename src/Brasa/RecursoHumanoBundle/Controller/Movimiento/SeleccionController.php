@@ -431,7 +431,7 @@ class SeleccionController extends Controller
             ->add('fechaCierre', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoCierreSeleccionRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))
             ->add('bloqueado', 'checkbox', array('required'  => false))
             ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
@@ -497,10 +497,10 @@ class SeleccionController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         $arrayPropiedadesRequisicion = array(
@@ -509,10 +509,10 @@ class SeleccionController extends Controller
                     return $er->createQueryBuilder('r')
                     ->where('r.estadoCerrado = 0')
                     ->orderBy('r.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );                    
         if($session->get('filtroCodigoCentroCosto')) {

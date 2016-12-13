@@ -251,10 +251,10 @@ class PagoExamenController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('ee')                                        
                     ->orderBy('ee.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,  
                 'empty_data' => "",
-                'empty_value' => "TODOS",    
+                'placeholder' => "TODOS",    
                 'data' => ""
             );  
         if($session->get('filtroCodigoEntidadExamen')) {

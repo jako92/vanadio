@@ -355,7 +355,7 @@ class VacacionesController extends Controller
                     ->where('pc.tipoAdicional = :tipoAdicional')
                     ->setParameter('tipoAdicional', 2)
                     ->orderBy('pc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
             ->add('TxtValor', 'number', array('required' => true))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
@@ -521,10 +521,10 @@ class VacacionesController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {

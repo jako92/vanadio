@@ -385,10 +385,10 @@ class FacturasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -400,10 +400,10 @@ class FacturasController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('t')
                     ->orderBy('t.nombreCorto', 'ASC');},
-                'property' => 'nombreCorto',
+                'choice_label' => 'nombreCorto',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoTerceros')) {

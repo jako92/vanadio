@@ -220,7 +220,7 @@ class LiquidacionController extends Controller
                     ->where('pc.tipoAdicional = :tipoAdicional')
                     ->setParameter('tipoAdicional', $tipo)
                     ->orderBy('pc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true,
                 'data' => ""
             );
@@ -398,10 +398,10 @@ class LiquidacionController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {

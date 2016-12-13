@@ -127,7 +127,7 @@ class AspiranteController extends Controller
                     return $er->createQueryBuilder('sr')
                     ->where('sr.estadoCerrado = 0')        
                     ->orderBy('sr.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true
                 ))                              
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
@@ -336,10 +336,10 @@ class AspiranteController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('z')
                     ->orderBy('z.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {

@@ -29,7 +29,7 @@ class PagosAdicionalesAgregarController extends Controller
                     ->where('pc.tipoAdicional = :tipoAdicional')
                     ->setParameter('tipoAdicional', $intTipoAdicional)
                     ->orderBy('pc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
             ->add('TxtValor', 'number', array('required' => true))                             
             ->add('TxtDetalle', TextType::class, array('required' => false))            
@@ -196,7 +196,7 @@ class PagosAdicionalesAgregarController extends Controller
                     ->where('pc.tipoAdicional = :tipoAdicional')
                     ->setParameter('tipoAdicional', $intTipoAdicional)
                     ->orderBy('pc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true,
                 'data' => ""
             ); 
@@ -212,7 +212,7 @@ class PagosAdicionalesAgregarController extends Controller
                     ->where('e.codigoEmpleadoPk = :empleado')
                     ->setParameter('empleado', $codigoEmpleado)
                     ->orderBy('e.nombreCorto', 'ASC');},
-                'property' => 'nombreCorto',
+                'choice_label' => 'nombreCorto',
                 'required' => true))    
             ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto)               
             ->add('TxtValor', 'number', array('required' => true, 'data' => $arPagoAdicional->getValor()))                             

@@ -71,7 +71,7 @@ class EmpleadoInformacionInternaController extends Controller
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
             ->add('informacionInternaTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))    
             ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
             ->add('comentarios', 'textarea', array('required' => true))
