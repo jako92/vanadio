@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAdicionalPagoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PagosAdicionalesController extends Controller
 {
@@ -277,8 +278,8 @@ class PagosAdicionalesController extends Controller
         }       
         
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', 'text', array('label'  => 'Numero Identificacion','data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
-            ->add('txtNombreCorto', 'text', array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Numero Identificacion','data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
             ->add('centroCostoRel', 'entity', $arrayPropiedades)
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesConcepto)    
             ->add('BtnRetirarConcepto', 'submit', array('label'  => 'Eliminar',))

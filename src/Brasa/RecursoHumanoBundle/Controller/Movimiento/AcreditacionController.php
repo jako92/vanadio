@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AcreditacionController extends Controller
 {
@@ -121,7 +122,7 @@ class AcreditacionController extends Controller
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('numero', 'text', array('required' => true))
+            ->add('numero', TextType::class, array('required' => true))
             ->add('fecha', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
             ->add('attachment', 'file')
             ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
@@ -261,8 +262,8 @@ class AcreditacionController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', 'text', array('label'  => 'Nombre','data' => $strNombreEmpleado))
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('estadoRechazado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'RECHAZADO', '0' => 'SIN RECHAZAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoRechazado')))
             ->add('estadoValidado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'VALIDADO', '0' => 'SIN VALIDAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoValidado')))
             ->add('estadoAcreditado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'ACREDITADO', '0' => 'SIN ACREDITAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoAcreditado')))

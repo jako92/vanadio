@@ -9,7 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoObservacionesType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoAspectosMejorarType;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DesempenosController extends Controller
 {
@@ -581,7 +581,7 @@ class DesempenosController extends Controller
     private function formularioLista() {
         $session = new session;
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
                 ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
             ->add('BtnExcel', 'submit', array('label'  => 'Excel',))

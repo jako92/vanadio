@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PagosAdicionalesAgregarController extends Controller
 {
@@ -28,7 +29,7 @@ class PagosAdicionalesAgregarController extends Controller
                 'property' => 'nombre',
                 'required' => true))
             ->add('TxtValor', 'number', array('required' => true))                             
-            ->add('TxtDetalle', 'text', array('required' => false))            
+            ->add('TxtDetalle', TextType::class, array('required' => false))            
             ->add('aplicarDiaLaborado', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
             ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
@@ -212,7 +213,7 @@ class PagosAdicionalesAgregarController extends Controller
                 'required' => true))    
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto)               
             ->add('TxtValor', 'number', array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
-            ->add('TxtDetalle', 'text', array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
+            ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
             ->add('aplicarDiaLaborado', 'choice', array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                
             ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))

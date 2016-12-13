@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCreditoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
 
@@ -195,11 +195,11 @@ class CreditosController extends Controller
         $arCredito = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($codigoCreditoPk);
         $arPagoCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCreditoPago();
         $form = $this->createFormBuilder()
-            ->add('creditoRel', 'text', array('data' => $codigoCreditoPk, 'attr' => array('readonly' => 'readonly')))
-            ->add('vrCuota', 'text', array('data' => round($arCredito->getVrCuota(),2), 'attr' => array('readonly' => 'readonly')))
-            ->add('saldo', 'text', array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
-            ->add('saldoTotal', 'text', array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
-            ->add('vrAbono','text')
+            ->add('creditoRel', TextType::class, array('data' => $codigoCreditoPk, 'attr' => array('readonly' => 'readonly')))
+            ->add('vrCuota', TextType::class, array('data' => round($arCredito->getVrCuota(),2), 'attr' => array('readonly' => 'readonly')))
+            ->add('saldo', TextType::class, array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
+            ->add('saldoTotal', TextType::class, array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
+            ->add('vrAbono',TextType::class)
             ->add('tipoPago','hidden', array('data' => 'ABONO'))
             ->add('save', 'submit', array('label' => 'Guardar'))
             ->getForm();
@@ -330,7 +330,7 @@ class CreditosController extends Controller
         $em = $this->getDoctrine()->getManager();
         $formCredito = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_creditos_refinanciar', array('codigoCredito' => $codigoCredito)))
-            ->add('numeroCuotas', 'text', array('label'  => 'Numero cuotas'))
+            ->add('numeroCuotas', TextType::class, array('label'  => 'Numero cuotas'))
             ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
             ->getForm();
         $formCredito->handleRequest($request);
@@ -380,8 +380,8 @@ class CreditosController extends Controller
             }          
         }
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', 'text', array('label'  => 'Nombre','data' => $strNombreEmpleado))
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))

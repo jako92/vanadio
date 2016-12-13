@@ -9,6 +9,8 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionDetalleType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionNotaType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 class CapacitacionesController extends Controller
 {
     var $strDqlLista = "";
@@ -447,7 +449,7 @@ class CapacitacionesController extends Controller
             ->add('capacitacionTipoRel', 'entity', $arrayPropiedades)
             ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('TxtTema', 'text', array('label'  => 'TEMA','data' => $session->get('filtroTema')))
+            ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
             ->add('estado', 'choice', array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroEstado')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
             ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
@@ -559,10 +561,10 @@ class CapacitacionesController extends Controller
             ->add('cargoRel', 'entity', $arrayPropiedadesCargo)
             ->add('centroCostoRel', 'entity', $arrayPropiedadesCentro)
             ->add('puestoRel', 'entity', $arrayPropiedadesPuesto)
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('TxtCodigoCliente', 'text', array('label'  => 'Codigo Cliente','data' => $session->get('filtroCodigoCliente')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'Nombre Cliente','data' => $session->get('filtroNombreCliente')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
+            ->add('TxtCodigoCliente', TextType::class, array('label'  => 'Codigo Cliente','data' => $session->get('filtroCodigoCliente')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'Nombre Cliente','data' => $session->get('filtroNombreCliente')))
             ->add('BtnAgregar', 'submit', array('label'  => 'Agregar',))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
             ->getForm();

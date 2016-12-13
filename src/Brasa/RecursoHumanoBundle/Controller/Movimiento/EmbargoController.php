@@ -128,9 +128,9 @@ class EmbargoController extends Controller
             $session->set('filtroRhuCodigoEmpleado', null);
         }          
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', 'text', array('label'  => 'Nombre','data' => $strNombreEmpleado))    
-            ->add('TxtNumero', 'text', array('label'  => 'Numero','data' => $session->get('filtroEmbargoNumero')))                                                                                
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))    
+            ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroEmbargoNumero')))                                                                                
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))            
             ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
             ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))

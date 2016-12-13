@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProgramacionesPagoController extends Controller
 {
@@ -325,7 +325,7 @@ class ProgramacionesPagoController extends Controller
     public function agregarEmpleadoAction(Request $request, $codigoProgramacionPago) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createFormBuilder()
-            ->add('numeroIdentificacion', 'text', array('required' => true))
+            ->add('numeroIdentificacion', TextType::class, array('required' => true))
             ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);

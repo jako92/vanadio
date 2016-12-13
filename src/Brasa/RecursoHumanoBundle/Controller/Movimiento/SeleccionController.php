@@ -11,7 +11,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionReferenciaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionPruebaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionVisitaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionEntrevistaType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class SeleccionController extends Controller
 {
     /**
@@ -522,8 +522,8 @@ class SeleccionController extends Controller
             ->add('requisicionRel', 'entity', $arrayPropiedadesRequisicion)
             ->add('estadoAprobado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAprobadoSeleccion')))
             ->add('estadoCerrado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccion')))
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre', 'data' => $session->get('filtroNombreSeleccion')))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionSeleccion')))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreSeleccion')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionSeleccion')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
             ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
             ->add('BtnExcel', 'submit', array('label'  => 'Excel',))

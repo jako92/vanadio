@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuIncapacidadType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class IncapacidadController extends Controller
 {
@@ -247,11 +248,11 @@ class IncapacidadController extends Controller
             $arrayPropiedadesIncapacidadTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuIncapacidadTipo", $session->get('filtroRhuIncapacidadTipo'));                                    
         }        
         $form = $this->createFormBuilder()                        
-            ->add('txtNumeroIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', 'text', array('label'  => 'Nombre','data' => $strNombreEmpleado))                
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))                
             ->add('centroCostoRel', 'entity', $arrayPropiedades)                                                       
             ->add('incapacidadTipoRel', 'entity', $arrayPropiedadesIncapacidadTipo)                                                                       
-            ->add('TxtNumeroEps', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIncapacidadNumeroEps')))                                                        
+            ->add('TxtNumeroEps', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIncapacidadNumeroEps')))                                                        
             ->add('estadoTranscripcion', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroIncapacidadEstadoTranscripcion')))                                                    
             ->add('estadoLegalizado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'LEGALIZADA', '0' => 'SIN LEGALIZAR'),'data' => $session->get('filtroIncapacidadEstadoLegalizado')))                                                    
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
