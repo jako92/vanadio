@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
@@ -24,7 +25,7 @@ class DisciplinarioController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->listar();
@@ -317,7 +318,7 @@ class DisciplinarioController extends Controller
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinario')->listaDQL(
                 $session->get('filtroIdentificacion'),
                 $session->get('filtroCodigoCentroCosto'),
@@ -332,7 +333,7 @@ class DisciplinarioController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
@@ -392,7 +393,7 @@ class DisciplinarioController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);

@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -23,7 +24,7 @@ class DotacionController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -324,7 +325,7 @@ class DotacionController extends Controller
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->listaDQL(
                 $session->get('filtroIdentificacion'),
                 $session->get('filtroCodigoCentroCosto')
@@ -333,7 +334,7 @@ class DotacionController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
@@ -359,7 +360,7 @@ class DotacionController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
@@ -390,7 +391,7 @@ class DotacionController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

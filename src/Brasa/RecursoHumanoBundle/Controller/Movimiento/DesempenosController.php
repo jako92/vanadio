@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDesempenoObservacionesType;
@@ -24,7 +25,7 @@ class DesempenosController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -572,13 +573,13 @@ class DesempenosController extends Controller
     }
     
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
     }
 
     private function formularioLista() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $form = $this->createFormBuilder()
             ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
@@ -625,7 +626,7 @@ class DesempenosController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

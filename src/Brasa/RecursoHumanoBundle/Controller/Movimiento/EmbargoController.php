@@ -2,11 +2,11 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuEmbargoType;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -113,7 +113,7 @@ class EmbargoController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreEmpleado = "";
         if($session->get('filtroIdentificacion')) {
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
@@ -140,7 +140,7 @@ class EmbargoController extends Controller
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();                
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmbargo')->listaDQL(
                 $session->get('filtroEmbargoNumero'),
                 $session->get('filtroIdentificacion')
@@ -148,7 +148,7 @@ class EmbargoController extends Controller
     }         
     
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());        
@@ -159,7 +159,7 @@ class EmbargoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

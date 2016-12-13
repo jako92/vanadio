@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -23,7 +24,7 @@ class EstudioController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->listar();
@@ -141,7 +142,7 @@ class EstudioController extends Controller
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->listaMovimientoDQL(
                 $session->get('filtroIdentificacion'),
                 $session->get('filtroNombre'),
@@ -152,7 +153,7 @@ class EstudioController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedadesEstudio = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoEstudioTipo',
                 'query_builder' => function (EntityRepository $er) {
@@ -184,7 +185,7 @@ class EstudioController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
@@ -200,7 +201,7 @@ class EstudioController extends Controller
     
     private function formularioDetalle($ar) {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrBotonGenerar = array('label' => 'Generar solicitud', 'disabled' => false);
         $arrBotonValidado = array('label' => 'Validado', 'disabled' => false);
         $arrBotonNoValidado = array('label' => 'No validado', 'disabled' => false);

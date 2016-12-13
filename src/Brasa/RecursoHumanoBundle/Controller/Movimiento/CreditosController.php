@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCreditoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -357,7 +358,7 @@ class CreditosController extends Controller
     }
 
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->listaCreditoDQL(
                     $session->get('filtroIdentificacion'),
@@ -368,7 +369,7 @@ class CreditosController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreEmpleado = "";
         if($session->get('filtroIdentificacion')) {
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
@@ -393,7 +394,7 @@ class CreditosController extends Controller
 
     private function formularioDetalle($ar) {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrBotonSuspender = array('label' => 'Suspender', 'disabled' => false);
         if($ar->getEstadoPagado() == 1) {   
              $arrBotonSuspender['disabled'] = true;
@@ -407,7 +408,7 @@ class CreditosController extends Controller
     }    
     
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $arrControles = $request->request->All();
@@ -431,7 +432,7 @@ class CreditosController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

@@ -1,6 +1,7 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -237,7 +238,7 @@ class PagoBancoController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);
@@ -507,7 +508,7 @@ class PagoBancoController extends Controller
     } 
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->listaDQL(
                 $this->strFecha
@@ -515,7 +516,7 @@ class PagoBancoController extends Controller
     }    
     
     private function listarDetalle() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->dqlListaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientePagoBancoDql(                
                 $session->get('filtroRhuCodigoBanco'));        
@@ -523,7 +524,7 @@ class PagoBancoController extends Controller
     
     private function filtrar ($form) {
         
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $controles = $request->request->get('form');
         $dateFecha = $form->get('fecha')->getData();
         if($dateFecha != null) {            
@@ -535,7 +536,7 @@ class PagoBancoController extends Controller
     }
     
     private function filtrarNuevoDetalle ($form) {
-        $session = $this->getRequest()->getSession();   
+        $session = new session;   
         $arBanco = $form->get('bancoRel')->getData();
         if($arBanco) {
             $session->set('filtroRhuCodigoBanco', $arBanco->getCodigoBancoPk());
@@ -673,7 +674,7 @@ class PagoBancoController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
               
         $form = $this->createFormBuilder()
             //->add('entidadExamenRel', 'entity', $arrayPropiedades) 

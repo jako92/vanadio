@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -233,7 +234,7 @@ class PagosAdicionalesController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
@@ -292,7 +293,7 @@ class PagosAdicionalesController extends Controller
     
     private function formularioPeriodo() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();                 
+        $session = new session;                 
         $form = $this->createFormBuilder()
             ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
             ->getForm();
@@ -300,7 +301,7 @@ class PagosAdicionalesController extends Controller
     }
     
     private function listar($form, $modalidad, $periodo) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->listaAdicionalesDql(                    
             $session->get('filtroNumeroIdentificacion'),
@@ -315,7 +316,7 @@ class PagosAdicionalesController extends Controller
 
     private function filtrarLista($form) {
         
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $controles = $request->request->get('form');
         $arrControles = $request->request->All();
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
@@ -591,7 +592,7 @@ class PagosAdicionalesController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

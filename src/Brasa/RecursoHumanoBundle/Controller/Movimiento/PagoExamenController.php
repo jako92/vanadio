@@ -1,6 +1,7 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -175,7 +176,7 @@ class PagoExamenController extends Controller
     }    
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoExamen')->listaDQL(
                 $session->get('filtroCodigoEntidadExamen')
@@ -184,7 +185,7 @@ class PagoExamenController extends Controller
     
     private function filtrar ($form) {
         
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $controles = $request->request->get('form');
         $session->set('filtroCodigoEntidadExamen', $controles['entidadExamenRel']);                               
     }
@@ -242,7 +243,7 @@ class PagoExamenController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadExamen',
                 'query_builder' => function (EntityRepository $er) {

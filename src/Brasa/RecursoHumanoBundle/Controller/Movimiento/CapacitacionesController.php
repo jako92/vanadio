@@ -2,6 +2,7 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionType;
@@ -400,7 +401,7 @@ class CapacitacionesController extends Controller
     }
 
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->listaDql(
             $session->get('filtroTipo'),
@@ -413,7 +414,7 @@ class CapacitacionesController extends Controller
 
     private function listarDetalleNuevoEmpleado() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strDqlListaNuevoDetalleEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionDetalle')->listaDql(
         $session->get('filtroCodigoCargo'),
         $session->get('filtroCodigoCentroCosto'),
@@ -427,7 +428,7 @@ class CapacitacionesController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCapacitacionTipo',
                 'query_builder' => function (EntityRepository $er) {
@@ -511,7 +512,7 @@ class CapacitacionesController extends Controller
 
     private function formularioDetalleNuevoEmpleado() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $arrayPropiedadesCargo = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
                 'query_builder' => function (EntityRepository $er) {
@@ -569,7 +570,7 @@ class CapacitacionesController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroTipo', $controles['capacitacionTipoRel']);
@@ -588,7 +589,7 @@ class CapacitacionesController extends Controller
     }
 
     private function filtrarDetalleNuevoEmpleado($form) {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCargo', $controles['cargoRel']);
@@ -605,7 +606,7 @@ class CapacitacionesController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
