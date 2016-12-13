@@ -35,11 +35,11 @@ class CostosController extends Controller
                 $this->listarCostosGeneral();
                 $this->generarExcel();
             }
-            if($form->get('BtnPDF')->isClicked()) {
+            if($form->get('BtnPDF')->isClicked()) {                
                 $this->filtrarLista($form);
-                $this->listarCostosGeneral();
+                $this->listarCostosGeneral();                
                 $objReporteCostos = new \Brasa\RecursoHumanoBundle\Reportes\ReporteCostos();
-                $objReporteCostos->Generar($this, $this->strSqlLista);
+                $objReporteCostos->Generar($this, $em, $this->strSqlLista);
             }
             if($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form);

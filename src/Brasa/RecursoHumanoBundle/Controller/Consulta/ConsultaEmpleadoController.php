@@ -82,15 +82,24 @@ class ConsultaEmpleadoController extends Controller
         $arEmpleadoDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado));
         if($form->isValid()) {
         }
-        $arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('request')->query->get('page', 1),5);
-        $arVacaciones = $paginator->paginate($arVacaciones, $this->get('request')->query->get('page', 1),5);
-        $arLicencias = $paginator->paginate($arLicencias, $this->get('request')->query->get('page', 1),5);
-        $arContratos = $paginator->paginate($arContratos, $this->get('request')->query->get('page', 1),5);
-        $arCreditos = $paginator->paginate($arCreditos, $this->get('request')->query->get('page', 1),5);
-        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('request')->query->get('page', 1),5);
-        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('request')->query->get('page', 1),6);
-        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('request')->query->get('page', 1),8);
-        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $this->get('request')->query->get('page', 1),8);
+        //$arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('request')->query->get('page', 1),5);
+        $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1),5);
+        //$arVacaciones = $paginator->paginate($arVacaciones, $this->get('request')->query->get('page', 1),5);
+        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1),5);
+        //$arLicencias = $paginator->paginate($arLicencias, $this->get('request')->query->get('page', 1),5);
+        $arLicencias = $paginator->paginate($arLicencias, $request->query->getInt('page', 1),5);
+        //$arContratos = $paginator->paginate($arContratos, $this->get('request')->query->get('page', 1),5);
+        $arContratos = $paginator->paginate($arContratos, $request->query->getInt('page', 1),5);
+        //$arCreditos = $paginator->paginate($arCreditos, $this->get('request')->query->get('page', 1),5);
+        $arCreditos = $paginator->paginate($arCreditos, $request->query->getInt('page', 1),5);
+        //$arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('request')->query->get('page', 1),5);
+        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $request->query->getInt('page', 1),5);
+        //$arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('request')->query->get('page', 1),6);
+        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $request->query->getInt('page', 1),5);
+        //$arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('request')->query->get('page', 1),8);
+        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $request->query->getInt('page', 1),5);
+        //$arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $this->get('request')->query->get('page', 1),8);
+        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $request->query->getInt('page', 1),5);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:detalleGeneral.html.twig', array(
                     'arEmpleado' => $arEmpleado,
                     'arIncapacidades' => $arIncapacidades,
@@ -138,8 +147,8 @@ class ConsultaEmpleadoController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVOS', '0' => 'INACTIVOS')))
-            ->add('estadoContratado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO')))    
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
+            ->add('estadoContratado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

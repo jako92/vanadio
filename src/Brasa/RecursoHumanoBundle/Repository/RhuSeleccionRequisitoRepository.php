@@ -28,8 +28,7 @@ class RhuSeleccionRequisitoRepository extends EntityRepository {
         $dql   = "SELECT sq FROM BrasaRecursoHumanoBundle:RhuSeleccionRequisito sq WHERE sq.codigoSeleccionRequisitoPk <> 0";
         if($strNombre != "" ) {
             $dql .= " AND sq.nombre LIKE '%" . $strNombre . "%'";
-        }   
-        
+        }           
         if($boolCerrado == 1 ) {
             $dql .= " AND sq.estadoCerrado = 1";
         } elseif($boolCerrado == '0' || $boolCerrado == 0) {
@@ -44,8 +43,7 @@ class RhuSeleccionRequisitoRepository extends EntityRepository {
         }
         if($strHasta != "" || $strHasta != 0) {
             $dql .= " AND sq.fecha <='" . $strHasta . "'";
-        }
-         
+        }         
         $dql .= " ORDER BY sq.codigoSeleccionRequisitoPk DESC";
         return $dql;
     }   

@@ -6,6 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ControlAccesosEmpleadosController extends Controller
 {
@@ -55,7 +61,7 @@ class ControlAccesosEmpleadosController extends Controller
     }        
     
     private function listar($form) {
-        $session = $this->getRequest()->getSession();         
+        $session = new Session;         
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioAcceso')->listaConsultaDql(                    
             $this->nombre,
@@ -73,48 +79,48 @@ class ControlAccesosEmpleadosController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();            
+        $session = new Session;            
         $form = $this->createFormBuilder()
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->nombre))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificaciín','data' => $this->identificacion))
-            ->add('centroCostoRel', 'entity', array(
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->nombre))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificaciín','data' => $this->identificacion))
+            ->add('centroCostoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""))
-            ->add('cargoRel', 'entity', array(
+            ->add('cargoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""))
-            ->add('departamentoEmpresaRel', 'entity', array(
+            ->add('departamentoEmpresaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('de')
                     ->orderBy('de.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => "")) 
-            ->add('estadoEntrada', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))
-            ->add('estadoSalida', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))
-            ->add('entradaTarde', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))
-            ->add('salidaAntes', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI')))                
-            ->add('fechaDesde','date', array('data' => new \DateTime('now'), 'format' => 'yyyyMMdd'))
-            ->add('fechaHasta','date', array('data' => new \DateTime('now'), 'format' => 'yyyyMMdd'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('estadoEntrada', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1')))
+            ->add('estadoSalida', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1')))
+            ->add('entradaTarde', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1')))
+            ->add('salidaAntes', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1')))                
+            ->add('fechaDesde',DateType::class, array('data' => new \DateTime('now'), 'format' => 'yyyyMMdd'))
+            ->add('fechaHasta',DateType::class, array('data' => new \DateTime('now'), 'format' => 'yyyyMMdd'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }           
@@ -155,7 +161,7 @@ class ControlAccesosEmpleadosController extends Controller
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

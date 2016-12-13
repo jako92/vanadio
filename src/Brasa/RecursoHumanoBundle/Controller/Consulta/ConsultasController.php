@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ConsultasController extends Controller
@@ -96,7 +97,7 @@ class ConsultasController extends Controller
                 $this->filtrarCreditoLista($form);
                 $this->CreditosListar();
                 $objReporteCreditos = new \Brasa\RecursoHumanoBundle\Reportes\ReporteCreditos();
-                $objReporteCreditos->Generar($this, $this->strSqlCreditoLista);
+                $objReporteCreditos->Generar($this, $em, $this->strSqlCreditoLista);
             }
             if($form->get('BtnFiltrarCredito')->isClicked()) {
                 $this->filtrarCreditoLista($form);
@@ -177,7 +178,7 @@ class ConsultasController extends Controller
                 $this->filtrarServiciosPorCobrarLista($form);
                 $this->ServiciosPorCobrarListar();
                 $objReporteServiciosPorCobrar = new \Brasa\RecursoHumanoBundle\Reportes\ReporteServiciosPorCobrar();
-                $objReporteServiciosPorCobrar->Generar($this, $this->strSqlServiciosPorCobrarLista);
+                $objReporteServiciosPorCobrar->Generar($this, $em, $this->strSqlServiciosPorCobrarLista);
             }
             if($form->get('BtnFiltrarServiciosPorCobrar')->isClicked()) {
                 $this->filtrarServiciosPorCobrarLista($form);
@@ -217,7 +218,7 @@ class ConsultasController extends Controller
                 $this->filtrarIncapacidadesLista($form);
                 $this->IncapacidadesListar();
                 $objReporteIncapacidades = new \Brasa\RecursoHumanoBundle\Reportes\ReporteIncapacidades();
-                $objReporteIncapacidades->Generar($this, $this->strSqlIncapacidadesLista);
+                $objReporteIncapacidades->Generar($this, $em, $this->strSqlIncapacidadesLista);
             }
             if($form->get('BtnFiltrarIncapacidades')->isClicked()) {
                 $this->filtrarIncapacidadesLista($form);
@@ -257,7 +258,7 @@ class ConsultasController extends Controller
                 $this->filtrarIncapacidadesCobrarLista($form);
                 $this->IncapacidadesCobrarListar();
                 $objReporteIncapacidadesCobrar = new \Brasa\RecursoHumanoBundle\Reportes\ReporteIncapacidadesCobrar();
-                $objReporteIncapacidadesCobrar->Generar($this, $this->strSqlIncapacidadesCobrarLista);
+                $objReporteIncapacidadesCobrar->Generar($this, $em, $this->strSqlIncapacidadesCobrarLista);
             }
             if($form->get('BtnFiltrarIncapacidadesCobrar')->isClicked()) {
                 $this->filtrarIncapacidadesCobrarLista($form);
@@ -950,8 +951,8 @@ class ConsultasController extends Controller
 
         $form = $this->createFormBuilder()
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('TxtAnio','number', array('label'  => 'Anio','data' => $session->get('filtroRhuAnio')))
-            ->add('TxtMes','number', array('label'  => 'Mes','data' => $session->get('filtroRhuMes')))            
+            ->add('TxtAnio',NumberType::class, array('label'  => 'Anio','data' => $session->get('filtroRhuAnio')))
+            ->add('TxtMes',NumberType::class, array('label'  => 'Mes','data' => $session->get('filtroRhuMes')))            
             ->add('BtnFiltrarAportes', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcelAportes', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
@@ -978,7 +979,7 @@ class ConsultasController extends Controller
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
-            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('TODOS' => '', 'SI' => '1', 'NO' => '0')))    
+            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -2986,6 +2987,18 @@ class ConsultasController extends Controller
                     $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
+        $entidadPension = '';
+        if ($arAporte->getCodigoEntidadPensionFk() != null){
+            $entidadPension = $arAporte->getEntidadPensionRel()->getNombre();
+        }
+        $entidadSalud = '';
+        if ($arAporte->getCodigoEntidadSaludFk() != null){
+            $entidadSalud = $arAporte->getEntidadSaludRel()->getNombre();
+        }
+        $entidadCaja = '';
+        if ($arAporte->getCodigoEntidadCajaFk() != null){
+            $entidadCaja = $arAporte->getEntidadCajaRel()->getNombre();
+        }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arAporte->getCodigoAportePk())
                     ->setCellValue('B' . $i, $arAporte->getSsoSucursalRel()->getNombre())
@@ -3020,11 +3033,11 @@ class ConsultasController extends Controller
                     ->setCellValue('AE' . $i, $arAporte->getAporteVoluntario())
                     ->setCellValue('AF' . $i, $arAporte->getVariacionCentrosTrabajo())
                     ->setCellValue('AG' . $i, $arAporte->getIncapacidadAccidenteTrabajoEnfermedadProfesional())
-                    ->setCellValue('AH' . $i, $arAporte->getEntidadPensionRel()->getNombre())
+                    ->setCellValue('AH' . $i, $entidadPension)
                     ->setCellValue('AI' . $i, $arAporte->getCodigoEntidadPensionTraslada())
-                    ->setCellValue('AJ' . $i, $arAporte->getEntidadSaludRel()->getNombre())
+                    ->setCellValue('AJ' . $i, $entidadSalud)
                     ->setCellValue('AK' . $i, $arAporte->getCodigoEntidadSaludTraslada())
-                    ->setCellValue('AL' . $i, $arAporte->getEntidadCajaRel()->getNombre())
+                    ->setCellValue('AL' . $i, $entidadCaja)
                     ->setCellValue('AM' . $i, $arAporte->getDiasCotizadosPension())
                     ->setCellValue('AN' . $i, $arAporte->getDiasCotizadosSalud())
                     ->setCellValue('AO' . $i, $arAporte->getDiasCotizadosRiesgosProfesionales())

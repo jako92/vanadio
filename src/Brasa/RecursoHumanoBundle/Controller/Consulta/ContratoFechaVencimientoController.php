@@ -50,7 +50,7 @@ class ContratoFechaVencimientoController extends Controller
     }     
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosFechaVencimientoDQL(
                     $session->get('filtroCodigoContratoTipo'),
@@ -65,16 +65,16 @@ class ContratoFechaVencimientoController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -85,10 +85,10 @@ class ContratoFechaVencimientoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoEmpleadoTipo')) {
@@ -99,10 +99,10 @@ class ContratoFechaVencimientoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('et')
                     ->orderBy('et.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {
@@ -113,10 +113,10 @@ class ContratoFechaVencimientoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoSubzona')) {
@@ -127,39 +127,39 @@ class ContratoFechaVencimientoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('contratoTipoRel', 'entity', $arrayPropiedadesTipoContrato)
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)    
-            ->add('empleadoTipoRel', 'entity', $arrayPropiedadesTipo)
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)
-            ->add('subZonaRel', 'entity', $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaVencimiento','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)    
+            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaVencimiento',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             //->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoContratoTipo', $controles['contratoTipoRel']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoEmpleadoTipo', $controles['empleadoTipoRel']);
-        $session->set('filtroCodigoZona', $controles['zonaRel']);
-        $session->set('filtroCodigoSubzona', $controles['subZonaRel']);
+        $session = new Session;
+        //$request = $this->getRequest();
+        //$controles = $request->request->get('form');
+        $session->set('filtroCodigoContratoTipo', $form->get('contratoTipoRel')->getData());
+        $session->set('filtroCodigoCentroCosto', $form->get('centroCostoRel')->getData());
+        $session->set('filtroCodigoEmpleadoTipo', $form->get('empleadoTipoRel')->getData());
+        $session->set('filtroCodigoZona', $form->get('zonaRel')->getData());
+        $session->set('filtroCodigoSubzona', $form->get('subZonaRel')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
                 
         //$dateFechaDesde = $form->get('fechaDesde')->getData();
@@ -178,7 +178,7 @@ class ContratoFechaVencimientoController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
