@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoExamenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagoExamenController extends Controller
 {
@@ -260,7 +261,7 @@ class PagoExamenController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadExamen", $session->get('filtroCodigoEntidadExamen'));                                    
         }        
         $form = $this->createFormBuilder()
-            ->add('entidadExamenRel', 'entity', $arrayPropiedades)                  
+            ->add('entidadExamenRel', EntityType::class, $arrayPropiedades)                  
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

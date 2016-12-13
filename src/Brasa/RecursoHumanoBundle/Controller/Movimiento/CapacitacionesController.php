@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CapacitacionesController extends Controller
 {
@@ -449,7 +450,7 @@ class CapacitacionesController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCapacitacionTipo", $session->get('filtroTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('capacitacionTipoRel', 'entity', $arrayPropiedades)
+            ->add('capacitacionTipoRel', EntityType::class, $arrayPropiedades)
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
@@ -561,9 +562,9 @@ class CapacitacionesController extends Controller
             $arrayPropiedadesPuesto['data'] = $em->getReference("BrasaTurnoBundle:TurPuesto", $session->get('filtroCodigoPuesto'));
         }
         $form = $this->createFormBuilder()
-            ->add('cargoRel', 'entity', $arrayPropiedadesCargo)
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentro)
-            ->add('puestoRel', 'entity', $arrayPropiedadesPuesto)
+            ->add('cargoRel', EntityType::class, $arrayPropiedadesCargo)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentro)
+            ->add('puestoRel', EntityType::class, $arrayPropiedadesPuesto)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
             ->add('TxtCodigoCliente', TextType::class, array('label'  => 'Codigo Cliente','data' => $session->get('filtroCodigoCliente')))

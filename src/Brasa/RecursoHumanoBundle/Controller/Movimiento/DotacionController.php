@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuDotacionType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuDotacionElementoType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class DotacionController extends Controller
 {
@@ -351,7 +352,7 @@ class DotacionController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))

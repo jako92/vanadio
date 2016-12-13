@@ -14,6 +14,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionEntrevistaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SeleccionController extends Controller
 {
@@ -428,7 +429,7 @@ class SeleccionController extends Controller
             ->setAction($this->generateUrl('brs_rhu_seleccion_cerrar', array('codigoSeleccion' => $codigoSeleccion)))
             ->add('comentarios', 'textarea', array('data' =>$arSeleccion->getComentarios() ,'required' => true))                      
             ->add('fechaCierre', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
-            ->add('motivoCierreSeleccionRel', 'entity', array(
+            ->add('motivoCierreSeleccionRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion',
                 'property' => 'nombre',
             ))
@@ -521,8 +522,8 @@ class SeleccionController extends Controller
             $arrayPropiedadesRequisicion['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSeleccionRequisito", $session->get('filtroCodigoRequisicion'));
         }        
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('requisicionRel', 'entity', $arrayPropiedadesRequisicion)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('requisicionRel', EntityType::class, $arrayPropiedadesRequisicion)
             ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAprobadoSeleccion')))
             ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccion')))
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreSeleccion')))

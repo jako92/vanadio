@@ -11,6 +11,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagosAdicionalesController extends Controller
 {
@@ -282,8 +283,8 @@ class PagosAdicionalesController extends Controller
         $form = $this->createFormBuilder()
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Numero Identificacion','data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('pagoConceptoRel', 'entity', $arrayPropiedadesConcepto)    
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesConcepto)    
             ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
             ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
@@ -455,7 +456,7 @@ class PagosAdicionalesController extends Controller
             $arrayPropiedadesDepartamentoEmpresa['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa", $session->get('filtroCodigoDepartamentoEmpresa'));
         }
         $form = $this->createFormBuilder()
-            ->add('departamentoEmpresaRel', 'entity', $arrayPropiedadesDepartamentoEmpresa)
+            ->add('departamentoEmpresaRel', EntityType::class, $arrayPropiedadesDepartamentoEmpresa)
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))    
             ->getForm();

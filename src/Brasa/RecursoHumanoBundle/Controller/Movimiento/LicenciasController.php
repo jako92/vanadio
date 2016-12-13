@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuLicenciaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class LicenciasController extends Controller
 {
@@ -178,8 +179,8 @@ class LicenciasController extends Controller
             }          
         }
         $form = $this->createFormBuilder()                        
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)                                           
-            ->add('licenciaTipoRel', 'entity', $arrayPropiedadesLicenciaTipo)                                               
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)                                           
+            ->add('licenciaTipoRel', EntityType::class, $arrayPropiedadesLicenciaTipo)                                               
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

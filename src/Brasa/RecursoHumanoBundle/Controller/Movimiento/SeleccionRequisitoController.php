@@ -267,7 +267,7 @@ class SeleccionRequisitoController extends Controller
             ->setAction($this->generateUrl('brs_rhu_descartar_aspirante', array('codigoSelReqAsp' => $codigoSelReqAsp )))
             ->add('comentarios', 'textarea', array('data' =>$arSeleccionRequisicionAspirante->getComentarios() ,'required' => true))                      
             ->add('fechaDescarte', DateType::class, array('label'  => 'Fecha', 'data' => new \DateTime('now')))
-            ->add('motivoDescarteRequisicionAspiranteRel', 'entity', array(
+            ->add('motivoDescarteRequisicionAspiranteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoDescarteRequisicionAspirante',
                 'choice_label' => 'nombre',
             ))

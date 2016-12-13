@@ -11,6 +11,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuLiquidacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class LiquidacionController extends Controller
 {
@@ -235,7 +236,7 @@ class LiquidacionController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto) 
+            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto) 
             ->add('TxtValor', 'number', array('required' => true, 'data' => $valor))                             
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
@@ -407,7 +408,7 @@ class LiquidacionController extends Controller
             $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentroCosto)    
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)    
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('estadoGenerado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroGenerado')))

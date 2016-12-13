@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class FacturasController extends Controller
 {
     var $strSqlLista = "";
@@ -411,8 +411,8 @@ class FacturasController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('terceroRel', 'entity', $arrayPropiedadesTerceros)
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentroCosto)
+            ->add('terceroRel', EntityType::class, $arrayPropiedadesTerceros)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroNumero')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))

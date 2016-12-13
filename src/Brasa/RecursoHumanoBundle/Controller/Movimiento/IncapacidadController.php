@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuIncapacidadType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class IncapacidadController extends Controller
 {
@@ -252,8 +253,8 @@ class IncapacidadController extends Controller
         $form = $this->createFormBuilder()                        
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))                
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)                                                       
-            ->add('incapacidadTipoRel', 'entity', $arrayPropiedadesIncapacidadTipo)                                                                       
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)                                                       
+            ->add('incapacidadTipoRel', EntityType::class, $arrayPropiedadesIncapacidadTipo)                                                                       
             ->add('TxtNumeroEps', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIncapacidadNumeroEps')))                                                        
             ->add('estadoTranscripcion', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroIncapacidadEstadoTranscripcion')))                                                    
             ->add('estadoLegalizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'LEGALIZADA', '0' => 'SIN LEGALIZAR'),'data' => $session->get('filtroIncapacidadEstadoLegalizado')))                                                    

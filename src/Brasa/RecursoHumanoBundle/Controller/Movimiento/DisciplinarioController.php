@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class DisciplinarioController extends Controller
 {
@@ -381,9 +382,9 @@ class DisciplinarioController extends Controller
             $arrayPropiedadesOperacion['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSubzona", $session->get('filtroCodigoOperacion'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)
-            ->add('operacionRel', 'entity', $arrayPropiedadesOperacion)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+            ->add('operacionRel', EntityType::class, $arrayPropiedadesOperacion)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroEstadoCerrado')))                                        
             ->add('estadoProcede', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroEstadoProcede')))                                        

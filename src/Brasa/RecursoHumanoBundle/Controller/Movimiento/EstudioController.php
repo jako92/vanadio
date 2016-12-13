@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuEmpleadoEstudioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EstudioController extends Controller
 {
@@ -173,7 +174,7 @@ class EstudioController extends Controller
         
 
         $form = $this->createFormBuilder()
-            ->add('empleadoEstudioTipoRel', 'entity', $arrayPropiedadesEstudio)
+            ->add('empleadoEstudioTipoRel', EntityType::class, $arrayPropiedadesEstudio)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))    
             ->add('fechaVencimientoCurso',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))

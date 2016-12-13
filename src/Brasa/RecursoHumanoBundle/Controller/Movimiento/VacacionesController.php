@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VacacionesController extends Controller
 {
@@ -347,7 +348,7 @@ class VacacionesController extends Controller
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
         $form = $this->createFormBuilder()
-            ->add('pagoConceptoRel', 'entity', array(
+            ->add('pagoConceptoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('pc')
@@ -531,7 +532,7 @@ class VacacionesController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

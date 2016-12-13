@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuVisitaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VisitaController extends Controller
 {
@@ -227,8 +228,8 @@ class VisitaController extends Controller
             }          
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)
-            ->add('visitaTipoRel', 'entity', $arrayPropiedadesTipo)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('visitaTipoRel', EntityType::class, $arrayPropiedadesTipo)
             ->add('validarVencimiento', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroValidarVencimiento')))    
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))

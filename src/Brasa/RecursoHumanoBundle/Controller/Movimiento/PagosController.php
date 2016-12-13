@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagosController extends Controller
 {
@@ -266,8 +267,8 @@ class PagosController extends Controller
         }
         
         $form = $this->createFormBuilder()                        
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentroCosto)
-            ->add('pagoTipoRel', 'entity', $arrayPropiedadesTipo)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
+            ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             //->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $strFechaDesde))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    

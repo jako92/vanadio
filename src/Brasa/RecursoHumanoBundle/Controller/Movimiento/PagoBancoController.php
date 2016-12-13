@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoBancoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagoBancoController extends Controller
 {
@@ -262,7 +263,7 @@ class PagoBancoController extends Controller
             $arrayPropiedadesBanco['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuBanco", $session->get('filtroRhuCodigoBanco'));
         }        
         $form = $this->createFormBuilder()
-            ->add('bancoRel', 'entity', $arrayPropiedadesBanco)                
+            ->add('bancoRel', EntityType::class, $arrayPropiedadesBanco)                
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar',))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
@@ -679,7 +680,7 @@ class PagoBancoController extends Controller
         $session = new session;        
               
         $form = $this->createFormBuilder()
-            //->add('entidadExamenRel', 'entity', $arrayPropiedades) 
+            //->add('entidadExamenRel', EntityType::class, $arrayPropiedades) 
             ->add('fecha',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            

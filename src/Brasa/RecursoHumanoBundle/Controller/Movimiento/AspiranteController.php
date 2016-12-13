@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAspiranteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AspiranteController extends Controller
 {
@@ -120,7 +121,7 @@ class AspiranteController extends Controller
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
         $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigoAspirante);
         $form = $this->createFormBuilder()
-            ->add('seleccionRequisicionRel', 'entity',
+            ->add('seleccionRequisicionRel', EntityType::class,
                 array('class' => 'BrasaRecursoHumanoBundle:RhuSeleccionRequisito',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sr')
@@ -345,7 +346,7 @@ class AspiranteController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
         }            
         $form = $this->createFormBuilder()
-            ->add('zonaRel', 'entity', $arrayPropiedades)
+            ->add('zonaRel', EntityType::class, $arrayPropiedades)
             ->add('reintegro', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroReintegro')))
             ->add('bloqueado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroBloqueado')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreAspirante')))

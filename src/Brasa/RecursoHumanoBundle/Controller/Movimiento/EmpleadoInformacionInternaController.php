@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuEmpleadoInformacionInternaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * BaseEmpleadoInformacionInterna  Controller.
@@ -68,7 +69,7 @@ class EmpleadoInformacionInternaController extends Controller
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
-            ->add('informacionInternaTipoRel', 'entity', array(
+            ->add('informacionInternaTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo',
                         'property' => 'nombre',
             ))    

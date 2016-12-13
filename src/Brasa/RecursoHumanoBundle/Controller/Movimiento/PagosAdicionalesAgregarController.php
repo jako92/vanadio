@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PagosAdicionalesAgregarController extends Controller
 {
@@ -21,7 +22,7 @@ class PagosAdicionalesAgregarController extends Controller
         $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $intTipoAdicional = $tipo;
         $form = $this->createFormBuilder()
-            ->add('pagoConceptoRel', 'entity', array(
+            ->add('pagoConceptoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
                 'query_builder' => function (EntityRepository $er) use($intTipoAdicional) {
                     return $er->createQueryBuilder('pc')
@@ -204,7 +205,7 @@ class PagosAdicionalesAgregarController extends Controller
         }                    
         
         $form = $this->createFormBuilder() 
-            ->add('empleadoRel', 'entity', array(
+            ->add('empleadoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEmpleado',
                 'query_builder' => function (EntityRepository $er) use($codigoEmpleado) {
                     return $er->createQueryBuilder('e')
@@ -213,7 +214,7 @@ class PagosAdicionalesAgregarController extends Controller
                     ->orderBy('e.nombreCorto', 'ASC');},
                 'property' => 'nombreCorto',
                 'required' => true))    
-            ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto)               
+            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto)               
             ->add('TxtValor', 'number', array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
             ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
             ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
