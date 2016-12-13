@@ -3,10 +3,14 @@
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuZonaType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 /**
  * RhuZona controller.
  *
@@ -19,9 +23,8 @@ class ZonaController extends Controller
     /**
      * @Route("/rhu/base/zona/", name="brs_rhu_base_zona")
      */     
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 72, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -76,9 +79,8 @@ class ZonaController extends Controller
     /**
      * @Route("/rhu/base/zona/nuevo/{codigoZonaPk}", name="brs_rhu_base_zona_nuevo")
      */    
-    public function nuevoAction($codigoZonaPk) {
+    public function nuevoAction(Request $request, $codigoZonaPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arZona = new \Brasa\RecursoHumanoBundle\Entity\RhuZona();
         if ($codigoZonaPk != 0)
         {
@@ -108,13 +110,13 @@ class ZonaController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new Session;   
         $form = $this->createFormBuilder()                                    
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => "", 'required' => false))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => "", 'required' => false))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             //->add('BtnPdf', 'submit', array('label'  => 'Pdf',))    
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                            
             ->getForm();        
         return $form;
     }           

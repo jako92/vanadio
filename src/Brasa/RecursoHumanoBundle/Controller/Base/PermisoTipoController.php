@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPermisoTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuPermisoTipo controller.
@@ -17,17 +18,16 @@ class PermisoTipoController extends Controller
     /**
      * @Route("/rhu/base/permiso/tipo/lista", name="brs_rhu_base_permiso_tipo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 51, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -97,7 +97,8 @@ class PermisoTipoController extends Controller
         }
         $arPermisoTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuPermisoTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPermisoTipo')->findAll();
-        $arPermisoTipos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arPermisoTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/PermisoTipo:listar.html.twig', array(
                     'arPermisoTipos' => $arPermisoTipos,
@@ -109,26 +110,26 @@ class PermisoTipoController extends Controller
     /**
      * @Route("/rhu/base/permiso/tipo/nuevo/{codigoPermisoTipoPk}", name="brs_rhu_base_permiso_tipo_nuevo")
      */
-    public function nuevoAction($codigoPermisoTipoPk) {
+    public function nuevoAction(Request $request, $codigoPermisoTipoPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arPermisoTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuPermisoTipo();
         if ($codigoPermisoTipoPk != 0)
         {
             $arPermisoTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPermisoTipo')->find($codigoPermisoTipoPk);
-        }    
-        $formPermisoTipo = $this->createForm(new RhuPermisoTipoType(), $arPermisoTipo);
-        $formPermisoTipo->handleRequest($request);
-        if ($formPermisoTipo->isValid())
+        }
+        $form = $this->createForm(RhuPermisoTipoType::class, $arPermisoTipo);  
+        //$formPermisoTipo = $this->createForm(new RhuPermisoTipoType(), $arPermisoTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arPermisoTipo = $formPermisoTipo->getData();
+            $arPermisoTipo = $form->getData();
             $em->persist($arPermisoTipo);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_permiso_tipo_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/PermisoTipo:nuevo.html.twig', array(
-            'formPermisoTipo' => $formPermisoTipo->createView(),
+            'formPermisoTipo' => $form->createView(),
         ));
     }
     

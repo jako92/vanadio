@@ -3,7 +3,6 @@
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -53,10 +52,9 @@ class DesempenoConceptoTipoController extends Controller
             }
         }
         $arDesempenoConceptoTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempenoConceptoTipo();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConceptoTipo')->findAll();
-        $arDesempenoConceptoTipos = $paginator->paginate($em->createQuery($query), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
-        //$arDesempenoConceptoTipos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),20);
-
+        $arDesempenoConceptoTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConceptoTipo')->findAll();
+        $arDesempenoConceptoTipos = $paginator->paginate($arDesempenoConceptoTipos, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        
         return $this->render('BrasaRecursoHumanoBundle:Base/DesempenoConceptoTipo:listar.html.twig', array(
                     'arDesempenoConceptoTipos' => $arDesempenoConceptoTipos,
                     'form'=> $form->createView()
@@ -73,8 +71,8 @@ class DesempenoConceptoTipoController extends Controller
         if ($codigoDesempenoConceptoTipo != 0)
         {
             $arDesempenoConceptoTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConceptoTipo')->find($codigoDesempenoConceptoTipo);
-        }    
-        $form = $this->createForm(new RhuDesempenoConceptoTipoType(), $arDesempenoConceptoTipo);
+        }
+        $form = $this->createForm(RhuDesempenoConceptoTipoType::class, $arDesempenoConceptoTipo);         
         $form->handleRequest($request);
         if ($form->isValid())
         {

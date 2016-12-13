@@ -4,6 +4,15 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class RhuPermisoType extends AbstractType
 {
@@ -12,22 +21,22 @@ class RhuPermisoType extends AbstractType
 
         $builder
 
-            ->add('permisoTipoRel', 'entity', array(
+            ->add('permisoTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuPermisoTipo',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('fechaPermiso', 'date', array('format' => 'yyyyMMdd'))    
-            ->add('horaSalida', 'time', array('required' => true))
-            ->add('horaLlegada', 'time', array('required' => true))                
-            ->add('motivo', 'textarea', array('required' => true))
-            ->add('jefeAutoriza', 'text', array('required' => true))
-            ->add('observaciones', 'textarea', array('required' => false))
-            ->add('afectaHorario', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('guardar', 'submit')
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));
+            ->add('fechaPermiso', DateType::class, array('format' => 'yyyyMMdd'))    
+            ->add('horaSalida', TimeType::class, array('required' => true))
+            ->add('horaLlegada', TimeType::class, array('required' => true))                
+            ->add('motivo', TextareaType::class, array('required' => true))
+            ->add('jefeAutoriza', TextType::class, array('required' => true))
+            ->add('observaciones', TextareaType::class, array('required' => false))
+            ->add('afectaHorario', ChoiceType::class, array('choices'   => array('1' => 'SI', '0' => 'NO')))
+            ->add('guardar', SubmitType::class)
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuRiesgoProfesionalType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class RiesgoProfesionalController extends Controller
@@ -14,18 +15,17 @@ class RiesgoProfesionalController extends Controller
     /**
      * @Route("/rhu/base/riesgoProfesional/listar", name="brs_rhu_base_riesgoProfesional_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 68, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -104,8 +104,8 @@ class RiesgoProfesionalController extends Controller
         }
         $arEntidadesRiesgosProfesionales = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findAll();
-        $arEntidadesRiesgosProfesionales = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
-
+        $arEntidadesRiesgosProfesionales = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
+        
         return $this->render('BrasaRecursoHumanoBundle:Base/RiesgoProfesional:listar.html.twig', array(
                     'arEntidadesRiesgosProfesionales' => $arEntidadesRiesgosProfesionales,
                     'form'=> $form->createView()
@@ -117,7 +117,7 @@ class RiesgoProfesionalController extends Controller
     /**
      * @Route("/rhu/base/riesgoProfesional/nuevo/{codigoEntidadRiesgoProfesionalPk}", name="brs_rhu_base_riesgoProfesional_nuevo")
      */
-    public function nuevoAction($codigoEntidadRiesgoProfesionalPk) {
+    public function nuevoAction(Request $request, $codigoEntidadRiesgoProfesionalPk) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         $arEntidadRiesgoProfesional = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();

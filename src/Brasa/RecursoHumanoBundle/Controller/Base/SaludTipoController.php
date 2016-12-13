@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSaludTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuSaludTipo controller.
@@ -17,17 +18,16 @@ class SaludTipoController extends Controller
     /**
      * @Route("/rhu/base/salud/tipo/lista", name="brs_rhu_base_salud_tipo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 65, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arSaludTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud();
@@ -52,8 +52,8 @@ class SaludTipoController extends Controller
             }
         }
         $arSaludTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuTipoSalud')->findAll();
-        $arSaludTipos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arSaludTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuTipoSalud')->findAll();
+        $arSaludTipos = $paginator->paginate($arSaludTipos, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/SaludTipo:listar.html.twig', array(
                     'arSaludTipos' => $arSaludTipos,
@@ -65,9 +65,8 @@ class SaludTipoController extends Controller
     /**
      * @Route("/rhu/base/salud/tipo/nuevo/{codigoSaludTipo}", name="brs_rhu_base_salud_tipo_nuevo")
      */
-    public function nuevoAction($codigoSaludTipo) {
+    public function nuevoAction(Request $request, $codigoSaludTipo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arSaludTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud();
         if ($codigoSaludTipo != 0)
         {

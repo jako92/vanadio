@@ -2,18 +2,21 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TrasladoPensionController extends Controller
 {
     /**
      * @Route("/rhu/traslado/pension/nuevo/{codigoContrato}/{codigoTrasladoPension}", name="brs_rhu_traslado_pension_nuevo")
      */
-    public function nuevoAction($codigoContrato, $codigoTrasladoPension = 0) {
+    public function nuevoAction(Request $request, $codigoContrato, $codigoTrasladoPension = 0) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arTrasladoPension = new \Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension();
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
@@ -26,18 +29,18 @@ class TrasladoPensionController extends Controller
             $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
         }
         $form = $this->createFormBuilder()
-            ->add('entidadPensionNuevaRel', 'entity', array(
+            ->add('entidadPensionNuevaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadPension',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('ep')
                     ->orderBy('ep.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('fechaAplicacion', 'date', array('data' => new \DateTime('now')))
-            ->add('fechaFosyga', 'date', array('data' => new \DateTime('now')))                
-            ->add('detalle', 'text', array('required' => true))
-            ->add('tipo', 'choice', array('choices' => array('1' => 'TRASLADO', '2' => 'CAMBIO')))                                                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('fechaAplicacion', DateType::class, array('data' => new \DateTime('now')))
+            ->add('fechaFosyga', DateType::class, array('data' => new \DateTime('now')))                
+            ->add('detalle', TextType::class, array('required' => true))
+            ->add('tipo', ChoiceType::class, array('choices' => array('1' => 'TRASLADO', '2' => 'CAMBIO')))                                                
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid())
@@ -81,9 +84,8 @@ class TrasladoPensionController extends Controller
     /**
      * @Route("/rhu/traslado/pension/editar/{codigoContrato}/{codigoTrasladoPension}", name="brs_rhu_traslado_pension_editar")
      */
-    public function editarAction($codigoContrato, $codigoTrasladoPension = 0) {
+    public function editarAction(Request $request, $codigoContrato, $codigoTrasladoPension = 0) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
@@ -97,9 +99,9 @@ class TrasladoPensionController extends Controller
         }
         $form = $this->createFormBuilder()    
             ->setAction($this->generateUrl('brs_rhu_traslado_pension_editar', array('codigoContrato' => $codigoContrato, 'codigoTrasladoPension' => $codigoTrasladoPension)))
-            ->add('fechaCambioAfiliacion', 'date', array('data' => new \DateTime('now')))
-            ->add('estadoAfiliado', 'choice', array('choices' => array($estadoAfiliado => $nombreEstadoAfiliado, '1' => 'CERRADO', '0' => 'ABIERTO')))                                                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('fechaCambioAfiliacion', DateType::class, array('data' => new \DateTime('now')))
+            ->add('estadoAfiliado', ChoiceType::class, array('choices' => array($estadoAfiliado => $nombreEstadoAfiliado, '1' => 'CERRADO', '0' => 'ABIERTO')))                                                
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid())

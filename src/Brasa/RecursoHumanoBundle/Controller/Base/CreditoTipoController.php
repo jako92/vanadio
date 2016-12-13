@@ -260,7 +260,8 @@ class CreditoTipoController extends Controller
                 exit;
             }
         }
-        $arCreditosTiposEmpleados = $paginator->paginate($arCreditosTiposEmpleados, $this->get('Request')->query->get('page', 1),30);
+        $arCreditosTiposEmpleados = $paginator->paginate($arCreditosTiposEmpleados, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arCreditosTiposEmpleados = $paginator->paginate($arCreditosTiposEmpleados, $this->get('Request')->query->get('page', 1),30);
         return $this->render('BrasaRecursoHumanoBundle:Base/CreditoTipo:detalle.html.twig', array(
                     'arCreditosTiposEmpleados' => $arCreditosTiposEmpleados,
                     'arCreditosTipo' => $arCreditosTipo,

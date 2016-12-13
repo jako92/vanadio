@@ -3,6 +3,12 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class RhuPagoConceptoType extends AbstractType
 {
@@ -13,34 +19,34 @@ class RhuPagoConceptoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', 'text', array('required' => true))
-            ->add('componeSalario', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('componePorcentaje', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('componeValor', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('porPorcentaje', 'number', array('required' => true))
-            ->add('prestacional', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('generaIngresoBasePrestacion', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('generaIngresoBaseCotizacion', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('operacion', 'number', array('required' => true))
-            ->add('conceptoAdicion', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('conceptoIncapacidad', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('conceptoAuxilioTransporte', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('codigoCuentaFk', 'text', array('required' => true))
-            ->add('tipoCuenta', 'number', array('required' => true))    
-            ->add('codigoCuentaOperacionFk', 'text', array('required' => true))
-            ->add('codigoInterface', 'text', array('required' => false))                
-            ->add('tipoCuentaOperacion', 'number', array('required' => true))                    
-            ->add('conceptoPension', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('conceptoSalud', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('provisionIndemnizacion', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))
-            ->add('provisionVacacion', 'choice', array('choices'   => array('1' => 'SI', '0' => 'NO')))                
-            ->add('tipoAdicional', 'number', array('required' => true))
-            ->add('codigoCuentaComercialFk', 'text', array('required' => true))
-            ->add('tipoCuentaComercial', 'number', array('required' => true))
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('componeSalario', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('componePorcentaje', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('componeValor', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('porPorcentaje', NumberType::class, array('required' => true))
+            ->add('prestacional', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('generaIngresoBasePrestacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('generaIngresoBaseCotizacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('operacion', ChoiceType::class, array('required' => true))
+            ->add('conceptoAdicion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('conceptoIncapacidad', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('conceptoAuxilioTransporte', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('codigoCuentaFk', TextType::class, array('required' => true))
+            ->add('tipoCuenta', ChoiceType::class, array('required' => true))    
+            ->add('codigoCuentaOperacionFk', TextType::class, array('required' => true))
+            ->add('codigoInterface', TextType::class, array('required' => false))                
+            ->add('tipoCuentaOperacion', ChoiceType::class, array('required' => true))                    
+            ->add('conceptoPension', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('conceptoSalud', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('provisionIndemnizacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('provisionVacacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                
+            ->add('tipoAdicional', ChoiceType::class, array('required' => true))
+            ->add('codigoCuentaComercialFk', TextType::class, array('required' => true))
+            ->add('tipoCuentaComercial', ChoiceType::class, array('required' => true))
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

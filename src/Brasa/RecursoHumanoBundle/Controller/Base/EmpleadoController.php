@@ -159,17 +159,28 @@ class EmpleadoController extends Controller
             $strRutaImagen = $arConfiguracion->getRutaImagenes()."empleados/" . $arEmpleado->getRutaFoto();
         }
         //$verRuta = $arConfiguracion->getRutaImagenes()."empleados/" . $arEmpleado->getRutaFoto();
-        $arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('Request')->query->get('page', 1),5);
-        $arVacaciones = $paginator->paginate($arVacaciones, $this->get('Request')->query->get('page', 1),5);
-        $arLicencias = $paginator->paginate($arLicencias, $this->get('Request')->query->get('page', 1),5);
-        $arContratos = $paginator->paginate($arContratos, $this->get('Request')->query->get('page', 1),5);
-        $arCreditos = $paginator->paginate($arCreditos, $this->get('Request')->query->get('page', 1),5);
-        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('Request')->query->get('page', 1),5);
-        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('Request')->query->get('page', 1),6);
-        $arExamenes = $paginator->paginate($arExamenes, $this->get('Request')->query->get('page', 1),6);
-        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('Request')->query->get('page', 1),8);
-        $arDotacion = $paginator->paginate($arDotacion, $this->get('Request')->query->get('page', 1),8);
-        $arAdicionalesPago = $paginator->paginate($arAdicionalesPago, $this->get('Request')->query->get('page', 1),8);
+        $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('Request')->query->get('page', 1),5);
+        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arVacaciones = $paginator->paginate($arVacaciones, $this->get('Request')->query->get('page', 1),5);
+        $arLicencias = $paginator->paginate($arLicencias, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arLicencias = $paginator->paginate($arLicencias, $this->get('Request')->query->get('page', 1),5);
+        $arContratos = $paginator->paginate($arContratos, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arContratos = $paginator->paginate($arContratos, $this->get('Request')->query->get('page', 1),5);
+        $arCreditos = $paginator->paginate($arCreditos, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arCreditos = $paginator->paginate($arCreditos, $this->get('Request')->query->get('page', 1),5);
+        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('Request')->query->get('page', 1),5);
+        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('Request')->query->get('page', 1),6);
+        $arExamenes = $paginator->paginate($arExamenes, $request->query->getInt('page', 1)/*page number*/,6/*limit per page*/);                                               
+        //$arExamenes = $paginator->paginate($arExamenes, $this->get('Request')->query->get('page', 1),6);
+        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $request->query->getInt('page', 1)/*page number*/,8/*limit per page*/);                                               
+        //$arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('Request')->query->get('page', 1),8);
+        $arDotacion = $paginator->paginate($arDotacion, $request->query->getInt('page', 1)/*page number*/,8/*limit per page*/);                                               
+        //$arDotacion = $paginator->paginate($arDotacion, $this->get('Request')->query->get('page', 1),8);
+        $arAdicionalesPago = $paginator->paginate($arAdicionalesPago, $request->query->getInt('page', 1)/*page number*/,8/*limit per page*/);                                               
+        //$arAdicionalesPago = $paginator->paginate($arAdicionalesPago, $this->get('Request')->query->get('page', 1),8);
         return $this->render('BrasaRecursoHumanoBundle:Base/Empleado:detalle.html.twig', array(
                     'arEmpleado' => $arEmpleado,
                     'arIncapacidades' => $arIncapacidades,
@@ -229,7 +240,7 @@ class EmpleadoController extends Controller
                $arEmpleado->setCabezaHogar(1);
             }
         }
-        $form = $this->createForm(new RhuEmpleadoType(), $arEmpleado);
+        $form = $this->createForm(RhuEmpleadoType::class, $arEmpleado);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.context')->getToken()->getUser();
@@ -374,8 +385,8 @@ class EmpleadoController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVOS', '0' => 'INACTIVOS')))
-            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO')))    
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
+            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('TxtCodigo', TextType::class, array('data' => $session->get('filtroCodigoEmpleado')))
@@ -389,7 +400,7 @@ class EmpleadoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new session;
+        $session = new Session;
         $request = $this->getRequest();
         $controles = $request->request->get('form');
         $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);

@@ -130,19 +130,20 @@ class LicenciaTipoController extends Controller
         if ($codigoLicenciaTipoPk != 0)
         {
             $arLicenciaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicenciaTipo')->find($codigoLicenciaTipoPk);
-        }    
-        $formLicenciaTipo = $this->createForm(new RhuLicenciaTipoType(), $arLicenciaTipo);
-        $formLicenciaTipo->handleRequest($request);
-        if ($formLicenciaTipo->isValid())
+        }
+        $form = $this->createForm(RhuLicenciaTipoType::class, $arLicenciaTipo);
+        //$formLicenciaTipo = $this->createForm(new RhuLicenciaTipoType(), $arLicenciaTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos.
             $em->persist($arLicenciaTipo);
-            $arLicenciaTipo = $formLicenciaTipo->getData();
+            $arLicenciaTipo = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_licenciatipo_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/LicenciaTipo:nuevo.html.twig', array(
-            'formLicenciaTipo' => $formLicenciaTipo->createView(),
+            'formLicenciaTipo' => $form->createView(),
         ));
     }
     

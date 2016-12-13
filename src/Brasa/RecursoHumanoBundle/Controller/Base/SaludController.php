@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSaludType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuEntidadSalud controller.
@@ -17,18 +18,17 @@ class SaludController extends Controller
     /**
      * @Route("/rhu/base/salud/listar", name="brs_rhu_base_salud_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 62, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -109,8 +109,8 @@ class SaludController extends Controller
         }
         $arEntidadesSalud = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->findAll();
-        $arEntidadesSalud = $paginator->paginate($query, $this->get('request')->query->get('page', 1),30);
-
+        $arEntidadesSalud = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
+        
         return $this->render('BrasaRecursoHumanoBundle:Base/Salud:listar.html.twig', array(
                     'arEntidadesSalud' => $arEntidadesSalud,
                     'form'=> $form->createView()
@@ -121,26 +121,25 @@ class SaludController extends Controller
     /**
      * @Route("/rhu/base/salud/nuevo/{codigoEntidadSaludPk}", name="brs_rhu_base_salud_nuevo")
      */
-    public function nuevoAction($codigoEntidadSaludPk) {
+    public function nuevoAction(Request $request, $codigoEntidadSaludPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arSalud = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
         if ($codigoEntidadSaludPk != 0)
         {
             $arSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->find($codigoEntidadSaludPk);
-        }    
-        $formSalud = $this->createForm(new RhuSaludType(), $arSalud);
-        $formSalud->handleRequest($request);
-        if ($formSalud->isValid())
+        }
+        $form = $this->createForm(RhuSaludType::class, $arSalud);  
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arSalud);
-            $arSalud = $formSalud->getData();
+            $arSalud = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_salud_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Salud:nuevo.html.twig', array(
-            'formSalud' => $formSalud->createView(),
+            'formSalud' => $form->createView(),
         ));
     }
     

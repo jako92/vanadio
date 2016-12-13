@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSsoSucursalType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class SsoSucursalController extends Controller
@@ -15,18 +16,17 @@ class SsoSucursalController extends Controller
     /**
      * @Route("/rhu/base/ssosucursal/listar", name="brs_rhu_base_ssosucursal_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 61, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -102,7 +102,7 @@ class SsoSucursalController extends Controller
         }
         $arSsoSucursales = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoSucursal();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoSucursal')->findAll();
-        $arSsoSucursales = $paginator->paginate($query, $this->get('request')->query->get('page', 1),30);
+        $arSsoSucursales = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                                       
 
         return $this->render('BrasaRecursoHumanoBundle:Base/SsoSucursal:listar.html.twig', array(
                     'arSsoSucursales' => $arSsoSucursales,
@@ -114,26 +114,25 @@ class SsoSucursalController extends Controller
     /**
      * @Route("/rhu/base/ssosucursal/nuevo/{codigoSucursalPk}", name="brs_rhu_base_ssosucursal_nuevo")
      */
-    public function nuevoAction($codigoSucursalPk) {
+    public function nuevoAction(Request $request, $codigoSucursalPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arSsoSucursal = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoSucursal();
         if ($codigoSucursalPk != 0)
         {
             $arSsoSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoSucursal')->find($codigoSucursalPk);
-        }    
-        $formSsoSucursal = $this->createForm(new RhuSsoSucursalType(), $arSsoSucursal);
-        $formSsoSucursal->handleRequest($request);
-        if ($formSsoSucursal->isValid())
+        }
+        $form = $this->createForm(RhuSsoSucursalType::class, $arSsoSucursal);  
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arSsoSucursal);
-            $arSsoSucursal = $formSsoSucursal->getData();
+            $arSsoSucursal = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_ssosucursal_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/SsoSucursal:nuevo.html.twig', array(
-            'formSsoSucursal' => $formSsoSucursal->createView(),
+            'formSsoSucursal' => $form->createView(),
         ));
     }
     

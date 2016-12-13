@@ -2,11 +2,16 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSedeType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SedeController extends Controller
 {
@@ -15,15 +20,14 @@ class SedeController extends Controller
     /**
      * @Route("/rhu/base/sede/listar", name="brs_rhu_base_sede_listar")
      */ 
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 97, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -118,8 +122,7 @@ class SedeController extends Controller
     /**
      * @Route("/rhu/base/sede/nuevo/{codigoSedePk}", name="brs_rhu_base_sede_nuevo")
      */ 
-    public function nuevoAction($codigoSedePk) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoSedePk) {
         $em = $this->getDoctrine()->getManager();
         $arSede = new \Brasa\RecursoHumanoBundle\Entity\RhuSede();
         if ($codigoSedePk != 0)
@@ -146,43 +149,41 @@ class SedeController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new session;      
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')                                        
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,  
                 'empty_data' => "",
-                'empty_value' => "TODOS",    
+                'placeholder' => "TODOS",    
                 'data' => ""
             );  
         if($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));                                    
         }
         $form = $this->createFormBuilder()                        
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)                                           
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)                                           
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();        
         return $form;
     }  
     
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);        
+        $session = new Session;
+        $session->set('filtroCodigoCentroCosto', $form['centroCostoRel']->getData());        
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
     }   
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSede')->listaDQL(
                 $session->get('filtroEmpleadoNombre'), 
                 $session->get('filtroCodigoCentroCosto')                

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionEntrevistaTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuSeleccionEntrevistaTipo controller.
@@ -18,17 +19,16 @@ class SeleccionEntrevistaTipoController extends Controller
     /**
      * @Route("/rhu/base/seleccion/entrevista/tipo/listar", name="brs_rhu_base_seleccion_entrevista_tipo_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 50, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arSeleccionEntrevistaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionEntrevistaTipo();
@@ -96,7 +96,7 @@ class SeleccionEntrevistaTipoController extends Controller
         }
         $arSeleccionEntrevistasTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionEntrevistaTipo();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevistaTipo')->findAll();
-        $arSeleccionEntrevistasTipo = $paginator->paginate($query, $this->get('request')->query->get('page', 1),50);
+        $arSeleccionEntrevistasTipo = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                               
 
         return $this->render('BrasaRecursoHumanoBundle:Base/SeleccionEntrevistaTipo:listar.html.twig', array(
                     'arSeleccionEntrevistasTipo' => $arSeleccionEntrevistasTipo,
@@ -108,9 +108,8 @@ class SeleccionEntrevistaTipoController extends Controller
     /**
      * @Route("/rhu/base/seleccion/entrevista/tipo/nuevo{codigoSeleccionEntrevistaTipo}", name="brs_rhu_base_seleccion_entrevista_tipo_nuevo")
      */
-    public function nuevoAction($codigoSeleccionEntrevistaTipo) {
+    public function nuevoAction(Request $request, $codigoSeleccionEntrevistaTipo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arSeleccionEntrevistaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionEntrevistaTipo();
         if ($codigoSeleccionEntrevistaTipo != 0)
         {

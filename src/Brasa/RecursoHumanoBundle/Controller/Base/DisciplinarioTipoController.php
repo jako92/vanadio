@@ -66,8 +66,9 @@ class DisciplinarioTipoController extends Controller
         $arDisciplinarioTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinarioTipo();
         if ($codigoDisciplinarioTipo != 0) {
             $arDisciplinarioTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinarioTipo')->find($codigoDisciplinarioTipo);
-        }    
-        $form = $this->createForm(new RhuDisciplinarioTipoType(), $arDisciplinarioTipo);
+        }
+        $form = $this->createForm(RhuDisciplinarioTipoType::class, $arDisciplinarioTipo);
+        //$form = $this->createForm(new RhuDisciplinarioTipoType(), $arDisciplinarioTipo);
         $form->handleRequest($request);
         if ($form->isValid()) {                        
             $arDisciplinarioTipo = $form->getData();

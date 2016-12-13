@@ -154,7 +154,8 @@ class CentroCostoController extends Controller
         $form->handleRequest($request);
         $arSedes = new \Brasa\RecursoHumanoBundle\Entity\RhuSede();
         $arSedes = $em->getRepository('BrasaRecursoHumanoBundle:RhuSede')->findBy(array('codigoCentroCostoFk' => $codigoCentroCosto));
-        $arSedes = $paginator->paginate($arSedes, $this->get('Request')->query->get('page', 1),5);
+        $arSedes = $paginator->paginate($arSedes, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arSedes = $paginator->paginate($arSedes, $this->get('Request')->query->get('page', 1),5);
         $arCentrosCostos = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
         $arCentrosCostos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($codigoCentroCosto);
         return $this->render('BrasaRecursoHumanoBundle:Base/CentroCosto:detalle.html.twig', array(

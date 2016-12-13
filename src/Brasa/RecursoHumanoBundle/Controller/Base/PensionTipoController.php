@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPensionTipoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuPensionTipo controller.
@@ -17,17 +18,16 @@ class PensionTipoController extends Controller
     /**
      * @Route("/rhu/base/pension/tipo/lista", name="brs_rhu_base_pension_tipo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 66, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arPensionTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoPension();
@@ -52,8 +52,8 @@ class PensionTipoController extends Controller
             }
         }
         $arPensionTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoPension();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuTipoPension')->findAll();
-        $arPensionTipos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arPensionTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuTipoPension')->findAll();
+        $arPensionTipos = $paginator->paginate($arPensionTipos, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/PensionTipo:listar.html.twig', array(
                     'arPensionTipos' => $arPensionTipos,
@@ -65,21 +65,20 @@ class PensionTipoController extends Controller
     /**
      * @Route("/rhu/base/pension/tipo/nuevo/{codigoPensionTipo}", name="brs_rhu_base_pension_tipo_nuevo")
      */
-    public function nuevoAction($codigoPensionTipo) {
+    public function nuevoAction(Request $request, $codigoPensionTipo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arPensionTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuTipoPension();
         if ($codigoPensionTipo != 0)
         {
             $arPensionTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuTipoPension')->find($codigoPensionTipo);
-        }    
-        $form = $this->createForm(new RhuPensionTipoType(), $arPensionTipo);
+        }
+        $form = $this->createForm(RhuPensionTipoType::class, $arPensionTipo);  
+        //$form = $this->createForm(new RhuPensionTipoType(), $arPensionTipo);
         $form->handleRequest($request);
         if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arPensionTipo = $form->getData();
-            $em->persist($arPensionTipo);
+            $em->persist($form);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_pension_tipo_lista'));
         }

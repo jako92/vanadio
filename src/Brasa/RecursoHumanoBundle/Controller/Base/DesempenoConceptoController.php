@@ -50,9 +50,8 @@ class DesempenoConceptoController extends Controller
             }
         }
         $arDesempenoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempenoConcepto();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConcepto')->findAll();
-        $arDesempenoConceptos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
-        //$arDesempenoConceptos = $paginator->paginate($query, $this->get('Request')->query->get('page', 1),100);
+        $arDesempenoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoConcepto')->findAll();
+        $arDesempenoConceptos = $paginator->paginate($arDesempenoConceptos, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
 
         return $this->render('BrasaRecursoHumanoBundle:Base/DesempenoConcepto:listar.html.twig', array(
                     'arDesempenoConceptos' => $arDesempenoConceptos,

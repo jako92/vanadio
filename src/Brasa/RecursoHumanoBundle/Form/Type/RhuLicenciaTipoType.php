@@ -3,23 +3,29 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
  
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuLicenciaTipoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                                                                                    
-            ->add('nombre', 'text', array('required' => true))
-            ->add('pagoConceptoRel', 'entity', array(
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('pagoConceptoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))
-            ->add('afectaSalud', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))    
-            ->add('ausentismo', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))    
-            ->add('guardar', 'submit');        
+            ->add('afectaSalud', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))    
+            ->add('ausentismo', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))    
+            ->add('guardar', SubmitType::class);        
     }
  
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

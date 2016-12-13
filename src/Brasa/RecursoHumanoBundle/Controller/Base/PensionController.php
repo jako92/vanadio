@@ -2,11 +2,14 @@
 
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPensionType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuEntidadPension controller.
@@ -17,19 +20,18 @@ class PensionController extends Controller
     /**
      * @Route("/rhu/base/pension/listar", name="brs_rhu_base_pension_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 63, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->createFormBuilder() //
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF'))                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF'))                
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -110,8 +112,9 @@ class PensionController extends Controller
         }
         
         $arEntidadesPension = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->findAll();
-        $arEntidadesPension = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arEntidadesPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->findAll();
+        $arEntidadesPension = $paginator->paginate($arEntidadesPension, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
+        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Pension:listar.html.twig', array(
                     'arEntidadesPension' => $arEntidadesPension,
@@ -123,26 +126,26 @@ class PensionController extends Controller
     /**
      * @Route("/rhu/base/pension/nuevo/{codigoEntidadPensionPk}", name="brs_rhu_base_pension_nuevo")
      */
-    public function nuevoAction($codigoEntidadPensionPk) {
+    public function nuevoAction(Request $request, $codigoEntidadPensionPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arPension = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
         if ($codigoEntidadPensionPk != 0)
         {
             $arPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->find($codigoEntidadPensionPk);
-        }    
-        $formPension = $this->createForm(new RhuPensionType(), $arPension);
-        $formPension->handleRequest($request);
-        if ($formPension->isValid())
+        }
+        $form = $this->createForm(RhuPensionType::class, $arPension);  
+        //$formPension = $this->createForm(new RhuPensionType(), $arPension);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arPension);
-            $arPension = $formPension->getData();
+            $arPension = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_pension_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Pension:nuevo.html.twig', array(
-            'formPension' => $formPension->createView(),
+            'formPension' => $form->createView(),
         ));
     }
     

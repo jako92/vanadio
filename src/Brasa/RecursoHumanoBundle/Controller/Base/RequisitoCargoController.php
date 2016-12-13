@@ -3,11 +3,14 @@
 namespace Brasa\RecursoHumanoBundle\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuRequisitoCargoType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuRequisitoCargo controller.
@@ -20,9 +23,8 @@ class RequisitoCargoController extends Controller
     /**
      * @Route("/rhu/base/requisito/cargo/lista", name="brs_rhu_base_requisito_cargo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 56, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
@@ -66,9 +68,8 @@ class RequisitoCargoController extends Controller
     /**
      * @Route("/rhu/base/requisito/cargo/nuevo/{codigoRequisitoCargo}", name="brs_rhu_base_requisito_cargo_nuevo")
      */
-    public function nuevoAction($codigoRequisitoCargo) {
+    public function nuevoAction(Request $request, $codigoRequisitoCargo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arRequisitoCargo = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoCargo();
         if ($codigoRequisitoCargo != 0) {
             $arRequisitoCargo = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoCargo')->find($codigoRequisitoCargo);
@@ -89,17 +90,16 @@ class RequisitoCargoController extends Controller
     /**
      * @Route("/rhu/base/requisito/cargo/nuevomultiple/{codigoRequisitoCargo}", name="brs_rhu_base_requisito_cargo_nuevomultiple")
      */
-    public function nuevoMultipleAction($codigoRequisitoCargo) {
+    public function nuevoMultipleAction(Request $request, $codigoRequisitoCargo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arRequisitosConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoConcepto();
         $arRequisitosConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoConcepto')->findAll();
         $form = $this->createFormBuilder()
-            ->add('cargoRel', 'entity', array(
+            ->add('cargoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
             ))    
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -128,42 +128,40 @@ class RequisitoCargoController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCargo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCargo", $session->get('filtroCodigoCargo'));
         }
         $form = $this->createFormBuilder()
-            ->add('cargoRel', 'entity', $arrayPropiedades)    
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                
+            ->add('cargoRel', EntityType::class, $arrayPropiedades)    
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                
             ->getForm();        
         return $form;
     }     
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoCargo')->listaDql(
         $session->get('filtroCodigoCargo'));         
     }    
     
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCargo', $controles['cargoRel']);
+        $session = new session;
+        $session->set('filtroCodigoCargo', $form['cargoRel']->getData());
     }
     
     private function generarExcel() {

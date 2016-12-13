@@ -78,19 +78,20 @@ class ExamenTipoController extends Controller
         if ($codigoExamenTipoPk != 0)
         {
             $arExamenTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenTipo')->find($codigoExamenTipoPk);
-        }    
-        $formExamenTipo = $this->createForm(new RhuExamenTipoType(), $arExamenTipo);
-        $formExamenTipo->handleRequest($request);
-        if ($formExamenTipo->isValid())
+        }
+        $form = $this->createForm(RhuExamenTipoType::class, $arExamenTipo); 
+        //$formExamenTipo = $this->createForm(new RhuExamenTipoType(), $arExamenTipo);
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
             $em->persist($arExamenTipo);
-            $arExamenTipo = $formExamenTipo->getData();
+            $arExamenTipo = $form->getData();
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_examentipo_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/ExamenTipo:nuevo.html.twig', array(
-            'formExamenTipo' => $formExamenTipo->createView(),
+            'formExamenTipo' => $form->createView(),
         ));
     }
     

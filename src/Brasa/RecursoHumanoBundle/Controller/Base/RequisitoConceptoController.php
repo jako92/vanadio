@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuRequisitoConceptoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuRequisitoConcepto controller.
@@ -19,9 +20,8 @@ class RequisitoConceptoController extends Controller
     /**
      * @Route("/rhu/base/requisito/concepto/lista", name="brs_rhu_base_requisito_concepto_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 55, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
@@ -60,14 +60,14 @@ class RequisitoConceptoController extends Controller
     /**
      * @Route("/rhu/base/requisito/concepto/nuevo/{codigoRequisitoConcepto}", name="brs_rhu_base_requisito_concepto_nuevo")
      */
-    public function nuevoAction($codigoRequisitoConcepto) {
+    public function nuevoAction(Request $request, $codigoRequisitoConcepto) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arRequisitoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoConcepto();
         if ($codigoRequisitoConcepto != 0) {
             $arRequisitoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoConcepto')->find($codigoRequisitoConcepto);
-        }    
-        $form = $this->createForm(new RhuRequisitoConceptoType(), $arRequisitoConcepto);
+        }
+        $form = $this->createForm(RhuRequisitoConceptoType::class, $arRequisitoConcepto);  
+        //$form = $this->createForm(new RhuRequisitoConceptoType(), $arRequisitoConcepto);
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arRequisitoConcepto = $form->getData();
@@ -82,8 +82,8 @@ class RequisitoConceptoController extends Controller
     
     private function formularioLista() {
         $form = $this->createFormBuilder()                        
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))                
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))                
             ->getForm();        
         return $form;
     }     

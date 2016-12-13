@@ -4,6 +4,14 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class RhuAccidenteTrabajoType extends AbstractType
 {
     /**
@@ -14,73 +22,73 @@ class RhuAccidenteTrabajoType extends AbstractType
     {
         $builder
             //->add('numeroIdentificacion', 'text', array('required' => true))
-            ->add('ciudadRel', 'entity', array(
+            ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('codigoFurat', 'number', array('required' => true))
-            ->add('fechaAccidente','date',array('required' => true ,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('tipoAccidenteRel', 'entity', array(
+            ->add('codigoFurat', NumberType::class, array('required' => true))
+            ->add('fechaAccidente', DateType::class, array('required' => true ,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('tipoAccidenteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuAccidenteTrabajoTipoAccidente',
                         'property' => 'nombre',))
-            ->add('fechaEnviaInvestigacion', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaIncapacidadDesde', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaIncapacidadHasta', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('dias', 'number', array('required' => false))
-            ->add('cie10', 'text', array('required' => false))
-            ->add('diagnostico', 'text', array('required' => false))
-            ->add('naturalezaLesion', 'text', array('required' => false))
-            ->add('cuerpoAfectado', 'text', array('required' => false))
-            ->add('agente', 'text', array('required' => false))
-            ->add('mecanismoAccidente', 'text', array('required' => false))
-            ->add('lugarAccidente', 'text', array('required' => false))
-            ->add('coordinadorEncargado', 'text', array('required' => false))                
-            ->add('cargoCoordinadorEncargado', 'text', array('required' => false))                                
-            ->add('tiempoServicioEmpleado', 'text', array('required' => false))                                
-            ->add('tareaDesarrolladaMomentoAccidente', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))                
-            ->add('oficioHabitual', 'text', array('required' => false))                                
-            ->add('descripcionAccidente', 'textarea', array('required' => false))
-            ->add('actoInseguro', 'textarea', array('required' => false))
-            ->add('condicionInsegura', 'textarea', array('required' => false))
-            ->add('factorPersonal', 'textarea', array('required' => false))
-            ->add('factorTrabajo', 'textarea', array('required' => false))
-            ->add('planAccion1', 'textarea', array('required' => false))
-            ->add('tipoControlUnoRel', 'entity', array(
+            ->add('fechaEnviaInvestigacion', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaIncapacidadDesde', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaIncapacidadHasta', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('dias', NumberType::class, array('required' => false))
+            ->add('cie10', TextType::class, array('required' => false))
+            ->add('diagnostico', TextType::class, array('required' => false))
+            ->add('naturalezaLesion', TextType::class, array('required' => false))
+            ->add('cuerpoAfectado', TextType::class, array('required' => false))
+            ->add('agente', TextType::class, array('required' => false))
+            ->add('mecanismoAccidente', TextType::class, array('required' => false))
+            ->add('lugarAccidente', TextType::class, array('required' => false))
+            ->add('coordinadorEncargado', TextType::class, array('required' => false))                
+            ->add('cargoCoordinadorEncargado', TextType::class, array('required' => false))                                
+            ->add('tiempoServicioEmpleado', TextType::class, array('required' => false))                                
+            ->add('tareaDesarrolladaMomentoAccidente', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))                
+            ->add('oficioHabitual', TextType::class, array('required' => false))                                
+            ->add('descripcionAccidente', TextareaType::class, array('required' => false))
+            ->add('actoInseguro', TextareaType::class, array('required' => false))
+            ->add('condicionInsegura', TextareaType::class, array('required' => false))
+            ->add('factorPersonal', TextareaType::class, array('required' => false))
+            ->add('factorTrabajo', TextareaType::class, array('required' => false))
+            ->add('planAccion1', TextareaType::class, array('required' => false))
+            ->add('tipoControlUnoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuAccidenteTrabajoTipoControl',
-                        'property' => 'nombre',))
-            ->add('fechaVerificacion1', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('areaResponsable1', 'text', array('required' => false))
-            ->add('planAccion2', 'textarea', array('required' => false))
-            ->add('tipoControlDosRel', 'entity', array(
+                        'choice_label' => 'nombre',))
+            ->add('fechaVerificacion1', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('areaResponsable1', TextType::class, array('required' => false))
+            ->add('planAccion2', TextareaType::class, array('required' => false))
+            ->add('tipoControlDosRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuAccidenteTrabajoTipoControl',
-                        'property' => 'nombre',))
-            ->add('fechaVerificacion2', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('areaResponsable2', 'text', array('required' => false))                
-            ->add('planAccion3', 'textarea', array('required' => false))
-            ->add('tipoControlTresRel', 'entity', array(
+                        'choice_label' => 'nombre',))
+            ->add('fechaVerificacion2', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('areaResponsable2', TextType::class, array('required' => false))                
+            ->add('planAccion3', TextareaType::class, array('required' => false))
+            ->add('tipoControlTresRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuAccidenteTrabajoTipoControl',
-                        'property' => 'nombre',))
-            ->add('fechaVerificacion3', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('areaResponsable3', 'text', array('required' => false))
-            ->add('participanteInvestigacion1', 'text', array('required' => false))                
-            ->add('cargoParticipanteInvestigacion1', 'text', array('required' => false))
-            ->add('participanteInvestigacion2', 'text', array('required' => false))                
-            ->add('cargoParticipanteInvestigacion2', 'text', array('required' => false))                
-            ->add('participanteInvestigacion3', 'text', array('required' => false))                
-            ->add('cargoParticipanteInvestigacion3', 'text', array('required' => false))                
-            ->add('representanteLegal', 'text', array('required' => false))                
-            ->add('cargoRepresentanteLegal', 'text', array('required' => false))
-            ->add('licencia', 'text', array('required' => false))
-            ->add('fechaVerificacion', 'date', array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('responsableVerificacion', 'text', array('required' => false))                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
-            ->add('guardarnuevo', 'submit', array('label'  => 'Guardar y Nuevo'));        
+                        'choice_label' => 'nombre',))
+            ->add('fechaVerificacion3', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('areaResponsable3', TextType::class, array('required' => false))
+            ->add('participanteInvestigacion1', TextType::class, array('required' => false))                
+            ->add('cargoParticipanteInvestigacion1', TextType::class, array('required' => false))
+            ->add('participanteInvestigacion2', TextType::class, array('required' => false))                
+            ->add('cargoParticipanteInvestigacion2', TextType::class, array('required' => false))                
+            ->add('participanteInvestigacion3', TextType::class, array('required' => false))                
+            ->add('cargoParticipanteInvestigacion3', TextType::class, array('required' => false))                
+            ->add('representanteLegal', TextType::class, array('required' => false))                
+            ->add('cargoRepresentanteLegal', TextType::class, array('required' => false))
+            ->add('licencia', TextType::class, array('required' => false))
+            ->add('fechaVerificacion', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('responsableVerificacion', TextType::class, array('required' => false))                
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
+            ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));        
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

@@ -72,8 +72,8 @@ class EmpleadoEstudioTipoController extends Controller
         if ($codigoTipoEstudio != 0)
         {
             $arTipoEstudios = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudioTipo')->find($codigoTipoEstudio);
-        }    
-        $form = $this->createForm(new RhuEmpleadoEstudioTipoType(), $arTipoEstudios);
+        }
+        $form = $this->createForm(RhuEmpleadoEstudioTipoType::class, $arTipoEstudios); 
         $form->handleRequest($request);
         if ($form->isValid())
         {

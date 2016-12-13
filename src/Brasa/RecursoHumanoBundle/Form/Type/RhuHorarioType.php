@@ -3,6 +3,10 @@ namespace Brasa\RecursoHumanoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuHorarioType extends AbstractType
 {
@@ -13,23 +17,23 @@ class RhuHorarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', 'text', array('required' => true))
-            ->add('horaEntrada', 'time', array('required' => true))
-            ->add('horaSalida', 'time', array('required' => true))
-            ->add('generaHoraExtra', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))     
-            ->add('controlHorario', 'choice', array('choices' => array('1' => 'SI', '0' => 'NO')))     
-            ->add('lunes', 'text', array('required' => true))    
-            ->add('martes', 'text', array('required' => true))        
-            ->add('miercoles', 'text', array('required' => true))        
-            ->add('jueves', 'text', array('required' => true))        
-            ->add('viernes', 'text', array('required' => true))        
-            ->add('sabado', 'text', array('required' => true))        
-            ->add('domingo', 'text', array('required' => true))        
-            ->add('festivo', 'text', array('required' => true))        
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('horaEntrada', TimeType::class, array('required' => true))
+            ->add('horaSalida', TimeType::class, array('required' => true))
+            ->add('generaHoraExtra', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))     
+            ->add('controlHorario', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))     
+            ->add('lunes', TextType::class, array('required' => true))    
+            ->add('martes', TextType::class, array('required' => true))        
+            ->add('miercoles', TextType::class, array('required' => true))        
+            ->add('jueves', TextType::class, array('required' => true))        
+            ->add('viernes', TextType::class, array('required' => true))        
+            ->add('sabado', TextType::class, array('required' => true))        
+            ->add('domingo', TextType::class, array('required' => true))        
+            ->add('festivo', TextType::class, array('required' => true))        
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoConceptoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuPagoConcepto controller.
@@ -17,17 +18,16 @@ class PagoConceptoController extends Controller
     /**
      * @Route("/rhu/base/pago/concepto/lista", name="brs_rhu_base_pago_concepto_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 48, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -174,7 +174,7 @@ class PagoConceptoController extends Controller
         }
         $arPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findAll();
-        $arPagoConceptos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
+        $arPagoConceptos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:listar.html.twig', array(
                     'arPagoConceptos' => $arPagoConceptos,
@@ -185,16 +185,15 @@ class PagoConceptoController extends Controller
     /**
      * @Route("/rhu/base/pago/concepto/nuevo/{codigoPagoConcepto}", name="brs_rhu_base_pago_concepto_nuevo")
      */
-    public function nuevoAction($codigoPagoConcepto) {
+    public function nuevoAction(Request $request, $codigoPagoConcepto) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPagoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
         if ($codigoPagoConcepto != 0)
         {
             $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($codigoPagoConcepto);
-        }    
-        $form = $this->createForm(new RhuPagoConceptoType(), $arPagoConcepto);
+        }
+        $form = $this->createForm(RhuPagoConceptoType::class, $arPagoConcepto);         
         $form->handleRequest($request);
         if ($form->isValid())
         {

@@ -21,7 +21,6 @@ class EmpleadoInformacionInternaTipoController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 46, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
@@ -53,8 +52,9 @@ class EmpleadoInformacionInternaTipoController extends Controller
             }
         }
         $arEmpleadoInformacionInternaTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoInformacionInternaTipo();
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo')->findAll();
-        $arEmpleadoInformacionInternaTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        $arEmpleadoInformacionInternaTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo')->findAll();
+        $arEmpleadoInformacionInternaTipos = $paginator->paginate($arEmpleadoInformacionInternaTipos, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
+        //$arEmpleadoInformacionInternaTipos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
 
         return $this->render('BrasaRecursoHumanoBundle:Base/EmpleadoInformacionInternaTipo:listar.html.twig', array(
                     'arEmpleadoInformacionInternaTipos' => $arEmpleadoInformacionInternaTipos,
@@ -72,8 +72,8 @@ class EmpleadoInformacionInternaTipoController extends Controller
         if ($codigoInformacionInternaTipo != 0)
         {
             $arEmpleadoInformacionInternaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoInformacionInternaTipo')->find($codigoInformacionInternaTipo);
-        }    
-        $form = $this->createForm(new RhuEmpleadoInformacionInternaTipoType(), $arEmpleadoInformacionInternaTipo);
+        }
+        $form = $this->createForm(RhuEmpleadoInformacionInternaTipoType::class, $arEmpleadoInformacionInternaTipo);       
         $form->handleRequest($request);
         if ($form->isValid())
         {

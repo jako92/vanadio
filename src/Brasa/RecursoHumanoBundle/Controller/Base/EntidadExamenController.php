@@ -156,12 +156,11 @@ class EntidadExamenController extends Controller
     /**
      * @Route("/rhu/base/entidadexamen/detalle/{codigoEntidadExamenPk}", name="brs_rhu_base_entidadexamen_detalle")
      */
-    public function detalleAction($codigoEntidadExamenPk) {
+    public function detalleAction(Request $request, $codigoEntidadExamenPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $form = $this->createFormBuilder()                                   
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnActualizar', 'submit', array('label'  => 'Actualizar',))    
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnActualizar', SubmitType::class, array('label'  => 'Actualizar',))    
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {

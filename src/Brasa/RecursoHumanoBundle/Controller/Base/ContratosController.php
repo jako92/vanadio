@@ -102,9 +102,11 @@ class ContratosController extends Controller
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
         $arTrasladoPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuTrasladoPension')->findBy(array('codigoContratoFk' => $codigoContrato));
-        $arTrasladoPension = $paginator->paginate($arTrasladoPension, $this->get('request')->query->get('page', 1),10);
+        $arTrasladoPension = $paginator->paginate($arTrasladoPension, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arTrasladoPension = $paginator->paginate($arTrasladoPension, $this->get('request')->query->get('page', 1),10);
         $arTrasladoSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuTrasladoSalud')->findBy(array('codigoContratoFk' => $codigoContrato));
-        $arTrasladoSalud = $paginator->paginate($arTrasladoSalud, $this->get('request')->query->get('page', 1),10);
+        $arTrasladoSalud = $paginator->paginate($arTrasladoSalud, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arTrasladoSalud = $paginator->paginate($arTrasladoSalud, $this->get('request')->query->get('page', 1),10);
         if ($arContrato->getEstadoActivo() == 1 || $arContrato->getIndefinido() == 1){
             $disabled = FALSE;
         } else {
@@ -144,16 +146,20 @@ class ContratosController extends Controller
         }
         $arCambiosSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
         $arCambiosSalario = $em->getRepository('BrasaRecursoHumanoBundle:RhuCambioSalario')->findBy(array('codigoContratoFk' => $codigoContrato));
-        $arCambiosSalario = $paginator->paginate($arCambiosSalario, $this->get('Request')->query->get('page', 1),5);
+        $arCambiosSalario = $paginator->paginate($arCambiosSalario, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arCambiosSalario = $paginator->paginate($arCambiosSalario, $this->get('Request')->query->get('page', 1),5);
         $arVacaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->findBy(array('codigoContratoFk' => $codigoContrato));
-        $arVacaciones = $paginator->paginate($arVacaciones, $this->get('Request')->query->get('page', 1),5);
+        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arVacaciones = $paginator->paginate($arVacaciones, $this->get('Request')->query->get('page', 1),5);
         $arContratoSedes = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoSede();
         $arContratoSedes = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoSede')->findBy(array('codigoContratoFk' => $codigoContrato));
-        $arContratoSedes = $paginator->paginate($arContratoSedes, $this->get('Request')->query->get('page', 1),5);
+        $arContratoSedes = $paginator->paginate($arContratoSedes, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arContratoSedes = $paginator->paginate($arContratoSedes, $this->get('Request')->query->get('page', 1),5);
         
         $arContratoProrrogas = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoProrroga')->findBy(array('codigoContratoFk' => $codigoContrato), array('codigoContratoProrrogaPk' => 'DESC'));
-        $arContratoProrrogas = $paginator->paginate($arContratoProrrogas, $this->get('Request')->query->get('page', 1),10);
+        $arContratoProrrogas = $paginator->paginate($arContratoProrrogas, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
+        //$arContratoProrrogas = $paginator->paginate($arContratoProrrogas, $this->get('Request')->query->get('page', 1),10);
         return $this->render('BrasaRecursoHumanoBundle:Base/Contrato:detalle.html.twig', array(
                     'arContrato' => $arContrato,
                     'arCambiosSalario' => $arCambiosSalario,

@@ -141,19 +141,19 @@ class HorarioController extends Controller
         if ($codigoHorarioPk != 0)
         {
             $arHorario = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorario')->find($codigoHorarioPk);
-        }    
-        $formHorario = $this->createForm(new RhuHorarioType(), $arHorario);
-        $formHorario->handleRequest($request);
-        if ($formHorario->isValid())
+        }
+        $form = $this->createForm(RhuHorarioType::class, $arHorario);  
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arHorario = $formHorario->getData();
+            $arHorario = $form->getData();
             $em->persist($arHorario);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_horario_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Horario:nuevo.html.twig', array(
-            'formHorario' => $formHorario->createView(),
+            'formHorario' => $form->createView(),
         ));
     }
     

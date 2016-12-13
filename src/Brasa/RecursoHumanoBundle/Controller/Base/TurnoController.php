@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuTurnoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * RhuTurno controller.
@@ -17,17 +18,16 @@ class TurnoController extends Controller
     /**
      * @Route("/rhu/base/turno/listar", name="brs_rhu_base_turno_listar")
      */
-    public function listarAction() {
+    public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 60, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }        
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         
@@ -116,7 +116,7 @@ class TurnoController extends Controller
         }
         $arTurnos = new \Brasa\RecursoHumanoBundle\Entity\RhuTurno();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuTurno')->findAll();
-        $arTurnos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),20);
+        $arTurnos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                                               
 
         return $this->render('BrasaRecursoHumanoBundle:Base/Turno:listar.html.twig', array(
                     'arTurnos' => $arTurnos,
@@ -128,26 +128,25 @@ class TurnoController extends Controller
     /**
      * @Route("/rhu/base/turno/nuevo/{codigoTurnoPk}", name="brs_rhu_base_turno_nuevo")
      */
-    public function nuevoAction($codigoTurnoPk) {
+    public function nuevoAction(Request $request, $codigoTurnoPk) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arTurno = new \Brasa\RecursoHumanoBundle\Entity\RhuTurno();
         if ($codigoTurnoPk != "0")
         {
             $arTurno = $em->getRepository('BrasaRecursoHumanoBundle:RhuTurno')->find($codigoTurnoPk);
-        }    
-        $formTurno = $this->createForm(new RhuTurnoType(), $arTurno);
-        $formTurno->handleRequest($request);
-        if ($formTurno->isValid())
+        }
+        $form = $this->createForm(RhuTurnoType::class, $arTurno);  
+        $form->handleRequest($request);
+        if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arTurno = $formTurno->getData();
+            $arTurno = $form->getData();
             $em->persist($arTurno);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_base_turno_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Turno:nuevo.html.twig', array(
-            'formTurno' => $formTurno->createView(),
+            'formTurno' => $form->createView(),
         ));
     }
     
