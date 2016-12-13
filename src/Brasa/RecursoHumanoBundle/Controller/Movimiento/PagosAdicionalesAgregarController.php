@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PagosAdicionalesAgregarController extends Controller
 {
@@ -31,8 +32,8 @@ class PagosAdicionalesAgregarController extends Controller
                 'required' => true))
             ->add('TxtValor', 'number', array('required' => true))                             
             ->add('TxtDetalle', TextType::class, array('required' => false))            
-            ->add('aplicarDiaLaborado', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                
-            ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                
+            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();
@@ -215,8 +216,8 @@ class PagosAdicionalesAgregarController extends Controller
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto)               
             ->add('TxtValor', 'number', array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
             ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
-            ->add('aplicarDiaLaborado', 'choice', array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
-            ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
+            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();

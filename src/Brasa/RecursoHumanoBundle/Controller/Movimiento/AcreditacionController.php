@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AcreditacionController extends Controller
 {
@@ -266,9 +267,9 @@ class AcreditacionController extends Controller
         $form = $this->createFormBuilder()
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('estadoRechazado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'RECHAZADO', '0' => 'SIN RECHAZAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoRechazado')))
-            ->add('estadoValidado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'VALIDADO', '0' => 'SIN VALIDAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoValidado')))
-            ->add('estadoAcreditado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'ACREDITADO', '0' => 'SIN ACREDITAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoAcreditado')))
+            ->add('estadoRechazado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'RECHAZADO', '0' => 'SIN RECHAZAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoRechazado')))
+            ->add('estadoValidado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'VALIDADO', '0' => 'SIN VALIDAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoValidado')))
+            ->add('estadoAcreditado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'ACREDITADO', '0' => 'SIN ACREDITAR'), 'data' => $session->get('filtroRhuAcreditacionEstadoAcreditado')))
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
             ->add('filtrarFecha', 'checkbox', array('required'  => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFecha')))

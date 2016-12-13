@@ -10,6 +10,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAdicionalPagoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PagosAdicionalesController extends Controller
 {
@@ -285,8 +286,8 @@ class PagosAdicionalesController extends Controller
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesConcepto)    
             ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
-            ->add('aplicarDiaLaborado', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
-            ->add('estadoInactivo', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
+            ->add('estadoInactivo', ChoiceType::class, array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();

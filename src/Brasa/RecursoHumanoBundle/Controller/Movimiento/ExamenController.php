@@ -13,6 +13,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenRestriccionMedicaAgregarType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenRestriccionMedicaEditarType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ExamenController extends Controller
 {
@@ -564,9 +565,9 @@ class ExamenController extends Controller
         $form = $this->createFormBuilder()            
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('estadoAutorizado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADOS', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
-            ->add('estadoAprobado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'APROBADOS', '0' => 'SIN APROBAR'), 'data' => $session->get('filtroRhuExamenEstadoAprobado')))
-            ->add('controlPago', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroControlPago')))
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADOS', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
+            ->add('estadoAprobado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'APROBADOS', '0' => 'SIN APROBAR'), 'data' => $session->get('filtroRhuExamenEstadoAprobado')))
+            ->add('controlPago', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroControlPago')))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
