@@ -12,6 +12,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenDetalleType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenRestriccionMedicaAgregarType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenRestriccionMedicaEditarType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ExamenController extends Controller
 {
@@ -305,7 +306,7 @@ class ExamenController extends Controller
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
         $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -501,7 +502,7 @@ class ExamenController extends Controller
         $arExamenRestriccionMedicaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenRestriccionMedicaDetalle();
         $arExamenRestriccionMedicaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenRestriccionMedicaDetalle')->findBy(array('codigoExamenRestriccionMedicaFk' => $arExamenRestriccionMedica->getCodigoExamenRestriccionMedicaPk()));
         $form = $this->createFormBuilder()
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -566,9 +567,9 @@ class ExamenController extends Controller
             ->add('estadoAutorizado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADOS', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
             ->add('estadoAprobado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'APROBADOS', '0' => 'SIN APROBAR'), 'data' => $session->get('filtroRhuExamenEstadoAprobado')))
             ->add('controlPago', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroControlPago')))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -602,15 +603,15 @@ class ExamenController extends Controller
             $arrBotonEliminarRestriccion['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-                    ->add('BtnAprobar', 'submit', $arrBotonAprobar)
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminarDetalle)
-                    ->add('BtnActualizarDetalle', 'submit', $arrBotonActualizarDetalle)
-                    ->add('BtnAprobarDetalle', 'submit', $arrBotonAprobarDetalle)
-                    ->add('BtnCerrarDetalle', 'submit', $arrBotonCerrarDetalle)
-                    ->add('BtnEliminarRestriccion', 'submit', $arrBotonEliminarRestriccion)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                    ->add('BtnAprobar', SubmitType::class, $arrBotonAprobar)
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
+                    ->add('BtnActualizarDetalle', SubmitType::class, $arrBotonActualizarDetalle)
+                    ->add('BtnAprobarDetalle', SubmitType::class, $arrBotonAprobarDetalle)
+                    ->add('BtnCerrarDetalle', SubmitType::class, $arrBotonCerrarDetalle)
+                    ->add('BtnEliminarRestriccion', SubmitType::class, $arrBotonEliminarRestriccion)
                     ->getForm();
         return $form;
     }

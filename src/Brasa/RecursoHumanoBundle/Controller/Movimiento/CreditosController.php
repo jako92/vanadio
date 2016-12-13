@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class CreditosController extends Controller
@@ -202,7 +202,7 @@ class CreditosController extends Controller
             ->add('saldoTotal', TextType::class, array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
             ->add('vrAbono',TextType::class)
             ->add('tipoPago','hidden', array('data' => 'ABONO'))
-            ->add('save', 'submit', array('label' => 'Guardar'))
+            ->add('save', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -253,7 +253,7 @@ class CreditosController extends Controller
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
             ->add('attachment', 'file')
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
 
@@ -332,7 +332,7 @@ class CreditosController extends Controller
         $formCredito = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_creditos_refinanciar', array('codigoCredito' => $codigoCredito)))
             ->add('numeroCuotas', TextType::class, array('label'  => 'Numero cuotas'))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formCredito->handleRequest($request);
         $arCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
@@ -385,10 +385,10 @@ class CreditosController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF',))            
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }
@@ -402,8 +402,8 @@ class CreditosController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))
-            ->add('BtnSuspender', 'submit', $arrBotonSuspender)
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))
+            ->add('BtnSuspender', SubmitType::class, $arrBotonSuspender)
             ->getForm();
         return $form;
     }    

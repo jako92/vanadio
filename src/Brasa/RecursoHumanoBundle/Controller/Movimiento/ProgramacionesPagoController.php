@@ -326,7 +326,7 @@ class ProgramacionesPagoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->createFormBuilder()
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
 
@@ -381,7 +381,7 @@ class ProgramacionesPagoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder()    
-                    ->add('BtnLimpiar', 'submit', array('label'  => 'Limpiar',))
+                    ->add('BtnLimpiar', SubmitType::class, array('label'  => 'Limpiar',))
                     ->getForm();    
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -632,7 +632,7 @@ class ProgramacionesPagoController extends Controller
             ->setAction($this->generateUrl('brs_rhu_movimiento_programacion_pago_detalle_parametros_prima', array('codigoProgramacionPagoDetalle' => $codigoProgramacionPagoDetalle)))            
             ->add('porcentajeIbp', 'number', array('data' => $arProgramacionPagoDetalle->getPorcentajeIbp() ,'required' => false))      
             ->add('vrSalarioPrimaPropuesto', 'number', array('data' => $arProgramacionPagoDetalle->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {            
@@ -714,11 +714,11 @@ class ProgramacionesPagoController extends Controller
         }        
         
         $form = $this->createFormBuilder()    
-                   // ->add('BtnActualizarDetalle', 'submit', $arrBotonActualizarDetalle)
-                    ->add('BtnDesbloquearSoportePagoTurnos', 'submit', $arrBotonDesbloquearSoportePagoTurnos)                            
-                    ->add('BtnGenerarEmpleados', 'submit', $arrBotonGenerarEmpleados)                        
-                    ->add('BtnEliminarEmpleados', 'submit', $arrBotonEliminarEmpleados)
-                    ->add('BtnEliminarTodoEmpleados', 'submit', $arrBotonEliminarTodoEmpleados)                    
+                   // ->add('BtnActualizarDetalle', SubmitType::class, $arrBotonActualizarDetalle)
+                    ->add('BtnDesbloquearSoportePagoTurnos', SubmitType::class, $arrBotonDesbloquearSoportePagoTurnos)                            
+                    ->add('BtnGenerarEmpleados', SubmitType::class, $arrBotonGenerarEmpleados)                        
+                    ->add('BtnEliminarEmpleados', SubmitType::class, $arrBotonEliminarEmpleados)
+                    ->add('BtnEliminarTodoEmpleados', SubmitType::class, $arrBotonEliminarTodoEmpleados)                    
                     ->getForm();  
         return $form;
     }    
@@ -742,9 +742,9 @@ class ProgramacionesPagoController extends Controller
         }        
         
         $form = $this->createFormBuilder()                        
-                    ->add('BtnGenerarEmpleados', 'submit', $arrBotonGenerarEmpleados)                        
-                    ->add('BtnEliminarEmpleados', 'submit', $arrBotonEliminarEmpleados)
-                    ->add('BtnEliminarTodoEmpleados', 'submit', $arrBotonEliminarTodoEmpleados)                    
+                    ->add('BtnGenerarEmpleados', SubmitType::class, $arrBotonGenerarEmpleados)                        
+                    ->add('BtnEliminarEmpleados', SubmitType::class, $arrBotonEliminarEmpleados)
+                    ->add('BtnEliminarTodoEmpleados', SubmitType::class, $arrBotonEliminarTodoEmpleados)                    
                     ->getForm();  
         return $form;
     }        
@@ -777,13 +777,13 @@ class ProgramacionesPagoController extends Controller
             $arrBotonMarcar['disabled'] = true;            
         }
         $form = $this->createFormBuilder()             
-            ->add('BtnActualizar', 'submit', $arrBotonActualizar)            
-            ->add('BtnActualizarHoras', 'submit', $arrBotonActualizarHoras)
-            ->add('BtnActualizarHorasSoportePago', 'submit',$arrBotonActualizarHorasSoportePago)            
-            ->add('BtnEliminarPagoAdicional', 'submit', $arrBotonEliminarPagoAdicional)
-            ->add('BtnInactivarPagoAdicional', 'submit', $arrBotonInactivarPagoAdicional)
-            ->add('BtnActualizarPagoAdicional', 'submit', $arrBotonActualizarPagoAdicional)
-            ->add('BtnMarcar', 'submit', $arrBotonMarcar)
+            ->add('BtnActualizar', SubmitType::class, $arrBotonActualizar)            
+            ->add('BtnActualizarHoras', SubmitType::class, $arrBotonActualizarHoras)
+            ->add('BtnActualizarHorasSoportePago', SubmitType::class,$arrBotonActualizarHorasSoportePago)            
+            ->add('BtnEliminarPagoAdicional', SubmitType::class, $arrBotonEliminarPagoAdicional)
+            ->add('BtnInactivarPagoAdicional', SubmitType::class, $arrBotonInactivarPagoAdicional)
+            ->add('BtnActualizarPagoAdicional', SubmitType::class, $arrBotonActualizarPagoAdicional)
+            ->add('BtnMarcar', SubmitType::class, $arrBotonMarcar)
             ->getForm();
         return $form;
     }    

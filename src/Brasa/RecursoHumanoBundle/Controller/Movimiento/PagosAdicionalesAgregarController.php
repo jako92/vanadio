@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PagosAdicionalesAgregarController extends Controller
 {
@@ -32,8 +33,8 @@ class PagosAdicionalesAgregarController extends Controller
             ->add('TxtDetalle', TextType::class, array('required' => false))            
             ->add('aplicarDiaLaborado', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
-            ->add('BtnGuardaryNuevo', 'submit', array('label'  => 'Guardar y nuevo',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();
                     
         $form->handleRequest($request);
@@ -216,8 +217,8 @@ class PagosAdicionalesAgregarController extends Controller
             ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
             ->add('aplicarDiaLaborado', 'choice', array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
             ->add('aplicarDiaLaboradoSinDescanso', 'choice', array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
-            ->add('BtnGuardaryNuevo', 'submit', array('label'  => 'Guardar y nuevo',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();
         $form->handleRequest($request);
         

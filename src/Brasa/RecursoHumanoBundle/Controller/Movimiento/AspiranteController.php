@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAspiranteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AspiranteController extends Controller
 {
@@ -127,7 +128,7 @@ class AspiranteController extends Controller
                 'property' => 'nombre',
                 'required' => true
                 ))                              
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -193,8 +194,8 @@ class AspiranteController extends Controller
         }
             $form = $this->createFormBuilder()
                 ->add('comentarios', 'textarea', array('data' =>$arAspirante->getComentarios() ,'required' => false))                          
-                ->add('BtnDesbloquear', 'submit', array('label'  => 'Desbloquear'))                              
-                ->add('BtnCancelar', 'submit', array('label'  => 'Cancelar'))
+                ->add('BtnDesbloquear', SubmitType::class, array('label'  => 'Desbloquear'))                              
+                ->add('BtnCancelar', SubmitType::class, array('label'  => 'Cancelar'))
                 ->getForm();
         
         
@@ -348,9 +349,9 @@ class AspiranteController extends Controller
             ->add('bloqueado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroBloqueado')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreAspirante')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionAspirante')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }

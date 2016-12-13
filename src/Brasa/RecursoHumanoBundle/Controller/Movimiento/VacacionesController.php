@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class VacacionesController extends Controller
 {
@@ -299,7 +300,7 @@ class VacacionesController extends Controller
         $arCreditos = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
         $arCreditos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->pendientes($arVacacion->getCodigoEmpleadoFk());
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -355,7 +356,7 @@ class VacacionesController extends Controller
                 'property' => 'nombre',
                 'required' => true))
             ->add('TxtValor', 'number', array('required' => true))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -388,7 +389,7 @@ class VacacionesController extends Controller
         $arPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
         $arPagoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('tipoAdicional' => 1));
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -446,7 +447,7 @@ class VacacionesController extends Controller
             ->add('vrSalarioPromedio', 'number', array('data' =>$arVacacion->getVrSalarioPromedio() ,'required' => false))            
             ->add('totalVacaciones', 'number', array('data' =>$arVacacion->getVrVacacionBruto() ,'required' => false))                
             ->add('vrRecargoNocturno', 'number', array('data' =>$arVacacion->getVrPromedioRecargoNocturno() ,'required' => false))                            
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -532,11 +533,11 @@ class VacacionesController extends Controller
             ->add('centroCostoRel', 'entity', $arrayPropiedades)
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('estadoPagado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroPagado')))
             ->add('estadoAutorizado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroAutorizado')))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }
@@ -575,12 +576,12 @@ class VacacionesController extends Controller
             $arrBotonLiquidar['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnGenerarPago', 'submit', $arrBotonGenerarPago)
-                    ->add('BtnLiquidar', 'submit', $arrBotonLiquidar)
-                    ->add('BtnEliminarAdicional', 'submit', $arrBotonEliminarAdicional)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnGenerarPago', SubmitType::class, $arrBotonGenerarPago)
+                    ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
+                    ->add('BtnEliminarAdicional', SubmitType::class, $arrBotonEliminarAdicional)
                     ->getForm();
         return $form;
     }

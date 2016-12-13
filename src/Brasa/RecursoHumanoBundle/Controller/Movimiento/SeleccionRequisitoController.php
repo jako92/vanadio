@@ -273,7 +273,7 @@ class SeleccionRequisitoController extends Controller
             ))
             ->add('bloqueado', 'checkbox', array('required'  => false))
             ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
            
@@ -388,11 +388,11 @@ class SeleccionRequisitoController extends Controller
             $arrBotonEliminarDetalle['disabled'] = true;            
         }
         $form = $this->createFormBuilder()
-            ->add('BtnImprimir', 'submit', $arrBotonImprimir)    
-            ->add('BtnAprobarDetalle', 'submit', $arrBotonAprobarDetalle)
-            ->add('BtnDesaprobarDetalle', 'submit', $arrBotonDesaprobarDetalle)
-            ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminarDetalle)
-            ->add('BtnExcelAspirante', 'submit', $arrBotonExcelAspirante)            
+            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)    
+            ->add('BtnAprobarDetalle', SubmitType::class, $arrBotonAprobarDetalle)
+            ->add('BtnDesaprobarDetalle', SubmitType::class, $arrBotonDesaprobarDetalle)
+            ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
+            ->add('BtnExcelAspirante', SubmitType::class, $arrBotonExcelAspirante)            
             ->getForm();        
         return $form;
     }    

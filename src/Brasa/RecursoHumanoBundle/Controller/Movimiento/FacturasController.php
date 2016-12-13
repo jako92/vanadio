@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuFacturaType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FacturasController extends Controller
 {
@@ -107,10 +108,10 @@ class FacturasController extends Controller
         $em = $this->getDoctrine()->getManager();
                          
         $form = $this->createFormBuilder()                        
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))            
-            ->add('BtnEliminarDetalleServicio', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnEliminarDetalleExamen', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnEliminarDetalleSeleccion', 'submit', array('label'  => 'Eliminar',))            
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))            
+            ->add('BtnEliminarDetalleServicio', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnEliminarDetalleExamen', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnEliminarDetalleSeleccion', SubmitType::class, array('label'  => 'Eliminar',))            
             ->getForm();
         $form->handleRequest($request);        
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
@@ -191,7 +192,7 @@ class FacturasController extends Controller
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
         $form = $this->createFormBuilder()
-            ->add('BtnAgregar', 'submit', array('label'  => 'Agregar',))
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Agregar',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -274,7 +275,7 @@ class FacturasController extends Controller
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
         $form = $this->createFormBuilder()
-            ->add('BtnAgregar', 'submit', array('label'  => 'Agregar',))
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Agregar',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -314,7 +315,7 @@ class FacturasController extends Controller
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
         $form = $this->createFormBuilder()
-            ->add('BtnAgregar', 'submit', array('label'  => 'Agregar',))
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Agregar',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -415,9 +416,9 @@ class FacturasController extends Controller
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroNumero')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }

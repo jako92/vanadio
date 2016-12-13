@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAdicionalPagoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PagosAdicionalesController extends Controller
 {
@@ -282,12 +283,12 @@ class PagosAdicionalesController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
             ->add('centroCostoRel', 'entity', $arrayPropiedades)
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesConcepto)    
-            ->add('BtnRetirarConcepto', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnInactivar', 'submit', array('label'  => 'Inactivar',))            
+            ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
             ->add('aplicarDiaLaborado', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
             ->add('estadoInactivo', 'choice', array('choices' => array('2' => 'TODOS', '0' => 'NO', '1' => 'SI'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -296,7 +297,7 @@ class PagosAdicionalesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new session;                 
         $form = $this->createFormBuilder()
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }
@@ -338,8 +339,8 @@ class PagosAdicionalesController extends Controller
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
         $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
         $form = $this->createFormBuilder()
-            ->add('BtnRetirarConcepto', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnAplicaDiaLaborado', 'submit', array('label'  => 'Aplicar a dia laborado',))                
+            ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnAplicaDiaLaborado', SubmitType::class, array('label'  => 'Aplicar a dia laborado',))                
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -454,8 +455,8 @@ class PagosAdicionalesController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('departamentoEmpresaRel', 'entity', $arrayPropiedadesDepartamentoEmpresa)
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))    
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))    
             ->getForm();
         $form->handleRequest($request);
         $this->listarTiempoSuplementarioMasivo($arProgramacionPago);
@@ -573,7 +574,7 @@ class PagosAdicionalesController extends Controller
         $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->ListaDQL('', $codigoCentroCosto, 1));
         $arEmpleados = $paginator->paginate($query, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGenerar', 'submit', array('label'  => 'Generar',))
+            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {

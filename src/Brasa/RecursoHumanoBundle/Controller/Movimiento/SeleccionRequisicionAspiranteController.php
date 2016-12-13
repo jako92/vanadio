@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SeleccionRequisicionAspiranteController extends Controller
 {
@@ -128,16 +129,16 @@ class SeleccionRequisicionAspiranteController extends Controller
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))        
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombreSeleccionRequisito')))
             ->add('estadoAbierto', 'choice', array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccionRequisito')))             
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }
     
     private function formularioDetalle() {        
         $form = $this->createFormBuilder()
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))
-            ->add('BtnAprobarDetalle', 'submit', array('label'  => 'Aprobar',))
-            ->add('BtnEliminarDetalle', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))
+            ->add('BtnAprobarDetalle', SubmitType::class, array('label'  => 'Aprobar',))
+            ->add('BtnEliminarDetalle', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();        
         return $form;
     }    

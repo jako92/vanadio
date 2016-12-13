@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoIncapacidadType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PagoIncapacidadController extends Controller
 {
@@ -164,7 +165,7 @@ class PagoIncapacidadController extends Controller
         $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesEntidadSaludCobrar($arIncapacidadPago->getCodigoEntidadSaludFk());
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) { 
@@ -287,9 +288,9 @@ class PagoIncapacidadController extends Controller
         }        
         $form = $this->createFormBuilder()
             ->add('entidadSaludRel', 'entity', $arrayPropiedades)                  
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }   
@@ -310,11 +311,11 @@ class PagoIncapacidadController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-            ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)                             
-            ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-            ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-            ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)                  
+            ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+            ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                             
+            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+            ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+            ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)                  
             ->getForm();        
         return $form;
     }    

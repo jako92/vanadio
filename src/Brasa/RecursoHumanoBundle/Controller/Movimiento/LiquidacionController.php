@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuLiquidacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class LiquidacionController extends Controller
 {
@@ -235,7 +236,7 @@ class LiquidacionController extends Controller
         $form = $this->createFormBuilder()
             ->add('pagoConceptoRel', 'entity', $arrayPropiedadesPagoConcepto) 
             ->add('TxtValor', 'number', array('required' => true, 'data' => $valor))                             
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) { 
@@ -273,7 +274,7 @@ class LiquidacionController extends Controller
         $arCreditos = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
         $arCreditos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->pendientes($arLiquidacion->getCodigoEmpleadoFk());
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) { 
@@ -330,7 +331,7 @@ class LiquidacionController extends Controller
             ->add('vrSalarioPrimaPropuesto', 'number', array('data' =>$arLiquidacion->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
             ->add('vrSalarioCesantiasPropuesto', 'number', array('data' =>$arLiquidacion->getVrSalarioCesantiasPropuesto() ,'required' => false))                                      
             ->add('eliminarAusentismo', 'checkbox', array('required'  => false, 'data' =>$arLiquidacion->getEliminarAusentismo()))                
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -410,9 +411,9 @@ class LiquidacionController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('estadoGenerado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroGenerado')))
             ->add('estadoPagado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroPagado')))
-            ->add('BtnLiquidar', 'submit', array('label'  => 'Liquidar'))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnLiquidar', SubmitType::class, array('label'  => 'Liquidar'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
@@ -439,12 +440,12 @@ class LiquidacionController extends Controller
             $arrBotonLiquidar['disabled'] = true;
         }
         $form = $this->createFormBuilder()    
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)            
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnLiquidar', 'submit', $arrBotonLiquidar)
-                    ->add('BtnEliminarAdicional', 'submit', $arrBotonEliminarAdicional)
-                    ->add('BtnGenerarPago', 'submit', $arrBotonGenerarPago)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
+                    ->add('BtnEliminarAdicional', SubmitType::class, $arrBotonEliminarAdicional)
+                    ->add('BtnGenerarPago', SubmitType::class, $arrBotonGenerarPago)
                     ->getForm();  
         return $form;
     }        

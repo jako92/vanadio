@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PagosController extends Controller
 {
@@ -107,8 +108,8 @@ class PagosController extends Controller
         $arPagoDetallesSede = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalleSede();
         $arPagoDetallesSede = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalleSede')->findBy(array('codigoPagoFk' => $codigoPago));        
         $form = $this->createFormBuilder()            
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))           
-            ->add('BtnEnviarCorreo', 'submit', array('label'  => 'Correo',))           
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))           
+            ->add('BtnEnviarCorreo', SubmitType::class, array('label'  => 'Correo',))           
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -271,15 +272,15 @@ class PagosController extends Controller
             //->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $strFechaDesde))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
             //->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $strFechaHasta))                
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                            
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroPagoNumero')))                                                   
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', 'submit', array('label'  => 'Corregir ibc', 'disabled' => true))
-            ->add('BtnExcelDetalle', 'submit', array('label'  => 'Excel detalle',))
-            //->add('BtnExcelResumen', 'submit', array('label'  => 'Excel resumen',))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))
+            //->add('BtnExcelResumen', SubmitType::class, array('label'  => 'Excel resumen',))
             ->getForm();        
         return $form;
     }      

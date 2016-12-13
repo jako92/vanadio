@@ -11,6 +11,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuDisciplinarioDescargoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DisciplinarioController extends Controller
 {
@@ -387,9 +388,9 @@ class DisciplinarioController extends Controller
             ->add('estadoProcede', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroEstadoProcede')))                                        
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
@@ -435,11 +436,11 @@ class DisciplinarioController extends Controller
         }
         
         $form = $this->createFormBuilder()    
-            ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-            ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-            ->add('BtnCerrar', 'submit', $arrBotonCerrar)            
-            ->add('BtnImprimir', 'submit', $arrBotonImprimir)                                            
-            ->add('BtnEliminarDescargo', 'submit', $arrBotonEliminarDescargo)                                            
+            ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+            ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+            ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)            
+            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                                            
+            ->add('BtnEliminarDescargo', SubmitType::class, $arrBotonEliminarDescargo)                                            
             ->getForm();  
         return $form;
     }

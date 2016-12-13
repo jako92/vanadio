@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AcreditacionController extends Controller
 {
@@ -126,7 +127,7 @@ class AcreditacionController extends Controller
             ->add('numero', TextType::class, array('required' => true))
             ->add('fecha', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
             ->add('attachment', 'file')
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -187,7 +188,7 @@ class AcreditacionController extends Controller
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
             ->add('attachment', 'file')
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -271,10 +272,10 @@ class AcreditacionController extends Controller
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
             ->add('filtrarFecha', 'checkbox', array('required'  => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFecha')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcelInforme', 'submit', array('label'  => 'Informe'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcelInforme', SubmitType::class, array('label'  => 'Informe'))
             ->getForm();
         return $form;
     }

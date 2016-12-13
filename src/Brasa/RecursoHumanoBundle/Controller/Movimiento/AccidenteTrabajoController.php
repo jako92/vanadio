@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAccidenteTrabajoType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AccidenteTrabajoController extends Controller
 {
@@ -148,7 +149,7 @@ class AccidenteTrabajoController extends Controller
     public function detalleAction(Request $request, $codigoAccidenteTrabajo) {
         $em = $this->getDoctrine()->getManager();        
         $form = $this->createFormBuilder()
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))    
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))    
             ->getForm();
         $form->handleRequest($request);
 
@@ -200,11 +201,11 @@ class AccidenteTrabajoController extends Controller
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnCerrar', 'submit', array('label'  => 'Cerrar',))    
-            //->add('BtnPdf', 'submit', array('label'  => 'PDF',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnCerrar', SubmitType::class, array('label'  => 'Cerrar',))    
+            //->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         return $form;
     }

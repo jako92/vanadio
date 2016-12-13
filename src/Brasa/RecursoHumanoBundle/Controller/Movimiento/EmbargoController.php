@@ -131,9 +131,9 @@ class EmbargoController extends Controller
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))    
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroEmbargoNumero')))                                                                                
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();        
         return $form;
     }      

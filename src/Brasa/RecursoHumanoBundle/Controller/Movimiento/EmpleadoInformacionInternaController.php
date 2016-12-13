@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuEmpleadoInformacionInternaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * BaseEmpleadoInformacionInterna  Controller.
@@ -27,8 +28,8 @@ class EmpleadoInformacionInternaController extends Controller
         }
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arEmpleadoInformacionInterna = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoInformacionInterna();
@@ -73,7 +74,7 @@ class EmpleadoInformacionInternaController extends Controller
             ))    
             ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
             ->add('comentarios', 'textarea', array('required' => true))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoBancoType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PagoBancoController extends Controller
 {
@@ -262,9 +263,9 @@ class PagoBancoController extends Controller
         }        
         $form = $this->createFormBuilder()
             ->add('bancoRel', 'entity', $arrayPropiedadesBanco)                
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar',))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         $form->handleRequest($request); 
         $this->listarDetalle();
@@ -380,7 +381,7 @@ class PagoBancoController extends Controller
         $arVacaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->findBy(array('estadoPagoGenerado' => 1, 'estadoPagoBanco' => 0));
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))            
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -429,7 +430,7 @@ class PagoBancoController extends Controller
         $arLiquidaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
         $arLiquidaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findBy(array('estadoPagoGenerado' => 1, 'estadoPagoBanco' => 0));
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))            
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -478,7 +479,7 @@ class PagoBancoController extends Controller
         $arSsoPediodoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
         $arSsoPediodoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->findBy(array('estadoCerrado' => 1, 'estadoPagoBanco' => 0));
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))            
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -680,9 +681,9 @@ class PagoBancoController extends Controller
         $form = $this->createFormBuilder()
             //->add('entidadExamenRel', 'entity', $arrayPropiedades) 
             ->add('fecha',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }          
@@ -710,18 +711,18 @@ class PagoBancoController extends Controller
             $arrBotonDesAutorizar['disabled'] = true;
         }
         $form = $this->createFormBuilder()    
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)            
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)                                
-                    ->add('BtnArchivoBancolombiaPab', 'submit', $arrBotonArchivoBancolombiaPab)
-                    ->add('BtnArchivoBancolombiaSap', 'submit', $arrBotonArchivoBancolombiaSap)
-                    ->add('BtnArchivoAvvillasInterno', 'submit', $arrBotonArchivoAvvillasInterno)
-                    ->add('BtnArchivoAvvillasOtros', 'submit', $arrBotonArchivoAvvillasOtros)
-                    ->add('BtnArchivoDavivienda', 'submit', $arrBotonArchivoDavivienda)
-                    ->add('BtnArchivoBogota', 'submit', $arrBotonArchivoBogota)
-                    ->add('BtnArchivoColpatriaCsv', 'submit', $arrBotonArchivoColpatriaCsv)
-                    ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminarDetalle)
-                    ->add('BtnDetalleExcel', 'submit', array('label' => 'Excel'))
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                                
+                    ->add('BtnArchivoBancolombiaPab', SubmitType::class, $arrBotonArchivoBancolombiaPab)
+                    ->add('BtnArchivoBancolombiaSap', SubmitType::class, $arrBotonArchivoBancolombiaSap)
+                    ->add('BtnArchivoAvvillasInterno', SubmitType::class, $arrBotonArchivoAvvillasInterno)
+                    ->add('BtnArchivoAvvillasOtros', SubmitType::class, $arrBotonArchivoAvvillasOtros)
+                    ->add('BtnArchivoDavivienda', SubmitType::class, $arrBotonArchivoDavivienda)
+                    ->add('BtnArchivoBogota', SubmitType::class, $arrBotonArchivoBogota)
+                    ->add('BtnArchivoColpatriaCsv', SubmitType::class, $arrBotonArchivoColpatriaCsv)
+                    ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
+                    ->add('BtnDetalleExcel', SubmitType::class, array('label' => 'Excel'))
                     ->getForm();  
         return $form;
     }    

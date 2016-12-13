@@ -12,6 +12,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionPruebaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionVisitaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuSeleccionEntrevistaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SeleccionController extends Controller
 {
     /**
@@ -431,7 +432,7 @@ class SeleccionController extends Controller
             ))
             ->add('bloqueado', 'checkbox', array('required'  => false))
             ->add('comentariosAspirante', 'textarea', array('required'  => false))                      
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formSeleccion->handleRequest($request);
            
@@ -524,9 +525,9 @@ class SeleccionController extends Controller
             ->add('estadoCerrado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'), 'data' => $session->get('filtroAbiertoSeleccion')))
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreSeleccion')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionSeleccion')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
@@ -563,15 +564,15 @@ class SeleccionController extends Controller
             $arrBotonAprobar['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnAprobar', 'submit', $arrBotonAprobar)
-                    //->add('BtnCerrar', 'submit', $arrBotonCerrar)
-                    ->add('BtnDetalleVerificarReferencia', 'submit', $arrBotonDetalleVerificarReferencia)
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-                    ->add('BtnEliminarReferencia', 'submit', $arrBotonEliminarReferencia)
-                    ->add('BtnEliminarPrueba', 'submit', $arrBotonEliminarPrueba)
-                    ->add('BtnEliminarVisita', 'submit', $arrBotonEliminarVisita)
-                    ->add('BtnEliminarEntrevista', 'submit', $arrBotonEliminarEntrevista)
+                    ->add('BtnAprobar', SubmitType::class, $arrBotonAprobar)
+                    //->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
+                    ->add('BtnDetalleVerificarReferencia', SubmitType::class, $arrBotonDetalleVerificarReferencia)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                    ->add('BtnEliminarReferencia', SubmitType::class, $arrBotonEliminarReferencia)
+                    ->add('BtnEliminarPrueba', SubmitType::class, $arrBotonEliminarPrueba)
+                    ->add('BtnEliminarVisita', SubmitType::class, $arrBotonEliminarVisita)
+                    ->add('BtnEliminarEntrevista', SubmitType::class, $arrBotonEliminarEntrevista)
                     ->getForm();
         return $form;
     }

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuIncapacidadType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class IncapacidadController extends Controller
 {
@@ -255,11 +256,11 @@ class IncapacidadController extends Controller
             ->add('TxtNumeroEps', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIncapacidadNumeroEps')))                                                        
             ->add('estadoTranscripcion', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroIncapacidadEstadoTranscripcion')))                                                    
             ->add('estadoLegalizado', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'LEGALIZADA', '0' => 'SIN LEGALIZAR'),'data' => $session->get('filtroIncapacidadEstadoLegalizado')))                                                    
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnLegalizar', 'submit', array('label'  => 'Legalizar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnLegalizar', SubmitType::class, array('label'  => 'Legalizar',))
             ->getForm();        
         return $form;
     }      

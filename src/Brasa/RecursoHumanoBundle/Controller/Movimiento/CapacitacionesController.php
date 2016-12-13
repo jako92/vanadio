@@ -11,6 +11,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuCapacitacionNotaType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CapacitacionesController extends Controller
 {
@@ -452,9 +453,9 @@ class CapacitacionesController extends Controller
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
             ->add('estado', 'choice', array('choices'   => array('2' => 'TODOS', '0' => 'SI', '1' => 'NO'), 'data' => $session->get('filtroEstado')))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
@@ -499,16 +500,16 @@ class CapacitacionesController extends Controller
         }
 
         $form = $this->createFormBuilder()
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnImprimirNotas', 'submit', $arrBotonImprimirNotas)
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-                    ->add('BtnAsistio', 'submit', $arrBotonAsistio)
-                    ->add('BtnNoAsistio', 'submit', $arrBotonNoAsistio)
-                    ->add('BtnActualizarDetalle', 'submit', $arrBotonActualizarDetalle)
-                    ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminarDetalle)
-                    ->add('BtnEliminarNota', 'submit', $arrBotonEliminarNota)
-                    ->add('BtnCerrar', 'submit', $arrBotonCerrar)
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnImprimirNotas', SubmitType::class, $arrBotonImprimirNotas)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                    ->add('BtnAsistio', SubmitType::class, $arrBotonAsistio)
+                    ->add('BtnNoAsistio', SubmitType::class, $arrBotonNoAsistio)
+                    ->add('BtnActualizarDetalle', SubmitType::class, $arrBotonActualizarDetalle)
+                    ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
+                    ->add('BtnEliminarNota', SubmitType::class, $arrBotonEliminarNota)
+                    ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
                     ->getForm();
         return $form;
     }
@@ -566,8 +567,8 @@ class CapacitacionesController extends Controller
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
             ->add('TxtCodigoCliente', TextType::class, array('label'  => 'Codigo Cliente','data' => $session->get('filtroCodigoCliente')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'Nombre Cliente','data' => $session->get('filtroNombreCliente')))
-            ->add('BtnAgregar', 'submit', array('label'  => 'Agregar',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Agregar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
