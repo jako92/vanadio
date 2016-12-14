@@ -5,9 +5,9 @@ class FormatoCapacitacionNotas extends \FPDF_FPDF {
 
     public static $codigoCapacitacion;
 
-    public function Generar($miThis, $codigoCapacitacion) {
+    public function Generar($em, $codigoCapacitacion) {
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoCapacitacion = $codigoCapacitacion;
         $pdf = new FormatoCapacitacionNotas();

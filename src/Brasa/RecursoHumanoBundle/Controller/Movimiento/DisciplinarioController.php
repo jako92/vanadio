@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -90,8 +91,8 @@ class DisciplinarioController extends Controller
             $arDisciplinario->setFechaIncidente(new \DateTime('now'));
             $arDisciplinario->setFechaIngresoTrabajo(new \DateTime('now'));
             $arDisciplinario->setFechaNotificacion(new \DateTime('now'));
-        }
-        $form = $this->createForm(new RhuDisciplinarioType, $arDisciplinario);
+        }                
+        $form = $this->createForm(RhuDisciplinarioType::class, $arDisciplinario);  
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -191,15 +192,15 @@ class DisciplinarioController extends Controller
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 0){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinario();
-                        $objFormatoProceso->Generar($this, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
                     }
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 1){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinario1teg();
-                        $objFormatoProceso->Generar($this, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
                     }
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 2){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinarioEstelar();
-                        $objFormatoProceso->Generar($this, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
                     }
                                                                                
                 }    
@@ -287,7 +288,8 @@ class DisciplinarioController extends Controller
         if($codigoDisciplinarioDescargo != 0) {
             $arDisciplinarioDescargo = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinarioDescargo')->find($codigoDisciplinarioDescargo);
         }
-        $form = $this->createForm(new RhuDisciplinarioDescargoType(), $arDisciplinarioDescargo);
+        $form = $this->createForm(RhuDisciplinarioDescargoType::class, $arDisciplinarioDescargo); 
+        //$form = $this->createForm(new RhuDisciplinarioDescargoType(), $arDisciplinarioDescargo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arDisciplinarioDescargo = $form->getData();
@@ -398,13 +400,16 @@ class DisciplinarioController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;                
+        $session = new session;
+        $codigoCentroCosto = "";
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }        
+        }
+        $codigoZona = "";       
         if($form->get('zonaRel')->getData()) {
             $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
         }
+        $codigoOperacion = "";
         if($form->get('operacionRel')->getData()) {
             $codigoOperacion = $form->get('operacionRel')->getData()->getCodigoOperacionPk();
         }        

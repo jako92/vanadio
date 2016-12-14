@@ -5,9 +5,9 @@ class FormatoDescargo extends \FPDF_FPDF {
     public static $em;
     public static $codigoDescargo;
     
-    public function Generar($miThis, $codigoDescargo) {        
+    public function Generar($em, $codigoDescargo) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoDescargo = $codigoDescargo;
         $pdf = new FormatoDescargo();

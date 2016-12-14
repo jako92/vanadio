@@ -83,7 +83,7 @@ class AcreditacionController extends Controller
             $arAcreditacion->setFechaVencimiento(new \DateTime('now'));
         }
 
-        $form = $this->createForm(new RhuAcreditacionType(), $arAcreditacion);
+        $form = $this->createForm(RhuAcreditacionType::class, $arAcreditacion);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();

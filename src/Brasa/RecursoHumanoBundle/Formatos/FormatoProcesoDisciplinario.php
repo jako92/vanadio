@@ -7,9 +7,9 @@ class FormatoProcesoDisciplinario extends \FPDF_FPDF {
     public static $codigoProcesoDisciplinarioTipo;
     public static $codigoProcesoDisciplinario;
     
-    public function Generar($miThis, $codigoProcesoDisciplinarioTipo,$codigoProcesoDisciplinario) {        
+    public function Generar($em, $codigoProcesoDisciplinarioTipo,$codigoProcesoDisciplinario) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoProcesoDisciplinarioTipo = $codigoProcesoDisciplinarioTipo;
         self::$codigoProcesoDisciplinario = $codigoProcesoDisciplinario;

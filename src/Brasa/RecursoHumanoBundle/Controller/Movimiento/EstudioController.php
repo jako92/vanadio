@@ -80,7 +80,7 @@ class EstudioController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arEstudio->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuEmpleadoEstudioType, $arEstudio);
+        $form = $this->createForm(RhuEmpleadoEstudioType::class, $arEstudio);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -189,6 +189,7 @@ class EstudioController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
+        $codigoEmpleadoEstudioTipo = "";
         if($form->get('empleadoEstudioTipoRel')->getData()) {
             $codigoEmpleadoEstudioTipo = $form->get('empleadoEstudioTipoRel')->getData()->getCodigoEmpleadoEstudioTipoPk();
         }        

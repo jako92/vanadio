@@ -31,7 +31,7 @@ class RhuPermisoType extends AbstractType
             ->add('motivo', TextareaType::class, array('required' => true))
             ->add('jefeAutoriza', TextType::class, array('required' => true))
             ->add('observaciones', TextareaType::class, array('required' => false))
-            ->add('afectaHorario', ChoiceType::class, array('choices'   => array('1' => 'SI', '0' => 'NO')))
+            ->add('afectaHorario', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

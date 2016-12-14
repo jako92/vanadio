@@ -5,9 +5,9 @@ class FormatoPermiso extends \FPDF_FPDF {
     
     public static $codigoPermiso;
     
-    public function Generar($miThis, $codigoPermiso) {        
+    public function Generar($em, $codigoPermiso) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoPermiso = $codigoPermiso;
         $pdf = new FormatoPermiso();

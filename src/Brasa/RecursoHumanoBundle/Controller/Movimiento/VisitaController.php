@@ -80,7 +80,7 @@ class VisitaController extends Controller
         } else {
             $arVisita->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuVisitaType, $arVisita);         
+        $form = $this->createForm(RhuVisitaType::class, $arVisita);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();

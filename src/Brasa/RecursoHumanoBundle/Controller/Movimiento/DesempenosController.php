@@ -84,7 +84,7 @@ class DesempenosController extends Controller
         } else {
             $arDesempeno->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuDesempenoType, $arDesempeno);         
+        $form = $this->createForm(RhuDesempenoType::class, $arDesempeno);      
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arrControles = $request->request->All();
@@ -485,7 +485,7 @@ class DesempenosController extends Controller
         }          
             $arDesempenosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuDesempenoDetalle();
             $arDesempenosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuDesempenoDetalle')->ordenarPreguntasTipo($codigoDesempeno);
-            $arDesempenosDetalles = $paginator->paginate($arDesempenosDetalles, $this->get('request')->query->get('page', 1),100);    
+            $arDesempenosDetalles = $paginator->paginate($arDesempenosDetalles, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);          
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Desempenos:detalle.html.twig', array(
                         'arDesempenosDetalles' => $arDesempenosDetalles,
                         'arDesempeno' => $arDesempeno,

@@ -28,7 +28,7 @@ class RhuDisciplinarioType extends AbstractType
             ))                 
             ->add('asunto', TextareaType::class, array('required' => false))            
             ->add('diasSuspencion', TextType::class, array('required' => false)) 
-            ->add('reentrenamiento', ChoiceType::class, array('choices'   => array('0' => 'NO', '1' => 'SI'))) 
+            ->add('reentrenamiento', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1'))) 
             ->add('puesto', TextType::class, array('required' => false))
             ->add('fechaNotificacion', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('fechaIncidente', DateType::class, array('format' => 'yyyyMMdd'))    

@@ -79,7 +79,8 @@ class PermisoController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arPermiso->setFechaPermiso(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuPermisoType, $arPermiso);
+        $form = $this->createForm(RhuPermisoType::class, $arPermiso);
+        //$form = $this->createForm(new RhuPermisoType, $arPermiso);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -156,7 +157,7 @@ class PermisoController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arPermiso->getEstadoAutorizado() == 1) {
                     $objFormatoPermiso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoPermiso();
-                    $objFormatoPermiso->Generar($this, $codigoPermiso);
+                    $objFormatoPermiso->Generar($em, $codigoPermiso);
                 }
             }
         }
@@ -209,7 +210,8 @@ class PermisoController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;        
+        $session = new session;
+        $codigoCentroCosto = "";        
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }

@@ -89,13 +89,13 @@ class CapacitacionesController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if ($arCapacitacion->getEstadoAutorizado() == 1){
                     $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCapacitacion();
-                    $objFormato->Generar($this, $codigoCapacitacion);
+                    $objFormato->Generar($em, $codigoCapacitacion);
                 }
             }
             if($form->get('BtnImprimirNotas')->isClicked()) {
                 if ($arCapacitacion->getEstadoAutorizado() == 1){
                     $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCapacitacionNotas();
-                    $objFormato->Generar($this, $codigoCapacitacion);
+                    $objFormato->Generar($em, $codigoCapacitacion);
                 }
             }
             if($form->get('BtnAutorizar')->isClicked()) {
@@ -261,10 +261,12 @@ class CapacitacionesController extends Controller
         }
         $arCapacitacionesDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
         $arCapacitacionesDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionDetalle')->findBy(array('codigoCapacitacionFk' => $codigoCapacitacion));
-        $arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $this->get('request')->query->get('page', 1),50);
+        $arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $this->get('request')->query->get('page', 1),50);
         $arCapacitacionesNotas = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionNota();
         $arCapacitacionesNotas = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionNota')->findBy(array('codigoCapacitacionFk' => $codigoCapacitacion));
-        $arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $this->get('request')->query->get('page', 1),50);
+        $arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $this->get('request')->query->get('page', 1),50);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Capacitaciones:detalle.html.twig', array(
                         'arCapacitacionesDetalles' => $arCapacitacionesDetalles,
                         'arCapacitacionesNotas' => $arCapacitacionesNotas,
@@ -281,7 +283,8 @@ class CapacitacionesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
-        $form = $this->createForm(new RhuCapacitacionDetalleType(), $arCapacitacionDetalle);
+        $form = $this->createForm(RhuCapacitacionDetalleType::class, $arCapacitacionDetalle);
+        //$form = $this->createForm(new RhuCapacitacionDetalleType(), $arCapacitacionDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arCapacitacion->getEstadoAutorizado() == 0){
@@ -389,7 +392,8 @@ class CapacitacionesController extends Controller
             $arCapacitacion->setFecha(new \DateTime('now'));
             $arCapacitacion->setFechaCapacitacion(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuCapacitacionType(), $arCapacitacion);
+        $form = $this->createForm(RhuCapacitacionType::class, $arCapacitacion);
+        //$form = $this->createForm(new RhuCapacitacionType(), $arCapacitacion);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arCapacitacion->getEstadoAutorizado() == 0){
@@ -576,7 +580,8 @@ class CapacitacionesController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;        
+        $session = new session; 
+        $codigoCapacitacionTipo = "";
         if($form->get('capacitacionTipoRel')->getData()) {
             $codigoCapacitacionTipo = $form->get('capacitacionTipoRel')->getData()->getCodigoCapacitacionTipoPk();
         } 
