@@ -43,7 +43,7 @@ class CtbTerceroType extends AbstractType
             ->add('BtnGuardar', 'submit', array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

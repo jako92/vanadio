@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbCentroCostoType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -14,16 +15,15 @@ class CentroCostoController extends Controller
     /**
      * @Route("/ctb/base/centro/costo/lista", name="brs_ctb_base_centro_costo_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 93, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arCentroCostos = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
@@ -43,7 +43,8 @@ class CentroCostoController extends Controller
         }
         $arCentroCostos = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
         $query = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->findAll();
-        $arCentroCostos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
+        $arCentroCostos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCentroCostos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
 
         return $this->render('BrasaContabilidadBundle:Base/CentroCosto:lista.html.twig', array(
                     'arCentroCostos' => $arCentroCostos,
@@ -55,15 +56,15 @@ class CentroCostoController extends Controller
     /**
      * @Route("/ctb/base/centro/costo/nuevo/{codigoCentroCosto}", name="brs_ctb_base_centro_costo_nuevo")
      */
-    public function nuevoAction($codigoCentroCosto) {
+    public function nuevoAction(Request $request, $codigoCentroCosto) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arCentroCosto = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
         if ($codigoCentroCosto != 0)
         {
             $arCentroCosto = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find($codigoCentroCosto);
-        }    
-        $form = $this->createForm(new CtbCentroCostoType(), $arCentroCosto);
+        }
+        $form = $this->createForm(CtbCentroCostoType::class, $arCentroCosto);   
+        //$form = $this->createForm(new CtbCentroCostoType(), $arCentroCosto);
         $form->handleRequest($request);
         if ($form->isValid())
         {

@@ -4,6 +4,9 @@ namespace Brasa\ContabilidadBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CtbComprobanteType extends AbstractType
 {
@@ -15,12 +18,12 @@ class CtbComprobanteType extends AbstractType
     {
         $builder
             
-            ->add('codigoComprobantePk', 'number', array('required' => true))
-            ->add('nombre', 'text', array('required' => true))
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'));
+            ->add('codigoComprobantePk', NumberType::class, array('required' => true))
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }
