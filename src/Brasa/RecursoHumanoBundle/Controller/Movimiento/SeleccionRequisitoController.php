@@ -72,7 +72,7 @@ class SeleccionRequisitoController extends Controller
         $form = $this->createForm(new RhuSeleccionRequisitoType, $arRequisito);
         $form->handleRequest($request);
         if ($form->isValid()) { 
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arRequisito = $form->getData();
             $arRequisito->setFecha(new \DateTime('now'));
             if($codigoSeleccionRequisito == 0) {
@@ -282,7 +282,7 @@ class SeleccionRequisitoController extends Controller
         if ($form->isValid()) {
             
                 if ($arSeleccionRequisicion->getEstadoCerrado() == 0){
-                    $arUsuario = $this->get('security.context')->getToken()->getUser();
+                    $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                     $arSeleccionRequisicionAspirante->setComentarios($form->get('comentarios')->getData());
                     $arSeleccionRequisicionAspirante->setFechaDescarte($form->get('fechaDescarte')->getData());
                     $arSeleccionRequisicionAspirante->setMotivoDescarteRequisicionAspiranteRel($form->get('motivoDescarteRequisicionAspiranteRel')->getData());

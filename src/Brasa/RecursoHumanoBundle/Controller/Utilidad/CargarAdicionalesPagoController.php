@@ -25,7 +25,7 @@ class CargarAdicionalesPagoController extends Controller
         $form->handleRequest($request);
         if($form->isValid()) {
             if($form->get('BtnCargar')->isClicked()) {
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
                 $fecha = new \DateTime('now');

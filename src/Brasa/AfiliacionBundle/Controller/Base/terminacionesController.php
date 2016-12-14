@@ -74,7 +74,7 @@ class terminacionesController extends Controller
             ->getForm();
         $formContrato->handleRequest($request);           
         if ($formContrato->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $dateFechaHasta = $formContrato->get('fechaHasta')->getData();                                                                                      
             
             $arContrato->setFechaHasta($dateFechaHasta);

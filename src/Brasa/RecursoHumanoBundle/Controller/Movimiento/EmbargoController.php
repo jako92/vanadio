@@ -81,7 +81,7 @@ class EmbargoController extends Controller
         $form = $this->createForm(new RhuEmbargoType(), $arEmbargo);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arEmbargo = $form->getData();                          
             $arrControles = $request->request->All();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

@@ -80,7 +80,7 @@ class PagoBancoController extends Controller
         $form = $this->createForm(new RhuPagoBancoType, $arPagoBanco);
         $form->handleRequest($request);
         if ($form->isValid()) {      
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arPagoBanco = $form->getData();
             $arPagoBanco->setCodigoUsuario($arUsuario->getUsername());
             $em->persist($arPagoBanco);

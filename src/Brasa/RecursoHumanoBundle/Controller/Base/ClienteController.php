@@ -77,7 +77,7 @@ class ClienteController extends Controller
         $form->handleRequest($request);
         
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arCliente = $form->getData();
             if ($codigoCliente == 0){
                 $arCliente->setUsuario($arUsuario->getUserName());

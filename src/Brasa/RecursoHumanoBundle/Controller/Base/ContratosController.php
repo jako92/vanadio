@@ -123,7 +123,7 @@ class ContratosController extends Controller
                 $objFormatoContrato->Generar($this, $codigoContrato);
             }
             if($form->get('BtnImprimirCartaPresentacion')->isClicked()) {
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPresentacion();
                 $objFormatoContrato->Generar($this, $codigoContrato,$arUsuario);
             }
@@ -131,14 +131,14 @@ class ContratosController extends Controller
             //$arrSeleccionados = $request->request->get('ChkSeleccionar');
             if($request->request->get('ImprimirTrasladoPension')) {
                 $codigoTrasladoPension = $request->request->get('ImprimirTrasladoPension');
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoTrasladoPension = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaTrasladoPension();
                 $objFormatoTrasladoPension->Generar($this, $codigoTrasladoPension, $arUsuario);
                 
             }
             if($request->request->get('ImprimirTrasladoSalud')) {
                 $codigoTrasladoSalud = $request->request->get('ImprimirTrasladoSalud');
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoTrasladoSalud = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaTrasladoSalud();
                 $objFormatoTrasladoSalud->Generar($this, $codigoTrasladoSalud, $arUsuario);
                 
@@ -206,7 +206,7 @@ class ContratosController extends Controller
         $form = $this->createForm(RhuContratoType::class, $arContrato); 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arContrato = $form->getData();
             $boolValidarTipoContrato = TRUE;
             $boolValidarTipoContratoSalud = TRUE;
@@ -424,7 +424,7 @@ class ContratosController extends Controller
             $mensaje = "";
         }    
         if ($formContrato->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $dateFechaHasta = $formContrato->get('fechaTerminacion')->getData();
             $arMotivoTerminacion = new \Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato();
             $codigoMotivoContrato = $formContrato->get('terminacionContratoRel')->getData();            
@@ -583,7 +583,7 @@ class ContratosController extends Controller
         $formContrato->handleRequest($request);
            
         if ($formContrato->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arCambioTipoContrato->setContratoRel($arContrato);
             $arCambioTipoContrato->setEmpleadoRel($arContrato->getEmpleadoRel());
             $arCambioTipoContrato->setContratoTipoAnteriorRel($arContrato->getContratoTipoRel());
@@ -676,7 +676,7 @@ class ContratosController extends Controller
                 $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato", $this);
         }
         if ($formActualizar->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($permiso == false){
                 $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato", $this);
             } else {
@@ -724,7 +724,7 @@ class ContratosController extends Controller
             ->getForm();
         $formIbpAdicional->handleRequest($request);    
         if ($formIbpAdicional->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $ibpCesantiasInicial = $formIbpAdicional->get('ibpCesantiasInicial')->getData();
             $ibpPrimasInicial = $formIbpAdicional->get('ibpPrimasInicial')->getData();
             $promedioRecargoNocturnoInicial = $formIbpAdicional->get('promedioRecargoNocturnoInicial')->getData();

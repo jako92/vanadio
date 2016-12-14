@@ -104,7 +104,7 @@ class VacacionesController extends Controller
         $form = $this->createForm(new RhuVacacionType, $arVacacion);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arVacacion = $form->getData();
             if($form->get('guardar')->isClicked()) {

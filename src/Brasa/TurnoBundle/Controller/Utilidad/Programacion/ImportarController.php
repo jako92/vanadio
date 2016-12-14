@@ -31,7 +31,7 @@ class ImportarController extends Controller
             if($form->get('BtnCargar')->isClicked()) {
                 $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
                 $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $error = "";

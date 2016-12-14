@@ -39,7 +39,7 @@ class CambioSalarioController extends Controller
         $form->handleRequest($request);
         if ($form->isValid())
         {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arContrato->getFechaUltimoPago() > $form->get('fechaAplicacion')->getData()){
                 $objMensaje->Mensaje("error", "El cambio de salario se debe realizar despues del pago del ".$arContrato->getFechaUltimoPago()->format('Y/m/d')."", $this);
             } else {

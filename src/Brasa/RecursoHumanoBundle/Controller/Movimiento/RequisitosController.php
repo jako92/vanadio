@@ -251,7 +251,7 @@ class RequisitosController extends Controller
         $form = $this->createForm(new RhuRequisitoType(), $arRequisito);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arRequisito = $form->getData();
             $arRequisito->setCodigoUsuario($arUsuario->getUserName());
             $em->persist($arRequisito);

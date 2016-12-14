@@ -105,7 +105,7 @@ class AccidenteTrabajoController extends Controller
         $form = $this->createForm(new RhuAccidenteTrabajoType, $arAccidenteTrabajo);         
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arAccidenteTrabajo = $form->getData();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

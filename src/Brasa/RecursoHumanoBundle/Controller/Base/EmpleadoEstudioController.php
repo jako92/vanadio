@@ -26,7 +26,7 @@ class EmpleadoEstudioController extends Controller
         if($codigoEmpleadoEstudio != 0) {
             $arEmpleadoEstudio = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->find($codigoEmpleadoEstudio);
         } else {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arEmpleadoEstudio->setFecha(new \DateTime('now'));
             //$arEmpleadoEstudio->setFechaInicioAcreditacion(new \DateTime('now'));
             //$arEmpleadoEstudio->setFechaTerminacion(new \DateTime('now'));

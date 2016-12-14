@@ -42,7 +42,7 @@ class PagosAdicionalesAgregarController extends Controller
                     
         $form->handleRequest($request);
         if($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
             if ($arrControles['form_txtNumeroIdentificacion'] == ""){
@@ -230,7 +230,7 @@ class PagosAdicionalesAgregarController extends Controller
         }
         if($form->isValid()) {
             $arrControles = $request->request->All();
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arPagoAdicional->getCodigoEmpleadoFk());        
             if ($codigoCentroCosto == null){
                 $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arEmpleado->getCodigoContratoUltimoFk());

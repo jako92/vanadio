@@ -243,7 +243,7 @@ class EmpleadoController extends Controller
         $form = $this->createForm(RhuEmpleadoType::class, $arEmpleado);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $boolErrores = 0;
             $arrControles = $request->request->All();
             $arEmpleado = $form->getData();

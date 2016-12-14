@@ -79,7 +79,7 @@ class LicenciasController extends Controller
         $form = $this->createForm(new RhuLicenciaType(), $arLicencia);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();            
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();            
             $arLicencia = $form->getData(); 
             $arrControles = $request->request->All();
             

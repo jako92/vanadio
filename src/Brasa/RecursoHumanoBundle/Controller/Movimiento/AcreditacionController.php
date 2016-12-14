@@ -86,7 +86,7 @@ class AcreditacionController extends Controller
         $form = $this->createForm(new RhuAcreditacionType(), $arAcreditacion);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arAcreditacion = $form->getData();
             $arrControles = $request->request->All();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {
@@ -134,7 +134,7 @@ class AcreditacionController extends Controller
         $form->handleRequest($request);
         if($form->isValid()) {
             if($form->get('BtnCargar')->isClicked()) {
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
                 $form['attachment']->getData()->move($rutaTemporal->getRutaTemporal(), "archivo.csv");
@@ -195,7 +195,7 @@ class AcreditacionController extends Controller
         $form->handleRequest($request);
         if($form->isValid()) {
             if($form->get('BtnCargar')->isClicked()) {
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
                 $form['attachment']->getData()->move($rutaTemporal->getRutaTemporal(), "archivo.csv");

@@ -70,7 +70,7 @@ class ExamenController extends Controller
         $form = $this->createForm(new RhuExamenType, $arExamen);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arExamen = $form->getData();
             if($codigoExamen == 0) {
                 $arExamen->setCodigoUsuario($arUsuario->getUserName());
@@ -380,7 +380,7 @@ class ExamenController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arExamen->getEstadoAutorizado() == 1){
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $arExamenRestriccionMedica = $form->getData();
                 $arExamenRestriccionMedica->setExamenRel($arExamen);
                 $arExamenRestriccionMedica->setFecha(new \DateTime('now'));
@@ -442,7 +442,7 @@ class ExamenController extends Controller
                     $arExamenRestriccionMedica = $form->getData();
                     $arExamenRestriccionMedica->setExamenRel($arExamen);
                     $em->persist($arExamenRestriccionMedica);
-                    $arUsuario = $this->get('security.context')->getToken()->getUser();
+                    $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                     $arExamenRestriccionMedica = $form->getData();
                     $arExamenRestriccionMedica->setExamenRel($arExamen);
                     $arExamenRestriccionMedica->setFecha(new \DateTime('now'));

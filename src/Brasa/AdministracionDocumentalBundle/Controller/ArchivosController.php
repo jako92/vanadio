@@ -67,10 +67,10 @@ class ArchivosController extends Controller
                         $form['attachment']->getData()->move($strDestino, $strArchivo);                    
                         return $this->redirect($this->generateUrl('brs_ad_archivos_lista', array('codigoDocumento' => $codigoDocumento, 'numero' => $numero)));
                     } else {
-                        $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido", $this);
+                        $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido");
                     }    
                 } else {
-                    $objMensaje->Mensaje("error", "Solo se pueden cargar arhivos pdf", $this);
+                    $objMensaje->Mensaje("error", "Solo se pueden cargar arhivos pdf");
                 }
             }                                   
         }         
@@ -149,12 +149,12 @@ class ArchivosController extends Controller
                         ->setBody($strMensaje,'text/html')                            
                         ->attach(\Swift_Attachment::fromPath($strRuta));                
                     $this->get('mailer')->send($message);
-                    $objMensaje->Mensaje("error", "Mensaje enviado con exito al correo ".$strMail."", $this);                                                                                
+                    $objMensaje->Mensaje("error", "Mensaje enviado con exito al correo ".$strMail);                                                                                
                     } else {
-                        $objMensaje->Mensaje("error", "EL correo remitente no esta en la configuracion general"."", $this);
+                        $objMensaje->Mensaje("error", "EL correo remitente no esta en la configuracion general"."");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No hay correo destino para enviar, por favor verificar", $this);
+                    $objMensaje->Mensaje("error", "No hay correo destino para enviar, por favor verificar");
                 }                                
             }
         }         
@@ -178,7 +178,7 @@ class ArchivosController extends Controller
             ->setTo(strtolower('sogaimplementacion@gmail.com'))
             ->setBody('Prueba SogaApp','text/html');
         $this->get('mailer')->send($message);
-        $objMensaje->Mensaje("error", "Mensaje de prueba enviado con exito", $this);                       
+        $objMensaje->Mensaje("error", "Mensaje de prueba enviado con exito");                       
         return $this->redirect($this->generateUrl('brs_ad_archivos_lista', array('codigoDocumento' => $codigoDocumento, 'numero' => $numero)));      
     }
     

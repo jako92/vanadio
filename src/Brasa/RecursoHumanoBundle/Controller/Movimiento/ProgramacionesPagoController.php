@@ -128,7 +128,7 @@ class ProgramacionesPagoController extends Controller
             $arProgramacionPago = $form->getData();            
             if($codigoProgramacionPago == 0) {
                 $arProgramacionPago->setNoGeneraPeriodo(1);
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $arProgramacionPago->setCodigoUsuario($arUsuario->getUserName());
             }
             
@@ -557,7 +557,7 @@ class ProgramacionesPagoController extends Controller
                 }
             }
             if($form->get('BtnActualizarPagoAdicional')->isClicked()) {
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $arrSeleccionados = $request->request->get('ChkSeleccionarValor');
                 if(count($arrSeleccionados) > 0) {
                     $arrControles = $request->request->All();

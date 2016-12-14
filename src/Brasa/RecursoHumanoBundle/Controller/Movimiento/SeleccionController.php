@@ -97,7 +97,7 @@ class SeleccionController extends Controller
         $form = $this->createForm(new RhuSeleccionType, $arSeleccion);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arSeleccion = $form->getData();
             $arSeleccion->setNombreCorto($arSeleccion->getNombre1() . " " . $arSeleccion->getNombre2() . " " .$arSeleccion->getApellido1() . " " . $arSeleccion->getApellido2());
             $arSeleccion->setFecha(new \DateTime('now'));
@@ -278,7 +278,7 @@ class SeleccionController extends Controller
         $form = $this->createForm(new RhuSeleccionReferenciaType(), $arSeleccionReferencia);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arSeleccion->getEstadoAutorizado() == 0){
                 $arSeleccionReferencia = $form->getData();
                 $arSeleccionReferencia->setSeleccionRel($arSeleccion);
@@ -316,7 +316,7 @@ class SeleccionController extends Controller
         $form = $this->createForm(new RhuSeleccionPruebaType(), $arSeleccionPrueba);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arSeleccion->getEstadoAutorizado() == 0){
                 $arSeleccionPrueba = $form->getData();
                 $arSeleccionPrueba->setSeleccionRel($arSeleccion);
@@ -352,7 +352,7 @@ class SeleccionController extends Controller
         $form = $this->createForm(new RhuSeleccionVisitaType(), $arSeleccionVisita);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arSeleccion->getEstadoAutorizado() == 0){
                 $arSeleccionVisita = $form->getData();
                 $arSeleccionVisita->setSeleccionRel($arSeleccion);
@@ -389,7 +389,7 @@ class SeleccionController extends Controller
         $form = $this->createForm(new RhuSeleccionEntrevistaType(), $arSeleccionEntrevista);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arSeleccion->getEstadoAutorizado() == 0){
                 if ($form->get('seleccionEntrevistaTipoRel')->getData() == null){
                     $objMensaje->Mensaje("error", "Debe selecionar un tipo de entrevista", $this);
@@ -444,7 +444,7 @@ class SeleccionController extends Controller
         if ($formSeleccion->isValid()) {
             if ($arSeleccion->getEstadoAutorizado() == 1){
                 if ($arSeleccion->getEstadoCerrado() == 0){
-                    $arUsuario = $this->get('security.context')->getToken()->getUser();
+                    $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                     $arSeleccion->setComentarios($formSeleccion->get('comentarios')->getData());
                     $arSeleccion->setFechaCierre($formSeleccion->get('fechaCierre')->getData());
                     $arSeleccion->setCodigoUsuario($arUsuario->getUserName());

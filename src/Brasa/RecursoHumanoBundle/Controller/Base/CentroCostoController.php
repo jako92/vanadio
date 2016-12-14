@@ -102,7 +102,7 @@ class CentroCostoController extends Controller
         $form->handleRequest($request);
         
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arCentroCosto = $form->getData();
             $strDia = $arCentroCosto->getFechaUltimoPagoProgramado()->format('d');
             $strMes = $arCentroCosto->getFechaUltimoPagoProgramado()->format('m');

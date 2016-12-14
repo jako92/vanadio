@@ -87,7 +87,7 @@ class DotacionController extends Controller
         $form = $this->createForm(new RhuDotacionType, $arDotacion);         
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arDotacion = $form->getData();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

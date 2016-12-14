@@ -1,7 +1,6 @@
 <?php
 namespace Brasa\GeneralBundle\MisClases;
-
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class Mensajes {
 
@@ -11,8 +10,9 @@ class Mensajes {
      * @param string $strMensaje El mensaje que se mostrara
      * @param string $vista la vista donde se mostrara el mensaje
      */
-    public function Mensaje($strTipo, $strMensaje, $vista) {
-        $vista->get('session')->getFlashBag()->add($strTipo, $strMensaje);                
+    public function Mensaje($strTipo, $strMensaje) {
+        $session = new Session();
+        $session->getFlashBag()->add($strTipo, $strMensaje);                
     }
 }
 ?>

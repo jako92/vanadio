@@ -77,13 +77,13 @@ class EstudioController extends Controller
         if($codigoEstudio != 0) {
             $arEstudio = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->find($codigoEstudio);
         } else {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arEstudio->setFecha(new \DateTime('now'));
         }
         $form = $this->createForm(new RhuEmpleadoEstudioType, $arEstudio);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arEstudio = $form->getData();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

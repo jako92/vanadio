@@ -139,7 +139,7 @@ class EntidadExamenController extends Controller
         if ($form->isValid())
         {
             // guardar la tarea en la base de datos
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if($codigoEntidadExamenPk == 0) {
                $arEntidadExamen->setCodigoUsuario($arUsuario->getUserName());
             }
@@ -217,7 +217,7 @@ class EntidadExamenController extends Controller
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             if ($form->get('BtnGuardar')->isClicked()) {
                 if (isset($arrControles['TxtPrecio'])) {

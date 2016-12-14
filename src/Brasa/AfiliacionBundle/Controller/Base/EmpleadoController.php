@@ -75,7 +75,7 @@ class EmpleadoController extends Controller
         if ($form->isValid()) {
             $arEmpleado = $form->getData();
             $arEmpleado->setNombreCorto($arEmpleado->getNombre1() . " " . $arEmpleado->getNombre2() . " " .$arEmpleado->getApellido1() . " " . $arEmpleado->getApellido2());
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if($codigoEmpleado == 0) {
                 $arEmpleado->setCodigoUsuario($arUsuario->getUserName());
             }
@@ -173,7 +173,7 @@ class EmpleadoController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             
-                $arUsuario = $this->get('security.context')->getToken()->getUser();
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 if($codigoContrato == 0) {
                     $arContrato->setCodigoUsuario($arUsuario->getUserName());
                     $nroContratos = $em->getRepository('BrasaAfiliacionBundle:AfiContrato')->historialContratos($codigoEmpleado,$arContrato->getFechaHasta());

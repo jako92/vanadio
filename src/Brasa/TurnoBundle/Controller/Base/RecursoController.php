@@ -202,7 +202,7 @@ class RecursoController extends Controller
             ->getForm();
         $form->handleRequest($request);    
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $dateFechaRetiro = $form->get('fechaTerminacion')->getData();
             $arRecurso->setFechaRetiro($dateFechaRetiro);
             $arRecurso->setEstadoRetiro(1);

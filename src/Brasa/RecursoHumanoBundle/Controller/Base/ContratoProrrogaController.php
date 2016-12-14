@@ -42,7 +42,7 @@ class ContratoProrrogaController extends Controller
         $form->handleRequest($request);
         if ($form->isValid())
         {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $boolValidarContratoFijo = TRUE;
             $fechaDesde = $form->get('fechaInicioNueva')->getData();
             $fechaHasta = $form->get('fechaFinalNueva')->getData();

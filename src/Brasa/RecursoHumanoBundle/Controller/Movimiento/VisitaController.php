@@ -83,7 +83,7 @@ class VisitaController extends Controller
         $form = $this->createForm(new RhuVisitaType, $arVisita);         
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arVisita = $form->getData();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

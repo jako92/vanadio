@@ -103,7 +103,7 @@ class IncapacidadController extends Controller
         $form = $this->createForm(new RhuIncapacidadType(), $arIncapacidad);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arIncapacidad = $form->getData();                          
             $arrControles = $request->request->All();
             if($arrControles['form_txtNumeroIdentificacion'] != '') {

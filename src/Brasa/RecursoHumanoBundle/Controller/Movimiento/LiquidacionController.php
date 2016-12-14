@@ -81,7 +81,7 @@ class LiquidacionController extends Controller
         $form = $this->createForm(new RhuLiquidacionType, $arLiquidacion);         
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             
             if($form->get('guardar')->isClicked()) {
@@ -339,7 +339,7 @@ class LiquidacionController extends Controller
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arUsuario = $this->get('security.context')->getToken()->getUser();            
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();            
             $porcentajeIbp = $form->get('porcentajeIbp')->getData();
             $vrIndemnizacion = $form->get('vrIndemnizacion')->getData();
             $diasAusentismoAdicional = $form->get('diasAusentismoAdicional')->getData();
