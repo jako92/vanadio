@@ -125,7 +125,7 @@ class ProgramacionesDetallesController extends Controller
             ->add('TxtCodigoRecurso', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroCodigoRecurso')))
             ->add('TxtNombreRecurso', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreRecurso))                                
             ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroProgramacionCodigo')))
-            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADO', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroProgramacionEstadoAutorizado')))                
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroProgramacionEstadoAutorizado')))                
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                
             ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroProgramacionFiltrarFecha')))                             

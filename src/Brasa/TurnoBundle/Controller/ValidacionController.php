@@ -2,13 +2,14 @@
 namespace Brasa\TurnoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class ValidacionController extends Controller
 {
     /**
      * @Route("/turno/validar/turno/{codigoProgramacionDetalle}/{dia}/{codigoTurno}", name="brs_tur_validar_turno")
      */    
-    public function turnoAction($codigoProgramacionDetalle, $dia, $codigoTurno) {   
+    public function turnoAction(Request $request, $codigoProgramacionDetalle, $dia, $codigoTurno) {   
         $em = $this->getDoctrine()->getManager();
         $strRespuesta = 0;
         $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();

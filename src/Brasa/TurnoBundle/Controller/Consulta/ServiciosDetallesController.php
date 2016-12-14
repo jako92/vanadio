@@ -106,7 +106,7 @@ class ServiciosDetallesController extends Controller
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                                
             ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->codigoServicio))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta)) 
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'CERRADO', '0' => 'SIN CERRAR'), 'data' => $session->get('filtroServicioDetalleEstadoCerrado')))                                                
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'CERRADO' => '1', 'SIN CERRAR' => '0'), 'data' => $session->get('filtroServicioDetalleEstadoCerrado')))                                                
             ->add('BtnExcelResumido', SubmitType::class, array('label'  => 'Excel resumido',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
