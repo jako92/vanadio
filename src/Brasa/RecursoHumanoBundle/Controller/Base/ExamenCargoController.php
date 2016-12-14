@@ -161,9 +161,11 @@ class ExamenCargoController extends Controller
     
     private function filtrar ($form) {
         $session = new session;
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCargo', $controles['cargoRel']);
+        $codigoCargo = "";
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();           
+    }
+        $session->set('filtroCodigoCargo', $codigoCargo);
     }
     
     private function generarExcel() {

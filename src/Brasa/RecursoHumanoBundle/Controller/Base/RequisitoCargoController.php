@@ -161,7 +161,12 @@ class RequisitoCargoController extends Controller
     
     private function filtrar ($form) {
         $session = new session;
-        $session->set('filtroCodigoCargo', $form['cargoRel']->getData());
+        $codigoCargo = "";
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();    
+        }
+        $session->set('filtroCodigoCargo', $codigoCargo);
+        
     }
     
     private function generarExcel() {

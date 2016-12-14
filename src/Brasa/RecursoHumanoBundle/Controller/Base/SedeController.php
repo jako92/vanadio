@@ -177,7 +177,11 @@ class SedeController extends Controller
     
     private function filtrarLista($form) {
         $session = new Session;
-        $session->set('filtroCodigoCentroCosto', $form['centroCostoRel']->getData());        
+                $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }  
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);       
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
     }   
     

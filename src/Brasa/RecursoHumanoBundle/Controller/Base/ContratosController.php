@@ -860,7 +860,7 @@ class ContratosController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('fechaDesdeInicia', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHastaInicia', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVOS', '0' => 'INACTIVOS')))
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
@@ -869,15 +869,16 @@ class ContratosController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
-        $arrControles = $request->request->All();
+        $session = new Session;   
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }  
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroDesdeInicia', $form->get('fechaDesdeInicia')->getData());
         $session->set('filtroHastaInicia', $form->get('fechaHastaInicia')->getData());
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroContratoActivo', $form->get('estadoActivo')->getData());
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
     }
 
     private function generarExcel() {
