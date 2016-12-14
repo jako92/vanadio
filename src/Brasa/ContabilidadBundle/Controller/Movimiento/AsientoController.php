@@ -7,6 +7,12 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\ContabilidadBundle\Form\Type\CtbAsientoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\ContabilidadBundle\Form\Type\CtbAsientoDetalleType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class AsientoController extends Controller
@@ -20,14 +26,13 @@ class AsientoController extends Controller
     /**
      * @Route("/ctb/movimientos/asientos/lista", name="brs_ctb_mov_asientos_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 113, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -74,8 +79,7 @@ class AsientoController extends Controller
     /**
      * @Route("/ctb/movimientos/asientos/nuevo/{codigoAsiento}", name="brs_ctb_mov_asientos_nuevo")
      */
-    public function nuevoAction($codigoAsiento = 0) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAsiento = 0) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();    
@@ -84,7 +88,7 @@ class AsientoController extends Controller
         } else {
             $arAsiento->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new CtbAsientoType, $arAsiento);         
+        $form = $this->createForm(CtbAsientoType::class, $arAsiento);      
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arAsiento = $form->getData();
@@ -109,9 +113,8 @@ class AsientoController extends Controller
     /**
      * @Route("/ctb/movimientos/asientos/detalle/{codigoAsiento}", name="brs_ctb_mov_asientos_detalle")
      */
-    public function detalleAction($codigoAsiento) {
+    public function detalleAction(Request $request, $codigoAsiento) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();
         $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigoAsiento);
@@ -362,26 +365,25 @@ class AsientoController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
+        $session = new Session;
                     
         $form = $this->createFormBuilder()
-            ->add('TxtNumeroAsiento', 'text', array('label'  => 'Número asiento'))
-            ->add('comprobanteRel', 'entity', array(
+            ->add('TxtNumeroAsiento', TextType::class, array('label'  => 'Número asiento'))
+            ->add('comprobanteRel', EntityType::class, array(
                 'class' => 'BrasaContabilidadBundle:CtbComprobante',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('fechaDesde', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('fechaHasta', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
@@ -432,15 +434,15 @@ class AsientoController extends Controller
             //$arrBotonAnular['disabled'] = true;
         }
         $form = $this->createFormBuilder()    
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)            
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                     /*->add('BtnAnular', 'submit', $arrBotonAnular)
                     ->add('BtnContabilizar', 'submit', $arrBotonContabilizar)
                     ->add('BtnAprobar', 'submit', $arrBotonAprobar)*/
-                    ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminarDetalle)
-                    ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-                    ->add('BtnAgregar', 'submit', $arrBotonAgregar)
+                    ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                    ->add('BtnAgregar', SubmitType::class, $arrBotonAgregar)
                     ->getForm();  
         return $form;
     }     
@@ -448,7 +450,7 @@ class AsientoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
