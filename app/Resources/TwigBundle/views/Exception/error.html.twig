@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A ocurrido un error - SogaApp</title>  
+  <link href="{{ asset('css/error.css') }}" media="all" rel="stylesheet" type="text/css" />
+  <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+
+<body>
+  <header class="page-container page-container-responsive space-top-4">
+    <a href="#" class="icon link-icon h2">
+      <span class="screen-reader-only">
+        <img src="{{ asset('imagenes/logos/logosoga.jpg') }}" width=150 height=150>SogaApp
+      </span>
+    </a>
+  </header>
+
+  <div class="page-container page-container-responsive">
+    <div class="row space-top-8 space-8 row-table">
+        <div class="col-5 col-middle">
+          <h1 class="text-jumbo text-ginormous">Oops!</h1>
+          <h2>Parece que ha ocurrido un error en la aplicacion.</h2>
+          <h6>Error code: {{ status_code }} {{ status_text }}</h6>
+          <ul class="list-unstyled">
+            <li>Puede ir a:</li>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Pagina appsoga.com</a></li>
+            <li><a href="#">Ayuda</a></li>
+            <li><a href="#">Reportar error</a></li>
+          </ul>
+        </div>
+        <div class="col-5 col-middle text-center">
+          <img src="{{ asset('imagenes/error/error.gif') }}" width="313" height="428" alt="Girl has dropped her ice cream.">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
