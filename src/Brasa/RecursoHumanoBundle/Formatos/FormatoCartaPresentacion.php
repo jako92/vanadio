@@ -7,9 +7,9 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
     
     public static $usuario;
     
-    public function Generar($miThis, $codigoContrato, $usuario) {        
+    public function Generar($em, $codigoContrato, $usuario) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoContrato = $codigoContrato;
         self::$usuario = $usuario;

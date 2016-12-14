@@ -120,12 +120,12 @@ class ContratosController extends Controller
         if($form->isValid()) {
             if($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoContrato();
-                $objFormatoContrato->Generar($this, $codigoContrato);
+                $objFormatoContrato->Generar($em, $codigoContrato);
             }
             if($form->get('BtnImprimirCartaPresentacion')->isClicked()) {
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPresentacion();
-                $objFormatoContrato->Generar($this, $codigoContrato,$arUsuario);
+                $objFormatoContrato->Generar($em, $codigoContrato,$arUsuario);
             }
             
             //$arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -133,14 +133,14 @@ class ContratosController extends Controller
                 $codigoTrasladoPension = $request->request->get('ImprimirTrasladoPension');
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoTrasladoPension = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaTrasladoPension();
-                $objFormatoTrasladoPension->Generar($this, $codigoTrasladoPension, $arUsuario);
+                $objFormatoTrasladoPension->Generar($em, $codigoTrasladoPension, $arUsuario);
                 
             }
             if($request->request->get('ImprimirTrasladoSalud')) {
                 $codigoTrasladoSalud = $request->request->get('ImprimirTrasladoSalud');
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoTrasladoSalud = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaTrasladoSalud();
-                $objFormatoTrasladoSalud->Generar($this, $codigoTrasladoSalud, $arUsuario);
+                $objFormatoTrasladoSalud->Generar($em, $codigoTrasladoSalud, $arUsuario);
                 
             }
         }

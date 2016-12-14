@@ -5,9 +5,9 @@ class FormatoHojaVida extends \FPDF_FPDF {
     
     public static $codigoEmpleado;
     
-    public function Generar($miThis, $codigoEmpleado) {        
+    public function Generar($em, $codigoEmpleado) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoEmpleado = $codigoEmpleado;
         $pdf = new FormatoHojaVida();

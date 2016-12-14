@@ -149,7 +149,7 @@ class EmpleadoController extends Controller
 
             if($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoHojaVida = new \Brasa\RecursoHumanoBundle\Formatos\FormatoHojaVida();
-                $objFormatoHojaVida->Generar($this, $codigoEmpleado);
+                $objFormatoHojaVida->Generar($em, $codigoEmpleado);
             }
         }
         $strRutaImagen = "";
