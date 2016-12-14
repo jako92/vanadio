@@ -5,9 +5,8 @@ class FormatoCotizacion extends \FPDF_FPDF {
     
     public static $codigoCotizacion;
     
-    public function Generar($miThis, $codigoCotizacion) {        
-        ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+    public function Generar($em, $codigoCotizacion) {        
+        ob_clean();        
         self::$em = $em;
         self::$codigoCotizacion = $codigoCotizacion;
         $pdf = new FormatoCotizacion();

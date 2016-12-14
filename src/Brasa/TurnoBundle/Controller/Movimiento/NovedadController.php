@@ -285,7 +285,7 @@ class NovedadController extends Controller
             ->add('TxtNombreRecurso', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreRecurso))                                
             ->add('TxtCodigoNovedad', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCodigoNovedad')))
             ->add('TxtNombreNovedad', TextType::class, array('label'  => 'Nombre','data' => $strNombreNovedad))                                                
-            ->add('estadoAplicado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'APLICADAS', '0' => 'SIN APLICAR'), 'data' => $session->get('filtroNovedadEstadoAplicado')))                
+            ->add('estadoAplicado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'APLICADAS' => '1', 'SIN APLICAR' => '0'), 'data' => $session->get('filtroNovedadEstadoAplicado')))                
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnAplicar', SubmitType::class, array('label'  => 'Aplicar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))

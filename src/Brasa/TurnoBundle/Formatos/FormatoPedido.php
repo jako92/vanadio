@@ -5,9 +5,8 @@ class FormatoPedido extends \FPDF_FPDF {
     
     public static $codigoPedido;
     
-    public function Generar($miThis, $codigoPedido) {        
-        ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+    public function Generar($em, $codigoPedido) {        
+        ob_clean();        
         self::$em = $em;
         self::$codigoPedido = $codigoPedido;
         $pdf = new FormatoPedido();

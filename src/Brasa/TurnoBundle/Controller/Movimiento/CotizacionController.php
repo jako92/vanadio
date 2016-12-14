@@ -305,7 +305,7 @@ class CotizacionController extends Controller
             ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'AUTORIZADO', '0' => 'SIN AUTORIZAR'), 'data' => $session->get('filtroCotizacionEstadoAutorizado')))                
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroCotizacionEstadoAutorizado')))                
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

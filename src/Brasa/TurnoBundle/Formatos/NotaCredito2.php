@@ -8,9 +8,7 @@ class NotaCredito2 extends \FPDF_FPDF {
     public static $codigoFactura;
     public static $strLetras;
 
-    public function Generar($miThis, $codigoFactura) {
-
-        $em = $miThis->getDoctrine()->getManager();
+    public function Generar($em, $codigoFactura) {       
         self::$em = $em;
         self::$codigoFactura = $codigoFactura;
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
