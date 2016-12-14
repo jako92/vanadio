@@ -57,10 +57,10 @@ class CartasController extends Controller
                         $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
                         $objFormatoCarta->Generar($this, $em, $arUsuario, $codigoCartaTipo, $fechaProceso, $fechaOpcional, $codigoContrato,"","","","","","");
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }
             }
         }

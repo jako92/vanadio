@@ -271,7 +271,7 @@ class EmpleadoController extends Controller
                 //Fin calculo edad
                 $intEdadEmpleado = $arConfiguracion->getEdadMinimaEmpleado();
                 if ($varEdad < $intEdadEmpleado){
-                    $objMensaje->Mensaje("error", "El empleado debe ser mayor de " .$intEdadEmpleado. " años!", $this);
+                    $objMensaje->Mensaje("error", "El empleado debe ser mayor de " .$intEdadEmpleado. " años!");
                 }else{
                     $digito = $objFunciones->devuelveDigitoVerificacion($arEmpleado->getNumeroIdentificacion());
                     $arEmpleado->setDigitoVerificacion($digito);

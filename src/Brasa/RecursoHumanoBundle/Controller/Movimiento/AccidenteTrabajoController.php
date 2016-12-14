@@ -37,7 +37,7 @@ class AccidenteTrabajoController extends Controller
                         $arAccidentesTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuAccidenteTrabajo();
                         $arAccidentesTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuAccidenteTrabajo')->find($codigoAccidenteTrabajo);
                         if ($arAccidentesTrabajo->getEstadoAccidente() == 1 ) {
-                            $objMensaje->Mensaje("error", "No se puede Eliminar el registro, por que ya fue cerrada!", $this);
+                            $objMensaje->Mensaje("error", "No se puede Eliminar el registro, por que ya fue cerrada!");
                         }
                         else {
                             $em->remove($arAccidentesTrabajo);
@@ -131,10 +131,10 @@ class AccidenteTrabajoController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_movimiento_accidente_trabajo_lista'));
                         }                        
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }                
             }
         }

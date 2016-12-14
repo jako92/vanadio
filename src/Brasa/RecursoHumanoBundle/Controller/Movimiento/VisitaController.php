@@ -39,7 +39,7 @@ class VisitaController extends Controller
                         $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
                         $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
                         if ($arVisita->getEstadoAutorizado() == 1 || $arVisita->getEstadoCerrado() == 1){
-                            $objMensaje->Mensaje("error", "La visita ". $codigoVisita ." ya fue autorizada y/o cerrada, no se pude eliminar", $this);
+                            $objMensaje->Mensaje("error", "La visita ". $codigoVisita ." ya fue autorizada y/o cerrada, no se pude eliminar");
                         } else {                            
                             $em->remove($arVisita);
                             }
@@ -104,10 +104,10 @@ class VisitaController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk() )));
                         }                        
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }                
             }
         }
@@ -136,7 +136,7 @@ class VisitaController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));                                                
                 } else {
-                        $objMensaje->Mensaje("error", "La visita ya esta autorizada", $this);
+                        $objMensaje->Mensaje("error", "La visita ya esta autorizada");
                     }    
                 
             }

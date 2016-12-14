@@ -118,7 +118,7 @@ class PagoBancoController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $codigoPagoBanco)));           
                     } else {
-                        $objMensaje->Mensaje("error", "No hay detalles para los pagos al banco, no se puede autorizar", $this);
+                        $objMensaje->Mensaje("error", "No hay detalles para los pagos al banco, no se puede autorizar");
                     }    
                 }
             }            
@@ -129,7 +129,7 @@ class PagoBancoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $codigoPagoBanco)));           
                 } else {
-                    $objMensaje->Mensaje("error", "La pago banco debe estar autorizado y no puede estar impreso", $this);
+                    $objMensaje->Mensaje("error", "La pago banco debe estar autorizado y no puede estar impreso");
                 }    
             }                        
             if($form->get('BtnImprimir')->isClicked()) {
@@ -140,7 +140,7 @@ class PagoBancoController extends Controller
                     $em->persist($arPagoBanco);
                     $em->flush();
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada");
                 }   
             }
             if($form->get('BtnEliminarDetalle')->isClicked()) {
@@ -350,7 +350,7 @@ class PagoBancoController extends Controller
                                 $em->flush();
                                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle_nuevo', array('codigoPagoBanco' => $codigoPagoBanco)));
                             } else {
-                                $objMensaje->Mensaje("error", "No se puede Eliminar la programacion ".$codigoProgramacionPago." Tiene registros sin pagar", $this);
+                                $objMensaje->Mensaje("error", "No se puede Eliminar la programacion ".$codigoProgramacionPago." Tiene registros sin pagar");
                             }
                         }
                     }    

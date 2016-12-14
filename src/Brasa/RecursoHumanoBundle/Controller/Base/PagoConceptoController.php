@@ -205,7 +205,7 @@ class PagoConceptoController extends Controller
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_rhu_base_pago_concepto_lista'));
             } else {
-                $objMensaje->Mensaje("error", "No existe la cuenta en el plan de cuentas", $this);
+                $objMensaje->Mensaje("error", "No existe la cuenta en el plan de cuentas");
             }
             
         }

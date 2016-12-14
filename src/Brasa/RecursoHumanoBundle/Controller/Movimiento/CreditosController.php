@@ -98,7 +98,7 @@ class CreditosController extends Controller
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($form->get('vrPagar')->getData() == 0 || $form->get('numeroCuotas')->getData() == 0){
-                $objMensaje->Mensaje("error", "El total a pagar y/o las cuotas no pueden estar en cero", $this);
+                $objMensaje->Mensaje("error", "El total a pagar y/o las cuotas no pueden estar en cero");
             } else {
                 $arrControles = $request->request->All();
                 $arCredito = $form->getData();
@@ -128,7 +128,7 @@ class CreditosController extends Controller
                             $em->persist($arCredito);
                             $em->flush();
                         } else {
-                            $objMensaje->Mensaje("error", $mensaje, $this);
+                            $objMensaje->Mensaje("error", $mensaje);
                             return $this->redirect($this->generateUrl('brs_rhu_creditos_nuevo', array('codigoCredito' => $codigoCredito )));
                         }
                         
@@ -138,7 +138,7 @@ class CreditosController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_creditos_lista'));
                         }                                            
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                        $objMensaje->Mensaje("error", "El empleado no existe");
                     }                
                 }
             }    
@@ -307,10 +307,10 @@ class CreditosController extends Controller
                 }
                 fclose($fp);
                 if ($empleadoNoExiste <> ""){
-                    $objMensaje->Mensaje("error", "" .$empleadoNoExiste. "", $this);
+                    $objMensaje->Mensaje("error", "" .$empleadoNoExiste. "");
                 }else{
                     if($empleadoSinContrato <> ""){
-                        $objMensaje->Mensaje("error", "" .$empleadoSinContrato. "", $this);                        
+                        $objMensaje->Mensaje("error", "" .$empleadoSinContrato. "");                        
                     }else{
                         $em->flush();
                         echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                        

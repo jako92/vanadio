@@ -111,13 +111,13 @@ class CentroCostoController extends Controller
                 $arCentroCosto->setCodigoUsuario($arUsuario->getUserName());
             }
             if ($strPeriodo == 2 && ($strDia != 10 && $strDia != 20 && $strDia != 30 && $strMes != 2)) {
-                $objMensaje->Mensaje("error", "El periodo debe terminar en dias 10, 20 o 30", $this);
+                $objMensaje->Mensaje("error", "El periodo debe terminar en dias 10, 20 o 30");
             } else {
                 if($strPeriodo == 4 && ($strDia != 15 && $strDia != 30 && $strMes != 2) ){
-                    $objMensaje->Mensaje("error", "El periodo debe terminar en dias 15 o 30", $this);    
+                    $objMensaje->Mensaje("error", "El periodo debe terminar en dias 15 o 30");    
                 } else {
                     if($strPeriodo == 5 && $strDia != 30 && $strMes != 2){
-                        $objMensaje->Mensaje("error", "El periodo debe terminar en dia 30", $this);
+                        $objMensaje->Mensaje("error", "El periodo debe terminar en dia 30");
                     }
                     else {     
                         $arCentroCosto->setFechaUltimoPago($arCentroCosto->getFechaUltimoPagoProgramado());

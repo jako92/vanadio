@@ -84,7 +84,7 @@ class EmpleadoInformacionInternaController extends Controller
             $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findBy(array('numeroIdentificacion' => $form->get('numeroIdentificacion')->getData()));
             if (count($arEmpleado) == 0){
-                $objMensaje->Mensaje("error", "No existe el número de identificación", $this);
+                $objMensaje->Mensaje("error", "No existe el número de identificación");
             }else {
                 $arInformacionInterna->setEmpleadoRel($arEmpleado[0]);
                 $arEmpleadoFinal = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();

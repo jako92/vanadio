@@ -52,15 +52,15 @@ class ContratoProrrogaController extends Controller
                  $boolValidarContratoFijo = FALSE;
             }
             if ($fechaHasta <= $fechaDesde ){
-               $objMensaje->Mensaje("error", "La fecha hasta no puede ser menor o igual a la fecha desde", $this);
+               $objMensaje->Mensaje("error", "La fecha hasta no puede ser menor o igual a la fecha desde");
             } else {
                if ($boolValidarContratoFijo == FALSE){
-                    $objMensaje->Mensaje("error", "La prorroga no puede ser mayor o igual a un año", $this);;
+                    $objMensaje->Mensaje("error", "La prorroga no puede ser mayor o igual a un año");
                } else {
                     if ($codigoContratoProrroga == 0){
                         if ($arContrato->getFechaProrrogaInicio() == null){
                             if ($arContrato->getFechaHasta() >= $fechaDesde || $arContrato->getFechaHasta() >= $fechaHasta){
-                                $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en el contrato inicial, si desea realizar una prorroga debe asignar fecha diferentes al del contrato inicial", $this);
+                                $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en el contrato inicial, si desea realizar una prorroga debe asignar fecha diferentes al del contrato inicial");
                             } else {
                                 //codigo nueva prorroga
                                 $arContratoProrroga->setContratoRel($arContrato);
@@ -131,7 +131,7 @@ class ContratoProrrogaController extends Controller
                             $em->getConnection()->executeQuery($strSql);
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                 
                         } else {
-                            $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en prorrogas anteriores en este contrato", $this);
+                            $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en prorrogas anteriores en este contrato");
                         }
                     } else {
                         $arRegistosContratosProrrogas = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoProrroga')->contratoProrroga($codigoContrato,$fechaDesde,$fechaHasta,$codigoContratoProrroga);
@@ -158,7 +158,7 @@ class ContratoProrrogaController extends Controller
                             $em->flush();
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>"; 
                         } else {
-                            $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en prorrogas anteriores en este contrato", $this);
+                            $objMensaje->Mensaje("error", "La fecha desde y/o hasta ya estan en prorrogas anteriores en este contrato");
                         }
                         
                       }        

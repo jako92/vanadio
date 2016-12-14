@@ -41,7 +41,7 @@ class PermisoController extends Controller
                         if ($arPermiso->getEstadoAutorizado() == 0){
                             $em->remove($arPermiso);
                         }else{
-                            $objMensaje->Mensaje("error", "El permiso número ".$codigoPermiso. ", no se puede eliminar, se encuentra autorizado", $this);
+                            $objMensaje->Mensaje("error", "El permiso número ".$codigoPermiso. ", no se puede eliminar, se encuentra autorizado");
                         }   
                     }
                     $em->flush();
@@ -112,10 +112,10 @@ class PermisoController extends Controller
                             
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }
             }
         }

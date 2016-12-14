@@ -53,13 +53,13 @@ class CapacitacionesController extends Controller
                         if ($arCapacitacion->getEstado() == 0){
                             $arCapacitacionDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionDetalle')->findBy(array('codigoCapacitacionFk' => $codigoCapacitacion));
                             if ($arCapacitacionDetalle != null){
-                                $objMensaje->Mensaje("error", "No se puede eliminar la capacitación " . $codigoCapacitacion ." tiene detalles", $this);
+                                $objMensaje->Mensaje("error", "No se puede eliminar la capacitación " . $codigoCapacitacion ." tiene detalles");
                             } else {
                                 $em->remove($arCapacitacion);
                                 $em->flush();
                             }
                         } else {
-                            $objMensaje->Mensaje("error", "Esta cerrada la capacitación", $this);
+                            $objMensaje->Mensaje("error", "Esta cerrada la capacitación");
                         }
                     }
                 }
@@ -107,7 +107,7 @@ class CapacitacionesController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_capacitacion_detalle', array('codigoCapacitacion' => $codigoCapacitacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "La capacitación no tiene detalles, no se puede autorizar", $this);
+                        $objMensaje->Mensaje("error", "La capacitación no tiene detalles, no se puede autorizar");
                     }
 
                 }
@@ -253,7 +253,7 @@ class CapacitacionesController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_capacitacion_detalle', array('codigoCapacitacion' => $codigoCapacitacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "La capacitación no tiene detalles, no se puede cerrar", $this);
+                        $objMensaje->Mensaje("error", "La capacitación no tiene detalles, no se puede cerrar");
                     }
 
                 }

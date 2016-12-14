@@ -51,7 +51,7 @@ class SeguridadSocialPeriodosController extends Controller
                 $codigoPeriodo = $request->request->get('OpDesgenerar');
                 $resultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodo')->desgenerar($codigoPeriodo);
                 if ($resultado == false){
-                    $objMensaje->Mensaje("error", "No se puede desgenerar el registro por que hay sucursal(es) generada(s) y cerrada(s)", $this);
+                    $objMensaje->Mensaje("error", "No se puede desgenerar el registro por que hay sucursal(es) generada(s) y cerrada(s)");
                 }
             }
             if($request->request->get('OpCerrar')) {
@@ -61,13 +61,13 @@ class SeguridadSocialPeriodosController extends Controller
                 $arPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodo')->find($codigoPeriodo);
                 $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
                 if ($arPeriodo->getEstadoGenerado() == 0){
-                    $objMensaje->Mensaje("error", "Debe generar periodo para poder cerrarlo", $this);
+                    $objMensaje->Mensaje("error", "Debe generar periodo para poder cerrarlo");
                 } else {
                     $arPeriodoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
                     $arPeriodoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->findBy(array('codigoPeriodoFk' => $codigoPeriodo, 'estadoCerrado' => 0));
                     $intTotal = count($arPeriodoDetalles);
                     if ($intTotal > 0){
-                        $objMensaje->Mensaje("error", "Hay periodos de sucursales sin cerrar", $this);
+                        $objMensaje->Mensaje("error", "Hay periodos de sucursales sin cerrar");
                     }else{
                         $arPeriodo->setEstadoCerrado(1);
                         $em->persist($arPeriodo);
@@ -85,10 +85,10 @@ class SeguridadSocialPeriodosController extends Controller
                         $arPeriodoEliminar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodo();
                         $arPeriodoEliminar =  $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodo')->find($codigoPeriodo);
                         if ($arPeriodoEliminar->getEstadoCerrado() == 1){
-                            $objMensaje->Mensaje("error", "No se puede eliminar el registro se encuentra cerrado", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar el registro se encuentra cerrado");
                         } else {
                             if ($arPeriodoEliminar->getEstadoGenerado() == 1){
-                                $objMensaje->Mensaje("error", "Se debe desgenerar el registro para eliminarlo", $this);
+                                $objMensaje->Mensaje("error", "Se debe desgenerar el registro para eliminarlo");
                             } else {
                                 $em->remove($arPeriodoEliminar);
                                 $em->flush();
@@ -150,7 +150,7 @@ class SeguridadSocialPeriodosController extends Controller
                         $arPeriodoDetalleEliminar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
                         $arPeriodoDetalleEliminar =  $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($codigoPeriodoDetalle);
                         if ($arPeriodoDetalleEliminar->getEstadoGenerado() == 1){
-                            $objMensaje->Mensaje("error", "No se puede eliminar el registro se encuentra generado", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar el registro se encuentra generado");
                         } else {
                             $arPeriodoEmpleadoEliminar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
                             $arPeriodoEmpleadoEliminar =  $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->findBy(array('codigoPeriodoDetalleFk' => $codigoPeriodoDetalle));
@@ -173,7 +173,7 @@ class SeguridadSocialPeriodosController extends Controller
                 $arSsoAportes = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoAporte')->findBy(array('codigoPeriodoDetalleFk' => $codigoPeriodoDetalle));
                 $resultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->generar($codigoPeriodoDetalle);
                 if ($resultado == false){
-                    $objMensaje->Mensaje("error", "No hay personal a generar en el periodo detalle " . $codigoPeriodoDetalle . "", $this);
+                    $objMensaje->Mensaje("error", "No hay personal a generar en el periodo detalle " . $codigoPeriodoDetalle . "");
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_ss_periodo_detalle', array('codigoPeriodo' => $codigoPeriodo)));
             }
@@ -187,7 +187,7 @@ class SeguridadSocialPeriodosController extends Controller
                 $arPeriodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
                 $arPeriodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($codigoPeriodo);
                 if ($arPeriodoDetalle->getEstadoGenerado() == 0){
-                    $objMensaje->Mensaje("error", "Debe generar periodo de la sucursal para poder cerrarlo", $this);
+                    $objMensaje->Mensaje("error", "Debe generar periodo de la sucursal para poder cerrarlo");
                 } else {
                     $arPeriodoDetalle->setEstadoCerrado(1);
                     $em->persist($arPeriodoDetalle);

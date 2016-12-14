@@ -63,7 +63,7 @@ class HorarioAccesoController extends Controller
                     $em->getConnection()->executeQuery($strSql); 
                 }
             }else {
-                    $objMensaje->Mensaje("error", "Digite por favor el numero de identificación", $this);
+                    $objMensaje->Mensaje("error", "Digite por favor el numero de identificación");
             }                 
         }
         $dql = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioAcceso')->listaDql2($codigoHorarioPeriodo);        

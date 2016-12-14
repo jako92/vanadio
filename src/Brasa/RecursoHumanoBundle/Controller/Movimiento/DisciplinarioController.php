@@ -45,7 +45,7 @@ class DisciplinarioController extends Controller
                             if ($arDisciplinario->getEstadoAutorizado() == 0){
                                 $em->remove($arDisciplinario);
                             }else{
-                                $objMensaje->Mensaje("error", "El proceso número ".$codigoDisciplinario. ", no se puede eliminar, se encuentra autorizado", $this);
+                                $objMensaje->Mensaje("error", "El proceso número ".$codigoDisciplinario. ", no se puede eliminar, se encuentra autorizado");
                             }   
                         }
                         $em->flush();
@@ -137,14 +137,14 @@ class DisciplinarioController extends Controller
 
                             }
                         } else {
-                            $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                            $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                        $objMensaje->Mensaje("error", "El empleado no existe");
                     }
                 }
             } else {
-                $objMensaje->Mensaje("error", "El proceso ya ha sido cerrado, no se puede editar", $this);
+                $objMensaje->Mensaje("error", "El proceso ya ha sido cerrado, no se puede editar");
             }   
         }
 
@@ -308,10 +308,10 @@ class DisciplinarioController extends Controller
                         $em->flush();
                         echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }
             }
         }

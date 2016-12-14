@@ -26,7 +26,7 @@ class TrasladoPensionController extends Controller
             $codigoTrasladoPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuTrasladoPension')->find($codigoTrasladoPension);
         }
         if ($arContrato->getEstadoActivo()== 0){
-            $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+            $objMensaje->Mensaje("error", "No tiene contrato activo");
         }
         $form = $this->createFormBuilder()
             ->add('entidadPensionNuevaRel', EntityType::class, array(
@@ -46,7 +46,7 @@ class TrasladoPensionController extends Controller
         if ($form->isValid())
         {
             if ($arContrato->getEstadoActivo()== 0){
-                $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+                $objMensaje->Mensaje("error", "No tiene contrato activo");
             }else{
                 $arEntidadPension = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
                 $arEntidadPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->find($arContrato->getCodigoEntidadPensionFk());
@@ -107,7 +107,7 @@ class TrasladoPensionController extends Controller
         if ($form->isValid())
         {
             if ($arContrato->getEstadoActivo()== 0){
-                $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+                $objMensaje->Mensaje("error", "No tiene contrato activo");
             }else{
                 
                 $arTrasladoPension->setFechaCambioAfiliacion($form->get('fechaCambioAfiliacion')->getData());

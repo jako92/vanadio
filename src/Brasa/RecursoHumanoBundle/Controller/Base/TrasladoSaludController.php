@@ -27,7 +27,7 @@ class TrasladoSaludController extends Controller
             $arTrasladoSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuTrasladoSalud')->find($codigoTrasladoSalud);
         }
         if ($arContrato->getEstadoActivo()== 0){
-            $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+            $objMensaje->Mensaje("error", "No tiene contrato activo");
         }
         $form = $this->createFormBuilder()
             ->add('entidadSaludNuevaRel', EntityType::class, array(
@@ -47,7 +47,7 @@ class TrasladoSaludController extends Controller
         if ($form->isValid())
         {
             if ($arContrato->getEstadoActivo()== 0){
-                $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+                $objMensaje->Mensaje("error", "No tiene contrato activo");
             }else{
                 $arEntidadSalud = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
                 $arEntidadSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->find($arContrato->getCodigoEntidadSaludFk());
@@ -107,7 +107,7 @@ class TrasladoSaludController extends Controller
         if ($form->isValid())
         {
             if ($arContrato->getEstadoActivo()== 0){
-                $objMensaje->Mensaje("error", "No tiene contrato activo", $this);
+                $objMensaje->Mensaje("error", "No tiene contrato activo");
             }else{
                 
                 $arTrasladoSalud->setFechaCambioAfiliacion($form->get('fechaCambioAfiliacion')->getData());

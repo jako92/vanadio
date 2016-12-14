@@ -277,15 +277,15 @@ class ProgramacionMasivaController extends Controller
                         $em->persist($arProgramacionDetalle);        
                     } else {
                         $error = true;
-                        $objMensaje->Mensaje("error", "Horas nocturnas superan las horas del pedido disponibles para programar detalle " . $intCodigo, $this);
+                        $objMensaje->Mensaje("error", "Horas nocturnas superan las horas del pedido disponibles para programar detalle " . $intCodigo);
                     }
                 } else {
                     $error = true;
-                    $objMensaje->Mensaje("error", "Horas diurnas superan las horas del pedido disponibles para programar detalle " . $intCodigo, $this);                
+                    $objMensaje->Mensaje("error", "Horas diurnas superan las horas del pedido disponibles para programar detalle " . $intCodigo);                
                 }                
             } else {
                 $error = true;
-                $objMensaje->Mensaje("error", $validar['mensaje'], $this);                
+                $objMensaje->Mensaje("error", $validar['mensaje']);                
             }
             if($error) {
                 break;

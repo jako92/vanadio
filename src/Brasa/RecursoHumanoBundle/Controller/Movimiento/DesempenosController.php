@@ -113,10 +113,10 @@ class DesempenosController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_desempeno_lista'));
                         }                        
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }                
             }
         }
@@ -157,7 +157,7 @@ class DesempenosController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_desempeno_detalle', array('codigoDesempeno' => $codigoDesempeno)));
                     }else{
-                        $objMensaje->Mensaje("error", "revise por favor las respuestas, tiene inconsistencias, de clic en actualizar para ver inconsistencias", $this);
+                        $objMensaje->Mensaje("error", "revise por favor las respuestas, tiene inconsistencias, de clic en actualizar para ver inconsistencias");
                     }
                 }
             }
@@ -175,7 +175,7 @@ class DesempenosController extends Controller
                         $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDesempenos();
                         $objFormato->Generar($this, $codigoDesempeno);
                     } else {
-                        $objMensaje->Mensaje("error", "revise por favor las respuestas, tiene inconsistencias, de clic en actualizar para ver inconsistencias", $this);
+                        $objMensaje->Mensaje("error", "revise por favor las respuestas, tiene inconsistencias, de clic en actualizar para ver inconsistencias");
                     }
                 }    
             }
@@ -216,12 +216,12 @@ class DesempenosController extends Controller
                                     $arDesempenoDetalle->setSiempre($intSiempre);
                                     $em->persist($arDesempenoDetalle);
                                 } else {
-                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."", $this);
+                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."");
                                     $control = false;
                                     $arDesempeno->setInconsistencia(true);
                                 }
                             } else {
-                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."", $this);
+                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
@@ -232,12 +232,12 @@ class DesempenosController extends Controller
                                     $arDesempenoDetalle->setCasiSiempre($intCasiSiempre);
                                     $em->persist($arDesempenoDetalle);
                                 } else {
-                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."", $this);
+                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."");
                                     $control = false;
                                     $arDesempeno->setInconsistencia(true);
                                 }
                             } else {
-                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."", $this);
+                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
@@ -247,12 +247,12 @@ class DesempenosController extends Controller
                                     $arDesempenoDetalle->setAlgunasVeces($intAlgunasVeces);
                                     $em->persist($arDesempenoDetalle);
                                 } else {
-                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."", $this);
+                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."");
                                     $control = false;
                                     $arDesempeno->setInconsistencia(true);
                                 }
                             } else {
-                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."", $this);
+                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
@@ -262,12 +262,12 @@ class DesempenosController extends Controller
                                     $arDesempenoDetalle->setCasiNunca($intCasiNunca);
                                     $em->persist($arDesempenoDetalle);
                                 } else {
-                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."", $this);
+                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."");
                                     $control = false;
                                     $arDesempeno->setInconsistencia(true);
                                 }
                             } else {
-                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."", $this);
+                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
@@ -277,22 +277,22 @@ class DesempenosController extends Controller
                                     $arDesempenoDetalle->setNunca($intNunca);
                                     $em->persist($arDesempenoDetalle);
                                 } else {
-                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."", $this);
+                                    $objMensaje->Mensaje("error", "La opcion de respuesta debe ser cero(0) o uno (1) en el registro " .$intCodigo."");
                                     $control = false;
                                     $arDesempeno->setInconsistencia(true);
                                 }
                             } else {
-                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."", $this);
+                                $objMensaje->Mensaje("error", "Hay opciones sin respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
                             if ($intSiempre + $intCasiSiempre + $intAlgunasVeces + $intCasiNunca + $intNunca == 0){
-                                $objMensaje->Mensaje("error", "Debe ingresar una opcion de respuesta en el registro " .$intCodigo."" , $this);
+                                $objMensaje->Mensaje("error", "Debe ingresar una opcion de respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             }
                             if ($intSiempre + $intCasiSiempre + $intAlgunasVeces + $intCasiNunca + $intNunca > 1){
-                                $objMensaje->Mensaje("error", "Debe ingresar solo un uno (1) en la opcion de respuesta en el registro " .$intCodigo."" , $this);
+                                $objMensaje->Mensaje("error", "Debe ingresar solo un uno (1) en la opcion de respuesta en el registro " .$intCodigo."");
                                 $control = false;
                                 $arDesempeno->setInconsistencia(true);
                             } 

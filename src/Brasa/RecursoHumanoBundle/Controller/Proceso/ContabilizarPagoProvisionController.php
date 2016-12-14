@@ -283,7 +283,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                 
                                 } else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de pension " . $arProvision->getContratoRel()->getEntidadPensionRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadPensionRel()->getNit(), $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de pension " . $arProvision->getContratoRel()->getEntidadPensionRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadPensionRel()->getNit());
                                     break 1;
                                 }                                                                 
                             }                             
@@ -323,7 +323,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                     
                                 }  else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de salud " . $arProvision->getContratoRel()->getEntidadSaludRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadSaludRel()->getNit(), $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de salud " . $arProvision->getContratoRel()->getEntidadSaludRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadSaludRel()->getNit());
                                     break 1;
                                 }                                                               
                             }                             
@@ -365,7 +365,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                     
                                 } else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de riesgos " . $arEntidadRiesgos->getNombre() . " Nit: " . $arEntidadRiesgos->getNit(), $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de riesgos " . $arEntidadRiesgos->getNombre() . " Nit: " . $arEntidadRiesgos->getNit());
                                     break 1;
                                 }                                              
                             }                             
@@ -405,7 +405,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                     
                                 }  else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de caja " . $arProvision->getContratoRel()->getEntidadCajaRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadCajaRel()->getNit(), $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad de caja " . $arProvision->getContratoRel()->getEntidadCajaRel()->getNombre() . " Nit: " . $arProvision->getContratoRel()->getEntidadCajaRel()->getNit());
                                     break 1;
                                 }                                                             
                             }                             
@@ -445,7 +445,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                     
                                 } else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad sena ", $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad sena ");
                                     break 1;
                                 }                                                               
                             }                             
@@ -486,7 +486,7 @@ class ContabilizarPagoProvisionController extends Controller
                                     }                                     
                                 } else {
                                     $errorDatos = true;
-                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad icbf ", $this);
+                                    $objMensaje->Mensaje("error", "El empleado (" . $arProvision->getEmpleadoRel()->getNombreCorto() . ") con identificacion: " . $arProvision->getEmpleadoRel()->getNumeroIdentificacion() . ", en terceros de contabilidad no existe la entidad icbf ");
                                     break 1;
                                 }                               
                             }                             

@@ -147,7 +147,7 @@ class SeleccionRequisitoController extends Controller
             if($request->request->get('OpAbrir')) {
                 if($arRequisicion->getEstadoCerrado() == 1) {
                     if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),111)){
-                        $objMensaje->Mensaje("error", "No tiene permisos para abrir la requisicion, comuniquese con el administrador", $this);
+                        $objMensaje->Mensaje("error", "No tiene permisos para abrir la requisicion, comuniquese con el administrador");
                     } else {
                         $arRequisicion->setEstadoCerrado(0);
                         $em->persist($arRequisicion);
@@ -298,7 +298,7 @@ class SeleccionRequisitoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 } else {
-                    $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso", $this);
+                    $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso");
                     return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 }    
             

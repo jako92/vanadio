@@ -141,7 +141,7 @@ class CreditoTipoController extends Controller
             // guardar la tarea en la base de datos
             $arCreditoTipo = $form->getData();
             if ($form->get('pagoConceptoRel')->getData() == null){
-                $objMensaje->Mensaje("error", "Se debe asociar en pago concepto al tipo de credito", $this);
+                $objMensaje->Mensaje("error", "Se debe asociar en pago concepto al tipo de credito");
             } else {
                 $em->persist($arCreditoTipo);
                 $em->flush();

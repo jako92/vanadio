@@ -94,7 +94,7 @@ class PedidoController extends Controller
                             $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));                            
                         } else {
                             $arPedido->setFechaProgramacion($fechaOriginal);
-                            $objMensaje->Mensaje("error", "No se actualizo la fecha del pedido porque tiene detalles, debe eliminarlos antes de cambiar la fecha", $this);
+                            $objMensaje->Mensaje("error", "No se actualizo la fecha del pedido porque tiene detalles, debe eliminarlos antes de cambiar la fecha");
                         }
                     } else {
                         $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
@@ -112,7 +112,7 @@ class PedidoController extends Controller
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $arPedido->getCodigoPedidoPk())));
                     }                       
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }                             
             }            
         }
@@ -138,14 +138,14 @@ class PedidoController extends Controller
                 $this->actualizarDetalle($arrControles, $codigoPedido);                
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedido')->autorizar($codigoPedido);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));                
             }    
             if($form->get('BtnAnular')->isClicked()) {                                 
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedido')->anular($codigoPedido);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));                
             }            
@@ -236,7 +236,7 @@ class PedidoController extends Controller
                     $objPedido = new \Brasa\TurnoBundle\Formatos\FormatoPedido();
                     $objPedido->Generar($this, $codigoPedido);
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
                 }
             }  
             

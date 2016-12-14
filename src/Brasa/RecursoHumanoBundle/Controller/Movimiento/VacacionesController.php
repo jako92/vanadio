@@ -43,11 +43,11 @@ class VacacionesController extends Controller
                             $arVacaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
                             $arVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
                             if ($arVacaciones->getEstadoAutorizado() == 1 ) {
-                                $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado!", $this);
+                                $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado!");
                             }
                             else {
                                 if ($arVacaciones->getEstadoPagoGenerado() == 1 ) {
-                                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, ya fue pagada!", $this);
+                                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, ya fue pagada!");
                                 } else {
                                     $em->remove($arVacaciones);
                                     $em->flush();
@@ -115,10 +115,10 @@ class VacacionesController extends Controller
                         $arVacacion->setEmpleadoRel($arEmpleado);
                         if($arEmpleado->getCodigoContratoActivoFk() != '') {
                             if ($form->get('fechaDesdeDisfrute')->getData() >  $form->get('fechaHastaDisfrute')->getData()){
-                                $objMensaje->Mensaje("error", "La fecha desde no debe ser mayor a la fecha hasta", $this);
+                                $objMensaje->Mensaje("error", "La fecha desde no debe ser mayor a la fecha hasta");
                             } else {
                                 if ($form->get('diasDisfrutados')->getData() == 0 && $form->get('diasPagados')->getData() == 0){
-                                    $objMensaje->Mensaje("error", "Los dias pagados o los dias disfrutados, no pueden estar en ceros", $this);
+                                    $objMensaje->Mensaje("error", "Los dias pagados o los dias disfrutados, no pueden estar en ceros");
                                 } else {
                                     $arVacacion->setCentroCostoRel($arEmpleado->getCentroCostoRel());
                                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
@@ -181,10 +181,10 @@ class VacacionesController extends Controller
                                 }
                             }
                         } else {
-                            $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                            $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                        $objMensaje->Mensaje("error", "El empleado no existe");
                     }
                 }
             }
@@ -245,11 +245,11 @@ class VacacionesController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "Una de las deducciones de creditos es mayor al saldo pendiente, por favor verifique los creditos del empleado", $this);
+                        $objMensaje->Mensaje("error", "Una de las deducciones de creditos es mayor al saldo pendiente, por favor verifique los creditos del empleado");
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No esta autorizado, no se puede generar pago", $this);
+                    $objMensaje->Mensaje("error", "No esta autorizado, no se puede generar pago");
                 }
             }
 
@@ -434,7 +434,7 @@ class VacacionesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),112)){
-            $objMensaje->Mensaje("error", "No tiene permisos para modificar la vacacion, comuniquese con el administrador", $this);
+            $objMensaje->Mensaje("error", "No tiene permisos para modificar la vacacion, comuniquese con el administrador");
         }
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
@@ -455,7 +455,7 @@ class VacacionesController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),112)){
-                $objMensaje->Mensaje("error", "No tiene permisos para modificar la vacacion, comuniquese con el administrador", $this);
+                $objMensaje->Mensaje("error", "No tiene permisos para modificar la vacacion, comuniquese con el administrador");
             } else {
                 $fechaDesdeDisfrute = $form->get('fechaDesdeDisfrute')->getData();
                 $fechaHastaDisfrute = $form->get('fechaHastaDisfrute')->getData();

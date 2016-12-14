@@ -42,7 +42,7 @@ class ProgramacionesPagoController extends Controller
                 if($strResultado == "") {
                     return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_lista'));
                 } else {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
             }            
             if($request->request->get('OpLiquidar')) {
@@ -63,7 +63,7 @@ class ProgramacionesPagoController extends Controller
                 if($inconsistencias == "") {
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->pagar($codigoProgramacionPago);
                 } else {
-                    $objMensaje->Mensaje("error", $inconsistencias, $this);
+                    $objMensaje->Mensaje("error", $inconsistencias);
                 }
                 
                 return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_lista'));
@@ -82,10 +82,10 @@ class ProgramacionesPagoController extends Controller
                             if ($arProgramacionPagoDetalles == null){
                                 $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->eliminar($codigoProgramacionPago);
                             } else {
-                                $objMensaje->Mensaje("error", "La programación de pago tiene registros asociados, no se puede eliminar", $this);
+                                $objMensaje->Mensaje("error", "La programación de pago tiene registros asociados, no se puede eliminar");
                             }  
                         } else {
-                            $objMensaje->Mensaje("error", "La programación de pago esta pagada o generada, no se puede eliminar", $this);
+                            $objMensaje->Mensaje("error", "La programación de pago esta pagada o generada, no se puede eliminar");
                         }
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_lista'));
@@ -161,7 +161,7 @@ class ProgramacionesPagoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
                 } else {
-                    $objMensaje->Mensaje("error", "No puede generar empleados cuando la programacion esta generada", $this);
+                    $objMensaje->Mensaje("error", "No puede generar empleados cuando la programacion esta generada");
                 }
             }
             if($form->get('BtnDesbloquearSoportePagoTurnos')->isClicked()) {
@@ -172,7 +172,7 @@ class ProgramacionesPagoController extends Controller
                         $arSoportePagoPeriodo->setEstadoBloqueoNomina(0);
                         $em->persist($arSoportePagoPeriodo);
                         $em->flush();
-                        $objMensaje->Mensaje("informacion", "Se desbloqueo el soporte de pago de turnos, ahora puede ser modificado", $this);                        
+                        $objMensaje->Mensaje("informacion", "Se desbloqueo el soporte de pago de turnos, ahora puede ser modificado");                        
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
                 }
@@ -267,7 +267,7 @@ class ProgramacionesPagoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_prima', array('codigoProgramacionPago' => $codigoProgramacionPago)));
                 } else {
-                    $objMensaje->Mensaje("error", "No puede generar empleados cuando la programacion esta generada", $this);
+                    $objMensaje->Mensaje("error", "No puede generar empleados cuando la programacion esta generada");
                 }
             }                        
             if($form->get('BtnEliminarEmpleados')->isClicked()) {               

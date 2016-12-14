@@ -64,7 +64,7 @@ class ProgramacionController extends Controller
         $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
         if($codigoProgramacion != 0) {
             if($em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->numeroRegistros($codigoProgramacion) > 0) {
-                $objMensaje->Mensaje("error", "La programacion tiene detalles y no se puede editar", $this);
+                $objMensaje->Mensaje("error", "La programacion tiene detalles y no se puede editar");
             }
             $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);
             
@@ -95,7 +95,7 @@ class ProgramacionController extends Controller
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_programacion_detalle', array('codigoProgramacion' => $arProgramacion->getCodigoProgramacionPk())));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }
             }
 
@@ -159,7 +159,7 @@ class ProgramacionController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $strResultado =  $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->eliminarDetallesSeleccionados($arrSeleccionados);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_programacion_detalle', array('codigoProgramacion' => $codigoProgramacion)));
@@ -179,7 +179,7 @@ class ProgramacionController extends Controller
             if($form->get('BtnAnular')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->anular($codigoProgramacion);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_programacion_detalle', array('codigoProgramacion' => $codigoProgramacion)));
             }
@@ -667,11 +667,11 @@ class ProgramacionController extends Controller
         if($validarHoras) {
             if($horasDiurnasRestantes < 0) {
                 $error = TRUE;        
-                $objMensaje->Mensaje("error", "Las horas diurnas de los turnos ingresadas [" . $arrTotalHoras['horasDiurnas'] . "], superan las horas del pedido disponibles para programar [" . $horasDiurnasPendientes . "]", $this);                
+                $objMensaje->Mensaje("error", "Las horas diurnas de los turnos ingresadas [" . $arrTotalHoras['horasDiurnas'] . "], superan las horas del pedido disponibles para programar [" . $horasDiurnasPendientes . "]");                
             }
             if($horasNocturnasRestantes < 0) {
                 $error = TRUE;        
-                $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arrTotalHoras['horasNocturnas'] . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasPendientes . "]", $this);                
+                $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arrTotalHoras['horasNocturnas'] . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasPendientes . "]");                
             }            
         }        
         if($error == FALSE) {
@@ -853,7 +853,7 @@ class ProgramacionController extends Controller
                     $em->persist($arProgramacionDetalle);                                                                      
                 } else {
                     $error = true;
-                    $objMensaje->Mensaje("error", $validar['mensaje'], $this);                
+                    $objMensaje->Mensaje("error", $validar['mensaje']);                
                 }
                 if($error) {
                     break;

@@ -49,14 +49,14 @@ class RegistroVisitasController extends Controller
                 $nombreVisitante;
             }else{
             if ($arrControles['txtNumeroIdentificacion'] == ''){
-                $objMensaje->Mensaje("error", "Número de identificación es requerido", $this);
+                $objMensaje->Mensaje("error", "Número de identificación es requerido");
             }else {
                 if ($arrControles['txtNombreCorto'] == ''){
-                    $objMensaje->Mensaje("error", "Nombre del visitante es requerido", $this);
+                    $objMensaje->Mensaje("error", "Nombre del visitante es requerido");
                 } else {
                     $arVisitaEntrada = $em->getRepository('BrasaRecursoHumanoBundle:RhuRegistroVisita')->RegistroEntrada($fechaHoy->format('Y/m/d'),$arrControles['txtNumeroIdentificacion']);
                     if (count($arVisitaEntrada) != 0){
-                            $objMensaje->Mensaje("error", "El visitante se encuentra registrado", $this);
+                            $objMensaje->Mensaje("error", "El visitante se encuentra registrado");
                         }else {
                             $arRegistroVisita->setFechaEntrada(new \DateTime('now'));
                             //$arRegistroVisita->setNumeroIdentificacion($arrControles['txtNumeroIdentificacion']);

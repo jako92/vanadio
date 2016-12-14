@@ -116,19 +116,19 @@ class LicenciasController extends Controller
                                         return $this->redirect($this->generateUrl('brs_rhu_licencias_lista'));
                                     }   
                                 } else {
-                                    $objMensaje->Mensaje("error", "La fecha de inicio del contrato es mayor a la licencia", $this); 
+                                    $objMensaje->Mensaje("error", "La fecha de inicio del contrato es mayor a la licencia"); 
                                 }                        
                             } else {                                
-                                $objMensaje->Mensaje("error", "Existe otra licencia en este rango de fechas", $this); 
+                                $objMensaje->Mensaje("error", "Existe otra licencia en este rango de fechas"); 
                             }                                           
                         } else {
-                            $objMensaje->Mensaje("error", "Hay incapacidades que se cruzan con la fecha de la licencia", $this); 
+                            $objMensaje->Mensaje("error", "Hay incapacidades que se cruzan con la fecha de la licencia"); 
                         }
                     } else {                        
-                        $objMensaje->Mensaje("error", "La fecha desde debe ser inferior o igual a la fecha hasta", $this);
+                        $objMensaje->Mensaje("error", "La fecha desde debe ser inferior o igual a la fecha hasta");
                     }                     
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this); 
+                    $objMensaje->Mensaje("error", "El empleado no existe"); 
                 }                
             }           
         }                

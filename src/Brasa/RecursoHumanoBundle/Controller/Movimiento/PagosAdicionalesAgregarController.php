@@ -46,10 +46,10 @@ class PagosAdicionalesAgregarController extends Controller
             $arrControles = $request->request->All();
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
             if ($arrControles['form_txtNumeroIdentificacion'] == ""){
-                $objMensaje->Mensaje("error", "Digite el número de identificación", $this);
+                $objMensaje->Mensaje("error", "Digite el número de identificación");
             }else {
                 if ($arEmpleado == null){
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 } else {
                     if ($arEmpleado->getCodigoContratoActivoFk() != null){
                         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arEmpleado->getCodigoContratoActivoFk());
@@ -57,7 +57,7 @@ class PagosAdicionalesAgregarController extends Controller
                         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arEmpleado->getCodigoContratoUltimoFk());
                     }
                     if ($arContrato == null){
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato");
                     } else {
                         if($form->get('TxtValor')->getData() != "" && $form->get('TxtValor')->getData() != 0) {                    
                             $boolError = FALSE;
@@ -99,7 +99,7 @@ class PagosAdicionalesAgregarController extends Controller
                                 $floBonificacionTotal = $floBonificacionNoPrestacional + $floBonificacion;
                                 if($floBonificacionTotal > $floBonificacionMaxima) {
                                     //echo "La bonificacion NO PRESTACIONAL no puede superar: " . $floBonificacionMaxima . " ya tiene bonificaciones por:" . $floBonificacionNoPrestacional;
-                                    $objMensaje->Mensaje("error", "La bonificacion NO PRESTACIONAL no puede superar: " . $floBonificacionMaxima . " ya tiene bonificaciones por:" . $floBonificacionNoPrestacional, $this);
+                                    $objMensaje->Mensaje("error", "La bonificacion NO PRESTACIONAL no puede superar: " . $floBonificacionMaxima . " ya tiene bonificaciones por:" . $floBonificacionNoPrestacional);
                                     return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_agregar_valoradicional', array('tipo' => $tipo) ));
                                     $boolError = TRUE;
                                 }  
@@ -226,7 +226,7 @@ class PagosAdicionalesAgregarController extends Controller
         $form->handleRequest($request);
         
         if ($codigoAdicionalDetalle == 0){
-            $objMensaje->Mensaje("error", "El tipo de adicional al pago para el item " . $arPagoConcepto->getNombre() . " en la tabla pago concepto no debe estar en cero (0), 1: bonificación, 2:descuento, 3: comisión, 4: tiempo suplementario!", $this);
+            $objMensaje->Mensaje("error", "El tipo de adicional al pago para el item " . $arPagoConcepto->getNombre() . " en la tabla pago concepto no debe estar en cero (0), 1: bonificación, 2:descuento, 3: comisión, 4: tiempo suplementario!");
         }
         if($form->isValid()) {
             $arrControles = $request->request->All();

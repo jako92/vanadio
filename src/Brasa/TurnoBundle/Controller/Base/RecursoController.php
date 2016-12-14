@@ -89,7 +89,7 @@ class RecursoController extends Controller
                         $arRecurso->setCorreo($arEmpleado->getCorreo());
                         $arRecurso->setFechaNacimiento($arEmpleado->getFechaNacimiento());
                     }else {
-                        $objMensaje->Mensaje("error", "El recurso " . $arEmpleado->getNombreCorto() . " ya existe", $this);
+                        $objMensaje->Mensaje("error", "El recurso " . $arEmpleado->getNombreCorto() . " ya existe");
                     }                    
                 } 
             }
@@ -117,7 +117,7 @@ class RecursoController extends Controller
                             return $this->redirect($this->generateUrl('brs_tur_base_recurso_lista'));
                         }                         
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                        $objMensaje->Mensaje("error", "El empleado no existe");
                     }
                 }                
             } 

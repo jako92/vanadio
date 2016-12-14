@@ -176,26 +176,26 @@ class IncapacidadController extends Controller
                                                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_incapacidad'));
                                                 }                             
                                             } else {                                    
-                                                $objMensaje->Mensaje("error", "No puede ingresar novedades antes de la fecha de inicio del contrato", $this);
+                                                $objMensaje->Mensaje("error", "No puede ingresar novedades antes de la fecha de inicio del contrato");
                                             }                  
                                         } else {
-                                            $objMensaje->Mensaje("error", "Existe una licencia en este periodo de fechas", $this);
+                                            $objMensaje->Mensaje("error", "Existe una licencia en este periodo de fechas");
                                         }                                                           
                                     } else {
-                                        $objMensaje->Mensaje("error", "Existe otra incapaciad del empleado en esta fecha", $this);
+                                        $objMensaje->Mensaje("error", "Existe otra incapaciad del empleado en esta fecha");
                                     }               
                                 } else {
-                                    $objMensaje->Mensaje("error", "La incapacidad no debe ser mayor 180 dias", $this);
+                                    $objMensaje->Mensaje("error", "La incapacidad no debe ser mayor 180 dias");
                                 }
                             }else {
-                                $objMensaje->Mensaje("error", "La fecha desde debe ser inferior o igual a la fecha hasta de la incapacidad", $this);
+                                $objMensaje->Mensaje("error", "La fecha desde debe ser inferior o igual a la fecha hasta de la incapacidad");
                             }                            
                         } else {
-                            $objMensaje->Mensaje("error", "El diagnostico no existe", $this);                                    
+                            $objMensaje->Mensaje("error", "El diagnostico no existe");                                    
                         }                        
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);                                    
+                    $objMensaje->Mensaje("error", "El empleado no existe");                                    
                 }
             }            
         }                

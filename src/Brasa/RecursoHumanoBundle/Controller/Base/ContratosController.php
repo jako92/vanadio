@@ -194,11 +194,11 @@ class ContratosController extends Controller
             $arContrato->setVrSalario($douSalarioMinimo); //se Parametrizó con configuracion salario minimo
             $douValidarEmpleadoContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->validarEmpleadoContrato($codigoEmpleado);
             if ($douValidarEmpleadoContrato >= 1){
-                $objMensaje->Mensaje("error", "El empleado tiene contrato abierto, no se puede generar otro contrato", $this);
+                $objMensaje->Mensaje("error", "El empleado tiene contrato abierto, no se puede generar otro contrato");
                 $intEstado = 1;
             }
             if ($arEmpleado->getEmpleadoInformacionInterna() == 1){
-               $objMensaje->Mensaje("error", "El empleado esta bloqueado por información interna", $this); 
+               $objMensaje->Mensaje("error", "El empleado esta bloqueado por información interna"); 
                $intEstado = 2;
             }
 
@@ -233,7 +233,7 @@ class ContratosController extends Controller
             if ($codigoContrato == 0){
                 $douValidarEmpleadoContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->validarEmpleadoContrato($codigoEmpleado);
                 if ($douValidarEmpleadoContrato >= 1){
-                    $objMensaje->Mensaje("error", "El empleado tiene contrato abierto, no se puede generar otro contrato", $this);
+                    $objMensaje->Mensaje("error", "El empleado tiene contrato abierto, no se puede generar otro contrato");
                     $intEstado = 1;
                 } else{   
                     if($boolValidarTipoContrato == TRUE) {
@@ -324,10 +324,10 @@ class ContratosController extends Controller
                                     echo "La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d');
                                 }                                    
                             } else {
-                                $objMensaje->Mensaje('error', "El salario integral debe ser mayor a 13 salarios minimos", $this);
+                                $objMensaje->Mensaje('error', "El salario integral debe ser mayor a 13 salarios minimos");
                             }                                
                         } else {
-                            $objMensaje->Mensaje("error", "Los contratos de practicante/aprendizaje del sena (lectiva-productiva) la salud va a cargo del empleador", $this);
+                            $objMensaje->Mensaje("error", "Los contratos de practicante/aprendizaje del sena (lectiva-productiva) la salud va a cargo del empleador");
                         }
                     } else {
                         echo "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social";
@@ -335,7 +335,7 @@ class ContratosController extends Controller
                 }
             } else {
                 if ($boolValidarContratoFijo == FALSE){
-                    $objMensaje->Mensaje("error", "La duración del contrato no puede ser mayor o igual a un año", $this);
+                    $objMensaje->Mensaje("error", "La duración del contrato no puede ser mayor o igual a un año");
                 } else {
                     if($boolValidarTipoContrato == TRUE) {
                         if($arContrato->getCentroCostoRel()->getFechaUltimoPago() < $arContrato->getFechaDesde() || $em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),1)) {
@@ -535,20 +535,20 @@ class ContratosController extends Controller
                                 $em->flush();
                                 //$em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($arLiquidacion->getCodigoLiquidacionPk());
                             } else {
-                                $objMensaje->Mensaje("error", "No puede terminar un contrato con dotaciones pendientes", $this);
+                                $objMensaje->Mensaje("error", "No puede terminar un contrato con dotaciones pendientes");
                               }
                         } else {
-                            $objMensaje->Mensaje("error", "No puede terminar un contrato con licencias pendientes", $this);
+                            $objMensaje->Mensaje("error", "No puede terminar un contrato con licencias pendientes");
                         }
 
                     } else {
-                        $objMensaje->Mensaje("error", "No puede terminar un contrato con incapacidades pendientes", $this);
+                        $objMensaje->Mensaje("error", "No puede terminar un contrato con incapacidades pendientes");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No tiene permisos para terminar un contrato", $this);
+                    $objMensaje->Mensaje("error", "No tiene permisos para terminar un contrato");
                 }
             } else {
-                $objMensaje->Mensaje("error", "No puede terminar un contrato antes del ultimo pago", $this);
+                $objMensaje->Mensaje("error", "No puede terminar un contrato antes del ultimo pago");
             }
             return $this->redirect($this->generateUrl('brs_rhu_base_contratos_lista'));
         }
@@ -673,12 +673,12 @@ class ContratosController extends Controller
             ->getForm();
         $formActualizar->handleRequest($request);
         if ($permiso == false){
-                $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato", $this);
+                $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato");
         }
         if ($formActualizar->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($permiso == false){
-                $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato", $this);
+                $objMensaje->Mensaje("error", "No tiene permisos para actualizar el contrato");
             } else {
             $arContrato->setContratoTipoRel($formActualizar->get('contratoTipoRel')->getData());
             $arContrato->setSalarioTipoRel($formActualizar->get('salarioTipoRel')->getData());
@@ -809,7 +809,7 @@ class ContratosController extends Controller
         if($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($arrSeleccionados == null){
-                $objMensaje->Mensaje("error", "No ha seleccionado ningun documento", $this);
+                $objMensaje->Mensaje("error", "No ha seleccionado ningun documento");
             } else {
                 foreach ($arrSeleccionados AS $codigoDocumento){
                     //$arEntregaDocumento = new \Brasa\RecursoHumanoBundle\Entity\RhuEntregaDocumento();

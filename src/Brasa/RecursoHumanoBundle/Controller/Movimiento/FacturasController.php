@@ -42,7 +42,7 @@ class FacturasController extends Controller
                             $em->flush();
                         }
                         else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar la factura, tiene registros liquidados", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar la factura, tiene registros liquidados");
                         }
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_facturas_lista'));    

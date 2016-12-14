@@ -41,7 +41,7 @@ class AspiranteController extends Controller
                              $em->remove($arAspirantes);
                              $em->flush();
                         } else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar esta aprobado o autorizado", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar esta aprobado o autorizado");
                         }     
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_aspirante_lista'));
@@ -161,17 +161,17 @@ class AspiranteController extends Controller
                                 $em->flush();
                                 echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                     
                             } else {
-                                $objMensaje->Mensaje("error", "El aspirante debe tener una edad entre " .$edadMinima. " y " .$edadMaxima . " años para aplicar a la requisicion", $this);
+                                $objMensaje->Mensaje("error", "El aspirante debe tener una edad entre " .$edadMinima. " y " .$edadMaxima . " años para aplicar a la requisicion");
                             }
                         } else {
                             $em->flush();
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                     
                         }    
                     } else {
-                        $objMensaje->Mensaje("error", "El aspirante ya se encuenta en la requisicion", $this);
+                        $objMensaje->Mensaje("error", "El aspirante ya se encuenta en la requisicion");
                     }
                 } else {
-                    $objMensaje->Mensaje('error','La requisicion esta cerrada, no puede aplicar',$this);
+                    $objMensaje->Mensaje('error','La requisicion esta cerrada, no puede aplicar');
                 }
             } else {
                 $objMensaje->Mensaje('error','El aspirante no puede aplicar a la requisición, tiene inconsistencias',$this);
@@ -193,7 +193,7 @@ class AspiranteController extends Controller
         $arAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
         $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigoAspirante);
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),110)){
-            $objMensaje->Mensaje("error", "No tiene permisos para desbloquear aspirantes, comuniquese con el administrador", $this);
+            $objMensaje->Mensaje("error", "No tiene permisos para desbloquear aspirantes, comuniquese con el administrador");
         }
             $form = $this->createFormBuilder()
                 ->add('comentarios', TextareaType::class, array('data' =>$arAspirante->getComentarios() ,'required' => false))                          
@@ -206,7 +206,7 @@ class AspiranteController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(),110)){
-            $objMensaje->Mensaje("error", "No tiene permisos para desbloquear aspirantes, comuniquese con el administrador", $this);
+            $objMensaje->Mensaje("error", "No tiene permisos para desbloquear aspirantes, comuniquese con el administrador");
             } else {
                 if($form->get('BtnDesbloquear')->isClicked()) {
                     $arAspirante->setBloqueado(0);

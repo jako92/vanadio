@@ -34,7 +34,7 @@ class GenerarHorarioPeriodoController extends Controller
                 if($strResultado == "") {
                     return $this->redirect($this->generateUrl('brs_rhu_proceso_control_acceso_horario_periodo_listar'));
                 } else {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
             }
             
@@ -48,10 +48,10 @@ class GenerarHorarioPeriodoController extends Controller
                             if ($arHorarioPeriodo->getEstadoCerrado() == 0){
                                 $em->remove($arHorarioPeriodo);
                             } else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoHorarioPeriodo . ", ya fue cerrado", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoHorarioPeriodo . ", ya fue cerrado");
                         }
                         } else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoHorarioPeriodo . ", ya fue generado", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoHorarioPeriodo . ", ya fue generado");
                         }
                     }
                     $em->flush();
@@ -89,7 +89,7 @@ class GenerarHorarioPeriodoController extends Controller
         if ($form->isValid()) {
             $arHorarioPeriodoValidar = $em->getRepository('BrasaRecursoHumanoBundle:RhuHorarioPeriodo')->findOneBy(array('fechaPeriodo' => $form->get('fechaPeriodo')->getData()));
             if (count($arHorarioPeriodoValidar) > 0){
-                $objMensaje->Mensaje("error", "Ya existe el periodo", $this);
+                $objMensaje->Mensaje("error", "Ya existe el periodo");
             }else {
                 $fecha = $form->get('fechaPeriodo')->getData();                
                 $strSql = "CALL spRhuHorarioAcceso('" . $fecha->format('Y/m/d') . "')";           

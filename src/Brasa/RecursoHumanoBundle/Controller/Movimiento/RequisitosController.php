@@ -82,7 +82,7 @@ class RequisitosController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_requisito_detalle', array('codigoRequisito' => $codigoRequisito)));
                     } else {
-                        $objMensaje->Mensaje("error", "Los requisitos no tienen detalles, no se puede autorizar", $this);
+                        $objMensaje->Mensaje("error", "Los requisitos no tienen detalles, no se puede autorizar");
                     }
                 }
             }

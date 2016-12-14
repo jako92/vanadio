@@ -77,7 +77,7 @@ class ClienteController extends Controller
             $arClienteValidar = new \Brasa\TurnoBundle\Entity\TurCliente();
             $arClienteValidar = $em->getRepository('BrasaTurnoBundle:TurCliente')->findBy(array('nit' => $arCliente->getNit()));
             if(($codigoCliente == 0 || $codigoCliente == '') && count($arClienteValidar) > 0) {
-                $objMensaje->Mensaje("error", "El cliente con ese nit ya existe", $this);
+                $objMensaje->Mensaje("error", "El cliente con ese nit ya existe");
             } else {
                 $arUsuario = $this->getUser();
                 $arCliente->setUsuario($arUsuario->getUserName());

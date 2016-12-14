@@ -129,10 +129,10 @@ class LiquidacionController extends Controller
                     $arDotacionPendiente = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->dotacionDevolucion($arLiquidacion->getCodigoEmpleadoFk());
                     $registrosDotacionesPendientes = count($arDotacionPendiente);
                     if ($registrosDotacionesPendientes > 0){
-                        $objMensaje->Mensaje("error", "El empleado tiene dotaciones pendientes por entregar, no se puede autorizar la liquidación", $this);
+                        $objMensaje->Mensaje("error", "El empleado tiene dotaciones pendientes por entregar, no se puede autorizar la liquidación");
                     }else{
                         if ($arLiquidacion->getEstadoGenerado() == 0){
-                            $objMensaje->Mensaje("error", "La liquidacion debe ser liquidada antes de autorizar", $this);
+                            $objMensaje->Mensaje("error", "La liquidacion debe ser liquidada antes de autorizar");
                         } else {
                             $arLiquidacion->setEstadoAutorizado(1);
                             $em->persist($arLiquidacion);
@@ -157,7 +157,7 @@ class LiquidacionController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                 } else {
-                    $objMensaje->Mensaje("error", "No puede reliquidar una liquidacion autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede reliquidar una liquidacion autorizada");
                 }
 
             }
@@ -172,11 +172,11 @@ class LiquidacionController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "Hay saldos en creditos que son inferiores a la deducciones", $this);
+                        $objMensaje->Mensaje("error", "Hay saldos en creditos que son inferiores a la deducciones");
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "No esta autorizado, no se puede generar pago", $this);
+                    $objMensaje->Mensaje("error", "No esta autorizado, no se puede generar pago");
                 }
             }
             

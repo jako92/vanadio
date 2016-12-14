@@ -529,7 +529,7 @@ class PagosAdicionalesController extends Controller
                         $intIndice++;
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "La programacion esta pagada, no se puede modificar el tiempo suplementario!", $this);
+                    $objMensaje->Mensaje("error", "La programacion esta pagada, no se puede modificar el tiempo suplementario!");
                 }    
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));                                                

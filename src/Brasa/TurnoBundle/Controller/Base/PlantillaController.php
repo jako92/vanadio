@@ -118,7 +118,7 @@ class PlantillaController extends Controller {
                     $objExamen = new \Brasa\TurnoBundle\Formatos\FormatoExamen();
                     $objExamen->Generar($this, $codigoPlantilla);
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada");
                 }
             }
             if ($form->get('BtnDetalleEliminar')->isClicked()) {

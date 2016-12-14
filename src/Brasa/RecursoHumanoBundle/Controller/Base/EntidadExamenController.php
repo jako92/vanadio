@@ -46,12 +46,12 @@ class EntidadExamenController extends Controller
                         if ($arEntidadExamenDetalle == null){
                             $em->remove($arEntidadExamen);
                         } else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoEntidadExamenPk .", tiene detalles asociados", $this);
+                            $objMensaje->Mensaje("error", "No se puede eliminar el registro " . $codigoEntidadExamenPk .", tiene detalles asociados");
                         }
                         $em->flush();
                     }
                 } catch (ForeignKeyConstraintViolationException $e) { 
-                    $objMensaje->Mensaje('error', 'No se puede eliminar la entidad examen porque esta siendo utilizado', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar la entidad examen porque esta siendo utilizado');
                   }    
             }
         

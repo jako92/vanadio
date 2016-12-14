@@ -98,7 +98,7 @@ class ServicioController extends Controller
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $arServicio->getCodigoServicioPk())));
                     }                       
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }                             
             }            
         }
@@ -193,7 +193,7 @@ class ServicioController extends Controller
                     $objServicio = new \Brasa\TurnoBundle\Formatos\FormatoServicio();
                     $objServicio->Generar($this, $codigoServicio);
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
                 }
                  * 
                  */

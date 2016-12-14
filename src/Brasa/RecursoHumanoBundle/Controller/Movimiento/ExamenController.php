@@ -156,10 +156,10 @@ class ExamenController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_examen_detalle', array('codigoExamen' => $arExamen->getCodigoExamenPk())));
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }
             }
         }
@@ -218,7 +218,7 @@ class ExamenController extends Controller
                     $objExamen = new \Brasa\RecursoHumanoBundle\Formatos\FormatoExamen();
                     $objExamen->Generar($this, $codigoExamen);
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada");
                 }
             }
             if($form->get('BtnEliminarDetalle')->isClicked()) {
@@ -331,7 +331,7 @@ class ExamenController extends Controller
                         echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                     }
                     else {
-                        $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar", $this);
+                        $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar");
                     }
                 } else {
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
@@ -405,7 +405,7 @@ class ExamenController extends Controller
                         echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                     }
                     else {
-                        $objMensaje->Mensaje("error", "Debe selecionar al menos un tipo de restricción medica", $this);
+                        $objMensaje->Mensaje("error", "Debe selecionar al menos un tipo de restricción medica");
                     }
 
             } else {

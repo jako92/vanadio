@@ -263,14 +263,14 @@ class ConfiguracionController extends Controller
             $arCuentaNominaPagar = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
             $arCuentaNominaPagar = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($cuentaNominaPagar);
             if ($arCuentaNominaPagar == null){
-                $objMensaje->Mensaje("error", "La cuenta de contabilidad nomina por pagar " .$cuentaNominaPagar. " no existe", $this);
+                $objMensaje->Mensaje("error", "La cuenta de contabilidad nomina por pagar " .$cuentaNominaPagar. " no existe");
             } else {
                 $arConfiguracion->setCuentaNominaPagar($cuentaNominaPagar);
             }
             $arCuentaPagos = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
             $arCuentaPagos = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($cuentaPago);
             if ($arCuentaPagos == null){
-                $objMensaje->Mensaje("error", "La cuenta de contabilidad pagos " .$cuentaPago. " no existe", $this);
+                $objMensaje->Mensaje("error", "La cuenta de contabilidad pagos " .$cuentaPago. " no existe");
             } else {
                 $arConfiguracion->setCuentaPago($cuentaPago);
             }

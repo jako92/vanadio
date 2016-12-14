@@ -186,7 +186,7 @@ class NovedadController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurNovedad')->imprimir($codigoNovedad);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     $objNovedad = new \Brasa\TurnoBundle\Formatos\FormatoNovedad();
                     $objNovedad->Generar($this, $codigoNovedad);                   

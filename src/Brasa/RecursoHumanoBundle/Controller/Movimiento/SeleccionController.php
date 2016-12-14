@@ -53,13 +53,13 @@ class SeleccionController extends Controller
                                          $em->flush();
                                     }
                                 } else {
-                                    $objMensaje->Mensaje("error", "Tiene visitas creadas en esta selección", $this);
+                                    $objMensaje->Mensaje("error", "Tiene visitas creadas en esta selección");
                                   }
                             } else {
-                                $objMensaje->Mensaje("error", "Tiene pruebas creadas en esta selección", $this);
+                                $objMensaje->Mensaje("error", "Tiene pruebas creadas en esta selección");
                               }
                         } else {
-                            $objMensaje->Mensaje("error", "Tiene referencias creadas en esta selección", $this);
+                            $objMensaje->Mensaje("error", "Tiene referencias creadas en esta selección");
                         }
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_seleccion_lista'));
@@ -143,7 +143,7 @@ class SeleccionController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                     } else {
-                        $objMensaje->Mensaje("error", "La selección no tiene entrevistas, no se puede autorizar", $this);
+                        $objMensaje->Mensaje("error", "La selección no tiene entrevistas, no se puede autorizar");
                     }    
                 }
             }
@@ -392,7 +392,7 @@ class SeleccionController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             if ($arSeleccion->getEstadoAutorizado() == 0){
                 if ($form->get('seleccionEntrevistaTipoRel')->getData() == null){
-                    $objMensaje->Mensaje("error", "Debe selecionar un tipo de entrevista", $this);
+                    $objMensaje->Mensaje("error", "Debe selecionar un tipo de entrevista");
                 } else {
                     $arSeleccionEntrevista = $form->getData();
                     $arSeleccionEntrevista->setSeleccionRel($arSeleccion);
@@ -462,11 +462,11 @@ class SeleccionController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                 } else {
-                    $objMensaje->Mensaje("error", "El proceso de seleccion esta cerrado, no se puede realizar el proceso", $this);
+                    $objMensaje->Mensaje("error", "El proceso de seleccion esta cerrado, no se puede realizar el proceso");
                 return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                 }    
             } else {
-                $objMensaje->Mensaje("error", "El proceso de seleccion debe estar autorizado", $this);
+                $objMensaje->Mensaje("error", "El proceso de seleccion debe estar autorizado");
                 return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
             }
             

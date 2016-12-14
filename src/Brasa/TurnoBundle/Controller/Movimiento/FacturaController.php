@@ -125,7 +125,7 @@ class FacturaController extends Controller
                             if($arClienteDireccion->getCodigoClienteFk() == $arCliente->getCodigoClientePk()) {
                                 $arFactura->setClienteDireccionRel($arClienteDireccion);                                
                             } else {
-                                $objMensaje->Mensaje("error", "La direccion no pertenece al cliente", $this);
+                                $objMensaje->Mensaje("error", "La direccion no pertenece al cliente");
                             }                            
                         }                        
                     }
@@ -146,7 +146,7 @@ class FacturaController extends Controller
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $arFactura->getCodigoFacturaPk())));
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El tercero no existe", $this);
+                    $objMensaje->Mensaje("error", "El tercero no existe");
                 }                             
             }            
         }
@@ -186,7 +186,7 @@ class FacturaController extends Controller
                             if($arClienteDireccion->getCodigoClienteFk() == $arCliente->getCodigoClientePk()) {
                                 $arFactura->setClienteDireccionRel($arClienteDireccion);                                
                             } else {
-                                $objMensaje->Mensaje("error", "La direccion no pertenece al cliente", $this);
+                                $objMensaje->Mensaje("error", "La direccion no pertenece al cliente");
                             }                            
                         }                        
                     }
@@ -209,7 +209,7 @@ class FacturaController extends Controller
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $arFactura->getCodigoFacturaPk())));
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El tercero no existe", $this);
+                    $objMensaje->Mensaje("error", "El tercero no existe");
                 }                             
             }            
         }
@@ -235,14 +235,14 @@ class FacturaController extends Controller
                 $this->actualizarDetalle($arrControles, $codigoFactura);
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurFactura')->autorizar($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));                                
             }    
             if($form->get('BtnDesAutorizar')->isClicked()) {                            
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurFactura')->desAutorizar($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));                                
             }               
@@ -255,7 +255,7 @@ class FacturaController extends Controller
             if($form->get('BtnAnular')->isClicked()) {                                 
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurFactura')->anular($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));                
             }            
@@ -269,7 +269,7 @@ class FacturaController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurFactura')->imprimir($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
                         $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();

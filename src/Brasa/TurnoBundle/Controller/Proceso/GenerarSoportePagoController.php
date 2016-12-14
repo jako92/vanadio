@@ -178,7 +178,7 @@ class GenerarSoportePagoController extends Controller
                     $em->persist($arSoportePagoPeriodo);
                     $em->flush();                    
                 } else {
-                    $objMensaje->Mensaje("error", "El soporte de pago fue utilizado en una programacion pago, debe desbloquearlo para poder desgenerar", $this);
+                    $objMensaje->Mensaje("error", "El soporte de pago fue utilizado en una programacion pago, debe desbloquearlo para poder desgenerar");
                 }                                                 
                 return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago'));                
             }

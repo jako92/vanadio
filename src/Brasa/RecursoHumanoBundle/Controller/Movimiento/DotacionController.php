@@ -39,11 +39,11 @@ class DotacionController extends Controller
                         $arDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();
                         $arDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->find($codigoDotacion);
                         if ($arDotacion->getEstadoAutorizado() == 1){
-                            $objMensaje->Mensaje("error", "La dotación ". $codigoDotacion ." ya fue autorizada, no se pude eliminar", $this);
+                            $objMensaje->Mensaje("error", "La dotación ". $codigoDotacion ." ya fue autorizada, no se pude eliminar");
                         }else{
                             $arRegistros = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->validarDotacionesDQL($codigoDotacion);
                             if ($arRegistros){
-                                $objMensaje->Mensaje("error", "La dotación ". $codigoDotacion ." contiene registros asignados", $this);
+                                $objMensaje->Mensaje("error", "La dotación ". $codigoDotacion ." contiene registros asignados");
                             }else{
                                 $em->remove($arDotacion);
                             }
@@ -125,10 +125,10 @@ class DotacionController extends Controller
                             return $this->redirect($this->generateUrl('brs_rhu_dotacion_detalle', array('codigoDotacion' => $arDotacion->getCodigoDotacionPk() )));
                         }                        
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo", $this);
+                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);
+                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }                
             }
         }
@@ -159,7 +159,7 @@ class DotacionController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_dotacion_detalle', array('codigoDotacion' => $codigoDotacion)));                                                
                     } else {
-                        $objMensaje->Mensaje("error", "La dotación no tiene detalles, no se puede autorizar", $this);
+                        $objMensaje->Mensaje("error", "La dotación no tiene detalles, no se puede autorizar");
                     }    
                 }
             }
@@ -202,7 +202,7 @@ class DotacionController extends Controller
                 $arDotacionDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->dotacionDevolucion($arDotaciones->getCodigoEmpleadoFk());
                 $intRegistros = count($arDotacionDetalle);
                 if ($intRegistros > 0){
-                    $objMensaje->Mensaje("error", "No se puede cerrar, el empleado tiene devoluciones pendientes", $this);
+                    $objMensaje->Mensaje("error", "No se puede cerrar, el empleado tiene devoluciones pendientes");
                 }else{
                     $arCerrarDotaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->findBy(array('codigoEmpleadoFk' => $arDotaciones->getCodigoEmpleadoFk()));
                     foreach ($arCerrarDotaciones as $arCerrarDotacion) {

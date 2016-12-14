@@ -73,16 +73,16 @@ class envioComprobanteCorreoController extends Controller
                                 $this->get('mailer')->send($message);                                 
                             }                             
                         }
-                        $objMensaje->Mensaje("error", "Se han enviado los correos exitosamente", $this);
+                        $objMensaje->Mensaje("error", "Se han enviado los correos exitosamente");
                         /*foreach ($arPagos as $arPago) {
                             $rutaArchivo = $ruta."Pago".$arPago->getCodigoPagoPk().".pdf";
                             unlink($rutaArchivo);
                         } */                       
                     } else {
-                        $objMensaje->Mensaje("error", "La programacion de pago debe estar pagada", $this);
+                        $objMensaje->Mensaje("error", "La programacion de pago debe estar pagada");
                     }                   
                 } else {
-                    $objMensaje->Mensaje("error", "La programacion de pago " . $codigo . " no existe", $this);
+                    $objMensaje->Mensaje("error", "La programacion de pago " . $codigo . " no existe");
                 }                                                                              
             }            
         }                    

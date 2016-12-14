@@ -36,13 +36,13 @@ class CertificadoIngresoRetencionController extends Controller
             if($formCertificado->get('BtnGenerar')->isClicked()) {
                 $controles = $request->request->get('form');
                 if ($formCertificado->get('txtIdentificacion')->getData() == "" && $formCertificado->get('centroCostoRel')->getData() == ""){
-                    $objMensaje->Mensaje("error", "Por favor ingresar el número de identificación o el código del centro de costo para generar el certificado de ingresos y retenciones!", $this);
+                    $objMensaje->Mensaje("error", "Por favor ingresar el número de identificación o el código del centro de costo para generar el certificado de ingresos y retenciones!");
                 } else {
                     if ($formCertificado->get('txtIdentificacion')->getData() != ""){
                         $empleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                         $empleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $formCertificado->get('txtIdentificacion')->getData()));
                         if (count($empleado) == 0){
-                            $objMensaje->Mensaje("error", "No existe el empleado con el número de identificación ".$controles['txtIdentificacion']."", $this);
+                            $objMensaje->Mensaje("error", "No existe el empleado con el número de identificación ".$controles['txtIdentificacion']."");
                         } else {
                             $codigoEmpleado = $empleado->getCodigoEmpleadoPk();
                             $strFechaExpedicion = $formCertificado->get('fechaExpedicion')->getData();
@@ -86,7 +86,7 @@ class CertificadoIngresoRetencionController extends Controller
                                 $objFormatoCertificadoIngreso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCertificadoIngreso();
                                 $objFormatoCertificadoIngreso->Generar($this,$codigoEmpleado,$strFechaExpedicion,$strLugarExpedicion,$strFechaCertificado,$strAfc,$stCertifico1,$stCertifico2,$stCertifico3,$stCertifico4,$stCertifico5,$stCertifico6,$totalPrestacional,$floPension,$floSalud,$datFechaInicio,$datFechaFin,$totalCesantiaseIntereses,$douRetencion,$duoGestosRepresentacion,$douOtrosIngresos,$duoTotalIngresos,$strRuta);  
                             } else {
-                                $objMensaje->Mensaje("error", "Este empleado no registra información de ingresos  y retenciones para el año ". $strFechaCertificado."" , $this);                
+                                $objMensaje->Mensaje("error", "Este empleado no registra información de ingresos  y retenciones para el año ". $strFechaCertificado."");                
                             }
                         }    
                     } else {

@@ -177,7 +177,7 @@ class CotizacionController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->imprimir($codigoCotizacion);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     $objCotizacion = new \Brasa\TurnoBundle\Formatos\FormatoCotizacion();
                     $objCotizacion->Generar($this, $codigoCotizacion);                   

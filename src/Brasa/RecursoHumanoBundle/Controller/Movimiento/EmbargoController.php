@@ -101,7 +101,7 @@ class EmbargoController extends Controller
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_embargo'));
                     }                                                                                                                             
                 } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe", $this);                                    
+                    $objMensaje->Mensaje("error", "El empleado no existe");                                    
                 }
             }            
         }                
