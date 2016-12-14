@@ -9,9 +9,9 @@ class FormatoExamenRestriccionMedica extends \FPDF_FPDF {
     
     public static $arExamenRestriccionMedicaDetalle;
     
-    public function Generar($miThis, $codigoRestriccionMedica, $arExamenRestriccionMedica,$arExamenRestriccionMedicaDetalle ) {        
+    public function Generar($em, $codigoRestriccionMedica, $arExamenRestriccionMedica,$arExamenRestriccionMedicaDetalle ) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoRestriccionMedica = $codigoRestriccionMedica;
         self::$arExamenRestriccionMedica = $arExamenRestriccionMedica;

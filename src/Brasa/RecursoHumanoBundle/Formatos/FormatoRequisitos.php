@@ -5,9 +5,9 @@ class FormatoRequisitos extends \FPDF_FPDF {
 
     public static $codigoRequisito;
 
-    public function Generar($miThis, $codigoRequisito) {
+    public function Generar($em, $codigoRequisito) {
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoRequisito = $codigoRequisito;
         $pdf = new FormatoRequisitos();

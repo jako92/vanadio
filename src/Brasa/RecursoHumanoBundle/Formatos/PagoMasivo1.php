@@ -11,7 +11,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
     public static $fechaHasta;
     public static $dato;
     
-    public function Generar($miThis, $em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "") {        
+    public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "") {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;

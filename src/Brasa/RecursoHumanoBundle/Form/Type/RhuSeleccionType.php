@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+
 class RhuSeleccionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -84,7 +85,7 @@ class RhuSeleccionType extends AbstractType
                     ->orderBy('c.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))   
-            ->add('zonaRel', 'entity', array(
+            ->add('zonaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuZona',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('z')

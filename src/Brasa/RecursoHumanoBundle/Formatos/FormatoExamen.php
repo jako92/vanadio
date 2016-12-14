@@ -5,9 +5,9 @@ class FormatoExamen extends \FPDF_FPDF {
     
     public static $codigoExamen;
     
-    public function Generar($miThis, $codigoExamen) {        
+    public function Generar($em, $codigoExamen) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoExamen = $codigoExamen;
         $pdf = new FormatoExamen();

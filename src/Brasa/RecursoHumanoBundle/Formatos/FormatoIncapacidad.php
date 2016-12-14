@@ -5,9 +5,9 @@ class FormatoIncapacidad extends \FPDF_FPDF {
     
     public static $strDql;
    
-    public function Generar($miThis, $dql) {        
+    public function Generar($em, $dql) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$strDql = $dql;
         $pdf = new FormatoIncapacidad('L');

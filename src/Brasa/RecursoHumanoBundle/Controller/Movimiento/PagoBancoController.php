@@ -77,7 +77,7 @@ class PagoBancoController extends Controller
             $arPagoBanco->setFechaAplicacion(new \DateTime('now'));
             $arPagoBanco->setFechaTrasmision(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuPagoBancoType, $arPagoBanco);
+        $form = $this->createForm(RhuPagoBancoType::class, $arPagoBanco);
         $form->handleRequest($request);
         if ($form->isValid()) {      
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -135,7 +135,7 @@ class PagoBancoController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if ($arPagoBanco->getEstadoAutorizado() == 1){
                     $objFormatoPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoPagoBanco();
-                    $objFormatoPagoBancoDetalle->Generar($this, $codigoPagoBanco);
+                    $objFormatoPagoBancoDetalle->Generar($em, $codigoPagoBanco);
                     $arPagoBanco->setEstadoImpreso(1);
                     $em->persist($arPagoBanco);
                     $em->flush();

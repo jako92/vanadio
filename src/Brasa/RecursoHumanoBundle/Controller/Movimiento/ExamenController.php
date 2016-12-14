@@ -67,7 +67,7 @@ class ExamenController extends Controller
             $arExamen->setFecha(new \DateTime('now'));
             $arExamen->setControlPago($arConfiguracion->getControlPago());
         }
-        $form = $this->createForm(new RhuExamenType, $arExamen);
+        $form = $this->createForm(RhuExamenType::class, $arExamen);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -131,7 +131,7 @@ class ExamenController extends Controller
         }else{
             $arExamen->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuExamenControlType, $arExamen);
+        $form = $this->createForm(RhuExamenControlType::class, $arExamen);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arExamen = $form->getData();
@@ -216,7 +216,7 @@ class ExamenController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arExamen->getEstadoAutorizado() == 1) {
                     $objExamen = new \Brasa\RecursoHumanoBundle\Formatos\FormatoExamen();
-                    $objExamen->Generar($this, $codigoExamen);
+                    $objExamen->Generar($em, $codigoExamen);
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada");
                 }
@@ -376,7 +376,7 @@ class ExamenController extends Controller
         $arExamenRestriccionMedica = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenRestriccionMedica();
         $arExamenRestriccionMedicaTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenRestriccionMedicaTipo();
         $arExamenRestriccionMedicaTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenRestriccionMedicaTipo')->findAll();
-        $form = $this->createForm(new RhuExamenRestriccionMedicaAgregarType(), $arExamenRestriccionMedica);
+        $form = $this->createForm(RhuExamenRestriccionMedicaAgregarType::class, $arExamenRestriccionMedica);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arExamen->getEstadoAutorizado() == 1){
@@ -434,7 +434,7 @@ class ExamenController extends Controller
             $arExamenRestriccionMedicaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenRestriccionMedicaDetalle')->tiposRestriccionesMedicas($arExamenRestriccionMedica->getCodigoExamenRestriccionMedicaPk());
         }
 
-        $form = $this->createForm(new RhuExamenRestriccionMedicaEditarType(), $arExamenRestriccionMedica);
+        $form = $this->createForm(RhuExamenRestriccionMedicaEditarType::class, $arExamenRestriccionMedica);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arExamen->getEstadoAutorizado() == 1){
@@ -511,7 +511,7 @@ class ExamenController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
 
                 $objExamenRestriccionMedica = new \Brasa\RecursoHumanoBundle\Formatos\FormatoExamenRestriccionMedica();
-                $objExamenRestriccionMedica->Generar($this, $codigoRestriccionMedica,$arExamenRestriccionMedica,$arExamenRestriccionMedicaDetalle);
+                $objExamenRestriccionMedica->Generar($em, $codigoRestriccionMedica,$arExamenRestriccionMedica,$arExamenRestriccionMedicaDetalle);
 
             }
         }

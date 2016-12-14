@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SeleccionController extends Controller
@@ -94,7 +95,7 @@ class SeleccionController extends Controller
         } else {
             $arSeleccion->setFechaPruebas(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuSeleccionType, $arSeleccion);
+        $form = $this->createForm(RhuSeleccionType::class, $arSeleccion);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -275,7 +276,7 @@ class SeleccionController extends Controller
         if($codigoSeleccionReferencia != 0) {
             $arSeleccionReferencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionReferencia')->find($codigoSeleccionReferencia);
         }
-        $form = $this->createForm(new RhuSeleccionReferenciaType(), $arSeleccionReferencia);
+        $form = $this->createForm(RhuSeleccionReferenciaType::class, $arSeleccionReferencia);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -313,7 +314,7 @@ class SeleccionController extends Controller
         if($codigoSeleccionPrueba != 0) {
             $arSeleccionPrueba = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionPrueba')->find($codigoSeleccionPrueba);
         }
-        $form = $this->createForm(new RhuSeleccionPruebaType(), $arSeleccionPrueba);
+        $form = $this->createForm(RhuSeleccionPruebaType::class, $arSeleccionPrueba);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -349,7 +350,7 @@ class SeleccionController extends Controller
         if($codigoSeleccionVisita != 0) {
             $arSeleccionVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionVisita')->find($codigoSeleccionVisita);
         }
-        $form = $this->createForm(new RhuSeleccionVisitaType(), $arSeleccionVisita);
+        $form = $this->createForm(RhuSeleccionVisitaType::class, $arSeleccionVisita);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -386,7 +387,7 @@ class SeleccionController extends Controller
         if($codigoSeleccionEntrevista != 0) {
             $arSeleccionEntrevista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevista')->find($codigoSeleccionEntrevista);
         }
-        $form = $this->createForm(new RhuSeleccionEntrevistaType(), $arSeleccionEntrevista);
+        $form = $this->createForm(RhuSeleccionEntrevistaType::class, $arSeleccionEntrevista);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -430,7 +431,7 @@ class SeleccionController extends Controller
         $formSeleccion = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_seleccion_cerrar', array('codigoSeleccion' => $codigoSeleccion)))
             ->add('comentarios', TextareaType::class, array('data' =>$arSeleccion->getComentarios() ,'required' => true))                      
-            ->add('fechaCierre', 'date', array('label'  => 'Fecha', 'data' => new \DateTime('now')))
+            ->add('fechaCierre', DateType::class, array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoCierreSeleccionRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoCierreSeleccion',
                 'choice_label' => 'nombre',
@@ -584,11 +585,13 @@ class SeleccionController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }                
+        }
+        $codigoRequisicion = '';
         if($form->get('requisicionRel')->getData()) {
-            $codigoRequisicion = $form->get('requisicionRel')->getData()->getCodigoRequisicionPk();
+            $codigoRequisicion = $form->get('requisicionRel')->getData()->getCodigoSeleccionRequisitoPk();
         }         
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroCodigoRequisicion', $codigoRequisicion);

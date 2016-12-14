@@ -5,9 +5,9 @@ class FormatoDetalleCredito extends \FPDF_FPDF {
     
     public static $codigoCredito;
     
-    public function Generar($miThis, $codigoCredito) {        
+    public function Generar($em, $codigoCredito) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoCredito = $codigoCredito;
         $pdf = new FormatoDetalleCredito();

@@ -76,7 +76,7 @@ class LicenciasController extends Controller
         } else {
             $arLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->find($codigoLicencia);
         }
-        $form = $this->createForm(new RhuLicenciaType(), $arLicencia);                     
+        $form = $this->createForm(RhuLicenciaType::class, $arLicencia);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();            
@@ -201,10 +201,12 @@ class LicenciasController extends Controller
     }         
     
     private function filtrarLista($form) {
-        $session = new session;        
+        $session = new session; 
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }        
+        }
+        $codigoLicenciaTipo = '';
         if($form->get('licenciaTipoRel')->getData()) {
             $codigoLicenciaTipo = $form->get('licenciaTipoRel')->getData()->getCodigoLicenciaTipoPk();
         }        

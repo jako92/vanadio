@@ -34,12 +34,12 @@ class RhuExamenType extends AbstractType
                 'choice_label' => 'nombre',
             ))           
             ->add('fecha', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('codigoSexoFk', ChoiceType::class, array('action'   => array('M' => 'MASCULINO', 'F' => 'FEMENINO')))
+            ->add('codigoSexoFk', ChoiceType::class, array('action'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('identificacion', NumberType::class, array('required' => true))
             ->add('nombreCorto', TextType::class, array('required' => true))
             ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('controlPago', ChoiceType::class, array('choices'   => array('1' => 'SI', '0' => 'NO')))
+            ->add('controlPago', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

@@ -56,7 +56,7 @@ class PagoExamenController extends Controller
         if($codigoPagoExamen != 0) {
             $arPagoExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoExamen')->find($codigoPagoExamen);
         }
-        $form = $this->createForm(new RhuPagoExamenType, $arPagoExamen);
+        $form = $this->createForm(RhuPagoExamenType::class, $arPagoExamen);
         $form->handleRequest($request);
         if ($form->isValid()) {           
             $arPagoExamen = $form->getData();
@@ -111,7 +111,7 @@ class PagoExamenController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arPagoExamen->getEstadoAutorizado() == 1) {
                     $objFormatoPagoExamenDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoPagoExamenDetalle();
-                    $objFormatoPagoExamenDetalle->Generar($this, $codigoPagoExamen);
+                    $objFormatoPagoExamenDetalle->Generar($em, $codigoPagoExamen);
                 }
             }
             if($form->get('BtnEliminarDetalle')->isClicked()) {
@@ -186,6 +186,7 @@ class PagoExamenController extends Controller
     
     private function filtrar ($form) {        
         $session = new session;
+        $codigoEntidadExamen = '';
         if($form->get('entidadExamenRel')->getData()) {
             $codigoEntidadExamen = $form->get('entidadExamenRel')->getData()->getCodigoEntidadExamenPk();
         } 

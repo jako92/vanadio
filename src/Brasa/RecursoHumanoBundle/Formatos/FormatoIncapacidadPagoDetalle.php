@@ -5,9 +5,9 @@ class FormatoIncapacidadPagoDetalle extends \FPDF_FPDF {
     
     public static $codigoIncapacidadPago;
     
-    public function Generar($miThis, $codigoIncapacidadPago) {        
+    public function Generar($em, $codigoIncapacidadPago) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoIncapacidadPago = $codigoIncapacidadPago;
         $pdf = new FormatoIncapacidadPagoDetalle();

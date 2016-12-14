@@ -62,7 +62,7 @@ class CreditosController extends Controller
                 $form = $this->formularioLista();
                 $this->listar();
                 $objFormatoCredito = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCredito();
-                $objFormatoCredito->Generar($this, $this->strSqlLista);
+                $objFormatoCredito->Generar($em, $this->strSqlLista);
             }
             if($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form);
@@ -93,7 +93,7 @@ class CreditosController extends Controller
             $arCredito->setFechaCredito(new \DateTime('now'));
             $arCredito->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuCreditoType, $arCredito);         
+        $form = $this->createForm(RhuCreditoType::class, $arCredito);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -165,7 +165,7 @@ class CreditosController extends Controller
         if($form->isValid()) {
             if($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoDetalleCredito = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDetalleCredito();
-                $objFormatoDetalleCredito->Generar($this, $codigoCreditoFk);
+                $objFormatoDetalleCredito->Generar($em, $codigoCreditoFk);
             }
             if($form->get('BtnSuspender')->isClicked()) {
                 if ($arCredito->getEstadoSuspendido() == 0){

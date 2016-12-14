@@ -78,7 +78,7 @@ class EmbargoController extends Controller
             $arEmbargo->setFecha(new \DateTime('now'));
         }        
 
-        $form = $this->createForm(new RhuEmbargoType(), $arEmbargo);                     
+        $form = $this->createForm(RhuEmbargoType::class, $arEmbargo);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();

@@ -18,7 +18,7 @@ class RhuCreditoType extends AbstractType
         $builder           
             ->add('creditoTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCreditoTipo',
-                'choie_label' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true,
             ))
              ->add('creditoTipoPagoRel', EntityType::class, array(

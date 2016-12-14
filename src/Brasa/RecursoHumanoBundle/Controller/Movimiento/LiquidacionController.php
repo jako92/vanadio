@@ -78,7 +78,7 @@ class LiquidacionController extends Controller
         if($codigoLiquidacion != 0) {
             $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
         }
-        $form = $this->createForm(new RhuLiquidacionType, $arLiquidacion);         
+        $form = $this->createForm(RhuLiquidacionType::class, $arLiquidacion);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -116,11 +116,11 @@ class LiquidacionController extends Controller
                     $codigoFormato = $arConfiguracion->getCodigoFormatoLiquidacion();
                     if($codigoFormato <= 1) {
                         $objFormatoLiquidacion = new \Brasa\RecursoHumanoBundle\Formatos\Liquidacion1();
-                        $objFormatoLiquidacion->Generar($this, $codigoLiquidacion);                                          
+                        $objFormatoLiquidacion->Generar($em, $codigoLiquidacion);                                          
                     }
                     if($codigoFormato == 2) {
                         $objFormatoLiquidacion = new \Brasa\RecursoHumanoBundle\Formatos\Liquidacion2();
-                        $objFormatoLiquidacion->Generar($this, $codigoLiquidacion);                                     
+                        $objFormatoLiquidacion->Generar($em, $codigoLiquidacion);                                     
                 }                                       
                 }
             }
@@ -455,7 +455,8 @@ class LiquidacionController extends Controller
     }        
     
     private function filtrar ($form) {
-        $session = new session;        
+        $session = new session; 
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }         

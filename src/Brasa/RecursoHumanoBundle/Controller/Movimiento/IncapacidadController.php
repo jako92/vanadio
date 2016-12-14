@@ -46,7 +46,7 @@ class IncapacidadController extends Controller
                 $this->filtrarLista($form);
                 $this->listar();
                 $objFormatoIncapacidades = new \Brasa\RecursoHumanoBundle\Formatos\FormatoIncapacidad();
-                $objFormatoIncapacidades->Generar($this, $this->strSqlLista);
+                $objFormatoIncapacidades->Generar($em, $this->strSqlLista);
             }
 
             if($form->get('BtnEliminar')->isClicked()) {
@@ -100,7 +100,7 @@ class IncapacidadController extends Controller
             $arIncapacidad->setFechaHasta(new \DateTime('now'));                
         }        
 
-        $form = $this->createForm(new RhuIncapacidadType(), $arIncapacidad);                     
+        $form = $this->createForm(RhuIncapacidadType::class, $arIncapacidad);                     
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -282,9 +282,11 @@ class IncapacidadController extends Controller
     
     private function filtrarLista($form) {
         $session = new session;
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        } 
+        }
+        $codigoIncapacidadTipo = '';
         if($form->get('incapacidadTipoRel')->getData()) {
             $codigoIncapacidadTipo = $form->get('incapacidadTipoRel')->getData()->getCodigoIncapacidadTipoPk();
         }                

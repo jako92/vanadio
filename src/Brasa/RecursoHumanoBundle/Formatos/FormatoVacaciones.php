@@ -4,9 +4,9 @@ class FormatoVacaciones extends \FPDF_FPDF {
     public static $em;
     public static $codigoVacacion;
     
-    public function Generar($miThis, $codigoVacacion) {        
+    public function Generar($em, $codigoVacacion) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoVacacion = $codigoVacacion;
         $pdf = new FormatoVacaciones();

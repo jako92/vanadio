@@ -84,7 +84,7 @@ class PagosController extends Controller
                 $this->filtrarLista($form, $request);
                 $this->listar();
                 $objFormatoPagos = new \Brasa\RecursoHumanoBundle\Formatos\FormatoListaPagos();
-                $objFormatoPagos->Generar($this, $this->strDqlLista);
+                $objFormatoPagos->Generar($em, $this->strDqlLista);
             }
         }       
                 
@@ -119,15 +119,15 @@ class PagosController extends Controller
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
                 if($codigoFormato <= 1) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                    $objFormatoPago->Generar($this, "", "", $codigoPago);                    
+                    $objFormatoPago->Generar($em, "", "", $codigoPago);                    
                 }
                 if($codigoFormato == 2) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                    $objFormatoPago->Generar($this, "", "", $codigoPago);                    
+                    $objFormatoPago->Generar($em, "", "", $codigoPago);                    
                 }
                 if($codigoFormato == 3) { //Horus y horus 2
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo3();
-                    $objFormatoPago->Generar($this, "", "", $codigoPago);                    
+                    $objFormatoPago->Generar($em, "", "", $codigoPago);                    
                 }
             }
             if($form->get('BtnEnviarCorreo')->isClicked()) {
@@ -137,11 +137,11 @@ class PagosController extends Controller
                 $ruta = $arConfiguracionGeneral->getRutaTemporal();
                     if($codigoFormato <= 1) {
                         $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                        $objFormatoPago->Generar($this, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                        $objFormatoPago->Generar($em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                     }   
                     if($codigoFormato == 2) {
                         $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                        $objFormatoPago->Generar($this, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                        $objFormatoPago->Generar($em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                     }  
 
                     $correo = $arPago->getEmpleadoRel()->getCorreo();                                        
@@ -297,10 +297,12 @@ class PagosController extends Controller
     }         
     
     private function filtrarLista($form, Request $request) {
-        $session = $this->get('session');        
+        $session = $this->get('session'); 
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
+        $codigoPagoTipo = '';
         if($form->get('pagoTipoRel')->getData()) {
             $codigoPagoTipo = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();
         }        

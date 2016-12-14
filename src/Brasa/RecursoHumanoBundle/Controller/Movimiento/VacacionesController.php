@@ -101,7 +101,7 @@ class VacacionesController extends Controller
             $arVacacion->setFechaDesdeDisfrute(new \DateTime('now'));
             $arVacacion->setFechaHastaDisfrute(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuVacacionType, $arVacacion);
+        $form = $this->createForm(RhuVacacionType::class, $arVacacion);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -225,7 +225,7 @@ class VacacionesController extends Controller
             }
             if($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoDetalleVacaciones = new \Brasa\RecursoHumanoBundle\Formatos\FormatoVacaciones();
-                $objFormatoDetalleVacaciones->Generar($this, $codigoVacacion);
+                $objFormatoDetalleVacaciones->Generar($em, $codigoVacacion);
             }
             if($form->get('BtnLiquidar')->isClicked()) {
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->liquidar($codigoVacacion);
@@ -547,6 +547,7 @@ class VacacionesController extends Controller
 
     private function filtrarLista($form) {
         $session = new session;
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }

@@ -4,9 +4,9 @@ class Liquidacion1 extends \FPDF_FPDF {
     public static $em;
     public static $codigoLiquidacion;
 
-    public function Generar($miThis, $codigoLiquidacion) {
+    public function Generar($em, $codigoLiquidacion) {
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoLiquidacion = $codigoLiquidacion;
         $pdf = new Liquidacion1();

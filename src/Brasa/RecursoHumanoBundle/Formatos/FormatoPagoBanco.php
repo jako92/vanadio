@@ -4,9 +4,9 @@ class FormatoPagoBanco extends \FPDF_FPDF {
     public static $em;
     public static $codigoPagoBanco;
     
-    public function Generar($miThis, $codigoPagoBanco) {        
+    public function Generar($em, $codigoPagoBanco) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoPagoBanco = $codigoPagoBanco;
         $pdf = new FormatoPagoBanco();

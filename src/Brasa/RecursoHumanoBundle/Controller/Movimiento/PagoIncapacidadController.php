@@ -56,7 +56,7 @@ class PagoIncapacidadController extends Controller
         if($codigoIncapacidadPago != 0) {
             $arIncapacidadPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
         }
-        $form = $this->createForm(new RhuPagoIncapacidadType, $arIncapacidadPagos);
+        $form = $this->createForm(RhuPagoIncapacidadType::class, $arIncapacidadPagos);
         $form->handleRequest($request);
         if ($form->isValid()) {           
             $arIncapacidadPagos = $form->getData();
@@ -90,7 +90,7 @@ class PagoIncapacidadController extends Controller
             $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
             if($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoIncapacidadPagoDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoIncapacidadPagoDetalle();
-                $objFormatoIncapacidadPagoDetalle->Generar($this, $codigoIncapacidadPago);
+                $objFormatoIncapacidadPagoDetalle->Generar($em, $codigoIncapacidadPago);
             }
             if($form->get('BtnDetalleEliminar')->isClicked()) {                
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->eliminarDetallesSeleccionados($arrSeleccionados,$codigoIncapacidadPago);
@@ -203,6 +203,7 @@ class PagoIncapacidadController extends Controller
     
     private function filtrar ($form) {        
         $session = new session;
+        $codigoEntidadSalud = '';
         if($form->get('entidadSaludRel')->getData()) {
             $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
         }                 

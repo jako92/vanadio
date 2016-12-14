@@ -97,7 +97,7 @@ class RequisitosController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arRequisito->getEstadoAutorizado() == 1) {
                     $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoRequisitos();
-                    $objFormato->Generar($this, $codigoRequisito);
+                    $objFormato->Generar($em, $codigoRequisito);
                 }
             }
             if($form->get('BtnCerrar')->isClicked()) {
@@ -185,7 +185,8 @@ class RequisitosController extends Controller
         }
         $arRequisitosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
         $arRequisitosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoDetalle')->findBy(array('codigoRequisitoFk' => $codigoRequisito));
-        $arRequisitosDetalles = $paginator->paginate($arRequisitosDetalles, $this->get('request')->query->get('page', 1),50);
+        //$arRequisitosDetalles = $paginator->paginate($arRequisitosDetalles, $this->get('Request')->query->get('page', 1),50);
+        $arRequisitosDetalles = $paginator->paginate($arRequisitosDetalles, $request->query->getInt('page', 1)/*page number*/,50/*limit per page*/);                                               
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisitos:detalle.html.twig', array(
                         'arRequisitosDetalles' => $arRequisitosDetalles,
                         'arRequisito' => $arRequisito,
@@ -248,7 +249,7 @@ class RequisitosController extends Controller
         $em = $this->getDoctrine()->getManager();
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisito();
         $arRequisito->setFecha(new \DateTime('now'));
-        $form = $this->createForm(new RhuRequisitoType(), $arRequisito);
+        $form = $this->createForm(RhuRequisitoType::class, $arRequisito);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
