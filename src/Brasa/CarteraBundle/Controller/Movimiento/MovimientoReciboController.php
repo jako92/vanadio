@@ -103,7 +103,7 @@ class MovimientoReciboController extends Controller
 
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro", $this);
+                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro");
                 }
             } else {
                 $arUsuario = $this->getUser();
@@ -163,15 +163,15 @@ class MovimientoReciboController extends Controller
                                 $em->persist($arRecibo);
                                 $em->flush();                        
                             } else {
-                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja', $this);
+                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja');
                             }                    
                         }
                     } else {
-                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias', $this);
+                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
                     }
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                
                 } else {
-                   $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado', $this); 
+                   $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado'); 
                 }
                 
             }
@@ -193,7 +193,7 @@ class MovimientoReciboController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                
                 } else {
-                    $objMensaje->Mensaje('error', "El recibo debe estar autorizado y no puede estar impreso", $this);
+                    $objMensaje->Mensaje('error', "El recibo debe estar autorizado y no puede estar impreso");
                 }
             }
             if($form->get('BtnAnular')->isClicked()) {
@@ -236,7 +236,7 @@ class MovimientoReciboController extends Controller
                     $this->actualizarDetalle($arrControles, $codigoRecibo);                
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado");
                 }    
             }
             if($form->get('BtnDetalleEliminar')->isClicked()) {  
@@ -245,7 +245,7 @@ class MovimientoReciboController extends Controller
                     $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->eliminarSeleccionados($arrSeleccionados);
                     $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->liquidar($codigoRecibo);                 
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                 }
                 return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                    
             }    
@@ -256,13 +256,13 @@ class MovimientoReciboController extends Controller
                 if($arRecibo->getEstadoAutorizado() == 1 ) {
                     $strResultado = $em->getRepository('BrasaCarteraBundle:CarRecibo')->imprimir($codigoRecibo);
                     if($strResultado != "") {
-                        $objMensaje->Mensaje("error", $strResultado, $this);
+                        $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objRecibo = new \Brasa\CarteraBundle\Formatos\FormatoRecibo();
                         $objRecibo->Generar($this, $codigoRecibo);
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
                 }
                 return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                        
             }                        

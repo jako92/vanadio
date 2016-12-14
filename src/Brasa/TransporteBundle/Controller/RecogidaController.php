@@ -76,7 +76,7 @@ class RecogidaController extends Controller
                         return $this->redirect($this->generateUrl('brs_tte_recogida_lista'));
                     }                      
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }                             
             }            
             

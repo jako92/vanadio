@@ -102,7 +102,7 @@ class MovimientoNotaDebitoController extends Controller
 
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro", $this);
+                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro");
                 }
             } else {
                 $arUsuario = $this->getUser();
@@ -161,7 +161,7 @@ class MovimientoNotaDebitoController extends Controller
                                     $em->persist($arNotaDebito);
                                     $em->flush();                        
                                 } else {
-                                    $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja', $this);
+                                    $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja');
                                 }                    
                             } else {
                                 $arNotaDebito->setEstadoAutorizado(1);
@@ -170,12 +170,12 @@ class MovimientoNotaDebitoController extends Controller
                             }    
                         }
                     } else {
-                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias', $this);
+                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
                     }
 
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));                
                 } else {
-                    $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado', $this); 
+                    $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado'); 
                 }
             }
             if($form->get('BtnDesAutorizar')->isClicked()) {
@@ -196,7 +196,7 @@ class MovimientoNotaDebitoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));                
                 } else {
-                    $objMensaje->Mensaje('error', "La nota debito debe estar autorizado y no puede estar impreso", $this);
+                    $objMensaje->Mensaje('error', "La nota debito debe estar autorizado y no puede estar impreso");
                 }
             }
             if($form->get('BtnAnular')->isClicked()) {
@@ -229,7 +229,7 @@ class MovimientoNotaDebitoController extends Controller
                     $this->actualizarDetalle($arrControles, $codigoNotaDebito);                
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, esta autorizado");
                 }
             }
             if($form->get('BtnDetalleEliminar')->isClicked()) {
@@ -239,7 +239,7 @@ class MovimientoNotaDebitoController extends Controller
                     $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->liquidar($codigoNotaDebito);
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                 }
             }    
             if($form->get('BtnImprimir')->isClicked()) {
@@ -249,13 +249,13 @@ class MovimientoNotaDebitoController extends Controller
                 if($arNotaDebito->getEstadoAutorizado() == 1 ) {
                     $strResultado = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->imprimir($codigoNotaDebito);
                     if($strResultado != "") {
-                        $objMensaje->Mensaje("error", $strResultado, $this);
+                        $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objNotaDebito = new \Brasa\CarteraBundle\Formatos\FormatoNotaDebito();
                         $objNotaDebito->Generar($this, $codigoNotaDebito);
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
                 }
             }                        
         }

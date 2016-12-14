@@ -123,7 +123,7 @@ class PagoCursoController extends Controller
                 $arrControles = $request->request->All();                
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiPagoCurso')->autorizar($codigoPagoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_pago_curso_detalle', array('codigoPagoCurso' => $codigoPagoCurso)));
             }            
@@ -133,7 +133,7 @@ class PagoCursoController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiPagoCurso')->desAutorizar($codigoPagoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_pago_curso_detalle', array('codigoPagoCurso' => $codigoPagoCurso)));
             }    
@@ -143,7 +143,7 @@ class PagoCursoController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiPagoCurso')->imprimir($codigoPagoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {                    
                     $objPagoCurso = new \Brasa\AfiliacionBundle\Formatos\PagoCurso();
                     $objPagoCurso->Generar($this, $codigoPagoCurso);                    

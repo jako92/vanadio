@@ -67,7 +67,7 @@ class MovimientoController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->eliminar($arrSeleccionados);
                 if ($respuesta == true){
-                    $objMensaje->Mensaje("error", "No se puede eliminar el movimiento, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede eliminar el movimiento, esta autorizado");
                 } else {
                     return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_lista', array('codigoDocumento' => $codigoDocumento)));
                 }
@@ -114,10 +114,10 @@ class MovimientoController extends Controller
                         return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $arMovimiento->getCodigoMovimientoPk())));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El tercero no existe", $this);
+                    $objMensaje->Mensaje("error", "El tercero no existe");
                   }
             } else {
-                $objMensaje->Mensaje("error", "El tercero no existe", $this);
+                $objMensaje->Mensaje("error", "El tercero no existe");
             }
         }
         return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevo.html.twig', array(
@@ -142,7 +142,7 @@ class MovimientoController extends Controller
                 if($arMovimiento->getEstadoAutorizado() == 0) {
                     $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->autorizar($codigoMovimiento);
                     if($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta, $this);
+                        $objMensaje->Mensaje("error", $respuesta);
                     } else {
                         $em->flush();
                     }                   
@@ -153,7 +153,7 @@ class MovimientoController extends Controller
                 if($arMovimiento->getEstadoAutorizado() == 1) {
                     $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->desautorizar($codigoMovimiento);
                     if($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta, $this);
+                        $objMensaje->Mensaje("error", $respuesta);
                     } else {
                         $em->flush();
                     }
@@ -175,7 +175,7 @@ class MovimientoController extends Controller
                     if($arMovimiento->getEstadoImpreso() == 0) {
                         $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->imprimir($codigoMovimiento);
                         if($respuesta != "") {
-                            $objMensaje->Mensaje("error", $respuesta, $this);
+                            $objMensaje->Mensaje("error", $respuesta);
                         } else {                        
                             $em->flush();
                         }                        
@@ -183,7 +183,7 @@ class MovimientoController extends Controller
                     $objMovimiento = new \Brasa\InventarioBundle\Formatos\FormatoMovimiento();
                     $objMovimiento->Generar($this, $codigoMovimiento);                        
                 } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada", $this);
+                    $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada");
                 }
             }
         }

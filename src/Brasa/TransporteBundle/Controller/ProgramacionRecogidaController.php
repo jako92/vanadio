@@ -68,7 +68,7 @@ class ProgramacionRecogidaController extends Controller
                         return $this->redirect($this->generateUrl('brs_tte_programacion_recogida_detalle', array('codigoProgramacionRecogida' => $arProgramacionRecogida->getCodigoProgramacionRecogidaPk())));
                     }                      
                 } else {
-                    $objMensaje->Mensaje("error", "El conductor no existe", $this);
+                    $objMensaje->Mensaje("error", "El conductor no existe");
                 }                             
             }            
             

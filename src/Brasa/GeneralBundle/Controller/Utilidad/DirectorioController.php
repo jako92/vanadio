@@ -161,7 +161,7 @@ class DirectorioController extends Controller
                     $form['attachment']->getData()->move($strDestino, $strArchivo);
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 } else {
-                    $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido", $this);
+                    $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido");
                 }    
                 
                 

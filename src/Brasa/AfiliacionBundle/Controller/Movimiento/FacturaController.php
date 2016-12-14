@@ -58,7 +58,7 @@ class FacturaController extends Controller
                     $em->getRepository('BrasaAfiliacionBundle:AfiFactura')->eliminar($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_afi_movimiento_factura'));
                  } catch (ForeignKeyConstraintViolationException $e) { 
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados');
                  }   
                 //return $this->redirect($this->generateUrl('brs_afi_movimiento_factura'));
             }
@@ -123,7 +123,7 @@ class FacturaController extends Controller
                         return $this->redirect($this->generateUrl('brs_afi_movimiento_factura_detalle', array('codigoFactura' => $arFactura->getCodigoFacturaPk())));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }
             }
         }
@@ -153,7 +153,7 @@ class FacturaController extends Controller
                 $this->actualizarDetalle($arrControles, $codigoFactura);
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiFactura')->autorizar($codigoFactura);
                 if($strResultado != '') {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));
             }
@@ -166,7 +166,7 @@ class FacturaController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiFactura')->anular($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));
             }
@@ -176,7 +176,7 @@ class FacturaController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiFactura')->desAutorizar($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));
             }
@@ -186,7 +186,7 @@ class FacturaController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiFactura')->imprimir($codigoFactura);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     if($arFactura->getCodigoFacturaTipoFk() == 1) {
                         $objFactura = new \Brasa\AfiliacionBundle\Formatos\Factura();

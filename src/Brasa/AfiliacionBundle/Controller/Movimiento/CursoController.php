@@ -165,7 +165,7 @@ class CursoController extends Controller
                         return $this->redirect($this->generateUrl('brs_afi_movimiento_curso_detalle', array('codigoCurso' => $arCurso->getCodigoCursoPk())));
                     }                    
                 } else {
-                    $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                    $objMensaje->Mensaje("error", "El cliente no existe");
                 }                                                 
             }                                              
         }
@@ -231,7 +231,7 @@ class CursoController extends Controller
                             $em->flush();            
                             return $this->redirect($this->generateUrl('brs_afi_movimiento_curso'));
                         } else {
-                            $objMensaje->Mensaje("error", "El cliente no existe", $this);
+                            $objMensaje->Mensaje("error", "El cliente no existe");
                         }                                                 
                     }                     
                 }
@@ -267,7 +267,7 @@ class CursoController extends Controller
                 $this->actualizarDetalle($arrControles, $codigoCurso);
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiCurso')->autorizar($codigoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_curso_detalle', array('codigoCurso' => $codigoCurso)));
             }            
@@ -277,7 +277,7 @@ class CursoController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiCurso')->anular($codigoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_curso_detalle', array('codigoCurso' => $codigoCurso)));
             }            
@@ -287,7 +287,7 @@ class CursoController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiCurso')->desAutorizar($codigoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_curso_detalle', array('codigoCurso' => $codigoCurso)));
             }    
@@ -297,7 +297,7 @@ class CursoController extends Controller
                 }
                 $strResultado = $em->getRepository('BrasaAfiliacionBundle:AfiCurso')->imprimir($codigoCurso);
                 if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado, $this);
+                    $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     $objCurso = new \Brasa\AfiliacionBundle\Formatos\Curso();
                     $objCurso->Generar($this, $codigoCurso);                    

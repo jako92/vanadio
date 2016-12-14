@@ -67,7 +67,7 @@ class PeriodoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_afi_movimiento_periodo'));
                 } else {
-                    $objMensaje->Mensaje('error','No se puede desgenerar el cobro, esta siendo utilizado en facturas',$this);
+                    $objMensaje->Mensaje('error','No se puede desgenerar el cobro, esta siendo utilizado en facturas');
                 }
             }
 
@@ -141,7 +141,7 @@ class PeriodoController extends Controller
                     $em->getRepository('BrasaAfiliacionBundle:AfiPeriodo')->eliminar($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_afi_movimiento_periodo'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados');
                  }
             }
             
@@ -240,7 +240,7 @@ class PeriodoController extends Controller
                 //$arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $registros = $em->getRepository('BrasaAfiliacionBundle:AfiPeriodoDetalle')->eliminar($arrSeleccionados);
                 if ($registros == TRUE){
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro');
                 }
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_periodo_detalle', array('codigoPeriodo' => $codigoPeriodo)));
             }
@@ -254,7 +254,7 @@ class PeriodoController extends Controller
                 if ($arPeriodo->getEstadoFacturado() == 0){
                     $em->getRepository('BrasaAfiliacionBundle:AfiPeriodoDetalle')->trasladoNuevo($arrSeleccionados,$codigoPeriodo);
                 } else {
-                    $objMensaje->Mensaje('error', 'El periodo se encuentra facturado', $this);
+                    $objMensaje->Mensaje('error', 'El periodo se encuentra facturado');
                 }
                 
                 return $this->redirect($this->generateUrl('brs_afi_movimiento_periodo_detalle', array('codigoPeriodo' => $codigoPeriodo)));
@@ -604,7 +604,7 @@ class PeriodoController extends Controller
                     exit;
                 
                 } else {
-                    $objMensaje->Mensaje('error', 'Hay informacion sin registro para el pago de pila',$this);
+                    $objMensaje->Mensaje('error', 'Hay informacion sin registro para el pago de pila');
                 }     
             }
             
@@ -806,7 +806,7 @@ class PeriodoController extends Controller
                                     readfile($strArchivo);                               
                                     unlink($strRutaZip);
                 } else {
-                    $objMensaje->Mensaje('error', 'Hay informacion sin registro para el pago de pila',$this);
+                    $objMensaje->Mensaje('error', 'Hay informacion sin registro para el pago de pila');
                 }     
             }
             

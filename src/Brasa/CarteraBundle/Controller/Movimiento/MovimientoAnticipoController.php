@@ -103,7 +103,7 @@ class MovimientoAnticipoController extends Controller
 
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro", $this);
+                    $objMensaje->Mensaje("error", "Para modificar el cliente debe eliminar los detalles asociados a este registro");
                 }
             } else {
                 $arUsuario = $this->getUser();
@@ -125,7 +125,7 @@ class MovimientoAnticipoController extends Controller
                         return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_listar'));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "El valor del anticipo debe ser mayor a cero", $this);
+                    $objMensaje->Mensaje("error", "El valor del anticipo debe ser mayor a cero");
                 }
                     
             }
@@ -172,15 +172,15 @@ class MovimientoAnticipoController extends Controller
                                 $em->persist($arAnticipo);
                                 $em->flush();                        
                             } else {
-                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al anticipo de caja', $this);
+                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al anticipo de caja');
                             }                    
                         }
                     } else {
-                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias', $this);
+                        $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
                     }
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));                
                 } else {
-                   $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado', $this); 
+                   $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado'); 
                 }
                 
             }
@@ -202,7 +202,7 @@ class MovimientoAnticipoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));                
                 } else {
-                    $objMensaje->Mensaje('error', "El anticipo debe estar autorizado y no puede estar impreso", $this);
+                    $objMensaje->Mensaje('error', "El anticipo debe estar autorizado y no puede estar impreso");
                 }
             }
             if($form->get('BtnAnular')->isClicked()) {
@@ -245,7 +245,7 @@ class MovimientoAnticipoController extends Controller
                     $this->actualizarDetalle($arrControles, $codigoAnticipo);                
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado");
                 }    
             }
             if($form->get('BtnDetalleEliminar')->isClicked()) {                
@@ -254,7 +254,7 @@ class MovimientoAnticipoController extends Controller
                     $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->eliminarSeleccionados($arrSeleccionados);
                     $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->liquidar($codigoAnticipo);                 
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                 }
                 return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));                    
             }    
@@ -265,7 +265,7 @@ class MovimientoAnticipoController extends Controller
                 if($arAnticipo->getEstadoAutorizado() == 1 ) {
                     $strResultado = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->imprimir($codigoAnticipo);
                     if($strResultado != "") {
-                        $objMensaje->Mensaje("error", $strResultado, $this);
+                        $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objAnticipo = new \Brasa\CarteraBundle\Formatos\FormatoAnticipo();
                         $objAnticipo->Generar($this, $codigoAnticipo);
@@ -338,7 +338,7 @@ class MovimientoAnticipoController extends Controller
                     }
                 }
                 if ($totalAnticipoDetalle > $arAnticipo->getVrAnticipo()){
-                    $objMensaje->Mensaje("error", 'El valor a pagar no puede ser mayor al anticipo', $this);
+                    $objMensaje->Mensaje("error", 'El valor a pagar no puede ser mayor al anticipo');
                     
                 } else {
                     $em->flush();
@@ -587,7 +587,7 @@ class MovimientoAnticipoController extends Controller
             }
             $Anticipo = $arAnticipo->getVrAnticipo();
             if ($totalAnticipoDetalle > $Anticipo){
-                $objMensaje->Mensaje("error", 'El valor a pagar no puede ser mayor al anticipo', $this);
+                $objMensaje->Mensaje("error", 'El valor a pagar no puede ser mayor al anticipo');
             } else {
                 $em->flush();
                 $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->liquidar($codigoActicipo);

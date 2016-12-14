@@ -65,7 +65,7 @@ class ClienteController extends Controller
             $arClienteValidar = new \Brasa\CarteraBundle\Entity\CarCliente();
             $arClienteValidar = $em->getRepository('BrasaCarteraBundle:CarCliente')->findBy(array('nit' => $arCliente->getNit()));
             if(($codigoCliente == 0 || $codigoCliente == '') && count($arClienteValidar) > 0) {
-                $objMensaje->Mensaje("error", "El cliente con ese nit ya existe", $this);
+                $objMensaje->Mensaje("error", "El cliente con ese nit ya existe");
             } else {
                 $arUsuario = $this->getUser();
                 $arCliente->setUsuario($arUsuario->getUserName());

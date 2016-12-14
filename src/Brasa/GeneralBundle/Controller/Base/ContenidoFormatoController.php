@@ -44,7 +44,7 @@ class ContenidoFormatoController extends Controller
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_gen_base_contenido_formato_lista'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
-                    $objMensaje->Mensaje('error', 'No se puede eliminar contenidos de los formatos porque esta siendo utilizado', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar contenidos de los formatos porque esta siendo utilizado');
                    }    
             }                        
         }

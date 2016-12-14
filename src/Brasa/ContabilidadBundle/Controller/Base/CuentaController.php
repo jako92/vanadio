@@ -73,7 +73,7 @@ class CuentaController extends Controller
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_ctb_base_cuentas_lista'));                
             } else {
-                $objMensaje->Mensaje('error', 'La cuenta padre no existe', $this);
+                $objMensaje->Mensaje('error', 'La cuenta padre no existe');
             }
 
         }

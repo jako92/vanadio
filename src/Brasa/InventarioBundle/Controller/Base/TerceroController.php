@@ -43,7 +43,7 @@ class TerceroController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_inv_base_tercero'));
                     } catch (ForeignKeyConstraintViolationException $e) {
-                        $objMensaje->Mensaje('error', 'No se puede eliminar el tercero porque esta siendo utilizado', $this);
+                        $objMensaje->Mensaje('error', 'No se puede eliminar el tercero porque esta siendo utilizado');
                       }
                 }
             }

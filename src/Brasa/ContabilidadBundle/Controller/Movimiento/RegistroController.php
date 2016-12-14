@@ -227,7 +227,7 @@ class RegistroController extends Controller
                     $em->flush();
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 } else {
-                    $objMensaje->Mensaje('error', 'Debe seleccionar un filtro', $this);
+                    $objMensaje->Mensaje('error', 'Debe seleccionar un filtro');
                 }                               
             }
         }

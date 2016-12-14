@@ -40,11 +40,11 @@ class AsientoController extends Controller
                         $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();
                         $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigoAsiento);
                         if ($arAsiento->getEstadoAutorizado() == 1){
-                            $objMensaje->Mensaje("error", "El asiento ". $codigoAsiento ." ya fue autorizada, no se pude eliminar", $this);
+                            $objMensaje->Mensaje("error", "El asiento ". $codigoAsiento ." ya fue autorizada, no se pude eliminar");
                         }else{
                             $arRegistros = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->validarAsientosDQL($codigoAsiento);
                             if ($arRegistros){
-                                $objMensaje->Mensaje("error", "El asiento ". $codigoAsiento ." contiene registros asignados", $this);
+                                $objMensaje->Mensaje("error", "El asiento ". $codigoAsiento ." contiene registros asignados");
                             }else{
                                 $em->remove($arAsiento);
                             }
@@ -131,14 +131,14 @@ class AsientoController extends Controller
                     if($em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->numeroRegistros($codigoAsiento) > 0) {
                         $autorizar = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->Autorizar($codigoAsiento);
                         if ($autorizar != ""){
-                            $objMensaje->Mensaje("error", $autorizar, $this);
+                            $objMensaje->Mensaje("error", $autorizar);
                         }
                         return $this->redirect($this->generateUrl('brs_ctb_mov_asientos_detalle', array('codigoAsiento' => $codigoAsiento)));
                     } else {
-                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al asiento', $this);
+                                $objMensaje->Mensaje('error', 'Debe adicionar detalles al asiento');
                             }    
                 } else {
-                    $objMensaje->Mensaje("error", "El asiento ya esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "El asiento ya esta autorizado");
                 }
                 
             }
@@ -146,11 +146,11 @@ class AsientoController extends Controller
                 if ($arAsiento->getEstadoAutorizado() == 1){
                     $autorizar = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->DesAutorizar($codigoAsiento);
                     if ($autorizar != ""){
-                        $objMensaje->Mensaje("error", $autorizar, $this);
+                        $objMensaje->Mensaje("error", $autorizar);
                     }
                     return $this->redirect($this->generateUrl('brs_ctb_mov_asientos_detalle', array('codigoAsiento' => $codigoAsiento)));
                 } else {
-                    $objMensaje->Mensaje("error", "El asiento ya esta desautorizado", $this);
+                    $objMensaje->Mensaje("error", "El asiento ya esta desautorizado");
                 }
                 
             }
@@ -163,7 +163,7 @@ class AsientoController extends Controller
                             $arAsientoDetalle = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();
                             $arAsientoDetalle = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->find($codigoAsientoDetalle);
                             if ($arAsientoDetalle->getEstadoAutorizado() == 1){
-                                $objMensaje->Mensaje("error", "El asiento detalle ". $codigoAsientoDetalle ." ya fue autorizada, no se pude eliminar", $this);
+                                $objMensaje->Mensaje("error", "El asiento detalle ". $codigoAsientoDetalle ." ya fue autorizada, no se pude eliminar");
                             }else{
                                 $em->remove($arAsientoDetalle);
                             }
@@ -173,7 +173,7 @@ class AsientoController extends Controller
                         return $this->redirect($this->generateUrl('brs_ctb_mov_asientos_detalle', array('codigoAsiento' => $codigoAsiento)));
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, el asiento esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede eliminar el registro, el asiento esta autorizado");
                 }
                 
             }
@@ -211,12 +211,12 @@ class AsientoController extends Controller
                         //$arAsientoDetalleNew->setCredito($arrControlesNew['TxtCreditoNew']);
                         $arAsientoDetalleNew->setDescripcion($arrControlesNew['TxtDescripcionNew']);
                         if ($arCuentaNew == null){
-                            $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el número de cuenta ". $strCuenta . " no existe en el sistema" , $this);
+                            $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el número de cuenta ". $strCuenta . " no existe en el sistema");
                         }else {
                             if ($registrosNew == 0 ){
                                 if ($strIdentificacion == null){
                                     if ($arCuentaNew->getExigeNit() == 1){
-                                        $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que la cuenta exige número de identificación" , $this);
+                                        $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que la cuenta exige número de identificación");
                                     }else{
 
                                         $em->persist($arAsientoDetalleNew);
@@ -225,12 +225,12 @@ class AsientoController extends Controller
                                         return $this->redirect($this->generateUrl('brs_ctb_mov_asientos_detalle', array('codigoAsiento' => $codigoAsiento)));
                                     }
                                 }else {
-                                    $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el número de identificación ". $strIdentificacion . " no existe en el sistema" , $this);
+                                    $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el número de identificación ". $strIdentificacion . " no existe en el sistema");
                                 }
                             }else {
                                 if ($arCentroCostoNew == null){
                                     if ($arrControlesNew['TxtCodigoCentroCostoNew'] != null){
-                                        $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el centro de costo ". $arrControlesNew['TxtCodigoCentroCostoNew'] . " no existe en el sistema" , $this);
+                                        $objMensaje->Mensaje("error", "El sistema no agregó el registro , por que el centro de costo ". $arrControlesNew['TxtCodigoCentroCostoNew'] . " no existe en el sistema");
                                     }else{ 
                                         $em->persist($arAsientoDetalleNew);
                                         $em->flush();
@@ -246,10 +246,10 @@ class AsientoController extends Controller
                             }   
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El registro no tiene número de cuenta", $this);
+                        $objMensaje->Mensaje("error", "El registro no tiene número de cuenta");
                     }
                 } else {
-                   $objMensaje->Mensaje("error", "No se puede agregar registro, el asiento ha sido autorizado", $this); 
+                   $objMensaje->Mensaje("error", "No se puede agregar registro, el asiento ha sido autorizado"); 
                 }
                 
             }
@@ -290,23 +290,23 @@ class AsientoController extends Controller
                             //$arAsientoDetalle->setCredito($arrControles['TxtCredito'.$intCodigo]);
                             $arAsientoDetalle->setDescripcion($arrControles['TxtDescripcion'.$intCodigo]);
                             if ($arCuenta == null){
-                                $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el número de cuenta ". $arrControles['TxtCuenta'.$intCodigo] . " no existe" , $this);
+                                $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el número de cuenta ". $arrControles['TxtCuenta'.$intCodigo] . " no existe");
                             }else {
                                 if ($registros == 0 ){
                                     if ($arrControles['TxtNumeroIdentificacion'.$intCodigo] == null){
                                         if ($arCuenta->getExigeNit() == 1){
-                                            $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que la cuenta exige número de identificación" , $this);
+                                            $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que la cuenta exige número de identificación");
                                         } else {
 
                                             $em->persist($arAsientoDetalle);
                                         }
                                     }else {
-                                        $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el número de identificación ". $arrControles['TxtNumeroIdentificacion'.$intCodigo] . " no existe" , $this);
+                                        $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el número de identificación ". $arrControles['TxtNumeroIdentificacion'.$intCodigo] . " no existe");
                                     }
                                 }else {
                                     if ($arCentroCosto == null){
                                         if ($arrControles['TxtCodigoCentroCosto'.$intCodigo] != null){
-                                            $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el centro de costo ". $arrControles['TxtCodigoCentroCosto'.$intCodigo] . " no existe" , $this);
+                                            $objMensaje->Mensaje("error", "El sistema no modificó el registro ".$intCodigo.", por que el centro de costo ". $arrControles['TxtCodigoCentroCosto'.$intCodigo] . " no existe");
                                         }else {
 
                                             $em->persist($arAsientoDetalle);
@@ -320,7 +320,7 @@ class AsientoController extends Controller
                         }
                     }
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede actualizar los detalles, el asiento ha sido autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede actualizar los detalles, el asiento ha sido autorizado");
                 }
                 $em->flush();
                 $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->liquidar($codigoAsiento);
@@ -332,7 +332,7 @@ class AsientoController extends Controller
                     $objFormatoAsientoDetalle = new \Brasa\ContabilidadBundle\Formatos\FormatoAsientoDetalle();
                     $objFormatoAsientoDetalle->Generar($this, $codigoAsiento);
                 } else {
-                    $objMensaje->Mensaje("error", "No se puede imprimir, el asiento no esta autorizado", $this);
+                    $objMensaje->Mensaje("error", "No se puede imprimir, el asiento no esta autorizado");
                 }    
             }
         }

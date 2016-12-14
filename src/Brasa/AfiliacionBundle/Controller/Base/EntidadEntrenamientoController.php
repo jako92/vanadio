@@ -94,7 +94,7 @@ class EntidadEntrenamientoController extends Controller
                 return $this->redirect($this->generateUrl('brs_afi_base_entidad_entrenamiento_detalle', array('codigoEntidadEntrenamiento' => $codigoEntidadEntrenamiento)));
             }      
             if ($form->get('BtnImprimir')->isClicked()) {
-               $objMensaje->Mensaje('error', "Opcion en desarrollo", $this);
+               $objMensaje->Mensaje('error', "Opcion en desarrollo");
             }            
         }
         $arEntidadEntrenamiento = new \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamiento();

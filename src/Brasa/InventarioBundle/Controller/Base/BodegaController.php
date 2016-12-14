@@ -42,7 +42,7 @@ class BodegaController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_inv_base_bodega'));
                     } catch (ForeignKeyConstraintViolationException $e) {
-                        $objMensaje->Mensaje('error', 'No se puede eliminar el bodega porque esta siendo utilizado', $this);
+                        $objMensaje->Mensaje('error', 'No se puede eliminar el bodega porque esta siendo utilizado');
                       }
                 }
             }

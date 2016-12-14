@@ -35,7 +35,7 @@ class EmpleadoController extends Controller
                     $em->getRepository('BrasaAfiliacionBundle:AfiEmpleado')->eliminar($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_afi_base_empleado'));
                 } catch (ForeignKeyConstraintViolationException $e) {
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el empleado, tiene registros asociados', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el empleado, tiene registros asociados');
                   }
             }
             if ($form->get('BtnFiltrar')->isClicked()) {
@@ -107,7 +107,7 @@ class EmpleadoController extends Controller
                 try{
                     $em->getRepository('BrasaAfiliacionBundle:AfiContrato')->eliminar($arrSeleccionados,$codigoEmpleado);
                 } catch (ForeignKeyConstraintViolationException $e) {
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el contrato, tiene registros asociados', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el contrato, tiene registros asociados');
                   }
                 return $this->redirect($this->generateUrl('brs_afi_base_empleado_detalle', array('codigoEmpleado' => $codigoEmpleado)));
             }
@@ -144,7 +144,7 @@ class EmpleadoController extends Controller
             $arContrato = $em->getRepository('BrasaAfiliacionBundle:AfiContrato')->find($codigoContrato);
         } else {
             if ($em->getRepository('BrasaAfiliacionBundle:AfiContrato')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'indefinido' => 1))){
-              $objMensaje->Mensaje('error', 'El empleado tiene un contrato abierto, por favor cerrar el actual para poder crear el nuevo', $this);     
+              $objMensaje->Mensaje('error', 'El empleado tiene un contrato abierto, por favor cerrar el actual para poder crear el nuevo');     
             } else {
                 $arEmpleado = new \Brasa\AfiliacionBundle\Entity\AfiEmpleado();
                 $arEmpleado = $em->getRepository('BrasaAfiliacionBundle:AfiEmpleado')->find($codigoEmpleado);
@@ -187,7 +187,7 @@ class EmpleadoController extends Controller
                 $em->flush();
                 if($codigoContrato == 0 || $codigoContrato == '') {
                     if ($em->getRepository('BrasaAfiliacionBundle:AfiContrato')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'indefinido' => 1))){
-                        $objMensaje->Mensaje('error', 'EEl empleado tiene un contrato abierto, por favor cerrar el actual para poder crear el nuevo', $this);                     
+                        $objMensaje->Mensaje('error', 'EEl empleado tiene un contrato abierto, por favor cerrar el actual para poder crear el nuevo');                     
                     } else {
                         $arEmpleado = new \Brasa\AfiliacionBundle\Entity\AfiEmpleado();
                         $arEmpleado = $em->getRepository('BrasaAfiliacionBundle:AfiEmpleado')->find($codigoEmpleado);

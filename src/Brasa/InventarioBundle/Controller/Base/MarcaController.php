@@ -42,7 +42,7 @@ class MarcaController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_inv_base_marca'));
                     } catch (ForeignKeyConstraintViolationException $e) {
-                        $objMensaje->Mensaje('error', 'No se puede eliminar el marca porque esta siendo utilizado', $this);
+                        $objMensaje->Mensaje('error', 'No se puede eliminar el marca porque esta siendo utilizado');
                       }
                 }
             }

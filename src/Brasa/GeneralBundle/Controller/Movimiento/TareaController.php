@@ -53,7 +53,7 @@ class TareaController extends Controller
                         $em->persist($arUsuarioAct);                        
                         $em->flush();                        
                     } else {
-                        $objMensaje->Mensaje("error", "Solo puede terminar la tarea el usuario responsable " . $arTarea->getUsuarioTareaFk(), $this);
+                        $objMensaje->Mensaje("error", "Solo puede terminar la tarea el usuario responsable " . $arTarea->getUsuarioTareaFk());
                     }
 
                 }

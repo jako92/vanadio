@@ -347,7 +347,7 @@ class SegUsuariosController extends Controller
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
                 else {
-                    $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar", $this);
+                    $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar");
                 }
             }                                    
         }
@@ -415,7 +415,7 @@ class SegUsuariosController extends Controller
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
                 else {
-                    $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar", $this);
+                    $objMensaje->Mensaje("error", "No selecciono ningun dato para grabar");
                 }
             }
         }
