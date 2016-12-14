@@ -51,7 +51,7 @@ class DisciplinarioController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_disciplinario'));
                     } catch (ForeignKeyConstraintViolationException $e) {
-                        $objMensaje->Mensaje('error', 'No se puede eliminar el proceso disciplinario, tiene detalles relacionados', $this);
+                        $objMensaje->Mensaje('error', 'No se puede eliminar el proceso disciplinario, tiene detalles relacionados');
                     }    
                     
                 }

@@ -42,7 +42,7 @@ class PagoBancoController extends Controller
                         }
                         $em->flush();
                     } catch (ForeignKeyConstraintViolationException $e) { 
-                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles asociados');
                   }    
                 }                
                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco'));
@@ -174,49 +174,49 @@ class PagoBancoController extends Controller
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoBancolombiaPab($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado');
                 }
             }
             if($form->get('BtnArchivoBancolombiaSap')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoBancolombiaSap($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado');
                 }
             }
             if($form->get('BtnArchivoAvvillasInterno')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoAvvillasInterno($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado');
                 }
             }
             if($form->get('BtnArchivoAvvillasOtros')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoAvvillasOtros($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
                 }
             }
             if($form->get('BtnArchivoDavivienda')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoDavivienda($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
                 }
             }
             if($form->get('BtnArchivoBogota')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoBogota($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
                 }
             }
             if($form->get('BtnArchivoColpatriaCsv')->isClicked()) {
                 if($arPagoBanco->getEstadoAutorizado() == 1) {
                     $this->generarArchivoColpatriaCsv($arPagoBanco);
                 } else {
-                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ', $this);
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
                 }
             }
             if ($form->get('BtnDetalleExcel')->isClicked()) {                

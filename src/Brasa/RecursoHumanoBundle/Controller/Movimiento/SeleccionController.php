@@ -162,7 +162,7 @@ class SeleccionController extends Controller
                     if ($strRespuesta == ''){
                         return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                     }else{
-                        $objMensaje->Mensaje('error', $strRespuesta, $this);
+                        $objMensaje->Mensaje('error', $strRespuesta);
                     }
                 }    
             }

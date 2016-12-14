@@ -68,7 +68,7 @@ class SeleccionRequisicionAspiranteController extends Controller
                     if ($strRespuesta == ''){
                         return $this->redirect($this->generateUrl('brs_rhu_requisicionaspirante_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }else{
-                        $objMensaje->Mensaje('error', $strRespuesta, $this);
+                        $objMensaje->Mensaje('error', $strRespuesta);
                     }
                 }
             }

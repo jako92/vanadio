@@ -94,7 +94,7 @@ class PagoExamenController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_pago_examen_detalle', array('codigoPagoExamen' => $codigoPagoExamen)));                                                                        
                     } else {
-                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al pago de examen', $this);
+                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al pago de examen');
                     }
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_pago_examen_detalle', array('codigoPagoExamen' => $codigoPagoExamen)));                                                

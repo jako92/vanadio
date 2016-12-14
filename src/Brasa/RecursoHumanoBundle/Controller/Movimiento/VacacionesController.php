@@ -56,7 +56,7 @@ class VacacionesController extends Controller
                             }
                         }
                     } catch (ForeignKeyConstraintViolationException $e) {
-                        $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles relacionados', $this);
+                        $objMensaje->Mensaje('error', 'No se puede eliminar el registro, tiene detalles relacionados');
                       }
                 }
                 $this->filtrarLista($form);

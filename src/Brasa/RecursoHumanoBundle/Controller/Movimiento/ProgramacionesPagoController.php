@@ -122,7 +122,7 @@ class ProgramacionesPagoController extends Controller
             $arProgramacionPago->setFechaHasta(new \DateTime('now'));
             $arProgramacionPago->setFechaHastaReal(new \DateTime('now'));             
         }
-        $form = $this->createForm(new RhuProgramacionPagoType(), $arProgramacionPago);
+        $form = $this->createForm(RhuProgramacionPagoType::class, $arProgramacionPago);
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arProgramacionPago = $form->getData();            
@@ -802,11 +802,13 @@ class ProgramacionesPagoController extends Controller
                     );
     }
 
-    private function filtrarLista(Request $request, $form) {
+    private function filtrarLista($form, Request $request) {
         $session = $this->get('session');
+        $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
+        $codigoPagoTipo = '';
         if($form->get('pagoTipoRel')->getData()) {
             $codigoPagoTipo = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();
         }        

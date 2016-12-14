@@ -4,9 +4,9 @@ class FormatoSeleccionRequisito extends \FPDF_FPDF {
     public static $em;
     public static $codigoSeleccionRequisito;
     
-    public function Generar($miThis, $codigoSeleccionRequisito) {        
+    public function Generar($em, $codigoSeleccionRequisito) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoSeleccionRequisito = $codigoSeleccionRequisito;
         $pdf = new FormatoSeleccionRequisito();

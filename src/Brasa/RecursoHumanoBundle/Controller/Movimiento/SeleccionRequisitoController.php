@@ -69,7 +69,7 @@ class SeleccionRequisitoController extends Controller
         if($codigoSeleccionRequisito != 0) {
             $arRequisito = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($codigoSeleccionRequisito);
         }
-        $form = $this->createForm(new RhuSeleccionRequisitoType, $arRequisito);
+        $form = $this->createForm(RhuSeleccionRequisitoType::class, $arRequisito);
         $form->handleRequest($request);
         if ($form->isValid()) { 
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -110,14 +110,14 @@ class SeleccionRequisitoController extends Controller
             $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
             if($form->get('BtnImprimir')->isClicked()) {                
                 $objSeleccionRequisito = new \Brasa\RecursoHumanoBundle\Formatos\FormatoSeleccionRequisito();
-                $objSeleccionRequisito->Generar($this, $codigoSeleccionRequisito);
+                $objSeleccionRequisito->Generar($em, $codigoSeleccionRequisito);
             }
             if($form->get('BtnEliminarDetalle')->isClicked()) {
                 if($arRequisicion->getEstadoCerrado() == 0) {
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisicionAspirante')->eliminarDetallesSeleccionados($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                 } else {
-                    $objMensaje->Mensaje('error', 'No se puede eliminar, la requisicion esta cerrada', $this);
+                    $objMensaje->Mensaje('error', 'No se puede eliminar, la requisicion esta cerrada');
                 }
             }
             if($form->get('BtnAprobarDetalle')->isClicked()) {
@@ -126,10 +126,10 @@ class SeleccionRequisitoController extends Controller
                     if ($strRespuesta == ''){
                         return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }else{
-                        $objMensaje->Mensaje('error', $strRespuesta, $this);
+                        $objMensaje->Mensaje('error', $strRespuesta);
                     }
                 } else {
-                    $objMensaje->Mensaje('error', 'No se puede aprobar, la requisicion esta cerrada', $this);
+                    $objMensaje->Mensaje('error', 'No se puede aprobar, la requisicion esta cerrada');
                 }
             }
             if($form->get('BtnDesaprobarDetalle')->isClicked()) {
@@ -138,10 +138,10 @@ class SeleccionRequisitoController extends Controller
                     if ($strRespuesta == ''){
                         return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }else{
-                        $objMensaje->Mensaje('error', $strRespuesta, $this);
+                        $objMensaje->Mensaje('error', $strRespuesta);
                     }
                 } else {
-                    $objMensaje->Mensaje('error', 'No se puede aprobar, la requisicion esta cerrada', $this);
+                    $objMensaje->Mensaje('error', 'No se puede aprobar, la requisicion esta cerrada');
                 }
             }
             if($request->request->get('OpAbrir')) {
@@ -328,13 +328,14 @@ class SeleccionRequisitoController extends Controller
     }
     
     private function filtrar ($form, Request $request) {
-        $session = new Session;                
-                
+        $session = new Session;                             
         $session->set('filtroNombreSeleccionRequisito', $form->get('TxtNombre')->getData());                
         $session->set('filtroAbiertoSeleccionRequisito', $form->get('estadoCerrado')->getData());
-        $session->set('filtroCodigoCargo', $form->get('cargoRel')->getData());
-        
-        
+        $codigoCargo = '';
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();
+        }        
+        $session->set('filtroCodigoCargo', $codigoCargo);                
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){

@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RhuAspiranteType extends AbstractType
 {
@@ -67,20 +68,20 @@ class RhuAspiranteType extends AbstractType
             ->add('apellido2', TextType::class, array('required' => false))
             ->add('correo', TextType::class, array('required' => false))
             ->add('telefono', TextType::class, array('required' => false))
-            ->add('codigoTipoLibreta', ChoiceType::class, array('choices' => array('1' => '1° CLASE', '2' => '2° CLASE', '0' => 'NO APLICA')))                
+            ->add('codigoTipoLibreta', ChoiceType::class, array('choices' => array('1° CLASE' => '1', '2° CLASE' => '2', 'NO APLICA' => '0')))                
             ->add('celular', TextType::class, array('required' => false))
             ->add('direccion', TextType::class, array('required' => false))
             ->add('barrio', TextType::class, array('required' => false)) 
             ->add('peso', TextType::class, array('required' => false))                
             ->add('estatura', TextType::class, array('required' => false))                
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
-            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('M' => 'MASCULINO', 'F' => 'FEMENINO')))
-            ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('1' => 'TIEMPO COMPLETO', '2' => 'MEDIO TIEMPO', '3' => 'POR HORAS','4' => 'DESDE CASA', '5' => 'PRACTICAS')))                            
-            ->add('comentarios', 'textarea', array('required' => false))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
+            ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('TIEMPO COMPLETO' => '1', 'MEDIO TIEMPO' => '2', 'POR HORAS' => '3','DESDE CASA' => '4', 'PRACTICAS' => '5')))                            
+            ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('cargoAspira', TextType::class, array('required' => false))                
             ->add('recomendado', TextType::class, array('required' => false))                
             ->add('operacion', TextType::class, array('required' => false))
-            ->add('reintegro', ChoiceType::class, array('choices'   => array('1' => 'SI', '0' => 'NO')))                
+            ->add('reintegro', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

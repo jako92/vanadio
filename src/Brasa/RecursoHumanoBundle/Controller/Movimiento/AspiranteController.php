@@ -77,7 +77,7 @@ class AspiranteController extends Controller
             $arAspirante->setFecha(new \DateTime('now'));
             $arAspirante->setFechaNacimiento(new \DateTime('now'));
         } 
-        $form = $this->createForm(new RhuAspiranteType, $arAspirante);
+        $form = $this->createForm(RhuAspiranteType::class, $arAspirante);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -174,7 +174,7 @@ class AspiranteController extends Controller
                     $objMensaje->Mensaje('error','La requisicion esta cerrada, no puede aplicar');
                 }
             } else {
-                $objMensaje->Mensaje('error','El aspirante no puede aplicar a la requisición, tiene inconsistencias',$this);
+                $objMensaje->Mensaje('error','El aspirante no puede aplicar a la requisición, tiene inconsistencias');
             }    
         }
 
@@ -299,7 +299,7 @@ class AspiranteController extends Controller
                     if ($strRespuesta == ''){
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_aspirante_detalle', array('codigoAspirante' => $codigoAspirante)));
                     }else{
-                        $objMensaje->Mensaje('error', $strRespuesta, $this);
+                        $objMensaje->Mensaje('error', $strRespuesta);
                     }
                 }    
             }
@@ -368,7 +368,8 @@ class AspiranteController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session;        
+        $session = new session;
+        $codigoZona = '';
         if($form->get('zonaRel')->getData()) {
             $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
         }         

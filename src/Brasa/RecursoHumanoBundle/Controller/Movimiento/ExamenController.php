@@ -189,7 +189,7 @@ class ExamenController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_examen_detalle', array('codigoExamen' => $codigoExamen)));
                     } else {
-                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al examen', $this);
+                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al examen');
                     }
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_examen_detalle', array('codigoExamen' => $codigoExamen)));
