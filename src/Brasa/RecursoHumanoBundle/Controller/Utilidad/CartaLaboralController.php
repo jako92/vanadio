@@ -105,7 +105,8 @@ class CartaLaboralController extends Controller
         $form->handleRequest($request);
            
         if ($form->isValid()) {
-            $arUsuario = '';
+            $arUsuario = $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+            $arUsuario = $arUsuario->getUserName();
             $codigoCartaTipo = 5;
             $salario = $form->get('salario')->getData();
             $promedioIbp = $form->get('promedioIbp')->getData();

@@ -23,8 +23,8 @@ class CartasController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 82)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        //$arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-        $arUsuario = '';
+        $arUsuario = $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+        $arUsuario = $arUsuario->getUserName();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
             ->add('cartaTipoRel', EntityType::class,
