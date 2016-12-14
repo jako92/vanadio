@@ -5,11 +5,6 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ProyeccionParametroController extends Controller
 {
@@ -18,8 +13,9 @@ class ProyeccionParametroController extends Controller
     /**
      * @Route("/rhu/utilidades/proyeccion/parametro", name="brs_rhu_utilidades_proyeccion_parametro")
      */
-    public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
+    public function listaAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 116)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -153,6 +149,9 @@ class ProyeccionParametroController extends Controller
                             $ibpPrimas += $ibpPrimasInicial;
                             $ibpPrimas = round($ibpPrimas);
                             $salarioPromedioPrimas = 0;
+                            if($arContrato->getCodigoEmpleadoFk() == 5386) {
+                                echo "hola";
+                            }
                             if($arContrato->getCodigoSalarioTipoFk() == 2) {
                                 if($intDiasPrimaSalarioPromedio > 0) {
                                     //Se realiza para seracis
@@ -160,7 +159,7 @@ class ProyeccionParametroController extends Controller
                                         if($arConfiguracion->getPromedioPrimasLaboradoDias() > 0) {
                                             $intDiasPrima = $arConfiguracion->getPromedioPrimasLaboradoDias();
                                         }
-                                        $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrima) * 30;
+                                        $salarioPromedioPrimas = ($ibpPrimas / ($intDiasPrima - 15)) * 30;
                                         if($salarioPromedioPrimas < $salarioMinimo) {
                                             $salarioPromedioPrimas = $salarioMinimo + $auxilioTransporte;
                                         }
@@ -254,7 +253,7 @@ class ProyeccionParametroController extends Controller
     }
 
     private function listar() {
-        $session = new Session;
+        $session = $this->getRequest()->getSession();
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProyeccion')->listaDql(
                     "",
@@ -266,7 +265,7 @@ class ProyeccionParametroController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = new Session;
+        $session = $this->getRequest()->getSession();
         $dateFecha = new \DateTime('now');
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
         $strFechaHasta = $dateFecha->format('Y/m/').$intUltimoDia;
@@ -275,17 +274,19 @@ class ProyeccionParametroController extends Controller
         }
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar'))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('BtnGenerar', 'submit', array('label'  => 'Generar'))
+            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }
 
     private function filtrarLista($form) {
-        $session = new Session;                
+        $session = $this->getRequest()->getSession();
+        $request = $this->getRequest();
+        $controles = $request->request->get('form');
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroHasta', $dateFechaHasta->format('Y/m/d'));
@@ -296,7 +297,7 @@ class ProyeccionParametroController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
-        $session = new Session;
+        $session = $this->getRequest()->getSession();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
