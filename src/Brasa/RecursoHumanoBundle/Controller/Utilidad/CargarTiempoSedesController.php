@@ -5,21 +5,22 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CargarTiempoSedesController extends Controller
 {
     /**
      * @Route("/rhu/programaciones/pago/cargar/tiempo/sede/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_cargar_tiempo_sede")
      */
-    public function cargarAction($codigoProgramacionPago) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function cargarAction(Request $request, $codigoProgramacionPago) {
+        $em = $this->getDoctrine()->getManager();        
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('attachment', 'file')
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('attachment', FileType::class)
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {

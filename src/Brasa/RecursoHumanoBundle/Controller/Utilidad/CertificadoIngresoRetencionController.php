@@ -7,6 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CertificadoIngresoRetencionController extends Controller
 {
@@ -15,9 +23,8 @@ class CertificadoIngresoRetencionController extends Controller
     /**
      * @Route("/rhu/utilidades/certificado/ingreso/retencion", name="brs_rhu_utilidades_certificado_ingreso_retencion")
      */
-    public function CertificadoAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function CertificadoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 84)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -183,10 +190,8 @@ class CertificadoIngresoRetencionController extends Controller
             'formCertificado' => $formCertificado->createView()));
     }              
     
-    private function formularioLista() {
-        
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    private function formularioLista() {        
+        $em = $this->getDoctrine()->getManager();        
         $ConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $ConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $fechaActual = date('Y-m-j');
@@ -202,32 +207,32 @@ class CertificadoIngresoRetencionController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         $formCertificado = $this->createFormBuilder()                        
-            ->add('txtIdentificacion', 'text', array('data' => '', 'required' => false))
-            ->add('centroCostoRel', 'entity', $arrayPropiedades)    
-            ->add('fechaCertificado', 'choice', array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))    
-            ->add('fechaExpedicion','date', array('data' => new \ DateTime('now')))
-            ->add('LugarExpedicion', 'entity', array(
+            ->add('txtIdentificacion', TextType::class, array('data' => '', 'required' => false))
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)    
+            ->add('fechaCertificado', ChoiceType::class, array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))    
+            ->add('fechaExpedicion',DateType::class, array('data' => new \ DateTime('now')))
+            ->add('LugarExpedicion', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => true))
-            ->add('afc', 'number', array('data' => '0', 'required' => false))
-            ->add('certifico1', 'text', array('data' => '1. Mi patrimonio bruto era igual o inferior a 4.500 UVT ($123.683.000)', 'required' => true))                
-            ->add('certifico2', 'text', array('data' => '2. No fui responsable del impuesto sobre las ventas', 'required' => true))                
-            ->add('certifico3', 'text', array('data' => '3. Mis ingresos totales fueron iguales o inferiores a 1.400 UVT ($38.479.000)', 'required' => true))
-            ->add('certifico4', 'text', array('data' => '4. Mis consumos mediante tarjeta de crédito no excedieron la suma de 2.800 UVT ($76.958.000)', 'required' => true))
-            ->add('certifico5', 'text', array('data' => '5. Quen el total de mis compras y consumos no superaron la suma de 2.800 UVT ($76.958.000)', 'required' => true))                
-            ->add('certifico6', 'text', array('data' => '6. Que el valor total de mis consignaciones bancarias, depósitos o inversiones financieras no excedieron la suma de 4.500 UVT ($123.683.000)', 'required' => true))                
-            ->add('BtnGenerar', 'submit', array('label' => 'Generar'))    
+            ->add('afc', NumberType::class, array('data' => '0', 'required' => false))
+            ->add('certifico1', TextType::class, array('data' => '1. Mi patrimonio bruto era igual o inferior a 4.500 UVT ($123.683.000)', 'required' => true))                
+            ->add('certifico2', TextType::class, array('data' => '2. No fui responsable del impuesto sobre las ventas', 'required' => true))                
+            ->add('certifico3', TextType::class, array('data' => '3. Mis ingresos totales fueron iguales o inferiores a 1.400 UVT ($38.479.000)', 'required' => true))
+            ->add('certifico4', TextType::class, array('data' => '4. Mis consumos mediante tarjeta de crédito no excedieron la suma de 2.800 UVT ($76.958.000)', 'required' => true))
+            ->add('certifico5', TextType::class, array('data' => '5. Quen el total de mis compras y consumos no superaron la suma de 2.800 UVT ($76.958.000)', 'required' => true))                
+            ->add('certifico6', TextType::class, array('data' => '6. Que el valor total de mis consignaciones bancarias, depósitos o inversiones financieras no excedieron la suma de 4.500 UVT ($123.683.000)', 'required' => true))                
+            ->add('BtnGenerar', SubmitType::class, array('label' => 'Generar'))    
             ->getForm();        
         return $formCertificado;
     }                 

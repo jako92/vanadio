@@ -5,15 +5,20 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class InformacionDaneController extends Controller
 {
     /**
      * @Route("/rhu/utilidades/informaciondane/informe", name="brs_rhu_utilidades_informacion_dane_informe")
      */
-    public function InformeAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function InformeAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 79)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -26,11 +31,11 @@ class InformacionDaneController extends Controller
         $fechaTerceraAnterior = strtotime ( '-3 year' , strtotime ( $fechaActual ) ) ;
         $fechaTerceraAnterior = date ( 'Y' , $fechaTerceraAnterior );
         $form = $this->createFormBuilder()
-            ->add('BtnGenerarArchivo', 'submit', array('label'  => 'Generar archivo',))
-            ->add('fechaProceso', 'choice', array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))
-            ->add('formatos', 'choice', array('choices' => array('mts' => 'Muestra trimestral de servicios MTS')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('BtnGenerarArchivo', SubmitType::class, array('label'  => 'Generar archivo',))
+            ->add('fechaProceso', ChoiceType::class, array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))
+            ->add('formatos', ChoiceType::class, array('choices' => array('mts' => 'Muestra trimestral de servicios MTS')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {

@@ -4,21 +4,22 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class NotificacionesController extends Controller
 {
     /**
      * @Route("/rhu/utilidades/notificaciones/cierreprogramacionpago", name="brs_rhu_utilidades_notificaciones_cierreprogramacionpago")
      */
-    public function cierreProgramacionPagoAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function cierreProgramacionPagoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 76)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');        
         $form = $this->createFormBuilder()
-            ->add('BtnEnviar', 'submit', array('label'  => 'Enviar',))
+            ->add('BtnEnviar', SubmitType::class, array('label'  => 'Enviar',))
             ->getForm();
         $form->handleRequest($request);        
         if($form->isValid()) {
@@ -47,8 +48,8 @@ class NotificacionesController extends Controller
                 
             }
         }  
-        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->ListaFechaPagoDQL());
-        $arCentrosCostos = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 20);
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->ListaFechaPagoDQL());        
+        $arCentrosCostos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                
         return $this->render('BrasaRecursoHumanoBundle:Utilidades/Notificaciones:cierreProgramacionPago.html.twig', array(
             'arCentrosCostos' => $arCentrosCostos,
             'form' => $form->createView()

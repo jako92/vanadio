@@ -5,6 +5,11 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class SupervigilanciaParafiscalesController extends Controller
 {
@@ -13,9 +18,8 @@ class SupervigilanciaParafiscalesController extends Controller
     /**
      * @Route("/rhu/utilidades/supervigilancia/parafiscales", name="brs_rhu_utilidades_supervigilancia_parafiscales")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 81)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -74,7 +78,7 @@ class SupervigilanciaParafiscalesController extends Controller
     }        
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSupervigilanciaParafiscales')->listaDql(
           $session->get('filtroIdentificacion')      
@@ -84,16 +88,16 @@ class SupervigilanciaParafiscalesController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $arrayPropiedades = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -102,19 +106,17 @@ class SupervigilanciaParafiscalesController extends Controller
         $form = $this->createFormBuilder()
             //->add('centroCostoRel', 'entity', $arrayPropiedades)
             //->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('BtnGenerar', 'submit', array('label'  => 'Generar'))
+            ->add('fechaDesde', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar'))
             //->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
             ->getForm();
         return $form;
     }        
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
+        $session = new Session;        
         //$session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
         //$session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroDesde', $form->get('fechaDesde')->getData());
@@ -124,7 +126,7 @@ class SupervigilanciaParafiscalesController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

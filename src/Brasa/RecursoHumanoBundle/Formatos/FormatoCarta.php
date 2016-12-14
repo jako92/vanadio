@@ -1,5 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Formatos;
+use Symfony\Component\HttpFoundation\Request;
 
 class FormatoCarta extends \FPDF_FPDF {
     public static $em;
@@ -16,11 +17,11 @@ class FormatoCarta extends \FPDF_FPDF {
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
     
-    public function Generar($miThis, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    public function Generar($miThis, $em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
-        $request = $miThis->getRequest();
-        $arUsuario = $miThis->get('security.context')->getToken()->getUser();
+        //$em = $miThis->getDoctrine()->getManager();
+        //$request = $miThis->getRequest();
+        //$arUsuario = $miThis->get('security.context')->getToken()->getUser();
         self::$arUsuario = $arUsuario;
         self::$em = $em;
         self::$codigoTipoCarta = $codigoTipoCarta;
@@ -190,7 +191,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();        
         $sustitucion16 = $arConfiguracionNomina->getEntidadRiesgoProfesionalRel()->getNombre();
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();         
-        $sustitucion18 = self::$arUsuario->getUserName();
+        $sustitucion18 = self::$arUsuario;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();
         $sustitucion20 = $arConfiguracion->getDigitoVerificacionEmpresa();
         $cadena = $arContenidoFormato->getContenido();

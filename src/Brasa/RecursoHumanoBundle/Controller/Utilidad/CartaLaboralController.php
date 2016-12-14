@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CartaLaboralController extends Controller
 {
@@ -38,11 +43,11 @@ class CartaLaboralController extends Controller
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 if ($arConfiguracion->getCodigoFormatoCarta() == 0){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                    $objFormatoCarta->Generar($this, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
                 if ($arConfiguracion->getCodigoFormatoCarta() == 1){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
-                    $objFormatoCarta->Generar($this, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
             }
             if($form->get('BtnFiltrar')->isClicked()) {
@@ -60,8 +65,7 @@ class CartaLaboralController extends Controller
     /**
      * @Route("/rhu/utilidades/carta/laboralparametros/{codigoContrato}", name="brs_rhu_utilidades_carta_laboralparametros")
      */
-    public function cartarLaboralParametrosAction(Request $request, $codigoContrato) {
-        $request = $this->getRequest();
+    public function cartarLaboralParametrosAction(Request $request, $codigoContrato) {       
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
@@ -90,17 +94,18 @@ class CartaLaboralController extends Controller
         $floNoPrestacional = $arNoPrestacional;
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_utilidades_carta_laboralparametros', array('codigoContrato' => $codigoContrato)))                        
-            ->add('salario', 'checkbox', array('required'  => false, 'data' => true))                 
-            ->add('promedioIbp', 'checkbox', array('required'  => false, 'data' => false))                 
-            ->add('promedioNoPrestacional', 'checkbox', array('required'  => false, 'data' => false))                 
-            ->add('salarioSugerido', 'text', array('required' => false))
-            ->add('promedioIbpSugerido', 'text', array('required' => false))
-            ->add('promedioNoPrestacionalSugerido', 'text', array('required' => false))    
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir'))
+            ->add('salario', TextType::class, array('required'  => false, 'data' => true))                 
+            ->add('promedioIbp', CheckboxType::class, array('required'  => false, 'data' => false))                 
+            ->add('promedioNoPrestacional', CheckboxType::class, array('required'  => false, 'data' => false))                 
+            ->add('salarioSugerido', TextType::class, array('required' => false))
+            ->add('promedioIbpSugerido', TextType::class, array('required' => false))
+            ->add('promedioNoPrestacionalSugerido', TextType::class, array('required' => false))    
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir'))
             ->getForm();
         $form->handleRequest($request);
            
         if ($form->isValid()) {
+            $arUsuario = '';
             $codigoCartaTipo = 5;
             $salario = $form->get('salario')->getData();
             $promedioIbp = $form->get('promedioIbp')->getData();
@@ -112,11 +117,11 @@ class CartaLaboralController extends Controller
             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
             if ($arConfiguracion->getCodigoFormatoCarta() == 0){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                $objFormatoCarta->Generar($this, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
             }
             if ($arConfiguracion->getCodigoFormatoCarta() == 1){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
-                $objFormatoCarta->Generar($this, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
             }
             //return $this->redirect($this->generateUrl('brs_rhu_utilidades_carta_laboral'));
             
@@ -137,10 +142,10 @@ class CartaLaboralController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCodigoCentroCosto')) {
@@ -148,16 +153,16 @@ class CartaLaboralController extends Controller
         }
         
         $form = $this->createFormBuilder()                        
-            ->add('centroCostoRel', 'entity', $arrayPropiedadesCentroCosto)
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                            
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                            
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                            
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                            
             ->getForm();        
         return $form;
     }      
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();                
-        $session = $this->get('session');
+        $session = new Session;
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosCartaLaboralDQL(
             $session->get('filtroCodigoCentroCosto'),
             $session->get('filtroIdentificacion')
@@ -165,9 +170,12 @@ class CartaLaboralController extends Controller
     }         
     
     private function filtrarLista($form, Request $request) {
-        $session = $this->get('session');        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);                
+        $session = new Session;        
+        $codigoCentroCosto = "";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);                        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
     }         
     

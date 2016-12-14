@@ -7,6 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class formatoPagoMasivoController extends Controller
 {
@@ -15,9 +23,8 @@ class formatoPagoMasivoController extends Controller
     /**
      * @Route("/rhu/utilidades/programacion/pago/comprobante/masivo/{codigoProgramacionPago}", name="brs_rhu_utilidades_programacion_pago_comprobante_masivo")
      */         
-    public function listaAction($codigoProgramacionPago = "") {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request, $codigoProgramacionPago = "") {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 75)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -45,11 +52,11 @@ class formatoPagoMasivoController extends Controller
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
                 if($codigoFormato <= 1) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                    $objFormatoPago->Generar($this, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($this, $em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
                 }
                 if($codigoFormato == 2) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                    $objFormatoPago->Generar($this, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($this, $em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
                 }                                 
             }            
         }                    
@@ -59,16 +66,16 @@ class formatoPagoMasivoController extends Controller
     
     private function formularioLista() {  
         $em = $this->getDoctrine()->getManager();  
-        $session = $this->get('session');
+        $session = new Session;
         $arrayPropiedadesZona = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuZona',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('z')
                     ->orderBy('z.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroRhuCodigoZona')) {
@@ -79,10 +86,10 @@ class formatoPagoMasivoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('sz')
                     ->orderBy('sz.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroRhuCodigoSubzona')) {
@@ -101,14 +108,14 @@ class formatoPagoMasivoController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);        
         $form = $this->createFormBuilder()  
-            ->add('zonaRel', 'entity', $arrayPropiedadesZona)                
-            ->add('subzonaRel', 'entity', $arrayPropiedadesSubzona)                
-            ->add('numero','text', array('required'  => false, 'data' => ""))
-            ->add('dato','text', array('required'  => false, 'data' => ""))
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                                
-            ->add('porFecha', 'checkbox', array('required'  => false, 'data' => true))
-            ->add('BtnGenerar', 'submit', array('label'  => 'Generar'))    
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)                
+            ->add('subzonaRel', EntityType::class, $arrayPropiedadesSubzona)                
+            ->add('numero',TextType::class, array('required'  => false, 'data' => ""))
+            ->add('dato',TextType::class, array('required'  => false, 'data' => ""))
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                                
+            ->add('porFecha', CheckboxType::class, array('required'  => false, 'data' => true))
+            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar'))    
             ->getForm();        
         return $form;
     }                 

@@ -5,15 +5,19 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class MediosMagneticosController extends Controller
 {
     /**
      * @Route("/rhu/utilidades/mediosmagneticos/informe", name="brs_rhu_utilidades_medios_magneticos_informe")
      */           
-    public function InformeAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function InformeAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 78)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -26,11 +30,11 @@ class MediosMagneticosController extends Controller
         $fechaTerceraAnterior = strtotime ( '-3 year' , strtotime ( $fechaActual ) ) ;
         $fechaTerceraAnterior = date ( 'Y' , $fechaTerceraAnterior );
         $form = $this->createFormBuilder()
-            ->add('BtnGenerarArchivo', 'submit', array('label'  => 'Generar archivo',))
-            ->add('fechaProceso', 'choice', array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))    
-            ->add('formatos', 'entity', array(
+            ->add('BtnGenerarArchivo', SubmitType::class, array('label'  => 'Generar archivo',))
+            ->add('fechaProceso', ChoiceType::class, array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))    
+            ->add('formatos', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMedioMagneticoExogena',
-                'property' => 'formato',
+                'choice_label' => 'formato',
             ))
             ->getForm();
         $form->handleRequest($request);
@@ -79,7 +83,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1001Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -172,7 +176,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1003Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -244,7 +248,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1005Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -308,7 +312,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1006Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->setActiveSheetIndex(0)
@@ -366,7 +370,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1007Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -444,7 +448,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1008Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -516,7 +520,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1009Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -588,7 +592,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1010Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -662,7 +666,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1011Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -740,7 +744,7 @@ class MediosMagneticosController extends Controller
     
     private function generarFormato1012Excel() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
                 // Set document properties
                 $objPHPExcel->getProperties()->setCreator("EMPRESA")

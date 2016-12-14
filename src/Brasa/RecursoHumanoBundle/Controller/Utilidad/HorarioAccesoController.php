@@ -5,6 +5,11 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class HorarioAccesoController extends Controller
 {
@@ -12,8 +17,7 @@ class HorarioAccesoController extends Controller
     /**
      * @Route("/rhu/utilidad/horario/acceso/empleado", name="brs_rhu_utilidad_horario_acceso_empleado")
      */ 
-    public function listaAction() {
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {        
         $paginator  = $this->get('knp_paginator');
         $em = $this->getDoctrine()->getManager();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 85)) {
@@ -29,8 +33,7 @@ class HorarioAccesoController extends Controller
     /**
      * @Route("/rhu/utilidad/horario/acceso/empleado/detalle/{codigoHorarioPeriodo}", name="brs_rhu_utilidad_horario_acceso_empleado_detalle")
      */     
-    public function detalleAction($codigoHorarioPeriodo) {
-        $request = $this->getRequest();
+    public function detalleAction(Request $request, $codigoHorarioPeriodo) {        
         $paginator  = $this->get('knp_paginator');
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -45,8 +48,8 @@ class HorarioAccesoController extends Controller
             $codigoHorarioPeriodoDiaAnterior = $arHorarioPeriodoDiaAnterior->getCodigoHorarioPeriodoPk();
         }
         $form = $this->createFormBuilder()                  
-                    ->add('tipo', 'choice', array('choices' => array('0' => 'Entrada', '1' => 'Salida'),'data' => 1,'expanded' => true,))
-                    ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+                    ->add('tipo', ChoiceType::class, array('choices' => array('Entrada' => '0', 'Salida' => '1'),'data' => 1,'expanded' => true,))
+                    ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
                     ->getForm();               
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -79,15 +82,14 @@ class HorarioAccesoController extends Controller
     /**
      * @Route("/rhu/utilidad/cargar/control/acceso/empleados", name="brs_rhu_utilidad_cargar_control_acceso_empleados")
      */
-    public function cargarAction() {
-        $em = $this->getDoctrine()->getManager();
+    public function cargarAction(Request $request) {        
         $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('attachment', 'file')
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('attachment', FileType::class)
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
         $arrErrores = array();

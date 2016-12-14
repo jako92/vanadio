@@ -8,6 +8,11 @@ use Doctrine\ORM\EntityRepository;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class envioComprobanteCorreoController extends Controller
 {
@@ -16,10 +21,9 @@ class envioComprobanteCorreoController extends Controller
     /**
      * @Route("/rhu/utilidades/programacion/pago/comprobante/correo/{codigoProgramacionPago}/{codigoPago}", name="brs_rhu_utilidades_programacion_pago_comprobante_correo")
      */         
-    public function listaAction($codigoProgramacionPago = "", $codigoPago = "") {
-        $session = $this->get('session');
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request, $codigoProgramacionPago = "", $codigoPago = "") {
+        $session = new Session;
+        $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         /*if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 75)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -48,11 +52,11 @@ class envioComprobanteCorreoController extends Controller
                         foreach ($arPagos as $arPago) {
                             if($codigoFormato <= 1) {
                                 $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                                $objFormatoPago->Generar($this, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                                $objFormatoPago->Generar($this, $em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                             }   
                             if($codigoFormato == 2) {
                                 $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                                $objFormatoPago->Generar($this, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                                $objFormatoPago->Generar($this, $em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                             }  
 
                             $correo = $arPago->getEmpleadoRel()->getCorreo();
@@ -88,12 +92,12 @@ class envioComprobanteCorreoController extends Controller
     
     private function formularioLista() {  
         $em = $this->getDoctrine()->getManager();  
-        $session = $this->get('session');
+        $session = new Session;
                
         $form = $this->createFormBuilder()                  
-            ->add('codigoProgramacionPago','text', array('required'  => false, 'data' => $session->get('filtroRhuCodigoProgramacionPago')))
-            ->add('codigoPago','text', array('required'  => false, 'data' => $session->get('filtroRhuCodigoPago')))
-            ->add('BtnEnviar', 'submit', array('label'  => 'Enviar'))    
+            ->add('codigoProgramacionPago',TextType::class, array('required'  => false, 'data' => $session->get('filtroRhuCodigoProgramacionPago')))
+            ->add('codigoPago',TextType::class, array('required'  => false, 'data' => $session->get('filtroRhuCodigoPago')))
+            ->add('BtnEnviar', SubmitType::class, array('label'  => 'Enviar'))    
             ->getForm();        
         return $form;
     }                         

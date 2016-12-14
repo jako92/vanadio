@@ -5,6 +5,11 @@ namespace Brasa\RecursoHumanoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ProyeccionController extends Controller
 {
@@ -13,9 +18,8 @@ class ProyeccionController extends Controller
     /**
      * @Route("/rhu/utilidades/proyeccion", name="brs_rhu_utilidades_proyeccion")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 80)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -208,7 +212,7 @@ class ProyeccionController extends Controller
     }        
     
     private function listar() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProyeccion')->listaDql(                                        
                     "",
@@ -220,7 +224,7 @@ class ProyeccionController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $dateFecha = new \DateTime('now');
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
         $strFechaHasta = $dateFecha->format('Y/m/').$intUltimoDia;
@@ -229,19 +233,17 @@ class ProyeccionController extends Controller
         }            
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()            
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-            ->add('BtnGenerar', 'submit', array('label'  => 'Generar'))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar'))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;
     }        
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');        
+        $session = new Session;               
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());        
         $dateFechaHasta = $form->get('fechaHasta')->getData();        
         $session->set('filtroHasta', $dateFechaHasta->format('Y/m/d'));
@@ -252,7 +254,7 @@ class ProyeccionController extends Controller
         set_time_limit(0);
         ini_set("memory_limit", -1);        
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

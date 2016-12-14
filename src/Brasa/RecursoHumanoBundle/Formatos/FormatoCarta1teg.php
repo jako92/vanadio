@@ -2,20 +2,36 @@
 namespace Brasa\RecursoHumanoBundle\Formatos;
 class FormatoCarta1teg extends \FPDF_FPDF {
     public static $em;
-    
+    public static $arUsuario;
+    public static $request;
     public static $codigoTipoCarta;
     public static $fechaProceso;
     public static $fechaOpcional;
     public static $codigoContrato;
+    public static $booleamSalario; //carta laboral
+    public static $booleamPromedioIbp; //carta laboral
+    public static $booleamPromedioNoPrestacional; //carta laboral
+    public static $salarioSugerido; //carta laboral
+    public static $promedioIbpSugerido; //carta laboral
+    public static $promedioNoPrestacionalSugerido; //carta laboral
     
-    public function Generar($miThis, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato) {        
+    public function Generar($miThis, $em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
+        //$request = $miThis->getRequest();
+        //$arUsuario = $miThis->get('security.context')->getToken()->getUser();
+        self::$arUsuario = $arUsuario;
         self::$em = $em;
         self::$codigoTipoCarta = $codigoTipoCarta;
         self::$fechaProceso = $fechaProceso;
         self::$fechaOpcional = $fechaOpcional;
         self::$codigoContrato = $codigoContrato;
+        self::$booleamSalario = $booleamSalario; //carta laboral
+        self::$booleamPromedioIbp = $booleamPromedioIbp; //carta laboral
+        self::$booleamPromedioNoPrestacional = $booleamPromedioNoPrestacional; //carta laboral
+        self::$salarioSugerido = $salarioSugerido; //carta laboral        
+        self::$promedioIbpSugerido = $promedioIbpSugerido; //carta laboral
+        self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
         $pdf = new FormatoCarta1teg();
         $pdf->AliasNbPages();
         $pdf->AddPage();

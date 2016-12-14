@@ -6,14 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuRegistroVisitaType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RegistroVisitasController extends Controller
 {
     /**
      * @Route("/rhu/utilidades/control/acceso/visitante", name="brs_rhu_utilidades_control_acceso_visitante")
      */
-    public function registroAction() {
-        $request = $this->getRequest();
+    public function registroAction(Request $request) {        
         $paginator  = $this->get('knp_paginator');
         $em = $this->getDoctrine()->getManager();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 86)) {
@@ -27,7 +31,7 @@ class RegistroVisitasController extends Controller
         $fechaHoy = new \DateTime('now');
         $dql = $em->getRepository('BrasaRecursoHumanoBundle:RhuRegistroVisita')->RegistroHoy($fechaHoy->format('Y/m/d'));
         $arRegistroVisitas = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 50);
-        $form = $this->createForm(new RhuRegistroVisitaType, $arRegistroVisita);         
+        $form = $this->createForm(RhuRegistroVisitaType::class, $arRegistroVisita);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arrControles = $request->request->All();
@@ -84,14 +88,14 @@ class RegistroVisitasController extends Controller
     /**
      * @Route("/rhu/utilidades/salida/control/acceso/visitantes/{codigoRegistroVisita}", name="brs_rhu_utilidades_salida_control_acceso_visitantes")
      */
-    public function salidaAction($codigoRegistroVisita) {
+    public function salidaAction(Request $request, $codigoRegistroVisita) {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_rhu_salida_control_acceso_visitantes', array('codigoRegistroVisita' => $codigoRegistroVisita)))
-            ->add('comentarios', 'textarea', array('required' => false))
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         $arRegistroVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuRegistroVisita();
