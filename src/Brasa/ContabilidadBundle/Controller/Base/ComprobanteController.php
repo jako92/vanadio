@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbComprobanteType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -14,16 +15,15 @@ class ComprobanteController extends Controller
     /**
      * @Route("/ctb/base/comprobantes/lista", name="brs_ctb_base_comprobantes_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 91, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arComprobantes = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
@@ -43,7 +43,8 @@ class ComprobanteController extends Controller
         }
         $arComprobantes = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
         $query = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->findAll();
-        $arComprobantes = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
+        $arComprobantes = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arComprobantes = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
 
         return $this->render('BrasaContabilidadBundle:Base/Comprobantes:lista.html.twig', array(
                     'arComprobantes' => $arComprobantes,
@@ -55,15 +56,14 @@ class ComprobanteController extends Controller
     /**
      * @Route("/ctb/base/comprobantes/nuevo/{codigoComprobante}", name="brs_ctb_base_comprobantes_nuevo")
      */
-    public function nuevoAction($codigoComprobante) {
+    public function nuevoAction(Request $request, $codigoComprobante) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arComprobante = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
         if ($codigoComprobante != 0)
         {
             $arComprobante = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);
-        }    
-        $form = $this->createForm(new CtbComprobanteType(), $arComprobante);
+        }
+        $form = $this->createForm(CtbComprobanteType::class, $arComprobante);  
         $form->handleRequest($request);
         if ($form->isValid())
         {

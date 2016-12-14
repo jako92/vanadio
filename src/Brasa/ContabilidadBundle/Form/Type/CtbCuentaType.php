@@ -21,9 +21,9 @@ class CtbCuentaType extends AbstractType
             ->add('codigoCuentaPadreFk', TextType::class, array('required' => true))    
             ->add('codigoCuentaPk', TextType::class, array('required' => true))    
             ->add('nombreCuenta', TextType::class, array('required' => true))    
-            ->add('permiteMovimientos', 'choice', array('choices' => array('0' => 'NO' , '1' => 'SI')))
-            ->add('exigeNit', 'choice', array('choices' => array('0' => 'NO' , '1' => 'SI')))
-            ->add('exigeCentroCostos', 'choice', array('choices' => array('0' => 'NO' , '1' => 'SI')))                            
+            ->add('permiteMovimientos', ChoiceType::class, array('choices' => array('NO' => '0' , 'SI' => '1')))
+            ->add('exigeNit', ChoiceType::class, array('choices' => array('NO' => '0' , 'SI' => '1')))
+            ->add('exigeCentroCostos', ChoiceType::class, array('choices' => array('NO' => '0' , 'SI' => '1')))                            
             ->add('porcentajeRetencion', NumberType::class, array('required' => true))
             ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'));
     }

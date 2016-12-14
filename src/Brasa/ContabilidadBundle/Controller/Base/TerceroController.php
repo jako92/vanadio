@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbTerceroType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -14,17 +15,16 @@ class TerceroController extends Controller
     /**
      * @Route("/ctb/base/terceros/lista", name="brs_ctb_base_terceros_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 90, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnCorregirDigitosVerificacion', 'submit', array('label'  => 'Corregir digitos verificacion'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnCorregirDigitosVerificacion', SubmitType::class, array('label'  => 'Corregir digitos verificacion'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $arTerceros = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
@@ -59,7 +59,8 @@ class TerceroController extends Controller
         }
         $arTerceros = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
         $query = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findAll();
-        $arTerceros = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
+        $arTerceros = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        
 
         return $this->render('BrasaContabilidadBundle:Base/Terceros:lista.html.twig', array(
                     'arTerceros' => $arTerceros,
@@ -71,15 +72,14 @@ class TerceroController extends Controller
     /**
      * @Route("/ctb/base/terceros/nuevo/{codigoTercero}", name="brs_ctb_base_terceros_nuevo")
      */
-    public function nuevoAction($codigoTercero) {
+    public function nuevoAction(Request $request, $codigoTercero) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
         if ($codigoTercero != 0)
         {
             $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($codigoTercero);
-        }    
-        $form = $this->createForm(new CtbTerceroType(), $arTercero);
+        }
+        $form = $this->createForm(CtbTerceroType::class, $arTercero);  
         $form->handleRequest($request);
         if ($form->isValid())
         {

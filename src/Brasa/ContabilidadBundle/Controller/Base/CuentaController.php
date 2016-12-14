@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbCuentaType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -16,9 +19,8 @@ class CuentaController extends Controller
     /**
      * @Route("/ctb/base/cuentas/lista", name="brs_ctb_base_cuentas_lista")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 92, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -53,15 +55,15 @@ class CuentaController extends Controller
     /**
      * @Route("/ctb/base/cuentas/nuevo/{codigoCuenta}", name="brs_ctb_base_cuentas_nuevo")
      */
-    public function nuevoAction($codigoCuenta) {
+    public function nuevoAction(Request $request, $codigoCuenta) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCuenta = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
         if ($codigoCuenta != 0) {
             $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
-        }    
-        $form = $this->createForm(new CtbCuentaType(), $arCuenta);
+        }
+        $form = $this->createForm(CtbCuentaType::class, $arCuenta); 
+        //$form = $this->createForm(new CtbCuentaType(), $arCuenta);
         $form->handleRequest($request);
         if ($form->isValid()) {           
             $arCuenta = $form->getData();
@@ -93,13 +95,13 @@ class CuentaController extends Controller
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new Session;    
         $form = $this->createFormBuilder()                                    
-            ->add('TxtCodigoCuenta', 'text', array('label'  => 'Código Cuenta','data' => "", 'required' => false))
-            ->add('TxtNombreCuenta', 'text', array('label'  => 'Nombre Cuenta','data' => "", 'required' => false))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))                                            
+            ->add('TxtCodigoCuenta', TextType::class, array('label'  => 'Código Cuenta','data' => "", 'required' => false))
+            ->add('TxtNombreCuenta', TextType::class, array('label'  => 'Nombre Cuenta','data' => "", 'required' => false))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                            
             ->getForm();        
         return $form;
     }
