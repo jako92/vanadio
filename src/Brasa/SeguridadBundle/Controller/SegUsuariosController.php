@@ -34,6 +34,9 @@ class SegUsuariosController extends Controller
             ));
     }
 
+    /**
+     * @Route("/admin/usuario/nuevo/{codigoUsuario}", name="brs_seg_admin_usuario_nuevo")
+     */ 
     public function nuevoAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -64,8 +67,11 @@ class SegUsuariosController extends Controller
             'form' => $form->createView(),
         ));
     }
-    
-    public function detalleAction($codigoUsuario) {
+        
+    /**
+     * @Route("/admin/usuario/detalle/{codigoUsuario}", name="brs_seg_admin_usuario_detalle")
+     */    
+    public function detalleAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createFormBuilder()
             ->add('BtnEliminarEspecial', SubmitType::class, array('label' => 'Eliminar'))
@@ -261,6 +267,9 @@ class SegUsuariosController extends Controller
                     ));
     }    
     
+    /**
+     * @Route("/admin/usuario/detalle/permiso/especial/nuevo/{codigoUsuario}/", name="brs_seg_admin_usuario_detalle_nuevo_especial")
+     */    
     public function detalleNuevoPermisoEspecialAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -295,10 +304,12 @@ class SegUsuariosController extends Controller
         return $this->render('BrasaSeguridadBundle:Usuarios:detalleNuevoPermisoEspecial.html.twig', array(
             'arPermisosEspeciales' => $arPermisosEspeciales,
             'form' => $form->createView()));
-    }
+    }    
     
-    public function detalleNuevoPermisoDocumentoAction(Request $request, $codigoUsuario) {
-        $request = $this->getRequest();
+    /**
+     * @Route("/admin/usuario/detalle/permiso/documento/nuevo/{codigoUsuario}/", name="brs_seg_admin_usuario_detalle_nuevo_documento")
+     */   
+    public function detalleNuevoPermisoDocumentoAction(Request $request, $codigoUsuario) {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
@@ -435,7 +446,10 @@ class SegUsuariosController extends Controller
             'form' => $form->createView(),
         ));
     }
-
+   
+    /**
+     * @Route("/admin/usuario/cambiar/clave/admin/{codigoUsuario}", name="brs_seg_admin_usuario_cambiar_clave")
+     */     
     public function cambiarClaveAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $formUsuario = $this->createFormBuilder()
@@ -461,8 +475,9 @@ class SegUsuariosController extends Controller
             'formUsuario' => $formUsuario->createView()
         ));
     }   
+
     /**
-     * @Route("/user/usuario/cambiar/calve/usuario/{codigoUsuario}/", name="brs_seg_user_usuario_cambiar_clave")
+     * @Route("/user/usuario/cambiar/clave/usuario/{codigoUsuario}/", name="brs_seg_user_usuario_cambiar_clave")
      */     
     public function cambiarClaveUsuarioAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
