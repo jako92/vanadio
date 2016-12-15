@@ -4,6 +4,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Brasa\InventarioBundle\Form\Type\InvTerceroType;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
@@ -73,7 +76,7 @@ class TerceroController extends Controller
         if($codigoTercero != '' && $codigoTercero != '0') {
             $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->find($codigoTercero);
         }
-        $form = $this->createForm(new InvTerceroType, $arTercero);
+        $form = $this->createForm(InvTerceroType::class, $arTercero);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arTercero = $form->getData();
@@ -106,11 +109,11 @@ class TerceroController extends Controller
 
     private function formularioFiltro() {
         $form = $this->createFormBuilder()
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $this->strNit))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $this->strNit))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -118,7 +121,7 @@ class TerceroController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

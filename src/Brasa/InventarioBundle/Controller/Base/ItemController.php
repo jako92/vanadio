@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\InventarioBundle\Form\Type\InvItemType;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
@@ -119,7 +120,7 @@ class ItemController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
