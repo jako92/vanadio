@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * CarConfiguracion controller.
@@ -17,9 +18,8 @@ class ConfiguracionController extends Controller
     /**
      * @Route("/car/configuracion/{codigoConfiguracionPk}", name="brs_car_configuracion")
      */
-    public function configuracionAction() {
+    public function configuracionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 91)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -32,7 +32,7 @@ class ConfiguracionController extends Controller
             //->add('informacionContactoFactura', 'textarea', array('data' => $arConfiguracion->getInformacionContactoFactura(), 'required' => false)) 
             //->add('informacionResolucionDianFactura', 'textarea', array('data' => $arConfiguracion->getInformacionResolucionDianFactura(), 'required' => false)) 
             //->add('informacionResolucionSupervigilanciaFactura', 'textarea', array('data' => $arConfiguracion->getInformacionResolucionSupervigilanciaFactura(), 'required' => false)) 
-            ->add('guardar', 'submit', array('label' => 'Actualizar'))
+            ->add('guardar', SubmitType::CLASS, array('label' => 'Actualizar'))
             ->getForm();
         $formConfiguracion->handleRequest($request);
         if ($formConfiguracion->isValid()) {

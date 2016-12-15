@@ -3,6 +3,14 @@
 namespace Brasa\RecursoHumanoBundle\Controller\General;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -16,9 +24,8 @@ class ConfiguracionController extends Controller
     /**
      * @Route("/rhu/configuracion/{codigoConfiguracionPk}", name="brs_rhu_configuracion_nomina")
      */
-    public function configuracionAction() {
+    public function configuracionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 92)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -36,7 +43,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoAuxilioTransporte['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoAuxilioTransporte());
 
@@ -45,7 +52,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoCredito['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoCredito());
 
@@ -54,7 +61,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoSeguro['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoSeguro());
 
@@ -63,7 +70,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoHoraDiurnaTrabajada['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoHoraDiurnaTrabajada());
 
@@ -72,7 +79,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('rp')
                 ->orderBy('rp.codigoEntidadRiesgoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoRiesgoProfesional['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional", $arConfiguracion->getCodigoEntidadRiesgoFk());
 
@@ -81,7 +88,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoIncapacidad['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoIncapacidad());
 
@@ -90,7 +97,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoRetencionFuente['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoRetencionFuente());
 
@@ -99,7 +106,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('ee')
                 ->orderBy('ee.codigoEntidadExamenPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoEntidadExamenIngreso['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadExamen", $arConfiguracion->getCodigoEntidadExamenIngreso());
 
@@ -108,7 +115,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')
                 ->orderBy('c.codigoComprobantePk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoEntidadComprobanteNomina['data'] = $em->getReference("BrasaContabilidadBundle:CtbComprobante", $arConfiguracion->getCodigoComprobantePagoNomina());
 
@@ -117,7 +124,7 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')
                 ->orderBy('c.codigoComprobantePk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoEntidadComprobanteBanco['data'] = $em->getReference("BrasaContabilidadBundle:CtbComprobante", $arConfiguracion->getCodigoComprobantePagoBanco());
         if ($arConfiguracion->getControlPago() == 1){
@@ -130,41 +137,41 @@ class ConfiguracionController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('cc')
                 ->orderBy('cc.codigoPagoConceptoPk', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoVacacion['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoVacacion());
 
         $formConfiguracion = $this->createFormBuilder()
-            ->add('conceptoAuxilioTransporte', 'entity', $arrayPropiedadesConceptoAuxilioTransporte)
-            ->add('vrAuxilioTransporte', 'number', array('data' => $arConfiguracion->getVrAuxilioTransporte(), 'required' => true))
-            ->add('vrSalario', 'number', array('data' => $arConfiguracion->getVrSalario(), 'required' => true))
-            ->add('conceptoCredito', 'entity', $arrayPropiedadesConceptoCredito, array('required' => true))
-            ->add('conceptoSeguro', 'entity', $arrayPropiedadesConceptoSeguro, array('required' => true))
-            ->add('conceptoHoraDiurnaTrabajada', 'entity', $arrayPropiedadesConceptoHoraDiurnaTrabajada, array('required' => true))
-            ->add('conceptoRiesgoProfesional', 'entity', $arrayPropiedadesConceptoRiesgoProfesional, array('required' => true))
-            ->add('porcentajePensionExtra', 'number', array('data' => $arConfiguracion->getPorcentajePensionExtra(), 'required' => true))
-            ->add('conceptoIncapacidad', 'entity', $arrayPropiedadesConceptoIncapacidad, array('required' => true))
-            ->add('porcentajeIva', 'number', array('data' => $arConfiguracion->getPorcentajeIva(), 'required' => true))
-            ->add('conceptoRetencionFuente', 'entity', $arrayPropiedadesConceptoRetencionFuente, array('required' => true))
-            ->add('porcentajeBonificacionNoPrestacional', 'number', array('data' => $arConfiguracion->getPorcentajeBonificacionNoPrestacional(), 'required' => true))
-            ->add('edadMinimaEmpleado', 'number', array('data' => $arConfiguracion->getEdadMinimaEmpleado(), 'required' => true))
-            ->add('entidadExamenIngreso', 'entity', $arrayPropiedadesConceptoEntidadExamenIngreso, array('required' => true))
-            ->add('comprobantePagoNomina', 'entity', $arrayPropiedadesConceptoEntidadComprobanteNomina, array('required' => true))
-            ->add('comprobantePagoBanco', 'entity', $arrayPropiedadesConceptoEntidadComprobanteBanco, array('required' => true))
-            ->add('controlPago', 'choice', array('choices'   => array($arConfiguracion->getControlPago() => $srtControlPago, '1' => 'SI', '0' => 'NO')))
-            ->add('prestacionesPorcentajeCesantias', 'number', array('data' => $arConfiguracion->getPrestacionesPorcentajeCesantias(), 'required' => true))
-            ->add('prestacionesPorcentajeInteresesCesantias', 'number', array('data' => $arConfiguracion->getPrestacionesPorcentajeInteresesCesantias(), 'required' => true))
-            ->add('prestacionesPorcentajeVacaciones', 'number', array('data' => $arConfiguracion->getPrestacionesPorcentajeVacaciones(), 'required' => true))
-            ->add('prestacionesPorcentajePrimas', 'number', array('data' => $arConfiguracion->getPrestacionesPorcentajePrimas(), 'required' => true))
-            ->add('aportesPorcentajeCaja', 'number', array('data' => $arConfiguracion->getAportesPorcentajeCaja(), 'required' => true))
-            ->add('aportesPorcentajeVacaciones', 'number', array('data' => $arConfiguracion->getAportesPorcentajeVacaciones(), 'required' => true))
-            ->add('tipoBasePagoVacaciones', 'choice', array('choices' => array('1' => 'SALARIO', '2' => 'SALARIO PRESTACIONAL', '3' => 'SALARIO+RECARGOS NOCTURNOS', '0' => 'SIN ASIGNAR'), 'data' => $arConfiguracion->getTipoBasePagoVacaciones()))
-            ->add('tipoPlanillaSso', 'choice', array('choices' => array('S' => 'SUCURSAL', 'U' => 'UNICA'), 'data' => $arConfiguracion->getTipoPlanillaSso()))
-            ->add('cuentaNominaPagar', 'number', array('data' => $arConfiguracion->getCuentaNominaPagar(), 'required' => true))
-            ->add('cuentaPago', 'number', array('data' => $arConfiguracion->getCuentaPago(), 'required' => true))
-            ->add('conceptoVacacion', 'entity', $arrayPropiedadesConceptoVacacion, array('required' => true))
-            ->add('afectaVacacionesParafiscales', 'checkbox', array('data' => $arConfiguracion->getAfectaVacacionesParafiscales(), 'required' => false))
-            ->add('guardar', 'submit', array('label' => 'Actualizar'))
+            ->add('conceptoAuxilioTransporte', EntityType::class, $arrayPropiedadesConceptoAuxilioTransporte)
+            ->add('vrAuxilioTransporte', NumberType::class, array('data' => $arConfiguracion->getVrAuxilioTransporte(), 'required' => true))
+            ->add('vrSalario', NumberType::class, array('data' => $arConfiguracion->getVrSalario(), 'required' => true))
+            ->add('conceptoCredito', EntityType::class, $arrayPropiedadesConceptoCredito, array('required' => true))
+            ->add('conceptoSeguro', EntityType::class, $arrayPropiedadesConceptoSeguro, array('required' => true))
+            ->add('conceptoHoraDiurnaTrabajada', EntityType::class, $arrayPropiedadesConceptoHoraDiurnaTrabajada, array('required' => true))
+            ->add('conceptoRiesgoProfesional', EntityType::class, $arrayPropiedadesConceptoRiesgoProfesional, array('required' => true))
+            ->add('porcentajePensionExtra', NumberType::class, array('data' => $arConfiguracion->getPorcentajePensionExtra(), 'required' => true))
+            ->add('conceptoIncapacidad', EntityType::class, $arrayPropiedadesConceptoIncapacidad, array('required' => true))
+            ->add('porcentajeIva', NumberType::class, array('data' => $arConfiguracion->getPorcentajeIva(), 'required' => true))
+            ->add('conceptoRetencionFuente', EntityType::class, $arrayPropiedadesConceptoRetencionFuente, array('required' => true))
+            ->add('porcentajeBonificacionNoPrestacional', NumberType::class, array('data' => $arConfiguracion->getPorcentajeBonificacionNoPrestacional(), 'required' => true))
+            ->add('edadMinimaEmpleado', NumberType::class, array('data' => $arConfiguracion->getEdadMinimaEmpleado(), 'required' => true))
+            ->add('entidadExamenIngreso', EntityType::class, $arrayPropiedadesConceptoEntidadExamenIngreso, array('required' => true))
+            ->add('comprobantePagoNomina', EntityType::class, $arrayPropiedadesConceptoEntidadComprobanteNomina, array('required' => true))
+            ->add('comprobantePagoBanco', EntityType::class, $arrayPropiedadesConceptoEntidadComprobanteBanco, array('required' => true))
+            ->add('controlPago', ChoiceType::class, array('choices'   => array($srtControlPago => $arConfiguracion->getControlPago() , 'SI' => '1', 'NO' => '0')))
+            ->add('prestacionesPorcentajeCesantias', NumberType::class, array('data' => $arConfiguracion->getPrestacionesPorcentajeCesantias(), 'required' => true))
+            ->add('prestacionesPorcentajeInteresesCesantias', NumberType::class, array('data' => $arConfiguracion->getPrestacionesPorcentajeInteresesCesantias(), 'required' => true))
+            ->add('prestacionesPorcentajeVacaciones', NumberType::class, array('data' => $arConfiguracion->getPrestacionesPorcentajeVacaciones(), 'required' => true))
+            ->add('prestacionesPorcentajePrimas', NumberType::class, array('data' => $arConfiguracion->getPrestacionesPorcentajePrimas(), 'required' => true))
+            ->add('aportesPorcentajeCaja', NumberType::class, array('data' => $arConfiguracion->getAportesPorcentajeCaja(), 'required' => true))
+            ->add('aportesPorcentajeVacaciones', NumberType::class, array('data' => $arConfiguracion->getAportesPorcentajeVacaciones(), 'required' => true))
+            ->add('tipoBasePagoVacaciones', ChoiceType::class, array('choices' => array('SALARIO' => '1', 'SALARIO PRESTACIONAL' => '1', 'SALARIO+RECAROS NOCTURNOS' => '2', 'SIN ASIGNAR' => '0'), 'data' => $arConfiguracion->getTipoBasePagoVacaciones()))
+            ->add('tipoPlanillaSso', ChoiceType::class, array('choices' => array('SUCURSAL' => 'S', 'UNICA' => 'U'), 'data' => $arConfiguracion->getTipoPlanillaSso()))
+            ->add('cuentaNominaPagar', NumberType::class, array('data' => $arConfiguracion->getCuentaNominaPagar(), 'required' => true))
+            ->add('cuentaPago', NumberType::class, array('data' => $arConfiguracion->getCuentaPago(), 'required' => true))
+            ->add('conceptoVacacion', EntityType::class, $arrayPropiedadesConceptoVacacion, array('required' => true))
+            ->add('afectaVacacionesParafiscales', CheckboxType::class, array('data' => $arConfiguracion->getAfectaVacacionesParafiscales(), 'required' => false))
+            ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))
             //->add('guardarProvision', 'submit', array('label' => 'Actualizar'))
             ->getForm();
         $formConfiguracion->handleRequest($request);
@@ -290,9 +297,8 @@ class ConfiguracionController extends Controller
     /**
      * @Route("/rhu/configuracion/nomina/parametros/prestaciones/", name="brs_rhu_configuracion_nomina_parametros_prestaciones")
      */
-    public function configuracionParametrosPrestacionAction() {
+    public function configuracionParametrosPrestacionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 115)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }        
@@ -300,11 +306,11 @@ class ConfiguracionController extends Controller
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);        
         $form = $this->createFormBuilder()                     
-            ->add('promedioPrimasLaborado', 'checkbox', array('data' => $arConfiguracion->getPromedioPrimasLaborado(), 'required' => false))
-            ->add('promedioPrimasLaboradoDias', 'number', array('data' => $arConfiguracion->getPromedioPrimasLaboradoDias(), 'required' => true))                
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'))            
-            ->add('BtnNuevo', 'submit', array('label' => 'Nuevo'))            
-            ->add('BtnEliminar', 'submit', array('label' => 'Eliminar'))            
+            ->add('promedioPrimasLaborado', CheckboxType::class, array('data' => $arConfiguracion->getPromedioPrimasLaborado(), 'required' => false))
+            ->add('promedioPrimasLaboradoDias', NumberType::class, array('data' => $arConfiguracion->getPromedioPrimasLaboradoDias(), 'required' => true))                
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))            
+            ->add('BtnNuevo', SubmitType::class, array('label' => 'Nuevo'))            
+            ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))            
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {

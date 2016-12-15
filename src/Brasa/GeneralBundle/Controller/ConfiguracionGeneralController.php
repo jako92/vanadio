@@ -3,6 +3,13 @@
 namespace Brasa\GeneralBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -16,9 +23,8 @@ class ConfiguracionGeneralController extends Controller
     /**
      * @Route("/gen/configuracion/general/{codigoConfiguracionPk}", name="brs_gen_configuracion_general")
      */
-    public function configuracionAction() {
+    public function configuracionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 93)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -31,36 +37,36 @@ class ConfiguracionGeneralController extends Controller
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')                                        
                 ->orderBy('c.nombre', 'ASC');},
-            'property' => 'nombre',
+            'choice_label' => 'nombre',
             'required' => false);                   
         $arrayPropiedadesCiudad['data'] = $em->getReference("BrasaGeneralBundle:GenCiudad", $arConfiguracionGeneral->getCodigoCiudadFk());
         $formConfiguracionNotificaciones = $this->createFormBuilder() 
-            ->add('correoTurnoInconsistencia', 'text', array('data' => $arConfiguracionNotificaciones->getCorreoTurnoInconsistencia(), 'required' => false))
-            ->add('guardar', 'submit', array('label' => 'Actualizar'))            
+            ->add('correoTurnoInconsistencia', TextType::class, array('data' => $arConfiguracionNotificaciones->getCorreoTurnoInconsistencia(), 'required' => false))
+            ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))            
             ->getForm(); 
         $formConfiguracionNotificaciones->handleRequest($request);
         $formConfiguracionGeneral = $this->createFormBuilder() 
-            ->add('nitEmpresa', 'text', array('data' => $arConfiguracionGeneral->getNitEmpresa(), 'required' => true))
-            ->add('digitoVerificacion', 'number', array('data' => $arConfiguracionGeneral->getDigitoVerificacionEmpresa(), 'required' => true))
-            ->add('nombreEmpresa', 'text', array('data' => $arConfiguracionGeneral->getNombreEmpresa(), 'required' => true))    
-            ->add('sigla', 'text', array('data' => $arConfiguracionGeneral->getSigla(), 'required' => true))    
-            ->add('telefonoEmpresa', 'text', array('data' => $arConfiguracionGeneral->getTelefonoEmpresa(), 'required' => true))
-            ->add('direccionEmpresa', 'text', array('data' => $arConfiguracionGeneral->getDireccionEmpresa(), 'required' => true))    
-            ->add('ciudadRel', 'entity', $arrayPropiedadesCiudad)
-            ->add('baseRetencionFuente', 'text', array('data' => $arConfiguracionGeneral->getBaseRetencionFuente(), 'required' => true))
-            ->add('baseRetencionCree', 'text', array('data' => $arConfiguracionGeneral->getBaseRetencionCREE(), 'required' => true))    
-            ->add('porcentajeRetencionFuente', 'text', array('data' => $arConfiguracionGeneral->getPorcentajeRetencionFuente(), 'required' => true))    
-            ->add('porcentajeRetencionCree', 'text', array('data' => $arConfiguracionGeneral->getPorcentajeRetencionCREE(), 'required' => true))
-            ->add('baseRetencionIvaVentas', 'text', array('data' => $arConfiguracionGeneral->getBaseRetencionIvaVentas(), 'required' => true))    
-            ->add('porcentajeRetencionIvaVentas', 'text', array('data' => $arConfiguracionGeneral->getPorcentajeRetencionIvaVentas(), 'required' => true))
-            ->add('fechaUltimoCierre', 'date', array('data' => $arConfiguracionGeneral->getFechaUltimoCierre(), 'required' => true))
-            ->add('nitVentasMostrador', 'text', array('data' => $arConfiguracionGeneral->getNitVentasMostrador(), 'required' => true))    
-            ->add('rutaTemporal', 'text', array('data' => $arConfiguracionGeneral->getRutaTemporal(), 'required' => true))    
-            ->add('rutaAlmacenamiento', 'text', array('data' => $arConfiguracionGeneral->getRutaAlmacenamiento(), 'required' => true))                
-            ->add('rutaImagenes', 'text', array('data' => $arConfiguracionGeneral->getRutaImagenes(), 'required' => true))                
-            ->add('rutaDirectorio', 'text', array('data' => $arConfiguracionGeneral->getRutaDirectorio(), 'required' => true))                                
-            ->add('paginaWeb', 'text', array('data' => $arConfiguracionGeneral->getPaginaWeb(), 'required' => true))                                                
-            ->add('guardar', 'submit', array('label' => 'Actualizar'))            
+            ->add('nitEmpresa', TextType::class, array('data' => $arConfiguracionGeneral->getNitEmpresa(), 'required' => true))
+            ->add('digitoVerificacion', NumberType::class, array('data' => $arConfiguracionGeneral->getDigitoVerificacionEmpresa(), 'required' => true))
+            ->add('nombreEmpresa', TextType::class, array('data' => $arConfiguracionGeneral->getNombreEmpresa(), 'required' => true))    
+            ->add('sigla', TextType::class, array('data' => $arConfiguracionGeneral->getSigla(), 'required' => true))    
+            ->add('telefonoEmpresa', TextType::class, array('data' => $arConfiguracionGeneral->getTelefonoEmpresa(), 'required' => true))
+            ->add('direccionEmpresa', TextType::class, array('data' => $arConfiguracionGeneral->getDireccionEmpresa(), 'required' => true))    
+            ->add('ciudadRel', EntityType::class, $arrayPropiedadesCiudad)
+            ->add('baseRetencionFuente', TextType::class, array('data' => $arConfiguracionGeneral->getBaseRetencionFuente(), 'required' => true))
+            ->add('baseRetencionCree', TextType::class, array('data' => $arConfiguracionGeneral->getBaseRetencionCREE(), 'required' => true))    
+            ->add('porcentajeRetencionFuente', TextType::class, array('data' => $arConfiguracionGeneral->getPorcentajeRetencionFuente(), 'required' => true))    
+            ->add('porcentajeRetencionCree', TextType::class, array('data' => $arConfiguracionGeneral->getPorcentajeRetencionCREE(), 'required' => true))
+            ->add('baseRetencionIvaVentas', TextType::class, array('data' => $arConfiguracionGeneral->getBaseRetencionIvaVentas(), 'required' => true))    
+            ->add('porcentajeRetencionIvaVentas', TextType::class, array('data' => $arConfiguracionGeneral->getPorcentajeRetencionIvaVentas(), 'required' => true))
+            ->add('fechaUltimoCierre', DateType::class, array('data' => $arConfiguracionGeneral->getFechaUltimoCierre(), 'required' => true))
+            ->add('nitVentasMostrador', TextType::class, array('data' => $arConfiguracionGeneral->getNitVentasMostrador(), 'required' => true))    
+            ->add('rutaTemporal', TextType::class, array('data' => $arConfiguracionGeneral->getRutaTemporal(), 'required' => true))    
+            ->add('rutaAlmacenamiento', TextType::class, array('data' => $arConfiguracionGeneral->getRutaAlmacenamiento(), 'required' => true))                
+            ->add('rutaImagenes', TextType::class, array('data' => $arConfiguracionGeneral->getRutaImagenes(), 'required' => true))                
+            ->add('rutaDirectorio', TextType::class, array('data' => $arConfiguracionGeneral->getRutaDirectorio(), 'required' => true))                                
+            ->add('paginaWeb', TextType::class, array('data' => $arConfiguracionGeneral->getPaginaWeb(), 'required' => true))                                                
+            ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))            
             ->getForm();
         $formConfiguracionGeneral->handleRequest($request);
         if ($formConfiguracionGeneral->isValid()) {
@@ -127,12 +133,11 @@ class ConfiguracionGeneralController extends Controller
     /**
      * @Route("/general/borrar/bd/", name="brs_gen_borrar_bd")
      */
-    public function borrarBDAction() {
+    public function borrarBDAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         
         $form = $this->createFormBuilder()            
-            ->add('BtnCargar', 'submit', array('label'  => 'Borrar'))
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Borrar'))
             ->getForm();
         $form->handleRequest($request);
 
