@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Brasa\TurnoBundle\Form\Type\TurProgramacionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProgramacionController extends Controller
 {
@@ -248,7 +249,7 @@ class ProgramacionController extends Controller
         $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
         $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);               
         $form = $this->createFormBuilder()
-            ->add('secuenciaDetalleRel', 'entity', array(
+            ->add('secuenciaDetalleRel', EntityType::class, array(
                 'class' => 'BrasaTurnoBundle:TurSecuenciaDetalle',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('s')
