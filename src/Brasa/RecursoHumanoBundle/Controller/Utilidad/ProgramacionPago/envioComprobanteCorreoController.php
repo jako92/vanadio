@@ -52,11 +52,11 @@ class envioComprobanteCorreoController extends Controller
                         foreach ($arPagos as $arPago) {
                             if($codigoFormato <= 1) {
                                 $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                                $objFormatoPago->Generar($this, $em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                                $objFormatoPago->Generar($em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                             }   
                             if($codigoFormato == 2) {
                                 $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                                $objFormatoPago->Generar($this, $em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
+                                $objFormatoPago->Generar($em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                             }  
 
                             $correo = $arPago->getEmpleadoRel()->getCorreo();
