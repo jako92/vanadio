@@ -716,8 +716,7 @@ class FacturaController extends Controller
     }
     
     private function formularioDetalleNuevo() {
-        $session = $this->getRequest()->getSession();
-        $em = $this->getDoctrine()->getManager();        
+        $session = new session;       
         $form = $this->createFormBuilder()
             ->add('mostrarTodo', CheckboxType::class, array('required'  => false))
             ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero'), 'required'  => false))                
