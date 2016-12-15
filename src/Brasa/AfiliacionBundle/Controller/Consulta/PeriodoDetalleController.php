@@ -115,7 +115,7 @@ class PeriodoDetalleController extends Controller
             ->add('TxtNit', textType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', textType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
             ->add('TxtNumero', textType::class, array('label'  => 'Codigo','data' => $session->get('filtroCursoNumero')))
-            ->add('estadoFacturado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'FACTURADO', '0' => 'SIN FACTURAR'), 'data' => $session->get('filtroPeriodoEstadoFacturado')))                
+            ->add('estadoFacturado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'FACTURADO' => '1', 'SIN FACTURAR' => '0'), 'data' => $session->get('filtroPeriodoEstadoFacturado')))                
             ->add('fechaDesde', DateType::class ,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))

@@ -34,8 +34,8 @@ class PagosAdicionalesAgregarController extends Controller
                 'required' => true))
             ->add('TxtValor', NumberType::class, array('required' => true))                             
             ->add('TxtDetalle', TextType::class, array('required' => false))            
-            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                
-            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array('0' => 'NO', '1' => 'SI')))                                            
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('NO' => '0', 'SI' => '1')))                
+            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array('NO' => '0', 'SI' => '1')))                                            
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();
@@ -218,8 +218,8 @@ class PagosAdicionalesAgregarController extends Controller
             ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesPagoConcepto)               
             ->add('TxtValor', NumberType::class, array('required' => true, 'data' => $arPagoAdicional->getValor()))                             
             ->add('TxtDetalle', TextType::class, array('required' => false, 'data' => $arPagoAdicional->getDetalle()))
-            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array($aplicaDiaLaborado => $intAplicaDiaLaborado, '0' => 'NO', '1' => 'SI')))                
-            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array($aplicaDiaLaboradoSinDescanso => $intAplicaDiaLaboradoSinDescanso, '0' => 'NO', '1' => 'SI')))                
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array($intAplicaDiaLaborado => $aplicaDiaLaborado, 'NO' => '0', 'SI' => '1')))                
+            ->add('aplicarDiaLaboradoSinDescanso', ChoiceType::class, array('choices' => array($intAplicaDiaLaboradoSinDescanso => $aplicaDiaLaboradoSinDescanso, 'NO' => '0', 'SI' => '1')))                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnGuardaryNuevo', SubmitType::class, array('label'  => 'Guardar y nuevo',))
             ->getForm();

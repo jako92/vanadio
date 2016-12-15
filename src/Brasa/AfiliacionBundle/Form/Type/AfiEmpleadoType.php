@@ -60,7 +60,7 @@ class AfiEmpleadoType extends AbstractType
             ->add('celular', textType::class, array('required' => false))
             ->add('direccion', textType::class, array('required' => false))
             ->add('barrio', textType::class, array('required' => false))
-            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('M' => 'MASCULINO', 'F' => 'FEMENINO')))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
             ->add('fechaNacimiento',DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date' )))                            
             ->add('correo', textType::class, array('required' => false))                            
             ->add('comentarios', TextareaType::class, array('required' => false))

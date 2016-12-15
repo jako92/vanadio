@@ -68,7 +68,7 @@ class AfiClienteType extends AbstractType
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('codigoSucursal', textType::class, array('required' => false))
             ->add('independiente', CheckboxType::class, array('required'  => false))
-            ->add('tipoIdentificacion', ChoiceType::class, array('choices'   => array('NI' => 'NIT', 'CC' => 'CEDULA DE CIUDADANIA')))                
+            ->add('tipoIdentificacion', ChoiceType::class, array('choices'   => array('NIT' => 'NI', 'CEDULA DE CIUDADANIA' => 'CC')))                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

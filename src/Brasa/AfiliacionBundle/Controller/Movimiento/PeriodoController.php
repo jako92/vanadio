@@ -878,7 +878,7 @@ class PeriodoController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'CERRADO', '0' => 'SIN CERRAR'), 'data' => $session->get('filtroPeriodoEstadoCerrado')))
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'CERRADO' => '1', 'SIN CERRAR' => '0'), 'data' => $session->get('filtroPeriodoEstadoCerrado')))
             ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))

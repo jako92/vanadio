@@ -103,7 +103,7 @@ class generalController extends Controller
             ->add('TxtNumeroIdentificacion', textType::class, array('label'  => 'Nombre','data' => $session->get('filtroEmpleadoIdentificacion')))
             ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'ACTIVO', '0' => 'RETIRADO'), 'data' => $session->get('filtroActivo')))                
+            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVO' => '1', 'RETIRADO' => '0'), 'data' => $session->get('filtroActivo')))                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();

@@ -33,7 +33,7 @@ class InformacionDaneController extends Controller
         $form = $this->createFormBuilder()
             ->add('BtnGenerarArchivo', SubmitType::class, array('label'  => 'Generar archivo',))
             ->add('fechaProceso', ChoiceType::class, array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'),$fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))
-            ->add('formatos', ChoiceType::class, array('choices' => array('mts' => 'Muestra trimestral de servicios MTS')))
+            ->add('formatos', ChoiceType::class, array('choices' => array('Muestra trimestral de servicios MTS' => 'mts')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->getForm();

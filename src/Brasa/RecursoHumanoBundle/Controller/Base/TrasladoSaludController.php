@@ -39,7 +39,7 @@ class TrasladoSaludController extends Controller
                 'required' => true))
             ->add('fechaAplicacion', DateType::class, array('data' => new \DateTime('now')))
             ->add('fechaFosyga', DateType::class, array('data' => new \DateTime('now')))                                
-            ->add('tipo', ChoiceType::class, array('choices' => array('1' => 'TRASLADO', '2' => 'CAMBIO')))                                
+            ->add('tipo', ChoiceType::class, array('choices' => array('TRASLADO' => '1', 'CAMBIO' => '2')))                                
             ->add('detalle', TextType::class, array('required' => true))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
@@ -100,7 +100,7 @@ class TrasladoSaludController extends Controller
         $form = $this->createFormBuilder()    
             ->setAction($this->generateUrl('brs_rhu_traslado_salud_editar', array('codigoContrato' => $codigoContrato, 'codigoTrasladoSalud' => $codigoTrasladoSalud)))
             ->add('fechaCambioAfiliacion', DateType::class, array('data' => new \DateTime('now')))
-            ->add('estadoAfiliado', ChoiceType::class, array('choices' => array($estadoAfiliado => $nombreEstadoAfiliado, '1' => 'CERRADO', '0' => 'ABIERTO')))                                                
+            ->add('estadoAfiliado', ChoiceType::class, array('choices' => array($nombreEstadoAfiliado => $estadoAfiliado, 'CERRADO' => '1', 'ABIERTO' => '0')))                                                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);

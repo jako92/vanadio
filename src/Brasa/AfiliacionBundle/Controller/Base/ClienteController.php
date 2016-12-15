@@ -128,7 +128,7 @@ class ClienteController extends Controller
             ->add('TxtNombre', textType::class, array('label'  => 'Nombre','data' => $session->get('filtroClienteNombre')))
             ->add('TxtIdentificacion', textType::class, array('label'  => 'Identificacion','data' => $session->get('filtroClienteIndentificacion')))
             ->add('TxtCodigo', textType::class, array('label'  => 'Codigo'))    
-            ->add('independiente', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO')))                                            
+            ->add('independiente', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))                                            
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))

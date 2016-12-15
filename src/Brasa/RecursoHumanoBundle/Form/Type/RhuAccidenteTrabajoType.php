@@ -48,7 +48,7 @@ class RhuAccidenteTrabajoType extends AbstractType
             ->add('coordinadorEncargado', TextType::class, array('required' => false))                
             ->add('cargoCoordinadorEncargado', TextType::class, array('required' => false))                                
             ->add('tiempoServicioEmpleado', TextType::class, array('required' => false))                                
-            ->add('tareaDesarrolladaMomentoAccidente', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))                
+            ->add('tareaDesarrolladaMomentoAccidente', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))                
             ->add('oficioHabitual', TextType::class, array('required' => false))                                
             ->add('descripcionAccidente', TextareaType::class, array('required' => false))
             ->add('actoInseguro', TextareaType::class, array('required' => false))

@@ -39,7 +39,7 @@ class TrasladoPensionController extends Controller
             ->add('fechaAplicacion', DateType::class, array('data' => new \DateTime('now')))
             ->add('fechaFosyga', DateType::class, array('data' => new \DateTime('now')))                
             ->add('detalle', TextType::class, array('required' => true))
-            ->add('tipo', ChoiceType::class, array('choices' => array('1' => 'TRASLADO', '2' => 'CAMBIO')))                                                
+            ->add('tipo', ChoiceType::class, array('choices' => array('TRASLADO' => '1', 'CAMBIO' => '2')))                                                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
