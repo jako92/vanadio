@@ -189,7 +189,7 @@ class NovedadController extends Controller
                     $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     $objNovedad = new \Brasa\TurnoBundle\Formatos\FormatoNovedad();
-                    $objNovedad->Generar($this, $codigoNovedad);                   
+                    $objNovedad->Generar($em, $codigoNovedad);                   
                 }                
             }                        
         }

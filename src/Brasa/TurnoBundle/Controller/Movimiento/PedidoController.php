@@ -234,7 +234,7 @@ class PedidoController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arPedido->getEstadoAutorizado() == 1) {
                     $objPedido = new \Brasa\TurnoBundle\Formatos\FormatoPedido();
-                    $objPedido->Generar($this, $codigoPedido);
+                    $objPedido->Generar($em, $codigoPedido);
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
                 }

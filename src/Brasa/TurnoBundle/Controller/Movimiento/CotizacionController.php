@@ -180,7 +180,7 @@ class CotizacionController extends Controller
                     $objMensaje->Mensaje("error", $strResultado);
                 } else {
                     $objCotizacion = new \Brasa\TurnoBundle\Formatos\FormatoCotizacion();
-                    $objCotizacion->Generar($this, $codigoCotizacion);                   
+                    $objCotizacion->Generar($em, $codigoCotizacion);                   
                 }                
             }                        
         }

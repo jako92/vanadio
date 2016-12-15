@@ -7,22 +7,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenDirectorioType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class DirectorioController extends Controller
 {
     /**
      * @Route("/general/utilidad/gestorarchivo/{codigoDirectorioPadre}", name="brs_gen_utilidad_gestorarchivo")
      */
-    public function listaAction($codigoDirectorioPadre = 0) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listaAction(Request $request, $codigoDirectorioPadre = 0) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 72)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnEliminarDirectorio', 'submit', array('label'  => 'Eliminar directorio'))
-            ->add('BtnEliminarArchivo', 'submit', array('label'  => 'Eliminar archivo'))
+            ->add('BtnEliminarDirectorio', SubmitType::class, array('label'  => 'Eliminar directorio'))
+            ->add('BtnEliminarArchivo', SubmitType::class, array('label'  => 'Eliminar archivo'))
             ->getForm(); 
         $form->handleRequest($request);
         $arDirectorios = new \Brasa\GeneralBundle\Entity\GenDirectorio();
@@ -66,14 +68,16 @@ class DirectorioController extends Controller
         }
         
         $queryDirectorios = $em->getRepository('BrasaGeneralBundle:GenDirectorio')->findBy(array('codigoDirectorioPadreFk' => $codigoDirectorioPadre));
-        $arDirectorios = $paginator->paginate($queryDirectorios, $this->get('request')->query->get('page', 1),40);
+        //$arDirectorios = $paginator->paginate($queryDirectorios, $this->get('request')->query->get('page', 1),40);
+        $arDirectorios = $paginator->paginate($queryDirectorios, $request->query->getInt('page', 1)/*page number*/,40/*limit per page*/);
         if ($codigoDirectorioPadre == 0){
             $codigo = null;
         }else{
             $codigo = $codigoDirectorioPadre;
         }
         $queryArchivos = $em->getRepository('BrasaGeneralBundle:GenArchivo')->findBy(array('codigoDirectorioFk' => $codigo));
-        $arArchivos = $paginator->paginate($queryArchivos, $this->get('request')->query->get('page', 1),40);        
+        //$arArchivos = $paginator->paginate($queryArchivos, $this->get('request')->query->get('page', 1),40);
+        $arArchivos = $paginator->paginate($queryArchivos, $request->query->getInt('page', 1)/*page number*/,40/*limit per page*/); 
         
         $codigoDirectorioPadreAux = $codigoDirectorioPadre;
         while ($codigoDirectorioPadreAux != null && $codigoDirectorioPadreAux != 0) {
@@ -96,15 +100,14 @@ class DirectorioController extends Controller
     /**
      * @Route("/general/utilidad/gestorarchivo/directorio/nuevo/{codigoDirectorio}/{codigoDirectorioPadre}", name="brs_gen_utilidad_gestorarchivo_directorio_nuevo")
      */
-    public function nuevoDirectorioAction($codigoDirectorio,$codigoDirectorioPadre) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoDirectorioAction(Request $request, $codigoDirectorio,$codigoDirectorioPadre) {
+        $em = $this->getDoctrine()->getManager();        
         $arDirectorio = new \Brasa\GeneralBundle\Entity\GenDirectorio();
         if ($codigoDirectorio != 0)
         {
             $arDirectorio = $em->getRepository('BrasaGeneralBundle:GenDirectorio')->find($codigoDirectorio);
         }    
-        $form = $this->createForm(new GenDirectorioType(), $arDirectorio);
+        $form = $this->createForm(GenDirectorioType::class, $arDirectorio);
         $form->handleRequest($request);
         if ($form->isValid())
         {
@@ -127,14 +130,13 @@ class DirectorioController extends Controller
     /**
      * @Route("/general/utilidad/gestorarchivo/cargar/archivo/{codigoDirectorioPadre}", name="brs_gen_utilidad_gestorarchivo_cargar_archivo")
      */
-    public function cargarArchivoAction($codigoDirectorioPadre) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function cargarArchivoAction(Request $request, $codigoDirectorioPadre) {
+        $em = $this->getDoctrine()->getManager();        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes(); 
         $form = $this->createFormBuilder()
-            ->add('descripcion', 'text', array('required' => false))    
-            ->add('attachment', 'file') 
-            ->add('BtnCargar', 'submit', array('label'  => 'Cargar'))
+            ->add('descripcion', TextType::class, array('required' => false))    
+            ->add('attachment', FileType::class) 
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -175,7 +177,7 @@ class DirectorioController extends Controller
     /**
      * @Route("/general/utilidad/gestorarchivo/descargar/archivo/{codigoArchivo}", name="brs_gen_utilidad_gestorarchivo_descargar_archivo")
      */
-    public function descargarArchivoAction($codigoArchivo) {
+    public function descargarArchivoAction(Request $request, $codigoArchivo) {
         $em = $this->getDoctrine()->getManager();
         $arArchivo = new \Brasa\GeneralBundle\Entity\GenArchivo();
         $arArchivo = $em->getRepository('BrasaGeneralBundle:GenArchivo')->find($codigoArchivo);

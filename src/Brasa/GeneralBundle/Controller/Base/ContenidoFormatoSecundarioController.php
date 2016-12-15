@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenContenidoFormatoSecundarioType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 /**
  * GenContenidoFormatoSecundario controller.
  *
@@ -19,16 +19,15 @@ class ContenidoFormatoSecundarioController extends Controller
     /**
      * @Route("/general/base/contenido/formato/secundario/lista/", name="brs_gen_base_contenido_formato_secundario_lista")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 105, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         $this->lista();
@@ -58,14 +57,13 @@ class ContenidoFormatoSecundarioController extends Controller
     /**
      * @Route("/general/base/contenido/formato/secundario/nuevo/{codigoContenidoFormato}", name="brs_gen_base_contenido_formato_secundario_nuevo")
      */
-    public function nuevoAction($codigoContenidoFormato) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoContenidoFormato) {
+        $em = $this->getDoctrine()->getManager();        
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormatoSecundario();
         if ($codigoContenidoFormato != 0) {
             $arContenidoFormato = $em->getRepository('BrasaGeneralBundle:GenContenidoFormatoSecundario')->find($codigoContenidoFormato);
         }    
-        $form = $this->createForm(new GenContenidoFormatoSecundarioType(), $arContenidoFormato);
+        $form = $this->createForm(GenContenidoFormatoSecundarioType::class, $arContenidoFormato);
         $form->handleRequest($request);
         if ($form->isValid()) {                        
             $arContenidoFormato = $form->getData();

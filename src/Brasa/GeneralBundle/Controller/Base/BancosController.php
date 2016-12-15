@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenBancoType;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class BancosController extends Controller
@@ -14,16 +14,15 @@ class BancosController extends Controller
     /**
      * @Route("/general/base/bancos", name="brs_gen_base_bancos")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 102, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);        
         if($form->isValid()) {
@@ -50,8 +49,7 @@ class BancosController extends Controller
                 $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A1', 'Codigo')
-                            ->setCellValue('B1', 'Banco')
-                            ->setCellValue('C1', 'Cuenta');
+                            ->setCellValue('B1', 'Banco');
 
                 $i = 2;
                 $arBanco = $em->getRepository('BrasaGeneralBundle:GenBanco')->findAll();
@@ -59,9 +57,9 @@ class BancosController extends Controller
                 foreach ($arBanco as $arBanco) {
                         
                     $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue('A' . $i, $arBanco->getCodigoBancoGeneralPk())
-                            ->setCellValue('B' . $i, $arBanco->getBancoRel()->getNombre())
-                            ->setCellValue('C' . $i, $arBanco->getCuenta());
+                            ->setCellValue('A' . $i, $arBanco->getCodigoBancoPk())
+                            ->setCellValue('B' . $i, $arBanco->getNombre());
+                            
                     $i++;
                 }
 
@@ -87,7 +85,7 @@ class BancosController extends Controller
         }
         $arBancos = new \Brasa\GeneralBundle\Entity\GenBanco();
         $query = $em->getRepository('BrasaGeneralBundle:GenBanco')->findAll();
-        $arBancos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),50);
+        $arBancos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,50/*limit per page*/);
 
         return $this->render('BrasaGeneralBundle:Base/Bancos:lista.html.twig', array(
                     'arBancos' => $arBancos,
@@ -99,15 +97,14 @@ class BancosController extends Controller
     /**
      * @Route("/general/base/bancos/nuevo/{codigoBanco}", name="brs_gen_base_bancos_nuevo")
      */
-    public function nuevoAction($codigoBanco) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoBanco) {
+        $em = $this->getDoctrine()->getManager();        
         $arBanco = new \Brasa\GeneralBundle\Entity\GenBanco();
         if ($codigoBanco != 0)
         {
             $arBanco = $em->getRepository('BrasaGeneralBundle:GenBanco')->find($codigoBanco);
         }    
-        $form = $this->createForm(new GenBancoType(), $arBanco);
+        $form = $this->createForm(GenBancoType::class, $arBanco);
         $form->handleRequest($request);
         if ($form->isValid())
         {
