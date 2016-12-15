@@ -417,7 +417,7 @@ class PedidoController extends Controller
             $arPedidoDetalle->setDomingo(true);
             $arPedidoDetalle->setFestivo(true);            
         }
-        $form = $this->createForm(new TurPedidoDetalleType, $arPedidoDetalle);
+        $form = $this->createForm(TurPedidoDetalleType::class, $arPedidoDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arPedidoDetalle = $form->getData();
