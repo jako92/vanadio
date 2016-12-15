@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenAsesorType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -14,16 +15,15 @@ class AsesorController extends Controller
     /**
      * @Route("/general/base/asesor", name="brs_gen_base_asesor")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 100, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);
         //$arTerceros = new \Brasa\GeneralBundle\Entity\GenTercero();
@@ -95,7 +95,7 @@ class AsesorController extends Controller
         $dql = $em->getRepository('BrasaGeneralBundle:GenAsesor')->listaDql();
         $arAsesores = new \Brasa\GeneralBundle\Entity\GenAsesor();        
         //$arAsesores = $em->getRepository('BrasaGeneralBundle:GenAsesor')->findAll();
-        $arAsesores = $paginator->paginate($em->createQuery($dql), $this->get('request')->query->get('page', 1),50);
+        $arAsesores = $paginator->paginate($em->createQuery($dql), $request->query->getInt('page', 1),50);        
         return $this->render('BrasaGeneralBundle:Base/Asesor:lista.html.twig', array(
                     'arAsesores' => $arAsesores,
                     'form'=> $form->createView()
@@ -106,15 +106,14 @@ class AsesorController extends Controller
     /**
      * @Route("/general/base/asesor/nuevo/{codigoAsesor}", name="brs_gen_base_asesor_nuevo")
      */
-    public function nuevoAction($codigoAsesor) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAsesor) {
+        $em = $this->getDoctrine()->getManager();        
         $arAsesor = new \Brasa\GeneralBundle\Entity\GenAsesor();
         if ($codigoAsesor != 0)
         {
             $arAsesor = $em->getRepository('BrasaGeneralBundle:GenAsesor')->find($codigoAsesor);
         }    
-        $form = $this->createForm(new GenAsesorType(), $arAsesor);
+        $form = $this->createForm(GenAsesorType::class, $arAsesor);
         $form->handleRequest($request);
         if ($form->isValid())
         {

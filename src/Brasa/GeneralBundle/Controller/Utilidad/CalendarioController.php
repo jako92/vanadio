@@ -13,9 +13,8 @@ class CalendarioController extends Controller
     /**
      * @Route("/gen/utilidades/calendario/", name="brs_gen_utilidad_calendario")
      */
-    public function verAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function verAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 71)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }

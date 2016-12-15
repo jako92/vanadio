@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenCuentaType;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class CuentasController extends Controller
@@ -14,16 +14,15 @@ class CuentasController extends Controller
     /**
      * @Route("/general/base/cuentas", name="brs_gen_base_cuentas")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest(); // captura o recupera datos del formulario
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 103, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel'))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar'))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm(); 
         $form->handleRequest($request);        
         if($form->isValid()) {
@@ -40,8 +39,8 @@ class CuentasController extends Controller
         }
         $arCuentas = new \Brasa\GeneralBundle\Entity\GenCuenta();
         $query = $em->getRepository('BrasaGeneralBundle:GenCuenta')->findAll();
-        $arCuentas = $paginator->paginate($query, $this->get('request')->query->get('page', 1),50);
-
+        $arCuentas = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,50/*limit per page*/);
+                                                                    
         return $this->render('BrasaGeneralBundle:Base/Cuentas:lista.html.twig', array(
                     'arCuentas' => $arCuentas,
                     'form'=> $form->createView()
@@ -52,14 +51,13 @@ class CuentasController extends Controller
     /**
      * @Route("/general/base/cuentas/nuevo/{codigoCuenta}", name="brs_gen_base_cuentas_nuevo")
      */
-    public function nuevoAction($codigoCuenta) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoCuenta) {
+        $em = $this->getDoctrine()->getManager();        
         $arCuenta = new \Brasa\GeneralBundle\Entity\GenCuenta();
         if ($codigoCuenta != 0) {
             $arCuenta = $em->getRepository('BrasaGeneralBundle:GenCuenta')->find($codigoCuenta);
         }    
-        $form = $this->createForm(new GenCuentaType(), $arCuenta);
+        $form = $this->createForm(GenCuentaType::class, $arCuenta);
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arCuenta = $form->getData();

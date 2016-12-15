@@ -3,6 +3,8 @@ namespace Brasa\GeneralBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class GenAsesorType extends AbstractType
 {
@@ -13,13 +15,13 @@ class GenAsesorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('numeroIdentificacion', 'text', array('required' => true))
-            ->add('nombre', 'text', array('required' => true))
-            ->add('direccion', 'text', array('required' => false))    
-            ->add('telefono', 'text', array('required' => false))    
-            ->add('celular', 'text', array('required' => false))
-            ->add('email', 'text', array('required' => false))    
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'));
+            ->add('numeroIdentificacion', TextType::class, array('required' => true))
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('direccion', TextType::class, array('required' => false))    
+            ->add('telefono', TextType::class, array('required' => false))    
+            ->add('celular', TextType::class, array('required' => false))
+            ->add('email', TextType::class, array('required' => false))    
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
     public function getName()
