@@ -3,6 +3,10 @@ namespace Brasa\SeguridadBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserType extends AbstractType
 {
@@ -13,18 +17,18 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rolRel', 'entity', array(
+            ->add('rolRel', EntityType::class, array(
                 'class' => 'BrasaSeguridadBundle:SegRoles',
-                        'property' => 'nombre',
+                        'choice_label' => 'nombre',
             ))  
-            ->add('nombreCorto', 'text', array('required' => true))
-            ->add('username', 'text', array('required' => true))                
-            ->add('email', 'text', array('required' => true))                
-            ->add('password', 'password', array('required' => true))            
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('nombreCorto', TextType::class, array('required' => true))
+            ->add('username', TextType::class, array('required' => true))                
+            ->add('email', TextType::class, array('required' => true))                
+            ->add('password', PasswordType::class, array('required' => true))            
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

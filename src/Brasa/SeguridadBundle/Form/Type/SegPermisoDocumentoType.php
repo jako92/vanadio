@@ -3,6 +3,8 @@ namespace Brasa\SeguridadBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SegPermisoDocumentoType extends AbstractType
 {
@@ -13,19 +15,19 @@ class SegPermisoDocumentoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ingreso', 'checkbox', array('required'  => false))            
-            ->add('nuevo', 'checkbox', array('required'  => false))            
-            ->add('editar', 'checkbox', array('required'  => false))                            
-            ->add('eliminar', 'checkbox', array('required'  => false))                                            
-            ->add('autorizar', 'checkbox', array('required'  => false))                                            
-            ->add('desautorizar', 'checkbox', array('required'  => false))                                            
-            ->add('aprobar', 'checkbox', array('required'  => false))
-            ->add('anular', 'checkbox', array('required'  => false))
-            ->add('imprimir', 'checkbox', array('required'  => false))    
-            ->add('guardar', 'submit', array('label' => 'Guardar'));
+            ->add('ingreso', CheckboxType::class, array('required'  => false))            
+            ->add('nuevo', CheckboxType::class, array('required'  => false))            
+            ->add('editar', CheckboxType::class, array('required'  => false))                            
+            ->add('eliminar', CheckboxType::class, array('required'  => false))                                            
+            ->add('autorizar', CheckboxType::class, array('required'  => false))                                            
+            ->add('desautorizar', CheckboxType::class, array('required'  => false))                                            
+            ->add('aprobar', CheckboxType::class, array('required'  => false))
+            ->add('anular', CheckboxType::class, array('required'  => false))
+            ->add('imprimir', CheckboxType::class, array('required'  => false))    
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form';
     }

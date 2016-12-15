@@ -7,6 +7,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\SecurityContext;
 use Brasa\SeguridadBundle\Form\Type\UserType;
 use Brasa\SeguridadBundle\Form\Type\SegPermisoDocumentoType;
+use Symfony\Component\HttpFoundation\Request; 
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 class SegUsuariosController extends Controller
 {
     var $strDqlLista = "";
@@ -14,11 +20,10 @@ class SegUsuariosController extends Controller
     /**
      * @Route("/admin/usuario/lista/", name="brs_seg_admin_usuario_lista")
      */     
-    public function listaAction()
+    public function listaAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $request = $this->getRequest();
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -29,7 +34,7 @@ class SegUsuariosController extends Controller
             ));
     }
 
-    public function nuevoAction($codigoUsuario) {
+    public function nuevoAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         //El error es que se debe colocar el eslas entes de Brasa solo con eso toma la clase
@@ -40,7 +45,7 @@ class SegUsuariosController extends Controller
             $encoder = $factory->getEncoder($arUsuario);
             $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
         }
-        $form = $this->createForm(new UserType(), $arUsuario);
+        $form = $this->createForm(UserType::class, $arUsuario);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $form->getData();
@@ -62,11 +67,10 @@ class SegUsuariosController extends Controller
     
     public function detalleAction($codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $form = $this->createFormBuilder()
-            ->add('BtnEliminarEspecial', 'submit', array('label' => 'Eliminar'))
-            ->add('BtnEliminarDocumento', 'submit', array('label' => 'Eliminar'))    
-            ->add('BtnEliminarRol', 'submit', array('label' => 'Eliminar'))            
+            ->add('BtnEliminarEspecial', SubmitType::class, array('label' => 'Eliminar'))
+            ->add('BtnEliminarDocumento', SubmitType::class, array('label' => 'Eliminar'))    
+            ->add('BtnEliminarRol', SubmitType::class, array('label' => 'Eliminar'))            
             ->getForm();
         $form->handleRequest($request);
         
@@ -129,9 +133,8 @@ class SegUsuariosController extends Controller
     /**
      * @Route("/seg/usuario/detalle/ver/{codigoUsuario}/", name="brs_seg_usuario_detalle_ver")
      */      
-    public function detalleVerAction($codigoUsuario) {
+    public function detalleVerAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $form = $this->createFormBuilder()
             ->getForm();
         $form->handleRequest($request);
@@ -258,12 +261,11 @@ class SegUsuariosController extends Controller
                     ));
     }    
     
-    public function detalleNuevoPermisoEspecialAction($codigoUsuario) {
-        $request = $this->getRequest();
+    public function detalleNuevoPermisoEspecialAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-            ->add('guardar', 'submit', array('label' => 'Guardar'))
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -295,7 +297,7 @@ class SegUsuariosController extends Controller
             'form' => $form->createView()));
     }
     
-    public function detalleNuevoPermisoDocumentoAction($codigoUsuario) {
+    public function detalleNuevoPermisoDocumentoAction(Request $request, $codigoUsuario) {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -361,15 +363,14 @@ class SegUsuariosController extends Controller
     /**
      * @Route("/seg/usuario/detalle/permiso/documento/editar/{codigoPermisoDocumento}/", name="brs_seg_usuario_detalle_permiso_documento_editar")
      */     
-    public function detallePermisoDocumentoEditarAction($codigoPermisoDocumento) {
-        $request = $this->getRequest();
+    public function detallePermisoDocumentoEditarAction(Request $request, $codigoPermisoDocumento) {
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();
         $arPermisoDocumento = new \Brasa\SeguridadBundle\Entity\SegPermisoDocumento();
         if($codigoPermisoDocumento != 0) {
             $arPermisoDocumento = $em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->find($codigoPermisoDocumento);
         }
-        $form = $this->createForm(new SegPermisoDocumentoType(), $arPermisoDocumento);
+        $form = $this->createForm(SegPermisoDocumentoType::class, $arPermisoDocumento);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($form->get('guardar')->isClicked()) {
@@ -386,13 +387,12 @@ class SegUsuariosController extends Controller
     /**
      * @Route("/seg/usuario/detalle/rol/nuevo/{codigoUsuario}/", name="brs_seg_usuario_detalle_rol_nuevo")
      */     
-    public function detalleNuevoRolAction($codigoUsuario) {
-        $request = $this->getRequest();
+    public function detalleNuevoRolAction(Request $request, $codigoUsuario) {
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();
         $arRoles = $em->getRepository('BrasaSeguridadBundle:SegRoles')->findAll();
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -426,7 +426,6 @@ class SegUsuariosController extends Controller
     
     public function recuperarAction() {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         $form = $this->formularioRecuperar();
         $form->handleRequest($request);
         if ($form->isValid()) {            
@@ -437,13 +436,12 @@ class SegUsuariosController extends Controller
         ));
     }
 
-    public function cambiarClaveAction($codigoUsuario) {
-        $request = $this->getRequest();
+    public function cambiarClaveAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $formUsuario = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_seg_admin_usuario_cambiar_clave', array('codigoUsuario' => $codigoUsuario)))
-            ->add('password', 'password')                            
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('password', PasswordType::class)                            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formUsuario->handleRequest($request);        
         $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
@@ -466,13 +464,12 @@ class SegUsuariosController extends Controller
     /**
      * @Route("/user/usuario/cambiar/calve/usuario/{codigoUsuario}/", name="brs_seg_user_usuario_cambiar_clave")
      */     
-    public function cambiarClaveUsuarioAction($codigoUsuario) {
-        $request = $this->getRequest();
+    public function cambiarClaveUsuarioAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
         $formUsuario = $this->createFormBuilder()
             ->setAction($this->generateUrl('brs_seg_user_usuario_cambiar_clave', array('codigoUsuario' => $codigoUsuario)))
-            ->add('password', 'password')                            
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar'))
+            ->add('password', PasswordType::class)                            
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formUsuario->handleRequest($request);        
         $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
@@ -500,20 +497,20 @@ class SegUsuariosController extends Controller
 
     private function formularioRecuperar() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->createFormBuilder()
-            ->add('username', 'text', array('label'  => 'Numero', 'data' => ""))            
-            ->add('BtnRecuperar', 'submit', array('label'  => 'Recuperar'))
+            ->add('username', TextType::class, array('label'  => 'Numero', 'data' => ""))            
+            ->add('BtnRecuperar', SubmitType::class, array('label'  => 'Recuperar'))
             ->getForm();
         return $form;
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Numero','data' => ""))            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => ""))            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
