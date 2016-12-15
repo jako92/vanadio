@@ -398,7 +398,7 @@ class MovimientoNotaDebitoController extends Controller
             ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
             ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoImpreso', 'choice', array('choices'   => array('2' => 'TODOS', '1' => 'IMPRESO', '0' => 'SIN IMPRIMIR'), 'data' => $session->get('filtroNotaDebitoEstadoImpreso')))                
+            ->add('estadoImpreso', 'choice', array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroNotaDebitoEstadoImpreso')))                
             ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
             ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
             ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))

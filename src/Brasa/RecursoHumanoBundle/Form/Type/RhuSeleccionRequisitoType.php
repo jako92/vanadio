@@ -61,7 +61,7 @@ class RhuSeleccionRequisitoType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))                             
             ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('TIEMPO COMPLETO' => '1', 'MEDIO TIEMPO' => '2', 'POR HORAS' => '3','DESDE CASA' => '4', 'PRACTICAS' => '5', 'NO APLICA' => '0')))
-            //->add('codigoExperienciaFk', 'choice', array('choices'   => array('1' => '1 AÑO', '2' => '2 AÑOS', '3' => '3-4 AÑOS','4' => '5-10 AÑOS', '5' => 'GRADUADO', '6' => 'SIN EXPERIENCIA')))
+            //->add('codigoExperienciaFk', 'choice', array('choices'   => array('1 AÑO' => '1', '2 AÑOS' => '2', '3-4 AÑOS' => '3','5-10 AÑOS' => '4', 'GRADUADO' => '5', 'SIN EXPERIENCIA' => '6')))
             ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F', 'INDIFERENTE' => 'I')))
             ->add('codigoTipoVehiculoFk', ChoiceType::class, array('choices'   => array('CARRO' => '1', 'MOTO' => '2', 'NO APLICA' => '0')))
             ->add('codigoLicenciaCarroFk', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '2', 'NO APLICA' => '0')))

@@ -379,8 +379,8 @@ class PeriodoController extends Controller
                 
             ->setAction($this->generateUrl('brs_afi_movimiento_periodo_archivoplano', array('codigoPeriodo' => $codigoPeriodo)))
             ->add('arlIRel', 'entity', $arrayPropiedadesI)
-            ->add('tipo', 'choice', array('choices'   => array('U' => 'Independiente', 'S' => 'Sucursal')))    
-            ->add('entidad', 'choice', array('choices'   => array('88' => 'Simple', '89' => 'Enlace operativo')))
+            ->add('tipo', 'choice', array('choices'   => array('Independiente' => 'U', 'Sucursal' => 'S')))    
+            ->add('entidad', 'choice', array('choices'   => array('Simple' => '88', 'Enlace operativo' => '89')))
             ->add('sucursal','text', array('required' => false))    
             ->getForm();
         $form->handleRequest($request);
