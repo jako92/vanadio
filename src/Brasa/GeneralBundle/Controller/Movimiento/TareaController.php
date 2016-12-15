@@ -3,8 +3,12 @@ namespace Brasa\GeneralBundle\Controller\Movimiento;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Brasa\GeneralBundle\Form\Type\GenTareaType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class TareaController extends Controller
 {
@@ -15,10 +19,9 @@ class TareaController extends Controller
     /**
      * @Route("/gen/movimiento/tarea/", name="brs_gen_movimiento_tarea")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $request = $this->getRequest();        
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
@@ -70,8 +73,7 @@ class TareaController extends Controller
     /**
      * @Route("/gen/movimiento/tarea/nuevo/{codigoTarea}", name="brs_gen_movimiento_tarea_nuevo")
      */    
-    public function nuevoAction($codigoTarea) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoTarea) {        
         $em = $this->getDoctrine()->getManager();
         $arTarea = new \Brasa\GeneralBundle\Entity\GenTarea();
         if($codigoTarea != 0) {
@@ -80,7 +82,7 @@ class TareaController extends Controller
             $arTarea->setFecha(new \DateTime('now'));
             $arTarea->setFechaProgramada(new \DateTime('now'));
         }
-        $form = $this->createForm(new GenTareaType, $arTarea);
+        $form = $this->createForm(GenTareaType::class, $arTarea);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->getUser();
@@ -119,11 +121,11 @@ class TareaController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();       
+        $session = new Session;       
         $form = $this->createFormBuilder()
-            ->add('estadoTerminado', 'choice', array('choices'   => array('0' => 'SIN TERMINAR', '1' => 'TERMINADA', '2' => 'TODOS'), 'data' => $this->estadoTerminado))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('estadoTerminado', ChoiceType::class, array('choices'   => array('SIN TERMINAR' => '0', 'TERMINADA' => '', 'TODOS' => '2'), 'data' => $this->estadoTerminado))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }

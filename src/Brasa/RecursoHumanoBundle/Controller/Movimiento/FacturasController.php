@@ -360,11 +360,17 @@ class FacturasController extends Controller
     }
     
     private function filtrar($form) {
-        $session = new session;
-        
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoTerceros', $controles['terceroRel']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
+        $session = new session;                
+        $codigoTerceros = '';
+        if($form->get('terceroRel')->getData()) {
+            $codigoTerceros = $form->get('terceroRel')->getData()->getCodigoTerceroPk();
+        }        
+        $session->set('filtroCodigoTerceros', $codigoTerceros);
+        $codigoCentroCosto = '';
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto); 
         $session->set('filtroNumero', $form->get('TxtNumero')->getData());
                
         $dateFechaDesde = $form->get('fechaDesde')->getData();
