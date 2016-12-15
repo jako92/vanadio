@@ -3047,7 +3047,8 @@ class ConsultasController extends Controller
                     ->setCellValue('BE1', 'A_V_F_P_O')
                     ->setCellValue('BF1', 'C_V_F_P_O')
                     ->setCellValue('BG1', 'TOTAL COTIZACIÓN')
-                    ->setCellValue('BH1', 'A_F_S_P_S');
+                    ->setCellValue('BH1', 'A_F_S_P_SL')
+                    ->setCellValue('BI1', 'A_F_S_P_SB');
         $i = 2;
         $query = $em->createQuery($this->strSqlAportesLista);
         $arAportes = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte();
@@ -3080,7 +3081,7 @@ class ConsultasController extends Controller
                     $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
-        for($col = 'AQ'; $col !== 'BF'; $col++) {
+        for($col = 'AQ'; $col !== 'BJ'; $col++) {
                     $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
                     $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
@@ -3157,6 +3158,7 @@ class ConsultasController extends Controller
                     ->setCellValue('BF' . $i, $arAporte->getCotizacionVoluntarioFondoPensionesObligatorias())
                     ->setCellValue('BG' . $i, $arAporte->getTotalCotizacion())
                     ->setCellValue('BH' . $i, $arAporte->getAportesFondoSolidaridadPensionalSolidaridad())
+                    ->setCellValue('BI' . $i, $arAporte->getAportesFondoSolidaridadPensionalSubsistencia())
                     ;
             $i++;
         }
