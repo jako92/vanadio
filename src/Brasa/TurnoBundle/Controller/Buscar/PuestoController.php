@@ -60,7 +60,7 @@ class PuestoController extends Controller
 
     private function filtrarLista($form) {
         $session = new session;      
-        $controles = $request->request->get('form');
+        
     }    
           
 }

@@ -59,8 +59,8 @@ class ClienteController extends Controller
 
     private function filtrarLista($form) {
         $session = new Session();  
-        $request = $this->getRequest(); 
-        $controles = $request->request->get('form');
+        //$request = $this->getRequest(); 
+        //$controles = $request->request->get('form');
         $this->strNombre = $form->get('TxtNombre')->getData();
     }    
           

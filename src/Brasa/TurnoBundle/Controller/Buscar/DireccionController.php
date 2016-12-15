@@ -60,8 +60,7 @@ class DireccionController extends Controller
     }           
 
     private function filtrarLista($form) {
-        $session = new session;     
-        $controles = $request->request->get('form');
+        $session = new session;             
         $this->strNombre = $form->get('TxtNombre')->getData();
         $this->strCliente = $form->get('TxtCliente')->getData();
     }    
