@@ -30,7 +30,7 @@ class RhuAdicionalPagoType extends AbstractType
             ))    
             ->add('cantidad', TextType::class, array('required' => true))    
             ->add('valor', TextType::class, array('required' => true))        
-            ->add('aplicaDiaLaborado', ChoiceType::class, array('choices'   => array('1' => 'SI', '0' => 'NO')))
+            ->add('aplicaDiaLaborado', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('guardar', SubmitType::class);            
     }
 

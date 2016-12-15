@@ -88,7 +88,7 @@ class ActualizarClienteCarteraController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroClienteNombre')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroClienteIdentificacion')))
-            ->add('independiente', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'SI', '0' => 'NO'),'data' => $session->get('filtroIndependiente')))
+            ->add('independiente', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'),'data' => $session->get('filtroIndependiente')))
             ->add('BtnActualizar', SubmitType::class, array('label'  => 'Actualizar',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();

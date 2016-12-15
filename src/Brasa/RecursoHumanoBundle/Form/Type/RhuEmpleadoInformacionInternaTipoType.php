@@ -14,7 +14,7 @@ class RhuEmpleadoInformacionInternaTipoType extends AbstractType
     {
         $builder
             ->add('nombre', TextType::class, array('required' => true))
-            ->add('accion', ChoiceType::class, array('choices' => array('1' => 'BLOQUEADO', '0' => 'DESBLOQUEADO')))    
+            ->add('accion', ChoiceType::class, array('choices' => array('BLOQUEADO' => '1', 'DESBLOQUEADO' => '0')))    
             ->add('guardar', SubmitType::class);
     }
 

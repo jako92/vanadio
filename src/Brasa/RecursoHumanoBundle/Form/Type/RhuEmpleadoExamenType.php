@@ -22,7 +22,7 @@ class RhuEmpleadoExamenType extends AbstractType
                 'choice_label' => 'nombre',
             ))               
             ->add('fechaVencimiento', DateType::class)      
-            ->add('validarVencimiento', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))                                        
+            ->add('validarVencimiento', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))                                        
             ->add('comentarios', TextareaType::class, array('required' => false))                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

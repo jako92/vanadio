@@ -17,7 +17,7 @@ class TurPlantillaType extends AbstractType
         $builder            
             ->add('nombre', TextType::class, array('required' => true))  
             ->add('diasSecuencia', NumberType::class)
-            ->add('homologarCodigoTurno', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))                
+            ->add('homologarCodigoTurno', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))                
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

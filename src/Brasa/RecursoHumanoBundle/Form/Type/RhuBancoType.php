@@ -19,7 +19,7 @@ class RhuBancoType extends AbstractType
         $builder
             ->add('nombre', TextType::class, array('required' => true))
             ->add('nit', TextType::class, array('required' => true))    
-            ->add('convenioNomina', ChoiceType::class, array('choices' => array('1' => 'SI', '0' => 'NO')))
+            ->add('convenioNomina', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))
             ->add('numeroDigitos', NumberType::class, array('required' => true))
             ->add('codigoGeneral', TextType::class, array('required' => true))
             ->add('telefono', TextType::class, array('required' => false))

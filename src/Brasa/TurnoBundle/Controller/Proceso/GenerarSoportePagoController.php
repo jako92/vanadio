@@ -567,7 +567,7 @@ class GenerarSoportePagoController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('recursoGrupoRel', EntityType::class, $arrayPropiedadesRecursoGrupo)
-            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('0' => 'SIN CERRAR', '1' => 'CERRADO', '2' => 'TODOS'), 'data' => $session->get('filtroSoportePagoEstadoCerrado')))                                            
+            ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('SIN CERRAR' => '0', 'CERRADO' => '1', 'TODOS' => '2'), 'data' => $session->get('filtroSoportePagoEstadoCerrado')))                                            
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar')) 
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))         
             ->getForm();
