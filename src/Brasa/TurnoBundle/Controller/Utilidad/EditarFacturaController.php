@@ -2,19 +2,15 @@
 namespace Brasa\TurnoBundle\Controller\Utilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Brasa\TurnoBundle\Form\Type\TurFacturaEditarType;
-use PHPExcel_Shared_Date;
-use PHPExcel_Style_NumberFormat;
 
 class EditarFacturaController extends Controller
 {
     var $strListaDql = "";    
-
     
     /**
      * @Route("/tur/utilidad/editar/factura", name="brs_tur_utilidad_editar_factura")
@@ -43,8 +39,7 @@ class EditarFacturaController extends Controller
     /**
      * @Route("/tur/utilidad/editar/factura/nuevo/{codigoFactura}", name="brs_tur_utilidad_editar_factura_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoFactura) {
-        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();        
+    public function nuevoAction(Request $request, $codigoFactura) {        
         $em = $this->getDoctrine()->getManager();
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
