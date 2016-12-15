@@ -43,9 +43,9 @@ class ReclamoController extends Controller
                 $this->listar();
                 $this->generarExcel();
             }
-            if($form->get('BtnExcelInforme')->isClicked()) {
+            /*if($form->get('BtnExcelInforme')->isClicked()) {
                 $this->generarInformeExcel();
-            }
+            }*/
             if($form->get('BtnEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
@@ -84,7 +84,7 @@ class ReclamoController extends Controller
             $arReclamo->setFechaRegistro(new \DateTime('now'));            
         }
 
-        $form = $this->createForm(new RhuReclamoType(), $arReclamo);
+        $form = $this->createForm(RhuReclamoType::class, $arReclamo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -253,12 +253,12 @@ class ReclamoController extends Controller
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('Reclamoes');
+        $objPHPExcel->getActiveSheet()->setTitle('Reclamos');
         $objPHPExcel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Reclamoes.xlsx"');
+        header('Content-Disposition: attachment;filename="Reclamos.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

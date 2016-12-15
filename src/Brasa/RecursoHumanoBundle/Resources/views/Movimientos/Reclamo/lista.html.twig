@@ -94,7 +94,7 @@
                 <td>{{ arReclamos.fecha |date('Y/m/d') }}</td>                                                               
                 <td>{% if arReclamos.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>                                 
                 <td style="text-align: center">{% if arReclamos.estadoCerrado == 0 %}<a href="{{ path('brs_rhu_movimiento_reclamo_nuevo', {'codigoReclamo': arReclamos.codigoReclamoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arReclamos.codigoReclamoPk }}" /></td>
+                <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arReclamos.codigoReclamoPk }}" /></td>
             </tr>
             {% endfor %}
         </table>

@@ -91,7 +91,7 @@ class PagosAdicionalesController extends Controller
             $nombreModalidad = "FECHA";
         }        
         $arPagosAdicionales = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
-        $arCentrosCostos = $paginator->paginate($em->createQuery($session->get('dqlCentroCosto')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        //$arCentrosCostos = $paginator->paginate($em->createQuery($session->get('dqlCentroCosto')), $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/PagosAdicionales:lista.html.twig', array(
                     'arPagosAdicionales' => $arPagosAdicionales,
                     'modalidad' => $modalidad,
@@ -565,12 +565,12 @@ class PagosAdicionalesController extends Controller
     
     private function filtrarListaTiempoSuplementirioMasivo($form, Request $request) {
         $session = new Session;        
-        $codigoCentroCosto = '';
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        $codigoDepartamentoEmpresa = '';
+        if($form->get('departamentoEmpresaRel')->getData()) {
+            $codigoDepartamentoEmpresa = $form->get('departamentoEmpresaRel')->getData()->getCodigoDepartamentoEmpresaPk();
         }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
-        $session->set('filtroCodigoDepartamentoEmpresa', $form->get('departamentoEmpresaRel')->getData());
+        $session->set('filtroCodigoDepartamentoEmpresa', $codigoDepartamentoEmpresa);
+        //$session->set('filtroCodigoDepartamentoEmpresa', $form->get('departamentoEmpresaRel')->getData());
     }
     
     

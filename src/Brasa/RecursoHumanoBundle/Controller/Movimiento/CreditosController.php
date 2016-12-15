@@ -10,7 +10,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CreditosController extends Controller
 {
@@ -37,7 +39,7 @@ class CreditosController extends Controller
                     foreach ($arrSeleccionados AS $codigoCredito) {
                         $arCreditos = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
                         $arCreditos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($codigoCredito);
-                        if ($arCreditos->getaprobado() == 1 or $arCreditos->getEstadoPagado() == 1) {
+                        if ($arCreditos->getEstadoPagado() == 1) {
                             $mensaje = "No se puede Eliminar el registro, por que el credito ya esta aprobado o cancelado!";
                         }
                         else {
@@ -201,7 +203,7 @@ class CreditosController extends Controller
             ->add('saldo', TextType::class, array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
             ->add('saldoTotal', TextType::class, array('data' => round($arCredito->getSaldo(),2), 'attr' => array('readonly' => 'readonly')))
             ->add('vrAbono',TextType::class)
-            ->add('tipoPago','hidden', array('data' => 'ABONO'))
+            ->add('tipoPago', HiddenType::class, array('data' => 'ABONO'))
             ->add('save', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
@@ -252,7 +254,7 @@ class CreditosController extends Controller
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('attachment', 'file')
+            ->add('attachment', FileType::class)
             ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
@@ -462,9 +464,8 @@ class CreditosController extends Controller
                             ->setCellValue('J1', 'SALDO')
                             ->setCellValue('K1', 'CUOTAS')
                             ->setCellValue('L1', 'CUOTA ACTUAL')
-                            ->setCellValue('M1', 'PAGADO')
-                            ->setCellValue('N1', 'APROBADO')
-                            ->setCellValue('O1', 'SUSPENDIDO');
+                            ->setCellValue('M1', 'PAGADO')                            
+                            ->setCellValue('N1', 'SUSPENDIDO');
 
                 $i = 2;
                 $query = $em->createQuery($this->strSqlLista);
@@ -483,9 +484,8 @@ class CreditosController extends Controller
                             ->setCellValue('J' . $i, $arCredito->getSaldo())
                             ->setCellValue('K' . $i, $arCredito->getNumeroCuotas())
                             ->setCellValue('L' . $i, $arCredito->getNumeroCuotaActual())
-                            ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arCredito->getEstadoPagado()))
-                            ->setCellValue('N' . $i, $objFunciones->devuelveBoolean($arCredito->getAprobado()))
-                            ->setCellValue('O' . $i, $objFunciones->devuelveBoolean($arCredito->getEstadoSuspendido()));
+                            ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arCredito->getEstadoPagado()))                            
+                            ->setCellValue('N' . $i, $objFunciones->devuelveBoolean($arCredito->getEstadoSuspendido()));
                         if ($arCredito->getCodigoCreditoTipoFk()){
                             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $i, $arCredito->getCreditoTipoRel()->getNombre());
                         }   

@@ -131,17 +131,7 @@ class FormatoDetalleCredito extends \FPDF_FPDF {
         $this->Cell(30, 6, "SALDO TEMPORAL:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(65, 6, number_format($arDetallePago->getSaldo() , 2, '.', ','),1, 0, 'R', 1);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(30, 6, "APROBADO:" , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arDetallePago->getAprobado()== 1)
-        {    
-            $this->Cell(65, 6, "SI" , 1, 0, 'L', 1);
-        }
-        else
-        {
-            $this->Cell(65, 6, "NO" , 1, 0, 'L', 1);
-        }
+        $this->SetFont('Arial','B',8);            
         $this->SetXY(10, 75);
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 6, "TIPO PAGO:" , 1, 0, 'L', 1);
