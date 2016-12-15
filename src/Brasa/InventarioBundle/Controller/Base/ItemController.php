@@ -3,6 +3,8 @@ namespace Brasa\InventarioBundle\Controller\Base;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\InventarioBundle\Form\Type\InvItemType;
 use PHPExcel_Shared_Date;
@@ -72,7 +74,7 @@ class ItemController extends Controller
         if($codigoItem != '' && $codigoItem != '0') {
             $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($codigoItem);
         }
-        $form = $this->createForm(new InvItemType, $arItem);
+        $form = $this->createForm(InvItemType::class, $arItem);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arItem = $form->getData();
@@ -105,11 +107,11 @@ class ItemController extends Controller
 
     private function formularioFiltro() {
         $form = $this->createFormBuilder()
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
