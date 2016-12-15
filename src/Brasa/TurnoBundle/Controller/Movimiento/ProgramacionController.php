@@ -169,11 +169,11 @@ class ProgramacionController extends Controller
                 $codigoFormato = $arConfiguracion->getCodigoFormatoProgramacion();
                 if($codigoFormato <= 1) {
                     $objProgramacion = new \Brasa\TurnoBundle\Formatos\Programacion1();
-                    $objProgramacion->Generar($this, $codigoProgramacion);                    
+                    $objProgramacion->Generar($em, $codigoProgramacion);                    
                 }
                 if($codigoFormato == 2) {
                     $objProgramacion = new \Brasa\TurnoBundle\Formatos\Programacion2();
-                    $objProgramacion->Generar($this, $codigoProgramacion);                    
+                    $objProgramacion->Generar($em, $codigoProgramacion);                    
                 }                
             }
             if($form->get('BtnAnular')->isClicked()) {

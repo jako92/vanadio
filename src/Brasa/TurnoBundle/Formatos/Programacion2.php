@@ -5,9 +5,9 @@ class Programacion2 extends \FPDF_FPDF {
     
     public static $codigoProgramacion;
     
-    public function Generar($miThis, $codigoProgramacion, $strRuta = "") {        
+    public function Generar($em, $codigoProgramacion, $strRuta = "") {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoProgramacion = $codigoProgramacion;
         $pdf = new Programacion2('L');

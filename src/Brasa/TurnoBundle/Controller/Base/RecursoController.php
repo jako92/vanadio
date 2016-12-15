@@ -285,7 +285,7 @@ class RecursoController extends Controller
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombreRecurso')))
             ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCodigoRecurso')))                  
             ->add('TxtNumeroIdentificacion', TextType::class, array('label'  => 'NumeroIdentificacion','data' => $session->get('filtroIdentificacionRecurso')))                                        
-            ->add('estadoRetirado', ChoiceType::class, array('choices'   => array('2' => 'TODOS', '1' => 'RETIRADO', '0' => 'SIN RETIRAR'), 'data' => $session->get('filtroRecursoEstadoRetirado')))                
+            ->add('estadoRetirado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'RETIRADO' => '1', 'SIN RETIRAR' => '0'), 'data' => $session->get('filtroRecursoEstadoRetirado')))                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnActivar', SubmitType::class, array('label'  => 'Activar'))
