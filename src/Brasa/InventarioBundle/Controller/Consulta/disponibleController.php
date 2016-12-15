@@ -4,6 +4,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class disponibleController extends Controller
 {
@@ -42,20 +45,20 @@ class disponibleController extends Controller
     }        
     
     private function lista() {
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();        
         $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvLote')->consultaDisponibleDql(
                 $session->get('filtroCodigoItem'));                    
     }
 
     private function filtrar ($form) {
-        $session = $this->getRequest()->getSession();        
+        $session = new Session; 
         $session->set('filtroCodigoItem', $form->get('TxtCodigoItem')->getData());
     }    
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();      
+        $session = new Session;     
         $strNombreItem = "";
         if($session->get('filtroCodigoItem')) {
             $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($session->get('filtroCodigoItem'));
@@ -67,10 +70,10 @@ class disponibleController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('TxtCodigoItem', 'text', array('label'  => 'Item','data' => $session->get('filtroCodigoItem')))
-            ->add('TxtNombreItem', 'text', array('label'  => 'NombreItem','data' => $strNombreItem))                                                                    
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtCodigoItem', TextType::class, array('label'  => 'Item','data' => $session->get('filtroCodigoItem')))
+            ->add('TxtNombreItem', TextType::class, array('label'  => 'NombreItem','data' => $strNombreItem))                                                                    
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }                 

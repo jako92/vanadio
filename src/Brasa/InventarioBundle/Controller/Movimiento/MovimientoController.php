@@ -6,6 +6,9 @@ use Brasa\InventarioBundle\Form\Type\InvMovimientoType;
 use Brasa\InventarioBundle\Form\Type\InvMovimientoDetalleType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use PHPExcel_Style_Border;
 
@@ -205,7 +208,7 @@ class MovimientoController extends Controller
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar',SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -237,13 +240,13 @@ class MovimientoController extends Controller
 
     private function listaIngreso($codigoTipoDocumento) {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvDocumento')->listaDql($codigoTipoDocumento);
     }
     
     private function lista($codigoDocumento) {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();        
+        $session = new Session; 
         $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvMovimiento')->listaDql(
             $codigoDocumento,
             $session->get('filtroInvCodigoMovimiento'), 
@@ -252,7 +255,7 @@ class MovimientoController extends Controller
     }
 
     private function filtrarLista ($form) {
-        $session = $this->getRequest()->getSession();        
+        $session = new Session;    
         $session->set('filtroInvCodigoMovimiento', $form->get('TxtCodigo')->getData());        
         $session->set('filtroInvNumeroMovimiento', $form->get('TxtNumero')->getData());
     }        
@@ -261,11 +264,11 @@ class MovimientoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $this->getRequest()->getSession();
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Numero','data' => $session->get('filtroInvNumeroMovimiento')))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $session->get('filtroInvCodigoMovimiento')))    
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))             
+            ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroInvNumeroMovimiento')))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroInvCodigoMovimiento')))    
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))             
                 ->getForm();
         return $form;
     }
@@ -285,18 +288,18 @@ class MovimientoController extends Controller
             $arrBotonImprimir['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-            ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)
-            ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-            ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)
-            ->add('BtnEliminarDetalle', 'submit', $arrBotonEliminar)
-            ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
+            ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+            ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+            ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminar)
+            ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
             ->getForm();
         return $form;
     }
 
     private function formularioIngreso() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session;
         $form = $this->createFormBuilder()
             ->getForm();
         return $form;

@@ -5,6 +5,9 @@ namespace Brasa\InventarioBundle\Controller\Buscar;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityRepository;
 
 class ItemController extends Controller
@@ -47,17 +50,15 @@ class ItemController extends Controller
     
     private function formularioLista() {                
         $form = $this->createFormBuilder()                                                
-            ->add('TxtNombreItem', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtCodigoItem', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))                            
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombreItem', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigoItem', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))                            
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }           
 
     private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
+        $session = new Session;
         $this->strNombre = $form->get('TxtNombreItem')->getData();
         $this->strCodigo = $form->get('TxtCodigoItem')->getData();
     }    
