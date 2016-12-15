@@ -5,9 +5,9 @@ class FormatoVisita extends \FPDF_FPDF {
     
     public static $codigoVisita;
     
-    public function Generar($miThis, $codigoVisita) {        
+    public function Generar($em, $codigoVisita) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoVisita = $codigoVisita;
         $pdf = new FormatoVisita();

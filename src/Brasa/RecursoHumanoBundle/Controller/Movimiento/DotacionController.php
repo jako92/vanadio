@@ -84,7 +84,7 @@ class DotacionController extends Controller
         } else {
             $arDotacion->setFechaEntrega(new \DateTime('now'));
         }
-        $form = $this->createForm(new RhuDotacionType, $arDotacion);         
+        $form = $this->createForm(RhuDotacionType::class, $arDotacion);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -174,7 +174,7 @@ class DotacionController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arDotacion->getEstadoAutorizado() == 1) {
                     $objFormatoDotacionDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDotacionDetalle();
-                    $objFormatoDotacionDetalle->Generar($this, $codigoDotacion);
+                    $objFormatoDotacionDetalle->Generar($em, $codigoDotacion);
                 }    
             }
             
@@ -363,6 +363,7 @@ class DotacionController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
+        $codigoCentroCosto ="";
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         } 

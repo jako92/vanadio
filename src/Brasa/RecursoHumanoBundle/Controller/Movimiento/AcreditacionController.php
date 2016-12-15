@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -128,7 +129,7 @@ class AcreditacionController extends Controller
         $form = $this->createFormBuilder()
             ->add('numero', TextType::class, array('required' => true))
             ->add('fecha', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('attachment', 'file')
+            ->add('attachment', FileType::class)
             ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);
@@ -189,7 +190,7 @@ class AcreditacionController extends Controller
         $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('attachment', 'file')
+            ->add('attachment', FileType::class)
             ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
         $form->handleRequest($request);

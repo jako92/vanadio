@@ -102,7 +102,7 @@ class AccidenteTrabajoController extends Controller
         if($codigoAccidenteTrabajo != 0) {
             $arAccidenteTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuAccidenteTrabajo')->find($codigoAccidenteTrabajo);
         } 
-        $form = $this->createForm(new RhuAccidenteTrabajoType, $arAccidenteTrabajo);         
+        $form = $this->createForm(RhuAccidenteTrabajoType::class, $arAccidenteTrabajo);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -211,7 +211,8 @@ class AccidenteTrabajoController extends Controller
     }
 
     private function filtrarLista($form) {
-        $session = new session;                
+        $session = new session;
+        $codigoCentroCosto ="";
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }

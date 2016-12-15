@@ -33,7 +33,7 @@ class RhuAccidenteTrabajoType extends AbstractType
             ->add('fechaAccidente', DateType::class, array('required' => true ,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('tipoAccidenteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuAccidenteTrabajoTipoAccidente',
-                        'property' => 'nombre',))
+                        'choice_label' => 'nombre',))
             ->add('fechaEnviaInvestigacion', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaIncapacidadDesde', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaIncapacidadHasta', DateType::class, array('required' => false,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))

@@ -151,7 +151,7 @@ class VisitaController extends Controller
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arVisita->getEstadoAutorizado() == 1) {
                     $objFormatoDotacionDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoVisita();
-                    $objFormatoDotacionDetalle->Generar($this, $codigoVisita);
+                    $objFormatoDotacionDetalle->Generar($em, $codigoVisita);
                 }    
             }
             
@@ -242,9 +242,11 @@ class VisitaController extends Controller
 
     private function filtrar ($form) {
         $session = new session;
+        $codigoCentroCosto ="";
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
+        $codigoVisitaTipo ="";
         if($form->get('visitaTipoRel')->getData()) {
             $codigoVisitaTipo = $form->get('visitaTipoRel')->getData()->getCodigoVisitaTipoPk();
         }        

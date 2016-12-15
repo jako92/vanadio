@@ -5,9 +5,9 @@ class FormatoDotacionDetalle extends \FPDF_FPDF {
     
     public static $codigoDotacion;
     
-    public function Generar($miThis, $codigoDotacion) {        
+    public function Generar($em, $codigoDotacion) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoDotacion = $codigoDotacion;
         $pdf = new FormatoDotacionDetalle();

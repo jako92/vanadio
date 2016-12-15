@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -55,11 +56,11 @@ class EstudioController extends Controller
                 $this->listar();
                 $this->generarExcel();
             }
-            if($form->get('BtnExcelInforme')->isClicked()) {
-                $this->filtrar($form);
-                $this->listar();
-                $this->generarInformeExcel();
-            }
+            //if($form->get('BtnExcelInforme')->isClicked()) {
+                //$this->filtrar($form);
+                //$this->listar();
+                //$this->generarInformeExcel();
+           // }
         }
 
         $arEstudios = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 40);
@@ -191,7 +192,7 @@ class EstudioController extends Controller
         $session = new session;
         $codigoEmpleadoEstudioTipo = "";
         if($form->get('empleadoEstudioTipoRel')->getData()) {
-            $codigoEmpleadoEstudioTipo = $form->get('empleadoEstudioTipoRel')->getData()->getCodigoEmpleadoEstudioTipoPk();
+            $codigoEmpleadoEstudioTipo = $form->get('empleadoEstudioTipoRel')->getData()->getEmpleadoEstudioTipoPk();
         }        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
