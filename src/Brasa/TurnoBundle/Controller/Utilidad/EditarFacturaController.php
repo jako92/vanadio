@@ -43,7 +43,7 @@ class EditarFacturaController extends Controller
         $em = $this->getDoctrine()->getManager();
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
-        $form = $this->createForm(new TurFacturaEditarType, $arFactura);
+        $form = $this->createForm(TurFacturaEditarType::class, $arFactura);        
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arFactura = $form->getData();                                                     
