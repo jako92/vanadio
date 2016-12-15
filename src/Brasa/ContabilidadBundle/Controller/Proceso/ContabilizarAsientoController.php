@@ -5,6 +5,8 @@ namespace Brasa\ContabilidadBundle\Controller\Proceso;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ContabilizarAsientoController extends Controller
 {
@@ -12,9 +14,8 @@ class ContabilizarAsientoController extends Controller
     /**
      * @Route("/ctb/procesos/contabilizar/asientos", name="brs_ctb_procesos_contabilizar_asientos")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 61)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -62,7 +63,7 @@ class ContabilizarAsientoController extends Controller
     
     private function formularioLista() {
         $form = $this->createFormBuilder()                        
-            ->add('BtnContabilizar', 'submit', array('label'  => 'Contabilizar',))
+            ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();        
         return $form;
     }      
