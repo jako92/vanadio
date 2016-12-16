@@ -9,6 +9,7 @@ use Brasa\SeguridadBundle\Form\Type\UserType;
 use Brasa\SeguridadBundle\Form\Type\SegPermisoDocumentoType;
 use Symfony\Component\HttpFoundation\Request; 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -313,18 +314,18 @@ class SegUsuariosController extends Controller
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-            ->add('ingreso', 'checkbox', array('required'  => false))
-            ->add('nuevo', 'checkbox', array('required'  => false))
-            ->add('editar', 'checkbox', array('required'  => false))
-            ->add('eliminar', 'checkbox', array('required'  => false))
-            ->add('autorizar', 'checkbox', array('required'  => false))
-            ->add('desautorizar', 'checkbox', array('required'  => false))
-            ->add('aprobar', 'checkbox', array('required'  => false))
-            ->add('desaprobar', 'checkbox', array('required'  => false))
-            ->add('anular', 'checkbox', array('required'  => false))            
-            ->add('imprimir', 'checkbox', array('required'  => false))
-            ->add('desanular', 'checkbox', array('required'  => false))            
-            ->add('BtnGuardar', 'submit', array('label' => 'Guardar'))
+            ->add('ingreso', CheckboxType::class, array('required'  => false))
+            ->add('nuevo', CheckboxType::class, array('required'  => false))
+            ->add('editar', CheckboxType::class, array('required'  => false))
+            ->add('eliminar', CheckboxType::class, array('required'  => false))
+            ->add('autorizar', CheckboxType::class, array('required'  => false))
+            ->add('desautorizar', CheckboxType::class, array('required'  => false))
+            ->add('aprobar', CheckboxType::class, array('required'  => false))
+            ->add('desaprobar', CheckboxType::class, array('required'  => false))
+            ->add('anular', CheckboxType::class, array('required'  => false))            
+            ->add('imprimir', CheckboxType::class, array('required'  => false))
+            ->add('desanular', CheckboxType::class, array('required'  => false))            
+            ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
