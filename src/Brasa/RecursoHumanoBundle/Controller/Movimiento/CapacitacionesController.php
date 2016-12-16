@@ -361,7 +361,7 @@ class CapacitacionesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionNota = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionNota();
-        $form = $this->createForm(new RhuCapacitacionNotaType(), $arCapacitacionNota);
+        $form = $this->createForm(RhuCapacitacionNotaType::class, $arCapacitacionNota);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($arCapacitacion->getEstadoAutorizado() == 0){
