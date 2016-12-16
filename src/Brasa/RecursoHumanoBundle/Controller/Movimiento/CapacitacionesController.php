@@ -602,11 +602,22 @@ class CapacitacionesController extends Controller
 
     private function filtrarDetalleNuevoEmpleado($form) {
         $session = new session;
+        $codigoCargo ="";
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();
+        } 
+        $session->set('filtroCodigoCargo', $codigoCargo); 
         
-        $controles = $request->request->get('form');
-        $session->set('filtroCodigoCargo', $controles['cargoRel']);
-        $session->set('filtroCodigoCentroCosto', $controles['centroCostoRel']);
-        $session->set('filtroCodigoPuesto', $controles['puestoRel']);
+        $codigoCentroCosto ="";
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        } 
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $codigoPuesto ="";
+        if($form->get('puestoRel')->getData()) {
+            $codigoCentroCosto = $form->get('puestoRel')->getData()->getCodigoPuestoPk();
+        } 
+        $session->set('filtroCodigoPuesto', $codigoPuesto);        
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroCodigoCliente', $form->get('TxtCodigoCliente')->getData());
