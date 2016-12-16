@@ -8,10 +8,10 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuCreditoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CreditosController extends Controller
@@ -365,8 +365,9 @@ class CreditosController extends Controller
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->listaCreditoDQL(
                     $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
+                    "",
+                    "",
+                    $session->get('filtroRhuCreditoEstadoPagado')
                     );
     }
 
@@ -385,8 +386,7 @@ class CreditosController extends Controller
         $form = $this->createFormBuilder()
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoPagado')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))            
@@ -412,17 +412,8 @@ class CreditosController extends Controller
     
     private function filtrarLista($form) {
         $session = new session;
-        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());                
-        $dateFechaDesde = $form->get('fechaDesde')->getData();
-        $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }
-        
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData()); 
+        $session->set('filtroRhuCreditoEstadoPagado', $form->get('estadoPagado')->getData());
     }
 
     private function generarExcel() {

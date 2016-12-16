@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuCreditoRepository extends EntityRepository {
     
-    public function listaDQL($strIdentificacion = "", $strDesde = "", $strHasta = "") {        
+    public function listaDQL($strIdentificacion = "", $strDesde = "", $strHasta = "", $estadoPagado = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT c, e FROM BrasaRecursoHumanoBundle:RhuCredito c JOIN c.empleadoRel e WHERE c.codigoCreditoPk <> 0 AND c.estadoPagado <> 1";   
         if($strIdentificacion != "" ) {
@@ -25,12 +25,17 @@ class RhuCreditoRepository extends EntityRepository {
             //$strHasta = new \DateTime($strHasta);
             $dql .= " AND c.fechaInicio <='" . $strHasta . "'";
         }
-        
+        if($estadoPagado == 1 ) {
+            $dql .= " AND c.estadoPagado = 1";
+        }
+        if($estadoPagado == "0") {
+            $dql .= " AND c.estadoPagado = 0";
+        }        
         //$dql .= " ORDER BY p.empleadoRel.nombreCorto";
         return $dql;
     }
     
-    public function listaCreditoDQL($strIdentificacion = "", $strDesde = "", $strHasta = "") {        
+    public function listaCreditoDQL($strIdentificacion = "", $strDesde = "", $strHasta = "", $estadoPagado = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT c, e FROM BrasaRecursoHumanoBundle:RhuCredito c JOIN c.empleadoRel e WHERE c.codigoCreditoPk <> 0";
            
@@ -43,8 +48,13 @@ class RhuCreditoRepository extends EntityRepository {
         if($strHasta != "" ) {
             $dql .= " AND c.fechaInicio <='" . $strHasta . "'";
         }
-        
-        //$dql .= " ORDER BY p.empleadoRel.nombreCorto";
+        if($estadoPagado == 1 ) {
+            $dql .= " AND c.estadoPagado = 1";
+        }
+        if($estadoPagado == "0") {
+            $dql .= " AND c.estadoPagado = 0";
+        }         
+        $dql .= " ORDER BY c.codigoCreditoPk DESC";
         return $dql;
     }
     

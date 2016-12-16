@@ -38,7 +38,7 @@ class RhuIncapacidadRepository extends EntityRepository {
             $dql .= " AND i.estadoLegalizado = 1";
         }
         if($estadoLegalizado == "0") {
-            $dql .= " AND a.estadoLegalizado = 0";
+            $dql .= " AND i.estadoLegalizado = 0";
         }        
         $dql .= " ORDER BY i.codigoIncapacidadPk DESC";
         return $dql;
