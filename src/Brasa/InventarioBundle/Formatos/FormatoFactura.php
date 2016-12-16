@@ -132,7 +132,7 @@ class FormatoFactura extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(14);
-        $header = array('CODIGO', 'DETALLE', 'PEDIDO', 'CANTIDAD', 'VALOR');
+        $header = array('CODIGO', 'ITEM', 'CANTIDAD', 'IVA', 'PRECIO', 'SUBTOTAL');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -140,7 +140,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7);
 
         //creamos la cabecera de la tabla.
-        $w = array(15, 125, 10, 15, 30);
+        $w = array(15, 100, 20, 20, 20,20);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -162,10 +162,11 @@ class FormatoFactura extends \FPDF_FPDF {
         foreach ($arMovimientoDetalles as $arMovimientoDetalle) {
             
             $pdf->Cell(15, 4, $arMovimientoDetalle->getCodigoDetalleMovimientoPk(), 1, 0, 'L');
-            $pdf->Cell(125, 4, "", 1, 0, 'L');
-            $pdf->Cell(10, 4, number_format($arMovimientoDetalle->getCantidad(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(15, 4, number_format($arMovimientoDetalle->getCantidad(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(30, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(100, 4,$arMovimientoDetalle->getItemRel()->getNombre(), 1, 0, 'L');
+            $pdf->Cell(20, 4, number_format($arMovimientoDetalle->getCantidad(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arMovimientoDetalle->getVrIva(), 0, '.', ','), 1, 0, 'R');            
+            $pdf->Cell(20, 4, number_format($arMovimientoDetalle->getVrPrecio(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }
