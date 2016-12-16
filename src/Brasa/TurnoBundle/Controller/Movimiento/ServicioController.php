@@ -275,7 +275,7 @@ class ServicioController extends Controller
             $arServicioDetalleCompuesto->setServicioDetalleRel($arServicioDetalle);
             $arServicioDetalleCompuesto->setPeriodoRel($arPeriodo);           
         }
-        $form = $this->createForm(new TurServicioDetalleCompuestoType, $arServicioDetalleCompuesto);
+        $form = $this->createForm(TurServicioDetalleCompuestoType::class, $arServicioDetalleCompuesto);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arServicioDetalleCompuesto = $form->getData();
@@ -373,7 +373,7 @@ class ServicioController extends Controller
             $arServicioDetalle->setFechaDesde(new \DateTime('now'));
             $arServicioDetalle->setFechaHasta(new \DateTime('now'));            
         }
-        $form = $this->createForm(new TurServicioDetalleType, $arServicioDetalle);
+        $form = $this->createForm(TurServicioDetalleType::class, $arServicioDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arServicioDetalle = $form->getData();
