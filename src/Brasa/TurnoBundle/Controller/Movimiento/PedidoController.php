@@ -471,7 +471,7 @@ class PedidoController extends Controller
             $arPedidoDetalleCompuesto->setDomingo(true);
             $arPedidoDetalleCompuesto->setFestivo(true);            
         }
-        $form = $this->createForm(new TurPedidoDetalleCompuestoType, $arPedidoDetalleCompuesto);
+        $form = $this->createForm(TurPedidoDetalleCompuestoType::class, $arPedidoDetalleCompuesto);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arPedidoDetalleCompuesto = $form->getData();           
