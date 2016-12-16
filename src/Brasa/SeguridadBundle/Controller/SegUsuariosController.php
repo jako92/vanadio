@@ -40,7 +40,6 @@ class SegUsuariosController extends Controller
      */ 
     public function nuevoAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
         //El error es que se debe colocar el eslas entes de Brasa solo con eso toma la clase
         $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
         if($codigoUsuario != 0) {
