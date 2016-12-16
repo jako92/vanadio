@@ -52,11 +52,11 @@ class formatoPagoMasivoController extends Controller
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
                 if($codigoFormato <= 1) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                    $objFormatoPago->Generar($this, $em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
                 }
                 if($codigoFormato == 2) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                    $objFormatoPago->Generar($this, $em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
                 }                                 
             }            
         }                    
