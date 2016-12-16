@@ -35,7 +35,7 @@ class RhuCreditoRepository extends EntityRepository {
         return $dql;
     }
     
-    public function listaCreditoDQL($strIdentificacion = "", $strDesde = "", $strHasta = "", $estadoPagado = "") {        
+    public function listaCreditoDQL($strIdentificacion = "", $strDesde = "", $strHasta = "", $estadoPagado = "", $estadoSuspendido = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT c, e FROM BrasaRecursoHumanoBundle:RhuCredito c JOIN c.empleadoRel e WHERE c.codigoCreditoPk <> 0";
            
@@ -54,6 +54,12 @@ class RhuCreditoRepository extends EntityRepository {
         if($estadoPagado == "0") {
             $dql .= " AND c.estadoPagado = 0";
         }         
+        if($estadoSuspendido == 1 ) {
+            $dql .= " AND c.estadoSuspendido = 1";
+        }
+        if($estadoSuspendido == "0") {
+            $dql .= " AND c.estadoSuspendido = 0";
+        } 
         $dql .= " ORDER BY c.codigoCreditoPk DESC";
         return $dql;
     }

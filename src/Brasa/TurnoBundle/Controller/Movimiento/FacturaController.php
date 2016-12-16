@@ -341,7 +341,7 @@ class FacturaController extends Controller
         } else {
             $arFacturaDetalle->setFacturaRel($arFactura);
         }
-        $form = $this->createForm(new TurFacturaDetalleNuevoType, $arFacturaDetalle);
+        $form = $this->createForm(TurFacturaDetalleNuevoType::class, $arFacturaDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arFacturaDetalle = $form->getData();   

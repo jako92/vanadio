@@ -367,7 +367,8 @@ class CreditosController extends Controller
                     $session->get('filtroIdentificacion'),
                     "",
                     "",
-                    $session->get('filtroRhuCreditoEstadoPagado')
+                    $session->get('filtroRhuCreditoEstadoPagado'),
+                    $session->get('filtroRhuCreditoEstadoSuspendido')
                     );
     }
 
@@ -387,6 +388,7 @@ class CreditosController extends Controller
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoPagado')))
+            ->add('estadoSuspendido', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SUSPENDIDOS' => '1', 'SIN SUSPENDER' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoSuspendido')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))            
@@ -414,6 +416,7 @@ class CreditosController extends Controller
         $session = new session;
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData()); 
         $session->set('filtroRhuCreditoEstadoPagado', $form->get('estadoPagado')->getData());
+        $session->set('filtroRhuCreditoEstadoSuspendido', $form->get('estadoSuspendido')->getData());
     }
 
     private function generarExcel() {
