@@ -29,6 +29,11 @@ class InvMovimiento
     private $codigoDocumentoTipoFk;               
     
     /**
+     * @ORM\Column(name="codigo_documento_clase_fk", type="integer", nullable=true)
+     */      
+    private $codigoDocumentoClaseFk;      
+    
+    /**
      * @ORM\Column(name="numero", type="integer", nullable=true)
      */    
     private $numero = 0;
@@ -1074,5 +1079,29 @@ class InvMovimiento
     public function getMovimientosDescuentosFinancierosMovimientoRel()
     {
         return $this->movimientosDescuentosFinancierosMovimientoRel;
+    }
+
+    /**
+     * Set codigoDocumentoClaseFk
+     *
+     * @param integer $codigoDocumentoClaseFk
+     *
+     * @return InvMovimiento
+     */
+    public function setCodigoDocumentoClaseFk($codigoDocumentoClaseFk)
+    {
+        $this->codigoDocumentoClaseFk = $codigoDocumentoClaseFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoDocumentoClaseFk
+     *
+     * @return integer
+     */
+    public function getCodigoDocumentoClaseFk()
+    {
+        return $this->codigoDocumentoClaseFk;
     }
 }

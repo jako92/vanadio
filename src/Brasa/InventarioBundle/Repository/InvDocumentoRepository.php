@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class InvDocumentoRepository extends EntityRepository
 {
-    public function listaDql($codigoTipoDocumento = '', $strCodigo = '', $strNombre = '') {
+    public function listaDql($codigoDocumentoClase = '', $strCodigo = '', $strNombre = '') {
         $dql   = "SELECT d FROM BrasaInventarioBundle:InvDocumento d WHERE d.codigoDocumentoPk <> 0 ";
         if($strNombre != "" ) {
             $dql .= " AND d.nombre LIKE '%" . $strNombre . "%'";
@@ -20,8 +20,8 @@ class InvDocumentoRepository extends EntityRepository
         if($strCodigo != "" ) {
             $dql .= " AND d.codigoDocumentoPk LIKE '%" . $strCodigo . "%'";
         }
-        if($codigoTipoDocumento != '') {
-            $dql .= " AND d.codigoDocumentoTipoFk = " . $codigoTipoDocumento;
+        if($codigoDocumentoClase != '') {
+            $dql .= " AND d.codigoDocumentoClaseFk = " . $codigoDocumentoClase;
         }
         $dql .= " ORDER BY d.codigoDocumentoPk";
         return $dql;

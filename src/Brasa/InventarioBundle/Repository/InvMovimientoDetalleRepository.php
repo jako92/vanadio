@@ -51,7 +51,7 @@ class InvMovimientoDetalleRepository extends EntityRepository
         $em = $this->getEntityManager();
         $intNumeroRegistros = 0;
         $dql   = "SELECT COUNT(md.codigoDetalleMovimientoPk) as numeroRegistros FROM BrasaInventarioBundle:InvMovimientoDetalle md "
-                . "WHERE md.codigoMovimientoFk = " . $codigoMovimiento . " AND md.loteFk is null";
+                . "WHERE md.afectaInventario = 1 AND md.codigoMovimientoFk = " . $codigoMovimiento . " AND (md.loteFk is null OR md.loteFk = '')";
         $query = $em->createQuery($dql);
         $arrMovimientoDetalles = $query->getSingleResult(); 
         if($arrMovimientoDetalles) {
@@ -64,7 +64,7 @@ class InvMovimientoDetalleRepository extends EntityRepository
         $em = $this->getEntityManager();
         $intNumeroRegistros = 0;
         $dql   = "SELECT COUNT(md.codigoDetalleMovimientoPk) as numeroRegistros FROM BrasaInventarioBundle:InvMovimientoDetalle md "
-                . "WHERE md.codigoMovimientoFk = " . $codigoMovimiento . " AND md.codigoBodegaFk is null";
+                . "WHERE md.afectaInventario = 1 AND md.codigoMovimientoFk = " . $codigoMovimiento . " AND md.codigoBodegaFk is null";
         $query = $em->createQuery($dql);
         $arrMovimientoDetalles = $query->getSingleResult(); 
         if($arrMovimientoDetalles) {
@@ -72,7 +72,7 @@ class InvMovimientoDetalleRepository extends EntityRepository
         } 
         if($intNumeroRegistros <= 0) {
             $dql   = "SELECT md.codigoBodegaFk FROM BrasaInventarioBundle:InvMovimientoDetalle md "
-                    . "WHERE md.codigoMovimientoFk = " . $codigoMovimiento;
+                    . "WHERE md.afectaInventario = 1 AND md.codigoMovimientoFk = " . $codigoMovimiento;
             $query = $em->createQuery($dql);
             $arrMovimientoDetalles = $query->getResult();             
             foreach ($arrMovimientoDetalles as $arrMovimientoDetalle) {                

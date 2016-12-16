@@ -128,24 +128,29 @@ class InvMovimientoDetalle
     private $operacionComercial = 0;
 
     /**
-     * @ORM\Column(name="afectar_remision", type="bigint")
+     * @ORM\Column(name="afecta_remision", type="boolean")
      */    
-    private $afectarRemision = 0;    
+    private $afectaRemision = false;    
+    
+    /**
+     * @ORM\Column(name="afecta_inventario", type="boolean")
+     */    
+    private $afectaInventario = false;    
     
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
-    private $estadoAutorizado = 0;
+    private $estadoAutorizado = false;
 
     /**
      * @ORM\Column(name="estado_anulado", type="boolean")
      */    
-    private $estadoAnulado = 0;    
+    private $estadoAnulado = false;    
 
     /**
      * @ORM\Column(name="estado_cerrado", type="boolean")
      */    
-    private $estadoCerrado = 0;    
+    private $estadoCerrado = false;    
     
     /**
      * @ORM\Column(name="codigo_detalle_movimiento_enlace", type="integer", nullable=true)     
@@ -705,27 +710,51 @@ class InvMovimientoDetalle
     }
 
     /**
-     * Set afectarRemision
+     * Set afectaRemision
      *
-     * @param integer $afectarRemision
+     * @param boolean $afectaRemision
      *
      * @return InvMovimientoDetalle
      */
-    public function setAfectarRemision($afectarRemision)
+    public function setAfectaRemision($afectaRemision)
     {
-        $this->afectarRemision = $afectarRemision;
+        $this->afectaRemision = $afectaRemision;
 
         return $this;
     }
 
     /**
-     * Get afectarRemision
+     * Get afectaRemision
      *
-     * @return integer
+     * @return boolean
      */
-    public function getAfectarRemision()
+    public function getAfectaRemision()
     {
-        return $this->afectarRemision;
+        return $this->afectaRemision;
+    }
+
+    /**
+     * Set afectaInventario
+     *
+     * @param boolean $afectaInventario
+     *
+     * @return InvMovimientoDetalle
+     */
+    public function setAfectaInventario($afectaInventario)
+    {
+        $this->afectaInventario = $afectaInventario;
+
+        return $this;
+    }
+
+    /**
+     * Get afectaInventario
+     *
+     * @return boolean
+     */
+    public function getAfectaInventario()
+    {
+        return $this->afectaInventario;
     }
 
     /**

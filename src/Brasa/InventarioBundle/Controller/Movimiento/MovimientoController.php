@@ -18,9 +18,9 @@ class MovimientoController extends Controller
     var $strListaDql = "";
 
     /**
-     * @Route("/inv/movimiento/movimiento/ingreso/{codigoTipoDocumento}", name="brs_inv_movimiento_movimiento_ingreso")
+     * @Route("/inv/movimiento/movimiento/ingreso/{codigoDocumentoClase}", name="brs_inv_movimiento_movimiento_ingreso")
      */
-    public function ingresoAction(Request $request, $codigoTipoDocumento) {
+    public function ingresoAction(Request $request, $codigoDocumentoClase) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioIngreso();
@@ -28,7 +28,7 @@ class MovimientoController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $form->handleRequest($request);
-        $this->listaIngreso($codigoTipoDocumento);
+        $this->listaIngreso($codigoDocumentoClase);
         if ($form->isValid()) {
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarIngreso($form);
@@ -97,7 +97,7 @@ class MovimientoController extends Controller
         } else {
             $arMovimiento->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(new InvMovimientoType, $arMovimiento);
+        $form = $this->createForm(InvMovimientoType::class, $arMovimiento);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arrControles = $request->request->All();
@@ -108,6 +108,7 @@ class MovimientoController extends Controller
                     $arMovimiento->setTerceroRel($arTercero);
                     $arMovimiento->setDocumentoRel($arDocumento);
                     $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
+                    $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
                     $em->persist($arMovimiento);
                     $em->flush();
 
@@ -183,8 +184,10 @@ class MovimientoController extends Controller
                             $em->flush();
                         }                        
                     }
-                    $objMovimiento = new \Brasa\InventarioBundle\Formatos\FormatoMovimiento();
-                    $objMovimiento->Generar($this, $codigoMovimiento);                        
+                    if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
+                        $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura();
+                        $objFormatoFactura->Generar($em, $codigoMovimiento);                        
+                    }                                        
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada");
                 }
@@ -223,6 +226,7 @@ class MovimientoController extends Controller
                         $arMovimientoDetalle->setMovimientoRel($arMovimiento);
                         $arMovimientoDetalle->setItemRel($arItem);                        
                         $arMovimientoDetalle->setFechaVencimiento(new \DateTime('now'));
+                        $arMovimientoDetalle->setAfectaInventario($arItem->getAfectaInventario());
                         $arMovimientoDetalle->setOperacionInventario($arMovimiento->getOperacionInventario());                        
                         $em->persist($arMovimientoDetalle);
                     }
@@ -238,10 +242,10 @@ class MovimientoController extends Controller
             'form' => $form->createView()));
     }
 
-    private function listaIngreso($codigoTipoDocumento) {
+    private function listaIngreso($codigoDocumentoClase) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvDocumento')->listaDql($codigoTipoDocumento);
+        $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvDocumento')->listaDql($codigoDocumentoClase);
     }
     
     private function lista($codigoDocumento) {
@@ -262,7 +266,7 @@ class MovimientoController extends Controller
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session();
         $form = $this->createFormBuilder()
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroInvNumeroMovimiento')))
             ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroInvCodigoMovimiento')))    
@@ -378,12 +382,14 @@ class MovimientoController extends Controller
                 $vence = date_create($vence);
                 $bodega = $arrControles['TxtBodega'][$codigo];
                 $cantidad = $arrControles['TxtCantidad'][$codigo];
-                $costo = $arrControles['TxtCosto'][$codigo];                
+                $costo = $arrControles['TxtCosto'][$codigo];
+                $precio = $arrControles['TxtPrecio'][$codigo];                
                 $arMovimientoDetalle->setLoteFk($lote);                
                 $arMovimientoDetalle->setFechaVencimiento($vence);
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
                 $arMovimientoDetalle->setVrCosto($costo);
+                $arMovimientoDetalle->setVrPrecio($precio);
                 $em->persist($arMovimientoDetalle);
             }
             $em->flush();                

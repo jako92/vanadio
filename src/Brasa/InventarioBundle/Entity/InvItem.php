@@ -86,7 +86,7 @@ class InvItem
     /**
      * @ORM\Column(name="permitir_inventario_negativo", type="boolean")
      */    
-    private $permitirInventarioNegativo = 0; 
+    private $permitirInventarioNegativo = false; 
        
     /**
      * @ORM\Column(name="codigo_unidad_medida_fk", type="string", length=25, nullable=true)
@@ -96,12 +96,17 @@ class InvItem
     /**
      * @ORM\Column(name="servicio", type="boolean")
      */    
-    private $servicio = 0;              
+    private $servicio = false;              
 
     /**
      * @ORM\Column(name="materia_prima", type="boolean")
      */    
-    private $materiaPrima = 0;
+    private $materiaPrima = false;
+    
+    /**
+     * @ORM\Column(name="afecta_inventario", type="boolean")
+     */    
+    private $afectaInventario = true;    
     
     /**
      * @ORM\ManyToOne(targetEntity="InvMarca", inversedBy="itemesMarcaRel")
@@ -114,6 +119,7 @@ class InvItem
      */
     protected $movimientosDetallesItemRel;    
        
+
     /**
      * Constructor
      */
@@ -538,6 +544,30 @@ class InvItem
     public function getMateriaPrima()
     {
         return $this->materiaPrima;
+    }
+
+    /**
+     * Set afectaInventario
+     *
+     * @param boolean $afectaInventario
+     *
+     * @return InvItem
+     */
+    public function setAfectaInventario($afectaInventario)
+    {
+        $this->afectaInventario = $afectaInventario;
+
+        return $this;
+    }
+
+    /**
+     * Get afectaInventario
+     *
+     * @return boolean
+     */
+    public function getAfectaInventario()
+    {
+        return $this->afectaInventario;
     }
 
     /**

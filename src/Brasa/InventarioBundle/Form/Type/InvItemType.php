@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class InvItemType extends AbstractType
@@ -23,7 +24,8 @@ class InvItemType extends AbstractType
                 'required' => true))                 
             ->add('nombre', TextType::class, array('required' => true))            
             ->add('porcentajeIva', NumberType::class, array('required' => false))
-            ->add('vrCostoPredeterminado', NumberType::class, array('required' => false))                                                                        
+            ->add('vrCostoPredeterminado', NumberType::class, array('required' => false))
+            ->add('afectaInventario', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)            
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
