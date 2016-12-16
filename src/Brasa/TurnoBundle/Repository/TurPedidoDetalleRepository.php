@@ -444,7 +444,11 @@ class TurPedidoDetalleRepository extends EntityRepository {
                 $intHorasDiurnasLiquidacion = $intHorasRealesDiurnas;
                 $intHorasNocturnasLiquidacion = $intHorasRealesNocturnas;                 
             }
-            $douHoras = ($intHorasRealesDiurnas + $intHorasRealesNocturnas ) * $arPedidoDetalleCompuesto->getCantidad();                                                            
+            $intHorasRealesDiurnas = $intHorasRealesDiurnas * $arPedidoDetalleCompuesto->getCantidad();
+            $intHorasRealesNocturnas = $intHorasRealesNocturnas * $arPedidoDetalleCompuesto->getCantidad();
+            $intHorasDiurnasLiquidacion = $intHorasDiurnasLiquidacion * $arPedidoDetalleCompuesto->getCantidad();
+            $intHorasNocturnasLiquidacion = $intHorasNocturnasLiquidacion * $arPedidoDetalleCompuesto->getCantidad();             
+            $douHoras = $intHorasRealesDiurnas + $intHorasRealesNocturnas ;                                                            
             $arPedidoDetalleCompuestoActualizar = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleCompuesto();        
             $arPedidoDetalleCompuestoActualizar = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleCompuesto')->find($arPedidoDetalleCompuesto->getCodigoPedidoDetalleCompuestoPk());                         
             $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
@@ -482,10 +486,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
             $arPedidoDetalleCompuestoActualizar->setVrTotalDetalle($totalDetalle);             
             $arPedidoDetalleCompuestoActualizar->setVrPrecioMinimo($floVrMinimoServicio);
             $arPedidoDetalleCompuestoActualizar->setVrPrecio($precio);
-            
-            
-            $intHorasRealesDiurnas = $intHorasRealesDiurnas * $arPedidoDetalle->getCantidad(); 
-            $intHorasRealesNocturnas = $intHorasRealesNocturnas * $arPedidoDetalle->getCantidad(); 
+                        
             $arPedidoDetalleCompuestoActualizar->setHoras($douHoras);
             $arPedidoDetalleCompuestoActualizar->setHorasDiurnas($intHorasRealesDiurnas);
             $arPedidoDetalleCompuestoActualizar->setHorasNocturnas($intHorasRealesNocturnas);
