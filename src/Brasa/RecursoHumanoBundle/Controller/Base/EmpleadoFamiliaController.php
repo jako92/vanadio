@@ -26,7 +26,7 @@ class EmpleadoFamiliaController extends Controller
             $arEmpleadoFamilia->setEntidadSaludRel($arEmpleado->getEntidadSaludRel());
         }            
         
-        $form = $this->createForm(new RhuEmpleadoFamiliaType, $arEmpleadoFamilia);
+        $form = $this->createForm(RhuEmpleadoFamiliaType::class, $arEmpleadoFamilia);
         $form->handleRequest($request);
         if ($form->isValid()) {           
             $arEmpleadoFamilia = $form->getData();            

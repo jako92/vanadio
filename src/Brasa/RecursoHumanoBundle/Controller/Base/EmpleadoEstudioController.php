@@ -33,7 +33,7 @@ class EmpleadoEstudioController extends Controller
             //$arEmpleadoEstudio->setFechaTerminacionAcreditacion(new \DateTime('now'));
         }            
         
-        $form = $this->createForm(new RhuEmpleadoEstudioType, $arEmpleadoEstudio);
+        $form = $this->createForm(RhuEmpleadoEstudioType::class, $arEmpleadoEstudio);
         $form->handleRequest($request);
         if ($form->isValid()) {           
             $arEmpleadoEstudio = $form->getData();            
