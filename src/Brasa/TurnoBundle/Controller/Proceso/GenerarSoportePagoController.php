@@ -347,7 +347,7 @@ class GenerarSoportePagoController extends Controller
             $arSoportePagoPeriodo->setFechaHasta(new \DateTime('now'));  
             $arSoportePagoPeriodo->setDiasPeriodo(15);
         }
-        $form = $this->createForm(new TurSoportePagoPeriodoType, $arSoportePagoPeriodo);
+        $form = $this->createForm(TurSoportePagoPeriodoType::class, $arSoportePagoPeriodo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arSoportePagoPeriodo = $form->getData();
