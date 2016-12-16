@@ -328,10 +328,14 @@ class PagosAdicionalesController extends Controller
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
+        $codigoPagoConcepto = '';
+        if($form->get('pagoConceptoRel')->getData()) {
+            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();
+        }        
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroNumeroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroAplicarDiaLaborado', $form->get('aplicarDiaLaborado')->getData());
-        $session->set('filtroCodigoPagoConcepto', $form->get('pagoConceptoRel')->getData());
+        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
         $session->set('filtroPagoAdicionalEstadoInactivo', $form->get('estadoInactivo')->getData());
     }
 
