@@ -109,7 +109,7 @@ class RhuEmpleadoType extends AbstractType
             ))
             ->add('correo', TextType::class, array('required' => false))
             ->add('cuenta', TextType::class, array('required' => false))
-            ->add('tipoCuenta', ChoiceType::class, array('action' => array('S' => 'AHORRO', 'D' => 'CORRIENTE', 'DP' => 'DAVIPLATA')))
+            ->add('tipoCuenta', ChoiceType::class, array('choices' => array('AHORRO' => 'S', 'CORRIENTE' => 'D', 'DAVIPLATA' => 'DP')))
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
             ->add('auxilioTransporte', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('discapacidad', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                
