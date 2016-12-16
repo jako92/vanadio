@@ -27,6 +27,15 @@ class AppKernel extends Kernel
             new Brasa\InventarioBundle\BrasaInventarioBundle(),
             new Brasa\TesoreriaBundle\BrasaTesoreriaBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            
+            // These are the other bundles the SonataAdminBundle relies on
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            // And finally, the storage and SonataAdminBundle
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),            
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
