@@ -96,7 +96,13 @@ class FormatoCapacitacion extends \FPDF_FPDF {
         $this->SetXY(10, 69);
         $this->SetFont('Arial','B',8);
         $this->Cell(25, 6, "METODOLOGIA:", 0, 0, '', 1);
-        $this->Cell(238, 6, utf8_decode($metodologia), 'B', 0, 'L', 1);
+        $this->Cell(140, 6, utf8_decode($metodologia), 'B', 0, 'L', 1);
+        $this->Cell(12, 6, "ZONA:", 0, 0, '', 1);
+        $zona = "";
+        if ($arCapacitacion->getCodigoZonaFk() != null){
+            $zona = $arCapacitacion->getZonaRel()->getNombre();
+        }
+        $this->Cell(86, 6, utf8_decode($zona), 'B', 0, 'L', 1);
         //linea 4
         $this->SetXY(10, 76);
         $this->Cell(18, 6, "OBJETIVO:", 0, 0, '', 1);

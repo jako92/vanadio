@@ -88,6 +88,11 @@ class RhuCapacitacion
     private $codigoCapacitacionMetodologiaFk;
     
     /**
+     * @ORM\Column(name="codigo_zona_fk", type="integer", nullable=true)
+     */
+    private $codigoZonaFk;
+    
+    /**
      * @ORM\Column(name="objetivo", type="string", length=250, nullable=true)
      */    
     private $objetivo;
@@ -112,7 +117,13 @@ class RhuCapacitacion
      * @ORM\ManyToOne(targetEntity="RhuCapacitacionTipo", inversedBy="capacitacionesCapacitacionTipoRel")
      * @ORM\JoinColumn(name="codigo_capacitacion_tipo_fk", referencedColumnName="codigo_capacitacion_tipo_pk")
      */
-    protected $capacitacionTipoRel;    
+    protected $capacitacionTipoRel; 
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuZona", inversedBy="capacitacionesZonaRel")
+     * @ORM\JoinColumn(name="codigo_zona_fk", referencedColumnName="codigo_zona_pk")
+     */
+    protected $zonaRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuCapacitacionDetalle", mappedBy="capacitacionRel", cascade={"persist", "remove"})
@@ -129,9 +140,7 @@ class RhuCapacitacion
      * @ORM\JoinColumn(name="codigo_capacitacion_metodologia_fk", referencedColumnName="codigo_capacitacion_metodologia_pk")
      */
     protected $capacitacionMetodologiaRel;
-    
-    
-    
+        
     
     
     /**
@@ -490,6 +499,30 @@ class RhuCapacitacion
     }
 
     /**
+     * Set codigoZonaFk
+     *
+     * @param integer $codigoZonaFk
+     *
+     * @return RhuCapacitacion
+     */
+    public function setCodigoZonaFk($codigoZonaFk)
+    {
+        $this->codigoZonaFk = $codigoZonaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoZonaFk
+     *
+     * @return integer
+     */
+    public function getCodigoZonaFk()
+    {
+        return $this->codigoZonaFk;
+    }
+
+    /**
      * Set objetivo
      *
      * @param string $objetivo
@@ -607,6 +640,30 @@ class RhuCapacitacion
     public function getCapacitacionTipoRel()
     {
         return $this->capacitacionTipoRel;
+    }
+
+    /**
+     * Set zonaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuZona $zonaRel
+     *
+     * @return RhuCapacitacion
+     */
+    public function setZonaRel(\Brasa\RecursoHumanoBundle\Entity\RhuZona $zonaRel = null)
+    {
+        $this->zonaRel = $zonaRel;
+
+        return $this;
+    }
+
+    /**
+     * Get zonaRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuZona
+     */
+    public function getZonaRel()
+    {
+        return $this->zonaRel;
     }
 
     /**

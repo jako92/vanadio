@@ -477,30 +477,9 @@ class AfiPeriodoDetallePago
      */    
     private $codigoSucursalFk;
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiPeriodo", inversedBy="periodosDetallesPagosPeriodoRel")
-     * @ORM\JoinColumn(name="codigo_periodo_fk", referencedColumnName="codigo_periodo_pk")
-     */
-    protected $periodoRel;    
+       
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiEmpleado", inversedBy="periodosDetallesPagosEmpleadoRel")
-     * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
-     */
-    protected $empleadoRel;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiContrato", inversedBy="periodosDetallesPagosContratoRel")
-     * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
-     */
-    protected $contratoRel;    
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiSucursal", inversedBy="periodosDetallesPagosSucursalRel")
-     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
-     */
-    protected $sucursalRel;
-
 
 
     /**
@@ -2719,101 +2698,5 @@ class AfiPeriodoDetallePago
     public function getCodigoSucursalFk()
     {
         return $this->codigoSucursalFk;
-    }
-
-    /**
-     * Set periodoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPeriodo $periodoRel
-     *
-     * @return AfiPeriodoDetallePago
-     */
-    public function setPeriodoRel(\Brasa\AfiliacionBundle\Entity\AfiPeriodo $periodoRel = null)
-    {
-        $this->periodoRel = $periodoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get periodoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiPeriodo
-     */
-    public function getPeriodoRel()
-    {
-        return $this->periodoRel;
-    }
-
-    /**
-     * Set empleadoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $empleadoRel
-     *
-     * @return AfiPeriodoDetallePago
-     */
-    public function setEmpleadoRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $empleadoRel = null)
-    {
-        $this->empleadoRel = $empleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get empleadoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiEmpleado
-     */
-    public function getEmpleadoRel()
-    {
-        return $this->empleadoRel;
-    }
-
-    /**
-     * Set contratoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel
-     *
-     * @return AfiPeriodoDetallePago
-     */
-    public function setContratoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel = null)
-    {
-        $this->contratoRel = $contratoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get contratoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiContrato
-     */
-    public function getContratoRel()
-    {
-        return $this->contratoRel;
-    }
-
-    /**
-     * Set sucursalRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiSucursal $sucursalRel
-     *
-     * @return AfiPeriodoDetallePago
-     */
-    public function setSucursalRel(\Brasa\AfiliacionBundle\Entity\AfiSucursal $sucursalRel = null)
-    {
-        $this->sucursalRel = $sucursalRel;
-
-        return $this;
-    }
-
-    /**
-     * Get sucursalRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiSucursal
-     */
-    public function getSucursalRel()
-    {
-        return $this->sucursalRel;
     }
 }

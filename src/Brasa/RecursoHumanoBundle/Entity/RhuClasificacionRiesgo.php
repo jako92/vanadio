@@ -37,10 +37,8 @@ class RhuClasificacionRiesgo
      */
     protected $contratosClasificacionRiesgoRel;     
     
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="clasificacionRiesgoRel")
-     */
-    protected $afiContratosClasificacionRiesgoRel;    
+        
+    
     
     /**
      * Constructor
@@ -48,6 +46,7 @@ class RhuClasificacionRiesgo
     public function __construct()
     {
         $this->empleadosClasificacionRiesgoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratosClasificacionRiesgoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -85,6 +84,30 @@ class RhuClasificacionRiesgo
     }
 
     /**
+     * Set porcentaje
+     *
+     * @param float $porcentaje
+     *
+     * @return RhuClasificacionRiesgo
+     */
+    public function setPorcentaje($porcentaje)
+    {
+        $this->porcentaje = $porcentaje;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentaje
+     *
+     * @return float
+     */
+    public function getPorcentaje()
+    {
+        return $this->porcentaje;
+    }
+
+    /**
      * Add empleadosClasificacionRiesgoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadosClasificacionRiesgoRel
@@ -119,30 +142,6 @@ class RhuClasificacionRiesgo
     }
 
     /**
-     * Set porcentaje
-     *
-     * @param float $porcentaje
-     *
-     * @return RhuClasificacionRiesgo
-     */
-    public function setPorcentaje($porcentaje)
-    {
-        $this->porcentaje = $porcentaje;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentaje
-     *
-     * @return float
-     */
-    public function getPorcentaje()
-    {
-        return $this->porcentaje;
-    }
-
-    /**
      * Add contratosClasificacionRiesgoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClasificacionRiesgoRel
@@ -174,39 +173,5 @@ class RhuClasificacionRiesgo
     public function getContratosClasificacionRiesgoRel()
     {
         return $this->contratosClasificacionRiesgoRel;
-    }
-
-    /**
-     * Add afiContratosClasificacionRiesgoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosClasificacionRiesgoRel
-     *
-     * @return RhuClasificacionRiesgo
-     */
-    public function addAfiContratosClasificacionRiesgoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosClasificacionRiesgoRel)
-    {
-        $this->afiContratosClasificacionRiesgoRel[] = $afiContratosClasificacionRiesgoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosClasificacionRiesgoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosClasificacionRiesgoRel
-     */
-    public function removeAfiContratosClasificacionRiesgoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosClasificacionRiesgoRel)
-    {
-        $this->afiContratosClasificacionRiesgoRel->removeElement($afiContratosClasificacionRiesgoRel);
-    }
-
-    /**
-     * Get afiContratosClasificacionRiesgoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosClasificacionRiesgoRel()
-    {
-        return $this->afiContratosClasificacionRiesgoRel;
     }
 }

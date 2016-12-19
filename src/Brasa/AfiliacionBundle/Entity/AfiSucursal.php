@@ -27,25 +27,7 @@ class AfiSucursal
      */
     private $codigoInterface;                                                                
     
-    /**
-     * @ORM\OneToMany(targetEntity="AfiContrato", mappedBy="sucursalRel")
-     */
-    protected $contratosSucursalRel;
     
-    /**
-     * @ORM\OneToMany(targetEntity="AfiPeriodoDetallePago", mappedBy="sucursalRel")
-     */
-    protected $periodosDetallesPagosSucursalRel;
-
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->contratosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->periodosDetallesPagosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get codigoSucursalPk
@@ -103,73 +85,5 @@ class AfiSucursal
     public function getCodigoInterface()
     {
         return $this->codigoInterface;
-    }
-
-    /**
-     * Add contratosSucursalRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $contratosSucursalRel
-     *
-     * @return AfiSucursal
-     */
-    public function addContratosSucursalRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $contratosSucursalRel)
-    {
-        $this->contratosSucursalRel[] = $contratosSucursalRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove contratosSucursalRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $contratosSucursalRel
-     */
-    public function removeContratosSucursalRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $contratosSucursalRel)
-    {
-        $this->contratosSucursalRel->removeElement($contratosSucursalRel);
-    }
-
-    /**
-     * Get contratosSucursalRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getContratosSucursalRel()
-    {
-        return $this->contratosSucursalRel;
-    }
-
-    /**
-     * Add periodosDetallesPagosSucursalRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPeriodoDetallePago $periodosDetallesPagosSucursalRel
-     *
-     * @return AfiSucursal
-     */
-    public function addPeriodosDetallesPagosSucursalRel(\Brasa\AfiliacionBundle\Entity\AfiPeriodoDetallePago $periodosDetallesPagosSucursalRel)
-    {
-        $this->periodosDetallesPagosSucursalRel[] = $periodosDetallesPagosSucursalRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove periodosDetallesPagosSucursalRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPeriodoDetallePago $periodosDetallesPagosSucursalRel
-     */
-    public function removePeriodosDetallesPagosSucursalRel(\Brasa\AfiliacionBundle\Entity\AfiPeriodoDetallePago $periodosDetallesPagosSucursalRel)
-    {
-        $this->periodosDetallesPagosSucursalRel->removeElement($periodosDetallesPagosSucursalRel);
-    }
-
-    /**
-     * Get periodosDetallesPagosSucursalRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPeriodosDetallesPagosSucursalRel()
-    {
-        return $this->periodosDetallesPagosSucursalRel;
     }
 }

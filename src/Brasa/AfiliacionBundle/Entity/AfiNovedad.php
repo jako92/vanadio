@@ -47,24 +47,7 @@ class AfiNovedad
      */
     private $valor = 0; 
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiNovedadTipo", inversedBy="novedadesNovedadTipoRel")
-     * @ORM\JoinColumn(name="codigo_novedad_tipo_fk", referencedColumnName="codigo_novedad_tipo_pk")
-     */
-    protected $novedadTipoRel;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiEmpleado", inversedBy="novedadesEmpleadoRel")
-     * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
-     */
-    protected $empleadoRel;    
- 
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiContrato", inversedBy="novedadesContratoRel")
-     * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
-     */
-    protected $contratoRel;    
-
 
     /**
      * Get codigoNovedadPk
@@ -74,6 +57,30 @@ class AfiNovedad
     public function getCodigoNovedadPk()
     {
         return $this->codigoNovedadPk;
+    }
+
+    /**
+     * Set codigoNovedadTipoFk
+     *
+     * @param integer $codigoNovedadTipoFk
+     *
+     * @return AfiNovedad
+     */
+    public function setCodigoNovedadTipoFk($codigoNovedadTipoFk)
+    {
+        $this->codigoNovedadTipoFk = $codigoNovedadTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoNovedadTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoNovedadTipoFk()
+    {
+        return $this->codigoNovedadTipoFk;
     }
 
     /**
@@ -149,54 +156,6 @@ class AfiNovedad
     }
 
     /**
-     * Set valor
-     *
-     * @param float $valor
-     *
-     * @return AfiNovedad
-     */
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
-
-        return $this;
-    }
-
-    /**
-     * Get valor
-     *
-     * @return float
-     */
-    public function getValor()
-    {
-        return $this->valor;
-    }
-
-    /**
-     * Set empleadoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $empleadoRel
-     *
-     * @return AfiNovedad
-     */
-    public function setEmpleadoRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $empleadoRel = null)
-    {
-        $this->empleadoRel = $empleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get empleadoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiEmpleado
-     */
-    public function getEmpleadoRel()
-    {
-        return $this->empleadoRel;
-    }
-
-    /**
      * Set codigoContatoFk
      *
      * @param integer $codigoContatoFk
@@ -221,74 +180,26 @@ class AfiNovedad
     }
 
     /**
-     * Set contratoRel
+     * Set valor
      *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel
+     * @param float $valor
      *
      * @return AfiNovedad
      */
-    public function setContratoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel = null)
+    public function setValor($valor)
     {
-        $this->contratoRel = $contratoRel;
+        $this->valor = $valor;
 
         return $this;
     }
 
     /**
-     * Get contratoRel
+     * Get valor
      *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiContrato
+     * @return float
      */
-    public function getContratoRel()
+    public function getValor()
     {
-        return $this->contratoRel;
-    }
-
-    /**
-     * Set codigoNovedadTipoFk
-     *
-     * @param integer $codigoNovedadTipoFk
-     *
-     * @return AfiNovedad
-     */
-    public function setCodigoNovedadTipoFk($codigoNovedadTipoFk)
-    {
-        $this->codigoNovedadTipoFk = $codigoNovedadTipoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoNovedadTipoFk
-     *
-     * @return integer
-     */
-    public function getCodigoNovedadTipoFk()
-    {
-        return $this->codigoNovedadTipoFk;
-    }
-
-    /**
-     * Set novedadTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiNovedadTipo $novedadTipoRel
-     *
-     * @return AfiNovedad
-     */
-    public function setNovedadTipoRel(\Brasa\AfiliacionBundle\Entity\AfiNovedadTipo $novedadTipoRel = null)
-    {
-        $this->novedadTipoRel = $novedadTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get novedadTipoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiNovedadTipo
-     */
-    public function getNovedadTipoRel()
-    {
-        return $this->novedadTipoRel;
+        return $this->valor;
     }
 }

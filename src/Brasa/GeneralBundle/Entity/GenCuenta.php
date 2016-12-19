@@ -68,16 +68,13 @@ class GenCuenta
      * @ORM\OneToMany(targetEntity="Brasa\CarteraBundle\Entity\CarNotaCredito", mappedBy="cuentaRel")
      */
     protected $carNotasCreditosCuentaRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiPagoCurso", mappedBy="cuentaRel")
-     */
-    protected $afiPagosCursosCuentaRel;  
+         
     
     /**
      * @ORM\OneToMany(targetEntity="Brasa\CarteraBundle\Entity\CarAnticipo", mappedBy="cuentaRel")
      */
     protected $carAnticiposCuentaRel;
+    
     
     
     /**
@@ -89,7 +86,6 @@ class GenCuenta
         $this->carRecibosCuentaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carNotasDebitosCuentaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carNotasCreditosCuentaRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiPagosCursosCuentaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carAnticiposCuentaRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -381,40 +377,6 @@ class GenCuenta
     public function getCarNotasCreditosCuentaRel()
     {
         return $this->carNotasCreditosCuentaRel;
-    }
-
-    /**
-     * Add afiPagosCursosCuentaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCurso $afiPagosCursosCuentaRel
-     *
-     * @return GenCuenta
-     */
-    public function addAfiPagosCursosCuentaRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCurso $afiPagosCursosCuentaRel)
-    {
-        $this->afiPagosCursosCuentaRel[] = $afiPagosCursosCuentaRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiPagosCursosCuentaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCurso $afiPagosCursosCuentaRel
-     */
-    public function removeAfiPagosCursosCuentaRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCurso $afiPagosCursosCuentaRel)
-    {
-        $this->afiPagosCursosCuentaRel->removeElement($afiPagosCursosCuentaRel);
-    }
-
-    /**
-     * Get afiPagosCursosCuentaRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiPagosCursosCuentaRel()
-    {
-        return $this->afiPagosCursosCuentaRel;
     }
 
     /**

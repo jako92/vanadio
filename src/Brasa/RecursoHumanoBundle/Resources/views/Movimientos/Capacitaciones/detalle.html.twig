@@ -49,7 +49,7 @@
                     <td class="td-in-well">{{ arCapacitacion.objetivo }}</td>
                     <td class="titulo">CONTENIDO:</td>
                     <td class="td-in-well">{{ arCapacitacion.contenido }}</td>
-                    <td class="titulo">PERSONAS A CAPACITAR</td>
+                    <td class="titulo">PERSONAS A CAPACITAR:</td>
                     <td class="td-in-well" align="rigth">{{ arCapacitacion.numeroPersonasCapacitar }}</td></td>
                 </tr>
                 <tr>
@@ -63,9 +63,9 @@
                 <tr>
                     <td class="titulo"></td>
                     <td class="td-in-well"></td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                    <td class="titulo">ABIERTO</td>
+                    <td class="titulo">ZONA:</td>
+                    <td class="td-in-well">{{ arCapacitacion.zonaRel.nombre | default('') }}</td>
+                    <td class="titulo">ABIERTO:</td>
                     <td class="td-in-well">{% if arCapacitacion.estado == 0%}SI{% else %}NO{% endif%}</td>
                 </tr>
                 

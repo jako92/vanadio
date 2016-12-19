@@ -37,13 +37,10 @@ class AfiServicio
      */
     private $pendiente = 0;    
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiCliente", inversedBy="serviciosClienteRel")
-     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
-     */
-    protected $clienteRel;    
+       
 
 
+    
 
     /**
      * Get codigoServicioPk
@@ -149,29 +146,5 @@ class AfiServicio
     public function getPendiente()
     {
         return $this->pendiente;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCliente $clienteRel
-     *
-     * @return AfiServicio
-     */
-    public function setClienteRel(\Brasa\AfiliacionBundle\Entity\AfiCliente $clienteRel = null)
-    {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiCliente
-     */
-    public function getClienteRel()
-    {
-        return $this->clienteRel;
     }
 }

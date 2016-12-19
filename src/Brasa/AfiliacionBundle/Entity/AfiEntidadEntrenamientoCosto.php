@@ -32,18 +32,8 @@ class AfiEntidadEntrenamientoCosto
      */
     private $costo = 0;        
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiEntidadEntrenamiento", inversedBy="entidadesEntrenamientosCostosEntidadEntrenamientoRel")
-     * @ORM\JoinColumn(name="codigo_entidad_entrenamiento_fk", referencedColumnName="codigo_entidad_entrenamiento_pk")
-     */
-    protected $entidadEntrenamientoRel;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiCursoTipo", inversedBy="entidadesEntrenamientoCostosCursoTipoRel")
-     * @ORM\JoinColumn(name="codigo_curso_tipo_fk", referencedColumnName="codigo_curso_tipo_pk")
-     */
-    protected $cursoTipoRel;     
-
+    
 
     /**
      * Get codigoEntidadEntrenamientoCostoPk
@@ -125,53 +115,5 @@ class AfiEntidadEntrenamientoCosto
     public function getCosto()
     {
         return $this->costo;
-    }
-
-    /**
-     * Set entidadEntrenamientoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamiento $entidadEntrenamientoRel
-     *
-     * @return AfiEntidadEntrenamientoCosto
-     */
-    public function setEntidadEntrenamientoRel(\Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamiento $entidadEntrenamientoRel = null)
-    {
-        $this->entidadEntrenamientoRel = $entidadEntrenamientoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get entidadEntrenamientoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamiento
-     */
-    public function getEntidadEntrenamientoRel()
-    {
-        return $this->entidadEntrenamientoRel;
-    }
-
-    /**
-     * Set cursoTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursoTipoRel
-     *
-     * @return AfiEntidadEntrenamientoCosto
-     */
-    public function setCursoTipoRel(\Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursoTipoRel = null)
-    {
-        $this->cursoTipoRel = $cursoTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get cursoTipoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiCursoTipo
-     */
-    public function getCursoTipoRel()
-    {
-        return $this->cursoTipoRel;
     }
 }

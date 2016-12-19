@@ -97,20 +97,7 @@ class AfiFacturaDetalle
      */
     private $interesMora = 0;
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiFactura", inversedBy="facturasDetallesFacturaRel")
-     * @ORM\JoinColumn(name="codigo_factura_fk", referencedColumnName="codigo_factura_pk")
-     */
-    protected $facturaRel;         
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiPeriodo", inversedBy="facturasDetallesPeriodoRel")
-     * @ORM\JoinColumn(name="codigo_periodo_fk", referencedColumnName="codigo_periodo_pk")
-     */
-    protected $periodoRel;    
-    
-
-    
+   
 
     /**
      * Get codigoFacturaDetallePk
@@ -504,53 +491,5 @@ class AfiFacturaDetalle
     public function getInteresMora()
     {
         return $this->interesMora;
-    }
-
-    /**
-     * Set facturaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel
-     *
-     * @return AfiFacturaDetalle
-     */
-    public function setFacturaRel(\Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel = null)
-    {
-        $this->facturaRel = $facturaRel;
-
-        return $this;
-    }
-
-    /**
-     * Get facturaRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiFactura
-     */
-    public function getFacturaRel()
-    {
-        return $this->facturaRel;
-    }
-
-    /**
-     * Set periodoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPeriodo $periodoRel
-     *
-     * @return AfiFacturaDetalle
-     */
-    public function setPeriodoRel(\Brasa\AfiliacionBundle\Entity\AfiPeriodo $periodoRel = null)
-    {
-        $this->periodoRel = $periodoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get periodoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiPeriodo
-     */
-    public function getPeriodoRel()
-    {
-        return $this->periodoRel;
     }
 }

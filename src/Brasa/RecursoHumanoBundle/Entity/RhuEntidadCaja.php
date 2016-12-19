@@ -57,16 +57,14 @@ class RhuEntidadCaja
      */
     protected $empleadosFamiliasEntidadCajaRel;
     
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="entidadCajaRel")
-     */
-    protected $afiContratosEntidadCajaRel;    
+        
     
     /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadCajaRel")
      */
     protected $ssoAportesEntidadCajaRel;    
 
+    
     /**
      * Constructor
      */
@@ -75,7 +73,7 @@ class RhuEntidadCaja
         $this->empleadosEntidadCajaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosEntidadCajaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosFamiliasEntidadCajaRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosEntidadCajaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ssoAportesEntidadCajaRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -308,40 +306,6 @@ class RhuEntidadCaja
     public function getEmpleadosFamiliasEntidadCajaRel()
     {
         return $this->empleadosFamiliasEntidadCajaRel;
-    }
-
-    /**
-     * Add afiContratosEntidadCajaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadCajaRel
-     *
-     * @return RhuEntidadCaja
-     */
-    public function addAfiContratosEntidadCajaRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadCajaRel)
-    {
-        $this->afiContratosEntidadCajaRel[] = $afiContratosEntidadCajaRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosEntidadCajaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadCajaRel
-     */
-    public function removeAfiContratosEntidadCajaRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadCajaRel)
-    {
-        $this->afiContratosEntidadCajaRel->removeElement($afiContratosEntidadCajaRel);
-    }
-
-    /**
-     * Get afiContratosEntidadCajaRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosEntidadCajaRel()
-    {
-        return $this->afiContratosEntidadCajaRel;
     }
 
     /**

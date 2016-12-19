@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 class RhuCapacitacionRepository extends EntityRepository {
     
     
-    public function listaDql($strTipo = "", $strTema = "", $boolEstado = "", $strDesde = "", $strHasta = "") {        
+    public function listaDql($strTipo = "", $strTema = "", $boolEstado = "", $strDesde = "", $strHasta = "", $strCodigoZona = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCapacitacion c WHERE c.codigoCapacitacionPk <> 0";       
         if($strTipo != "") {
@@ -20,6 +20,9 @@ class RhuCapacitacionRepository extends EntityRepository {
         }
         if($strTema != "" ) {
             $dql .= " AND c.tema LIKE '%" . $strTema . "%'";
+        }
+        if($strCodigoZona != "") {
+            $dql .= " AND c.codigoZonaFk = " . $strCodigoZona;
         }
         if($boolEstado == 1 ) {
             $dql .= " AND c.estado = 1";

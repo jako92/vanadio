@@ -67,31 +67,9 @@ class AfiPagoCurso
      */    
     private $comentarios;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiProveedor", inversedBy="pagosCursosProveedorRel")
-     * @ORM\JoinColumn(name="codigo_proveedor_fk", referencedColumnName="codigo_proveedor_pk")
-     */
-    protected $proveedorRel;    
+       
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCuenta", inversedBy="afiPagosCursosCuentaRel")
-     * @ORM\JoinColumn(name="codigo_cuenta_fk", referencedColumnName="codigo_cuenta_pk")
-     */
-    protected $cuentaRel;     
     
-    /**
-     * @ORM\OneToMany(targetEntity="AfiPagoCursoDetalle", mappedBy="pagoCursoRel")
-     */
-    protected $pagosCursosDetallesPagoCursoRel;     
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pagosCursosDetallesPagoCursoRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get codigoPagoCursoPk
@@ -341,87 +319,5 @@ class AfiPagoCurso
     public function getComentarios()
     {
         return $this->comentarios;
-    }
-
-    /**
-     * Set proveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiProveedor $proveedorRel
-     *
-     * @return AfiPagoCurso
-     */
-    public function setProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiProveedor $proveedorRel = null)
-    {
-        $this->proveedorRel = $proveedorRel;
-
-        return $this;
-    }
-
-    /**
-     * Get proveedorRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiProveedor
-     */
-    public function getProveedorRel()
-    {
-        return $this->proveedorRel;
-    }
-
-    /**
-     * Set cuentaRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenCuenta $cuentaRel
-     *
-     * @return AfiPagoCurso
-     */
-    public function setCuentaRel(\Brasa\GeneralBundle\Entity\GenCuenta $cuentaRel = null)
-    {
-        $this->cuentaRel = $cuentaRel;
-
-        return $this;
-    }
-
-    /**
-     * Get cuentaRel
-     *
-     * @return \Brasa\GeneralBundle\Entity\GenCuenta
-     */
-    public function getCuentaRel()
-    {
-        return $this->cuentaRel;
-    }
-
-    /**
-     * Add pagosCursosDetallesPagoCursoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCursoDetalle $pagosCursosDetallesPagoCursoRel
-     *
-     * @return AfiPagoCurso
-     */
-    public function addPagosCursosDetallesPagoCursoRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCursoDetalle $pagosCursosDetallesPagoCursoRel)
-    {
-        $this->pagosCursosDetallesPagoCursoRel[] = $pagosCursosDetallesPagoCursoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove pagosCursosDetallesPagoCursoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCursoDetalle $pagosCursosDetallesPagoCursoRel
-     */
-    public function removePagosCursosDetallesPagoCursoRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCursoDetalle $pagosCursosDetallesPagoCursoRel)
-    {
-        $this->pagosCursosDetallesPagoCursoRel->removeElement($pagosCursosDetallesPagoCursoRel);
-    }
-
-    /**
-     * Get pagosCursosDetallesPagoCursoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPagosCursosDetallesPagoCursoRel()
-    {
-        return $this->pagosCursosDetallesPagoCursoRel;
     }
 }

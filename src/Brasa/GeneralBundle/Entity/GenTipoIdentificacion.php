@@ -41,11 +41,7 @@ class GenTipoIdentificacion
      * @ORM\OneToMany(targetEntity="Brasa\ContabilidadBundle\Entity\CtbTercero", mappedBy="tipoIdentificacionRel")
      */
     protected $cbtTercerosTipoIdentificacionRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiEmpleado", mappedBy="tipoIdentificacionRel")
-     */
-    protected $afiEmpleadosTipoIdentificacionRel; 
+         
     
     /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuAspirante", mappedBy="tipoIdentificacionRel")
@@ -57,6 +53,8 @@ class GenTipoIdentificacion
      */
     protected $turClientesTipoIdentificacionRel;    
     
+    
+    
     /**
      * Constructor
      */
@@ -65,8 +63,8 @@ class GenTipoIdentificacion
         $this->rhuEmpleadosTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rhuSeleccionesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cbtTercerosTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiEmpleadosTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rhuAspirantesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turClientesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -227,40 +225,6 @@ class GenTipoIdentificacion
     public function getCbtTercerosTipoIdentificacionRel()
     {
         return $this->cbtTercerosTipoIdentificacionRel;
-    }
-
-    /**
-     * Add afiEmpleadosTipoIdentificacionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosTipoIdentificacionRel
-     *
-     * @return GenTipoIdentificacion
-     */
-    public function addAfiEmpleadosTipoIdentificacionRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosTipoIdentificacionRel)
-    {
-        $this->afiEmpleadosTipoIdentificacionRel[] = $afiEmpleadosTipoIdentificacionRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiEmpleadosTipoIdentificacionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosTipoIdentificacionRel
-     */
-    public function removeAfiEmpleadosTipoIdentificacionRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosTipoIdentificacionRel)
-    {
-        $this->afiEmpleadosTipoIdentificacionRel->removeElement($afiEmpleadosTipoIdentificacionRel);
-    }
-
-    /**
-     * Get afiEmpleadosTipoIdentificacionRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiEmpleadosTipoIdentificacionRel()
-    {
-        return $this->afiEmpleadosTipoIdentificacionRel;
     }
 
     /**

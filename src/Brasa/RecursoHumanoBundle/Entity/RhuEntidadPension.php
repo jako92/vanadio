@@ -62,15 +62,13 @@ class RhuEntidadPension
      */
     protected $trasladosPensionesEntidadPensionNuevaRel;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="entidadPensionRel")
-     */
-    protected $afiContratosEntidadPensionRel;    
+        
 
     /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadPensionRel")
      */
     protected $ssoAportesEntidadPensionRel;    
+    
     
     /**
      * Constructor
@@ -81,7 +79,7 @@ class RhuEntidadPension
         $this->contratosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ssoAportesEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -348,40 +346,6 @@ class RhuEntidadPension
     public function getTrasladosPensionesEntidadPensionNuevaRel()
     {
         return $this->trasladosPensionesEntidadPensionNuevaRel;
-    }
-
-    /**
-     * Add afiContratosEntidadPensionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel
-     *
-     * @return RhuEntidadPension
-     */
-    public function addAfiContratosEntidadPensionRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel)
-    {
-        $this->afiContratosEntidadPensionRel[] = $afiContratosEntidadPensionRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosEntidadPensionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel
-     */
-    public function removeAfiContratosEntidadPensionRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel)
-    {
-        $this->afiContratosEntidadPensionRel->removeElement($afiContratosEntidadPensionRel);
-    }
-
-    /**
-     * Get afiContratosEntidadPensionRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosEntidadPensionRel()
-    {
-        return $this->afiContratosEntidadPensionRel;
     }
 
     /**

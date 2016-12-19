@@ -31,11 +31,9 @@ class RhuSsoSubtipoCotizante
      */
     protected $contratosSsoSubtipoCotizanteRel;     
 
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="ssoSubtipoCotizanteRel")
-     */
-    protected $afiContratosSsoSubtipoCotizanteRel;         
+             
 
+    
     
     /**
      * Constructor
@@ -44,7 +42,6 @@ class RhuSsoSubtipoCotizante
     {
         $this->empleadosSsoSubtipoCotizanteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosSsoSubtipoCotizanteRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosSsoSubtipoCotizanteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -161,39 +158,5 @@ class RhuSsoSubtipoCotizante
     public function getContratosSsoSubtipoCotizanteRel()
     {
         return $this->contratosSsoSubtipoCotizanteRel;
-    }
-
-    /**
-     * Add afiContratosSsoSubtipoCotizanteRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosSsoSubtipoCotizanteRel
-     *
-     * @return RhuSsoSubtipoCotizante
-     */
-    public function addAfiContratosSsoSubtipoCotizanteRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosSsoSubtipoCotizanteRel)
-    {
-        $this->afiContratosSsoSubtipoCotizanteRel[] = $afiContratosSsoSubtipoCotizanteRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosSsoSubtipoCotizanteRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosSsoSubtipoCotizanteRel
-     */
-    public function removeAfiContratosSsoSubtipoCotizanteRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosSsoSubtipoCotizanteRel)
-    {
-        $this->afiContratosSsoSubtipoCotizanteRel->removeElement($afiContratosSsoSubtipoCotizanteRel);
-    }
-
-    /**
-     * Get afiContratosSsoSubtipoCotizanteRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosSsoSubtipoCotizanteRel()
-    {
-        return $this->afiContratosSsoSubtipoCotizanteRel;
     }
 }

@@ -61,11 +61,7 @@ class GenAsesor
      * @ORM\OneToMany(targetEntity="Brasa\CarteraBundle\Entity\CarRecibo", mappedBy="asesorRel")
      */
     protected $carRecibosAsesorRel;     
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiCliente", mappedBy="asesorRel")
-     */
-    protected $afiClientesAsesorRel;     
+             
 
     /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCliente", mappedBy="asesorRel")
@@ -78,6 +74,7 @@ class GenAsesor
     protected $carAnticiposAsesorRel;
     
 
+    
     /**
      * Constructor
      */
@@ -86,7 +83,6 @@ class GenAsesor
         $this->carClientesAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carCuentasCobrarAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carRecibosAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiClientesAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turClientesAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carAnticiposAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -345,40 +341,6 @@ class GenAsesor
     public function getCarRecibosAsesorRel()
     {
         return $this->carRecibosAsesorRel;
-    }
-
-    /**
-     * Add afiClientesAsesorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCliente $afiClientesAsesorRel
-     *
-     * @return GenAsesor
-     */
-    public function addAfiClientesAsesorRel(\Brasa\AfiliacionBundle\Entity\AfiCliente $afiClientesAsesorRel)
-    {
-        $this->afiClientesAsesorRel[] = $afiClientesAsesorRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiClientesAsesorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCliente $afiClientesAsesorRel
-     */
-    public function removeAfiClientesAsesorRel(\Brasa\AfiliacionBundle\Entity\AfiCliente $afiClientesAsesorRel)
-    {
-        $this->afiClientesAsesorRel->removeElement($afiClientesAsesorRel);
-    }
-
-    /**
-     * Get afiClientesAsesorRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiClientesAsesorRel()
-    {
-        return $this->afiClientesAsesorRel;
     }
 
     /**

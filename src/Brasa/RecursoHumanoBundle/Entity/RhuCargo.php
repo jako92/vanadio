@@ -91,17 +91,15 @@ class RhuCargo
      * @ORM\OneToMany(targetEntity="RhuDotacionCargo", mappedBy="cargoRel")
      */
     protected $dotacionesCargosCargoRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="cargoRel")
-     */
-    protected $afiContratosCargoRel;    
+            
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCargoSupervigilancia", inversedBy="cargosCargoSupervigilanciaRel")
      * @ORM\JoinColumn(name="codigo_cargo_supervigilancia_fk", referencedColumnName="codigo_cargo_supervigilancia_pk")
      */
     protected $cargoSupervigilanciaRel;
+    
+    
     /**
      * Constructor
      */
@@ -120,7 +118,6 @@ class RhuCargo
         $this->disciplinariosCargoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->examenesCargosCargoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dotacionesCargosCargoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosCargoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -621,40 +618,6 @@ class RhuCargo
     public function getDotacionesCargosCargoRel()
     {
         return $this->dotacionesCargosCargoRel;
-    }
-
-    /**
-     * Add afiContratosCargoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosCargoRel
-     *
-     * @return RhuCargo
-     */
-    public function addAfiContratosCargoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosCargoRel)
-    {
-        $this->afiContratosCargoRel[] = $afiContratosCargoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosCargoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosCargoRel
-     */
-    public function removeAfiContratosCargoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosCargoRel)
-    {
-        $this->afiContratosCargoRel->removeElement($afiContratosCargoRel);
-    }
-
-    /**
-     * Get afiContratosCargoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosCargoRel()
-    {
-        return $this->afiContratosCargoRel;
     }
 
     /**

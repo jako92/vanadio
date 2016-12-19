@@ -41,13 +41,25 @@ class RhuZona
     /**
      * @ORM\OneToMany(targetEntity="RhuAspirante", mappedBy="zonaRel")
      */
-    protected $aspirantesZonaRel;     
+    protected $aspirantesZonaRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCapacitacion", mappedBy="zonaRel")
+     */
+    protected $capacitacionesZonaRel;
+    
+    
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->empleadosZonaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seleccionesRequisitosZonaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seleccionesZonaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->aspirantesZonaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->capacitacionesZonaRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -218,5 +230,39 @@ class RhuZona
     public function getAspirantesZonaRel()
     {
         return $this->aspirantesZonaRel;
+    }
+
+    /**
+     * Add capacitacionesZonaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion $capacitacionesZonaRel
+     *
+     * @return RhuZona
+     */
+    public function addCapacitacionesZonaRel(\Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion $capacitacionesZonaRel)
+    {
+        $this->capacitacionesZonaRel[] = $capacitacionesZonaRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove capacitacionesZonaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion $capacitacionesZonaRel
+     */
+    public function removeCapacitacionesZonaRel(\Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion $capacitacionesZonaRel)
+    {
+        $this->capacitacionesZonaRel->removeElement($capacitacionesZonaRel);
+    }
+
+    /**
+     * Get capacitacionesZonaRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCapacitacionesZonaRel()
+    {
+        return $this->capacitacionesZonaRel;
     }
 }

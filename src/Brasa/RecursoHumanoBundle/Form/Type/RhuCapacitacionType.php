@@ -27,6 +27,10 @@ class RhuCapacitacionType extends AbstractType
             ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                         'choice_label' => 'nombre',
+            ))
+            ->add('zonaRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuZona',
+                        'choice_label' => 'nombre',
             ))    
             ->add('fechaCapacitacion', DateTimeType::class, array('format' => 'yyyyMMdd'))
             ->add('tema', TextType::class, array('required' => true))

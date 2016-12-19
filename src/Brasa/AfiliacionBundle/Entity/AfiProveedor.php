@@ -77,21 +77,8 @@ class AfiProveedor
      */    
     private $comentarios;                                  
 
-    /**
-     * @ORM\OneToMany(targetEntity="AfiPagoCurso", mappedBy="proveedorRel")
-     */
-    protected $pagosCursosProveedorRel;    
+    
 
-    /**
-     * @ORM\OneToMany(targetEntity="AfiCursoDetalle", mappedBy="proveedorRel")
-     */
-    protected $cursosDetallesProveedorRel;     
-    
-    /**
-     * @ORM\OneToMany(targetEntity="AfiCursoTipo", mappedBy="proveedorRel")
-     */
-    protected $cursosTiposProveedorRel;    
-    
     /**
      * Get codigoProveedorPk
      *
@@ -388,114 +375,5 @@ class AfiProveedor
     public function getComentarios()
     {
         return $this->comentarios;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pagosCursosProveedorRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add pagosCursosProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCurso $pagosCursosProveedorRel
-     *
-     * @return AfiProveedor
-     */
-    public function addPagosCursosProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCurso $pagosCursosProveedorRel)
-    {
-        $this->pagosCursosProveedorRel[] = $pagosCursosProveedorRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove pagosCursosProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiPagoCurso $pagosCursosProveedorRel
-     */
-    public function removePagosCursosProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiPagoCurso $pagosCursosProveedorRel)
-    {
-        $this->pagosCursosProveedorRel->removeElement($pagosCursosProveedorRel);
-    }
-
-    /**
-     * Get pagosCursosProveedorRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPagosCursosProveedorRel()
-    {
-        return $this->pagosCursosProveedorRel;
-    }
-
-    /**
-     * Add cursosDetallesProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesProveedorRel
-     *
-     * @return AfiProveedor
-     */
-    public function addCursosDetallesProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesProveedorRel)
-    {
-        $this->cursosDetallesProveedorRel[] = $cursosDetallesProveedorRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove cursosDetallesProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesProveedorRel
-     */
-    public function removeCursosDetallesProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesProveedorRel)
-    {
-        $this->cursosDetallesProveedorRel->removeElement($cursosDetallesProveedorRel);
-    }
-
-    /**
-     * Get cursosDetallesProveedorRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCursosDetallesProveedorRel()
-    {
-        return $this->cursosDetallesProveedorRel;
-    }
-
-    /**
-     * Add cursosTiposProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursosTiposProveedorRel
-     *
-     * @return AfiProveedor
-     */
-    public function addCursosTiposProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursosTiposProveedorRel)
-    {
-        $this->cursosTiposProveedorRel[] = $cursosTiposProveedorRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove cursosTiposProveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursosTiposProveedorRel
-     */
-    public function removeCursosTiposProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiCursoTipo $cursosTiposProveedorRel)
-    {
-        $this->cursosTiposProveedorRel->removeElement($cursosTiposProveedorRel);
-    }
-
-    /**
-     * Get cursosTiposProveedorRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCursosTiposProveedorRel()
-    {
-        return $this->cursosTiposProveedorRel;
     }
 }

@@ -77,15 +77,13 @@ class RhuEntidadSalud
      */
     protected $trasladosSaludEntidadSaludNuevaRel;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="entidadSaludRel")
-     */
-    protected $afiContratosEntidadSaludRel;    
+        
 
     /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadSaludRel")
      */
     protected $ssoAportesEntidadSaludRel;    
+    
     
     /**
      * Constructor
@@ -99,7 +97,7 @@ class RhuEntidadSalud
         $this->incapacidadesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ssoAportesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -468,40 +466,6 @@ class RhuEntidadSalud
     public function getTrasladosSaludEntidadSaludNuevaRel()
     {
         return $this->trasladosSaludEntidadSaludNuevaRel;
-    }
-
-    /**
-     * Add afiContratosEntidadSaludRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadSaludRel
-     *
-     * @return RhuEntidadSalud
-     */
-    public function addAfiContratosEntidadSaludRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadSaludRel)
-    {
-        $this->afiContratosEntidadSaludRel[] = $afiContratosEntidadSaludRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosEntidadSaludRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadSaludRel
-     */
-    public function removeAfiContratosEntidadSaludRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadSaludRel)
-    {
-        $this->afiContratosEntidadSaludRel->removeElement($afiContratosEntidadSaludRel);
-    }
-
-    /**
-     * Get afiContratosEntidadSaludRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosEntidadSaludRel()
-    {
-        return $this->afiContratosEntidadSaludRel;
     }
 
     /**

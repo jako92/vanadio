@@ -62,11 +62,9 @@ class RhuEntidadCesantia
      */
     protected $trasladosPensionesEntidadPensionNuevaRel;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiContrato", mappedBy="entidadPensionRel")
-     */
-    protected $afiContratosEntidadPensionRel;    
+        
 
+    
     
     /**
      * Constructor
@@ -77,7 +75,6 @@ class RhuEntidadCesantia
         $this->contratosEntidadCesantiaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiContratosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -344,39 +341,5 @@ class RhuEntidadCesantia
     public function getTrasladosPensionesEntidadPensionNuevaRel()
     {
         return $this->trasladosPensionesEntidadPensionNuevaRel;
-    }
-
-    /**
-     * Add afiContratosEntidadPensionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel
-     *
-     * @return RhuEntidadCesantia
-     */
-    public function addAfiContratosEntidadPensionRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel)
-    {
-        $this->afiContratosEntidadPensionRel[] = $afiContratosEntidadPensionRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiContratosEntidadPensionRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel
-     */
-    public function removeAfiContratosEntidadPensionRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $afiContratosEntidadPensionRel)
-    {
-        $this->afiContratosEntidadPensionRel->removeElement($afiContratosEntidadPensionRel);
-    }
-
-    /**
-     * Get afiContratosEntidadPensionRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiContratosEntidadPensionRel()
-    {
-        return $this->afiContratosEntidadPensionRel;
     }
 }

@@ -77,25 +77,8 @@ class AfiEntidadEntrenamiento
      */    
     private $comentarios;                                  
 
-    /**
-     * @ORM\OneToMany(targetEntity="AfiCurso", mappedBy="entidadEntrenamientoRel")
-     */
-    protected $cursosEntidadEntrenamientoRel;     
-
-    /**
-     * @ORM\OneToMany(targetEntity="AfiEntidadEntrenamientoCosto", mappedBy="entidadEntrenamientoRel")
-     */
-    protected $entidadesEntrenamientosCostosEntidadEntrenamientoRel;
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->cursosEntidadEntrenamientoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->entidadesEntrenamientosCostosEntidadEntrenamientoRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    
+    
 
     /**
      * Get codigoEntidadEntrenamientoPk
@@ -393,73 +376,5 @@ class AfiEntidadEntrenamiento
     public function getComentarios()
     {
         return $this->comentarios;
-    }
-
-    /**
-     * Add cursosEntidadEntrenamientoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCurso $cursosEntidadEntrenamientoRel
-     *
-     * @return AfiEntidadEntrenamiento
-     */
-    public function addCursosEntidadEntrenamientoRel(\Brasa\AfiliacionBundle\Entity\AfiCurso $cursosEntidadEntrenamientoRel)
-    {
-        $this->cursosEntidadEntrenamientoRel[] = $cursosEntidadEntrenamientoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove cursosEntidadEntrenamientoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCurso $cursosEntidadEntrenamientoRel
-     */
-    public function removeCursosEntidadEntrenamientoRel(\Brasa\AfiliacionBundle\Entity\AfiCurso $cursosEntidadEntrenamientoRel)
-    {
-        $this->cursosEntidadEntrenamientoRel->removeElement($cursosEntidadEntrenamientoRel);
-    }
-
-    /**
-     * Get cursosEntidadEntrenamientoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCursosEntidadEntrenamientoRel()
-    {
-        return $this->cursosEntidadEntrenamientoRel;
-    }
-
-    /**
-     * Add entidadesEntrenamientosCostosEntidadEntrenamientoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientosCostosEntidadEntrenamientoRel
-     *
-     * @return AfiEntidadEntrenamiento
-     */
-    public function addEntidadesEntrenamientosCostosEntidadEntrenamientoRel(\Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientosCostosEntidadEntrenamientoRel)
-    {
-        $this->entidadesEntrenamientosCostosEntidadEntrenamientoRel[] = $entidadesEntrenamientosCostosEntidadEntrenamientoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove entidadesEntrenamientosCostosEntidadEntrenamientoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientosCostosEntidadEntrenamientoRel
-     */
-    public function removeEntidadesEntrenamientosCostosEntidadEntrenamientoRel(\Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientosCostosEntidadEntrenamientoRel)
-    {
-        $this->entidadesEntrenamientosCostosEntidadEntrenamientoRel->removeElement($entidadesEntrenamientosCostosEntidadEntrenamientoRel);
-    }
-
-    /**
-     * Get entidadesEntrenamientosCostosEntidadEntrenamientoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEntidadesEntrenamientosCostosEntidadEntrenamientoRel()
-    {
-        return $this->entidadesEntrenamientosCostosEntidadEntrenamientoRel;
     }
 }

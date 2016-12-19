@@ -37,21 +37,6 @@ class AfiFacturaDetalleAfiliacion
      */
     private $total = 0;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiFactura", inversedBy="facturasDetallesAfiliacionesFacturaRel")
-     * @ORM\JoinColumn(name="codigo_factura_fk", referencedColumnName="codigo_factura_pk")
-     */
-    protected $facturaRel;    
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiContrato", inversedBy="facturasDetallesAfiliacionesContratosRel")
-     * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
-     */
-    protected $contratoRel; 
-    
-
-    
-
     
 
     /**
@@ -158,53 +143,5 @@ class AfiFacturaDetalleAfiliacion
     public function getTotal()
     {
         return $this->total;
-    }
-
-    /**
-     * Set facturaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel
-     *
-     * @return AfiFacturaDetalleAfiliacion
-     */
-    public function setFacturaRel(\Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel = null)
-    {
-        $this->facturaRel = $facturaRel;
-
-        return $this;
-    }
-
-    /**
-     * Get facturaRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiFactura
-     */
-    public function getFacturaRel()
-    {
-        return $this->facturaRel;
-    }
-
-    /**
-     * Set contratoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel
-     *
-     * @return AfiFacturaDetalleAfiliacion
-     */
-    public function setContratoRel(\Brasa\AfiliacionBundle\Entity\AfiContrato $contratoRel = null)
-    {
-        $this->contratoRel = $contratoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get contratoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiContrato
-     */
-    public function getContratoRel()
-    {
-        return $this->contratoRel;
     }
 }

@@ -32,30 +32,7 @@ class AfiCursoTipo
      */    
     private $codigoProveedorFk;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiProveedor", inversedBy="cursosTiposProveedorRel")
-     * @ORM\JoinColumn(name="codigo_proveedor_fk", referencedColumnName="codigo_proveedor_pk")
-     */
-    protected $proveedorRel;     
     
-    /**
-     * @ORM\OneToMany(targetEntity="AfiCursoDetalle", mappedBy="cursoTipoRel")
-     */
-    protected $cursosDetallesCursoTipoRel; 
-    
-    /**
-     * @ORM\OneToMany(targetEntity="AfiEntidadEntrenamientoCosto", mappedBy="cursoTipoRel")
-     */
-    protected $entidadesEntrenamientoCostosCursoTipoRel;     
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->cursosDetallesCursoTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->entidadesEntrenamientoCostosCursoTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get codigoCursoTipoPk
@@ -116,74 +93,6 @@ class AfiCursoTipo
     }
 
     /**
-     * Add cursosDetallesCursoTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesCursoTipoRel
-     *
-     * @return AfiCursoTipo
-     */
-    public function addCursosDetallesCursoTipoRel(\Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesCursoTipoRel)
-    {
-        $this->cursosDetallesCursoTipoRel[] = $cursosDetallesCursoTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove cursosDetallesCursoTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesCursoTipoRel
-     */
-    public function removeCursosDetallesCursoTipoRel(\Brasa\AfiliacionBundle\Entity\AfiCursoDetalle $cursosDetallesCursoTipoRel)
-    {
-        $this->cursosDetallesCursoTipoRel->removeElement($cursosDetallesCursoTipoRel);
-    }
-
-    /**
-     * Get cursosDetallesCursoTipoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCursosDetallesCursoTipoRel()
-    {
-        return $this->cursosDetallesCursoTipoRel;
-    }
-
-    /**
-     * Add entidadesEntrenamientoCostosCursoTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientoCostosCursoTipoRel
-     *
-     * @return AfiCursoTipo
-     */
-    public function addEntidadesEntrenamientoCostosCursoTipoRel(\Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientoCostosCursoTipoRel)
-    {
-        $this->entidadesEntrenamientoCostosCursoTipoRel[] = $entidadesEntrenamientoCostosCursoTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove entidadesEntrenamientoCostosCursoTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientoCostosCursoTipoRel
-     */
-    public function removeEntidadesEntrenamientoCostosCursoTipoRel(\Brasa\AfiliacionBundle\Entity\AfiEntidadEntrenamientoCosto $entidadesEntrenamientoCostosCursoTipoRel)
-    {
-        $this->entidadesEntrenamientoCostosCursoTipoRel->removeElement($entidadesEntrenamientoCostosCursoTipoRel);
-    }
-
-    /**
-     * Get entidadesEntrenamientoCostosCursoTipoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEntidadesEntrenamientoCostosCursoTipoRel()
-    {
-        return $this->entidadesEntrenamientoCostosCursoTipoRel;
-    }
-
-    /**
      * Set codigoProveedorFk
      *
      * @param integer $codigoProveedorFk
@@ -205,29 +114,5 @@ class AfiCursoTipo
     public function getCodigoProveedorFk()
     {
         return $this->codigoProveedorFk;
-    }
-
-    /**
-     * Set proveedorRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiProveedor $proveedorRel
-     *
-     * @return AfiCursoTipo
-     */
-    public function setProveedorRel(\Brasa\AfiliacionBundle\Entity\AfiProveedor $proveedorRel = null)
-    {
-        $this->proveedorRel = $proveedorRel;
-
-        return $this;
-    }
-
-    /**
-     * Get proveedorRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiProveedor
-     */
-    public function getProveedorRel()
-    {
-        return $this->proveedorRel;
     }
 }

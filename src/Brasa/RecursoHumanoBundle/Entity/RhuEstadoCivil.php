@@ -36,18 +36,14 @@ class RhuEstadoCivil
      * @ORM\OneToMany(targetEntity="RhuSeleccionRequisito", mappedBy="estadoCivilRel")
      */
     protected $seleccionesRequisitosEstadoCivilRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Brasa\AfiliacionBundle\Entity\AfiEmpleado", mappedBy="estadoCivilRel")
-     */
-    protected $afiEmpleadosEstadoCivilRel; 
+         
 
     /**
      * @ORM\OneToMany(targetEntity="RhuAspirante", mappedBy="estadoCivilRel")
      */
     protected $aspirantesEstadoCivilRel;
     
-    
+        
     
     /**
      * Constructor
@@ -57,7 +53,6 @@ class RhuEstadoCivil
         $this->empleadosEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seleccionesEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seleccionesRequisitosEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->afiEmpleadosEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aspirantesEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -195,40 +190,6 @@ class RhuEstadoCivil
     public function getSeleccionesRequisitosEstadoCivilRel()
     {
         return $this->seleccionesRequisitosEstadoCivilRel;
-    }
-
-    /**
-     * Add afiEmpleadosEstadoCivilRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosEstadoCivilRel
-     *
-     * @return RhuEstadoCivil
-     */
-    public function addAfiEmpleadosEstadoCivilRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosEstadoCivilRel)
-    {
-        $this->afiEmpleadosEstadoCivilRel[] = $afiEmpleadosEstadoCivilRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove afiEmpleadosEstadoCivilRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosEstadoCivilRel
-     */
-    public function removeAfiEmpleadosEstadoCivilRel(\Brasa\AfiliacionBundle\Entity\AfiEmpleado $afiEmpleadosEstadoCivilRel)
-    {
-        $this->afiEmpleadosEstadoCivilRel->removeElement($afiEmpleadosEstadoCivilRel);
-    }
-
-    /**
-     * Get afiEmpleadosEstadoCivilRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAfiEmpleadosEstadoCivilRel()
-    {
-        return $this->afiEmpleadosEstadoCivilRel;
     }
 
     /**

@@ -37,17 +37,6 @@ class AfiFacturaDetalleCurso
      */
     private $total = 0;     
     
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiFactura", inversedBy="facturasDetallesCursosFacturaRel")
-     * @ORM\JoinColumn(name="codigo_factura_fk", referencedColumnName="codigo_factura_pk")
-     */
-    protected $facturaRel;    
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AfiCurso", inversedBy="facturasDetallesCursosCursoRel")
-     * @ORM\JoinColumn(name="codigo_curso_fk", referencedColumnName="codigo_curso_pk")
-     */
-    protected $cursoRel; 
     
 
     /**
@@ -154,53 +143,5 @@ class AfiFacturaDetalleCurso
     public function getTotal()
     {
         return $this->total;
-    }
-
-    /**
-     * Set facturaRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel
-     *
-     * @return AfiFacturaDetalleCurso
-     */
-    public function setFacturaRel(\Brasa\AfiliacionBundle\Entity\AfiFactura $facturaRel = null)
-    {
-        $this->facturaRel = $facturaRel;
-
-        return $this;
-    }
-
-    /**
-     * Get facturaRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiFactura
-     */
-    public function getFacturaRel()
-    {
-        return $this->facturaRel;
-    }
-
-    /**
-     * Set cursoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiCurso $cursoRel
-     *
-     * @return AfiFacturaDetalleCurso
-     */
-    public function setCursoRel(\Brasa\AfiliacionBundle\Entity\AfiCurso $cursoRel = null)
-    {
-        $this->cursoRel = $cursoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get cursoRel
-     *
-     * @return \Brasa\AfiliacionBundle\Entity\AfiCurso
-     */
-    public function getCursoRel()
-    {
-        return $this->cursoRel;
     }
 }

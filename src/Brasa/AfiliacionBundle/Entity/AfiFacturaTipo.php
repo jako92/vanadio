@@ -22,19 +22,7 @@ class AfiFacturaTipo
      */
     private $nombre;                             
     
-    /**
-     * @ORM\OneToMany(targetEntity="AfiFactura", mappedBy="facturaTipoRel")
-     */
-    protected $facturasFacturaTipoRel; 
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->facturasFacturaTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    
 
     /**
      * Get codigoFacturaTipoPk
@@ -68,39 +56,5 @@ class AfiFacturaTipo
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Add facturasFacturaTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiFactura $facturasFacturaTipoRel
-     *
-     * @return AfiFacturaTipo
-     */
-    public function addFacturasFacturaTipoRel(\Brasa\AfiliacionBundle\Entity\AfiFactura $facturasFacturaTipoRel)
-    {
-        $this->facturasFacturaTipoRel[] = $facturasFacturaTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasFacturaTipoRel
-     *
-     * @param \Brasa\AfiliacionBundle\Entity\AfiFactura $facturasFacturaTipoRel
-     */
-    public function removeFacturasFacturaTipoRel(\Brasa\AfiliacionBundle\Entity\AfiFactura $facturasFacturaTipoRel)
-    {
-        $this->facturasFacturaTipoRel->removeElement($facturasFacturaTipoRel);
-    }
-
-    /**
-     * Get facturasFacturaTipoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasFacturaTipoRel()
-    {
-        return $this->facturasFacturaTipoRel;
     }
 }

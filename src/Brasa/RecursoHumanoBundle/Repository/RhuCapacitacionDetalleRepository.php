@@ -39,4 +39,34 @@ class RhuCapacitacionDetalleRepository extends EntityRepository {
         //$dql .= " ORDER BY p.empleadoRel.nombreCorto";
         return $dql;
     }     
+    
+    public function listaDetalleDql($strTipo = "", $strTema = "", $boolEstado = "", $strDesde = "", $strHasta = "", $strCodigoZona = "") {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT cd, c FROM BrasaRecursoHumanoBundle:RhuCapacitacionDetalle cd JOIN cd.capacitacionRel c WHERE c.codigoCapacitacionPk <> 0";        
+        if($strTipo != "") {
+            $dql .= " AND c.codigoCapacitacionTipoFk = " . $strTipo;
+        }
+        if($strTema != "" ) {
+            $dql .= " AND c.tema LIKE '%" . $strTema . "%'";
+        }
+        if($strCodigoZona != "") {
+            $dql .= " AND c.codigoZonaFk = " . $strCodigoZona;
+        }
+        if($boolEstado == 1 ) {
+            $dql .= " AND c.estado = 1";
+        }
+        if($boolEstado == "0") {
+            $dql .= " AND c.estado = 0";
+        }
+        if($strDesde != "" || $strDesde != 0){
+            $dql .= " AND c.fechaCapacitacion >='" . $strDesde . "'";
+        }
+        if($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND c.fechaCapacitacion <='" .  $strHasta. "'";
+        }
+        $dql .= " ORDER BY c.fechaCapacitacion DESC";
+        return $dql;
+    }    
+    
+    
 }

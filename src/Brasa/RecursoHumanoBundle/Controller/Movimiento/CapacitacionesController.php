@@ -25,7 +25,7 @@ class CapacitacionesController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
+
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 21, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -44,6 +44,11 @@ class CapacitacionesController extends Controller
                 $this->filtrar($form);
                 $this->listar();
                 $this->generarExcel();
+            }
+            if($form->get('BtnExcelDetalle')->isClicked()) {
+                $this->filtrar($form);
+                $this->listar();
+                $this->generarExcelDetalle();
             }
             if($form->get('BtnEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -79,7 +84,7 @@ class CapacitacionesController extends Controller
     public function detalleAction(Request $request, $codigoCapacitacion) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        
+
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCapacitacion = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
@@ -261,11 +266,11 @@ class CapacitacionesController extends Controller
         }
         $arCapacitacionesDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
         $arCapacitacionesDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionDetalle')->findBy(array('codigoCapacitacionFk' => $codigoCapacitacion));
-        $arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        $arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);
         //$arCapacitacionesDetalles = $paginator->paginate($arCapacitacionesDetalles, $this->get('request')->query->get('page', 1),50);
         $arCapacitacionesNotas = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionNota();
         $arCapacitacionesNotas = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionNota')->findBy(array('codigoCapacitacionFk' => $codigoCapacitacion));
-        $arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        $arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);
         //$arCapacitacionesNotas = $paginator->paginate($arCapacitacionesNotas, $this->get('request')->query->get('page', 1),50);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Capacitaciones:detalle.html.twig', array(
                         'arCapacitacionesDetalles' => $arCapacitacionesDetalles,
@@ -279,7 +284,7 @@ class CapacitacionesController extends Controller
      * @Route("/rhu/capacitacion/detalle/nuevo/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoCapacitacion) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
@@ -305,7 +310,7 @@ class CapacitacionesController extends Controller
      * @Route("/rhu/capacitacion/detalle/nuevo/empleado/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo_empleado")
      */
     public function detalleNuevoEmpleadoAction(Request $request, $codigoCapacitacion) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
@@ -357,7 +362,7 @@ class CapacitacionesController extends Controller
      * @Route("/rhu/capacitacion/detalle/nuevo/nota/{codigoCapacitacion}", name="brs_rhu_capacitacion_detalle_nuevo_nota")
      */
     public function detalleNuevoNotaAction(Request $request, $codigoCapacitacion) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacion')->find($codigoCapacitacion);
         $arCapacitacionNota = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionNota();
@@ -382,7 +387,7 @@ class CapacitacionesController extends Controller
      * @Route("/rhu/capacitacion/nuevo/{codigoCapacitacion}", name="brs_rhu_capacitacion_nuevo")
      */
     public function nuevoAction(Request $request, $codigoCapacitacion) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $arCapacitacion = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion();
         if ($codigoCapacitacion != 0)
@@ -418,8 +423,8 @@ class CapacitacionesController extends Controller
             $session->get('filtroTema'),
             $session->get('filtroEstado'),
             $session->get('filtroDesde'),
-            $session->get('filtroHasta')
-            );
+            $session->get('filtroHasta'),
+            $session->get('filtroZona'));
     }
 
     private function listarDetalleNuevoEmpleado() {
@@ -453,8 +458,23 @@ class CapacitacionesController extends Controller
         if($session->get('filtroTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCapacitacionTipo", $session->get('filtroTipo'));
         }
+        $arrayPropiedadesZona = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuZona',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('z')
+                    ->orderBy('z.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroZona')) {
+            $arrayPropiedadesZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroZona'));
+        }
         $form = $this->createFormBuilder()
             ->add('capacitacionTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('TxtTema', TextType::class, array('label'  => 'TEMA','data' => $session->get('filtroTema')))
@@ -462,6 +482,7 @@ class CapacitacionesController extends Controller
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))
             ->getForm();
         return $form;
     }
@@ -580,11 +601,11 @@ class CapacitacionesController extends Controller
     }
 
     private function filtrar ($form) {
-        $session = new session; 
+        $session = new session;
         $codigoCapacitacionTipo = "";
         if($form->get('capacitacionTipoRel')->getData()) {
             $codigoCapacitacionTipo = $form->get('capacitacionTipoRel')->getData()->getCodigoCapacitacionTipoPk();
-        } 
+        }
         $session->set('filtroTipo', $codigoCapacitacionTipo);
         $session->set('filtroTema', $form->get('TxtTema')->getData());
         $session->set('filtroEstado', $form->get('estado')->getData());
@@ -598,6 +619,11 @@ class CapacitacionesController extends Controller
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
             $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
+        $codigoZona = "";
+        if($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
+        }
+        $session->set('filtroZona', $codigoZona);
     }
 
     private function filtrarDetalleNuevoEmpleado($form) {
@@ -605,19 +631,19 @@ class CapacitacionesController extends Controller
         $codigoCargo ="";
         if($form->get('cargoRel')->getData()) {
             $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();
-        } 
-        $session->set('filtroCodigoCargo', $codigoCargo); 
-        
+        }
+        $session->set('filtroCodigoCargo', $codigoCargo);
+
         $codigoCentroCosto ="";
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        } 
+        }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $codigoPuesto ="";
         if($form->get('puestoRel')->getData()) {
             $codigoCentroCosto = $form->get('puestoRel')->getData()->getCodigoPuestoPk();
-        } 
-        $session->set('filtroCodigoPuesto', $codigoPuesto);        
+        }
+        $session->set('filtroCodigoPuesto', $codigoPuesto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroCodigoCliente', $form->get('TxtCodigoCliente')->getData());
@@ -656,17 +682,18 @@ class CapacitacionesController extends Controller
                             ->setCellValue('D1', 'DURACION')
                             ->setCellValue('E1', 'CIUDAD')
                             ->setCellValue('F1', 'LUGAR')
-                            ->setCellValue('G1', 'TIPO')
-                            ->setCellValue('H1', 'TEMA')
-                            ->setCellValue('I1', 'METODOLOGIA')
-                            ->setCellValue('J1', 'OBJETIVO')
-                            ->setCellValue('K1', 'CONTENIDO')
-                            ->setCellValue('L1', 'A CAPACITAR')
-                            ->setCellValue('M1', 'ASISTIERON')
-                            ->setCellValue('N1', 'VR CAPACITACION')
-                            ->setCellValue('O1', 'FACILITADOR')
-                            ->setCellValue('P1', 'IDENTIFICACION')
-                            ->setCellValue('Q1', 'ABIERTO');
+                            ->setCellValue('G1', 'ZONA')
+                            ->setCellValue('H1', 'TIPO')
+                            ->setCellValue('I1', 'TEMA')
+                            ->setCellValue('J1', 'METODOLOGIA')
+                            ->setCellValue('K1', 'OBJETIVO')
+                            ->setCellValue('L1', 'CONTENIDO')
+                            ->setCellValue('M1', 'A CAPACITAR')
+                            ->setCellValue('N1', 'ASISTIERON')
+                            ->setCellValue('O1', 'VR CAPACITACION')
+                            ->setCellValue('P1', 'FACILITADOR')
+                            ->setCellValue('Q1', 'IDENTIFICACION')
+                            ->setCellValue('R1', 'ABIERTO');
 
                 $i = 2;
                 $query = $em->createQuery($this->strDqlLista);
@@ -693,6 +720,10 @@ class CapacitacionesController extends Controller
                     if ($arCapacitacion->getEstado() == 1){
                         $estado = "NO";
                     }
+                    $zona = "";
+                    if ($arCapacitacion->getCodigoZonaFk() != null){
+                        $zona = $arCapacitacion->getZonaRel()->getNombre();
+                    }
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arCapacitacion->getCodigoCapacitacionPk())
                             ->setCellValue('B' . $i, $arCapacitacion->getFechaCapacitacion()->format('Y-m-d'))
@@ -700,17 +731,18 @@ class CapacitacionesController extends Controller
                             ->setCellValue('D' . $i, $arCapacitacion->getDuracion())
                             ->setCellValue('E' . $i, $ciudad)
                             ->setCellValue('F' . $i, $arCapacitacion->getLugar())
-                            ->setCellValue('G' . $i, $strCapacitacionTipo)
-                            ->setCellValue('H' . $i, $arCapacitacion->getTema())
-                            ->setCellValue('I' . $i, $strCapacitacionMetodologia)
-                            ->setCellValue('J' . $i, $arCapacitacion->getObjetivo())
-                            ->setCellValue('K' . $i, $arCapacitacion->getContenido())
-                            ->setCellValue('L' . $i, $arCapacitacion->getNumeroPersonasCapacitar())
-                            ->setCellValue('M' . $i, $arCapacitacion->getNumeroPersonasAsistieron())
-                            ->setCellValue('N' . $i, $arCapacitacion->getVrCapacitacion())
-                            ->setCellValue('O' . $i, $arCapacitacion->getFacilitador())
-                            ->setCellValue('P' . $i, $arCapacitacion->getNumeroIdentificacionFacilitador())
-                            ->setCellValue('Q' . $i, $estado);
+                            ->setCellValue('G' . $i, $zona)
+                            ->setCellValue('H' . $i, $strCapacitacionTipo)
+                            ->setCellValue('I' . $i, $arCapacitacion->getTema())
+                            ->setCellValue('J' . $i, $strCapacitacionMetodologia)
+                            ->setCellValue('K' . $i, $arCapacitacion->getObjetivo())
+                            ->setCellValue('L' . $i, $arCapacitacion->getContenido())
+                            ->setCellValue('M' . $i, $arCapacitacion->getNumeroPersonasCapacitar())
+                            ->setCellValue('N' . $i, $arCapacitacion->getNumeroPersonasAsistieron())
+                            ->setCellValue('O' . $i, $arCapacitacion->getVrCapacitacion())
+                            ->setCellValue('P' . $i, $arCapacitacion->getFacilitador())
+                            ->setCellValue('Q' . $i, $arCapacitacion->getNumeroIdentificacionFacilitador())
+                            ->setCellValue('R' . $i, $estado);
                     $i++;
                 }
 
@@ -732,5 +764,137 @@ class CapacitacionesController extends Controller
                 $objWriter->save('php://output');
                 exit;
             }
+
+    private function generarExcelDetalle() {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        for($col = 'A'; $col !== 'Z'; $col++) {
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+                }
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'CÓDIGO')
+            ->setCellValue('B1', 'FECHA')
+            ->setCellValue('C1', 'HORA')
+            ->setCellValue('D1', 'DURACION')
+            ->setCellValue('E1', 'CIUDAD')
+            ->setCellValue('F1', 'LUGAR')
+            ->setCellValue('G1', 'ZONA')
+            ->setCellValue('H1', 'TIPO')
+            ->setCellValue('I1', 'TEMA')
+            ->setCellValue('J1', 'METODOLOGIA')
+            ->setCellValue('K1', 'OBJETIVO')
+            ->setCellValue('L1', 'CONTENIDO')
+            ->setCellValue('M1', 'A CAPACITAR')
+            ->setCellValue('N1', 'ASISTIERON')
+            ->setCellValue('O1', 'VR CAPACITACION')
+            ->setCellValue('P1', 'FACILITADOR')
+            ->setCellValue('Q1', 'IDENTIFICACION')
+            ->setCellValue('R1', 'ESTADO ABIERTO')
+            ->setCellValue('S1', 'ASISTENTE')
+            ->setCellValue('T1', 'IDENTIFICACION')
+            ->setCellValue('U1', 'GRUPO PAGO')
+            ->setCellValue('V1', 'CARGO')
+            ->setCellValue('W1', 'PUESTO')
+            ->setCellValue('X1', 'EVALUACION')
+            ->setCellValue('Y1', 'ASISTENCIA');
+
+        $i = 2;
+
+        $arCapacitacionDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacionDetalle();
+        $arCapacitacionDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuCapacitacionDetalle')->listaDetalleDql(
+                    $session->get('filtroTipo'),
+                    $session->get('filtroTema'),
+                    $session->get('filtroEstado'),
+                    $session->get('filtroDesde'),
+                    $session->get('filtroHasta'),
+                    $session->get('filtroZona'));
+
+        $arCapacitacionDetalle = $em->createQuery($arCapacitacionDetalle);
+        $arCapacitacionDetalle = $arCapacitacionDetalle->getResult();
+        foreach ($arCapacitacionDetalle as $arCapacitacionDetalle) {
+                    $strCapacitacionTipo = "";
+                    if ($arCapacitacionDetalle->getCapacitacionRel()->getCodigoCapacitacionTipoFk() != null){
+                        $strCapacitacionTipo = $arCapacitacionDetalle->getCapacitacionRel()->getCapacitacionTipoRel()->getNombre();
+                    }
+                    $ciudad = "";
+                    if ($arCapacitacionDetalle->getCapacitacionRel()->getCodigoCiudadFk() != null){
+                        $ciudad = $arCapacitacionDetalle->getCapacitacionRel()->getCiudadRel()->getNombre();
+                    }
+                    $strCapacitacionMetodologia = "";
+                    if ($arCapacitacionDetalle->getCapacitacionRel()->getCodigoCapacitacionMetodologiaFk() != null){
+                        $strCapacitacionMetodologia = $arCapacitacionDetalle->getCapacitacionRel()->getCapacitacionMetodologiaRel()->getNombre();
+                    }
+                    $estado = "SI";
+                    if ($arCapacitacionDetalle->getCapacitacionRel()->getEstado() == 1){
+                        $estado = "NO";
+                    }
+                    $zona = "";
+                    if ($arCapacitacionDetalle->getCapacitacionRel()->getCodigoZonaFk() != null){
+                        $zona = $arCapacitacionDetalle->getCapacitacionRel()->getZonaRel()->getNombre();
+                    }
+                    $puesto = "";
+                    if ($arCapacitacionDetalle->getEmpleadoRel()->getCodigoPuestoFk() != null){
+                        $puesto = $arCapacitacionDetalle->getEmpleadoRel()->getPuestoRel()->getNombre();
+                    }
+                    $objPHPExcel->setActiveSheetIndex(0)
+                            ->setCellValue('A' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getCodigoCapacitacionPk())
+                            ->setCellValue('B' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getFechaCapacitacion()->format('Y-m-d'))
+                            ->setCellValue('C' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getFechaCapacitacion()->format('H:i:s'))
+                            ->setCellValue('D' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getDuracion())
+                            ->setCellValue('E' . $i, $ciudad)
+                            ->setCellValue('F' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getLugar())
+                            ->setCellValue('G' . $i, $zona)
+                            ->setCellValue('H' . $i, $strCapacitacionTipo)
+                            ->setCellValue('I' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getTema())
+                            ->setCellValue('J' . $i, $strCapacitacionMetodologia)
+                            ->setCellValue('K' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getObjetivo())
+                            ->setCellValue('L' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getContenido())
+                            ->setCellValue('M' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getNumeroPersonasCapacitar())
+                            ->setCellValue('N' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getNumeroPersonasAsistieron())
+                            ->setCellValue('O' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getVrCapacitacion())
+                            ->setCellValue('P' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getFacilitador())
+                            ->setCellValue('Q' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getNumeroIdentificacionFacilitador())
+                            ->setCellValue('R' . $i, $estado)
+                            ->setCellValue('S' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getNombreCorto())
+                            ->setCellValue('T' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getNumeroIdentificacion())
+                            ->setCellValue('U' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getCentroCostoRel()->getNombre())
+                            ->setCellValue('V' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getCargoRel()->getNombre())
+                            ->setCellValue('W' . $i, $puesto)
+                            ->setCellValue('X' . $i, $arCapacitacionDetalle->getEvaluacion())
+                            ->setCellValue('Y' . $i, $arCapacitacionDetalle->getAsistencia());
+                    $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('capacitacionDetalle');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="capacitacionDetalle.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
 
 }
