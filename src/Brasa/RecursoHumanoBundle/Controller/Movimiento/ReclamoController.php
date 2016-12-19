@@ -52,7 +52,7 @@ class ReclamoController extends Controller
                     foreach ($arrSeleccionados AS $codigoReclamo) {
                         $arReclamo = new \Brasa\RecursoHumanoBundle\Entity\RhuReclamo();
                         $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuReclamo')->find($codigoReclamo);
-                        if($arReclamo->getEstadoValidado() == 0) {
+                        if($arReclamo->getEstadoCerrado() == 0) {
                             $em->remove($arReclamo);
                         }
                     }
