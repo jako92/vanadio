@@ -849,6 +849,14 @@ class CapacitacionesController extends Controller
                     if ($arCapacitacionDetalle->getEmpleadoRel()->getCodigoPuestoFk() != null){
                         $puesto = $arCapacitacionDetalle->getEmpleadoRel()->getPuestoRel()->getNombre();
                     }
+                    $centroCosto = "";
+                    if ($arCapacitacionDetalle->getEmpleadoRel()->getCodigoCentroCostoFk() != null){
+                        $centroCosto = $arCapacitacionDetalle->getEmpleadoRel()->getCentroCostoRel()->getNombre();
+                    }
+                    $cargo = "";
+                    if ($arCapacitacionDetalle->getEmpleadoRel()->getCodigoCargoFk() != null){
+                        $cargo = $arCapacitacionDetalle->getEmpleadoRel()->getCargoRel()->getNombre();
+                    }
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getCodigoCapacitacionPk())
                             ->setCellValue('B' . $i, $arCapacitacionDetalle->getCapacitacionRel()->getFechaCapacitacion()->format('Y-m-d'))
@@ -870,8 +878,8 @@ class CapacitacionesController extends Controller
                             ->setCellValue('R' . $i, $estado)
                             ->setCellValue('S' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getNombreCorto())
                             ->setCellValue('T' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getNumeroIdentificacion())
-                            ->setCellValue('U' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getCentroCostoRel()->getNombre())
-                            ->setCellValue('V' . $i, $arCapacitacionDetalle->getEmpleadoRel()->getCargoRel()->getNombre())
+                            ->setCellValue('U' . $i, $centroCosto)
+                            ->setCellValue('V' . $i, $cargo)
                             ->setCellValue('W' . $i, $puesto)
                             ->setCellValue('X' . $i, $arCapacitacionDetalle->getEvaluacion())
                             ->setCellValue('Y' . $i, $arCapacitacionDetalle->getAsistencia());
