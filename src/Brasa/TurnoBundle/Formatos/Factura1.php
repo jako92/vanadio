@@ -13,11 +13,8 @@ class Factura1 extends \FPDF_FPDF {
         self::$codigoFactura = $codigoFactura;
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
-        $arrayNumero = explode(".", 0, 2);
-        $intCentavos = 0;
-        if (count($arrayNumero) > 1)
-            $intCentavos = substr($arrayNumero[1], $arFactura->getVrTotal(), 2);
-        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($arFactura->getVrTotalNeto());
+        $valor = round($arFactura->getVrTotalNeto());
+        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
         self::$strLetras = $strLetras;
         ob_clean();
         $pdf = new Factura1();
