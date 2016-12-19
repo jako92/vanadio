@@ -492,7 +492,6 @@ class AcreditacionController extends Controller
                     }
                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                     $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
-
                     $gradoBachiller = "11";
                     $superior = "Ninguna";
                     $objPHPExcel->setActiveSheetIndex(0)
