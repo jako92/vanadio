@@ -46,17 +46,14 @@ class GenModulo
     /**     
      * @ORM\Column(name="cartera", type="boolean")
      */    
-    private $cartera = false;     
-    
-    /**     
-     * @ORM\Column(name="afiliacion", type="boolean")
-     */    
-    private $afiliacion = false;     
+    private $cartera = false;                 
 
     /**     
      * @ORM\Column(name="inventario", type="boolean")
      */    
     private $inventario = false;     
+
+    
 
     /**
      * Get codigoModuloPk
@@ -210,30 +207,6 @@ class GenModulo
     public function getCartera()
     {
         return $this->cartera;
-    }
-
-    /**
-     * Set afiliacion
-     *
-     * @param boolean $afiliacion
-     *
-     * @return GenModulo
-     */
-    public function setAfiliacion($afiliacion)
-    {
-        $this->afiliacion = $afiliacion;
-
-        return $this;
-    }
-
-    /**
-     * Get afiliacion
-     *
-     * @return boolean
-     */
-    public function getAfiliacion()
-    {
-        return $this->afiliacion;
     }
 
     /**

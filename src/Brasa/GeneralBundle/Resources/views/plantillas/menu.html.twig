@@ -218,18 +218,7 @@
                             </ul>
                         </li>
                         {% endif %}
-                        {% if arModulo.afiliacion == 1 %}
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">Afiliacion</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path('brs_afi_base_cliente') }}">Cliente</a></li>
-                                <li><a href="{{ path('brs_afi_base_empleado') }}">Empleado</a></li>
-                                <li><a href="{{ path('brs_afi_base_entidad_entrenamiento') }}">Entidad entrenamiento</a></li>
-                                <li><a href="{{ path('brs_afi_base_curso_tipo') }}">Tipo curso</a></li>
-                                <li><a href="{{ path('brs_afi_base_sucursal') }}">Sucursales</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
+                        
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -469,45 +458,7 @@
                             </ul>
                         </li>        
                         {% endif %}
-                        {% if arModulo.afiliacion == 1 %}
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">Afiliacion</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Periodo</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('brs_afi_consulta_periodo_detalle') }}">Detalles</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Contratos</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('brs_afi_consulta_contrato_general') }}">General</a></li>
-                                        <li><a href="{{ path('brs_afi_consulta_contrato_ingreso') }}">Ingresos</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Cuentas por cobrar</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('brs_cartera_consulta_cuentacobrarafiliacion_lista') }}">Afiliacion</a></li>
-                                        <li><a href="{{ path('brs_cartera_consulta_cuentacobrarpila_lista') }}">Pila</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Afiliaciones pendientes</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('brs_afi_consulta_contrato_afiliacionpagopendiente') }}">Lista</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Afiliaciones pagadas</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('brs_afi_consulta_pago_afiliaciones') }}">Lista</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        {% endif %}
+                        
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -617,15 +568,7 @@
                             </ul>
                         </li>
                         {% endif %}
-                        {% if arModulo.afiliacion == 1 %}
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">Afiliacion</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path('brs_afi_proceso_generar_periodo') }}">Generar periodo</a></li>
-                                <li><a href="{{ path('brs_afi_proceso_actualizar_clientecartera') }}">Actualizar cliente cartera</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
+                        
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -967,18 +910,7 @@
                             </ul>
                         </li>
                         {% endif %}
-                        {% if arModulo.afiliacion == 1 %}
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">Afiliacion</a>
-                            <ul class="dropdown-menu">                                
-                                <li><a href="{{ path('brs_afi_movimiento_curso') }}">Curso</a></li>
-                                <li><a href="{{ path('brs_afi_movimiento_pago_curso') }}">Pago curso</a></li>                                
-                                <li><a href="{{ path('brs_afi_movimiento_periodo') }}">Periodo seguridad social</a></li>                                
-                                <li><a href="{{ path('brs_afi_movimiento_novedad') }}">Novedad</a></li>
-                                <li><a href="{{ path('brs_afi_movimiento_factura') }}">Factura</a></li>
-                            </ul>
-                        </li>
-                        {% endif %}
+                        
                         {% if arModulo.inventario == 1 %}
                         <li class="dropdown-submenu">
                             <a tabindex="-1" href="#">Inventario</a>
