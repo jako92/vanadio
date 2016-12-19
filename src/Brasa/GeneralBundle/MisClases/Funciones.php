@@ -234,7 +234,7 @@ class Funciones {
 
              elseif ($s == '1')
 
-                $fin .= $fem ? ' una' : ' un';
+                $fin .= $fem ? ' uno' : ' un';
 
              else
 
@@ -262,9 +262,9 @@ class Funciones {
 
           if (++$sub < 3 and $fem) {
 
-             $matuni[1] = 'una';
+             $matuni[1] = 'uno';
 
-             $subcent = 'as';
+             $subcent = 'os';
 
           }else{
 

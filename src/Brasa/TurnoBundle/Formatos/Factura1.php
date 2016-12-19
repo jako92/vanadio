@@ -17,7 +17,7 @@ class Factura1 extends \FPDF_FPDF {
         $intCentavos = 0;
         if (count($arrayNumero) > 1)
             $intCentavos = substr($arrayNumero[1], $arFactura->getVrTotal(), 2);
-        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($arFactura->getVrTotal());
+        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($arFactura->getVrTotalNeto());
         self::$strLetras = $strLetras;
         ob_clean();
         $pdf = new Factura1();

@@ -107,6 +107,11 @@ sonata_block:
         # ... 
         
 sonata_admin:
+    title:                'SogaApp Admin'
+    title_logo:           imagenes/logos/logo.jpg
+    templates:
+        dashboard: SonataAdminBundle:Core:dashboard.html.twig
+       
     dashboard:
         groups:
             app.admin.group.inventario:
