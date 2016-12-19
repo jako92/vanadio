@@ -64,6 +64,7 @@
                         <th>PERSONAS CAPACITAR</th>
                         <th>PERSONAS ASISTIERON</th>
                         <th>ABIERTO</th>
+                        <th>AUTORIZADO</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -79,6 +80,7 @@
                             <td align="right">{{ arCapacitaciones.numeroPersonasCapacitar  }}</td>
                             <td align="right">{{ arCapacitaciones.numeroPersonasAsistieron  }}</td>
                             <td>{% if arCapacitaciones.estado == 0 %}SI{% else %}NO{% endif %}</td>
+                            <td>{% if arCapacitaciones.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
                             {% if arCapacitaciones.estado == 0 %}
                                 <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_capacitacion_nuevo', { 'codigoCapacitacion':  arCapacitaciones.codigoCapacitacionPk }) }}', 'EditarCapacitacion', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                             {% else %}

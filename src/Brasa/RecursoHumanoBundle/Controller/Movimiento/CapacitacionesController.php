@@ -389,6 +389,7 @@ class CapacitacionesController extends Controller
     public function nuevoAction(Request $request, $codigoCapacitacion) {
 
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCapacitacion = new \Brasa\RecursoHumanoBundle\Entity\RhuCapacitacion();
         if ($codigoCapacitacion != 0)
         {
@@ -396,6 +397,9 @@ class CapacitacionesController extends Controller
         } else {
             $arCapacitacion->setFecha(new \DateTime('now'));
             $arCapacitacion->setFechaCapacitacion(new \DateTime('now'));
+        }
+        if ($arCapacitacion->getEstadoAutorizado() == 1){
+            $objMensaje->Mensaje('error', 'El registro se encuentra autorizado, debe desautorizar para poder editar el registro');
         }
         $form = $this->createForm(RhuCapacitacionType::class, $arCapacitacion);
         //$form = $this->createForm(new RhuCapacitacionType(), $arCapacitacion);
@@ -407,7 +411,8 @@ class CapacitacionesController extends Controller
                 $em->flush();
                 echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
             } else {
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                //echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                $objMensaje->Mensaje('error', 'El registro se encuentra autorizado, debe desautorizar para poder editar el registro');
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Capacitaciones:nuevo.html.twig', array(

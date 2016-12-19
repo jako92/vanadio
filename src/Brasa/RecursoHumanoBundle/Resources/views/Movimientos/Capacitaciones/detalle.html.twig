@@ -61,10 +61,10 @@
                     <td class="td-in-well" align="rigth">{{ arCapacitacion.numeroPersonasAsistieron }}</td></td>
                 </tr>
                 <tr>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
                     <td class="titulo">ZONA:</td>
                     <td class="td-in-well">{{ arCapacitacion.zonaRel.nombre | default('') }}</td>
+                    <td class="titulo">AUTORIZADO:</td>
+                    <td class="td-in-well">{% if arCapacitacion.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>                    
                     <td class="titulo">ABIERTO:</td>
                     <td class="td-in-well">{% if arCapacitacion.estado == 0%}SI{% else %}NO{% endif%}</td>
                 </tr>
