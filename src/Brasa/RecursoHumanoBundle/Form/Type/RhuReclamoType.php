@@ -13,6 +13,7 @@ class RhuReclamoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                                              
+            ->add('reclamo', TextareaType::class, array('required' => false))            
             ->add('comentarios', TextareaType::class, array('required' => false))            
             ->add('fecha', DateType::class, array('format' => 'yyyyMMdd'))                             
             ->add('guardar', SubmitType::class)

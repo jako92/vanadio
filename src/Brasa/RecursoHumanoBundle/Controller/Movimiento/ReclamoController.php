@@ -117,6 +117,26 @@ class ReclamoController extends Controller
             'form' => $form->createView()));
     }
 
+    /**
+     * @Route("/rhu/movimiento/reclamo/detalle/{codigoReclamo}", name="brs_rhu_movimiento_reclamo_detalle")
+     */
+    public function detalleAction(Request $request, $codigoReclamo) {
+        $em = $this->getDoctrine()->getManager();        
+        $objMensaje = $this->get('mensajes_brasa');
+        $arReclamo = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudio();
+        $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->find($codigoReclamo);
+        $form = $this->formularioDetalle($arReclamo);
+        $form->handleRequest($request);
+        if($form->isValid()) {
+                        
+        }
+        $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuReclamo')->find($codigoReclamo);
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Reclamo:detalle.html.twig', array(
+                    'arReclamo' => $arReclamo,
+                    'form' => $form->createView()
+                    ));
+    }    
+    
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
@@ -159,6 +179,12 @@ class ReclamoController extends Controller
         return $form;
     }
 
+    private function formularioDetalle($ar) {
+        $form = $this->createFormBuilder()            
+                ->getForm();  
+        return $form;
+    }    
+    
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;

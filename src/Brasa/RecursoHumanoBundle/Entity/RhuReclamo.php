@@ -38,6 +38,11 @@ class RhuReclamo
     private $fechaSolucion;    
     
     /**
+     * @ORM\Column(name="reclamo", type="string", length=2000, nullable=true)
+     */    
+    private $reclamo;     
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;  
@@ -259,5 +264,29 @@ class RhuReclamo
     public function getCodigoUsuario()
     {
         return $this->codigoUsuario;
+    }
+
+    /**
+     * Set reclamo
+     *
+     * @param string $reclamo
+     *
+     * @return RhuReclamo
+     */
+    public function setReclamo($reclamo)
+    {
+        $this->reclamo = $reclamo;
+
+        return $this;
+    }
+
+    /**
+     * Get reclamo
+     *
+     * @return string
+     */
+    public function getReclamo()
+    {
+        return $this->reclamo;
     }
 }

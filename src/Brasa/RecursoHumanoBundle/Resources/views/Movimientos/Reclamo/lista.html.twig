@@ -84,6 +84,7 @@
                 <th>FECHA</th>                                                
                 <th>CER</th>                
                 <th style="text-align: center"></th>                
+                <th></th>
                 <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
             </tr>
             {% for arReclamos in arReclamos %}
@@ -94,6 +95,7 @@
                 <td>{{ arReclamos.fecha |date('Y/m/d') }}</td>                                                               
                 <td>{% if arReclamos.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>                                 
                 <td style="text-align: center">{% if arReclamos.estadoCerrado == 0 %}<a href="{{ path('brs_rhu_movimiento_reclamo_nuevo', {'codigoReclamo': arReclamos.codigoReclamoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                
+                <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_reclamo_detalle', { 'codigoReclamo': arReclamos.codigoReclamoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                
                 <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arReclamos.codigoReclamoPk }}" /></td>
             </tr>
             {% endfor %}
