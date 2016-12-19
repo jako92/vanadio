@@ -13,11 +13,6 @@ brasa_administracion_documental:
     type:     annotation
     prefix:   /
 
-brasa_afiliacion:
-    resource: "@BrasaAfiliacionBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 brasa_cartera:
     resource: "@BrasaCarteraBundle/Controller/"
     type:     annotation

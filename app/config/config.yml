@@ -9,7 +9,6 @@ imports:
     - { resource: "@BrasaContabilidadBundle/Resources/config/services.yml" }
     - { resource: "@BrasaTurnoBundle/Resources/config/services.yml" }
     - { resource: "@BrasaCarteraBundle/Resources/config/services.yml" }
-    - { resource: "@BrasaAfiliacionBundle/Resources/config/services.yml" }
     - { resource: "@BrasaAdministracionDocumentalBundle/Resources/config/services.yml" }
     - { resource: "@BrasaInventarioBundle/Resources/config/services.yml" }
     - { resource: "@BrasaTesoreriaBundle/Resources/config/services.yml" }
