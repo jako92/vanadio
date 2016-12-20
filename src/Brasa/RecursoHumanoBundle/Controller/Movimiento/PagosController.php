@@ -359,7 +359,15 @@ class PagosController extends Controller
         $query = $em->createQuery($this->strDqlLista);
         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arPagos = $query->getResult();
-        foreach ($arPagos as $arPago) {            
+        foreach ($arPagos as $arPago) {
+            $fechaDesdePago = '';
+            if ($arPago->getFechaDesdePago() != null){
+                $fechaDesdePago = $arPago->getFechaDesdePago()->format('Y-m-d');
+            }
+            $fechaHastaPago = '';
+            if ($arPago->getFechaHastaPago() != null){
+                $fechaHastaPago = $arPago->getFechaHastaPago()->format('Y-m-d');
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPago->getCodigoPagoPk())
                     ->setCellValue('B' . $i, $arPago->getNumero())
@@ -368,8 +376,8 @@ class PagosController extends Controller
                     ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('F' . $i, $arPago->getCentroCostoRel()->getNombre())
                     ->setCellValue('G' . $i, $arPago->getFechaDesde()->format('Y-m-d'). " - " .$arPago->getFechaHasta()->format('Y-m-d'))
-                    ->setCellValue('H' . $i, $arPago->getFechaDesdePago()->format('Y-m-d'))
-                    ->setCellValue('I' . $i, $arPago->getFechaHastaPago()->format('Y-m-d'))
+                    ->setCellValue('H' . $i, $fechaDesdePago)
+                    ->setCellValue('I' . $i, $fechaHastaPago)
                     ->setCellValue('J' . $i, $arPago->getDiasPeriodo())
                     ->setCellValue('K' . $i, $arPago->getVrSalarioEmpleado())
                     ->setCellValue('L' . $i, $arPago->getVrSalarioPeriodo())
