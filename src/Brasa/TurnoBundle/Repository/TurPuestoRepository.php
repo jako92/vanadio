@@ -20,6 +20,22 @@ class TurPuestoRepository extends EntityRepository {
         $dql .= " ORDER BY p.nombre";
         return $dql;
     }            
+
+    public function listaBuscarDql($codigoPuesto = '', $strNombre = "", $strNombreCliente = "") {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT p FROM BrasaTurnoBundle:TurPuesto p JOIN p.clienteRel c WHERE p.codigoPuestoPk <> 0 ";
+        if($strNombre != "" ) {
+            $dql .= " AND p.nombre LIKE '%" . $strNombre . "%'";
+        }
+        if($codigoPuesto != "" ) {
+            $dql .= " AND p.codigoPuestoPk = " . $codigoPuesto;
+        }
+        if($strNombreCliente != "" ) {
+            $dql .= " AND c.nombreCorto LIKE '%" . $strNombreCliente . "%'";
+        }        
+        $dql .= " ORDER BY p.nombre";
+        return $dql;
+    }            
     
     public function eliminar($arrSeleccionados) {
         $em = $this->getEntityManager();

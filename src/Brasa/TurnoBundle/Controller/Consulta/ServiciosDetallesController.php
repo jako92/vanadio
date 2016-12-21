@@ -43,11 +43,11 @@ class ServiciosDetallesController extends Controller
                 $this->lista();
                 $this->generarExcel();
             }
-            if ($form->get('BtnExcelResumido')->isClicked()) {
+            if ($form->get('BtnExcel2')->isClicked()) {
                 $this->filtrar($form);
                 $form = $this->formularioFiltro();
                 $this->lista();
-                $this->generarExcelResumido();
+                $this->generarExcel2();
             }            
         }
         $arServiciosDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
@@ -65,17 +65,20 @@ class ServiciosDetallesController extends Controller
                 $this->codigoServicio, 
                 $session->get('filtroCodigoCliente'),
                 $session->get('filtroServicioDetalleEstadoCerrado'),
-                $strFechaHasta                
+                $strFechaHasta,
+                $session->get('filtroTurCodigoCentroCosto'),
+                $session->get('filtroCodigoPuesto')                
                 );
     }
 
     private function filtrar ($form) {   
-        $session = new session;
-        $this->codigoServicio = $form->get('TxtCodigo')->getData();
+        $session = new session;        
         $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());
         $session->set('filtroServicioDetalleEstadoCerrado', $form->get('estadoCerrado')->getData());        
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroServicioDetalleFechaHasta', $dateFechaHasta->format('Y/m/d'));        
+        $session->set('filtroTurCodigoCentroCosto', $form->get('TxtCodigoCentroCosto')->getData());
     }
 
     private function formularioFiltro() {
@@ -93,6 +96,15 @@ class ServiciosDetallesController extends Controller
             }          
         } else {
             $session->set('filtroCodigoCliente', null);
+        }   
+        $strNombrePuesto = "";
+        if($session->get('filtroCodigoPuesto')) {
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($session->get('filtroCodigoPuesto'));
+            if($arPuesto) {                
+                $strNombrePuesto = $arPuesto->getNombre();
+            }  else {
+                $session->set('filtroCodigoPuesto', null);
+            }          
         }        
         $dateFecha = new \DateTime('now');
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
@@ -104,17 +116,19 @@ class ServiciosDetallesController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                                
-            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->codigoServicio))
+            ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')))
+            ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))                                
+            ->add('TxtCodigoCentroCosto', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroTurCodigoCentroCosto')))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta)) 
             ->add('estadoCerrado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'CERRADO' => '1', 'SIN CERRAR' => '0'), 'data' => $session->get('filtroServicioDetalleEstadoCerrado')))                                                
-            ->add('BtnExcelResumido', SubmitType::class, array('label'  => 'Excel resumido',))
+            ->add('BtnExcel2', SubmitType::class, array('label'  => 'Excel2',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }    
 
-    private function generarExcelResumido() {
+    private function generarExcel2() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();            

@@ -23,8 +23,8 @@ class TurServicioDetalleRepository extends EntityRepository {
         return $dql;
     }    
     
-    public function listaConsultaDql($codigoServicio = "", $codigoCliente = "", $estadoCerrado, $fechaHasta = "") {
-        $dql   = "SELECT sd FROM BrasaTurnoBundle:TurServicioDetalle sd JOIN sd.servicioRel s WHERE sd.codigoServicioDetallePk <> 0 ";                
+    public function listaConsultaDql($codigoServicio = "", $codigoCliente = "", $estadoCerrado, $fechaHasta = "", $codigoCentroCosto = "", $codigoPuesto = "") {
+        $dql   = "SELECT sd FROM BrasaTurnoBundle:TurServicioDetalle sd JOIN sd.servicioRel s JOIN sd.puestoRel p WHERE sd.codigoServicioDetallePk <> 0 ";                
         if($codigoCliente != '') {
             $dql .= "AND s.codigoClienteFk = " . $codigoCliente;  
         }
@@ -36,7 +36,13 @@ class TurServicioDetalleRepository extends EntityRepository {
         } 
         if($fechaHasta != "") {
             $dql .= " AND sd.fechaHasta >= '" . $fechaHasta . "'";
-        }         
+        } 
+        if($codigoCentroCosto != '') {
+            $dql .= "AND p.codigoCentroCostoContabilidadFk = " . $codigoCentroCosto;  
+        }        
+        if($codigoPuesto != '') {
+            $dql .= "AND sd.codigoPuestoFk = " . $codigoPuesto;  
+        }        
         $dql .= " ORDER BY s.codigoClienteFk, sd.codigoGrupoFacturacionFk, sd.codigoPuestoFk";
         return $dql;
     }     
