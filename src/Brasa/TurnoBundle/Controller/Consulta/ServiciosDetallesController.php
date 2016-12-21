@@ -157,13 +157,13 @@ class ServiciosDetallesController extends Controller
         
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CLIENTE')
-                    ->setCellValue('B1', 'GRUPO')
-                    ->setCellValue('C1', 'PUESTO')
-                    ->setCellValue('D1', 'SERVICIO')
-                    ->setCellValue('E1', 'MODALIDAD')                                    
-                    ->setCellValue('F1', 'DESDE')
-                    ->setCellValue('G1', 'HASTA')
-                    ->setCellValue('H1', 'ZONA')
+                    ->setCellValue('B1', 'C_COSTO')
+                    ->setCellValue('C1', 'CODIGO')
+                    ->setCellValue('D1', 'PUESTO')                
+                    ->setCellValue('E1', 'MODALIDAD')
+                    ->setCellValue('F1', 'SERVICIO')                                                        
+                    ->setCellValue('G1', 'DESDE')
+                    ->setCellValue('H1', 'HASTA')
                     ->setCellValue('I1', 'CANT')
                     ->setCellValue('J1', 'H')
                     ->setCellValue('K1', 'HD')
@@ -171,7 +171,9 @@ class ServiciosDetallesController extends Controller
                     ->setCellValue('M1', 'SUBTOTAL')
                     ->setCellValue('N1', 'BASE AIU')
                     ->setCellValue('O1', 'IVA')
-                    ->setCellValue('P1', 'TOTAL');
+                    ->setCellValue('P1', 'TOTAL')
+                    ->setCellValue('Q1', 'GRUPO')
+                    ->setCellValue('R1', 'ZONA');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -180,6 +182,7 @@ class ServiciosDetallesController extends Controller
         foreach ($arServiciosDetalles as $arServicioDetalle) {   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arServicioDetalle->getServicioRel()->getClienteRel()->getNombreCorto())                                        
+                    ->setCellValue('C' . $i, $arServicioDetalle->getCodigoPuestoFk())
                     ->setCellValue('D' . $i, $arServicioDetalle->getConceptoServicioRel()->getNombreFacturacion())
                     ->setCellValue('E' . $i, $arServicioDetalle->getModalidadServicioRel()->getNombre())                    
                     ->setCellValue('F' . $i, $arServicioDetalle->getFechaDesde()->format('Y/m/d'))                                        
@@ -200,8 +203,8 @@ class ServiciosDetallesController extends Controller
             }            
 
             if($arServicioDetalle->getPuestoRel()) {
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('C' . $i, $arServicioDetalle->getPuestoRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $i, $arServicioDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arServicioDetalle->getPuestoRel()->getNombre());
                 if($arServicioDetalle->getPuestoRel()->getZonaRel()) {
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('H' . $i, $arServicioDetalle->getPuestoRel()->getZonaRel()->getNombre());
