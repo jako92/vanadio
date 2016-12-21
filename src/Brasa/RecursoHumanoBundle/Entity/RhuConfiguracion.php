@@ -345,6 +345,13 @@ class RhuConfiguracion
     private $promedioPrimasLaboradoDias = 0;    
     
     /**
+     * Promedio primas utilizado por seracis
+     * @ORM\Column(name="omitir_descuento_embargo_primas", type="boolean")
+     */
+    private $omitirDescuentoEmbargoPrimas = false;    
+    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadRiesgoProfesional", inversedBy="configuracionEntidadRiesgoProfesionalRel")
      * @ORM\JoinColumn(name="codigo_entidad_riesgo_fk", referencedColumnName="codigo_entidad_riesgo_pk")
      */
@@ -1934,5 +1941,29 @@ class RhuConfiguracion
     public function getPromedioPrimasLaboradoDias()
     {
         return $this->promedioPrimasLaboradoDias;
+    }
+
+    /**
+     * Set omitirDescuentoEmbargoPrimas
+     *
+     * @param boolean $omitirDescuentoEmbargoPrimas
+     *
+     * @return RhuConfiguracion
+     */
+    public function setOmitirDescuentoEmbargoPrimas($omitirDescuentoEmbargoPrimas)
+    {
+        $this->omitirDescuentoEmbargoPrimas = $omitirDescuentoEmbargoPrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirDescuentoEmbargoPrimas
+     *
+     * @return boolean
+     */
+    public function getOmitirDescuentoEmbargoPrimas()
+    {
+        return $this->omitirDescuentoEmbargoPrimas;
     }
 }

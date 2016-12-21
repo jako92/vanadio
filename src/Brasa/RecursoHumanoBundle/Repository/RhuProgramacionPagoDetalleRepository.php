@@ -669,53 +669,55 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             } 
             
             //Embargos
-            $arEmbargos = new \Brasa\RecursoHumanoBundle\Entity\RhuEmbargo();
-            $arEmbargos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmbargo')->findBy(array('codigoEmpleadoFk' => $arProgramacionPagoDetalle->getCodigoEmpleadoFk(), 'estadoActivo' => 1));
-            foreach ($arEmbargos as $arEmbargo) {
-                $douPagoDetalle = 0;
-                if($arEmbargo->getValorFijo()) {
-                    $douPagoDetalle = $arEmbargo->getValor();
-                }
-                if($arEmbargo->getPorcentajeDevengado()) {                
-                    $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
-                    $douPagoDetalle = round($douPagoDetalle);
-                }
-                if($arEmbargo->getPorcentajeDevengadoPrestacional()) {                
-                    $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
-                    $douPagoDetalle = round($douPagoDetalle);
-                }                
-                if($arEmbargo->getPorcentajeDevengadoMenosDescuentoLey()) {                
-                    $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
-                    $douPagoDetalle = round($douPagoDetalle);
-                }     
-                if($arEmbargo->getPorcentajeExcedaSalarioMinimo()) {
-                    $salarioMinimoDevengado = ($douVrSalarioMinimo/2);
-                    $baseDescuento = $devengado - $salarioMinimoDevengado;
-                    if($baseDescuento > 0) {             
-                        $douPagoDetalle = ($baseDescuento * $arEmbargo->getPorcentaje()) / 100;
-                        $douPagoDetalle = round($douPagoDetalle);                                                
-                    }                    
-                }
-                if($arEmbargo->getPartesExcedaSalarioMinimo()) {
-                    $salarioMinimoDevengado = ($douVrSalarioMinimo/2);
-                    $baseDescuento = $devengado - $salarioMinimoDevengado;
-                    if($baseDescuento > 0) {                        
-                        $douPagoDetalle = $baseDescuento / $arEmbargo->getPartes();
+            if(!$arConfiguracion->getOmitirDescuentoEmbargoPrimas()) {
+                $arEmbargos = new \Brasa\RecursoHumanoBundle\Entity\RhuEmbargo();
+                $arEmbargos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmbargo')->findBy(array('codigoEmpleadoFk' => $arProgramacionPagoDetalle->getCodigoEmpleadoFk(), 'estadoActivo' => 1));
+                foreach ($arEmbargos as $arEmbargo) {
+                    $douPagoDetalle = 0;
+                    if($arEmbargo->getValorFijo()) {
+                        $douPagoDetalle = $arEmbargo->getValor();
                     }
-                }
-                if($douPagoDetalle > 0) {
-                    $arPagoConcepto = $arEmbargo->getEmbargoTipoRel()->getPagoConceptoRel();
-                    $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
-                    $arPagoDetalle->setPagoRel($arPago);
-                    $arPagoDetalle->setPagoConceptoRel($arPagoConcepto);
-                    $douPagoDetalle = round($douPagoDetalle);                    
-                    $arPagoDetalle->setVrPago($douPagoDetalle);
-                    $arPagoDetalle->setOperacion($arPagoConcepto->getOperacion());
-                    $arPagoDetalle->setVrPagoOperado($douPagoDetalle * $arPagoConcepto->getOperacion());
-                    $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
-                    $em->persist($arPagoDetalle);                    
-                }                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-            }             
+                    if($arEmbargo->getPorcentajeDevengado()) {                
+                        $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
+                        $douPagoDetalle = round($douPagoDetalle);
+                    }
+                    if($arEmbargo->getPorcentajeDevengadoPrestacional()) {                
+                        $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
+                        $douPagoDetalle = round($douPagoDetalle);
+                    }                
+                    if($arEmbargo->getPorcentajeDevengadoMenosDescuentoLey()) {                
+                        $douPagoDetalle = ($devengado * $arEmbargo->getPorcentaje()) / 100;
+                        $douPagoDetalle = round($douPagoDetalle);
+                    }     
+                    if($arEmbargo->getPorcentajeExcedaSalarioMinimo()) {
+                        $salarioMinimoDevengado = ($douVrSalarioMinimo/2);
+                        $baseDescuento = $devengado - $salarioMinimoDevengado;
+                        if($baseDescuento > 0) {             
+                            $douPagoDetalle = ($baseDescuento * $arEmbargo->getPorcentaje()) / 100;
+                            $douPagoDetalle = round($douPagoDetalle);                                                
+                        }                    
+                    }
+                    if($arEmbargo->getPartesExcedaSalarioMinimo()) {
+                        $salarioMinimoDevengado = ($douVrSalarioMinimo/2);
+                        $baseDescuento = $devengado - $salarioMinimoDevengado;
+                        if($baseDescuento > 0) {                        
+                            $douPagoDetalle = $baseDescuento / $arEmbargo->getPartes();
+                        }
+                    }
+                    if($douPagoDetalle > 0) {
+                        $arPagoConcepto = $arEmbargo->getEmbargoTipoRel()->getPagoConceptoRel();
+                        $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                        $arPagoDetalle->setPagoRel($arPago);
+                        $arPagoDetalle->setPagoConceptoRel($arPagoConcepto);
+                        $douPagoDetalle = round($douPagoDetalle);                    
+                        $arPagoDetalle->setVrPago($douPagoDetalle);
+                        $arPagoDetalle->setOperacion($arPagoConcepto->getOperacion());
+                        $arPagoDetalle->setVrPagoOperado($douPagoDetalle * $arPagoConcepto->getOperacion());
+                        $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
+                        $em->persist($arPagoDetalle);                    
+                    }                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                }                             
+            }
             
             if($guardar == 1) {
                 $em->flush();
