@@ -492,8 +492,12 @@ class AcreditacionController extends Controller
                     }
                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                     $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
+                    //echo $arContrato->getCodigoContratoPk().'<br>';
                     $gradoBachiller = "11";
                     $superior = "Ninguna";
+                    $ciudadLabora = $arAcreditacion->getEmpleadoRel()->getCiudadRel()->getNombre();
+                    
+                    $ciudadLabora = explode("-", $ciudadLabora);        
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arConfiguracion->getNitEmpresa().$arConfiguracion->getDigitoVerificacionEmpresa())
                             ->setCellValue('B' . $i, strtoupper($arConfiguracion->getNombreEmpresa()))
@@ -506,7 +510,7 @@ class AcreditacionController extends Controller
                             ->setCellValue('I' . $i, $arAcreditacion->getEmpleadoRel()->getFechaNacimiento()->format('d/m/Y'))
                             ->setCellValue('J' . $i, $sexo)
                             ->setCellValue('K' . $i, $arAcreditacion->getAcreditacionTipoRel()->getCargoCodigo())
-                            ->setCellValue('L' . $i, $arContrato->getFechaDesde()->format('d/m/Y'))
+                            ->setCellValue('L' . $i, $arAcreditacion->getEmpleadoRel()->getFechaContrato()->format('d/m/Y'))
                             ->setCellValue('M' . $i, $arAcreditacion->getAcreditacionTipoRel()->getCodigo())
                             ->setCellValue('N' . $i, $arAcreditacion->getAcademiaRel()->getNit())
                             ->setCellValue('O' . $i, $arAcreditacion->getNumeroRegistro())
@@ -514,8 +518,8 @@ class AcreditacionController extends Controller
                             ->setCellValue('Q' . $i, $arAcreditacion->getEmpleadoRel()->getTelefono())
                             ->setCellValue('R' . $i, $arAcreditacion->getEmpleadoRel()->getDireccion())
                             ->setCellValue('S' . $i, $arAcreditacion->getEmpleadoRel()->getDireccion())
-                            ->setCellValue('T' . $i, $arContrato->getCiudadLaboraRel()->getDepartamentoRel()->getNombre())
-                            ->setCellValue('U' . $i, $arContrato->getCiudadLaboraRel()->getNombre())
+                            ->setCellValue('T' . $i, $arAcreditacion->getEmpleadoRel()->getCiudadRel()->getDepartamentoRel()->getNombre())
+                            ->setCellValue('U' . $i, $ciudadLabora[0])
                             ->setCellValue('V' . $i, $gradoBachiller)
                             ->setCellValue('W' . $i, ucfirst($superior))
                             ->setCellValue('X' . $i, "Ninguna");
