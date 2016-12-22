@@ -128,7 +128,7 @@ class PedidoDevolucionController extends Controller
         if($form->isValid()) {
             if($form->get('BtnAutorizar')->isClicked()) { 
                 $arrControles = $request->request->All();
-                $this->actualizarDetalle($arrControles, $codigoPedido);                
+                //$this->actualizarDetalle($arrControles, $codigoPedido);                
                 $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedido')->autorizar($codigoPedido);
                 if($strResultado != "") {
                     $objMensaje->Mensaje("error", $strResultado);
@@ -189,11 +189,11 @@ class PedidoDevolucionController extends Controller
                 $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->ajustarSeleccionados($arrSeleccionados);                
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));                
             }            
-            if($form->get('BtnDetalleActualizar')->isClicked()) {                
+            /*if($form->get('BtnDetalleActualizar')->isClicked()) {                
                 $arrControles = $request->request->All();
                 $this->actualizarDetalle($arrControles, $codigoPedido);                                
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
-            }
+            }*/
             if($form->get('BtnDetalleExcel')->isClicked()) {                
                 $this->generarExcelDetalle($codigoPedido);
             }            
@@ -484,5 +484,7 @@ class PedidoDevolucionController extends Controller
         $objWriter->save('php://output');
         exit;
     }
+    
+    
     
 }
