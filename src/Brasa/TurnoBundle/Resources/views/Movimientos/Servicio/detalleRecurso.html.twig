@@ -317,7 +317,7 @@
                     </tr>
                     {% for arServicioDetalleRecursos in arServicioDetalleRecursos %}
                         <tr>
-                            <td>{{ arServicioDetalleRecursos.codigoServicioDetalleRecursoPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arServicioDetalleRecursos.codigoServicioDetalleRecursoPk }}"></td>
+                            <td>{{ arServicioDetalleRecursos.recursoRel.codigoRecursoPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arServicioDetalleRecursos.codigoServicioDetalleRecursoPk }}"></td>
                             <td>{{ arServicioDetalleRecursos.recursoRel.numeroIdentificacion | default('') }}</td>                     
                             <td>{{ arServicioDetalleRecursos.recursoRel.nombreCorto | default('') }}</td>                     
                             <td>{{ arServicioDetalleRecursos.recursoRel.recursoTipoRel.nombre | default('') }}</td>                     

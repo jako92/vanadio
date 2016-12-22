@@ -113,7 +113,7 @@
                 <td>{% if arFacturas.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>                
                 <td>{% if arFacturas.estadoContabilizado == 1 %} SI {% else %} NO {% endif %}</td>                
                 <td>{% if arFacturas.estadoAnulado == 1 %} SI {% else %} NO {% endif %}</td>                
-                {% if arFacturas.facturaTipoRel.tipo == 1 %} 
+                <!--{% if arFacturas.facturaTipoRel.tipo == 1 %}-->
                     <td style="text-align: center"><a href="{{ path('brs_tur_movimiento_factura_nuevo', {'codigoFactura': arFacturas.codigoFacturaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 {% else %} 
                     <td style="text-align: center"><a href="{{ path('brs_tur_movimiento_nota_credito_nuevo', {'codigoFactura': arFacturas.codigoFacturaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
