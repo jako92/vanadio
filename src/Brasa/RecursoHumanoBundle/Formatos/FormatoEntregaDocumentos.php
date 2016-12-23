@@ -7,9 +7,9 @@ class FormatoEntregaDocumentos extends \FPDF_FPDF {
     
     public static $arEntregaDocumento;
     
-    public function Generar($miThis, $codigoContrato, $arEntregaDocumento) {        
+    public function Generar($em, $codigoContrato, $arEntregaDocumento) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoContrato = $codigoContrato;
         self::$arEntregaDocumento = $arEntregaDocumento;
@@ -53,10 +53,10 @@ class FormatoEntregaDocumentos extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         
-        $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
-        $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(20);        
+        //$arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+        //$arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
+        //$arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
+        //$arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(20);        
         $this->SetXY(10, 10);
         $this->Ln(10);
         //$this->Cell(0, 0, $this->Image('imagenes/logos/firmanomina.jpg' , 15 ,150, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo

@@ -816,7 +816,7 @@ class ContratosController extends Controller
                     $arEntregaDocumento = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntregaDocumento')->find($codigoDocumento);                                
                 }
                 $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoEntregaDocumentos();
-                $objFormatoContrato->Generar($this, $codigoContrato,$arrSeleccionados);
+                $objFormatoContrato->Generar($em, $codigoContrato,$arrSeleccionados);
             }   
             
         }
