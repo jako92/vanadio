@@ -174,7 +174,7 @@ class PagoConceptoController extends Controller
         }
         $arPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findAll();
-        $arPagoConceptos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);                        
+        $arPagoConceptos = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,200/*limit per page*/);                        
 
         return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:listar.html.twig', array(
                     'arPagoConceptos' => $arPagoConceptos,
