@@ -115,7 +115,7 @@ class PedidoDevolucionController extends Controller
     }
 
     /**
-     * @Route("/tur/movimiento/pedido/detalle/{codigoPedido}", name="brs_tur_movimiento_pedido_detalle")
+     * @Route("/tur/movimiento/pedido/devolucion/detalle/{codigoPedido}", name="brs_tur_movimiento_pedido_devolucion_detalle")
      */     
     public function detalleAction(Request $request, $codigoPedido) {
         $em = $this->getDoctrine()->getManager();
