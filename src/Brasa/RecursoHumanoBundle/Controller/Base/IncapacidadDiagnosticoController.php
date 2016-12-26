@@ -26,9 +26,9 @@ class IncapacidadDiagnosticoController extends Controller
      */     
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 72, 1)) {
+        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 136, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }*/         
+        }         
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioLista();
