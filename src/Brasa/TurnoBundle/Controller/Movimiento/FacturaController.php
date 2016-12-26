@@ -309,7 +309,11 @@ class FacturaController extends Controller
                     if($arConfiguracion->getCodigoFormatoFactura() == 2) {
                         $objFactura = new \Brasa\TurnoBundle\Formatos\Factura2();
                         $objFactura->Generar($em, $codigoFactura);                            
-                    }                                            
+                    }
+                    if($arConfiguracion->getCodigoFormatoFactura() == 3) { //1teg
+                            $objFactura = new \Brasa\TurnoBundle\Formatos\Factura3();
+                            $objFactura->Generar($em, $codigoFactura);                            
+                        }
                 } 
                 if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
                     $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
