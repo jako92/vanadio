@@ -145,11 +145,10 @@ class ServiciosDetallesController extends Controller
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         //$objPHPExcel->getActiveSheet()->get
-        for($col = 'A'; $col !== 'AE'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+        for($col = 'A'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
         }     
-        for($col = 'M'; $col !== 'Q'; $col++) {
+        for($col = 'I'; $col !== 'Q'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
@@ -182,10 +181,10 @@ class ServiciosDetallesController extends Controller
         foreach ($arServiciosDetalles as $arServicioDetalle) {   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arServicioDetalle->getServicioRel()->getClienteRel()->getNombreCorto())                                        
-                    ->setCellValue('C' . $i, $arServicioDetalle->getCodigoPuestoFk())
-                    ->setCellValue('D' . $i, $arServicioDetalle->getConceptoServicioRel()->getNombreFacturacion())
-                    ->setCellValue('E' . $i, $arServicioDetalle->getModalidadServicioRel()->getNombre())                    
-                    ->setCellValue('F' . $i, $arServicioDetalle->getFechaDesde()->format('Y/m/d'))                                        
+                    ->setCellValue('C' . $i, $arServicioDetalle->getCodigoPuestoFk())                    
+                    ->setCellValue('E' . $i, $arServicioDetalle->getModalidadServicioRel()->getNombre())  
+                    ->setCellValue('F' . $i, $arServicioDetalle->getConceptoServicioRel()->getNombreFacturacion())
+                    ->setCellValue('G' . $i, $arServicioDetalle->getFechaDesde()->format('Y/m/d'))                                        
                     ->setCellValue('I' . $i, $arServicioDetalle->getCantidad())                    
                     ->setCellValue('J' . $i, $arServicioDetalle->getHoras())
                     ->setCellValue('K' . $i, $arServicioDetalle->getHorasDiurnas())
@@ -193,13 +192,15 @@ class ServiciosDetallesController extends Controller
                     ->setCellValue('M' . $i, $arServicioDetalle->getVrSubtotal())
                     ->setCellValue('N' . $i, $arServicioDetalle->getVrBaseAiu())
                     ->setCellValue('O' . $i, $arServicioDetalle->getVrIva())
-                    ->setCellValue('P' . $i, $arServicioDetalle->getVrTotalDetalle());
+                    ->setCellValue('P' . $i, $arServicioDetalle->getVrTotalDetalle())
+                    ;
+            
             if($arServicioDetalle->getEstadoCerrado() == 1) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G' . $i, $arServicioDetalle->getFechaHasta()->format('Y/m/d'));
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H' . $i, $arServicioDetalle->getFechaHasta()->format('Y/m/d'));
             }
             if($arServicioDetalle->getGrupoFacturacionRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('B' . $i, $arServicioDetalle->getGrupoFacturacionRel()->getNombre());
+                    ->setCellValue('Q' . $i, $arServicioDetalle->getGrupoFacturacionRel()->getNombre());
             }            
 
             if($arServicioDetalle->getPuestoRel()) {
@@ -207,7 +208,7 @@ class ServiciosDetallesController extends Controller
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arServicioDetalle->getPuestoRel()->getNombre());
                 if($arServicioDetalle->getPuestoRel()->getZonaRel()) {
                     $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('H' . $i, $arServicioDetalle->getPuestoRel()->getZonaRel()->getNombre());
+                        ->setCellValue('R' . $i, $arServicioDetalle->getPuestoRel()->getZonaRel()->getNombre());
                 }                
             }                 
                        

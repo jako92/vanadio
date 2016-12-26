@@ -925,6 +925,25 @@
                         {% endif %}
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        {% if arModulo.turno == 1 %}
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#">Turno</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">Factura</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('brs_tur_reporte_factura_fecha_servicio') }}">Fecha servicio</a></li>
+                                    </ul>
+                                </li>                                                             
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>                
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

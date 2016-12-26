@@ -57,6 +57,7 @@ class TurPedidoDetalleType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))                            
             ->add('cantidad', NumberType::class)
+            ->add('vrPrecioAjustado', NumberType::class)
             ->add('diaDesde', NumberType::class)
             ->add('diaHasta', NumberType::class)
             ->add('lunes', CheckboxType::class, array('required'  => false))
