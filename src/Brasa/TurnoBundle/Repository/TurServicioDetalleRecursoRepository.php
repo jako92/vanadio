@@ -30,5 +30,23 @@ class TurServicioDetalleRecursoRepository extends EntityRepository {
         } 
         $dql .= " ORDER BY s.codigoClienteFk, sd.codigoServicioFk";
         return $dql;
-    }      
+    }   
+    
+    /*
+     * Valida si el recurso esta en un servicio permanente
+     */
+    public function validarRecurso($codigoEmpleado) {
+        $em = $this->getEntityManager();        
+        $boolValidar = FALSE;
+        $dql = "SELECT sdr FROM BrasaTurnoBundle:TurServicioDetalleRecurso sdr "
+                . "WHERE sdr.codigoRecursoFk = '" . $codigoEmpleado . "' ";
+        $objQuery = $em->createQuery($dql);  
+        $arServicioDetalleRecurso = $objQuery->getResult();         
+        if(count($arServicioDetalleRecurso) > 0) {
+            $boolValidar = FALSE;
+        } else {
+            $boolValidar = TRUE;
+        }        
+        return $boolValidar;                     
+    }     
 }

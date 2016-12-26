@@ -98,6 +98,7 @@ class LicenciasController extends Controller
                                     $intDias = $intDias->format('%a');
                                     $intDias = $intDias + 1;
                                     $arLicencia->setCantidad($intDias);
+                                    $arLicencia->setMaternidad($arLicencia->getLicenciaTipoRel()->getMaternidad());
                                     if($codigoLicencia == 0) {
                                         $arLicencia->setCodigoUsuario($arUsuario->getUserName());
                                         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();

@@ -25,12 +25,17 @@ class RhuLicenciaTipo
     /**     
      * @ORM\Column(name="afecta_salud", type="boolean")
      */    
-    private $afectaSalud = 0;      
+    private $afectaSalud = false;      
 
     /**     
      * @ORM\Column(name="ausentismo", type="boolean")
      */    
-    private $ausentismo = 0;    
+    private $ausentismo = false;    
+
+    /**     
+     * @ORM\Column(name="maternidad", type="boolean")
+     */    
+    private $maternidad = false;
     
     /**
      * @ORM\Column(name="codigo_pago_concepto_fk", type="integer", nullable=true)
@@ -47,6 +52,7 @@ class RhuLicenciaTipo
      * @ORM\OneToMany(targetEntity="RhuLicencia", mappedBy="licenciaTipoRel")
      */
     protected $licenciasLicenciaTipoRel;     
+
 
     /**
      * Constructor
@@ -88,6 +94,78 @@ class RhuLicenciaTipo
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set afectaSalud
+     *
+     * @param boolean $afectaSalud
+     *
+     * @return RhuLicenciaTipo
+     */
+    public function setAfectaSalud($afectaSalud)
+    {
+        $this->afectaSalud = $afectaSalud;
+
+        return $this;
+    }
+
+    /**
+     * Get afectaSalud
+     *
+     * @return boolean
+     */
+    public function getAfectaSalud()
+    {
+        return $this->afectaSalud;
+    }
+
+    /**
+     * Set ausentismo
+     *
+     * @param boolean $ausentismo
+     *
+     * @return RhuLicenciaTipo
+     */
+    public function setAusentismo($ausentismo)
+    {
+        $this->ausentismo = $ausentismo;
+
+        return $this;
+    }
+
+    /**
+     * Get ausentismo
+     *
+     * @return boolean
+     */
+    public function getAusentismo()
+    {
+        return $this->ausentismo;
+    }
+
+    /**
+     * Set maternidad
+     *
+     * @param boolean $maternidad
+     *
+     * @return RhuLicenciaTipo
+     */
+    public function setMaternidad($maternidad)
+    {
+        $this->maternidad = $maternidad;
+
+        return $this;
+    }
+
+    /**
+     * Get maternidad
+     *
+     * @return boolean
+     */
+    public function getMaternidad()
+    {
+        return $this->maternidad;
     }
 
     /**
@@ -170,53 +248,5 @@ class RhuLicenciaTipo
     public function getLicenciasLicenciaTipoRel()
     {
         return $this->licenciasLicenciaTipoRel;
-    }
-
-    /**
-     * Set afectaSalud
-     *
-     * @param boolean $afectaSalud
-     *
-     * @return RhuLicenciaTipo
-     */
-    public function setAfectaSalud($afectaSalud)
-    {
-        $this->afectaSalud = $afectaSalud;
-
-        return $this;
-    }
-
-    /**
-     * Get afectaSalud
-     *
-     * @return boolean
-     */
-    public function getAfectaSalud()
-    {
-        return $this->afectaSalud;
-    }
-
-    /**
-     * Set ausentismo
-     *
-     * @param boolean $ausentismo
-     *
-     * @return RhuLicenciaTipo
-     */
-    public function setAusentismo($ausentismo)
-    {
-        $this->ausentismo = $ausentismo;
-
-        return $this;
-    }
-
-    /**
-     * Get ausentismo
-     *
-     * @return boolean
-     */
-    public function getAusentismo()
-    {
-        return $this->ausentismo;
     }
 }

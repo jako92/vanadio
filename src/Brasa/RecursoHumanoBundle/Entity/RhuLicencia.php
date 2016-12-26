@@ -65,13 +65,18 @@ class RhuLicencia
     /**     
      * @ORM\Column(name="afecta_transporte", type="boolean")
      */    
-    private $afectaTransporte = 0; 
+    private $afectaTransporte = false; 
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */    
     private $codigoUsuario;
 
+    /**     
+     * @ORM\Column(name="maternidad", type="boolean")
+     */    
+    private $maternidad = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuLicenciaTipo", inversedBy="licenciasLicenciaTipoRel")
      * @ORM\JoinColumn(name="codigo_licencia_tipo_fk", referencedColumnName="codigo_licencia_tipo_pk")
@@ -95,6 +100,8 @@ class RhuLicencia
      * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
      */
     protected $contratoRel;    
+
+
 
     /**
      * Get codigoLicenciaPk
@@ -227,6 +234,30 @@ class RhuLicencia
     }
 
     /**
+     * Set codigoContratoFk
+     *
+     * @param integer $codigoContratoFk
+     *
+     * @return RhuLicencia
+     */
+    public function setCodigoContratoFk($codigoContratoFk)
+    {
+        $this->codigoContratoFk = $codigoContratoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoContratoFk
+     *
+     * @return integer
+     */
+    public function getCodigoContratoFk()
+    {
+        return $this->codigoContratoFk;
+    }
+
+    /**
      * Set cantidad
      *
      * @param float $cantidad
@@ -323,6 +354,54 @@ class RhuLicencia
     }
 
     /**
+     * Set codigoUsuario
+     *
+     * @param string $codigoUsuario
+     *
+     * @return RhuLicencia
+     */
+    public function setCodigoUsuario($codigoUsuario)
+    {
+        $this->codigoUsuario = $codigoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoUsuario
+     *
+     * @return string
+     */
+    public function getCodigoUsuario()
+    {
+        return $this->codigoUsuario;
+    }
+
+    /**
+     * Set maternidad
+     *
+     * @param boolean $maternidad
+     *
+     * @return RhuLicencia
+     */
+    public function setMaternidad($maternidad)
+    {
+        $this->maternidad = $maternidad;
+
+        return $this;
+    }
+
+    /**
+     * Get maternidad
+     *
+     * @return boolean
+     */
+    public function getMaternidad()
+    {
+        return $this->maternidad;
+    }
+
+    /**
      * Set licenciaTipoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicenciaTipo $licenciaTipoRel
@@ -392,54 +471,6 @@ class RhuLicencia
     public function getEmpleadoRel()
     {
         return $this->empleadoRel;
-    }
-
-    /**
-     * Set codigoUsuario
-     *
-     * @param string $codigoUsuario
-     *
-     * @return RhuLicencia
-     */
-    public function setCodigoUsuario($codigoUsuario)
-    {
-        $this->codigoUsuario = $codigoUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoUsuario
-     *
-     * @return string
-     */
-    public function getCodigoUsuario()
-    {
-        return $this->codigoUsuario;
-    }
-
-    /**
-     * Set codigoContratoFk
-     *
-     * @param integer $codigoContratoFk
-     *
-     * @return RhuLicencia
-     */
-    public function setCodigoContratoFk($codigoContratoFk)
-    {
-        $this->codigoContratoFk = $codigoContratoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoContratoFk
-     *
-     * @return integer
-     */
-    public function getCodigoContratoFk()
-    {
-        return $this->codigoContratoFk;
     }
 
     /**

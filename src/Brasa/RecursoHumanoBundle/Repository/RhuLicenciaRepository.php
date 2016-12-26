@@ -75,16 +75,16 @@ class RhuLicenciaRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $strFechaDesde = $fechaDesde->format('Y-m-d');
         $strFechaHasta = $fechaHasta->format('Y-m-d');
-        $dql = "SELECT licencia FROM BrasaRecursoHumanoBundle:RhuLicencia licencia "
+        $dql = "SELECT licencia FROM BrasaRecursoHumanoBundle:RhuLicencia licencia JOIN licencia.licenciaTipoRel licenciaTipo "
                 . "WHERE (((licencia.fechaDesde BETWEEN '$strFechaDesde' AND '$strFechaHasta') OR (licencia.fechaHasta BETWEEN '$strFechaDesde' AND '$strFechaHasta')) "
                 . "OR (licencia.fechaDesde >= '$strFechaDesde' AND licencia.fechaDesde <= '$strFechaHasta') "
                 . "OR (licencia.fechaHasta >= '$strFechaHasta' AND licencia.fechaDesde <= '$strFechaDesde')) "
                 . "AND licencia.codigoEmpleadoFk = '" . $codigoEmpleado . "' ";
 
         if($tipo == 1) {
-            $dql = $dql . "AND (licencia.codigoLicenciaTipoFk = 3 OR licencia.codigoLicenciaTipoFk = 4)";       
+            $dql = $dql . "AND licenciaTipo.maternidad = 1";       
         } else {
-            $dql = $dql . "AND licencia.codigoLicenciaTipoFk <> 3 AND licencia.codigoLicenciaTipoFk <> 4";       
+            $dql = $dql . "AND licenciaTipo.maternidad = 0";       
         }
         $objQuery = $em->createQuery($dql);  
         $arLicencias = $objQuery->getResult();         
