@@ -394,7 +394,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetFillColor(200, 200, 200);
         $this->SetFont('Arial','B',8);
         //Logo
-        $this->Image('imagenes/logos/logo.jpg', 20, 13, 30, 20);
+        $this->Image('imagenes/logos/logo.jpg', 20, 13, 30, 25);
         $this->Image('imagenes/logos/veritas.jpg', 165, 11, 17, 22);
         $this->Image('imagenes/logos/iso.jpg', 185, 11, 24, 24);
         //INFORMACIÓN EMPRESA
