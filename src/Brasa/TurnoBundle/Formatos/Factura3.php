@@ -149,7 +149,7 @@ class Factura3 extends \FPDF_FPDF {
         $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(30, 4, '', 0, 0, 'R');
         $pdf->Cell(30, 4, '', 0, 0, 'R');*/
-        $pdf->Ln(1);
+        $pdf->Ln(0);
         $pdf->SetFont('Arial', '', 8);
         if($arFactura->getImprimirRelacion() == false) {
             if($arFactura->getImprimirAgrupada() == 0) {
@@ -180,8 +180,8 @@ class Factura3 extends \FPDF_FPDF {
                     //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Ln(2);
-                    $pdf->SetAutoPageBreak(true, 15);
+                    $pdf->Ln(-1);
+                    $pdf->SetAutoPageBreak(true, 88);
                 }
             } /*else {
                 $strSql = "SELECT tur_puesto.nombre AS puesto, tur_modalidad_servicio.nombre AS modalidadServicio, tur_concepto_servicio.nombre_facturacion AS conceptoServicio, cantidad  AS cantidad, vr_precio AS precio
