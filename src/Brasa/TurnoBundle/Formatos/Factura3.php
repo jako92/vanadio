@@ -38,7 +38,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->Cell(50, 4, "FACTURA DE VENTA", 0, 0, 'L', 0);
         $this->SetXY(178, 38);
         $this->SetFont('Arial','B',12);
-        $this->Cell(20, 4, utf8_decode("N°.  "). "14111412", 0, 0, 'L', 0);//$arFactura->getCodigoFacturaPk(), 0, 0, 'L', 0);
+        $this->Cell(20, 4, utf8_decode("N°.  "). $arFactura->getNumero(), 0, 0, 'L', 0);//$arFactura->getCodigoFacturaPk(), 0, 0, 'L', 0);
         //
         $this->SetFont('Arial', 'B', 8);
         $this->SetXY(15, 43);
@@ -159,10 +159,10 @@ class Factura3 extends \FPDF_FPDF {
                         $modalidad = "-" . utf8_decode($arFacturaDetalle->getModalidadServicioRel()->getNombre());
                     }
                     $pdf->Cell(139, 4, substr(utf8_decode($arFacturaDetalle->getPuestoRel()->getNombre()) . $modalidad, 0, 61), 0, 0, 'L');
-                    $pdf->SetFont('Arial', 'B', 8);
+                    
                     $modalidad = "";
                     
-                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');
+                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');
                     
                     $pdf->SetFont('Arial', '', 8);
                     $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
