@@ -119,12 +119,14 @@ class Programacion1 extends \FPDF_FPDF {
         $this->SetFont('Arial','',7);
         $this->Cell(68, 4, '', 1, 0, 'L', 1);                
         
-        $this->EncabezadoDetalles();
+        $this->EncabezadoDetalles($arProgramacion->getFecha());
         
     }
 
-    public function EncabezadoDetalles() {
+    public function EncabezadoDetalles($fecha) {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $this->Ln(10);
+        $header1 = array('', '','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31');
         $header = array('COD', 'RECURSO','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
@@ -134,11 +136,24 @@ class Programacion1 extends \FPDF_FPDF {
 
         //creamos la cabecera de la tabla.
         $w = array(10, 50, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
-        for ($i = 0; $i < count($header); $i++)
-            if ($i == 0 || $i == 1)
+        for ($i = 0; $i < count($header1); $i++) {
+            if ($i == 0 || $i == 1) {
+                $this->Cell($w[$i], 4, $header1[$i], 1, 0, 'L', 1);
+            } else {
+                $strFecha = $fecha->format('Y/m/').($i-1);
+                $fecha = date_create($strFecha);
+                $this->Cell($w[$i], 4, $objFunciones->devuelveDiaSemanaEspaniol($fecha), 1, 0, 'C', 1);            
+            }
+        }        
+        $this->Ln();
+        $w = array(10, 50, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
+        for ($i = 0; $i < count($header); $i++) {
+            if ($i == 0 || $i == 1) {
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
-            else
-                $this->Cell($w[$i], 4, $header[$i], 1, 0, 'C', 1);
+            } else {
+                $this->Cell($w[$i], 4, $header[$i], 1, 0, 'C', 1);            
+            }
+        }
 
         //Restauración de colores y fuentes
         $this->SetFillColor(224, 235, 255);
