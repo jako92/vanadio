@@ -174,7 +174,16 @@ class InvTercero
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="invTercerosFormaPagoRel")
+     * @ORM\JoinColumn(name="codigo_forma_pago_cliente_fk", referencedColumnName="codigo_forma_pago_pk")
+     */
+    protected $formaPagoRel;
+    
+    
   
+    
     
     /**
      * Constructor
@@ -360,6 +369,30 @@ class InvTercero
     public function getCodigoAsesorFk()
     {
         return $this->codigoAsesorFk;
+    }
+
+    /**
+     * Set codigoCiudadFk
+     *
+     * @param integer $codigoCiudadFk
+     *
+     * @return InvTercero
+     */
+    public function setCodigoCiudadFk($codigoCiudadFk)
+    {
+        $this->codigoCiudadFk = $codigoCiudadFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCiudadFk
+     *
+     * @return integer
+     */
+    public function getCodigoCiudadFk()
+    {
+        return $this->codigoCiudadFk;
     }
 
     /**
@@ -901,30 +934,6 @@ class InvTercero
     }
 
     /**
-     * Set codigoCiudadFk
-     *
-     * @param integer $codigoCiudadFk
-     *
-     * @return InvTercero
-     */
-    public function setCodigoCiudadFk($codigoCiudadFk)
-    {
-        $this->codigoCiudadFk = $codigoCiudadFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCiudadFk
-     *
-     * @return integer
-     */
-    public function getCodigoCiudadFk()
-    {
-        return $this->codigoCiudadFk;
-    }
-
-    /**
      * Set ciudadRel
      *
      * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
@@ -946,5 +955,29 @@ class InvTercero
     public function getCiudadRel()
     {
         return $this->ciudadRel;
+    }
+
+    /**
+     * Set formaPagoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel
+     *
+     * @return InvTercero
+     */
+    public function setFormaPagoRel(\Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel = null)
+    {
+        $this->formaPagoRel = $formaPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get formaPagoRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenFormaPago
+     */
+    public function getFormaPagoRel()
+    {
+        return $this->formaPagoRel;
     }
 }

@@ -106,13 +106,13 @@ class InvMovimientoRepository extends EntityRepository {
                 }
                 //$arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $arAsesor = $em->getRepository('BrasaGeneralBundle:GenAsesor')->find(1);
-                $arFormaPago = $em->getRepository('BrasaGeneralBundle:GenFormaPago')->find($arMovimiento->getTerceroRel()->getCodigoFormaPagoClienteFk());
+                //$arFormaPago = $em->getRepository('BrasaGeneralBundle:GenFormaPago')->find($arMovimiento->getTerceroRel()->getCodigoFormaPagoClienteFk());
                 $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find(3);
                 $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
                 $arClienteCartera = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $arMovimiento->getTerceroRel()->getNit()));
                 if ($arClienteCartera == null){
                     $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
-                    $arClienteCartera->setFormaPagoRel($arFormaPago);
+                    $arClienteCartera->setFormaPagoRel($arMovimiento->getTerceroRel()->getFormaPagoRel());
                     $arClienteCartera->setAsesorRel($arAsesor);
                     $arClienteCartera->setCiudadRel($arMovimiento->getTerceroRel()->getCiudadRel());
                     $arClienteCartera->setNit($arMovimiento->getTerceroRel()->getNit());

@@ -192,6 +192,12 @@ class InvMovimiento
     protected $terceroRel;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="invMovimientosFormaPagoRel")
+     * @ORM\JoinColumn(name="codigo_forma_pago_fk", referencedColumnName="codigo_forma_pago_pk")
+     */
+    protected $formaPagoRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="InvMovimientoDetalle", mappedBy="movimientoRel")
      */
     protected $movimientosDetallesMovimientoRel;    
@@ -202,6 +208,7 @@ class InvMovimiento
     protected $movimientosDescuentosFinancierosMovimientoRel;     
     
    
+    
     /**
      * Constructor
      */
@@ -267,6 +274,30 @@ class InvMovimiento
     public function getCodigoDocumentoTipoFk()
     {
         return $this->codigoDocumentoTipoFk;
+    }
+
+    /**
+     * Set codigoDocumentoClaseFk
+     *
+     * @param integer $codigoDocumentoClaseFk
+     *
+     * @return InvMovimiento
+     */
+    public function setCodigoDocumentoClaseFk($codigoDocumentoClaseFk)
+    {
+        $this->codigoDocumentoClaseFk = $codigoDocumentoClaseFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoDocumentoClaseFk
+     *
+     * @return integer
+     */
+    public function getCodigoDocumentoClaseFk()
+    {
+        return $this->codigoDocumentoClaseFk;
     }
 
     /**
@@ -1014,6 +1045,30 @@ class InvMovimiento
     }
 
     /**
+     * Set formaPagoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel
+     *
+     * @return InvMovimiento
+     */
+    public function setFormaPagoRel(\Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel = null)
+    {
+        $this->formaPagoRel = $formaPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get formaPagoRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenFormaPago
+     */
+    public function getFormaPagoRel()
+    {
+        return $this->formaPagoRel;
+    }
+
+    /**
      * Add movimientosDetallesMovimientoRel
      *
      * @param \Brasa\InventarioBundle\Entity\InvMovimientoDetalle $movimientosDetallesMovimientoRel
@@ -1079,29 +1134,5 @@ class InvMovimiento
     public function getMovimientosDescuentosFinancierosMovimientoRel()
     {
         return $this->movimientosDescuentosFinancierosMovimientoRel;
-    }
-
-    /**
-     * Set codigoDocumentoClaseFk
-     *
-     * @param integer $codigoDocumentoClaseFk
-     *
-     * @return InvMovimiento
-     */
-    public function setCodigoDocumentoClaseFk($codigoDocumentoClaseFk)
-    {
-        $this->codigoDocumentoClaseFk = $codigoDocumentoClaseFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoDocumentoClaseFk
-     *
-     * @return integer
-     */
-    public function getCodigoDocumentoClaseFk()
-    {
-        return $this->codigoDocumentoClaseFk;
     }
 }

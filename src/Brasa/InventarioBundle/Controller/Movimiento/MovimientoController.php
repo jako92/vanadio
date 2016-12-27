@@ -106,6 +106,7 @@ class MovimientoController extends Controller
                 $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->findOneBy(array('nit' => $arrControles['txtNit']));                
                 if(count($arTercero) > 0) {
                     $arMovimiento->setTerceroRel($arTercero);
+                    $arMovimiento->setFormaPagoRel($arTercero->getFormaPagoRel());
                     $arMovimiento->setDocumentoRel($arDocumento);
                     $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
                     $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());

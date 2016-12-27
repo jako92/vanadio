@@ -18,6 +18,13 @@ class InvTerceroType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+             ->add('formaPagoRel', EntityType::class, array(
+                'class' => 'BrasaGeneralBundle:GenFormaPago',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('fp')
+                    ->orderBy('fp.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))   
              ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {

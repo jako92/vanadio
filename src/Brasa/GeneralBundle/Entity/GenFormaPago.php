@@ -37,9 +37,20 @@ class GenFormaPago
     /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuCliente", mappedBy="formaPagoRel")
      */
-    protected $rhuClientesFormaPagoRel;    
+    protected $rhuClientesFormaPagoRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\InventarioBundle\Entity\InvMovimiento", mappedBy="formaPagoRel")
+     */
+    protected $invMovimientosFormaPagoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\InventarioBundle\Entity\InvTercero", mappedBy="formaPagoRel")
+     */
+    protected $invTercerosFormaPagoRel;
 
         
+    
     
     
     /**
@@ -50,6 +61,8 @@ class GenFormaPago
         $this->turClientesFormaPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carClientesFormaPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rhuClientesFormaPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->invMovimientosFormaPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->invTercerosFormaPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -186,5 +199,73 @@ class GenFormaPago
     public function getRhuClientesFormaPagoRel()
     {
         return $this->rhuClientesFormaPagoRel;
+    }
+
+    /**
+     * Add invMovimientosFormaPagoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvMovimiento $invMovimientosFormaPagoRel
+     *
+     * @return GenFormaPago
+     */
+    public function addInvMovimientosFormaPagoRel(\Brasa\InventarioBundle\Entity\InvMovimiento $invMovimientosFormaPagoRel)
+    {
+        $this->invMovimientosFormaPagoRel[] = $invMovimientosFormaPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove invMovimientosFormaPagoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvMovimiento $invMovimientosFormaPagoRel
+     */
+    public function removeInvMovimientosFormaPagoRel(\Brasa\InventarioBundle\Entity\InvMovimiento $invMovimientosFormaPagoRel)
+    {
+        $this->invMovimientosFormaPagoRel->removeElement($invMovimientosFormaPagoRel);
+    }
+
+    /**
+     * Get invMovimientosFormaPagoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvMovimientosFormaPagoRel()
+    {
+        return $this->invMovimientosFormaPagoRel;
+    }
+
+    /**
+     * Add invTercerosFormaPagoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvTercero $invTercerosFormaPagoRel
+     *
+     * @return GenFormaPago
+     */
+    public function addInvTercerosFormaPagoRel(\Brasa\InventarioBundle\Entity\InvTercero $invTercerosFormaPagoRel)
+    {
+        $this->invTercerosFormaPagoRel[] = $invTercerosFormaPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove invTercerosFormaPagoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvTercero $invTercerosFormaPagoRel
+     */
+    public function removeInvTercerosFormaPagoRel(\Brasa\InventarioBundle\Entity\InvTercero $invTercerosFormaPagoRel)
+    {
+        $this->invTercerosFormaPagoRel->removeElement($invTercerosFormaPagoRel);
+    }
+
+    /**
+     * Get invTercerosFormaPagoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvTercerosFormaPagoRel()
+    {
+        return $this->invTercerosFormaPagoRel;
     }
 }
