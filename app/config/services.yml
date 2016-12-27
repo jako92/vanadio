@@ -19,4 +19,10 @@ services:
         class: Brasa\InventarioBundle\Admin\InventarioItemAdmin
         arguments: [~, Brasa\InventarioBundle\Entity\InvItem, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Item }            
+            - { name: sonata.admin, manager_type: orm, label: Item }     
+            
+    admin.recursohumano.incapacidadtipo:
+        class: Brasa\RecursoHumanoBundle\Admin\IncapacidadTipoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Incapacidad tipo }            

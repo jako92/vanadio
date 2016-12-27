@@ -120,3 +120,9 @@ sonata_admin:
                 items:
                     - admin.inventario.marca 
                     - admin.inventario.item 
+                    
+            app.admin.group.recursohumano:
+                label: Recurso humano
+                label_catalogue: Brasa\RecursoHumanoBundle
+                items:
+                    - admin.recursohumano.incapacidadtipo             
