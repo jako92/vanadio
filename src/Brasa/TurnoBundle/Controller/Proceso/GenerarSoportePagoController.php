@@ -54,104 +54,106 @@ class GenerarSoportePagoController extends Controller
                 $codigoSoportePagoPeriodo = $request->request->get('OpGenerar');
                 $arSoportePagoPeriodo = new \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();
                 $arSoportePagoPeriodo = $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->find($codigoSoportePagoPeriodo);                
-                $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
-                $arCentroCosto = $arSoportePagoPeriodo->getCentroCostoRel();                
-                $dateFechaDesde = $arSoportePagoPeriodo->getFechaDesde();
-                $dateFechaHasta = $arSoportePagoPeriodo->getFechaHasta();
-                $intDiaInicial = $dateFechaDesde->format('j');
-                $intDiaFinal = $dateFechaHasta->format('j'); 
-                $arFestivos = $em->getRepository('BrasaGeneralBundle:GenFestivo')->festivos($dateFechaDesde->format('Y-m-').'01', $dateFechaHasta->format('Y-m-').'31');                
-                
-                //Genera los recursos del soporte pago
-                $dql   = "SELECT pd.codigoRecursoFk FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.recursoRel r "
-                        . "WHERE pd.anio = " . $arSoportePagoPeriodo->getFechaDesde()->format('Y') . " AND pd.mes = " . $arSoportePagoPeriodo->getFechaDesde()->format('m') . " GROUP BY pd.codigoRecursoFk";      
-                $query = $em->createQuery($dql);                
-                $arRecursosResumen = $query->getResult();
-                foreach($arRecursosResumen as $arRecursoResumen) {
-                    $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
-                    $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arRecursoResumen['codigoRecursoFk']);                    
-                    $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                    $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                    $arEmpleado = $arRecurso->getEmpleadoRel();
-                    $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
-                            . "WHERE c.codigoEmpleadoFk = " . $arRecurso->getCodigoEmpleadoFk()
-                            . " AND c.fechaUltimoPago < '" . $dateFechaHasta->format('Y-m-d') . "' "
-                            . " AND c.fechaDesde <= '" . $dateFechaHasta->format('Y-m-d') . "' "
-                            . " AND (c.fechaHasta >= '" . $dateFechaDesde->format('Y-m-d') . "' "
-                            . " OR c.indefinido = 1)"; 
-                    $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                    $query = $em->createQuery($dql);
-                    $arContratos = $query->getResult();
-                    $numeroContratos = count($arContratos);
-                    foreach ($arContratos as $arContrato) {
-                        if($arContrato->getCodigoCentroCostoFk() == $arSoportePagoPeriodo->getCodigoCentroCostoFk()) {
-                            if($arContrato->getEstadoTerminado() == 0 || $arContrato->getFechaHasta() >= $arSoportePagoPeriodo->getFechaDesde()) {
-                                if($arContrato->getFechaDesde() <= $arSoportePagoPeriodo->getFechaHasta()) {
-                                    $arSoportePago = new \Brasa\TurnoBundle\Entity\TurSoportePago();                                                
-                                    $arSoportePago->setCodigoContratoFk($arContrato->getCodigoContratoPk());
-                                    $arSoportePago->setVrSalario($arContrato->getVrSalario()); 
-                                    $arSoportePago->setVrDevengadoPactado($arContrato->getVrDevengadoPactado());
-                                    $arSoportePago->setRecursoRel($arRecurso);
-                                    $arSoportePago->setSoportePagoPeriodoRel($arSoportePagoPeriodo);
-                                    $arSoportePago->setAnio($arSoportePagoPeriodo->getAnio());
-                                    $arSoportePago->setMes($arSoportePagoPeriodo->getMes());
-                                    $arSoportePago->setDescansoOrdinario($arCentroCosto->getDescansoOrdinario());
-                                    $arSoportePago->setSecuencia($arContrato->getSecuencia());
-                                    if($numeroContratos > 1) {
-                                        if($arContrato->getFechaDesde() > $arSoportePagoPeriodo->getFechaDesde()) {
-                                            $arSoportePago->setFechaDesde($arContrato->getFechaDesde());
-                                            $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());
-                                        }
-                                        if($arContrato->getFechaHasta() < $arSoportePagoPeriodo->getFechaHasta()) {
+                if($arSoportePagoPeriodo->getEstadoGenerado() == 0) {
+                    $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
+                    $arCentroCosto = $arSoportePagoPeriodo->getCentroCostoRel();                
+                    $dateFechaDesde = $arSoportePagoPeriodo->getFechaDesde();
+                    $dateFechaHasta = $arSoportePagoPeriodo->getFechaHasta();
+                    $intDiaInicial = $dateFechaDesde->format('j');
+                    $intDiaFinal = $dateFechaHasta->format('j'); 
+                    $arFestivos = $em->getRepository('BrasaGeneralBundle:GenFestivo')->festivos($dateFechaDesde->format('Y-m-').'01', $dateFechaHasta->format('Y-m-').'31');                
+
+                    //Genera los recursos del soporte pago
+                    $dql   = "SELECT pd.codigoRecursoFk FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.recursoRel r "
+                            . "WHERE pd.anio = " . $arSoportePagoPeriodo->getFechaDesde()->format('Y') . " AND pd.mes = " . $arSoportePagoPeriodo->getFechaDesde()->format('m') . " GROUP BY pd.codigoRecursoFk";      
+                    $query = $em->createQuery($dql);                
+                    $arRecursosResumen = $query->getResult();
+                    foreach($arRecursosResumen as $arRecursoResumen) {
+                        $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
+                        $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arRecursoResumen['codigoRecursoFk']);                    
+                        $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+                        $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                        $arEmpleado = $arRecurso->getEmpleadoRel();
+                        $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
+                                . "WHERE c.codigoEmpleadoFk = " . $arRecurso->getCodigoEmpleadoFk()
+                                . " AND c.fechaUltimoPago < '" . $dateFechaHasta->format('Y-m-d') . "' "
+                                . " AND c.fechaDesde <= '" . $dateFechaHasta->format('Y-m-d') . "' "
+                                . " AND (c.fechaHasta >= '" . $dateFechaDesde->format('Y-m-d') . "' "
+                                . " OR c.indefinido = 1)"; 
+                        $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+                        $query = $em->createQuery($dql);
+                        $arContratos = $query->getResult();
+                        $numeroContratos = count($arContratos);
+                        foreach ($arContratos as $arContrato) {
+                            if($arContrato->getCodigoCentroCostoFk() == $arSoportePagoPeriodo->getCodigoCentroCostoFk()) {
+                                if($arContrato->getEstadoTerminado() == 0 || $arContrato->getFechaHasta() >= $arSoportePagoPeriodo->getFechaDesde()) {
+                                    if($arContrato->getFechaDesde() <= $arSoportePagoPeriodo->getFechaHasta()) {
+                                        $arSoportePago = new \Brasa\TurnoBundle\Entity\TurSoportePago();                                                
+                                        $arSoportePago->setCodigoContratoFk($arContrato->getCodigoContratoPk());
+                                        $arSoportePago->setVrSalario($arContrato->getVrSalario()); 
+                                        $arSoportePago->setVrDevengadoPactado($arContrato->getVrDevengadoPactado());
+                                        $arSoportePago->setRecursoRel($arRecurso);
+                                        $arSoportePago->setSoportePagoPeriodoRel($arSoportePagoPeriodo);
+                                        $arSoportePago->setAnio($arSoportePagoPeriodo->getAnio());
+                                        $arSoportePago->setMes($arSoportePagoPeriodo->getMes());
+                                        $arSoportePago->setDescansoOrdinario($arCentroCosto->getDescansoOrdinario());
+                                        $arSoportePago->setSecuencia($arContrato->getSecuencia());
+                                        if($numeroContratos > 1) {
+                                            if($arContrato->getFechaDesde() > $arSoportePagoPeriodo->getFechaDesde()) {
+                                                $arSoportePago->setFechaDesde($arContrato->getFechaDesde());
+                                                $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());
+                                            }
+                                            if($arContrato->getFechaHasta() < $arSoportePagoPeriodo->getFechaHasta()) {
+                                                $arSoportePago->setFechaDesde($arSoportePagoPeriodo->getFechaDesde());
+                                                $arSoportePago->setFechaHasta($arContrato->getFechaHasta());                                        
+                                            }
+                                        } else {
                                             $arSoportePago->setFechaDesde($arSoportePagoPeriodo->getFechaDesde());
-                                            $arSoportePago->setFechaHasta($arContrato->getFechaHasta());                                        
+                                            $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());                                    
                                         }
-                                    } else {
-                                        $arSoportePago->setFechaDesde($arSoportePagoPeriodo->getFechaDesde());
-                                        $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());                                    
+                                        /* Se suspende mientras se analizan los datos de los turnos fijos
+                                         * if($arContrato->getCodigoSalarioTipoFk() == 1) {
+                                            $arSoportePago->setTurnoFijo(1);
+                                        }
+                                         * 
+                                         */
+                                        /*if($arRecurso->getCodigoTurnoFijoNominaFk()) {
+                                           $arSoportePago->setTurnoFijo(1);
+                                        }*/      
+                                        if($arContrato->getTurnoFijoOrdinario()) {
+                                            $arSoportePago->setTurnoFijo(1);
+                                        }
+                                        $em->persist($arSoportePago);                                                    
                                     }
-                                    /* Se suspende mientras se analizan los datos de los turnos fijos
-                                     * if($arContrato->getCodigoSalarioTipoFk() == 1) {
-                                        $arSoportePago->setTurnoFijo(1);
-                                    }
-                                     * 
-                                     */
-                                    /*if($arRecurso->getCodigoTurnoFijoNominaFk()) {
-                                       $arSoportePago->setTurnoFijo(1);
-                                    }*/      
-                                    if($arContrato->getTurnoFijoOrdinario()) {
-                                        $arSoportePago->setTurnoFijo(1);
-                                    }
-                                    $em->persist($arSoportePago);                                                    
-                                }
-                            }                                                    
-                        }                        
-                    }   
-                                      
-                }                
-                $em->flush();
-                
-                //Generar los detalles del soporte de pago
-                $arSoportesPago = new \Brasa\TurnoBundle\Entity\TurSoportePago();
-                $arSoportesPago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));
-                foreach ($arSoportesPago as $arSoportePago) {
-                    $em->getRepository('BrasaTurnoBundle:TurSoportePago')->generar($arSoportePago, $arFestivos);                    
-                }                                                
-                $em->flush();
-                
-                //Genera soporte pago "programacion"
-                foreach ($arSoportesPago as $arSoportePago) {
-                    $em->getRepository('BrasaTurnoBundle:TurSoportePago')->generarProgramacion($arSoportePago, $arSoportePagoPeriodo->getFechaDesde()->format('Y'), $arSoportePagoPeriodo->getFechaDesde()->format('m'));
-                }                
-                $em->flush();                
-                
-                $arSoportePagoPeriodo->setEstadoGenerado(1);
-                $em->persist($arSoportePagoPeriodo);
-                $em->flush();
-                
-                $em->getRepository('BrasaTurnoBundle:TurSoportePago')->resumen($arSoportePagoPeriodo);                
-                $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->analizarInconsistencias($codigoSoportePagoPeriodo);                                                                                                    
-                $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                    
+                                }                                                    
+                            }                        
+                        }   
+
+                    }                
+                    $em->flush();
+
+                    //Generar los detalles del soporte de pago
+                    $arSoportesPago = new \Brasa\TurnoBundle\Entity\TurSoportePago();
+                    $arSoportesPago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));
+                    foreach ($arSoportesPago as $arSoportePago) {
+                        $em->getRepository('BrasaTurnoBundle:TurSoportePago')->generar($arSoportePago, $arFestivos);                    
+                    }                                                
+                    $em->flush();
+
+                    //Genera soporte pago "programacion"
+                    foreach ($arSoportesPago as $arSoportePago) {
+                        $em->getRepository('BrasaTurnoBundle:TurSoportePago')->generarProgramacion($arSoportePago, $arSoportePagoPeriodo->getFechaDesde()->format('Y'), $arSoportePagoPeriodo->getFechaDesde()->format('m'));
+                    }                
+                    $em->flush();                
+
+                    $arSoportePagoPeriodo->setEstadoGenerado(1);
+                    $em->persist($arSoportePagoPeriodo);
+                    $em->flush();
+
+                    $em->getRepository('BrasaTurnoBundle:TurSoportePago')->resumen($arSoportePagoPeriodo);                
+                    $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->analizarInconsistencias($codigoSoportePagoPeriodo);                                                                                                    
+                    $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                                        
+                }
 
                 return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago'));
             }
