@@ -437,19 +437,14 @@ class PagosAdicionalesController extends Controller
      * @Route("/rhu/pagos/adicionales/generarmasivo/suplementario/detalle/{codigoProgramacionPago}", name="brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle")
      */
     public function generarMasivoSuplementarioDetalleAction(Request $request, $codigoProgramacionPago) {
-        $em = $this->getDoctrine()->getManager();
-        
+        $em = $this->getDoctrine()->getManager();        
         $session = new Session;
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
         $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
         $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
-        $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
-        //$query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaDQL('', $arProgramacionPago->getCodigoCentroCostoFk(), 1));
-        //$arEmpleados = $paginator->paginate($query, $request->query->get('page', 1), 50);
-        //$form = $this->formularioLista();
-        
+        $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));        
         $arrayPropiedadesDepartamentoEmpresa = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa',
                 'query_builder' => function (EntityRepository $er) {
@@ -468,12 +463,19 @@ class PagosAdicionalesController extends Controller
             ->add('departamentoEmpresaRel', EntityType::class, $arrayPropiedadesDepartamentoEmpresa)
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))    
+            ->add('BtnEliminarExtra', SubmitType::class, array('label'  => 'Eliminar extra'))                                
             ->getForm();
         $form->handleRequest($request);
         $this->listarTiempoSuplementarioMasivo($arProgramacionPago);
         if($form->isValid()) {
             $arrControles = $request->request->All();
-            
+            if($form->get('BtnEliminarExtra')->isClicked()) {
+                if ($arProgramacionPago->getEstadoPagado() == 0 && $arProgramacionPago->getEstadoGenerado() == 0){
+                    $strSql = "UPDATE rhu_programacion_pago_detalle SET horas_extras_ordinarias_diurnas = 0, horas_extras_ordinarias_nocturnas = 0, horas_extras_festivas_diurnas = 0, horas_extras_festivas_nocturnas = 0, horas_recargo_nocturno = 0, horas_recargo_festivo_diurno = 0, horas_recargo_festivo_nocturno = 0 WHERE codigo_programacion_pago_fk = " . $codigoProgramacionPago;           
+                    $em->getConnection()->executeQuery($strSql);  
+                    return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));                                                
+                }
+            }            
             if($form->get('BtnGuardar')->isClicked()) {
                 if ($arProgramacionPago->getEstadoPagado() == 0){
                     $intIndice = 0;
@@ -547,7 +549,7 @@ class PagosAdicionalesController extends Controller
             }
         }
         
-        $arProgramacionPagoDetalle = $paginator->paginate($arProgramacionPagoDetalle, $request->query->get('page', 1), 50);                               
+        $arProgramacionPagoDetalle = $paginator->paginate($arProgramacionPagoDetalle, $request->query->get('page', 1), 30);                               
         //$arEmpleados = $paginator->paginate($em->createQuery($this->strDqlListaTiempoSuplementarioMasivo), $request->query->get('page', 1), 50);                               
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/PagosAdicionales:generarMasivoSuplementarioDetalle.html.twig', array(
             'arProgramacionPagoDetalle' => $arProgramacionPagoDetalle,

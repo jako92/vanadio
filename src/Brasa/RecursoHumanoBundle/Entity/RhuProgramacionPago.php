@@ -50,37 +50,37 @@ class RhuProgramacionPago
     /**
      * @ORM\Column(name="estado_generado", type="boolean")
      */    
-    private $estadoGenerado = 0;    
+    private $estadoGenerado = false;    
     
     /**
      * @ORM\Column(name="estado_pagado", type="boolean")
      */    
-    private $estadoPagado = 0;    
+    private $estadoPagado = false;    
     
     /**
      * @ORM\Column(name="estado_pagado_banco", type="boolean")
      */    
-    private $estadoPagadoBanco = 0;    
+    private $estadoPagadoBanco = false;    
     
     /**
      * @ORM\Column(name="estado_anulado", type="boolean")
      */    
-    private $estadoAnulado = 0;            
+    private $estadoAnulado = false;            
     
     /**     
      * @ORM\Column(name="verificar_pagos_adicionales", type="boolean")
      */    
-    private $verificarPagosAdicionales = 0;    
+    private $verificarPagosAdicionales = false;    
 
     /**     
      * @ORM\Column(name="verificar_incapacidades", type="boolean")
      */    
-    private $verificarIncapacidades = 0;     
+    private $verificarIncapacidades = false;     
     
     /**
      * @ORM\Column(name="novedades_verificadas", type="boolean")
      */    
-    private $novedadesVerificadas = 0;     
+    private $novedadesVerificadas = false;     
     
     /**
      * @ORM\Column(name="vr_neto", type="float")
@@ -90,13 +90,13 @@ class RhuProgramacionPago
     /**
      * @ORM\Column(name="empleados_generados", type="boolean")
      */    
-    private $empleadosGenerados = 0;
+    private $empleadosGenerados = false;
     
     /**     
      * Cuando se deshace un periodo esta propiedad ayuda a que no vuelva a generar periodo nuevo
      * @ORM\Column(name="no_generar_periodo", type="boolean")
      */    
-    private $noGeneraPeriodo = 0;     
+    private $noGeneraPeriodo = false;     
     
     /**
      * @ORM\Column(name="numero_empleados", type="integer")
@@ -122,6 +122,56 @@ class RhuProgramacionPago
      * @ORM\Column(name="codigo_soporte_pago_periodo_fk", type="integer", nullable=true)
      */    
     private $codigoSoportePagoPeriodoFk;     
+    
+    /**
+     * @ORM\Column(name="aplicar_credito", type="boolean")
+     */    
+    private $aplicarCredito = false;    
+
+    /**
+     * @ORM\Column(name="aplicar_embargo", type="boolean")
+     */    
+    private $aplicarEmbargo = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_vacacacion", type="boolean")
+     */    
+    private $aplicarVacacion = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_incapacidad", type="boolean")
+     */    
+    private $aplicarIncapacidad = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_licencia", type="boolean")
+     */    
+    private $aplicarLicencia = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_adicional", type="boolean")
+     */    
+    private $aplicarAdicional = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_extra", type="boolean")
+     */    
+    private $aplicarExtra = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_salud", type="boolean")
+     */    
+    private $aplicarSalud = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_pension", type="boolean")
+     */    
+    private $aplicarPension = false;    
+    
+    /**
+     * @ORM\Column(name="aplicar_transporte", type="boolean")
+     */    
+    private $aplicarTransporte = false;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuPagoTipo", inversedBy="programacionesPagosPagoTipoRel")
@@ -165,7 +215,6 @@ class RhuProgramacionPago
      */
     protected $facturasDetallesProgramacionPagoRel;
   
-
     /**
      * Constructor
      */
@@ -670,6 +719,270 @@ class RhuProgramacionPago
     }
 
     /**
+     * Set codigoSoportePagoPeriodoFk
+     *
+     * @param integer $codigoSoportePagoPeriodoFk
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setCodigoSoportePagoPeriodoFk($codigoSoportePagoPeriodoFk)
+    {
+        $this->codigoSoportePagoPeriodoFk = $codigoSoportePagoPeriodoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSoportePagoPeriodoFk
+     *
+     * @return integer
+     */
+    public function getCodigoSoportePagoPeriodoFk()
+    {
+        return $this->codigoSoportePagoPeriodoFk;
+    }
+
+    /**
+     * Set aplicarCredito
+     *
+     * @param boolean $aplicarCredito
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarCredito($aplicarCredito)
+    {
+        $this->aplicarCredito = $aplicarCredito;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarCredito
+     *
+     * @return boolean
+     */
+    public function getAplicarCredito()
+    {
+        return $this->aplicarCredito;
+    }
+
+    /**
+     * Set aplicarEmbargo
+     *
+     * @param boolean $aplicarEmbargo
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarEmbargo($aplicarEmbargo)
+    {
+        $this->aplicarEmbargo = $aplicarEmbargo;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarEmbargo
+     *
+     * @return boolean
+     */
+    public function getAplicarEmbargo()
+    {
+        return $this->aplicarEmbargo;
+    }
+
+    /**
+     * Set aplicarVacacion
+     *
+     * @param boolean $aplicarVacacion
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarVacacion($aplicarVacacion)
+    {
+        $this->aplicarVacacion = $aplicarVacacion;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarVacacion
+     *
+     * @return boolean
+     */
+    public function getAplicarVacacion()
+    {
+        return $this->aplicarVacacion;
+    }
+
+    /**
+     * Set aplicarIncapacidad
+     *
+     * @param boolean $aplicarIncapacidad
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarIncapacidad($aplicarIncapacidad)
+    {
+        $this->aplicarIncapacidad = $aplicarIncapacidad;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarIncapacidad
+     *
+     * @return boolean
+     */
+    public function getAplicarIncapacidad()
+    {
+        return $this->aplicarIncapacidad;
+    }
+
+    /**
+     * Set aplicarLicencia
+     *
+     * @param boolean $aplicarLicencia
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarLicencia($aplicarLicencia)
+    {
+        $this->aplicarLicencia = $aplicarLicencia;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarLicencia
+     *
+     * @return boolean
+     */
+    public function getAplicarLicencia()
+    {
+        return $this->aplicarLicencia;
+    }
+
+    /**
+     * Set aplicarAdicional
+     *
+     * @param boolean $aplicarAdicional
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarAdicional($aplicarAdicional)
+    {
+        $this->aplicarAdicional = $aplicarAdicional;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarAdicional
+     *
+     * @return boolean
+     */
+    public function getAplicarAdicional()
+    {
+        return $this->aplicarAdicional;
+    }
+
+    /**
+     * Set aplicarExtra
+     *
+     * @param boolean $aplicarExtra
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarExtra($aplicarExtra)
+    {
+        $this->aplicarExtra = $aplicarExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarExtra
+     *
+     * @return boolean
+     */
+    public function getAplicarExtra()
+    {
+        return $this->aplicarExtra;
+    }
+
+    /**
+     * Set aplicarSalud
+     *
+     * @param boolean $aplicarSalud
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarSalud($aplicarSalud)
+    {
+        $this->aplicarSalud = $aplicarSalud;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarSalud
+     *
+     * @return boolean
+     */
+    public function getAplicarSalud()
+    {
+        return $this->aplicarSalud;
+    }
+
+    /**
+     * Set aplicarPension
+     *
+     * @param boolean $aplicarPension
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarPension($aplicarPension)
+    {
+        $this->aplicarPension = $aplicarPension;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarPension
+     *
+     * @return boolean
+     */
+    public function getAplicarPension()
+    {
+        return $this->aplicarPension;
+    }
+
+    /**
+     * Set aplicarTransporte
+     *
+     * @param boolean $aplicarTransporte
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setAplicarTransporte($aplicarTransporte)
+    {
+        $this->aplicarTransporte = $aplicarTransporte;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarTransporte
+     *
+     * @return boolean
+     */
+    public function getAplicarTransporte()
+    {
+        return $this->aplicarTransporte;
+    }
+
+    /**
      * Set pagoTipoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoTipo $pagoTipoRel
@@ -919,29 +1232,5 @@ class RhuProgramacionPago
     public function getFacturasDetallesProgramacionPagoRel()
     {
         return $this->facturasDetallesProgramacionPagoRel;
-    }
-
-    /**
-     * Set codigoSoportePagoPeriodoFk
-     *
-     * @param integer $codigoSoportePagoPeriodoFk
-     *
-     * @return RhuProgramacionPago
-     */
-    public function setCodigoSoportePagoPeriodoFk($codigoSoportePagoPeriodoFk)
-    {
-        $this->codigoSoportePagoPeriodoFk = $codigoSoportePagoPeriodoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoSoportePagoPeriodoFk
-     *
-     * @return integer
-     */
-    public function getCodigoSoportePagoPeriodoFk()
-    {
-        return $this->codigoSoportePagoPeriodoFk;
     }
 }

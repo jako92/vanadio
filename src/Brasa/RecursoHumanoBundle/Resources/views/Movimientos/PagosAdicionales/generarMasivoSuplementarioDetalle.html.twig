@@ -22,8 +22,8 @@
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body"> 
                 <div class="form-group form-group-sm">  
-                    <label for="form_departamentoEmpresaRel" class="col-sm-2 control-label">Departamento empresa:</label>
-                    <div class="col-sm-10">                  
+                    <label for="form_departamentoEmpresaRel" class="col-sm-3 control-label">Departamento empresa:</label>
+                    <div class="col-sm-9">                  
                         {{ form_widget(form.departamentoEmpresaRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>    
@@ -103,6 +103,9 @@
                 </div>
             </div>        
             <div class="btn-toolbar" style="float: right">                
+                <div class="btn-group">                
+                    {{ form_widget(form.BtnEliminarExtra, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
+                </div>
                 <div class="btn-group">                
                     {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
                 </div>           

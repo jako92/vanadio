@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 class TurRecursoRepository extends EntityRepository {    
     
-    public function ListaDql($strNombre = "", $strCodigo = "", $codigoCentroCosto = "", $strNumeroIdentificacion = "", $codigoRecursoGrupo = "", $estadoRetirado = "", $estadoActivo = "") {
+    public function listaDql($strNombre = "", $strCodigo = "", $codigoCentroCosto = "", $strNumeroIdentificacion = "", $codigoRecursoGrupo = "", $estadoRetirado = "", $estadoActivo = "") {
         $em = $this->getEntityManager();
         $dql   = "SELECT r FROM BrasaTurnoBundle:TurRecurso r WHERE r.codigoRecursoPk <> 0";
         if($strNombre != "" ) {

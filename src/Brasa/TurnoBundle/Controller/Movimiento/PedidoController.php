@@ -22,6 +22,7 @@ class PedidoController extends Controller
     var $strListaDql = ""; 
     var $strListaDqlRecurso = "";   
     var $codigoRecurso = "";
+    var $identificacion = "";
     var $nombreRecurso = "";    
     
     /**
@@ -841,7 +842,8 @@ class PedidoController extends Controller
         $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);        
         $form = $this->createFormBuilder()
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->nombreRecurso))
-            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->codigoRecurso))                            
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->codigoRecurso)) 
+            ->add('TxtIdentificacion', TextType::class, array('data' => $this->identificacion))                                            
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))                
                 
@@ -924,7 +926,9 @@ class PedidoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $this->strListaDqlRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->listaDQL(
                 $this->nombreRecurso,                
-                $this->codigoRecurso   
+                $this->codigoRecurso,
+                "",
+                $this->identificacion
                 ); 
     }    
     
@@ -946,6 +950,8 @@ class PedidoController extends Controller
 
     private function filtrarRecurso($form) {       
         $this->nombreRecurso = $form->get('TxtNombre')->getData();
+        $this->codigoRecurso = $form->get('TxtCodigo')->getData();
+        $this->identificacion = $form->get('TxtIdentificacion')->getData();
     }
     
     private function formularioFiltro() {
