@@ -16,7 +16,7 @@ class AnticipoController extends Controller
     /**
      * @Route("/cartera/consulta/anticipo/lista", name="brs_cartera_consulta_anticipo_lista")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 52)) {
@@ -47,7 +47,7 @@ class AnticipoController extends Controller
     /**
      * @Route("/cartera/consulta/anticipo/detalle", name="brs_cartera_consulta_anticipo_detalle")
      */    
-    public function detalleAction() {
+    public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 53)) {

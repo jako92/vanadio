@@ -14,7 +14,7 @@ class MovimientoAnticipoController extends Controller
     /**
      * @Route("/cartera/movimiento/anticipo/lista", name="brs_cartera_movimiento_anticipo_listar")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         $session = $this->getRequest()->getSession();

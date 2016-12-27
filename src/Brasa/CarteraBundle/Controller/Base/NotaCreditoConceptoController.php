@@ -14,7 +14,7 @@ class NotaCreditoConceptoController extends Controller
     /**
      * @Route("/cartera/base/notacredito/concepto/lista", name="brs_cartera_base_notacredito_concepto_listar")
      */   
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 109, 1)) {
@@ -49,7 +49,7 @@ class NotaCreditoConceptoController extends Controller
     /**
      * @Route("/cartera/base/notacredito/concepto/nuevo/{codigoNotaCreditoConcepto}", name="brs_cartera_base_notacredito_concepto_nuevo")
      */
-    public function nuevoAction($codigoNotaCreditoConcepto = '') {
+    public function nuevoAction(Request $request, $codigoNotaCreditoConcepto = '') {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();

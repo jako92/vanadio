@@ -15,7 +15,7 @@ class ClienteController extends Controller
     /**
      * @Route("/cartera/base/cliente/lista", name="brs_cartera_base_cliente_listar")
      */   
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 106, 1)) {
@@ -50,7 +50,7 @@ class ClienteController extends Controller
     /**
      * @Route("/cartera/base/cliente/nuevo/{codigoCliente}", name="brs_cartera_base_cliente_nuevo")
      */
-    public function nuevoAction($codigoCliente = '') {
+    public function nuevoAction(Request $request, $codigoCliente = '') {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();

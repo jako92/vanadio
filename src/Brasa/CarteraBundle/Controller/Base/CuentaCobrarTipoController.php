@@ -14,7 +14,7 @@ class CuentaCobrarTipoController extends Controller
     /**
      * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_cartera_base_cuentacobrar_tipo_listar")
      */   
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 108, 1)) {
@@ -49,7 +49,7 @@ class CuentaCobrarTipoController extends Controller
     /**
      * @Route("/cartera/base/cuentacobrar/tipo/nuevo/{codigoCuentaCobrarTipo}", name="brs_cartera_base_cuentacobrar_tipo_nuevo")
      */
-    public function nuevoAction($codigoCuentaCobrarTipo = '') {
+    public function nuevoAction(Request $request, $codigoCuentaCobrarTipo = '') {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();

@@ -14,7 +14,7 @@ class ReciboController extends Controller
     /**
      * @Route("/cartera/consulta/recibo/lista", name="brs_cartera_consulta_recibo_lista")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 55)) {
@@ -47,7 +47,7 @@ class ReciboController extends Controller
     /**
      * @Route("/cartera/consulta/recibo/detalle", name="brs_cartera_consulta_recibo_detalle")
      */    
-    public function detalleAction() {
+    public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 56)) {

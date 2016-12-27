@@ -14,7 +14,7 @@ class ReciboTipoController extends Controller
     /**
      * @Route("/cartera/base/recibo/tipo/lista", name="brs_cartera_base_recibo_tipo_listar")
      */   
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 107, 1)) {
@@ -49,7 +49,7 @@ class ReciboTipoController extends Controller
     /**
      * @Route("/cartera/base/recibo/tipo/nuevo/{codigoReciboTipo}", name="brs_cartera_base_recibo_tipo_nuevo")
      */
-    public function nuevoAction($codigoReciboTipo = '') {
+    public function nuevoAction(Request $request, $codigoReciboTipo = '') {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();

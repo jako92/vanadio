@@ -14,7 +14,7 @@ class NotaDebitoController extends Controller
     /**
      * @Route("/cartera/consulta/notadebito/lista", name="brs_cartera_consulta_notadebito_lista")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 59)) {
@@ -47,7 +47,7 @@ class NotaDebitoController extends Controller
     /**
      * @Route("/cartera/consulta/notadebito/detalle", name="brs_cartera_consulta_notadebito_detalle")
      */    
-    public function detalleAction() {
+    public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 60)) {

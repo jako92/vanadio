@@ -14,7 +14,7 @@ class NotaDebitoConceptoController extends Controller
     /**
      * @Route("/cartera/base/notadebito/concepto/lista", name="brs_cartera_base_notadebito_concepto_listar")
      */   
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 110, 1)) {
@@ -49,7 +49,7 @@ class NotaDebitoConceptoController extends Controller
     /**
      * @Route("/cartera/base/notadebito/concepto/nuevo/{codigoNotaDebitoConcepto}", name="brs_cartera_base_notadebito_concepto_nuevo")
      */
-    public function nuevoAction($codigoNotaDebitoConcepto = '') {
+    public function nuevoAction(Request $request, $codigoNotaDebitoConcepto = '') {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();

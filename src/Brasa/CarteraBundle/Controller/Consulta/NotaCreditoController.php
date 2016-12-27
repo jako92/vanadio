@@ -14,7 +14,7 @@ class NotaCreditoController extends Controller
     /**
      * @Route("/cartera/consulta/notacredito/lista", name="brs_cartera_consulta_notacredito_lista")
      */    
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 57)) {

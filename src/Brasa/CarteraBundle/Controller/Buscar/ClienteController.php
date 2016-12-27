@@ -15,7 +15,7 @@ class ClienteController extends Controller
     /**
      * @Route("/cartera/buscar/cliente/{campoCodigo}/{campoNombre}", name="brs_cartera_buscar_cliente")
      */ 
-    public function listaAction($campoCodigo,$campoNombre) {
+    public function listaAction(Request $request, $campoCodigo,$campoNombre) {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         $paginator  = $this->get('knp_paginator');
