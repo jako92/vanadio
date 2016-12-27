@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class ServiciosDetallesRecursosController extends Controller
 {
     var $strListaDql = "";
@@ -26,18 +26,15 @@ class ServiciosDetallesRecursosController extends Controller
         $form->handleRequest($request);
         $this->lista();
         $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-        if ($form->isValid()) {  
-            $arrControles = $request->request->All();
-            if($arrControles['txtNit'] != '') {                
-                $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));
-                if($arCliente) {
-                    $this->codigoCliente = $arCliente->getCodigoClientePk();
-                }
-            }            
+        if ($form->isValid()) {             
             if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrar($form);
+                $form = $this->formularioFiltro();
                 $this->lista();
             }
             if ($form->get('BtnExcel')->isClicked()) {
+                $this->filtrar($form);
+                $form = $this->formularioFiltro();
                 $this->lista();
                 $this->generarExcel();
             }
@@ -51,14 +48,51 @@ class ServiciosDetallesRecursosController extends Controller
             
     private function lista() {
         $em = $this->getDoctrine()->getManager();
+        $session = new session;
         $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurServicioDetalleRecurso')->listaConsultaDql(
                 $this->codigoCliente);
+        
+        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurServicioDetalleRecurso')->listaConsultaDql(
+                $session->get('filtroCodigoCliente'),
+                $session->get('filtroCodigoRecurso'));          
     }
 
+    private function filtrar ($form) {
+        $session = new session;     
+        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoRecurso', $form->get('TxtCodigoRecurso')->getData());
+    }      
+    
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
-        $form = $this->createFormBuilder()            
+        $strNombreCliente = "";
+        if($session->get('filtroNit')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+            if($arCliente) {
+                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
+                $strNombreCliente = $arCliente->getNombreCorto();
+            }  else {
+                $session->set('filtroCodigoCliente', null);
+                $session->set('filtroNit', null);
+            }          
+        } else {
+            $session->set('filtroCodigoCliente', null);
+        }         
+        $strNombreRecurso = "";
+        if($session->get('filtroCodigoRecurso')) {
+            $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($session->get('filtroCodigoRecurso'));
+            if($arRecurso) {                
+                $strNombreRecurso = $arRecurso->getNombreCorto();
+            }  else {
+                $session->set('filtroCodigoRecurso', null);
+            }          
+        }        
+        $form = $this->createFormBuilder()
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                                
+            ->add('TxtCodigoRecurso', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroCodigoRecurso')))
+            ->add('TxtNombreRecurso', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreRecurso))                                                
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
