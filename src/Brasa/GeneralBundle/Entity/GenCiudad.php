@@ -217,6 +217,11 @@ class GenCiudad
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuAcademia", mappedBy="ciudadRel")
      */
     protected $rhuAcademiasCiudadRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\InventarioBundle\Entity\InvTercero", mappedBy="ciudadRel")
+     */
+    protected $invTercerosCiudadRel;
 
     
     /**
@@ -1522,5 +1527,39 @@ class GenCiudad
     public function getRhuAcademiasCiudadRel()
     {
         return $this->rhuAcademiasCiudadRel;
+    }
+
+    /**
+     * Add invTercerosCiudadRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvTercero $invTercerosCiudadRel
+     *
+     * @return GenCiudad
+     */
+    public function addInvTercerosCiudadRel(\Brasa\InventarioBundle\Entity\InvTercero $invTercerosCiudadRel)
+    {
+        $this->invTercerosCiudadRel[] = $invTercerosCiudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove invTercerosCiudadRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvTercero $invTercerosCiudadRel
+     */
+    public function removeInvTercerosCiudadRel(\Brasa\InventarioBundle\Entity\InvTercero $invTercerosCiudadRel)
+    {
+        $this->invTercerosCiudadRel->removeElement($invTercerosCiudadRel);
+    }
+
+    /**
+     * Get invTercerosCiudadRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvTercerosCiudadRel()
+    {
+        return $this->invTercerosCiudadRel;
     }
 }

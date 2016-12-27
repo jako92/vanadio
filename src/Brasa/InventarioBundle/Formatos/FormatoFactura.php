@@ -308,9 +308,12 @@ class FormatoFactura extends \FPDF_FPDF {
 
         $this->Ln(3);
         $this->SetFont('Arial', 'B', 8);
-        $this->Text(20, $this->GetY($this->SetY(264)), $arConfiguracion->getInformacionPagoFactura());
+        $this->GetY($this->SetY(261));
+        $this->SetX(10);
+        $this->MultiCell(200, 3, $arConfiguracion->getInformacionPagoFactura(), 0, 'C');
+        //$this->Text(20, $this->GetY($this->SetY(264)), $arConfiguracion->getInformacionPagoFactura());
         $this->SetFont('Arial', '', 7);
-        $this->Text(60, $this->GetY($this->SetY(267)), $arConfiguracion->getInformacionContactoFactura());
+        $this->Text(60, $this->GetY($this->SetY(273)), $arConfiguracion->getInformacionContactoFactura(), 0, 'C');
 
         //Número de página
         $this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');

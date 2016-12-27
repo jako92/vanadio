@@ -51,7 +51,12 @@ class InvTercero
     /**
      * @ORM\Column(name="codigo_asesor_fk", type="integer", nullable=true)
      */    
-    private $codigoAsesorFk;    
+    private $codigoAsesorFk;
+
+    /**
+     * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
+     */
+    private $codigoCiudadFk;
     
     /**
      * @ORM\Column(name="codigo_lista_precio_fk", type="integer", nullable=true)
@@ -162,7 +167,13 @@ class InvTercero
     /**
      * @ORM\OneToMany(targetEntity="InvMovimiento", mappedBy="terceroRel")
      */
-    protected $movimientosTerceroRel;          
+    protected $movimientosTerceroRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="invTercerosCiudadRel")
+     * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
+     */
+    protected $ciudadRel;
   
     
     /**
@@ -887,5 +898,53 @@ class InvTercero
     public function getMovimientosTerceroRel()
     {
         return $this->movimientosTerceroRel;
+    }
+
+    /**
+     * Set codigoCiudadFk
+     *
+     * @param integer $codigoCiudadFk
+     *
+     * @return InvTercero
+     */
+    public function setCodigoCiudadFk($codigoCiudadFk)
+    {
+        $this->codigoCiudadFk = $codigoCiudadFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCiudadFk
+     *
+     * @return integer
+     */
+    public function getCodigoCiudadFk()
+    {
+        return $this->codigoCiudadFk;
+    }
+
+    /**
+     * Set ciudadRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
+     *
+     * @return InvTercero
+     */
+    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
+    {
+        $this->ciudadRel = $ciudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudadRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenCiudad
+     */
+    public function getCiudadRel()
+    {
+        return $this->ciudadRel;
     }
 }

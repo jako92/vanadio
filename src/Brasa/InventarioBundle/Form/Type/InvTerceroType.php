@@ -6,6 +6,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class InvTerceroType extends AbstractType
 {
@@ -15,7 +17,14 @@ class InvTerceroType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder            
+        $builder
+             ->add('ciudadRel', EntityType::class, array(
+                'class' => 'BrasaGeneralBundle:GenCiudad',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))   
             ->add('nit', NumberType::class, array('required' => true))
             ->add('digitoVerificacion', NumberType::class, array('required' => true))    
             ->add('nombreCorto', TextType::class, array('required' => true))    
