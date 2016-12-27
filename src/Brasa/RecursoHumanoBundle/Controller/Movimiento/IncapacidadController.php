@@ -398,13 +398,7 @@ class IncapacidadController extends Controller
             }
         }
         if($tipo == 2) {
-            if($prorroga == 0) {
-                if($diasIncapacidad >= 2) {
-                    $dias = $diasIncapacidad - 1;
-                }                
-            } else {
-                $dias = $diasIncapacidad;
-            }
+            $dias = $diasIncapacidad;                
         }        
         return $dias;
     }
