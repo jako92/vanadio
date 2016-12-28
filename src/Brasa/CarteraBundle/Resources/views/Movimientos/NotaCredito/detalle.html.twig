@@ -55,7 +55,7 @@
                     </tr>                  
                     <tr>
                         <td class="titulo">CUENTA BANCO:</td>
-                        <td class="td-in-well">{{ arNotaCredito.cuentaRel.nombre }}</td>
+                        <td class="td-in-well">{{ arNotaCredito.cuentaRel.nombre | default('')}}</td>
                         <td class="titulo" >CONCEPTO:</td>
                         <td class="td-in-well">{{ arNotaCredito.notacreditoConceptoRel.nombre }}</td>
                         <td class="titulo" align="right"></td>
@@ -106,7 +106,7 @@
                 <tr class="{{ class }}">
                     <td>{{ arNotaCreditoDetalle.codigoNotaCreditoDetallePk  }}<input type="hidden" name="LblCodigo[]" value="{{ arNotaCreditoDetalle.codigoNotaCreditoDetallePk }}"></td>                                                    
                     <td>{{ arNotaCreditoDetalle.numeroFactura  }}</td>
-                    <td>{{ arNotaCreditoDetalle.cuentaCobrarTipoRel.nombre  }}</td>
+                    <td>{{ arNotaCreditoDetalle.cuentaCobrarTipoRel.nombre | default('') }}</td>
                     {% if arNotaCredito.estadoAutorizado == 0 %}                        
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtValor{{ arNotaCreditoDetalle.codigoNotaCreditoDetallePk }}" value="{{ arNotaCreditoDetalle.valor  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                     {% else %}                        

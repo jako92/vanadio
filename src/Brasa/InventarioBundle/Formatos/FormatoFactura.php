@@ -88,7 +88,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $List1 = array('',
             $arMovimiento->getFecha()->format('Y-m-d'),
             $arMovimiento->getFecha()->format('Y-m-d'),
-            "Contado",
+            $arMovimiento->getTerceroRel()->getFormaPagoRel()->getNombre(),
             $arMovimiento->getTerceroRel()->getPlazoPagoCliente(),
             $arMovimiento->getSoporte());
         $this->SetXY(175,25);
