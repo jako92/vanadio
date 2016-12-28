@@ -4,7 +4,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\CarteraBundle\Form\Type\CarReciboTipoType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ReciboTipoController extends Controller
 {
@@ -15,8 +18,7 @@ class ReciboTipoController extends Controller
      * @Route("/cartera/base/recibo/tipo/lista", name="brs_cartera_base_recibo_tipo_listar")
      */   
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 107, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -49,15 +51,14 @@ class ReciboTipoController extends Controller
     /**
      * @Route("/cartera/base/recibo/tipo/nuevo/{codigoReciboTipo}", name="brs_cartera_base_recibo_tipo_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoReciboTipo = '') {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoReciboTipo = '') {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arReciboTipo = new \Brasa\CarteraBundle\Entity\CarReciboTipo();
         if($codigoReciboTipo != '' && $codigoReciboTipo != '0') {
             $arReciboTipo = $em->getRepository('BrasaCarteraBundle:CarReciboTipo')->find($codigoReciboTipo);
         }        
-        $form = $this->createForm(new CarReciboTipoType, $arReciboTipo);
+        $form = $this->createForm(CarReciboTipoType::class, $arReciboTipo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arReciboTipo = $form->getData();
@@ -92,11 +93,11 @@ class ReciboTipoController extends Controller
     
     private function formularioFiltro() {
         $form = $this->createFormBuilder()            
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))                            
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))                            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -104,7 +105,7 @@ class ReciboTipoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -119,13 +120,10 @@ class ReciboTipoController extends Controller
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIG0')
                     ->setCellValue('B1', 'NOMBRE');
-
-        $i = 2;
-        
+        $i = 2;        
         $query = $em->createQuery($this->strDqlLista);
                 $arReciboTipos = new \Brasa\CarteraBundle\Entity\CarReciboTipo();
-                $arReciboTipos = $query->getResult();
-                
+                $arReciboTipos = $query->getResult();                
         foreach ($arReciboTipos as $arReciboTipo) {            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arReciboTipo->getCodigoReciboTipoPk())

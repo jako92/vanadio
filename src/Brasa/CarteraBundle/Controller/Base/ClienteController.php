@@ -4,7 +4,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\CarteraBundle\Form\Type\CarClienteType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ClienteController extends Controller
 {
@@ -16,8 +19,7 @@ class ClienteController extends Controller
      * @Route("/cartera/base/cliente/lista", name="brs_cartera_base_cliente_listar")
      */   
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 106, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -50,15 +52,14 @@ class ClienteController extends Controller
     /**
      * @Route("/cartera/base/cliente/nuevo/{codigoCliente}", name="brs_cartera_base_cliente_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoCliente = '') {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoCliente = '') {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCliente = new \Brasa\CarteraBundle\Entity\CarCliente();
         if($codigoCliente != '' && $codigoCliente != '0') {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->find($codigoCliente);
         }        
-        $form = $this->createForm(new CarClienteType, $arCliente);
+        $form = $this->createForm(CarClienteType::class, $arCliente);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arCliente = $form->getData();
@@ -102,12 +103,12 @@ class ClienteController extends Controller
     
     private function formularioFiltro() {
         $form = $this->createFormBuilder()            
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtIdentificacion', 'text', array('label'  => 'Identificacion','data' => $this->strIdentificacion))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))                            
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $this->strIdentificacion))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))                            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -115,7 +116,7 @@ class ClienteController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

@@ -5,9 +5,9 @@ class FormatoRecibo extends \FPDF_FPDF {
     
     public static $codigoRecibo;
     
-    public function Generar($miThis, $codigoRecibo) {        
+    public function Generar($em, $codigoRecibo) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoRecibo = $codigoRecibo;
         $pdf = new FormatoRecibo();

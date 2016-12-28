@@ -3,7 +3,14 @@ namespace Brasa\CarteraBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 class CuentaCobrarPilaController extends Controller
 {
     var $strListaDql = "";
@@ -14,8 +21,7 @@ class CuentaCobrarPilaController extends Controller
      * @Route("/cartera/consulta/cuentacobrarpila/lista", name="brs_cartera_consulta_cuentacobrarpila_lista")
      */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         $paginator  = $this->get('knp_paginator');
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 101)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
@@ -36,7 +42,7 @@ class CuentaCobrarPilaController extends Controller
             if ($form->get('BtnPdf')->isClicked()) {
                 $strWhere .= $this->devFiltro($form);
                 $objEstadoCuenta = new \Brasa\CarteraBundle\Formatos\EstadoCuentaPila();
-                $objEstadoCuenta->Generar($this, $strWhere);
+                $objEstadoCuenta->Generar($em, $strWhere);
             }            
         }
         $connection = $em->getConnection();
@@ -55,7 +61,7 @@ class CuentaCobrarPilaController extends Controller
 
     private function devFiltro($form) {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strWhere = "";
         $arTipo = $form->get('cuentaCobrarTipoRel')->getData();  
         if($arTipo) {
@@ -91,7 +97,7 @@ class CuentaCobrarPilaController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -134,17 +140,17 @@ class CuentaCobrarPilaController extends Controller
             $arrayPropiedadesAsesor['data'] = $em->getReference("BrasaGeneralBundle:GenAsesor", $session->get('filtroAsesor'));
         }        
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
-            ->add('cuentaCobrarTipoRel', 'entity', $arrayPropiedades)
-            ->add('asesorRel', 'entity', $arrayPropiedadesAsesor)
-            ->add('rango', 'choice', array('choices' => array('TODOS' => '0','1 - 30' => '30', '31 - 60' => '60', '61 - 90' => '90', '91 - 180' => '180')))
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))            
-            ->add('BtnPdf', 'submit', array('label'  => 'PDF',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
+            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('asesorRel', EntityType::class, $arrayPropiedadesAsesor)
+            ->add('rango', ChoiceType::class, array('choices' => array('0' => 'TODOS','30' => '1 - 30', '60' => '31 - 60', '90' => '61 - 90', '180' => '91 - 180')))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))            
+            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }

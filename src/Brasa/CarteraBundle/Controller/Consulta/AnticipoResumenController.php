@@ -4,6 +4,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 class AnticipoResumenController extends Controller
 {
     var $strListaDql = "";
@@ -12,8 +17,7 @@ class AnticipoResumenController extends Controller
      * @Route("/cartera/consulta/anticipo/resumen/", name="brs_cartera_consulta_anticipo_resumen")
      */    
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 51)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -36,15 +40,15 @@ class AnticipoResumenController extends Controller
                 $codigoFormato = $arConfiguracion->getCodigoFormatoResumenAnticipo();
                 if($codigoFormato == 0) { //formato para cualquier empresa
                     $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen();
-                    $objImprimir->Generar($this, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
+                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
                 }
                 if($codigoFormato == 1) { //formato para empresa horus
                     $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen1();
-                    $objImprimir->Generar($this, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
+                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
                 }
                 if($codigoFormato == 2) { //formato para empresa horus2
                     $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen2();
-                    $objImprimir->Generar($this, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
+                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
                 }
             }            
         }    
@@ -71,7 +75,7 @@ class AnticipoResumenController extends Controller
     }    
             
     private function lista() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -84,7 +88,7 @@ class AnticipoResumenController extends Controller
     }        
 
     private function filtrarLista ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         /*$arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
         if ($arAnticipoTipo == null){
             $codigo = "";
@@ -103,7 +107,7 @@ class AnticipoResumenController extends Controller
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -132,14 +136,14 @@ class AnticipoResumenController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
         }*/
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
             //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))            
-            ->add('BtnImprimir', 'submit', array('label'  => 'Imprimir',))
-            ->add('BtnFiltrarLista', 'submit', array('label'  => 'Filtrar'))
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))            
+            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))
+            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }               

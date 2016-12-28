@@ -5,6 +5,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AnticipoController extends Controller
 {
@@ -17,8 +22,7 @@ class AnticipoController extends Controller
      * @Route("/cartera/consulta/anticipo/lista", name="brs_cartera_consulta_anticipo_lista")
      */    
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 52)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -48,8 +52,7 @@ class AnticipoController extends Controller
      * @Route("/cartera/consulta/anticipo/detalle", name="brs_cartera_consulta_anticipo_detalle")
      */    
     public function detalleAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 53)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -77,7 +80,7 @@ class AnticipoController extends Controller
     }
             
     private function lista() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -90,7 +93,7 @@ class AnticipoController extends Controller
     }
     
     private function detalle() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -103,7 +106,7 @@ class AnticipoController extends Controller
     }
 
     private function filtrarLista ($form, Request $request) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         /*$arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
         if ($arAnticipoTipo == null){
             $codigo = "";
@@ -121,7 +124,7 @@ class AnticipoController extends Controller
     }
     
     private function filtrarDetalle ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         $arCuentaCobrarTipo = $form->get('cuentaCobrarTipoRel')->getData();
         if ($arCuentaCobrarTipo == null){
             $codigo = "";
@@ -140,7 +143,7 @@ class AnticipoController extends Controller
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -169,14 +172,14 @@ class AnticipoController extends Controller
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
         }*/
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
             //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
-            ->add('BtnExcelLista', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarLista', 'submit', array('label'  => 'Filtrar'))
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
+            ->add('BtnExcelLista', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   
@@ -202,24 +205,24 @@ class AnticipoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCuentaCobrarTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('cuentaCobrarTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('BtnExcelDetalle', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarDetalle', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarDetalle', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   

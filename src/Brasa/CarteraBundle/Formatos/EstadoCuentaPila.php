@@ -4,9 +4,9 @@ class EstadoCuentaPila extends \FPDF_FPDF {
     public static $em;   
     public static $strWhere;
     
-    public function Generar($miThis, $strWhere) {        
+    public function Generar($em, $strWhere) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$strWhere = $strWhere;
         $pdf = new EstadoCuentaPila();

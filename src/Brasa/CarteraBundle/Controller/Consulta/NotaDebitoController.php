@@ -4,6 +4,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 class NotaDebitoController extends Controller
 {
     var $strListaDql = "";
@@ -15,8 +21,7 @@ class NotaDebitoController extends Controller
      * @Route("/cartera/consulta/notadebito/lista", name="brs_cartera_consulta_notadebito_lista")
      */    
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 59)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -48,8 +53,7 @@ class NotaDebitoController extends Controller
      * @Route("/cartera/consulta/notadebito/detalle", name="brs_cartera_consulta_notadebito_detalle")
      */    
     public function detalleAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 60)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -79,7 +83,7 @@ class NotaDebitoController extends Controller
     }
             
     private function lista() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -92,7 +96,7 @@ class NotaDebitoController extends Controller
     }
     
     private function detalle() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -105,7 +109,7 @@ class NotaDebitoController extends Controller
     }
 
     private function filtrarLista ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         $arNotaDebitoConcepto = $form->get('notaDebitoConceptoRel')->getData();
         if ($arNotaDebitoConcepto == null){
             $codigo = "";
@@ -127,7 +131,7 @@ class NotaDebitoController extends Controller
     }
     
     private function filtrarDetalle ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         $arCuentaCobrarTipo = $form->get('cuentaCobrarTipoRel')->getData();
         if ($arCuentaCobrarTipo == null){
             $codigo = "";
@@ -144,7 +148,7 @@ class NotaDebitoController extends Controller
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -163,31 +167,31 @@ class NotaDebitoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('ndc')
                     ->orderBy('ndc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroNotaDebitoConcepto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarNotaDebitoConcepto", $session->get('filtroNotaDebitoConcepto'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('notaDebitoConceptoRel', 'entity', $arrayPropiedades)
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('BtnExcelLista', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarLista', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('notaDebitoConceptoRel', EntityType::class, $arrayPropiedades)
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+            ->add('BtnExcelLista', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   
     
     private function formularioFiltroDetalle() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session();
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -206,24 +210,24 @@ class NotaDebitoController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCuentaCobrarTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('cuentaCobrarTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('BtnExcelDetalle', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarDetalle', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarDetalle', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   

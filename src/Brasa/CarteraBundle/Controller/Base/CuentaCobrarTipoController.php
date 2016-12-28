@@ -4,7 +4,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarTipoType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CuentaCobrarTipoController extends Controller
 {
@@ -15,8 +18,7 @@ class CuentaCobrarTipoController extends Controller
      * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_cartera_base_cuentacobrar_tipo_listar")
      */   
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 108, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -50,14 +52,13 @@ class CuentaCobrarTipoController extends Controller
      * @Route("/cartera/base/cuentacobrar/tipo/nuevo/{codigoCuentaCobrarTipo}", name="brs_cartera_base_cuentacobrar_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoCuentaCobrarTipo = '') {
-        $request = $this->getRequest();
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();            
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCuentaCobrarTipo = new \Brasa\CarteraBundle\Entity\CarCuentaCobrarTipo();
         if($codigoCuentaCobrarTipo != '' && $codigoCuentaCobrarTipo != '0') {
             $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find($codigoCuentaCobrarTipo);
         }        
-        $form = $this->createForm(new CarCuentaCobrarTipoType, $arCuentaCobrarTipo);
+        $form = $this->createForm(CarCuentaCobrarTipoType::class, $arCuentaCobrarTipo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arCuentaCobrarTipo = $form->getData();
@@ -92,19 +93,19 @@ class CuentaCobrarTipoController extends Controller
     
     private function formularioFiltro() {
         $form = $this->createFormBuilder()            
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))                            
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))                            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
 
     private function generarExcel() {
-        ob_clean();
+        ob_clean();        
+        $session = new session();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

@@ -5,9 +5,9 @@ class FormatoNotaCredito extends \FPDF_FPDF {
     
     public static $codigoNotaCredito;
     
-    public function Generar($miThis, $codigoNotaCredito) {        
+    public function Generar($em, $codigoNotaCredito) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoNotaCredito = $codigoNotaCredito;
         $pdf = new FormatoNotaCredito();

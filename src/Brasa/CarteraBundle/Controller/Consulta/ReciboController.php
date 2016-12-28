@@ -2,8 +2,14 @@
 namespace Brasa\CarteraBundle\Controller\Consulta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 class ReciboController extends Controller
 {
     var $strListaDql = "";
@@ -15,8 +21,7 @@ class ReciboController extends Controller
      * @Route("/cartera/consulta/recibo/lista", name="brs_cartera_consulta_recibo_lista")
      */    
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 55)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -48,8 +53,7 @@ class ReciboController extends Controller
      * @Route("/cartera/consulta/recibo/detalle", name="brs_cartera_consulta_recibo_detalle")
      */    
     public function detalleAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 56)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -79,7 +83,7 @@ class ReciboController extends Controller
     }
             
     private function lista() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -92,7 +96,7 @@ class ReciboController extends Controller
     }
     
     private function detalle() {
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -105,7 +109,7 @@ class ReciboController extends Controller
     }
 
     private function filtrarLista ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session; 
         $arReciboTipo = $form->get('reciboTipoRel')->getData();
         if ($arReciboTipo == null){
             $codigo = "";
@@ -123,7 +127,7 @@ class ReciboController extends Controller
     }
     
     private function filtrarDetalle ($form) {
-        $session = $this->getRequest()->getSession(); 
+        $session = new session(); 
         $arCuentaCobrarTipo = $form->get('cuentaCobrarTipoRel')->getData();
         if ($arCuentaCobrarTipo == null){
             $codigo = "";
@@ -142,7 +146,7 @@ class ReciboController extends Controller
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -161,31 +165,31 @@ class ReciboController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('rt')
                     ->orderBy('rt.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroReciboTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarReciboTipo", $session->get('filtroReciboTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('reciboTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
-            ->add('BtnExcelLista', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarLista', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('reciboTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
+            ->add('BtnExcelLista', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   
     
     private function formularioFiltroDetalle() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -204,24 +208,24 @@ class ReciboController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
                     ->orderBy('cc.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""
             );
         if($session->get('filtroCuentaCobrarTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('cuentaCobrarTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('BtnExcelDetalle', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrarDetalle', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrarDetalle', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }   

@@ -6,6 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\CarteraBundle\Form\Type\CarAnticipoType;
 use Brasa\CarteraBundle\Form\Type\CarAnticipoDetalleType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MovimientoAnticipoController extends Controller
 {
@@ -16,8 +21,8 @@ class MovimientoAnticipoController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession();
+        
+        $session = new session;
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 115, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -56,8 +61,8 @@ class MovimientoAnticipoController extends Controller
     /**
      * @Route("/cartera/movimiento/anticipo/nuevo/{codigoAnticipo}", name="brs_cartera_movimiento_anticipo_nuevo")
      */
-    public function nuevoAction($codigoAnticipo) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoAnticipo) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arAnticipo = new \Brasa\CarteraBundle\Entity\CarAnticipo();
@@ -73,7 +78,7 @@ class MovimientoAnticipoController extends Controller
             $arAnticipo->setFecha(new \DateTime('now'));
             $arAnticipo->setFechaPago(new \DateTime('now'));
         }
-        $form = $this->createForm(new CarAnticipoType, $arAnticipo);
+        $form = $this->createForm(CarAnticipoType::class, $arAnticipo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arAnticipo = $form->getData();
@@ -138,9 +143,9 @@ class MovimientoAnticipoController extends Controller
     /**
      * @Route("/cartera/movimiento/anticipo/detalle/{codigoAnticipo}", name="brs_cartera_movimiento_anticipo_detalle")
      */
-    public function detalleAction($codigoAnticipo) {
+    public function detalleAction(Request $request, $codigoAnticipo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arAnticipo = new \Brasa\CarteraBundle\Entity\CarAnticipo();
         $arAnticipo = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->find($codigoAnticipo);
@@ -268,12 +273,12 @@ class MovimientoAnticipoController extends Controller
                         $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objAnticipo = new \Brasa\CarteraBundle\Formatos\FormatoAnticipo();
-                        $objAnticipo->Generar($this, $codigoAnticipo);
+                        $objAnticipo->Generar($em, $codigoAnticipo);
                     }
                 } else {
                     //$objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado", $this);
                     $objAnticipo = new \Brasa\CarteraBundle\Formatos\FormatoAnticipo();
-                    $objAnticipo->Generar($this, $codigoAnticipo);
+                    $objAnticipo->Generar($em, $codigoAnticipo);
                     $arAnticipo->setEstadoImpresoAnticipado(1);
                     if($arAnticipo->getNumero() == 0) {            
                         $intNumero = $em->getRepository('BrasaCarteraBundle:CarConsecutivo')->consecutivo(1);
@@ -300,8 +305,8 @@ class MovimientoAnticipoController extends Controller
     /**
      * @Route("/cartera/movimiento/anticipo/detalle/nuevo/{codigoAnticipo}/{codigoAnticipoDetalle}", name="brs_cartera_movimiento_anticipo_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoAnticipo, $codigoAnticipoDetalle = 0) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoAnticipo, $codigoAnticipoDetalle = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
         $paginator  = $this->get('knp_paginator');
@@ -311,7 +316,7 @@ class MovimientoAnticipoController extends Controller
         $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->cuentasCobrar($arAnticipo->getCodigoClienteFk());
         $arCuentasCobrar = $paginator->paginate($arCuentasCobrar, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -357,7 +362,7 @@ class MovimientoAnticipoController extends Controller
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         
         $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarAnticipo')->listaDQL(
                 $session->get('filtroAnticipoNumero'), 
@@ -370,7 +375,7 @@ class MovimientoAnticipoController extends Controller
     }
 
     private function filtrar ($form) {       
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $session->set('filtroAnticipoNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroAnticipoEstadoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroAnticipoEstadoAnulado', $form->get('estadoAnulado')->getData());
@@ -389,7 +394,7 @@ class MovimientoAnticipoController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -416,17 +421,17 @@ class MovimientoAnticipoController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoAutorizado', 'choice', array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoAutorizado')))                
-            ->add('estadoAnulado', 'choice', array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoAnulado')))                    
-            ->add('fechaDesde', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
-            ->add('fechaHasta', 'date', array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-            ->add('estadoImpreso', 'choice', array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoImpreso')))                
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoAutorizado')))                
+            ->add('estadoAnulado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoAnulado')))                    
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('estadoImpreso', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAnticipoEstadoImpreso')))                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -461,12 +466,12 @@ class MovimientoAnticipoController extends Controller
             $arrBotonAnular['disabled'] = false;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)                 
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnAnular', 'submit', $arrBotonAnular)
-                    ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-                    ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                     ->getForm();
         return $form;
     }

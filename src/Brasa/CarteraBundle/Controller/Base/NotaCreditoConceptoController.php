@@ -4,7 +4,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\CarteraBundle\Form\Type\CarNotaCreditoConceptoType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class NotaCreditoConceptoController extends Controller
 {
@@ -15,8 +18,7 @@ class NotaCreditoConceptoController extends Controller
      * @Route("/cartera/base/notacredito/concepto/lista", name="brs_cartera_base_notacredito_concepto_listar")
      */   
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 109, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -49,15 +51,14 @@ class NotaCreditoConceptoController extends Controller
     /**
      * @Route("/cartera/base/notacredito/concepto/nuevo/{codigoNotaCreditoConcepto}", name="brs_cartera_base_notacredito_concepto_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoNotaCreditoConcepto = '') {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoNotaCreditoConcepto = '') {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arNotaCreditoConcepto = new \Brasa\CarteraBundle\Entity\CarNotaCreditoConcepto();
         if($codigoNotaCreditoConcepto != '' && $codigoNotaCreditoConcepto != '0') {
             $arNotaCreditoConcepto = $em->getRepository('BrasaCarteraBundle:CarNotaCreditoConcepto')->find($codigoNotaCreditoConcepto);
         }        
-        $form = $this->createForm(new CarNotaCreditoConceptoType, $arNotaCreditoConcepto);
+        $form = $this->createForm(CarNotaCreditoConceptoType::class, $arNotaCreditoConcepto);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arNotaCreditoConcepto = $form->getData();
@@ -92,11 +93,11 @@ class NotaCreditoConceptoController extends Controller
     
     private function formularioFiltro() {
         $form = $this->createFormBuilder()            
-            ->add('TxtNombre', 'text', array('label'  => 'Nombre','data' => $this->strNombre))
-            ->add('TxtCodigo', 'text', array('label'  => 'Codigo','data' => $this->strCodigo))                            
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))            
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))                            
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -104,7 +105,7 @@ class NotaCreditoConceptoController extends Controller
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")

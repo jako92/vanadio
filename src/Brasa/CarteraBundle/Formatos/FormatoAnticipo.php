@@ -5,9 +5,9 @@ class FormatoAnticipo extends \FPDF_FPDF {
     
     public static $codigoAnticipo;
     
-    public function Generar($miThis, $codigoAnticipo) {        
+    public function Generar($em, $codigoAnticipo) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoAnticipo = $codigoAnticipo;
         $pdf = new FormatoAnticipo();

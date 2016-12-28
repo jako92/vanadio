@@ -6,9 +6,9 @@ class AnticipoResumen1 extends \FPDF_FPDF {
     public static $fechaDesde;
     public static $fechaHasta;
     
-    public function Generar($miThis, $fechaDesde, $fechaHasta) {        
+    public function Generar($em, $fechaDesde, $fechaHasta) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
+        //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$fechaDesde = $fechaDesde;
         self::$fechaHasta = $fechaHasta;

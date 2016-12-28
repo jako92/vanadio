@@ -6,6 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\CarteraBundle\Form\Type\CarNotaCreditoType;
 use Brasa\CarteraBundle\Form\Type\CarNotaCreditoDetalleType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class MovimientoNotaCreditoController extends Controller
 {
@@ -14,13 +20,13 @@ class MovimientoNotaCreditoController extends Controller
     /**
      * @Route("/cartera/movimiento/notacredito/lista", name="brs_cartera_movimiento_notacredito_listar")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 118, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);        
@@ -56,8 +62,8 @@ class MovimientoNotaCreditoController extends Controller
     /**
      * @Route("/cartera/movimiento/notacredito/nuevo/{codigoNotaCredito}", name="brs_cartera_movimiento_notacredito_nuevo")
      */
-    public function nuevoAction($codigoNotaCredito) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoNotaCredito) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arNotaCredito = new \Brasa\CarteraBundle\Entity\CarNotaCredito();
@@ -73,7 +79,7 @@ class MovimientoNotaCreditoController extends Controller
             $arNotaCredito->setFecha(new \DateTime('now'));
             $arNotaCredito->setFechaPago(new \DateTime('now'));
         }
-        $form = $this->createForm(new CarNotaCreditoType, $arNotaCredito);
+        $form = $this->createForm(CarNotaCreditoType::class, $arNotaCredito);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arNotaCredito = $form->getData();
@@ -127,9 +133,9 @@ class MovimientoNotaCreditoController extends Controller
     /**
      * @Route("/cartera/movimiento/notacredito/detalle/{codigoNotaCredito}", name="brs_cartera_movimiento_notacredito_detalle")
      */
-    public function detalleAction($codigoNotaCredito) {
+    public function detalleAction(Request $request ,$codigoNotaCredito) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arNotaCredito = new \Brasa\CarteraBundle\Entity\CarNotaCredito();
         $arNotaCredito = $em->getRepository('BrasaCarteraBundle:CarNotaCredito')->find($codigoNotaCredito);
@@ -244,7 +250,7 @@ class MovimientoNotaCreditoController extends Controller
                         $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objNotaCredito = new \Brasa\CarteraBundle\Formatos\FormatoNotaCredito();
-                        $objNotaCredito->Generar($this, $codigoNotaCredito);
+                        $objNotaCredito->Generar($em, $codigoNotaCredito);
                     }
                 } else {
                     $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
@@ -264,8 +270,8 @@ class MovimientoNotaCreditoController extends Controller
     /**
      * @Route("/cartera/movimiento/notacredito/detalle/nuevo/{codigoNotaCredito}/{codigoNotaCreditoDetalle}", name="brs_cartera_movimiento_notacredito_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoNotaCredito, $codigoNotaCreditoDetalle = 0) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoNotaCredito, $codigoNotaCreditoDetalle = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
@@ -275,7 +281,7 @@ class MovimientoNotaCreditoController extends Controller
         $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->cuentasCobrar($arNotaCredito->getCodigoClienteFk());
         $arCuentasCobrar = $paginator->paginate($arCuentasCobrar, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -312,7 +318,7 @@ class MovimientoNotaCreditoController extends Controller
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarNotaCredito')->listaDQL(
                 $session->get('filtroNotaCreditoNumero'), 
                 $session->get('filtroCodigoCliente'),
@@ -320,7 +326,7 @@ class MovimientoNotaCreditoController extends Controller
     }
 
     private function filtrar ($form) {       
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $session->set('filtroNotaCreditoNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroNotaCreditoEstadoImpreso', $form->get('estadoImpreso')->getData());          
         $session->set('filtroNit', $form->get('TxtNit')->getData());   
@@ -328,7 +334,7 @@ class MovimientoNotaCreditoController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -344,13 +350,13 @@ class MovimientoNotaCreditoController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoImpreso', 'choice', array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroNotaCreditoEstadoImpreso')))                
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
+            ->add('estadoImpreso', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroNotaCreditoEstadoImpreso')))                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -380,12 +386,12 @@ class MovimientoNotaCreditoController extends Controller
             $arrBotonAnular['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)                 
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnAnular', 'submit', $arrBotonAnular)
-                    ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-                    ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                     ->getForm();
         return $form;
     }

@@ -6,6 +6,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\CarteraBundle\Form\Type\CarNotaDebitoType;
 use Brasa\CarteraBundle\Form\Type\CarNotaDebitoDetalleType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MovimientoNotaDebitoController extends Controller
 {
@@ -14,10 +18,9 @@ class MovimientoNotaDebitoController extends Controller
     /**
      * @Route("/cartera/movimiento/notadebito/lista", name="brs_cartera_movimiento_notadebito_listar")
      */
-    public function listaAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession();
+    public function listaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
+        $session = new session;
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 117, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -56,8 +59,7 @@ class MovimientoNotaDebitoController extends Controller
     /**
      * @Route("/cartera/movimiento/notadebito/nuevo/{codigoNotaDebito}", name="brs_cartera_movimiento_notadebito_nuevo")
      */
-    public function nuevoAction($codigoNotaDebito) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request, $codigoNotaDebito) {        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();
@@ -73,7 +75,7 @@ class MovimientoNotaDebitoController extends Controller
             $arNotaDebito->setFecha(new \DateTime('now'));
             $arNotaDebito->setFechaPago(new \DateTime('now'));
         }
-        $form = $this->createForm(new CarNotaDebitoType, $arNotaDebito);
+        $form = $this->createForm(CarNotaDebitoType::class, $arNotaDebito);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arNotaDebito = $form->getData();
@@ -128,9 +130,9 @@ class MovimientoNotaDebitoController extends Controller
     /**
      * @Route("/cartera/movimiento/notadebito/detalle/{codigoNotaDebito}", name="brs_cartera_movimiento_notadebito_detalle")
      */
-    public function detalleAction($codigoNotaDebito) {
+    public function detalleAction(Request $request, $codigoNotaDebito) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();
         $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigoNotaDebito);
@@ -252,7 +254,7 @@ class MovimientoNotaDebitoController extends Controller
                         $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objNotaDebito = new \Brasa\CarteraBundle\Formatos\FormatoNotaDebito();
-                        $objNotaDebito->Generar($this, $codigoNotaDebito);
+                        $objNotaDebito->Generar($em, $codigoNotaDebito);
                     }
                 } else {
                     $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
@@ -271,8 +273,8 @@ class MovimientoNotaDebitoController extends Controller
     /**
      * @Route("/cartera/movimiento/notadebito/detalle/nuevo/{codigoNotaDebito}/{codigoNotaDebitoDetalle}", name="brs_cartera_movimiento_notadebito_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoNotaDebito, $codigoNotaDebitoDetalle = 0) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request, $codigoNotaDebito, $codigoNotaDebitoDetalle = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
@@ -282,7 +284,7 @@ class MovimientoNotaDebitoController extends Controller
         $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->cuentasCobrar($arNotaDebito->getCodigoClienteFk());
         $arCuentasCobrar = $paginator->paginate($arCuentasCobrar, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -320,8 +322,8 @@ class MovimientoNotaDebitoController extends Controller
     /**
      * @Route("/cartera/movimiento/notadebito/anticipo/nuevo/{codigoNotaDebito}", name="brs_cartera_movimiento_notadebito_anticipo_nuevo")
      */
-    public function anticipoAction($codigoNotaDebito) {
-        $request = $this->getRequest();
+    public function anticipoAction(Request $request ,$codigoNotaDebito) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
@@ -332,7 +334,7 @@ class MovimientoNotaDebitoController extends Controller
         $arAnticipos = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->anticipos($arNotaDebito->getCodigoClienteFk());
         $arAnticipos = $paginator->paginate($arAnticipos, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -363,7 +365,7 @@ class MovimientoNotaDebitoController extends Controller
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->listaDQL(
                 $session->get('filtroNotaDebitoNumero'), 
                 $session->get('filtroCodigoCliente'),
@@ -371,7 +373,7 @@ class MovimientoNotaDebitoController extends Controller
     }
 
     private function filtrar ($form) {       
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $session->set('filtroNotaDebitoNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroNotaDebitoEstadoImpreso', $form->get('estadoImpreso')->getData());          
         $session->set('filtroNit', $form->get('TxtNit')->getData());   
@@ -379,7 +381,7 @@ class MovimientoNotaDebitoController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -395,13 +397,13 @@ class MovimientoNotaDebitoController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoImpreso', 'choice', array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroNotaDebitoEstadoImpreso')))                
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
+            ->add('estadoImpreso', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroNotaDebitoEstadoImpreso')))                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -431,12 +433,12 @@ class MovimientoNotaDebitoController extends Controller
             $arrBotonAnular['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)                 
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnAnular', 'submit', $arrBotonAnular)
-                    ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-                    ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                     ->getForm();
         return $form;
     }

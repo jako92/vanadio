@@ -4,8 +4,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\CarteraBundle\Form\Type\CarReciboType;
 use Brasa\CarteraBundle\Form\Type\CarReciboDetalleType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class MovimientoReciboController extends Controller
 {
@@ -14,10 +19,10 @@ class MovimientoReciboController extends Controller
     /**
      * @Route("/cartera/movimiento/recibo/lista", name="brs_cartera_movimiento_recibo_listar")
      */
-    public function listaAction() {
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession();
+        
+        $session = new session;
         if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 116, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
@@ -56,8 +61,8 @@ class MovimientoReciboController extends Controller
     /**
      * @Route("/cartera/movimiento/recibo/nuevo/{codigoRecibo}", name="brs_cartera_movimiento_recibo_nuevo")
      */
-    public function nuevoAction($codigoRecibo) {
-        $request = $this->getRequest();
+    public function nuevoAction(Request $request,$codigoRecibo) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();                 
         $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
@@ -73,7 +78,7 @@ class MovimientoReciboController extends Controller
             $arRecibo->setFecha(new \DateTime('now'));
             $arRecibo->setFechaPago(new \DateTime('now'));
         }
-        $form = $this->createForm(new CarReciboType, $arRecibo);
+        $form = $this->createForm(CarReciboType::class, $arRecibo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arRecibo = $form->getData();
@@ -129,9 +134,9 @@ class MovimientoReciboController extends Controller
     /**
      * @Route("/cartera/movimiento/recibo/detalle/{codigoRecibo}", name="brs_cartera_movimiento_recibo_detalle")
      */
-    public function detalleAction($codigoRecibo) {
+    public function detalleAction(Request $request,$codigoRecibo) {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        
         $objMensaje = $this->get('mensajes_brasa');
         $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
         $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigoRecibo);
@@ -259,7 +264,7 @@ class MovimientoReciboController extends Controller
                         $objMensaje->Mensaje("error", $strResultado);
                     } else {
                         $objRecibo = new \Brasa\CarteraBundle\Formatos\FormatoRecibo();
-                        $objRecibo->Generar($this, $codigoRecibo);
+                        $objRecibo->Generar($em, $codigoRecibo);
                     }
                 } else {
                     $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
@@ -280,8 +285,8 @@ class MovimientoReciboController extends Controller
     /**
      * @Route("/cartera/movimiento/recibo/detalle/nuevo/{codigoRecibo}/{codigoReciboDetalle}", name="brs_cartera_movimiento_recibo_detalle_nuevo")
      */
-    public function detalleNuevoAction($codigoRecibo, $codigoReciboDetalle = 0) {
-        $request = $this->getRequest();
+    public function detalleNuevoAction(Request $request,$codigoRecibo, $codigoReciboDetalle = 0) {
+        
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
@@ -291,7 +296,7 @@ class MovimientoReciboController extends Controller
         $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->cuentasCobrar($arRecibo->getCodigoClienteFk());
         $arCuentasCobrar = $paginator->paginate($arCuentasCobrar, $request->query->get('page', 1), 50);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', 'submit', array('label'  => 'Guardar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request); 
         if ($form->isValid()) {
@@ -328,7 +333,7 @@ class MovimientoReciboController extends Controller
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarRecibo')->listaDQL(
                 $session->get('filtroReciboNumero'), 
                 $session->get('filtroCodigoCliente'),
@@ -336,7 +341,7 @@ class MovimientoReciboController extends Controller
     }
 
     private function filtrar ($form) {       
-        $session = $this->getRequest()->getSession();        
+        $session = new session;        
         $session->set('filtroReciboNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroReciboEstadoImpreso', $form->get('estadoImpreso')->getData());          
         $session->set('filtroNit', $form->get('TxtNit')->getData());   
@@ -344,7 +349,7 @@ class MovimientoReciboController extends Controller
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
@@ -360,13 +365,13 @@ class MovimientoReciboController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', 'text', array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
-            ->add('TxtNit', 'text', array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', 'text', array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('estadoImpreso', 'choice', array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroReciboEstadoImpreso')))                
-            ->add('BtnEliminar', 'submit', array('label'  => 'Eliminar',))
-            ->add('BtnExcel', 'submit', array('label'  => 'Excel',))
-            ->add('BtnFiltrar', 'submit', array('label'  => 'Filtrar'))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
+            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
+            ->add('estadoImpreso', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroReciboEstadoImpreso')))                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
     }
@@ -396,12 +401,12 @@ class MovimientoReciboController extends Controller
             $arrBotonAnular['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-                    ->add('BtnDesAutorizar', 'submit', $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', 'submit', $arrBotonAutorizar)                 
-                    ->add('BtnImprimir', 'submit', $arrBotonImprimir)
-                    ->add('BtnAnular', 'submit', $arrBotonAnular)
-                    ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
-                    ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                     ->getForm();
         return $form;
     }
