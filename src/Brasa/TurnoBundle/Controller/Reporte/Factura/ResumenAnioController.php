@@ -4,50 +4,65 @@ namespace Brasa\TurnoBundle\Controller\Reporte\Factura;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Brasa\TurnoBundle\Form\Type\TurFacturaType;
+use Brasa\TurnoBundle\Form\Type\TurNotaCreditoType;
+use Brasa\TurnoBundle\Form\Type\TurFacturaDetalleType;
+use Brasa\TurnoBundle\Form\Type\TurFacturaDetalleNuevoType;
+use PHPExcel_Shared_Date;
+use PHPExcel_Style_NumberFormat;
 
-class FechaServicioController extends Controller
+class ResumenAnioController extends Controller
 {
-    var $strListaDql = "";
-    var $codigoRecurso = "";
+    var $strListaDql = "";    
+    var $boolMostrarTodo = "";
+    
     /**
-     * @Route("/tur/reporte/factura/fecha/servicio", name="brs_tur_reporte_factura_fecha_servicio")
-     */     
+     * @Route("/tur/reporte/factura/resumen/anio", name="brs_tur_reporte_factura_resumen_anio")
+     */    
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 89)) {
+        $paginator  = $this->get('knp_paginator');
+        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 29, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
-        $this->lista();                
-        if ($form->isValid()) {                             
-            if ($form->get('BtnFiltrar')->isClicked()) { 
+        $this->lista();
+        if ($form->isValid()) {                        
+            if ($form->get('BtnEliminar')->isClicked()) {                
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $em->getRepository('BrasaTurnoBundle:TurFactura')->eliminar($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_factura'));                  
+            }
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
-                $form = $this->formularioFiltro();
                 $this->lista();
             }
             if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrar($form);
-                $form = $this->formularioFiltro();
                 $this->lista();
                 $this->generarExcel();
             }
+            if ($form->get('BtnInterfaz')->isClicked()) {
+                $this->filtrar($form);
+                $this->lista();
+                $this->generarExcelInterfaz();
+            }            
         }
 
-        $arFacturaDetalle = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 200);
-        return $this->render('BrasaTurnoBundle:Reportes/Factura:fechaServicio.html.twig', array(
-            'arFacturaDetalle' => $arFacturaDetalle,                        
+        $arFacturas = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
+        return $this->render('BrasaTurnoBundle:Reportes/Factura:resumenAnio.html.twig', array(
+            'arFacturas' => $arFacturas,
             'form' => $form->createView()));
-    }        
+    }     
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
@@ -59,7 +74,7 @@ class FechaServicioController extends Controller
             $strFechaDesde = $session->get('filtroFacturaFechaDesde');
             $strFechaHasta = $session->get('filtroFacturaFechaHasta');
         }
-        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->listaReporteFechaServicioDql(
+        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFactura')->listaDql(
                 $session->get('filtroFacturaNumero'),
                 $session->get('filtroCodigoCliente'),
                 $session->get('filtroFacturaEstadoAutorizado'),
@@ -68,7 +83,7 @@ class FechaServicioController extends Controller
                 $session->get('filtroFacturaEstadoAnulado'),
                 $session->get('filtroTurnosCodigoFacturaTipo')
                 );
-    }
+    }          
 
     private function filtrar ($form) { 
         $session = new session;
@@ -147,12 +162,11 @@ class FechaServicioController extends Controller
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
-    }       
-
+    }    
+    
     private function generarExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
-        set_time_limit(0);
-        ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();        
         $objPHPExcel = new \PHPExcel();
         // Set document properties
@@ -165,57 +179,59 @@ class FechaServicioController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'J'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
-        }               
-        for($col = 'I'; $col !== 'J'; $col++) {  
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
+        for($col = 'A'; $col !== 'O'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);         
+        }      
+        for($col = 'I'; $col !== 'O'; $col++) {            
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }         
+        }        
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'TIPO')
-                    ->setCellValue('B1', 'NUMERO')                    
-                    ->setCellValue('C1', 'NIT')
-                    ->setCellValue('D1', 'CLIENTE')
-                    ->setCellValue('E1', 'C_COSTO')
-                    ->setCellValue('F1', 'FECHA')
-                    ->setCellValue('G1', 'F_PROG')
-                    ->setCellValue('H1', 'SERVICIO')
-                    ->setCellValue('I1', 'SUBTOTAL');
-        
+                    ->setCellValue('A1', 'CÓDIG0')
+                    ->setCellValue('B1', 'TIPO')
+                    ->setCellValue('C1', 'NUMERO')
+                    ->setCellValue('D1', 'FECHA')
+                    ->setCellValue('E1', 'VENCE')
+                    ->setCellValue('F1', 'NIT')                    
+                    ->setCellValue('G1', 'CLIENTE')
+                    ->setCellValue('H1', 'AUT')
+                    ->setCellValue('I1', 'ANU')
+                    ->setCellValue('J1', 'SUBTOTAL')    
+                    ->setCellValue('K1', 'BASE AUI')
+                    ->setCellValue('L1', 'IVA')
+                    ->setCellValue('M1', 'RTEIVA')
+                    ->setCellValue('N1', 'RTEFTE')
+                    ->setCellValue('O1', 'TOTAL BRUTO');
+
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
-        $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-        $arFacturaDetalles = $query->getResult();
-        foreach ($arFacturaDetalles as $arFacturaDetalle) {            
+        $arFacturas = new \Brasa\TurnoBundle\Entity\TurFactura();
+        $arFacturas = $query->getResult();
+
+        foreach ($arFacturas as $arFactura) {            
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arFacturaDetalle->getFacturaRel()->getFacturaTipoRel()->getNombre())
-                    ->setCellValue('B' . $i, $arFacturaDetalle->getFacturaRel()->getNumero())                    
-                    ->setCellValue('C' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNit())              
-                    ->setCellValue('D' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arFacturaDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
-                    ->setCellValue('F' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m'))
-                    ->setCellValue('G' . $i, $arFacturaDetalle->getFechaProgramacion()->format('m'))
-                    ->setCellValue('H' . $i, $arFacturaDetalle->getConceptoServicioRel()->getNombre())                                  
-                    ->setCellValue('I' . $i, $arFacturaDetalle->getSubtotal());  
-            
-            /*if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getAnio());
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getMes());
-            }*/                                
+                    ->setCellValue('A' . $i, $arFactura->getCodigoFacturaPk())
+                    ->setCellValue('B' . $i, $arFactura->getFacturaTipoRel()->getNombre())
+                    ->setCellValue('C' . $i, $arFactura->getNumero())
+                    ->setCellValue('D' . $i, $arFactura->getFecha()->format('Y/m/d'))
+                    ->setCellValue('E' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
+                    ->setCellValue('F' . $i, $arFactura->getClienteRel()->getNit())
+                    ->setCellValue('G' . $i, $arFactura->getClienteRel()->getNombreCorto())
+                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAutorizado()))
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAnulado()))
+                    ->setCellValue('J' . $i, $arFactura->getVrSubtotal())
+                    ->setCellValue('K' . $i, $arFactura->getVrBaseAIU())
+                    ->setCellValue('L' . $i, $arFactura->getVrIva())
+                    ->setCellValue('M' . $i, $arFactura->getVrRetencionIva())
+                    ->setCellValue('N' . $i, $arFactura->getVrRetencionFuente())
+                    ->setCellValue('O' . $i, $arFactura->getVrTotal());
             $i++;
         }
-        $intNum = count($arFacturaDetalle);
-        $intNum += 1;                
-        //$objPHPExcel->getActiveSheet()->getStyle('A1:AL1')->getFont()->setBold(true);        
-        
-        //$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-        
-        $objPHPExcel->getActiveSheet()->setTitle('FechaServicio');
+
+        $objPHPExcel->getActiveSheet()->setTitle('Facturas');
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="FacturaFechaServicio.xlsx"');
+        header('Content-Disposition: attachment;filename="Facturas.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
@@ -227,6 +243,6 @@ class FechaServicioController extends Controller
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }      
+    }    
 
 }

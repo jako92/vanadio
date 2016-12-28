@@ -274,8 +274,7 @@ class PagosAdicionalesAgregarController extends Controller
                         $arPagoAdicional->setDetalle($form->get('TxtDetalle')->getData());                    
                         $arPagoAdicional->setPagoConceptoRel($arPagoConcepto);                    
                         $arPagoAdicional->setPrestacional($arPagoConcepto->getPrestacional());
-                        $arPagoAdicional->setTipoAdicional($tipo);
-                        $arPagoAdicional->setPermanente(1);
+                        $arPagoAdicional->setTipoAdicional($tipo);                                                
                         $arPagoAdicional->setAplicaDiaLaborado($form->get('aplicarDiaLaborado')->getData());
                         $arPagoAdicional->setAplicaDiaLaboradoSinDescanso($form->get('aplicarDiaLaboradoSinDescanso')->getData());
                         $arPagoAdicional->setFechaUltimaEdicion(new \DateTime('now'));

@@ -59,7 +59,7 @@ class RetencionIcaController extends Controller
             $strFechaDesde = $session->get('filtroFacturaFechaDesde');
             $strFechaHasta = $session->get('filtroFacturaFechaHasta');
         }
-        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->listaReporteFechaServicioDql(
+        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->listaReporteRetencionIcaDql(
                 $session->get('filtroFacturaNumero'),
                 $session->get('filtroCodigoCliente'),
                 $session->get('filtroFacturaEstadoAutorizado'),
@@ -165,10 +165,10 @@ class RetencionIcaController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'J'; $col++) {
+        for($col = 'A'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
         }               
-        for($col = 'I'; $col !== 'J'; $col++) {  
+        for($col = 'H'; $col !== 'K'; $col++) {  
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }         
@@ -179,9 +179,10 @@ class RetencionIcaController extends Controller
                     ->setCellValue('D1', 'CLIENTE')
                     ->setCellValue('E1', 'C_COSTO')
                     ->setCellValue('F1', 'FECHA')
-                    ->setCellValue('G1', 'F_PROG')
-                    ->setCellValue('H1', 'SERVICIO')
-                    ->setCellValue('I1', 'SUBTOTAL');
+                    ->setCellValue('G1', 'CIUDAD')                    
+                    ->setCellValue('H1', 'SUBTOTAL')
+                    ->setCellValue('I1', 'IVA')
+                    ->setCellValue('J1', 'TOTAL');
         
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -194,15 +195,14 @@ class RetencionIcaController extends Controller
                     ->setCellValue('C' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNit())              
                     ->setCellValue('D' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNombreCorto())
                     ->setCellValue('E' . $i, $arFacturaDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
-                    ->setCellValue('F' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m'))
-                    ->setCellValue('G' . $i, $arFacturaDetalle->getFechaProgramacion()->format('m'))
-                    ->setCellValue('H' . $i, $arFacturaDetalle->getConceptoServicioRel()->getNombre())                                  
-                    ->setCellValue('I' . $i, $arFacturaDetalle->getSubtotal());  
+                    ->setCellValue('F' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m'))                                        
+                    ->setCellValue('H' . $i, $arFacturaDetalle->getSubtotal())
+                    ->setCellValue('I' . $i, $arFacturaDetalle->getIva())
+                    ->setCellValue('J' . $i, $arFacturaDetalle->getTotal());  
             
-            /*if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getAnio());
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getMes());
-            }*/                                
+            if($arFacturaDetalle->getCodigoCiudadFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G' . $i, $arFacturaDetalle->getCiudadRel()->getNombre());
+            }                                
             $i++;
         }
         $intNum = count($arFacturaDetalle);
@@ -211,11 +211,11 @@ class RetencionIcaController extends Controller
         
         //$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         
-        $objPHPExcel->getActiveSheet()->setTitle('FacturaDetalle');
+        $objPHPExcel->getActiveSheet()->setTitle('RetencionIca');
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="FacturaDetalle.xlsx"');
+        header('Content-Disposition: attachment;filename="RetencionIca.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

@@ -389,6 +389,7 @@ class FacturaController extends Controller
                         $arFacturaDetalle->setFacturaRel($arFactura);                        
                         $arFacturaDetalle->setConceptoServicioRel($arPedidoDetalle->getConceptoServicioRel());
                         $arFacturaDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+                        $arFacturaDetalle->setCiudadRel($arPedidoDetalle->getPuestoRel()->getCiudadRel());
                         $arFacturaDetalle->setModalidadServicioRel($arPedidoDetalle->getModalidadServicioRel());
                         $arFacturaDetalle->setGrupoFacturacionRel($arPedidoDetalle->getGrupoFacturacionRel());
                         $arFacturaDetalle->setPedidoDetalleRel($arPedidoDetalle);                        
@@ -449,6 +450,7 @@ class FacturaController extends Controller
                         $arFacturaDetalleNueva->setFacturaRel($arFactura);                        
                         $arFacturaDetalleNueva->setConceptoServicioRel($arFacturaDetalle->getConceptoServicioRel());
                         $arFacturaDetalleNueva->setPuestoRel($arFacturaDetalle->getPuestoRel());
+                        $arFacturaDetalleNueva->setCiudadRel($arFacturaDetalle->getPuestoRel()->getCiudadRel());
                         $arFacturaDetalleNueva->setModalidadServicioRel($arFacturaDetalle->getModalidadServicioRel());
                         $arFacturaDetalleNueva->setGrupoFacturacionRel($arFacturaDetalle->getGrupoFacturacionRel());
                         $arFacturaDetalleNueva->setPedidoDetalleRel($arFacturaDetalle->getPedidoDetalleRel());
@@ -526,6 +528,7 @@ class FacturaController extends Controller
                         $arFacturaDetalle = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
                         $arFacturaDetalle->setFacturaRel($arFactura);
                         $arFacturaDetalle->setPuestoRel($arPedidoDetalleConcepto->getPuestoRel());
+                        $arFacturaDetalle->setCiudadRel($arPedidoDetalleConcepto->getPuestoRel()->getCiudadRel());
                         $arFacturaDetalle->setConceptoServicioRel($arPedidoDetalleConcepto->getConceptoServicioRel());                        
                         $arFacturaDetalle->setPedidoDetalleConceptoRel($arPedidoDetalleConcepto);
                         $arFacturaDetalle->setCantidad($arPedidoDetalleConcepto->getCantidad());

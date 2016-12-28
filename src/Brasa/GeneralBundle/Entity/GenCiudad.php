@@ -185,6 +185,11 @@ class GenCiudad
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurPuesto", mappedBy="ciudadRel")
      */
     protected $turPuestosCiudadRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurFacturaDetalle", mappedBy="ciudadRel")
+     */
+    protected $turFacturasDetallesCiudadRel; 
     
     /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuContrato", mappedBy="ciudadContratoRel")
@@ -1561,5 +1566,39 @@ class GenCiudad
     public function getInvTercerosCiudadRel()
     {
         return $this->invTercerosCiudadRel;
+    }
+
+    /**
+     * Add turFacturasDetallesCiudadRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurFacturaDetalle $turFacturasDetallesCiudadRel
+     *
+     * @return GenCiudad
+     */
+    public function addTurFacturasDetallesCiudadRel(\Brasa\TurnoBundle\Entity\TurFacturaDetalle $turFacturasDetallesCiudadRel)
+    {
+        $this->turFacturasDetallesCiudadRel[] = $turFacturasDetallesCiudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove turFacturasDetallesCiudadRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurFacturaDetalle $turFacturasDetallesCiudadRel
+     */
+    public function removeTurFacturasDetallesCiudadRel(\Brasa\TurnoBundle\Entity\TurFacturaDetalle $turFacturasDetallesCiudadRel)
+    {
+        $this->turFacturasDetallesCiudadRel->removeElement($turFacturasDetallesCiudadRel);
+    }
+
+    /**
+     * Get turFacturasDetallesCiudadRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTurFacturasDetallesCiudadRel()
+    {
+        return $this->turFacturasDetallesCiudadRel;
     }
 }

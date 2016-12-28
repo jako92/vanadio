@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Reporte factura retencion ica - Soga App{% endblock %}
+{% block title %}Factura resumen año - Soga App{% endblock %}
 {% block content %}
 <script>
     $(function () {
@@ -8,7 +8,7 @@
 </script>    
 <div class="container">
     <div class="page-header">
-        <h3>Reporte factura retencion ica</h3>
+        <h3>Factura resumen año</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
@@ -84,30 +84,32 @@
             </div>
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">
-            <tr>                
+            <tr>
+                <th>{{ knp_pagination_sortable(arFacturas, 'CÓDIGO', 'p.codigoFacturaPk') }}</th>
                 <th>TIPO</th>
+                <th>SERVICIO</th>
                 <th>NUMERO</th>
-                <th>NIT</th>
+                <th>FECHA</th>
+                <th>VENCE</th>
                 <th>CLIENTE</th>
-                <th>C_COSTO</th>
-                <th>FECHA</th>                
-                <th>CIUDAD</th>
-                <th>SUBTOTAL</th>
-                <th>IVA</th>
-                <th>TOTAL</th>
+                <th>TOTAL</th>    
+                <th>AUT</th>
+                <th>CON</th>
+                <th>ANU</th>
             </tr>
-            {% for arFacturaDetalle in arFacturaDetalle %}
+            {% for arFacturas in arFacturas %}
             <tr>                                             
-                <td>{{ arFacturaDetalle.facturaRel.facturaTipoRel.nombre  }}</td>                  
-                <td>{{ arFacturaDetalle.facturaRel.numero  }}</td>
-                <td>{{ arFacturaDetalle.facturaRel.clienteRel.nit | default('')  }}</td>
-                <td>{{ arFacturaDetalle.facturaRel.clienteRel.nombreCorto | default('')  }}</td>
-                <td>{{ arFacturaDetalle.puestoRel.codigoCentroCostoContabilidadFk | default('')  }}</td>                
-                <td>{{ arFacturaDetalle.facturaRel.fecha|date('Y/m/d')  }}</td>
-                <td>{{ arFacturaDetalle.ciudadRel.nombre | default('')  }}</td>                
-                <td style="text-align: right">{{ arFacturaDetalle.subtotal | number_format(0, '.', ',') }}</td>                                                
-                <td style="text-align: right">{{ arFacturaDetalle.iva | number_format(0, '.', ',') }}</td>                                                                
-                <td style="text-align: right">{{ arFacturaDetalle.total | number_format(0, '.', ',') }}</td>                                                                
+                <td>{{ arFacturas.codigoFacturaPk  }}</td>  
+                <td>{{ arFacturas.facturaTipoRel.nombre |default('')  }}</td>
+                <td>{{ arFacturas.facturaServicioRel.nombre |default('')  }}</td>
+                <td>{{ arFacturas.numero  }}</td>
+                <td>{{ arFacturas.fecha |date("Y/m/d")  }}</td>
+                <td>{{ arFacturas.fechaVence |date("Y/m/d")  }}</td>
+                <td>{{ arFacturas.clienteRel.nombreCorto |default('') }}</td>
+                <td style="text-align: right">{{ arFacturas.vrTotal | number_format(0, '.', ',') }}</td>                
+                <td>{% if arFacturas.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>                
+                <td>{% if arFacturas.estadoContabilizado == 1 %} SI {% else %} NO {% endif %}</td>                
+                <td>{% if arFacturas.estadoAnulado == 1 %} SI {% else %} NO {% endif %}</td>                
             </tr>
             
             {% endfor %}
@@ -115,13 +117,13 @@
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arFacturaDetalle.getTotalItemCount }}</span></div>                        
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arFacturas.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-                {{ knp_pagination_render(arFacturaDetalle) }}       
+                {{ knp_pagination_render(arFacturas) }}       
         </div>
         <div class="btn-toolbar" style="float: right">
-            <div class="btn-group">                                
+            <div class="btn-group">      
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
         </div>

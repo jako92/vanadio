@@ -123,6 +123,11 @@ class TurFacturaDetalle
     private $tipo_pedido;    
     
     /**
+     * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
+     */
+    private $codigoCiudadFk;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurFactura", inversedBy="facturasDetallesFacturaRel")
      * @ORM\JoinColumn(name="codigo_factura_fk", referencedColumnName="codigo_factura_pk")
      */
@@ -170,6 +175,12 @@ class TurFacturaDetalle
      */
     protected $grupoFacturacionRel; 
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="turFacturasDetallesCiudadRel")
+     * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
+     */
+    protected $ciudadRel;    
+    
     /**
      * @ORM\OneToMany(targetEntity="TurFacturaDetalle", mappedBy="facturaDetalleRel")
      */
@@ -922,5 +933,53 @@ class TurFacturaDetalle
     public function getOperacion()
     {
         return $this->operacion;
+    }
+
+    /**
+     * Set codigoCiudadFk
+     *
+     * @param integer $codigoCiudadFk
+     *
+     * @return TurFacturaDetalle
+     */
+    public function setCodigoCiudadFk($codigoCiudadFk)
+    {
+        $this->codigoCiudadFk = $codigoCiudadFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCiudadFk
+     *
+     * @return integer
+     */
+    public function getCodigoCiudadFk()
+    {
+        return $this->codigoCiudadFk;
+    }
+
+    /**
+     * Set ciudadRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
+     *
+     * @return TurFacturaDetalle
+     */
+    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
+    {
+        $this->ciudadRel = $ciudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudadRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenCiudad
+     */
+    public function getCiudadRel()
+    {
+        return $this->ciudadRel;
     }
 }
