@@ -11,11 +11,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuPagoBancoRepository extends EntityRepository {        
         
-    public function listaDQL($strFecha = "") {                
+    public function listaDQL($strFecha = "", $codigoPagoBancoTipo = "") {                
         $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.codigoPagoBancoPk <> 0";
         if($strFecha != "") {
             $dql .= " AND pb.fechaAplicacion = '" .$strFecha. "'";
-        }    
+        }
+        if($codigoPagoBancoTipo != "") {
+            $dql .= " AND pb.codigoPagoBancoTipoFk = " .$codigoPagoBancoTipo;
+        }   
         
         $dql .= " ORDER BY pb.codigoPagoBancoPk DESC";
         return $dql;

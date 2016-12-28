@@ -113,11 +113,22 @@
         </div>                    
         <div class="btn-toolbar" style="float: right">              
             {%if arPagoBanco.estadoAutorizado == 0 %}                    
-                <div class="btn-group">
-                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_seguridad_social_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo seguridad social</a>
-                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_liquidacion_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo liquidacion</a>
-                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_vacacion_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo vacaciones</a>
-                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo nomina</a>
+                <div class="btn-group">                   
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 4 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_seguridad_social_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo seguridad social</a>
+                    {% endif %}
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 3 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_liquidacion_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo liquidacion</a>
+                    {% endif %}  
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 2 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_vacacion_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo vacaciones</a>
+                    {% endif %}                   
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 1 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK, 'codigoPagoBancoTipo':1}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo nomina</a>
+                    {% endif %}
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 5 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK, 'codigoPagoBancoTipo':5}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo primas</a>
+                    {% endif %}
                 </div>                        
             {% endif %}
             <div class="btn-group">

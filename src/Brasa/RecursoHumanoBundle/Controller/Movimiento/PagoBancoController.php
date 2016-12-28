@@ -1,5 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -234,9 +235,9 @@ class PagoBancoController extends Controller
     }
     
     /**
-     * @Route("/rhu/movimiento/pago/banco/detalle/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_nuevo")
+     * @Route("/rhu/movimiento/pago/banco/detalle/nuevo/{codigoPagoBanco}/{codigoPagoBancoTipo}", name="brs_rhu_movimiento_pago_banco_detalle_nuevo")
      */    
-    public function detalleNuevoAction(Request $request, $codigoPagoBanco) {
+    public function detalleNuevoAction(Request $request, $codigoPagoBanco, $codigoPagoBancoTipo) {
         
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
@@ -245,7 +246,7 @@ class PagoBancoController extends Controller
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);
         $arProgramacionesPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
-        $arProgramacionesPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->findBy(array('estadoPagado' => 1, 'estadoPagadoBanco' => 0));        
+        $arProgramacionesPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->findBy(array('estadoPagado' => 1, 'estadoPagadoBanco' => 0, 'codigoPagoTipoFk' => $codigoPagoBancoTipo ));        
         
         $arrayPropiedadesBanco = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuBanco',
@@ -268,7 +269,7 @@ class PagoBancoController extends Controller
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         $form->handleRequest($request); 
-        $this->listarDetalle();
+        $this->listarDetalle($codigoPagoBancoTipo);
         if ($form->isValid()) {            
                 if ($form->get('BtnGuardar')->isClicked()) {
                     if ($arPagoBanco->getEstadoAutorizado() == 0){
@@ -367,7 +368,8 @@ class PagoBancoController extends Controller
             'arPagos' => $arPagos,
             'arProgramacionesPago' => $arProgramacionesPago,
             'form' => $form->createView()));
-    }    
+    }
+    
     
     /**
      * @Route("/rhu/movimiento/pago/banco/detalle/vacacion/nuevo/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_vacacion_nuevo")
@@ -513,24 +515,32 @@ class PagoBancoController extends Controller
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->listaDQL(
-                $this->strFecha
+                $this->strFecha,
+                $session->get('filtroCodigoPagoBancoTipo')
                 );        
     }    
     
-    private function listarDetalle() {
+    private function listarDetalle($codigoPagoBancoTipo) {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->dqlListaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientePagoBancoDql(                
-                $session->get('filtroRhuCodigoBanco'));        
+                $session->get('filtroRhuCodigoBanco'),
+                $codigoPagoBancoTipo);        
     }     
     
-    private function filtrar ($form) {        
+    private function filtrar ($form ) { 
+        $session = new Session;
         $dateFecha = $form->get('fecha')->getData();
         if($dateFecha != null) {            
             $this->strFecha = $dateFecha->format('Y-m-d');
         } else {
             $this->strFecha = "";
-        }        
+        }
+        $codigoPagoBancoTipo = '';
+        if($form->get('pagoBancoTipoRel')->getData()) {
+            $codigoPagoBancoTipo = $form->get('pagoBancoTipoRel')->getData()->getCodigoPagoBancoTipoPk();
+        }
+        $session->set('filtroCodigoPagoBancoTipo', $codigoPagoBancoTipo);
     }
     
     private function filtrarNuevoDetalle ($form) {
@@ -672,11 +682,25 @@ class PagoBancoController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = new session;        
-              
+        $session = new session;
+        $arrayPropiedadesTipo = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoBancoTipo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoPagoBancoTipo')) {
+            $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoBanco", $session->get('filtroCodigoPagoBancoTipo'));
+        }                      
         $form = $this->createFormBuilder()
             //->add('entidadExamenRel', EntityType::class, $arrayPropiedades) 
             ->add('fecha',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('pagoBancoTipoRel', EntityType::class, $arrayPropiedadesTipo)  
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
