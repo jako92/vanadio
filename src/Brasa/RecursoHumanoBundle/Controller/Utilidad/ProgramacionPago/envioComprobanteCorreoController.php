@@ -59,7 +59,7 @@ class envioComprobanteCorreoController extends Controller
                                 $objFormatoPago->Generar($em, "", $ruta, $arPago->getCodigoPagoPk(), "", "", "", "", "", "");
                             }  
 
-                            $correo = $arPago->getEmpleadoRel()->getCorreo();
+                            $correo = strtolower($arPago->getEmpleadoRel()->getCorreo());
                             $correoNomina = $arConfiguracion->getCorreoNomina();
                             if($correo) {
                                 $rutaArchivo = $ruta."Pago".$arPago->getCodigoPagoPk().".pdf";
