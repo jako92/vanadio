@@ -393,13 +393,15 @@ class MovimientoController extends Controller
                 $bodega = $arrControles['TxtBodega'][$codigo];
                 $cantidad = $arrControles['TxtCantidad'][$codigo];
                 $costo = $arrControles['TxtCosto'][$codigo];
-                $precio = $arrControles['TxtPrecio'][$codigo];                
+                $precio = $arrControles['TxtPrecio'][$codigo];
+                $descuento = $arrControles['TxtDescuento'][$codigo];                
                 $arMovimientoDetalle->setLoteFk($lote);                
                 $arMovimientoDetalle->setFechaVencimiento($vence);
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
                 $arMovimientoDetalle->setVrCosto($costo);
                 $arMovimientoDetalle->setVrPrecio($precio);
+                $arMovimientoDetalle->setVrDescuento($descuento);
                 $em->persist($arMovimientoDetalle);
             }
             $em->flush();                            

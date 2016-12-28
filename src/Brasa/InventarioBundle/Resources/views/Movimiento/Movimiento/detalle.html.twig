@@ -90,6 +90,7 @@
                             <th>% IVA</th>
                             <th>IVA</th>
                             <th>CANTIDAD</th>
+                            <th>DESCUENTO</th>
                             <th>COSTO</th>
                             <th>PRECIO</th>
                             <th>SUBTOTAL</th>
@@ -107,6 +108,7 @@
                                     <td style="text-align: right">{{ arMovimientoDetalle.porcentajeIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtCantidad[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.cantidad  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtDescuento[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.vrDescuento  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtCosto[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.vrCosto  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtPrecio[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.vrPrecio  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrSubtotal | number_format(0, '.', ',') }}</td>
@@ -117,6 +119,7 @@
                                     <td style="text-align: right">{{ arMovimientoDetalle.porcentajeIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.cantidad | number_format(0, '.', ',') }}</td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.vrDescuento | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrCosto | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrPrecio | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrSubtotal | number_format(0, '.', ',') }}</td>
