@@ -158,13 +158,18 @@ class MovimientoController extends Controller
             }
             if($form->get('BtnDesAutorizar')->isClicked()) {
                 if($arMovimiento->getEstadoAutorizado() == 1) {
-                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->desautorizar($codigoMovimiento);
-                    if($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta);
-                    } else {
-                        $em->flush();
-                    }
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
+                    if($arMovimiento->getEstadoImpreso() == 0) {
+                        $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->desautorizar($codigoMovimiento);
+                        if($respuesta != "") {
+                            $objMensaje->Mensaje("error", $respuesta);
+                        } else {
+                            $em->flush();
+                        }
+                        return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
+                    }    
+                    else {
+                        $objMensaje->Mensaje("error","No se puede desautorizar, fue impreso el movimiento");
+                    }    
                 }
             }
             if($form->get('BtnDetalleActualizar')->isClicked()) {                
