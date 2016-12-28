@@ -6,7 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Brasa\TurnoBundle\Form\Type\TurCierreMesType;
 class CierreMesController extends Controller
 {
     /**
@@ -362,18 +363,22 @@ class CierreMesController extends Controller
                 $em->persist($arCierreMes);
                 $em->flush();                                                  
                 return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));                
-            }
-                       
+            }                      
             /*if($request->request->get('OpCerrar')) {
-                $codigoSoportePagoPeriodo = $request->request->get('OpCerrar');
-                $arSoportePagoPeriodo = NEW \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();
-                $arSoportePagoPeriodo = $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->find($codigoSoportePagoPeriodo);                
-                $arSoportePagoPeriodo->setEstadoCerrado(1);                
-                $em->persist($arSoportePagoPeriodo);
+                $codigoCierreMes = $request->request->get('OpCerrar');
+                $arCierreMes = NEW \Brasa\TurnoBundle\Entity\TurCierreMes();
+                $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);                
+                $arCierreMes->setEstadoCerrado(1);                
+                $em->persist($arCierreMes);
                 $em->flush();                                                   
                 return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago'));                
             }*/            
-            
+            if ($form->get('BtnEliminar')->isClicked()) {                
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $em->getRepository('BrasaTurnoBundle:TurCierreMes')->eliminar($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));                
+                
+            }             
             
         }
         $dql = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->listaDql();
@@ -383,8 +388,31 @@ class CierreMesController extends Controller
             'form' => $form->createView()));
     }
     
+    /**
+     * @Route("/tur/proceso/cierre/mes/nuevo/{codigoCierreMes}", name="brs_tur_proceso_cierre_mes_nuevo")
+     */    
+    public function nuevoAction(Request $request, $codigoCierreMes) {
+        $em = $this->getDoctrine()->getManager();        
+        $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+        if($codigoCierreMes != 0) {
+            $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
+        }
+        $form = $this->createForm(TurCierreMesType::class, $arCierreMes);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $arCierreMes = $form->getData();
+            $em->persist($arCierreMes);
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));                                                                              
+        }
+        return $this->render('BrasaTurnoBundle:Procesos/CierreMes:nuevo.html.twig', array(
+            'arSoportePagoPeriodo' => $arCierreMes,
+            'form' => $form->createView()));
+    }     
+    
     private function formularioGenerar() {
-        $form = $this->createFormBuilder()                  
+        $form = $this->createFormBuilder()
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar')) 
             ->getForm();
         return $form;
     }    

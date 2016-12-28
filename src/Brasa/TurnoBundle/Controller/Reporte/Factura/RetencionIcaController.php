@@ -13,12 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class FechaServicioController extends Controller
+class RetencionIcaController extends Controller
 {
     var $strListaDql = "";
     var $codigoRecurso = "";
     /**
-     * @Route("/tur/reporte/factura/fecha/servicio", name="brs_tur_reporte_factura_fecha_servicio")
+     * @Route("/tur/reporte/factura/retencion/ica", name="brs_tur_reporte_factura_retencion_ica")
      */     
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
@@ -44,7 +44,7 @@ class FechaServicioController extends Controller
         }
 
         $arFacturaDetalle = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 200);
-        return $this->render('BrasaTurnoBundle:Reportes/Factura:fechaServicio.html.twig', array(
+        return $this->render('BrasaTurnoBundle:Reportes/Factura:retencionIca.html.twig', array(
             'arFacturaDetalle' => $arFacturaDetalle,                        
             'form' => $form->createView()));
     }        

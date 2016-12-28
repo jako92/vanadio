@@ -15,9 +15,9 @@ class TurCierreMesRepository extends EntityRepository {
         $em = $this->getEntityManager();
         if(count($arrSeleccionados) > 0) {
             foreach ($arrSeleccionados AS $codigo) {                                
-                $arSoportePagoPeriodo = $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->find($codigo);                    
-                if($arSoportePagoPeriodo->getEstadoGenerado() == 0) {
-                    $em->remove($arSoportePagoPeriodo);                    
+                $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigo);                    
+                if($arCierreMes->getEstadoGenerado() == 0) {
+                    $em->remove($arCierreMes);                    
                 }                                     
             }
             $em->flush();
