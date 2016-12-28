@@ -42,47 +42,47 @@
                         <td class="td-in-well">{{ arNotaDebito.codigoNotaDebitoPk }}</td>
                         <td class="titulo">NÚMERO:</td>
                         <td class="td-in-well">{{ arNotaDebito.numero | default('0')}}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
+                        <td class="titulo"></td>
+                        <td class="titulo"></td>
                     </tr>
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arNotaDebito.clienteRel.nombreCorto | default('') }}</td>
                         <td class="titulo">NIT:</td>
                         <td class="td-in-well">{{ arNotaDebito.clienteRel.nit | default('') }}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
+                        <td class="titulo"></td>
+                        <td class="titulo"></td>
                     </tr>                  
                     <tr>
                         <td class="titulo">CUENTA BANCO:</td>
                         <td class="td-in-well">{{ arNotaDebito.cuentaRel.nombre }}</td>
                         <td class="titulo" >CONCEPTO:</td>
                         <td class="td-in-well">{{ arNotaDebito.notadebitoConceptoRel.nombre }}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
+                        <td class="titulo"></td>
+                        <td class="titulo"></td>
                     </tr>                
                     <tr>
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arNotaDebito.fecha |date("Y/m/d") }}</td>
                         <td class="titulo" >FECHA PAGO:</td>
                         <td class="td-in-well">{{ arNotaDebito.fechaPago |date("Y/m/d") }}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
+                        <td class="titulo"></td>
+                        <td class="titulo"></td>
                     </tr>
                     <tr>
                         <td class="titulo">ANULADO:</td>
                         <td class="td-in-well">{% if arNotaDebito.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo">IMPRESO:</td>
                         <td class="td-in-well">{% if arNotaDebito.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
+                        <td class="titulo"></td>
+                        <td class="titulo"></td>
                     </tr>
                     <tr>
                         <td class="titulo">EXPORTADO:</td>
                         <td class="td-in-well">{% if arNotaDebito.estadoExportado == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo">AUTORIZADO:</td>
                         <td class="td-in-well">{% if arNotaDebito.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo" align="right">TOTAL:</td>
+                        <td class="titulo">TOTAL:</td>
                         <td align="right">{{ arNotaDebito.valor | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
@@ -118,9 +118,9 @@
         </table>
             <div class="btn-toolbar" style="float: right">
                 {% if arNotaDebito.estadoAutorizado == 0 %}
-                    <div class="btn-group">
+                    <!--<div class="btn-group">
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_movimiento_notadebito_anticipo_nuevo', {'codigoNotaDebito': arNotaDebito.codigoNotaDebitoPk, 'codigoNotaDebitoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Anticipo</a>
-                    </div>
+                    </div>-->
                     <div class="btn-group">
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_movimiento_notadebito_detalle_nuevo', {'codigoNotaDebito': arNotaDebito.codigoNotaDebitoPk, 'codigoNotaDebitoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
                     </div>

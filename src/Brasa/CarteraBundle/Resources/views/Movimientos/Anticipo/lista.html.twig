@@ -80,8 +80,7 @@
                 <th>FECHA</th>
                 <th>F.PAGO</th>
                 <th>NIT</th>
-                <th>CLIENTE</th>
-                <th>ASESOR</th>
+                <th>CLIENTE</th>                
                 <th>CUENTA</th>                                
                 <th>ANTICIPO</th>
                 <th>TOTAL</th>
@@ -99,8 +98,7 @@
                 <td>{{ arAnticipos.fecha |date("Y/m/d")  }}</td>
                 <td>{{ arAnticipos.fechaPago |date("Y/m/d")  }}</td>
                 <td>{{ arAnticipos.clienteRel.nit |default('')  }}</td>
-                <td>{{ arAnticipos.clienteRel.nombreCorto |default('')  }}</td>
-                <td>{{ arAnticipos.asesorRel.nombre |default('')  }}</td>
+                <td>{{ arAnticipos.clienteRel.nombreCorto |default('')  }}</td>                
                 <td>{{ arAnticipos.cuentaRel.nombre |default('')  }}</td>                
                 <td style="text-align: right">{{ arAnticipos.VrAnticipo | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arAnticipos.vrTotal | number_format(0, '.', ',') }}</td>

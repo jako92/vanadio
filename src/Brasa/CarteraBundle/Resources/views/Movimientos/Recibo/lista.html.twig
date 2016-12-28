@@ -61,8 +61,7 @@
                 <th>FECHA</th>
                 <th>F.PAGO</th>
                 <th>NIT</th>
-                <th>CLIENTE</th>
-                <th>ASESOR</th>
+                <th>CLIENTE</th>                
                 <th>CUENTA</th>                                
                 <th>TOTAL</th>
                 <th>ANU</th>
@@ -80,8 +79,7 @@
                 <td>{{ arRecibos.fecha |date("Y/m/d")  }}</td>
                 <td>{{ arRecibos.fechaPago |date("Y/m/d")  }}</td>
                 <td>{{ arRecibos.clienteRel.nit |default('')  }}</td>
-                <td>{{ arRecibos.clienteRel.nombreCorto |default('')  }}</td>
-                <td>{{ arRecibos.asesorRel.nombre |default('')  }}</td>
+                <td>{{ arRecibos.clienteRel.nombreCorto |default('')  }}</td>                
                 <td>{{ arRecibos.cuentaRel.nombre |default('')  }}</td>                
                 <td style="text-align: right">{{ arRecibos.vrTotal | number_format(0, '.', ',') }}</td>
                 <td>{% if arRecibos.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>

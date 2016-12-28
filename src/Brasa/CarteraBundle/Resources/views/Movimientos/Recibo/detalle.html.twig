@@ -42,7 +42,7 @@
                         <td class="td-in-well">{{ arRecibo.codigoReciboPk }}</td>
                         <td class="titulo">NÚMERO:</td>
                         <td class="td-in-well">{{ arRecibo.numero | default('0') }}</td>
-                        <td class="titulo" align="right">TOTAL DESCUENTO:</td>
+                        <td class="titulo">TOTAL DESCUENTO:</td>
                         <td align="right">{{ arRecibo.vrTotalDescuento | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
@@ -50,7 +50,7 @@
                         <td class="td-in-well">{{ arRecibo.clienteRel.nombreCorto | default('') }}</td>
                         <td class="titulo">NIT:</td>
                         <td class="td-in-well">{{ arRecibo.clienteRel.nit | default('') }}</td>
-                        <td class="titulo" align="right">TOTAL AJUSTE PESO:</td>
+                        <td class="titulo">TOTAL AJUSTE PESO:</td>
                         <td align="right">{{ arRecibo.vrTotalAjustePeso | number_format(2, '.', ',')}}</td>
                     </tr>                  
                     <tr>
@@ -58,7 +58,7 @@
                         <td class="td-in-well">{{ arRecibo.cuentaRel.nombre }}</td>
                         <td class="titulo" >TIPO RECBO:</td>
                         <td class="td-in-well">{{ arRecibo.reciboTipoRel.nombre }}</td>
-                        <td class="titulo" align="right">TOTAL RETE ICA:</td>
+                        <td class="titulo">TOTAL RETE ICA:</td>
                         <td align="right">{{ arRecibo.vrTotalReteIca | number_format(2, '.', ',')}}</td>
                     </tr>                
                     <tr>
@@ -66,15 +66,15 @@
                         <td class="td-in-well">{{ arRecibo.fecha |date("Y/m/d") }}</td>
                         <td class="titulo" >FECHA PAGO:</td>
                         <td class="td-in-well">{{ arRecibo.fechaPago |date("Y/m/d") }}</td>
-                        <td class="titulo" align="right">TOTAL RETE IVA:</td>
+                        <td class="titulo">TOTAL RETE IVA:</td>
                         <td align="right">{{ arRecibo.vrTotalReteIva | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">ASESOR:</td>
-                        <td class="td-in-well">{{ arRecibo.asesorRel.nombre |default('') }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
-                        <td class="titulo" align="right">TOTAL RETE FUENTE:</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL RETE FUENTE:</td>
                         <td align="right">{{ arRecibo.vrTotalReteFuente | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
@@ -82,7 +82,7 @@
                         <td class="td-in-well">{% if arRecibo.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo">IMPRESO:</td>
                         <td class="td-in-well">{% if arRecibo.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo" align="right">VALOR:</td>
+                        <td class="titulo">VALOR:</td>
                         <td align="right">{{ arRecibo.vrTotal | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
@@ -90,7 +90,7 @@
                         <td class="td-in-well">{% if arRecibo.estadoExportado == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo">AUTORIZADO:</td>
                         <td class="td-in-well">{% if arRecibo.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo" align="right">TOTAL PAGO:</td>
+                        <td class="titulo">TOTAL PAGO:</td>
                         <td align="right">{{ arRecibo.vrTotalPago | number_format(2, '.', ',')}}</td>
                     </tr>                    
                     <tr>

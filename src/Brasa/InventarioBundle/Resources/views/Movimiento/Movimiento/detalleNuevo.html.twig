@@ -9,7 +9,7 @@
             <th>CODIGO</th>
             <th>NOMBRE</th>
             <th>MARCA</th>            
-            <th>PRECIO</th>            
+            <th>% IVA</th>            
             <th></th>
         </tr>
         {% for arItem in arItem %}
@@ -17,7 +17,7 @@
                 <td>{{ arItem.codigoItemPk  }}<input type="hidden" name="LblCodigoConcepto[]" value="{{ arItem.codigoItemPk }}"></td>
                 <td>{{ arItem.nombre }}</td>
                 <td>{{ arItem.marcaRel.nombre |default('') }}</td>
-                <td style="text-align: right">{{ arItem.vrPrecioPredeterminado | number_format(0, '.', ',') }}</td>                                                
+                <td style="text-align: right">{{ arItem.porcentajeIva | number_format(0, '.', ',') }}</td>                                                
                 <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arItem.codigoItemPk }}" /></td>
             </tr>
         {% endfor %}

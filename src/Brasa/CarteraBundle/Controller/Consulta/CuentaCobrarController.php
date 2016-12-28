@@ -145,7 +145,7 @@ class CuentaCobrarController extends Controller
             ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
             ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
             ->add('asesorRel', EntityType::class, $arrayPropiedadesAsesor)
-            ->add('rango', ChoiceType::class, array('choices' => array('0' => 'TODOS','30' => '1 - 30', '60' => '31 - 60', '90' => '61 - 90', '180' => '91 - 180')))
+            ->add('rango', ChoiceType::class, array('choices' => array('TODOS' => '0','1 - 30' => '30', '31 - 60' => '60', '61 - 90' => '90', '91 - 180' => '180')))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))            
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))

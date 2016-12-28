@@ -105,7 +105,7 @@ class InvMovimientoRepository extends EntityRepository {
                     $arMovimiento->setNumero($consecutivo);                                
                 }
                 //$arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-                $arAsesor = $em->getRepository('BrasaGeneralBundle:GenAsesor')->find(1);
+                //$arAsesor = $em->getRepository('BrasaGeneralBundle:GenAsesor')->find(1);
                 //$arFormaPago = $em->getRepository('BrasaGeneralBundle:GenFormaPago')->find($arMovimiento->getTerceroRel()->getCodigoFormaPagoClienteFk());
                 $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find(3);
                 $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
@@ -113,7 +113,7 @@ class InvMovimientoRepository extends EntityRepository {
                 if ($arClienteCartera == null){
                     $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
                     $arClienteCartera->setFormaPagoRel($arMovimiento->getTerceroRel()->getFormaPagoRel());
-                    $arClienteCartera->setAsesorRel($arAsesor);
+                    //$arClienteCartera->setAsesorRel($arAsesor);
                     $arClienteCartera->setCiudadRel($arMovimiento->getTerceroRel()->getCiudadRel());
                     $arClienteCartera->setNit($arMovimiento->getTerceroRel()->getNit());
                     $arClienteCartera->setDigitoVerificacion($arMovimiento->getTerceroRel()->getDigitoVerificacion());
@@ -129,7 +129,7 @@ class InvMovimientoRepository extends EntityRepository {
                 }                 
                 $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                 
                 $arCuentaCobrar->setClienteRel($arClienteCartera);
-                $arCuentaCobrar->setAsesorRel($arAsesor);
+                //$arCuentaCobrar->setAsesorRel($arAsesor);
                 $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
                 $arCuentaCobrar->setFecha($arMovimiento->getFecha());
                 $arCuentaCobrar->setFechaVence($arMovimiento->getFecha());
