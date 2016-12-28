@@ -113,7 +113,7 @@
         </div>                    
         <div class="btn-toolbar" style="float: right">              
             {%if arPagoBanco.estadoAutorizado == 0 %}                    
-                <div class="btn-group">                   
+                <div class="btn-group">                                       
                     {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 4 %}
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_seguridad_social_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 900)">Nuevo seguridad social</a>
                     {% endif %}
@@ -129,7 +129,10 @@
                     {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 5 %}
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK, 'codigoPagoTipo':2}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo primas</a>
                     {% endif %}
-                </div>                        
+                    {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 7 %}
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_importar', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Importar</a>
+                    {% endif %}                    
+                </div>                                        
             {% endif %}
             <div class="btn-group">
                 {{ form_widget(form.BtnDetalleExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}               

@@ -11,6 +11,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PagoBancoController extends Controller
 {
@@ -510,6 +511,82 @@ class PagoBancoController extends Controller
             'arSsoPediodoDetalles' => $arSsoPediodoDetalles,
             'form' => $form->createView()));
     } 
+    
+    /**
+     * @Route("/rhu/movimiento/pago/banco/detalle/importar/{codigoPagoBanco}", name="brs_rhu_movimiento_pago_banco_detalle_importar")
+     */
+    public function importarDetalleAction(Request $request, $codigoPagoBanco) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();  
+        $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
+        $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);        
+        $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $form = $this->createFormBuilder()
+            ->add('attachment', FileType::class)
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isValid()) {
+            if($form->get('BtnCargar')->isClicked()) {                
+                set_time_limit(0);
+                ini_set("memory_limit", -1);
+                
+                $form['attachment']->getData()->move($rutaTemporal->getRutaTemporal(), "archivo.xls");                
+                $ruta = $rutaTemporal->getRutaTemporal(). "archivo.xls";                
+                $arrCarga = array();
+                $objPHPExcel = \PHPExcel_IOFactory::load($ruta);                
+                foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+                    $worksheetTitle     = $worksheet->getTitle();
+                    $highestRow         = $worksheet->getHighestRow(); // e.g. 10
+                    $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
+                    $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                    $nrColumns = ord($highestColumn) - 64;
+                    for ($row = 2; $row <= $highestRow; ++ $row) {                        
+                        $cell = $worksheet->getCellByColumnAndRow(0, $row);
+                        $identificacion = $cell->getValue();                               
+                        $cell = $worksheet->getCellByColumnAndRow(1, $row);
+                        $valor = $cell->getValue();              
+                        $arrCarga[] = array(
+                            'identificacion' => $identificacion,
+                            'valor' => $valor);
+                    }
+                }
+                $error = "";
+                foreach ($arrCarga as $carga) {
+                    $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                    if($carga['identificacion']) {
+                        $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $carga['identificacion']));    
+                    }                    
+                    if($arEmpleado) {
+                        $arPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
+                        $arPagoBancoDetalle->setPagoBancoRel($arPagoBanco);                        
+                        $arPagoBancoDetalle->setCuenta($arEmpleado->getCuenta());
+                        $valorPagar = round($carga['valor']);
+                        $arPagoBancoDetalle->setVrPago($valorPagar); 
+                        $arPagoBancoDetalle->setBancoRel($arEmpleado->getBancoRel());                                        
+                        $arPagoBancoDetalle->setEmpleadoRel($arEmpleado);                        
+                        $em->persist($arPagoBancoDetalle);                                                     
+                    } else {
+                        $error .= "Empleado" . $carga['identificacion'] . " no existe ";
+                    }                                           
+                }
+                if($error != "") {
+                    //echo "Error al cargar:" . $error;
+                    $objMensaje->Mensaje('error', "Error al cargar:" . $error, $this);
+                } else {
+                    $em->flush();
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->liquidar($codigoPagoBanco);                    
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+                }
+                
+                
+            }                                   
+        }         
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/PagoBanco:importarDetalle.html.twig', array(
+            'form' => $form->createView()
+            ));
+    }    
     
     private function listar() {
         $session = new session;
