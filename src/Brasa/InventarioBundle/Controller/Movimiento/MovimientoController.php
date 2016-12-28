@@ -145,6 +145,8 @@ class MovimientoController extends Controller
         if($form->isValid()) {
             if($form->get('BtnAutorizar')->isClicked()) {
                 if($arMovimiento->getEstadoAutorizado() == 0) {
+                    $arrControles = $request->request->All();
+                    $this->actualizarDetalle($arrControles, $codigoMovimiento);
                     $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->autorizar($codigoMovimiento);
                     if($respuesta != "") {
                         $objMensaje->Mensaje("error", $respuesta);
@@ -167,12 +169,13 @@ class MovimientoController extends Controller
             }
             if($form->get('BtnDetalleActualizar')->isClicked()) {                
                 $arrControles = $request->request->All();
-                $this->actualizarDetalle($arrControles);                                
+                $this->actualizarDetalle($arrControles, $codigoMovimiento);                                                
                 return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
             }            
             if($form->get('BtnEliminarDetalle')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->eliminarSeleccionados($arrSeleccionados);                
+                $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->eliminarSeleccionados($arrSeleccionados);                                
+                $em->getRepository('BrasaInventarioBundle:InvMovimiento')->liquidar($codigoMovimiento);
                 return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
             }
             if($form->get('BtnImprimir')->isClicked()) {                                
@@ -229,6 +232,7 @@ class MovimientoController extends Controller
                         $arMovimientoDetalle->setFechaVencimiento(new \DateTime('now'));
                         $arMovimientoDetalle->setAfectaInventario($arItem->getAfectaInventario());
                         $arMovimientoDetalle->setOperacionInventario($arMovimiento->getOperacionInventario());                        
+                        $arMovimientoDetalle->setPorcentajeIva($arItem->getPorcentajeIva());                        
                         $em->persist($arMovimientoDetalle);
                     }
                     $em->persist($arMovimientoDetalle);
@@ -371,7 +375,7 @@ class MovimientoController extends Controller
         exit;
     }
 
-    private function actualizarDetalle($arrControles) {
+    private function actualizarDetalle($arrControles, $codigoMovimiento) {
         $em = $this->getDoctrine()->getManager();
         $intIndice = 0;        
         if(isset($arrControles['LblCodigo'])) {
@@ -393,8 +397,8 @@ class MovimientoController extends Controller
                 $arMovimientoDetalle->setVrPrecio($precio);
                 $em->persist($arMovimientoDetalle);
             }
-            $em->flush();                
-            //$em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);             
+            $em->flush();                            
+            $em->getRepository('BrasaInventarioBundle:InvMovimiento')->liquidar($codigoMovimiento);
         } 
     }    
     

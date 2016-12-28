@@ -172,4 +172,67 @@ class InvMovimientoRepository extends EntityRepository {
         }
         return $respuesta;        
     }
+    
+    public function liquidar($codigoMovimiento) {
+        $em = $this->getEntityManager();
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
+        $subtotal = 0;
+        $iva = 0;
+        $baseIva = 0;
+        $total = 0;
+        $retencionFuente = 0;
+        
+        $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+        $arMovimientoDetalle = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->findBy(array('codigoMovimientoFk' => $codigoMovimiento));
+        foreach ($arMovimientoDetalle as $arMovimientoDetalle) {
+            $arMovimientoDetalleAct = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+            $arMovimientoDetalleAct = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->find($arMovimientoDetalle->getCodigoDetalleMovimientoPk());
+            $subtotalDetalle = $arMovimientoDetalle->getVrPrecio() * $arMovimientoDetalle->getCantidad();
+            $subtotalDetalle = $subtotalDetalle;
+            //$baseIvaDetalle = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeIva()) / 100;
+            //$baseIvaDetalle = $baseIvaDetalle;
+            $ivaDetalle = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeIva()) / 100;
+            $ivaDetalle = $ivaDetalle;
+            $totalDetalle = $subtotalDetalle + $ivaDetalle;
+            $totalDetalle = $totalDetalle;
+            $arMovimientoDetalleAct->setOperacionInventario($arMovimiento->getOperacionInventario());
+            $arMovimientoDetalleAct->setVrSubtotal($subtotalDetalle);
+            $arMovimientoDetalleAct->setVrSubtotalOperadoInventario($subtotalDetalle * $arMovimientoDetalleAct->getOperacionInventario());
+            //$arMovimientoDetalleAct->setBaseIva($baseIvaDetalle);
+            $arMovimientoDetalleAct->setVrIva($ivaDetalle);
+            $arMovimientoDetalleAct->setVrTotal($totalDetalle);
+            $em->persist($arMovimientoDetalleAct);
+
+            $subtotal += $subtotalDetalle;
+            $iva += $ivaDetalle;
+            //$baseIva += $baseIvaDetalle;
+            $total += $totalDetalle;
+        }
+        
+        //$porRetencionFuente = $arMovimiento->getFacturaServicioRel()->getPorRetencionFuente();
+        //$porBaseRetencionFuente = $arMovimiento->getFacturaServicioRel()->getPorBaseRetencionFuente();
+        //$baseRetencionFuente = ($subtotal * $porBaseRetencionFuente) / 100;
+        //$baseRetencionFuente = $baseRetencionFuente;
+        /*if($baseRetencionFuente >= $arConfiguracion->getBaseRetencionFuente()) {
+            $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
+        }*/
+        //$retencionFuente = $retencionFuente;
+        $totalBruto = $subtotal;
+        $totalNeto = $subtotal + $iva - $retencionFuente;        
+        $total = $subtotal + $iva - $retencionFuente;        
+        $arMovimiento->setVrSubtotal($subtotal);
+        $arMovimiento->setVrSubtotalOperado($subtotal * $arMovimiento->getOperacionInventario());
+        //$arFactura->setVrSubtotalOtros($floSubTotalConceptos);
+        //$arMovimiento->setVrRetencionFuente($retencionFuente);
+        $arMovimiento->setVrIva($iva);
+        $arMovimiento->setvrBruto($totalBruto);
+        $arMovimiento->setVrNeto($totalNeto);
+        $arMovimiento->setvrTotal($total);
+        $em->persist($arMovimiento);
+        $em->flush();
+        return true;
+    }
 }

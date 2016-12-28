@@ -235,9 +235,9 @@ class PagoBancoController extends Controller
     }
     
     /**
-     * @Route("/rhu/movimiento/pago/banco/detalle/nuevo/{codigoPagoBanco}/{codigoPagoBancoTipo}", name="brs_rhu_movimiento_pago_banco_detalle_nuevo")
+     * @Route("/rhu/movimiento/pago/banco/detalle/nuevo/{codigoPagoBanco}/{codigoPagoTipo}", name="brs_rhu_movimiento_pago_banco_detalle_nuevo")
      */    
-    public function detalleNuevoAction(Request $request, $codigoPagoBanco, $codigoPagoBancoTipo) {
+    public function detalleNuevoAction(Request $request, $codigoPagoBanco, $codigoPagoTipo) {
         
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
@@ -246,7 +246,7 @@ class PagoBancoController extends Controller
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);
         $arProgramacionesPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
-        $arProgramacionesPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->findBy(array('estadoPagado' => 1, 'estadoPagadoBanco' => 0, 'codigoPagoTipoFk' => $codigoPagoBancoTipo ));        
+        $arProgramacionesPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->findBy(array('estadoPagado' => 1, 'estadoPagadoBanco' => 0, 'codigoPagoTipoFk' => $codigoPagoTipo ));        
         
         $arrayPropiedadesBanco = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuBanco',
@@ -269,7 +269,7 @@ class PagoBancoController extends Controller
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
         $form->handleRequest($request); 
-        $this->listarDetalle($codigoPagoBancoTipo);
+        $this->listarDetalle($codigoPagoTipo);
         if ($form->isValid()) {            
                 if ($form->get('BtnGuardar')->isClicked()) {
                     if ($arPagoBanco->getEstadoAutorizado() == 0){
@@ -358,7 +358,7 @@ class PagoBancoController extends Controller
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrarNuevoDetalle($form);
-                    $this->listarDetalle();                    
+                    $this->listarDetalle($codigoPagoTipo);                    
                 }
                 
             }    
@@ -520,12 +520,12 @@ class PagoBancoController extends Controller
                 );        
     }    
     
-    private function listarDetalle($codigoPagoBancoTipo) {
+    private function listarDetalle($codigoPagoTipo) {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->dqlListaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientePagoBancoDql(                
                 $session->get('filtroRhuCodigoBanco'),
-                $codigoPagoBancoTipo);        
+                $codigoPagoTipo);        
     }     
     
     private function filtrar ($form ) { 
@@ -536,11 +536,11 @@ class PagoBancoController extends Controller
         } else {
             $this->strFecha = "";
         }
-        $codigoPagoBancoTipo = '';
+        $codigoPagoTipo = '';
         if($form->get('pagoBancoTipoRel')->getData()) {
-            $codigoPagoBancoTipo = $form->get('pagoBancoTipoRel')->getData()->getCodigoPagoBancoTipoPk();
+            $codigoPagoTipo = $form->get('pagoBancoTipoRel')->getData()->getCodigoPagoBancoTipoPk();
         }
-        $session->set('filtroCodigoPagoBancoTipo', $codigoPagoBancoTipo);
+        $session->set('filtroCodigoPagoBancoTipo', $codigoPagoTipo);
     }
     
     private function filtrarNuevoDetalle ($form) {

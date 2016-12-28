@@ -35,8 +35,8 @@
                         <td class="td-in-well">{{ arMovimiento.numero }}</td>
                         <td class="titulo">CODIGO:</td>
                         <td class="td-in-well">{{ arMovimiento.codigoMovimientoPk }}</td>
-                        <td class="titulo">SUBTOTAL:</td>
-                        <td class="td-in-well">{{ arMovimiento.codigoMovimientoPk }}</td>                        
+                        <td class="titulo">SUBTOTAL:</td>                        
+                        <td align="right">{{ arMovimiento.vrSubtotal | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">FECHA:</td>
@@ -44,7 +44,7 @@
                         <td class="titulo" >DOCUMENTO:</td>
                         <td class="td-in-well">{{ arMovimiento.documentoRel.nombre | default('') }}</td>
                         <td class="titulo" >IVA:</td>
-                        <td class="td-in-well"></td>                        
+                        <td align="right">{{ arMovimiento.vrIva | number_format(0, '.', ',')}}</td>                        
                     </tr>
                     <tr>
                         <td class="titulo">TERCERO:</td>
@@ -52,7 +52,7 @@
                         <td class="titulo" ></td>
                         <td class="td-in-well"></td>
                         <td class="titulo" >TOTAL BRUTO:</td>
-                        <td class="td-in-well"></td>                         
+                        <td align="right">{{ arMovimiento.vrBruto | number_format(0, '.', ',')}}</td>                         
                     </tr>
                     <tr>
                         <td class="titulo"></td>
@@ -60,7 +60,7 @@
                         <td class="titulo" ></td>
                         <td class="td-in-well"></td>
                         <td class="titulo" >TOTAL NETO:</td>
-                        <td class="td-in-well"></td>                         
+                        <td align="right">{{ arMovimiento.vrNeto | number_format(0, '.', ',')}}</td>                         
                     </tr>                    
                     <tr>
                         <td class="titulo" >COMENTARIO: </td>
@@ -87,9 +87,12 @@
                             <th>LOTE</th>
                             <th>VENCE</th>
                             <th>BODEGA</th>
+                            <th>% IVA</th>
+                            <th>IVA</th>
                             <th>CANTIDAD</th>
                             <th>COSTO</th>
                             <th>PRECIO</th>
+                            <th>SUBTOTAL</th>
                             <th></th>
                         </tr>
                         {% for arMovimientoDetalle in arMovimientoDetalle %}
@@ -101,16 +104,22 @@
                                     <td><input class="input-grid" type="text" name="TxtLote[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" id="TxtLote[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.loteFk  }}" size="30" style="width:110px" onclick="this.select()" onBlur="javascript:this.value=this.value.toUpperCase()"/> <a class="btn btn-default btn-xs" href="javascript:abrirVentana3('{{ path('brs_inv_buscar_lote', {'codigoItem': arMovimientoDetalle.codigoItemFk, 'campoLote': 'TxtLote[' ~ arMovimientoDetalle.codigoDetalleMovimientoPk~ ']'}) }}', 'buscarLote', 600, 900)">...</a></td>
                                     <td><input class="input-grid" type="text" name="TxtVence[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.fechaVencimiento |date('Y-m-d')  }}" size="20" style="width:70px" onclick="this.select()" onBlur="javascript:this.value=this.value.toUpperCase()"/></td>
                                     <td><input class="input-grid" type="text" name="TxtBodega[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" id="TxtBodega[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.codigoBodegaFk  }}" size="6" style="width:30px" onclick="this.select()"/> <a class="btn btn-default btn-xs" href="javascript:abrirVentana3('{{ path('brs_inv_buscar_bodega', { 'campoCodigo': 'TxtBodega[' ~ arMovimientoDetalle.codigoDetalleMovimientoPk~ ']'}) }}', 'buscarBodega', 600, 900)">...</a></td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.porcentajeIva | number_format(0, '.', ',') }}</td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtCantidad[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.cantidad  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtCosto[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.vrCosto  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtPrecio[{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}]" value="{{ arMovimientoDetalle.vrPrecio  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.vrSubtotal | number_format(0, '.', ',') }}</td>
                                 {% else %}
                                     <td>{{ arMovimientoDetalle.loteFk  }}</td>
                                     <td>{{ arMovimientoDetalle.fechaVencimiento | date('Y-m-d')  }}</td>
                                     <td>{{ arMovimientoDetalle.codigoBodegaFk  }}</td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.porcentajeIva | number_format(0, '.', ',') }}</td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.cantidad | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrCosto | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arMovimientoDetalle.vrPrecio | number_format(0, '.', ',') }}</td>
+                                    <td style="text-align: right">{{ arMovimientoDetalle.vrSubtotal | number_format(0, '.', ',') }}</td>
                                 {% endif %}
                                 <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arMovimientoDetalle.codigoDetalleMovimientoPk }}" /></td>
                             </tr>

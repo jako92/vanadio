@@ -224,9 +224,9 @@ class RhuPagoRepository extends EntityRepository {
         return $dql;
     } 
 
-    public function pendientePagoBancoDql($codigoBanco = "", $codigoPagoBancoTipo = "") {        
+    public function pendientePagoBancoDql($codigoBanco = "", $codigoPagoTipo = "") {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT p, e FROM BrasaRecursoHumanoBundle:RhuPago p JOIN p.empleadoRel e WHERE p.estadoPagado = 1 AND p.estadoPagadoBanco = 0 AND p.codigoPagoTipoFk = " .$codigoPagoBancoTipo;
+        $dql   = "SELECT p, e FROM BrasaRecursoHumanoBundle:RhuPago p JOIN p.empleadoRel e WHERE p.estadoPagado = 1 AND p.estadoPagadoBanco = 0 AND p.codigoPagoTipoFk = " .$codigoPagoTipo;
         
         if($codigoBanco != "") {
             $dql .= " AND e.codigoBancoFk = " . $codigoBanco;

@@ -84,6 +84,11 @@ class InvMovimiento
     private $vrSubtotal = 0;
     
     /**
+     * @ORM\Column(name="vr_subtotal_operado", type="float")
+     */
+    private $vrSubtotalOperado = 0;
+    
+    /**
      * @ORM\Column(name="vr_descuento", type="float")
      */
     private $vrDescuento = 0;
@@ -208,6 +213,7 @@ class InvMovimiento
     protected $movimientosDescuentosFinancierosMovimientoRel;     
     
    
+    
     
     /**
      * Constructor
@@ -538,6 +544,30 @@ class InvMovimiento
     public function getVrSubtotal()
     {
         return $this->vrSubtotal;
+    }
+
+    /**
+     * Set vrSubtotalOperado
+     *
+     * @param float $vrSubtotalOperado
+     *
+     * @return InvMovimiento
+     */
+    public function setVrSubtotalOperado($vrSubtotalOperado)
+    {
+        $this->vrSubtotalOperado = $vrSubtotalOperado;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotalOperado
+     *
+     * @return float
+     */
+    public function getVrSubtotalOperado()
+    {
+        return $this->vrSubtotalOperado;
     }
 
     /**

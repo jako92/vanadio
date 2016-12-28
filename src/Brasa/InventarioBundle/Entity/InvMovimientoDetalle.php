@@ -86,6 +86,11 @@ class InvMovimientoDetalle
      * @ORM\Column(name="vr_subtotal", type="float")
      */    
     private $vrSubTotal = 0;
+    
+    /**
+     * @ORM\Column(name="vr_subtotal_operado_inventario", type="float")
+     */    
+    private $vrSubtotalOperadoInventario = 0;
 
     /**
      * @ORM\Column(name="porcentaje_iva", type="integer")
@@ -170,6 +175,7 @@ class InvMovimientoDetalle
     protected $itemRel;
     
 
+    
 
     /**
      * Get codigoDetalleMovimientoPk
@@ -515,6 +521,30 @@ class InvMovimientoDetalle
     public function getVrSubTotal()
     {
         return $this->vrSubTotal;
+    }
+
+    /**
+     * Set vrSubtotalOperadoInventario
+     *
+     * @param float $vrSubtotalOperadoInventario
+     *
+     * @return InvMovimientoDetalle
+     */
+    public function setVrSubtotalOperadoInventario($vrSubtotalOperadoInventario)
+    {
+        $this->vrSubtotalOperadoInventario = $vrSubtotalOperadoInventario;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotalOperadoInventario
+     *
+     * @return float
+     */
+    public function getVrSubtotalOperadoInventario()
+    {
+        return $this->vrSubtotalOperadoInventario;
     }
 
     /**
