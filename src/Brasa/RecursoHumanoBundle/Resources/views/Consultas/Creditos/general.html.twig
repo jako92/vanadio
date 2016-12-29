@@ -35,16 +35,13 @@
                 </div>
                 </div>                       
                 <div class="form-group form-group-sm">
-                    <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.fechaDesde, {'attr': {'maxlength' : 10} }) }} 
-                    </div>                
-                </div>                     
-                <div class="form-group form-group-sm">
-                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.fechaHasta, {'attr': {'maxlength' : 10} }) }} 
-                    </div>                
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">                        
+                    </div>
+                    <label class="col-sm-2 control-label">Pagado:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.estadoPagado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
                 </div>                     
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -66,6 +63,7 @@
                 <th>CUOTAS</th>
                 <th>C. ACTUAL</th>                
                 <th>SUSPENDIDO</th>
+                <th>PAGADO</th>
             </tr>
             {% set douTotalSaldo = 0  %}
             {% for arCreditos in arCreditos %}
@@ -82,6 +80,7 @@
                 <td>{{ arCreditos.numeroCuotas  }}</td>
                 <td>{{ arCreditos.numeroCuotaActual  }}</td>                
                 <td style="text-align: right" {% if arCreditos.estadoSuspendido == 0 %} class="success"> NO {% else %} <td class="danger">SI {% endif %}</td>
+                <td style="text-align: right" {% if arCreditos.estadoPagado == 0 %} class="danger"> NO {% else %} <td class="success">SI {% endif %}</td>
                 {% set douTotalSaldo = douTotalSaldo + arCreditos.saldo %}
             </tr>
             {% endfor %}
@@ -93,6 +92,7 @@
                 <td style="text-align: right"></td>
                 <td style="text-align: right"></td>
                 <td style="text-align: right">{{ douTotalSaldo | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right"></td>
                 <td style="text-align: right"></td>
                 <td style="text-align: right"></td>
                 <td style="text-align: right"></td>                

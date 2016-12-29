@@ -648,8 +648,9 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $this->strSqlCreditoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->listaDQL(
                     $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
+                    "",
+                    "",
+                    $session->get('filtroRhuCreditoEstadoPagado')
                     );
     }
 
@@ -882,9 +883,8 @@ class ConsultasController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))            
+            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoPagado')))
             ->add('BtnFiltrarCredito', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcelCredito', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnPDFCredito', SubmitType::class, array('label'  => 'PDF',))
@@ -1450,10 +1450,11 @@ class ConsultasController extends Controller
     private function filtrarCreditoLista($form) {
         $session = new Session;                
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroRhuCreditoEstadoPagado', $form->get('estadoPagado')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
         
-        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        /*$dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
@@ -1461,7 +1462,7 @@ class ConsultasController extends Controller
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
             $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }
+        }*/
     }
 
     private function filtrarPagoLista($form) {
@@ -2066,9 +2067,9 @@ class ConsultasController extends Controller
                     ->setCellValue('G1', 'VR. CUOTA')
                     ->setCellValue('H1', 'VR. SALDO')
                     ->setCellValue('I1', 'CUOTAS')
-                    ->setCellValue('J1', 'CUOTA ACTUAL')
-                    ->setCellValue('K1', 'APROBADO')
-                    ->setCellValue('L1', 'SUSPENDIDO');
+                    ->setCellValue('J1', 'CUOTA ACTUAL')                    
+                    ->setCellValue('K1', 'SUSPENDIDO')
+                    ->setCellValue('L1', 'PAGADO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlCreditoLista);
@@ -2094,6 +2095,12 @@ class ConsultasController extends Controller
             else {
                 $Suspendido = "NO";
             }
+            if ($arCredito->getEstadoPagado() == 1) {
+                $pagado = "SI";
+            }
+            else {
+                $pagado = "NO";
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arCredito->getCodigoCreditoPk())
                     ->setCellValue('B' . $i, $arCredito->getCreditoTipoRel()->getNombre())
@@ -2104,9 +2111,9 @@ class ConsultasController extends Controller
                     ->setCellValue('G' . $i, $arCredito->getVrCuota())
                     ->setCellValue('H' . $i, $arCredito->getSaldo())
                     ->setCellValue('I' . $i, $arCredito->getNumeroCuotas())
-                    ->setCellValue('J' . $i, $arCredito->getNumeroCuotaActual())
-                    ->setCellValue('K' . $i, '')
-                    ->setCellValue('L' . $i, $Suspendido);
+                    ->setCellValue('J' . $i, $arCredito->getNumeroCuotaActual())                    
+                    ->setCellValue('K' . $i, $Suspendido)
+                    ->setCellValue('L' . $i, $pagado);
             $i++;
         }
 
