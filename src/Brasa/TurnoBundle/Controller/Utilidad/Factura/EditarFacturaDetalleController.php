@@ -1,19 +1,19 @@
 <?php
-namespace Brasa\TurnoBundle\Controller\Utilidad;
+namespace Brasa\TurnoBundle\Controller\Utilidad\Factura;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Brasa\TurnoBundle\Form\Type\TurFacturaEditarType;
+use Brasa\TurnoBundle\Form\Type\TurFacturaDetalleEditarType;
 
-class EditarFacturaController extends Controller
+class EditarFacturaDetalleController extends Controller
 {
     var $strListaDql = "";    
     
     /**
-     * @Route("/tur/utilidad/editar/factura", name="brs_tur_utilidad_editar_factura")
+     * @Route("/tur/utilidad/editar/factura/detalle", name="brs_tur_utilidad_editar_factura_detalle")
      */    
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
@@ -30,56 +30,51 @@ class EditarFacturaController extends Controller
                 $this->lista();
             }            
         }        
-        $arFacturas = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
-        return $this->render('BrasaTurnoBundle:Utilidades/Factura:editar.html.twig', array(
-            'arFacturas' => $arFacturas,
+        $arFacturaDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
+        return $this->render('BrasaTurnoBundle:Utilidades/Factura:listaDetalle.html.twig', array(
+            'arFacturaDetalles' => $arFacturaDetalles,
             'form' => $form->createView()));
     }
     
     /**
-     * @Route("/tur/utilidad/editar/factura/nuevo/{codigoFactura}", name="brs_tur_utilidad_editar_factura_nuevo")
+     * @Route("/tur/utilidad/editar/factura/detalle/nuevo/{codigoFacturaDetalle}", name="brs_tur_utilidad_editar_factura_detalle_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoFactura) {        
+    public function nuevoAction(Request $request, $codigoFacturaDetalle) {        
         $em = $this->getDoctrine()->getManager();
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
-        $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
-        $form = $this->createForm(TurFacturaEditarType::class, $arFactura);        
+        $arFacturaDetalle = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();        
+        $arFacturaDetalle = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->find($codigoFacturaDetalle);
+        $form = $this->createForm(TurFacturaDetalleEditarType::class, $arFacturaDetalle);        
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arFactura = $form->getData();                                                     
-            $em->persist($arFactura);
+            $arFacturaDetalle = $form->getData();                                                     
+            $em->persist($arFacturaDetalle);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_tur_utilidad_editar_factura'));                       
+            return $this->redirect($this->generateUrl('brs_tur_utilidad_editar_factura_detalle'));                       
         }
-        return $this->render('BrasaTurnoBundle:Utilidades/Factura:nuevo.html.twig', array(
-            'arFactura' => $arFactura,
+        return $this->render('BrasaTurnoBundle:Utilidades/Factura:nuevoDetalle.html.twig', array(
+            'arFacturaDetalle' => $arFacturaDetalle,
             'form' => $form->createView()));
     }    
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFactura')->listaDql(
-                $session->get('filtroFacturaNumero'),
+        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->listaDql(
                 "",
-                "",
-                "",
-                "",                
-                "",
-                ""
+                $session->get('filtroFacturaCodigoDetalle')
                 );
     }      
 
     private function filtrar ($form) { 
         $session = new Session;            
-        $session->set('filtroFacturaNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroFacturaCodigoDetalle', $form->get('TxtCodigoDetalle')->getData());
     }   
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;          
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroFacturaNumero')))
+            ->add('TxtCodigoDetalle', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroFacturaCodigoDetalle')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;

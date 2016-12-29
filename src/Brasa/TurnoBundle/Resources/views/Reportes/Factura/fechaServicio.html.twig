@@ -90,6 +90,7 @@
                 <th>NIT</th>
                 <th>CLIENTE</th>
                 <th>C_COSTO</th>
+                <th>PUESTO</th>
                 <th>FECHA</th>
                 <th>F_PROG</th>
                 <th>SERVICIO</th>
@@ -102,6 +103,7 @@
                 <td>{{ arFacturaDetalle.facturaRel.clienteRel.nit | default('')  }}</td>
                 <td>{{ arFacturaDetalle.facturaRel.clienteRel.nombreCorto | default('')  }}</td>
                 <td>{{ arFacturaDetalle.puestoRel.codigoCentroCostoContabilidadFk | default('')  }}</td>                
+                <td>{{ arFacturaDetalle.puestoRel.nombre | default('')  }}</td>                
                 <td>{{ arFacturaDetalle.facturaRel.fecha|date('Y/m/d')  }}</td>
                 <td>{{ arFacturaDetalle.fechaProgramacion |date('Y/m/d')  }}</td>
                 <td>{{ arFacturaDetalle.conceptoServicioRel.nombre | default('') }}</td>                                                                                                                

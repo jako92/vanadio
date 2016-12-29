@@ -6,11 +6,13 @@ use Doctrine\ORM\EntityRepository;
 
 class TurFacturaDetalleRepository extends EntityRepository {
 
-    public function listaDql($codigoFactura = "") {
-        $dql   = "SELECT fd FROM BrasaTurnoBundle:TurFacturaDetalle fd WHERE fd.codigoFacturaDetallePk <> 0 ";
-        
+    public function listaDql($codigoFactura = "", $codigoFacturaDetalle = "") {
+        $dql   = "SELECT fd FROM BrasaTurnoBundle:TurFacturaDetalle fd WHERE fd.codigoFacturaDetallePk <> 0 ";        
         if($codigoFactura != '') {
-            $dql .= "AND fd.codigoFacturaFk = " . $codigoFactura . " ";  
+            $dql .= " AND fd.codigoFacturaFk = " . $codigoFactura;  
+        } 
+        if($codigoFacturaDetalle != '') {
+            $dql .= " AND fd.codigoFacturaDetallePk = " . $codigoFacturaDetalle;  
         }        
         $dql .= " ORDER BY fd.codigoGrupoFacturacionFk, fd.codigoPuestoFk";
         return $dql;
