@@ -12,6 +12,26 @@
         <h3>Adicionales al pago  ({{ nombreModalidad }})</h3>            
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">                                                   
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">
+                        
+                    </div>
+                    <label class="col-sm-2 control-label">CERRADO:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.estadoCerrado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
+                </div>                      
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>    
         <table class="table table-striped table-bordered table-condensed">
             <tr>                       
                 <th>FECHA</th>
@@ -24,7 +44,7 @@
                 <input type="hidden" name="LblCodigoGuia[]" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}">                                
                 
                 <td>{{ arPagosAdicionalesPeriodos.fecha |date('Y/m/d')}}</td>                
-                <td align="center">{% if arPagosAdicionalesPeriodos.estado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}">Cerrar</button>{% endif %}</td>
+                <td align="center">{% if arPagosAdicionalesPeriodos.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}">Cerrar</button>{% endif %}</td>
                 <td align="center"><a href="{{ path('brs_rhu_pagos_adicionales_lista', { 'modalidad': 2, 'periodo': arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
                 <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}" /></td>                
             </tr>

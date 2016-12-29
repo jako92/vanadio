@@ -23,10 +23,11 @@ class RhuPagoAdicionalPeriodo
     private $fecha;  
     
     /**
-     * @ORM\Column(name="estado", type="boolean", nullable=true)
+     * @ORM\Column(name="estado_cerrado", type="boolean", nullable=true)
      */    
-    private $estado;  
+    private $estadoCerrado = false;  
     
+
     /**
      * Get codigoPagoAdicionalPeriodoPk
      *
@@ -62,26 +63,26 @@ class RhuPagoAdicionalPeriodo
     }
 
     /**
-     * Set estado
+     * Set estadoCerrado
      *
-     * @param boolean $estado
+     * @param boolean $estadoCerrado
      *
      * @return RhuPagoAdicionalPeriodo
      */
-    public function setEstado($estado)
+    public function setEstadoCerrado($estadoCerrado)
     {
-        $this->estado = $estado;
+        $this->estadoCerrado = $estadoCerrado;
 
         return $this;
     }
 
     /**
-     * Get estado
+     * Get estadoCerrado
      *
      * @return boolean
      */
-    public function getEstado()
+    public function getEstadoCerrado()
     {
-        return $this->estado;
+        return $this->estadoCerrado;
     }
 }

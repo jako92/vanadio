@@ -11,9 +11,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuPagoAdicionalPeriodoRepository extends EntityRepository {
     
-    public function listaDql() {
+    public function listaDql($estadoCerrado = "") {
         $em = $this->getEntityManager();
         $dql   = "SELECT pap FROM BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo pap WHERE pap.codigoPagoAdicionalPeriodoPk <> 0 ";
+        if($estadoCerrado == 1 ) {
+            $dql .= " AND pap.estadoCerrado = 1";
+        }
+        if($estadoCerrado == '0' ) {
+            $dql .= " AND pap.estadoCerrado = 0";
+        } 
         $dql .= " ORDER BY pap.codigoPagoAdicionalPeriodoPk DESC";
         return $dql;
     } 
