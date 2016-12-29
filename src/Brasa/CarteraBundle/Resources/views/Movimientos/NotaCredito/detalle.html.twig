@@ -68,20 +68,12 @@
                         <td class="td-in-well">{{ arNotaCredito.fechaPago |date("Y/m/d") }}</td>
                         <td class="titulo" align="right"></td>
                         <td align="right"></td>
-                    </tr>
+                    </tr>                   
                     <tr>
-                        <td class="titulo">ANULADO:</td>
-                        <td class="td-in-well">{% if arNotaCredito.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo">IMPRESO:</td>
-                        <td class="td-in-well">{% if arNotaCredito.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo" align="right"></td>
-                        <td align="right"></td>
-                    </tr>
-                    <tr>
-                        <td class="titulo">EXPORTADO:</td>
-                        <td class="td-in-well">{% if arNotaCredito.estadoExportado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo">AUTORIZADO:</td>
-                        <td class="td-in-well">{% if arNotaCredito.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo" align="right">TOTAL:</td>
                         <td align="right">{{ arNotaCredito.valor | number_format(2, '.', ',')}}</td>
                     </tr>

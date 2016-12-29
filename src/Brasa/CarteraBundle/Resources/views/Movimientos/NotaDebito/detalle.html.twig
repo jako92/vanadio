@@ -68,20 +68,12 @@
                         <td class="td-in-well">{{ arNotaDebito.fechaPago |date("Y/m/d") }}</td>
                         <td class="titulo"></td>
                         <td class="titulo"></td>
-                    </tr>
+                    </tr>                    
                     <tr>
-                        <td class="titulo">ANULADO:</td>
-                        <td class="td-in-well">{% if arNotaDebito.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo">IMPRESO:</td>
-                        <td class="td-in-well">{% if arNotaDebito.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo"></td>
-                    </tr>
-                    <tr>
-                        <td class="titulo">EXPORTADO:</td>
-                        <td class="td-in-well">{% if arNotaDebito.estadoExportado == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td class="titulo">AUTORIZADO:</td>
-                        <td class="td-in-well">{% if arNotaDebito.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
+                        <td class="td-in-well"></td>
                         <td class="titulo">TOTAL:</td>
                         <td align="right">{{ arNotaDebito.valor | number_format(2, '.', ',')}}</td>
                     </tr>
