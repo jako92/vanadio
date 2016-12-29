@@ -161,7 +161,11 @@ class RhuLiquidacionRepository extends EntityRepository {
                     $ibpPrimas += $ibpPrimasInicial + $douIBPAdicional;                                            
                     $ibpPrimas = round($ibpPrimas);
                     if($arContrato->getCodigoSalarioTipoFk() == 2) {
-                         $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrimaLiquidar) * 30;                                    
+                        if($intDiasPrimaLiquidar > 0) {
+                            $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrimaLiquidar) * 30;
+                        } else {
+                            $salarioPromedioPrimas = 0;
+                        }                         
                     } else {
                         if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
                             $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
