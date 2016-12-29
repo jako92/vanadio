@@ -116,6 +116,15 @@ class PagosAdicionalesController extends Controller
         $form = $this->formularioPeriodo();
         $form->handleRequest($request);                
         if($form->isValid()) {
+            if($request->request->get('OpCerrar')) {
+                $codigoPagoAdicionalPeriodo = $request->request->get('OpCerrar');
+                $arPagoAdicionalPeriodo = NEW \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicionalPeriodo();
+                $arPagoAdicionalPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo')->find($codigoPagoAdicionalPeriodo);                
+                $arPagoAdicionalPeriodo->setEstado(1);                
+                $em->persist($arPagoAdicionalPeriodo);
+                $em->flush();                                                   
+                return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_lista_fecha', array('modalidad' =>2)));                
+            }
             if($form->get('BtnRetirarConcepto')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
@@ -173,6 +182,7 @@ class PagosAdicionalesController extends Controller
                 $this->listar($form, $modalidad);
                 $this->generarExcel();
             }
+                         
         }
         $nombreModalidad = "";
         if($modalidad == 1) {

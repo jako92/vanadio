@@ -20,10 +20,13 @@ class RhuPagoAdicionalPeriodo
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
      */    
-    private $fecha;     
+    private $fecha;  
     
-
-
+    /**
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
+     */    
+    private $estado;  
+    
     /**
      * Get codigoPagoAdicionalPeriodoPk
      *
@@ -56,5 +59,29 @@ class RhuPagoAdicionalPeriodo
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     *
+     * @return RhuPagoAdicionalPeriodo
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }
