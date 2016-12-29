@@ -57,13 +57,13 @@ class FormatoNotaDebito extends \FPDF_FPDF {
         $this->SetFillColor(272, 272, 272); 
         $this->SetXY(10, $intY);
         $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("CÓDIGO:") , 1, 0, 'L', 1);
+        $this->Cell(26, 5, utf8_decode("NÚMERO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arNotaDebito->getCodigoNotaDebitoPk(), 1, 0, 'L', 1);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("NÚMERO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',7);
         $this->Cell(52, 5, $arNotaDebito->getNumero(), 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',8);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("") , 1, 0, 'R', 1);
         $this->SetFont('Arial','',8);
@@ -103,7 +103,7 @@ class FormatoNotaDebito extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(52, 5, $arNotaDebito->getFecha()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("FECHA PAGO:") , 1, 0, 'L', 1);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(52, 5, $arNotaDebito->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
@@ -113,53 +113,19 @@ class FormatoNotaDebito extends \FPDF_FPDF {
         //linea 5
         $this->SetXY(10, $intY+20);
         $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("ANULADO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arNotaDebito->getEstadoAnulado() == 1){
-            $estadoAnulado = "SI";
-        } else {
-            $estadoAnulado = "NO";
-        }
-        $this->Cell(52, 5, $estadoAnulado, 1, 0, 'L', 1);
+        $this->Cell(26, 5, utf8_decode("FECHA PAGO:") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);        
+        $this->Cell(52, 5, $arNotaDebito->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("IMPRESO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arNotaDebito->getEstadoImpreso() == 1){
-            $estadoImpreso = "SI";
-        } else {
-            $estadoImpreso = "NO";
-        }
-        $this->Cell(52, 5, $estadoImpreso, 1, 0, 'L', 1);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);        
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("TOTAL:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, "", 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arNotaDebito->getValor(), 2, '.', ','), 1, 0, 'R', 1);        
         //linea 6
         $this->SetXY(10, $intY+25);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("EXPORTADO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arNotaDebito->getEstadoExportado() == 1){
-            $estadoExportado = "SI";
-        } else {
-            $estadoExportado = "NO";
-        }
-        $this->Cell(52, 5, $estadoExportado, 1, 0, 'L', 1);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("AUTORIZADO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arNotaDebito->getEstadoAutorizado() == 1){
-            $estadoAutorizado = "SI";
-        } else {
-            $estadoAutorizado = "NO";
-        }
-        $this->Cell(52, 5, $estadoAutorizado, 1, 0, 'L', 1);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("TOTAL:") , 1, 0, 'R', 1);
-        $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arNotaDebito->getValor(), 2, '.', ','), 1, 0, 'R', 1);
-        //linea 7
-        $this->SetXY(10, $intY+30);
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("COMENTARIOS:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',6.5);
@@ -170,7 +136,7 @@ class FormatoNotaDebito extends \FPDF_FPDF {
     }
 
     public function EncabezadoDetalles() {
-        $this->Ln(14);
+        $this->Ln(10);
         $header = array('CODIGO', utf8_decode('NUMERO'), 'TIPO CUENTA COBRAR','VALOR');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);

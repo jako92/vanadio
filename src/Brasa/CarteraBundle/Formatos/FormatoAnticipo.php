@@ -57,15 +57,15 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFillColor(272, 272, 272); 
         $this->SetXY(10, $intY);
         $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("CÓDIGO:") , 1, 0, 'L', 1);
+        $this->Cell(26, 5, utf8_decode("NÚMERO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arAnticipo->getCodigoAnticipoPk(), 1, 0, 'L', 1);
-        $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("NÚMERO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',7);
         $this->Cell(52, 5, $arAnticipo->getNumero(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("TOTAL DCTO:") , 1, 0, 'R', 1);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',8);
+        $this->Cell(23, 5, utf8_decode("TOTAL DCTO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(20, 5, number_format($arAnticipo->getVrTotalDescuento(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 2
@@ -79,7 +79,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(52, 5, $arAnticipo->getClienteRel()->getNit(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("T. AJ. PESO:") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("AJ. PESO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(20, 5, number_format($arAnticipo->getVrTotalAjustePeso(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 3
@@ -93,7 +93,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','',7);
         $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("T. RETE ICA:") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("RETE ICA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteIca(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 4
@@ -103,54 +103,41 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(52, 5, $arAnticipo->getFecha()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("FECHA PAGO:") , 1, 0, 'L', 1);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arAnticipo->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("T. RETE IVA:") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("RETE IVA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteIva(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 5
         $this->SetXY(10, $intY+20);
         $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("ANULADO:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',8);
-        if ($arAnticipo->getEstadoAnulado() == 1){
-            $estadoAnulado = "SI";
-        } else {
-            $estadoAnulado = "NO";
-        }
-        $this->Cell(52, 5, $estadoAnulado, 1, 0, 'L', 1);
+        $this->Cell(26, 5, utf8_decode("FECHA PAGO:") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);        
+        $this->Cell(52, 5, $arAnticipo->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5,  1, 0, 'L', 1);
+        $this->Cell(52, 5,  "", 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("T. RET FUENTE:") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("RET FUENTE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteFuente(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 6
         $this->SetXY(10, $intY+25);
         $this->SetFont('Arial','B',8);
-        $this->Cell(26, 5, utf8_decode("EXPORTADO:") , 1, 0, 'L', 1);
+        $this->Cell(26, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        if ($arAnticipo->getEstadoExportado() == 1){
-            $estadoExportado = "SI";
-        } else {
-            $estadoExportado = "NO";
-        }
-        $this->Cell(52, 5, $estadoExportado, 1, 0, 'L', 1);
+        
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(21, 5, utf8_decode("AUTORIZADO:") , 1, 0, 'L', 1);
+        $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        if ($arAnticipo->getEstadoAutorizado() == 1){
-            $estadoAutorizado = "SI";
-        } else {
-            $estadoAutorizado = "NO";
-        }
-        $this->Cell(52, 5, $estadoAutorizado, 1, 0, 'L', 1);
+        
+        $this->Cell(52, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("VALOR:") , 1, 0, 'R', 1);
+        $this->Cell(23, 5, utf8_decode("VALOR:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         if ($arAnticipo->getEstadoAutorizado() == 1){
             $this->Cell(20, 5, number_format($arAnticipo->getVrTotal(), 2, '.', ','), 1, 0, 'R', 1);
@@ -164,7 +151,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->Cell(21, 5, "" , 1, 0, 'L', 1);
         $this->Cell(52, 5, "" , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, "TOTAL PAGO:" , 1, 0, 'R', 1);
+        $this->Cell(23, 5, "TOTAL PAGO:" , 1, 0, 'L', 1);
         if ($arAnticipo->getEstadoAutorizado() == 1){
             $this->Cell(20, 5, number_format($arAnticipo->getVrTotalPago(), 2, '.', ','), 1, 0, 'R', 1);
         } else {
