@@ -597,10 +597,10 @@ class ProgramacionesPagoController extends Controller
                 $arSoportePagoProgramacion =  $em->getRepository('BrasaTurnoBundle:TurSoportePagoProgramacion')->findBy(array('codigoSoportePagoFk' => $arProgramacionPagoDetalle->getCodigoSoportePagoFk()));                                                                    
             }
         }        
- 
+        
         $arrDiaSemana = $objFunciones->diasMes($arProgramacionPagoDetalle->getFechaDesde(), $em->getRepository('BrasaGeneralBundle:GenFestivo')->festivos($arProgramacionPagoDetalle->getFechaDesde()->format('Y-m-').'01', $arProgramacionPagoDetalle->getFechaDesde()->format('Y-m-').'31'));        
         if($arProgramacionPagoDetalle->getProgramacionPagoRel()->getCodigoPagoTipoFk() == 1) {
-            $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->programacionPagoGeneralDql($arProgramacionPagoDetalle->getCodigoEmpleadoFk(), $arProgramacionPagoDetalle->getFechaDesde()->format('Y/m/d'), $arProgramacionPagoDetalle->getFechaHasta()->format('Y/m/d')));
+            $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->programacionPagoGeneralDql($arProgramacionPagoDetalle->getCodigoEmpleadoFk(), $arProgramacionPagoDetalle->getProgramacionPagoRel()->getFechaDesde()->format('Y/m/d'), $arProgramacionPagoDetalle->getProgramacionPagoRel()->getFechaHasta()->format('Y/m/d')));
             $arPagosAdicionales = $paginator->paginate($query, $request->query->get('page', 1), 20);                    
         } else {
             $arPagosAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicional();

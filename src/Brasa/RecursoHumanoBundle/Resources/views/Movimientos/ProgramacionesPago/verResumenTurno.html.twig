@@ -214,6 +214,7 @@
         {% if arProgramacionPagoDetalle.programacionPagoRel.estadoPagado == 0 %}
             <table class="table table-striped table-bordered table-condensed">
             <tr>
+                <th>FECHA</th>
                 <th>CONCEPTO</th>                    
                 <th>DETALLE</th>
                 <th>CANT</th>
@@ -228,6 +229,7 @@
             {% for arPagosAdicionales in arPagosAdicionales %}
                 <tr>
                 <input type="hidden" name="LblCodigoPagoAdicional[]" value="{{ arPagosAdicionales.codigoPagoAdicionalPk }}">                       
+                <td>{{ arPagosAdicionales.fecha | date('Y-m-d')}}</td> 
                 <td>{{ arPagosAdicionales.pagoConceptoRel.nombre}}</td>                    
                 <td>{{ arPagosAdicionales.detalle }}</td>
                 <td style="text-align: right">{{ arPagosAdicionales.cantidad | number_format(1, '.', ',') }}</td>                
