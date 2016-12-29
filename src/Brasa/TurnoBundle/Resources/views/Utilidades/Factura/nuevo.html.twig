@@ -6,7 +6,13 @@
     <h3>Utilidad editar factura</h3>
     <div class="panel panel-default">
         <div class="panel-heading">Informacion general</div>
-       <div class="panel-body">                                                      
+       <div class="panel-body">         
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">Tipo:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.facturaTipoRel, { 'attr': {'class': 'form-control'} }) }}                        
+                </div>                
+            </div>           
             <div class="form-group form-group-sm">
                 <label class="col-sm-3 control-label">Numero:</label>
                 <div class="col-sm-9">
@@ -23,6 +29,12 @@
                 <label class="col-sm-3 control-label">Vence:</label>
                 <div class="col-sm-9">
                     {{ form_widget(form.fechaVence) }}                        
+                </div>                
+            </div>  
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">Desripcion:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.descripcion, { 'attr': {'class': 'form-control'} }) }}                        
                 </div>                
             </div>                
         </div>
