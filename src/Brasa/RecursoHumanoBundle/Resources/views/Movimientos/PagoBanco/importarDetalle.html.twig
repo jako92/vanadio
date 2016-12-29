@@ -16,10 +16,17 @@
                 </div>                                
             </div>                                            
         </div>
-    </div>                   
+    </div>
     <div class="modal-footer">        
             {{ form_widget(form.BtnCargar, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}            
     </div>    
     {{ form_end(form) }}
+    <blockquote>
+        <p>Tener presenta la estructura que se requiere para subir el archivo de excel:</p><br>
+        <footer><cite title="Source Title">El archivo de excel solo debe tener una hoja de calculo con el nombre hoja1</cite></footer>
+        <footer><cite title="Source Title">El numero de identificacion no debe tener puntos.</cite></footer>
+        <footer><cite title="Source Title">Los valores no deben contener simbolos o caracteres, tampoco debe contener puntos (-+$).</cite></footer><br>
+    </blockquote>
+        <img src="{{ asset('imagenes/rhu/ayuda/estructura_pago_banco_otros.jpg') }}"width ="">
 </div>
 {% endblock %}
