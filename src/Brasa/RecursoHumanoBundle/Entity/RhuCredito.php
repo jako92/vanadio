@@ -191,6 +191,7 @@ class RhuCredito
      */
     protected $vacacionesAdicionalesCreditoRel;    
         
+    
     /**
      * Constructor
      */
@@ -453,6 +454,30 @@ class RhuCredito
     }
 
     /**
+     * Set vrCuotaPrima
+     *
+     * @param float $vrCuotaPrima
+     *
+     * @return RhuCredito
+     */
+    public function setVrCuotaPrima($vrCuotaPrima)
+    {
+        $this->vrCuotaPrima = $vrCuotaPrima;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCuotaPrima
+     *
+     * @return float
+     */
+    public function getVrCuotaPrima()
+    {
+        return $this->vrCuotaPrima;
+    }
+
+    /**
      * Set vrCuotaTemporal
      *
      * @param float $vrCuotaTemporal
@@ -621,30 +646,6 @@ class RhuCredito
     }
 
     /**
-     * Set aprobado
-     *
-     * @param integer $aprobado
-     *
-     * @return RhuCredito
-     */
-    public function setAprobado($aprobado)
-    {
-        $this->aprobado = $aprobado;
-
-        return $this;
-    }
-
-    /**
-     * Get aprobado
-     *
-     * @return integer
-     */
-    public function getAprobado()
-    {
-        return $this->aprobado;
-    }
-
-    /**
      * Set seguro
      *
      * @param integer $seguro
@@ -810,6 +811,30 @@ class RhuCredito
     public function getValidarCuotas()
     {
         return $this->validarCuotas;
+    }
+
+    /**
+     * Set aplicarCuotaPrima
+     *
+     * @param boolean $aplicarCuotaPrima
+     *
+     * @return RhuCredito
+     */
+    public function setAplicarCuotaPrima($aplicarCuotaPrima)
+    {
+        $this->aplicarCuotaPrima = $aplicarCuotaPrima;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarCuotaPrima
+     *
+     * @return boolean
+     */
+    public function getAplicarCuotaPrima()
+    {
+        return $this->aplicarCuotaPrima;
     }
 
     /**
@@ -1042,53 +1067,5 @@ class RhuCredito
     public function getVacacionesAdicionalesCreditoRel()
     {
         return $this->vacacionesAdicionalesCreditoRel;
-    }
-
-    /**
-     * Set vrCuotaPrima
-     *
-     * @param float $vrCuotaPrima
-     *
-     * @return RhuCredito
-     */
-    public function setVrCuotaPrima($vrCuotaPrima)
-    {
-        $this->vrCuotaPrima = $vrCuotaPrima;
-
-        return $this;
-    }
-
-    /**
-     * Get vrCuotaPrima
-     *
-     * @return float
-     */
-    public function getVrCuotaPrima()
-    {
-        return $this->vrCuotaPrima;
-    }
-
-    /**
-     * Set aplicarCuotaPrima
-     *
-     * @param boolean $aplicarCuotaPrima
-     *
-     * @return RhuCredito
-     */
-    public function setAplicarCuotaPrima($aplicarCuotaPrima)
-    {
-        $this->aplicarCuotaPrima = $aplicarCuotaPrima;
-
-        return $this;
-    }
-
-    /**
-     * Get aplicarCuotaPrima
-     *
-     * @return boolean
-     */
-    public function getAplicarCuotaPrima()
-    {
-        return $this->aplicarCuotaPrima;
     }
 }

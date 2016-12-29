@@ -871,10 +871,18 @@ class ConsultasController extends Controller
     private function formularioCreditosLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-
-
+        $strNombreEmpleado = "";
+        if($session->get('filtroIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
+            if($arEmpleado) {                
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+            }  else {
+                $session->set('filtroIdentificacion', null);
+            }          
+        }
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
             ->add('BtnFiltrarCredito', SubmitType::class, array('label'  => 'Filtrar'))
@@ -1441,7 +1449,7 @@ class ConsultasController extends Controller
 
     private function filtrarCreditoLista($form) {
         $session = new Session;                
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
         
@@ -2077,9 +2085,9 @@ class ConsultasController extends Controller
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arCreditos as $arCredito) {
-            if ($arCredito->getAprobado() == 1) {
+            /*if ($arCredito->getAprobado() == 1) {
                 $Aprobado = "SI";
-            }
+            }*/
             if ($arCredito->getEstadoSuspendido() == 1) {
                 $Suspendido = "SI";
             }
@@ -2097,7 +2105,7 @@ class ConsultasController extends Controller
                     ->setCellValue('H' . $i, $arCredito->getSaldo())
                     ->setCellValue('I' . $i, $arCredito->getNumeroCuotas())
                     ->setCellValue('J' . $i, $arCredito->getNumeroCuotaActual())
-                    ->setCellValue('K' . $i, $Aprobado)
+                    ->setCellValue('K' . $i, '')
                     ->setCellValue('L' . $i, $Suspendido);
             $i++;
         }
