@@ -18,7 +18,11 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
     }
     
     public function liquidar($codigoSoportePagoPeriodo) {        
-        $em = $this->getEntityManager();        
+        $em = $this->getEntityManager(); 
+        $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();        
+        $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+        $arConfiguracionTurnos = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+        $arConfiguracionTurnos = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);        
         $intRegistros = 0;
         $vrTotalPago = 0;
         $vrTotalDevengado = 0;
@@ -34,7 +38,7 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
         }        
         
         $arSoportePagoPeriodo->setRecursos($intRegistros);        
-        $diaAuxilioTransporte = 77700 / 30;
+        $diaAuxilioTransporte = $arConfiguracionNomina->getVrAuxilioTransporte() / 30;
         $porHoraNocturna = 135;
         $porRecargoNocturno = 35;
         $porFestivaDiurna = 175;
@@ -67,7 +71,12 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
                 $vrAuxilioTransporte = $diaAuxilioTransporte * $arSoportePago->getDiasTransporte();
             }            
             $vrPago = $vrDiurna + $vrNocturna + $vrDescanso + $vrFestivaDiurna + $vrFestivaNocturna + $vrExtraOrdinariaDiurna + $vrExtraOrdinariaNocturna + $vrExtraFestivaDiurna + $vrExtraFestivaNocturna;
-            $vrDevengado = $vrPago + $vrAuxilioTransporte;
+            if($arConfiguracionTurnos->getOmitirAuxilioTransporteDevengadoPactado()) {
+                $vrDevengado = $vrPago;
+            } else {
+                $vrDevengado = $vrPago + $vrAuxilioTransporte;
+            }
+            
             $vrDevengadoPactadoPeriodo = ($arSoportePago->getVrDevengadoPactado() / 30) * $arSoportePago->getDiasTransporte();
             $vrAjusteDevengadoPactado = $vrDevengadoPactadoPeriodo - $vrDevengado;
             $arSoportePagoAct->setVrAjusteDevengadoPactado($vrAjusteDevengadoPactado);

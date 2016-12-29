@@ -122,6 +122,11 @@ class TurConfiguracion
      */    
     private $tipoCompensacion = 0;    
     
+    /**     
+     * @ORM\Column(name="omitir_auxilio_transporte_devengado_pactado", type="boolean")
+     */    
+    private $omitirAuxilioTransporteDevengadoPactado = false;     
+    
     /**
      * Set codigoConfiguracionPk
      *
@@ -672,5 +677,29 @@ class TurConfiguracion
     public function getTipoCompensacion()
     {
         return $this->tipoCompensacion;
+    }
+
+    /**
+     * Set omitirAuxilioTransporteDevengadoPactado
+     *
+     * @param boolean $omitirAuxilioTransporteDevengadoPactado
+     *
+     * @return TurConfiguracion
+     */
+    public function setOmitirAuxilioTransporteDevengadoPactado($omitirAuxilioTransporteDevengadoPactado)
+    {
+        $this->omitirAuxilioTransporteDevengadoPactado = $omitirAuxilioTransporteDevengadoPactado;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirAuxilioTransporteDevengadoPactado
+     *
+     * @return boolean
+     */
+    public function getOmitirAuxilioTransporteDevengadoPactado()
+    {
+        return $this->omitirAuxilioTransporteDevengadoPactado;
     }
 }
