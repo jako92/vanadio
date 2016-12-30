@@ -79,7 +79,7 @@ class Factura4 extends \FPDF_FPDF {
         $this->ln(1);
         $this->SetY(20);
 
-        $List1 = array('FACTURA DE VENTA', 'Fecha emision:', 'Fecha vencimiento:', 'Forma pago:', 'Plazo:', 'Soporte:');
+        $List1 = array('FACTURA DE VENTA', 'Fecha emision:', 'Fecha vencimiento:', 'Forma pago:', 'Plazo:', '');
         $this->SetFont('Arial', 'B', 8);
         foreach ($List1 as $col) {
             if ($col == 'FACTURA DE VENTA'){
@@ -356,7 +356,7 @@ class Factura4 extends \FPDF_FPDF {
         $this->SetXY(57, 15);
         $this->Cell(88, 4, "Dir: ". $arConfiguracion->getDireccionEmpresa(), 0, 0, 'C');
         $this->SetXY(57, 19);
-        $this->Cell(88, 4, "Tel: ". $arConfiguracion->getTelefonoEmpresa(), 0, 0, 'C');
+        $this->Cell(88, 4, "Tel: ". $arConfiguracion->getTelefonoEmpresa()."  - email: facturacion@seguridadestelar.com", 0, 0, 'C');
         $this->SetXY(57, 23);
         $this->SetFont('Arial','',8);
         $this->MultiCell(88, 2.7, utf8_decode($arConfiguracionTurno->getInformacionResolucionDianFactura()), 0, 'C');
