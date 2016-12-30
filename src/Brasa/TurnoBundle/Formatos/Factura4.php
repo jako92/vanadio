@@ -240,12 +240,12 @@ class Factura4 extends \FPDF_FPDF {
 
         $this->SetFont('Arial', 'B', 7.5);
         $this->ln(7);
-        $totales = array('SUBTOTAL: ' . " " . " ",
-            'BASE AIU: ' . " " . " ",
+        $totales = array('SUBTOTAL: ' . " " . " ",            
             '(+)IVA: ' . " " . " ",
             '(+)RTE FUENTE: ' . " " . " ",
             '(+)RTE IVA: ' . " " . " ",
-            'TOTAL GENERAL: ' . " " . " "
+            'TOTAL GENERAL: ' . " " . " ",
+            'BASE AIU: ' . " " . " "
         );
 
         $this->line(10, $this->GetY() + 40, 205, $this->GetY() + 40);
@@ -257,12 +257,12 @@ class Factura4 extends \FPDF_FPDF {
             $this->ln();
         }
 
-        $totales2 = array(number_format($arFactura->getVrSubtotal(), 0, '.', ','),
-            number_format($arFactura->getVrBaseAIU(), 0, '.', ','),
+        $totales2 = array(number_format($arFactura->getVrSubtotal(), 0, '.', ','),            
             number_format($arFactura->getVrIva(), 0, '.', ','),
             number_format($arFactura->getVrRetencionFuente(), 0, '.', ','),
             number_format($arFactura->getVrRetencionIva(), 0, '.', ','),
-            number_format($arFactura->getVrTotalNeto(), 0, '.', ',')
+            number_format($arFactura->getVrTotalNeto(), 0, '.', ','),
+            number_format($arFactura->getVrBaseAIU(), 0, '.', ',')
         );
 
         $this->SetFont('Arial', '', 7.5);
