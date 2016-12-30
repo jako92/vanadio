@@ -120,7 +120,8 @@ class ProgramacionesPagoController extends Controller
         } else {
             $arProgramacionPago->setFechaDesde(new \DateTime('now'));
             $arProgramacionPago->setFechaHasta(new \DateTime('now'));
-            $arProgramacionPago->setFechaHastaReal(new \DateTime('now'));             
+            $arProgramacionPago->setFechaHastaReal(new \DateTime('now'));
+            $arProgramacionPago->setFechaPagado(new \DateTime('now'));
         }
         $form = $this->createForm(RhuProgramacionPagoType::class, $arProgramacionPago);
         $form->handleRequest($request);
@@ -153,6 +154,37 @@ class ProgramacionesPagoController extends Controller
         $form = $this->formularioDetalle($arProgramacionPago);
         $form->handleRequest($request);
         if($form->isValid()) {
+            if($form->get('BtnGenerar')->isClicked()) {  
+                if($arProgramacionPago->getEstadoGenerado() == 0 && $arProgramacionPago->getEstadoPagado() == 0) {
+                    $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->generar($codigoProgramacionPago);
+                    if($strResultado == "") {
+                        return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+                    } else {
+                        $objMensaje->Mensaje("error", $strResultado);
+                    }                       
+                }             
+            }
+            if($form->get('BtnDesgenerar')->isClicked()) {
+                if($arProgramacionPago->getEstadoGenerado() == 1 && $arProgramacionPago->getEstadoPagado() == 0) {
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->deshacer($codigoProgramacionPago);                    
+                }                
+                return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+            }
+            if($form->get('BtnLiquidar')->isClicked()) {                
+                if($arProgramacionPago->getEstadoGenerado() == 1 && $arProgramacionPago->getEstadoPagado() == 0) {
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->liquidar($codigoProgramacionPago);                    
+                } 
+                return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+            }
+            if($form->get('BtnPagar')->isClicked()) { 
+                $inconsistencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->validarPagar($codigoProgramacionPago);
+                if($inconsistencias == "") {
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->pagar($codigoProgramacionPago);
+                } else {
+                    $objMensaje->Mensaje("error", $inconsistencias);
+                }                
+                return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+            }            
             if($form->get('BtnGenerarEmpleados')->isClicked()) {
                 if($arProgramacionPago->getEstadoGenerado() == 0) {
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->generarEmpleados($codigoProgramacionPago);
@@ -697,6 +729,10 @@ class ProgramacionesPagoController extends Controller
 
     private function formularioDetalle($arProgramacionPago) {
         $arrBotonGenerarEmpleados = array('label' => 'Cargar contratos', 'disabled' => false);
+        $arrBotonGenerar = array('label' => 'Generar', 'disabled' => false);
+        $arrBotonDesgenerar = array('label' => 'Des-Generar', 'disabled' => true);
+        $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => true);
+        $arrBotonPagar = array('label' => 'Pagar', 'disabled' => true);
         $arrBotonDesbloquearSoportePagoTurnos = array('label' => 'Desbloquear soporte pago turnos', 'disabled' => false);
         $arrBotonEliminarEmpleados = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonEliminarTodoEmpleados = array('label' => 'Eliminar todo', 'disabled' => false);
@@ -704,19 +740,30 @@ class ProgramacionesPagoController extends Controller
         if($arProgramacionPago->getEstadoGenerado() == 1) {            
             $arrBotonGenerarEmpleados['disabled'] = true;                                            
             $arrBotonEliminarTodoEmpleados['disabled'] = true;            
+            $arrBotonGenerar['disabled'] = true;                                            
+            $arrBotonLiquidar['disabled'] = false;
+            $arrBotonDesgenerar['disabled'] = false;
+            $arrBotonPagar['disabled'] = false;
             
         }
         if($arProgramacionPago->getEstadoPagado() == 1) {            
             $arrBotonGenerarEmpleados['disabled'] = true;         
             $arrBotonEliminarEmpleados['disabled'] = true;                                    
             $arrBotonEliminarTodoEmpleados['disabled'] = true;
-            //$arrBotonActualizarDetalle['disabled'] = true;            
-            
+            $arrBotonGenerar['disabled'] = true;
+            $arrBotonLiquidar['disabled'] = true;
+            $arrBotonDesgenerar['disabled'] = true;
+            $arrBotonPagar['disabled'] = true;
+            $arrBotonDesbloquearSoportePagoTurnos['disabled'] = true;                        
         }        
         
         $form = $this->createFormBuilder()    
                    // ->add('BtnActualizarDetalle', SubmitType::class, $arrBotonActualizarDetalle)
                     ->add('BtnDesbloquearSoportePagoTurnos', SubmitType::class, $arrBotonDesbloquearSoportePagoTurnos)                            
+                    ->add('BtnGenerar', SubmitType::class, $arrBotonGenerar)                        
+                    ->add('BtnDesgenerar', SubmitType::class, $arrBotonDesgenerar)                        
+                    ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)                        
+                    ->add('BtnPagar', SubmitType::class, $arrBotonPagar)                        
                     ->add('BtnGenerarEmpleados', SubmitType::class, $arrBotonGenerarEmpleados)                        
                     ->add('BtnEliminarEmpleados', SubmitType::class, $arrBotonEliminarEmpleados)
                     ->add('BtnEliminarTodoEmpleados', SubmitType::class, $arrBotonEliminarTodoEmpleados)                    

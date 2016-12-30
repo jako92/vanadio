@@ -8,10 +8,12 @@
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
     {{ form_errors(form) }}
     <div class="btn-toolbar" style="float:left">
-        <div class="btn-group">                               
-            <a {% if  arProgramacionPago.inconsistencias == 0 %} class="btn btn-default btn-sm" {% else %} class="btn btn-default btn-sm btn-danger" {% endif %}  href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_inconsistencias', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'VerInconsistencias', 500, 700)" >Inconsistencias</a>                                    
-            <!-- Split button -->
+        <div class="btn-group">                                                       
             <div class="btn-group">
+                {{ form_widget(form.BtnGenerar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnDesgenerar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnLiquidar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnPagar, { 'attr': {'class': 'btn btn-default btn-sm', 'onclick': 'return confirm("Esta seguro de pagar la programacion? Este paso no es posible revertirlo")'} }) }}
                 <button type="button" class="btn btn-default btn-sm">Utilidades</button>
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
@@ -20,9 +22,16 @@
                     <li><a href="{{ path('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}" target="_blank">Agregar tiempo suplementario (Masivo)</a></li>
                 </ul>                
             </div>   
+            <a {% if  arProgramacionPago.inconsistencias == 0 %} class="btn btn-default btn-sm" {% else %} class="btn btn-default btn-sm btn-danger" {% endif %}  href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_inconsistencias', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'VerInconsistencias', 500, 700)" >Inconsistencias</a>                                    
             {{ form_widget(form.BtnDesbloquearSoportePagoTurnos, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
         </div>
-    </div><br /> <br />
+    </div>
+    <div style="float:right">
+        {% if arProgramacionPago.estadoGenerado == 1 %}<span class="label label-default">Generado</span>{% endif %}
+        {% if arProgramacionPago.estadoPagado != 0 %}<span class="label label-success">Pagado</span>{% endif %}        
+        {% if arProgramacionPago.inconsistencias == 1 %}<span class="label label-danger">Inconsistencias</span>{% endif %}
+    </div>
+    <br /><br />        
     <div class="panel panel-default">
       <div class="panel-heading">Detalle programación de pago</div>
       <div class="panel-body">
@@ -30,32 +39,38 @@
                 <tr>
                     <td class="titulo">CÓDIGO:</td>
                     <td class="td-in-well">{{ arProgramacionPago.codigoProgramacionPagoPk }}</td>
-                    <td class="titulo">INCONSISTENCIAS:</td>
-                    <td> {% if arProgramacionPago.inconsistencias == 0 %} NO {% else %} SI {% endif %} </td>                   
+                    <td class="titulo"></td>
+                    <td></td>                   
                 </tr>
                 <tr>
                     <td class="titulo">GRUPO PAGO:</td>
                     <td class="td-in-well">{{ arProgramacionPago.codigoCentroCostoFk }} - {{ arCentroCosto.nombre }}</td>
                     <td class="titulo">DÍAS</td>
-                    <td class="td-in-well">{{ arProgramacionPago.dias }}</td>                    
+                    <td class="td-in-well" align="right">{{ arProgramacionPago.dias | number_format(0, '.', ',')}}</td>                                                                                                               
                 </tr>
                 <tr>
                     <td class="titulo">PERIODO DESDE:</td>
                     <td class="td-in-well">{{ arProgramacionPago.fechaDesde |date("Y/m/d") }}</td>                    
-                    <td class="titulo">GENERADO:</td>
-                    <td> {% if arProgramacionPago.estadoGenerado == 0 %} NO {% else %} SI {% endif %}</td>                   
+                    <td class="titulo"></td>
+                    <td></td>                   
                 </tr>                                
                 <tr>
                     <td class="titulo">PERIODO HASTA:</td>
                     <td class="td-in-well">{{ arProgramacionPago.fechaHasta |date("Y/m/d") }}</td>
-                    <td class="titulo">PAGADO:</td>
-                    <td> {% if arProgramacionPago.estadoPagado == 0 %} NO {% else %} SI {% endif %}</td> 
-                </tr>                
-                <tr>
                     <td class="titulo"></td>
-                    <td class="td-in-well"></td>
+                    <td class="td-in-well" align="right"></td>                                                                                           
+                </tr>  
+                <tr>
+                    <td class="titulo">FECHA PAGADO:</td>
+                    <td class="td-in-well">{{ arProgramacionPago.fechaPagado |date("Y/m/d H:i") }}</td>
+                    <td class="titulo">NUMERO PAGOS:</td>
+                    <td class="td-in-well" align="right">{{ arProgramacionPago.numeroEmpleados | number_format(0, '.', ',')}}</td>                                                                                           
+                </tr>                 
+                <tr>
+                    <td class="titulo">SOPORTE PAGO (TURNO)</td>
+                    <td class="td-in-well">{{ arProgramacionPago.codigoSoportePagoPeriodoFk }}</td>
                     <td class="titulo">NETO A PAGAR:</th>
-                    <td class="td-in-well" align="right">{{ arProgramacionPago.vrNeto | number_format(2, '.', ',')}}</td>                                                                                           
+                    <td class="td-in-well" align="right">{{ arProgramacionPago.vrNeto | number_format(0, '.', ',')}}</td>                                                                                           
                 </tr>                
                 <tr>
                     <td colspan="8" class="titulo">COMENTARIOS:</td>
@@ -165,8 +180,9 @@
                     <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_cargar_soporte_turno', {'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'CargarTiempo', 600, 900)" >Cargar turnos</a>                    
                     <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_cargar_soporte_horario', {'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'CargarTiempo', 600, 900)" >Cargar horarios</a>                                        
                 {% endif %}                    
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_agregar_empleado', {'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'AgregarEmpleado', 600, 900)" >Agregar</a>                
-                                    
+                {% if arProgramacionPago.estadoPagado == 0 %}
+                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_agregar_empleado', {'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'AgregarEmpleado', 600, 900)" >Agregar</a>                
+                {% endif %}                    
                 
             </div>
             <div class="btn-group">

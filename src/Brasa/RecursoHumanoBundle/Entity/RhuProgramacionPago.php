@@ -38,6 +38,11 @@ class RhuProgramacionPago
     private $fechaHastaReal;    
     
     /**
+     * @ORM\Column(name="fecha_pagado", type="datetime", nullable=true)
+     */    
+    private $fechaPagado;    
+    
+    /**
      * @ORM\Column(name="dias", type="integer")
      */
     private $dias = 0;         
@@ -1232,5 +1237,29 @@ class RhuProgramacionPago
     public function getFacturasDetallesProgramacionPagoRel()
     {
         return $this->facturasDetallesProgramacionPagoRel;
+    }
+
+    /**
+     * Set fechaPagado
+     *
+     * @param \DateTime $fechaPagado
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setFechaPagado($fechaPagado)
+    {
+        $this->fechaPagado = $fechaPagado;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPagado
+     *
+     * @return \DateTime
+     */
+    public function getFechaPagado()
+    {
+        return $this->fechaPagado;
     }
 }

@@ -189,6 +189,8 @@ class RhuProgramacionPagoRepository extends EntityRepository {
         $arProgramacionPago->setEstadoGenerado(0);
         $em->persist($arProgramacionPago);
         $em->flush();
+        $strSql = "UPDATE rhu_programacion_pago_detalle SET vr_neto_pagar = 0 WHERE codigo_programacion_pago_fk = " . $codigoProgramacionPago;           
+        $em->getConnection()->executeQuery($strSql);        
         return true;
     }
 
@@ -268,7 +270,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
         $em = $this->getEntityManager(); 
         set_time_limit(0);
         ini_set("memory_limit", -1);
-        $arProgramacionPagoProcesar = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+        $arProgramacionPagoProcesar = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();        
         $arProgramacionPagoProcesar = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
         $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
         $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPagoProcesar->getCodigoCentroCostoFk());                                
@@ -389,6 +391,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             }                                            
             $em->persist($arCentroCosto);
             $arProgramacionPagoProcesar->setEstadoPagado(1);
+            $arProgramacionPagoProcesar->setFechaPagado(new \DateTime('now'));
             $em->persist($arProgramacionPagoProcesar);
             $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->liquidar($codigoProgramacionPago);
             if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 1) {

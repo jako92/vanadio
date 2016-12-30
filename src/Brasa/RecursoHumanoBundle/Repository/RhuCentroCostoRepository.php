@@ -93,6 +93,7 @@ class RhuCentroCostoRepository extends EntityRepository {
                 $arProgramacionPago->setFechaDesde(date_create($dateDesde));
                 $arProgramacionPago->setFechaHasta(date_create($dateHasta));
                 $arProgramacionPago->setFechaHastaReal(date_create($dateHastaReal));                
+                $arProgramacionPago->setFechaPagado(new \DateTime('now'));                
                 $arProgramacionPago->setDias($intDiasPeriodo);
                 $arProgramacionPago->setCentroCostoRel($arCentroCostoProceso);
                 $arProgramacionPago->setCodigoUsuario($arCentroCostoProceso->getCodigoUsuario());
@@ -120,6 +121,7 @@ class RhuCentroCostoRepository extends EntityRepository {
                 $arProgramacionPago->setFechaDesde($fechaDesde);
                 $arProgramacionPago->setFechaHasta($fechaHasta);
                 $arProgramacionPago->setFechaHastaReal($fechaHastaReal);
+                $arProgramacionPago->setFechaPagado(new \DateTime('now'));                
                 $arProgramacionPago->setDias(0);
                 $arProgramacionPago->setCentroCostoRel($arCentroCostoProceso);
                 $em->persist($arProgramacionPago);                
@@ -138,6 +140,7 @@ class RhuCentroCostoRepository extends EntityRepository {
                 $arProgramacionPago->setFechaDesde($fechaDesde);
                 $arProgramacionPago->setFechaHasta($fechaHasta);
                 $arProgramacionPago->setFechaHastaReal($fechaHasta);
+                $arProgramacionPago->setFechaPagado(new \DateTime('now'));                
                 $arProgramacionPago->setDias(0);
                 $arProgramacionPago->setCentroCostoRel($arCentroCostoProceso);
                 $em->persist($arProgramacionPago);                
