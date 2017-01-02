@@ -195,7 +195,13 @@ class RhuLiquidacionRepository extends EntityRepository {
                     $arLiquidacion->setVrIngresoBasePrestacionPrimas($ibpPrimas);
                     $arLiquidacion->setVrIngresoBasePrestacionPrimasInicial($ibpPrimasInicial);
                     $arLiquidacion->setVrSalarioPromedioPrimas($salarioPromedioPrimas);
-                } else {                    
+                } else {   
+                    $arLiquidacion->setDiasPrimas(0);                    
+                    $arLiquidacion->setVrPrima(0);    
+                    $arLiquidacion->setVrIngresoBasePrestacionPrimas(0);
+                    $arLiquidacion->setVrIngresoBasePrestacionPrimasInicial(0);
+                    $arLiquidacion->setVrSalarioPromedioPrimas(0);                
+                    $arLiquidacion->setFechaUltimoPagoPrimas($arLiquidacion->getContratoRel()->getFechaUltimoPagoPrimas());                    
                         /*$douIbp = $em->getRepository('BrasaRecursoHumanoBundle:RhuIngresoBase')->devuelveIbpFecha($arLiquidacion->getCodigoEmpleadoFk(), $arLiquidacion->getContratoRel()->getFechaDesde()->format('Y-m-d'), $arLiquidacion->getContratoRel()->getFechaHasta()->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
                         $douIbp = $douIbp + $floIBPAdicionalContrato;
                         $douIBPTotalPrimas = $douIbp;

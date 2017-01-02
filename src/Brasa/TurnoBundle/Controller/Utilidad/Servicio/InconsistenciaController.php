@@ -1,6 +1,6 @@
 <?php
 
-namespace Brasa\TurnoBundle\Controller\Utilidad;
+namespace Brasa\TurnoBundle\Controller\Utilidad\Servicio;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class ServicioInconsistenciaController extends Controller
+class InconsistenciaController extends Controller
 {
     var $strDqlLista = "";
     /**
