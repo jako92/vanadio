@@ -124,7 +124,7 @@ class Factura4 extends \FPDF_FPDF {
         $this->SetX(110);
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(10, 3, 'DIRECCION DE ENVIO', 0, 0, 'L');
-        $this->SetY(46);
+        $this->SetY(50);
         $this->Ln();
         $this->Ln(1);
         $this->SetFont('Arial', '', 8);
