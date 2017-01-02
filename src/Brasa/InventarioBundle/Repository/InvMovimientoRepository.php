@@ -133,7 +133,7 @@ class InvMovimientoRepository extends EntityRepository {
                 $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
                 $arCuentaCobrar->setFecha($arMovimiento->getFecha());
                 $arCuentaCobrar->setFechaVence($arMovimiento->getFecha());
-                $arCuentaCobrar->setNumeroDocumento($consecutivo);
+                $arCuentaCobrar->setNumeroDocumento($arMovimiento->getNumero());
                 $arCuentaCobrar->setCodigoFactura($arMovimiento->getCodigoMovimientoPk());
                 $arCuentaCobrar->setSoporte($arMovimiento->getSoporte());
                 $arCuentaCobrar->setValorOriginal($arMovimiento->getVrTotal());

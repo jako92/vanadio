@@ -2,7 +2,7 @@
 
 namespace Brasa\InventarioBundle\Formatos;
 
-class FormatoFactura extends \FPDF_FPDF {
+class FormatoFactura1 extends \FPDF_FPDF {
 
     public static $em;
     
@@ -14,7 +14,7 @@ class FormatoFactura extends \FPDF_FPDF {
         ob_clean();        
         self::$em = $em;
         self::$codigoMovimiento = $codigoMovimiento;
-        $pdf = new FormatoFactura();
+        $pdf = new FormatoFactura1();
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
@@ -28,14 +28,16 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->GenerarEncabezadoFactura(self::$em);
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arConfiguracionInventario = new \Brasa\InventarioBundle\Entity\InvConfiguracion();
+        $arConfiguracionInventario = self::$em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
-        $this->SetXY(10, 10);
-        $this->Cell(195, 268, '', 1, 0, 'L');
+        $this->SetXY(10, 14);
+        $this->Cell(195, 270, '', 1, 0, 'L');
 
         $this->SetFont('Arial', '', 7);
         $this->SetXY(110, 75);
-        $this->MultiCell(140, 3, "0125545454 de 5456464", 0, 'L');
+        $this->MultiCell(140, 3, $arConfiguracionInventario->getInformacionResolucionDianFactura(), 0, 'L');
         //$this->MultiCell(140, 3, "Informacion Resolucion Dian Factura", 0, 'L');
         $this->SetFont('Arial', 'B', 9);
 
@@ -218,8 +220,8 @@ class FormatoFactura extends \FPDF_FPDF {
     public function Footer() {
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
-        //$arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
-        //$arConfiguracion = self::$em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
+        $arConfiguracion = new \Brasa\InventarioBundle\Entity\InvConfiguracion();
+        $arConfiguracion = self::$em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
         $this->SetY(180);
         $this->line(10, $this->GetY() + 5, 205, $this->GetY() + 5);
 
@@ -284,8 +286,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetFont('Arial', '', 6);
         $this->GetY($this->SetY(228));
         $this->SetX(10);
-        $this->MultiCell(90, 3, "Informacion legal de la factura");
-
+        $this->MultiCell(90, 3, $arConfiguracion->getInformacionLegalFactura());
 
         $this->SetFont('Arial', '', 7);
         $this->GetY($this->SetY(255));
@@ -304,16 +305,14 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->Ln();
         $this->line(10, 269, 205, 269);
 
-
-
         $this->Ln(3);
         $this->SetFont('Arial', 'B', 8);
         $this->GetY($this->SetY(261));
         $this->SetX(10);
-        $this->MultiCell(200, 3, "Informacion pago", 0, 'C');
+        $this->MultiCell(200, 3, $arConfiguracion->getInformacionPagoFactura(), 0, 'C');
         //$this->Text(20, $this->GetY($this->SetY(264)), $arConfiguracion->getInformacionPagoFactura());
         $this->SetFont('Arial', '', 7);
-        $this->Text(60, $this->GetY($this->SetY(273)), "Informacion contacto", 0, 'C');
+        $this->Text(60, $this->GetY($this->SetY(273)), $arConfiguracion->getInformacionContactoFactura(), 0, 'C');
 
         //Número de página
         $this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');
@@ -324,7 +323,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
 
         $this->SetFont('Arial', '', 5);
-        $this->Text(188, 13, ' [sogaApp - turnos]');
+        $this->Text(187, 16, ' [sogaApp - inventario]');
         $this->Image('imagenes/logos/logo.jpg', 15, 15, 35, 17);
         $this->ln(11);
         $this->SetFont('Arial', 'B', 12);

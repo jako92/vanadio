@@ -1,0 +1,422 @@
+<?php
+
+namespace Brasa\InventarioBundle\Formatos;
+
+class FormatoFactura2 extends \FPDF_FPDF { //jg
+
+    public static $em;
+    public static $codigoMovimiento;
+    public static $strLetras;
+
+    public function Generar($em, $codigoMovimiento) { //1teg
+
+        self::$em = $em;
+        self::$codigoMovimiento = $codigoMovimiento;
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
+        $valor = round($arMovimiento->getVrNeto());
+        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
+        self::$strLetras = $strLetras;
+        ob_clean();
+        //$pdf = new Movimiento3(); //1teg
+        $pdf = new FormatoFactura2('P','mm', 'letter');
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->SetFont('Times', '', 12);
+        $this->Body($pdf);
+
+        $pdf->Output("Movimiento$codigoMovimiento.pdf", 'D');
+    }
+
+    public function Header() {
+        
+        $this->GenerarEncabezadoMovimiento(self::$em); 
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
+        $this->SetXY(15, 38);
+        $this->SetFont('Arial','B',15);
+        $this->Cell(50, 4, "FACTURA DE VENTA", 0, 0, 'L', 0);
+        $this->SetXY(178, 38);
+        $this->SetFont('Arial','B',12);
+        $this->Cell(20, 4, utf8_decode("N°.  "). $arMovimiento->getNumero(), 0, 0, 'L', 0);//$arMovimiento->getCodigoMovimientoPk(), 0, 0, 'L', 0);
+        //
+        $this->SetFont('Arial', 'B', 8);
+        $this->SetXY(15, 43);
+        $this->Cell(25, 5, "CLIENTE:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 7.7);
+        $this->Cell(115, 5, $arMovimiento->getTerceroRel()->getNombreCorto(), 0, 0, 'L', 1);
+        $this->SetXY(156, 43);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, "FECHA EMISION:", 0, 0, 'C', 1);
+        $this->Cell(25, 5, "FECHA VENCE:", 0, 0, 'C', 1);        
+        $this->SetXY(15, 48);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, "NIT:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(115, 5, $arMovimiento->getTerceroRel()->getNit(), 0, 0, 'L', 1);
+        $this->SetXY(156, 48);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, $arMovimiento->getFecha()->format('Y-m-d'), 0, 0, 'C', 1);
+        $this->Cell(25, 5, $arMovimiento->getFecha()->format('Y-m-d'), 0, 0, 'C', 1);
+        $this->SetXY(15, 53);
+        $this->Cell(25, 5, "OBRA/PUESTO:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(95, 5, "Por definir", 0, 0, 'L', 1);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(20, 5, "DIRECCION:", 0, 0, 'L', 1);        
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(51, 5, 'xxxxxxxxx', 0, 0, 'L', 1);
+        $this->SetXY(15, 58);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, "DIRECCION:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(115, 5, $arMovimiento->getTerceroRel()->getDireccion(), 0, 0, 'L', 1);
+        $this->SetXY(156, 58);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, utf8_decode("PEDIDO N°"), 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(25, 5, "0", 0, 0, 'L', 1);
+        $this->SetXY(15, 63);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, "TELEFONO:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(50, 5, $arMovimiento->getTerceroRel()->getTelefono(), 0, 0, 'L', 1);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(20, 5, "CIUDAD:", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(45, 5, $arMovimiento->getTerceroRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 1);
+        $this->SetXY(156, 63);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(25, 5, "FORMA PAGO", 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getFormaPagoRel()->getNombre(), 0, 0, 'L', 1);
+        //$this->Text(45, 70, utf8_decode($arMovimiento->getClienteRel()->getNombreCompleto()));
+        /*$this->SetXY(44, 68);
+        $this->MultiCell(90, 4, $arMovimiento->getClienteRel()->getNombreCompleto(), 0, 'L');
+        $this->Text(135, 70, "Nit");
+        $this->Text(170, 70, $arMovimiento->getClienteRel()->getNit(). "-" . $arMovimiento->getClienteRel()->getDigitoVerificacion());
+        $this->Text(15, 80, "Direccion");
+        //$this->Text(45, 80, utf8_decode($arMovimiento->getClienteRel()->getDireccion()));
+        $this->SetXY(44, 77);
+        $this->MultiCell(90, 4,  $arMovimiento->getClienteRel()->getDireccion(), 0, 'L');
+        $this->Text(135, 80, "Telefono");
+        $this->Text(170, 80, $arMovimiento->getClienteRel()->getTelefono());                */
+
+        $this->SetXY(110, 62);
+        $this->SetMargins(5, 1, 5);
+        $this->EncabezadoDetalles();
+    }
+
+    public function EncabezadoDetalles() {
+        $this->Ln(8);
+        $this->SetX(15);
+        $header = array('DESCRIPCION', 'CANT', 'VR. UNITARIO', 'VR. TOTAL');
+        //$this->SetFillColor(236, 236, 236);
+        //$this->SetTextColor(0);
+        //$this->SetDrawColor(0, 0, 0);
+        $this->SetLineWidth(.2);
+        $this->SetFont('', 'B', 7.5);
+
+        //creamos la cabecera de la tabla.
+        $w = array(139, 8, 22, 22);
+        for ($i = 0; $i < count($header); $i++)
+            if ($i == 0)
+                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'L',1);
+            else
+                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C',1);
+
+        //Restauración de colores y fuentes
+        $this->SetFillColor(224, 235, 255);
+        $this->SetTextColor(0);
+        $this->SetFont('');
+        $this->Ln(8);
+    }
+
+    public function Body($pdf) {
+        $pdf->Rect(15, 77, 139, 115);
+        $pdf->Rect(154, 77, 8, 115);
+        $pdf->Rect(162, 77, 22, 115);
+        $pdf->Rect(184, 77, 22, 115);
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
+        $arMovimientoDetalles = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+        $arMovimientoDetalles = self::$em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->findBy(array('codigoMovimientoFk' => self::$codigoMovimiento));
+        
+        /*$pdf->SetX(15);        
+        $pdf->Cell(124, 4, utf8_decode($arMovimiento->getDescripcion()), 0, 0, 'L');
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(10, 4, '', 0, 0, 'R');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(30, 4, '', 0, 0, 'R');
+        $pdf->Cell(30, 4, '', 0, 0, 'R');*/
+        $pdf->Ln(0);
+        $pdf->SetFont('Arial', '', 8);
+        //if($arMovimiento->getImprimirRelacion() == false) {
+            //if($arMovimiento->getImprimirAgrupada() == 0) {
+                foreach ($arMovimientoDetalles as $arMovimientoDetalle) {
+                    $pdf->SetX(15);
+                    /*if($arMovimientoDetalle->getCodigoModalidadServicioFk()) {
+                        $modalidad = "-" . utf8_decode($arMovimientoDetalle->getModalidadServicioRel()->getNombre());
+                    }*/
+                    $pdf->Cell(139, 4, substr("", 0, 61), 0, 0, 'L');
+                    
+                    $modalidad = "";
+                    
+                    $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');
+                    
+                    $pdf->SetFont('Arial', '', 8);
+                    $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 0, 0, 'R');
+                    $pdf->Ln();
+                    $pdf->SetX(15);
+                    $pdf->Cell(10, 4, '', 0, 0, 'R');
+                    /*if($arMovimientoDetalle->getTipoPedido() == 'FIJO') {
+                        $strCampo = $arMovimientoDetalle->getConceptoServicioRel()->getNombreMovimientocion() . " " . $arMovimientoDetalle->getDetalle();
+                    } else {
+                        $strCampo = $arMovimientoDetalle->getConceptoServicioRel()->getNombreMovimientocionAdicional() . " " . $arMovimientoDetalle->getDetalle();
+                    }*/
+                    $strCampo = " ojoooooo ";
+                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
+                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Ln(-1);
+                    $pdf->SetAutoPageBreak(true, 88);
+                }
+            /*} else {
+                $strSql = "SELECT tur_puesto.nombre AS puesto, tur_modalidad_servicio.nombre AS modalidadServicio, tur_concepto_servicio.nombre_facturacion AS conceptoServicio, cantidad  AS cantidad, vr_precio AS precio
+                            FROM
+                            tur_factura_detalle
+                            LEFT JOIN tur_puesto ON tur_factura_detalle.codigo_puesto_fk = tur_puesto.codigo_puesto_pk
+                            LEFT JOIN tur_modalidad_servicio ON tur_factura_detalle.codigo_modalidad_servicio_fk = tur_modalidad_servicio.codigo_modalidad_servicio_pk
+                            LEFT JOIN tur_concepto_servicio ON tur_factura_detalle.codigo_concepto_servicio_fk = tur_concepto_servicio.codigo_concepto_servicio_pk
+                            WHERE codigo_factura_fk = " . self::$codigoMovimiento . " AND codigo_grupo_facturacion_fk IS NULL";
+                $connection = self::$em->getConnection();
+                $statement = $connection->prepare($strSql);
+                $statement->execute();
+                $results = $statement->fetchAll();
+                foreach ($results as $arMovimientoDetalle) {
+                    $pdf->SetX(15);
+                    $pdf->Cell(10, 4, number_format($arMovimientoDetalle['cantidad'], 0, '.', ','), 0, 0, 'C');
+                    $pdf->SetFont('Arial', 'B', 9);
+                    $pdf->Cell(124, 4, substr(utf8_decode($arMovimientoDetalle['puesto']) . '-'  . $arMovimientoDetalle['modalidadServicio'], 0, 61), 0, 0, 'L');
+                    $pdf->SetFont('Arial', '', 9);
+
+                    $pdf->Cell(28, 4, number_format($arMovimientoDetalle['precio'], 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(28, 4, number_format($arMovimientoDetalle['precio'], 0, '.', ','), 0, 0, 'R');
+                    $pdf->Ln();
+                    $pdf->SetX(15);
+                    $pdf->Cell(10, 4, '', 0, 0, 'R');
+                    $strCampo = $arMovimientoDetalle['conceptoServicio'];
+                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
+                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Ln(2);
+                    $pdf->SetAutoPageBreak(true, 15);
+                }
+
+                $strSql = "SELECT tur_grupo_facturacion.nombre as puesto, tur_grupo_facturacion.concepto as conceptoServicio, SUM(cantidad)  AS cantidad, SUM(vr_precio) AS precio
+                            FROM
+                            tur_factura_detalle
+                            LEFT JOIN tur_puesto ON tur_factura_detalle.codigo_puesto_fk = tur_puesto.codigo_puesto_pk
+                            LEFT JOIN tur_modalidad_servicio ON tur_factura_detalle.codigo_modalidad_servicio_fk = tur_modalidad_servicio.codigo_modalidad_servicio_pk
+                            LEFT JOIN tur_concepto_servicio ON tur_factura_detalle.codigo_concepto_servicio_fk = tur_concepto_servicio.codigo_concepto_servicio_pk
+                            LEFT JOIN tur_grupo_facturacion ON tur_factura_detalle.codigo_grupo_facturacion_fk = tur_grupo_facturacion.codigo_grupo_facturacion_pk
+                            WHERE codigo_factura_fk = " . self::$codigoMovimiento . "  AND codigo_grupo_facturacion_fk IS NOT NULL
+                        GROUP BY tur_factura_detalle.codigo_grupo_facturacion_fk ";
+                $connection = self::$em->getConnection();
+                $statement = $connection->prepare($strSql);
+                $statement->execute();
+                $results = $statement->fetchAll();
+                foreach ($results as $arMovimientoDetalle) {
+                    $pdf->SetX(15);
+                    $pdf->Cell(10, 4, number_format($arMovimientoDetalle['cantidad'], 0, '.', ','), 0, 0, 'C');
+                    $pdf->SetFont('Arial', 'B', 9);
+                    $pdf->Cell(124, 4, substr(utf8_decode($arMovimientoDetalle['puesto']), 0, 61), 0, 0, 'L');
+                    $pdf->SetFont('Arial', '', 9);
+                    if($arMovimientoDetalle['cantidad'] > 0) {
+                        $precioUnitario = $arMovimientoDetalle['precio'] / $arMovimientoDetalle['cantidad'];
+                    }
+                    $pdf->Cell(28, 4, number_format($precioUnitario, 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(28, 4, number_format($arMovimientoDetalle['precio'], 0, '.', ','), 0, 0, 'R');
+                    $pdf->Ln();
+                    $pdf->SetX(15);
+                    $pdf->Cell(10, 4, '', 0, 0, 'R');
+                    $strCampo = $arMovimientoDetalle['conceptoServicio'];
+                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
+                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Cell(28, 4, '', 0, 0, 'R');
+                    $pdf->Ln(2);
+                    $pdf->SetAutoPageBreak(true, 15);
+                }
+            }*/
+        /*} else {
+                $pdf->SetX(15);
+                $pdf->Cell(10, 4, number_format(1, 0, '.', ','), 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 9);
+                $pdf->Cell(124, 4, utf8_decode($arMovimiento->getTituloRelacion()), 0, 0, 'L');
+                $pdf->SetFont('Arial', '', 9);
+                $pdf->Cell(28, 4, number_format($arMovimiento->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
+                $pdf->Cell(28, 4, number_format($arMovimiento->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
+                $pdf->Ln();
+                $pdf->SetX(15);
+                $pdf->Cell(10, 4, '', 0, 0, 'R');
+                $pdf->MultiCell(124, 4, utf8_decode($arMovimiento->getDetalleRelacion()), 0, 'L');
+                //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
+                $pdf->Cell(28, 4, '', 0, 0, 'R');
+                $pdf->Cell(28, 4, '', 0, 0, 'R');
+                $pdf->Ln(2);
+        }*/
+
+    }
+
+    public function devuelveMes($intMes) {
+        $strMes = "";
+        switch ($intMes) {
+            case 1:
+                $strMes = "ENERO";
+                break;
+            case 2:
+                $strMes = "FEBRERO";
+                break;
+            case 3:
+                $strMes = "MARZO";
+                break;
+            case 4:
+                $strMes = "ABRIL";
+                break;
+            case 5:
+                $strMes = "MAYO";
+                break;
+            case 6:
+                $strMes = "JUNIO";
+                break;
+            case 7:
+                $strMes = "JULIO";
+                break;
+            case 8:
+                $strMes = "AGOSTO";
+                break;
+            case 9:
+                $strMes = "SEPTIEMBRE";
+                break;
+            case 10:
+                $strMes = "OCTUBRE";
+                break;
+            case 11:
+                $strMes = "NOVIEMBRE";
+                break;
+            case 12:
+                $strMes = "DICIEMBRE";
+                break;
+        }
+        return $strMes;
+    }
+
+    public function Footer() {
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
+        $arConfiguracion = new \Brasa\InventarioBundle\Entity\InvConfiguracion();
+        $arConfiguracion = self::$em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
+        $this->SetFillColor(200, 200, 200);
+        $this->SetXY(15,192);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(40, 6, 'OBSERVACIONES:', 1, 0, 'L');        
+        $this->Cell(35, 6, 'RETE FTE SUGERIDA:', 1, 0, 'L');        
+        $this->Cell(22, 6, number_format($arMovimiento->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
+        $this->Cell(28, 6, 'AIU SERVICIO:', 1, 0, 'L');
+        $this->Cell(22, 6, number_format('0', 0, '.', ','), 1, 0, 'R');
+        $this->Cell(22, 6, 'SUBTOTAL', 1, 0, 'L');
+        $this->Cell(22, 6, number_format($arMovimiento->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');
+        $this->SetXY(15,198);        
+        $this->Cell(147, 12, '', 1, 0, 'L');
+        $this->Cell(22, 6, 'IVA', 1, 0, 'L');
+        $this->Cell(22, 6, number_format($arMovimiento->getVrIva(), 0, '.', ','), 1, 0, 'R');
+        $this->SetXY(162,204);        
+        $this->Cell(22, 6, 'TOTAL', 1, 0, 'L');
+        $this->Cell(22, 6, number_format($arMovimiento->getVrTotal(), 0, '.', ','), 1, 0, 'R');
+        $this->SetXY(15,210);        
+        $this->Cell(147, 6, substr(strtoupper(self::$strLetras), 0, 96), 1, 0, 'L',1);
+        $this->Cell(22, 6, 'NETO', 1, 0, 'L',1);
+        $this->Cell(22, 6, number_format($arMovimiento->getVrTotal(), 0, '.', ','), 1, 0, 'R',1);
+        $this->SetXY(15,216);        
+        $this->Cell(64, 6, 'RECIBIDO POR', 1, 0, 'L');
+        $this->Cell(64, 6, 'ACEPTADO POR', 1, 0, 'L');
+        $this->Cell(63, 6, '', 1, 0, 'L');
+        $this->SetXY(15,222);
+        $this->Cell(32, 6, 'NIT/C.C', 1, 0, 'L');
+        $this->Cell(32, 6, 'FECHA', 1, 0, 'L');
+        $this->Cell(32, 6, 'NIT/C.C', 1, 0, 'L');
+        $this->Cell(32, 6, 'FECHA', 1, 0, 'L');
+        $this->Cell(63, 6, 'FIRMA DEL EMISOR', 1, 0, 'L');
+        $this->SetXY(15,228);
+        $this->SetFont('Arial', 'B', 7.7);
+        $this->MultiCell(191, 3.6, utf8_decode($arConfiguracion->getInformacionLegalMovimiento()), 1, 'L');        
+        $this->SetXY(15,246);
+        $this->SetFont('Arial', 'B', 8);
+        $this->MultiCell(191, 3.9, utf8_decode($arConfiguracion->getInformacionPagoMovimiento()), 1, 'C');
+        $this->SetXY(15,258);
+        $this->SetFont('Arial', '', 8);
+        $this->MultiCell(191, 3.5, 'Autorizo a la entidad 1 TEG SEGURIDAD PLAZAS LTDA o a quien represente la calidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información referente a mi comportamiento comercial.', 1, 'L');
+        /*
+        $this->Text(20, 201, "Recibi conforme:");
+        $this->Text(20, 206, "Fecha y Nombre:");
+        $this->Text(20, 211, "Sello:");
+        $this->Text(20, 221, "Actividad Comercial");
+        $this->Text(60, 221, "Sector comercial");
+        //$this->Text(60, 221, utf8_decode($arMovimiento->getClienteRel()->getSectorComercialRel()->getNombre()));
+        $this->Text(90, 221, "Estrato =");
+        $this->Ln(4);
+        $this->SetFont('Arial', '', 8);
+        //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoMovimiento());
+        $this->SetXY(30,228);
+        $this->MultiCell(110, 5, $arConfiguracion->getInformacionPagoMovimiento(), 0, 'L');
+        $this->Ln();
+        $this->SetFont('Arial', 'B', 8);
+        $this->Text(30, 241, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
+        //$this->MultiCell(100, 5, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable", 0, 'L');
+        $this->SetFont('Arial', '', 7);
+        $this->Text(50, 251, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
+
+        //Número de página
+        //$this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');*/
+    }
+
+    public function GenerarEncabezadoMovimiento($em) {
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arConfiguracionInventario = new \Brasa\InventarioBundle\Entity\InvConfiguracion();
+        $arConfiguracionInventario = self::$em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = self::$em->getRepository('BrasaInventarioBundle:InvMovimiento')->find(self::$codigoMovimiento);
+        $this->SetFillColor(200, 200, 200);
+        $this->SetFont('Arial','B',8);
+        //Logo
+        $this->Image('imagenes/logos/logo.jpg', 20, 8, 30, 25);
+        $this->Image('imagenes/logos/veritas.jpg', 165, 11, 17, 22);
+        $this->Image('imagenes/logos/iso.jpg', 185, 11, 24, 24);
+        //INFORMACIÓN EMPRESA
+        $this->SetXY(50, 5);
+        $this->Cell(120, 4, utf8_decode($arConfiguracion->getNombreEmpresa()), 0, 0, 'C', 0);
+        $this->SetXY(50, 9);
+        $this->Cell(120, 4, "NIT.: ".$arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa(), 0, 0, 'C', 0);
+        $this->SetXY(50, 13);
+        $this->Cell(120, 4, $arConfiguracion->getDireccionEmpresa(), 0, 0, 'C', 0);
+        $this->SetXY(50, 18);
+        $this->Cell(120, 4, "Telefono: ".$arConfiguracion->getTelefonoEmpresa()." ".$arConfiguracion->getPaginaWeb(), 0, 0, 'C', 0);
+        $this->SetXY(50, 22);
+        $this->Cell(120, 4, $arConfiguracion->getCiudadRel()->getNombre(), 0, 0, 'C', 0);
+        $this->SetXY(50, 26);
+        $this->SetFont('Arial','',8);
+        $this->Cell(120, 4, "IVA REGIMEN COMUN", 0, 0, 'C', 0);
+        $this->SetXY(50, 30);
+        $this->Cell(120, 4, utf8_decode($arConfiguracionInventario->getInformacionResolucionDianFactura()), 0, 0, 'C', 0);
+        $this->SetXY(50, 33);
+        $this->Cell(120, 4, "__________________________________________________________________________________________________________________________", 0, 0, 'C', 0);
+    }
+
+}
+
+?>

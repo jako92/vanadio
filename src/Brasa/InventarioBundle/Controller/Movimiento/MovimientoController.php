@@ -194,9 +194,19 @@ class MovimientoController extends Controller
                         }                        
                     }
                     if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
-                        $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura();
-                        $objFormatoFactura->Generar($em, $codigoMovimiento);                        
-                    }                                        
+                        $arConfiguracion = $em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
+                        $codigoFormato = $arConfiguracion->getCodigoFormatoFactura();                                               
+                    
+                        if($codigoFormato <= 1) {
+                            $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura1();
+                            $objFormatoFactura->Generar($em, $codigoMovimiento);                    
+                        }
+                        if($codigoFormato == 2) {
+                            $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura2();
+                            $objFormatoFactura->Generar($em, $codigoMovimiento);                    
+                        }
+                    }    
+                    
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada");
                 }

@@ -290,6 +290,10 @@ class FacturaController extends Controller
                             $objFactura = new \Brasa\TurnoBundle\Formatos\Factura4();
                             $objFactura->Generar($em, $codigoFactura);                            
                         }
+                        if($arConfiguracion->getCodigoFormatoFactura() == 5) { //galaxia
+                            $objFactura = new \Brasa\TurnoBundle\Formatos\Factura5();
+                            $objFactura->Generar($em, $codigoFactura);                            
+                        }
                     } 
                     if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
                         $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
@@ -320,6 +324,10 @@ class FacturaController extends Controller
                     }
                     if($arConfiguracion->getCodigoFormatoFactura() == 4) { //estelar
                             $objFactura = new \Brasa\TurnoBundle\Formatos\Factura4();
+                            $objFactura->Generar($em, $codigoFactura);                            
+                    }
+                    if($arConfiguracion->getCodigoFormatoFactura() == 5) { //galaxia
+                            $objFactura = new \Brasa\TurnoBundle\Formatos\Factura5();
                             $objFactura->Generar($em, $codigoFactura);                            
                     }
                 } 
