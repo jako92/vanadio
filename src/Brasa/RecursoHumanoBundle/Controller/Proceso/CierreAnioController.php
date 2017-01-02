@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-
+use Brasa\RecursoHumanoBundle\Form\Type\RhuCierreAnioType;
 class CierreAnioController extends Controller
 {
     var $strSqlLista = "";
@@ -71,6 +71,29 @@ class CierreAnioController extends Controller
     }
 
     /**
+     * @Route("/rhu/proceso/cierre/anio/nuevo/{codigoCierreAnio}", name="brs_rhu_proceso_cierre_anio_nuevo")
+     */    
+    public function nuevoAction(Request $request, $codigoCierreAnio = 0) {        
+        $em = $this->getDoctrine()->getManager();        
+        $arCierreAnio = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreAnio();       
+        if($codigoCierreAnio != 0) {
+            $arCierreAnio = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreAnio')->find($codigoPagoAdicionalPeriodo);
+        }
+        
+        $form = $this->createForm(RhuCierreAnioType::class, $arCierreAnio);                     
+        $form->handleRequest($request);
+        if ($form->isValid()) {            
+            $arCierreAnio = $form->getData();                                                                                                          
+            $em->persist($arCierreAnio);
+            $em->flush();                
+            return $this->redirect($this->generateUrl('brs_rhu_proceso_cierre_anio'));                                                                                                                                                                                                             
+        }                
+
+        return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreAnio:nuevo.html.twig', array(
+            'form' => $form->createView()));
+    }     
+    
+    /**
      * @Route("/rhu/proceso/cierre/anio/cerrar/{codigoCierreAnio}", name="brs_rhu_proceso_cierre_anio_cerrar")
      */
     public function cerrarAction(Request $request, $codigoCierreAnio) {        
@@ -101,7 +124,7 @@ class CierreAnioController extends Controller
             
             $strFechaCambio = $arConfiguracion->getAnioActual()."/12/30";
             $arContratoMinimos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-            $strDql = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c WHERE c.estadoActivo = 1 AND c.indefinido = 1 AND c.VrSalario <= " . $arConfiguracion->getVrSalario();
+            $strDql = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c WHERE c.estadoActivo = 1 AND c.VrSalario <= " . $arConfiguracion->getVrSalario();
             $query = $em->createQuery($strDql);
             $arContratoMinimos = $query->getResult();                        
             foreach ($arContratoMinimos as $arContratoMinimo){
