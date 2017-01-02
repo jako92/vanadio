@@ -54,8 +54,9 @@ class TurServicioRepository extends EntityRepository {
 
     public function liquidar($codigoServicio) {
         $em = $this->getEntityManager();
-        $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();
-        $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
+        $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();         
+        $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);                
+        $floValorBaseServicio = $arServicio->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arServicio->getSectorRel()->getPorcentaje();        
         $intCantidad = 0;
         $precio = 0;
         $douTotalHoras = 0;
@@ -189,10 +190,7 @@ class TurServicioRepository extends EntityRepository {
                 $douCostoCalculado = $douCostoCalculado;
                 $douHoras = ($intHorasRealesDiurnas + $intHorasRealesNocturnas ) * $arServicioDetalle->getCantidad();
                 $arServicioDetalleActualizar = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
-                $arServicioDetalleActualizar = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($arServicioDetalle->getCodigoServicioDetallePk());
-                $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                $floValorBaseServicio = $arConfiguracionNomina->getVrSalario() * $arServicio->getSectorRel()->getPorcentaje();
+                $arServicioDetalleActualizar = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($arServicioDetalle->getCodigoServicioDetallePk());                                
                 $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arServicioDetalle->getModalidadServicioRel()->getPorcentaje() / 100);
                 $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100)/30)/16;             
                 $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100)/30)/8;            

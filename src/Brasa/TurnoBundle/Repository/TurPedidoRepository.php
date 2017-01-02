@@ -68,7 +68,8 @@ class TurPedidoRepository extends EntityRepository {
     public function liquidar($codigoPedido) {        
         $em = $this->getEntityManager();        
         $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();        
-        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido); 
+        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
+        $floValorBaseServicio = $arPedido->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arPedido->getSectorRel()->getPorcentaje();
         $intCantidad = 0;
         $douTotalHoras = 0;
         $douTotalHorasDiurnas = 0;
@@ -219,9 +220,6 @@ class TurPedidoRepository extends EntityRepository {
                 $douCostoCalculado = $douCostoCalculado;
                 $arPedidoDetalleActualizar = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();        
                 $arPedidoDetalleActualizar = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arPedidoDetalle->getCodigoPedidoDetallePk());                         
-                $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1); 
-                $floValorBaseServicio = $arConfiguracionNomina->getVrSalario() * $arPedido->getSectorRel()->getPorcentaje();
                 $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arPedidoDetalle->getModalidadServicioRel()->getPorcentaje() / 100);                        
                 $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100)/30)/16;            
                 $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100)/30)/8;                                  

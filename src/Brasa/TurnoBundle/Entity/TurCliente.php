@@ -68,6 +68,11 @@ class TurCliente
     private $codigoSectorFk;     
     
     /**
+     * @ORM\Column(name="codigo_lista_precio_fk", type="integer", nullable=true)
+     */    
+    private $codigoListaPrecioFk = 1;    
+    
+    /**
      * @ORM\Column(name="codigo_asesor_fk", type="integer", nullable=true)
      */    
     private $codigoAsesorFk;    
@@ -212,6 +217,12 @@ class TurCliente
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
      */
     protected $sectorRel;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TurListaPrecio", inversedBy="clientesListaPrecioRel")
+     * @ORM\JoinColumn(name="codigo_lista_precio_fk", referencedColumnName="codigo_lista_precio_pk")
+     */
+    protected $listaPrecioRel;     
     
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="turClientesFormaPagoRel")
@@ -2025,5 +2036,53 @@ class TurCliente
     public function getCostosRecursosDetallesClienteRel()
     {
         return $this->costosRecursosDetallesClienteRel;
+    }
+
+    /**
+     * Set codigoListaPrecioFk
+     *
+     * @param integer $codigoListaPrecioFk
+     *
+     * @return TurCliente
+     */
+    public function setCodigoListaPrecioFk($codigoListaPrecioFk)
+    {
+        $this->codigoListaPrecioFk = $codigoListaPrecioFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoListaPrecioFk
+     *
+     * @return integer
+     */
+    public function getCodigoListaPrecioFk()
+    {
+        return $this->codigoListaPrecioFk;
+    }
+
+    /**
+     * Set listaPrecioRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel
+     *
+     * @return TurCliente
+     */
+    public function setListaPrecioRel(\Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel = null)
+    {
+        $this->listaPrecioRel = $listaPrecioRel;
+
+        return $this;
+    }
+
+    /**
+     * Get listaPrecioRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurListaPrecio
+     */
+    public function getListaPrecioRel()
+    {
+        return $this->listaPrecioRel;
     }
 }

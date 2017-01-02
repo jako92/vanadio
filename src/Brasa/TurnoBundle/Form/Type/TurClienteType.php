@@ -92,7 +92,14 @@ class TurClienteType extends AbstractType
                     return $er->createQueryBuilder('se')
                     ->orderBy('se.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                            
+                'required' => true))   
+            ->add('listaPrecioRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurListaPrecio',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('lp')
+                    ->orderBy('lp.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                             
             ->add('nit', NumberType::class, array('required' => true))
             ->add('digitoVerificacion', TextType::class, array('required' => false))  
             ->add('nombreCorto', TextType::class, array('required' => true)) 
