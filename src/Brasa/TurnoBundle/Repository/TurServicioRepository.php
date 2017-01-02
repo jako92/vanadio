@@ -56,6 +56,7 @@ class TurServicioRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();         
         $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);                
+        $prueba = $arServicio->getClienteRel()->getListaPrecioRel()->getVrSalario();             
         $floValorBaseServicio = $arServicio->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arServicio->getSectorRel()->getPorcentaje();        
         $intCantidad = 0;
         $precio = 0;

@@ -21,6 +21,7 @@ class ActualizarPrecioController extends Controller
      */    
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         /*if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 87)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }*/
@@ -28,29 +29,25 @@ class ActualizarPrecioController extends Controller
         $form = $this->formularioLista();
         $form->handleRequest($request);
         if($form->isValid()) {
-            if($form->get('BtnGenerar')->isClicked()) {  
+            if($form->get('BtnActualizar')->isClicked()) {  
                 set_time_limit(0);
-                ini_set("memory_limit", -1);
-                $strSql = "DELETE FROM tur_servicio_inconsistencia WHERE 1";           
-                $em->getConnection()->executeQuery($strSql);                
-                $dateFecha = $form->get('fecha')->getData();
-                $strAnio = $dateFecha->format('Y');
-                $strMes = $dateFecha->format('m'); 
-                $arRecursos = new \Brasa\TurnoBundle\Entity\TurRecurso();
-                $arRecursos =  $em->getRepository('BrasaTurnoBundle:TurRecurso')->findBy(array('estadoActivo' => 1));                                
-                $this->recursosInactivosAsignacion();                
-                $this->recursosSinAsignacion($arRecursos);                
-                set_time_limit(60);
-                return $this->redirect($this->generateUrl('brs_tur_utilidad_servicio_inconsistencias')); 
+                ini_set("memory_limit", -1);                
+                $arServicioDetalles = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
+                $arServicioDetalles =  $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('estadoCerrado' => 0, 'compuesto' => 1));                                
+                foreach ($arServicioDetalles as $arServicioDetalle) {
+                    if($arServicioDetalle->getServicioRel()->getEstadoCerrado() == 0) {
+                        $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->liquidar($arServicioDetalle->getCodigoServicioDetallePk());                        
+                    }                    
+                }               
+                $arServicios = new \Brasa\TurnoBundle\Entity\TurServicio();
+                $arServicios =  $em->getRepository('BrasaTurnoBundle:TurServicio')->findBy(array('estadoCerrado' => 0));                                
+                foreach ($arServicios as $arServicio) {
+                    $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($arServicio->getCodigoServicioPk());
+                }
+                
+                $objMensaje->Mensaje("informacion", "Los servicios se han actualizado con exito");
+                return $this->redirect($this->generateUrl('brs_tur_utilidad_servicio_actualizar_precio')); 
             } 
-            if($form->get('BtnEliminar')->isClicked()) {            
-                $strSql = "DELETE FROM tur_servicio_inconsistencia WHERE 1";           
-                $em->getConnection()->executeQuery($strSql);
-                return $this->redirect($this->generateUrl('brs_tur_utilidad_servicio_inconsistencias')); 
-            }
-            if($form->get('BtnExportar')->isClicked()) {
-                $this->generarExcel();
-            }
         }                         
         return $this->render('BrasaTurnoBundle:Utilidades/Servicios:actualizarPrecio.html.twig', array(            
             'form' => $form->createView()));
