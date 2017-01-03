@@ -926,15 +926,16 @@ class ContratosController extends Controller
                     ->setCellValue('P1', 'HASTA')
                     ->setCellValue('Q1', 'SALARIO')
                     ->setCellValue('R1', 'SALARIO')
-                    ->setCellValue('S1', 'CARGO')
-                    ->setCellValue('T1', 'CARGO DESCRIPCION')
-                    ->setCellValue('U1', 'RIESGO')
-                    ->setCellValue('V1', 'ULT.PAGO')
-                    ->setCellValue('W1', 'ULT.PAGO PRIMAS')
-                    ->setCellValue('X1', 'ULT.PAGO CESANTIAS')
-                    ->setCellValue('Y1', 'ULT.PAGO VACACIONES')
-                    ->setCellValue('Z1', 'TERMINADO')
-                    ->setCellValue('AA1', 'LHE');
+                    ->setCellValue('S1', 'DEVENGADO PACTADO')
+                    ->setCellValue('T1', 'CARGO')
+                    ->setCellValue('U1', 'CARGO DESCRIPCION')
+                    ->setCellValue('V1', 'RIESGO')
+                    ->setCellValue('W1', 'ULT.PAGO')
+                    ->setCellValue('X1', 'ULT.PAGO PRIMAS')
+                    ->setCellValue('Y1', 'ULT.PAGO CESANTIAS')
+                    ->setCellValue('Z1', 'ULT.PAGO VACACIONES')
+                    ->setCellValue('AA1', 'TERMINADO')
+                    ->setCellValue('AB1', 'LHE');
         $i = 2;
         
         $query = $em->createQuery($this->strSqlLista);
@@ -987,15 +988,16 @@ class ContratosController extends Controller
                     ->setCellValue('P' . $i, $arContrato->getFechaHasta()->Format('Y-m-d'))
                     ->setCellValue('Q' . $i, $arContrato->getVrSalario())
                     ->setCellValue('R' . $i, $tipoSalario)
-                    ->setCellValue('S' . $i, $arContrato->getCargoRel()->getNombre())
-                    ->setCellValue('T' . $i, $arContrato->getCargoDescripcion())
-                    ->setCellValue('U' . $i, $arContrato->getClasificacionRiesgoRel()->getNombre())
-                    ->setCellValue('V' . $i, $arContrato->getFechaUltimoPago()->Format('Y-m-d'))
-                    ->setCellValue('W' . $i, $fechaUltimaPagoPrimas)
-                    ->setCellValue('X' . $i, $fechaUltimaPagoCesantias)
-                    ->setCellValue('Y' . $i, $fechaUltimaPagoVacaciones)
-                    ->setCellValue('Z' . $i, $objFunciones->devuelveBoolean($arContrato->getEstadoTerminado()))
-                    ->setCellValue('AA' . $i, $objFunciones->devuelveBoolean($arContrato->getLimitarHoraExtra()));
+                    ->setCellValue('S' . $i, $arContrato->getVrDevengadoPactado())
+                    ->setCellValue('T' . $i, $arContrato->getCargoRel()->getNombre())
+                    ->setCellValue('U' . $i, $arContrato->getCargoDescripcion())
+                    ->setCellValue('V' . $i, $arContrato->getClasificacionRiesgoRel()->getNombre())
+                    ->setCellValue('W' . $i, $arContrato->getFechaUltimoPago()->Format('Y-m-d'))
+                    ->setCellValue('X' . $i, $fechaUltimaPagoPrimas)
+                    ->setCellValue('Y' . $i, $fechaUltimaPagoCesantias)
+                    ->setCellValue('Z' . $i, $fechaUltimaPagoVacaciones)
+                    ->setCellValue('AA' . $i, $objFunciones->devuelveBoolean($arContrato->getEstadoTerminado()))
+                    ->setCellValue('AB' . $i, $objFunciones->devuelveBoolean($arContrato->getLimitarHoraExtra()));
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('contratos');
