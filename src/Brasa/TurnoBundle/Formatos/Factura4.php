@@ -299,7 +299,7 @@ class Factura4 extends \FPDF_FPDF {
         $this->Ln();*/
         $this->SetX(10);
         $this->SetFont('Arial', 'B', 10);
-        $this->MultiCell(145, 4, "SON : " . substr(strtoupper(self::$strLetras), 0, 96), 0, 'L');
+        $this->MultiCell(145, 4, "SON : " . substr(strtoupper(self::$strLetras. " PESOS M/CTE."), 0, 96), 0, 'L');
         //$Text = array($arConfiguracion->getInformacionLegalFactura());
 
         $this->SetFont('Arial', '', 6);

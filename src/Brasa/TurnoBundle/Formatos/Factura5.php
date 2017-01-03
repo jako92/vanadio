@@ -34,14 +34,14 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
                         
         
-        $this->SetXY(15, 43);        
+        $this->SetXY(12, 43);        
         $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);
         
-        $this->SetXY(15, 48);        
+        $this->SetXY(12, 48);        
         $this->Cell(138, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
-        $this->SetXY(15, 53);        
+        $this->SetXY(12, 53);        
         $this->Cell(138, 5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
-        $this->SetXY(15, 58);        
+        $this->SetXY(12, 58);        
         $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
         $this->SetXY(150, 43);        
@@ -60,7 +60,7 @@ class Factura5 extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(8);
-        $this->SetX(15);
+        $this->SetX(12);
         $header = array('DESCRIPCION', 'CANT', 'VR. UNITARIO', 'IVA','VR. TOTAL');
         //$this->SetFillColor(236, 236, 236);
         //$this->SetTextColor(0);
@@ -95,7 +95,7 @@ class Factura5 extends \FPDF_FPDF {
         if($arFactura->getImprimirRelacion() == false) {
             if($arFactura->getImprimirAgrupada() == 0) {
                 foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                    $pdf->SetX(15);
+                    $pdf->SetX(12);
                     if($arFacturaDetalle->getCodigoModalidadServicioFk()) {
                         $modalidad = "-" . utf8_decode($arFacturaDetalle->getModalidadServicioRel()->getNombre());
                     }
@@ -107,7 +107,7 @@ class Factura5 extends \FPDF_FPDF {
                     $pdf->Cell(21, 4, number_format($arFacturaDetalle->getPorIva(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Cell(21, 4, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Ln();
-                    $pdf->SetX(15);
+                    $pdf->SetX(12);
                     $pdf->Cell(10, 4, '', 0, 0, 'R');
                     if($arFacturaDetalle->getTipoPedido() == 'FIJO') {
                         $strCampo = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " " . $arFacturaDetalle->getDetalle();
@@ -285,15 +285,15 @@ class Factura5 extends \FPDF_FPDF {
         $this->Cell(42, 5, 'BASE AIU 10%', 1, 0, 'L');               
         $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 1, 0, 'R');
         
-        $this->SetXY(15,193);
+        $this->SetXY(12,193);
         $this->Rect(10, 192, 138, 30);
         $this->SetFont('Arial', '', 7.3);
         $this->MultiCell(137, 3, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 0, 'L');        
-        $this->SetXY(15,208);        
+        $this->SetXY(12,208);        
         $this->MultiCell(137, 3, "OBSERVACION: ". utf8_decode($arFactura->getComentarios()), 0, 'L');
-        $this->SetXY(15,223);        
+        $this->SetXY(12,223);        
         $this->MultiCell(137, 3, $arConfiguracion->getInformacionLegalFactura(), 0, 'L');
-        $this->SetXY(15,235);        
+        $this->SetXY(12,235);        
         $this->MultiCell(137, 3, "IMPRESO EN COMPUTADOR PARA GALAXIA SEGURIDAD LTDA AÑO 2014 NIT 811017575-1", 0, 'L');
         $this->Rect(10, 222, 201, 40);
         $this->Text(149, 225, "ACEPTADA Y RECIBIDA POR:");
@@ -301,7 +301,7 @@ class Factura5 extends \FPDF_FPDF {
         $this->Text(149, 236, "NIT O CEDULA:        __________________________");
         $this->Text(149, 242, "FECHA:                     __________________________");
         $this->Text(149, 248, "SELLO: ");
-        $this->Text(15, 266, $arConfiguracion->getInformacionResolucionDianFactura());
+        $this->Text(12, 266, $arConfiguracion->getInformacionResolucionDianFactura());
         /*
         
         
@@ -340,7 +340,7 @@ class Factura5 extends \FPDF_FPDF {
         //$this->Text(108, 40, $arConfiguracion->getNitEmpresa()."-".$arConfiguracion->getDigitoVerificacionEmpresa());
         
         
-        $this->SetXY(15, 30);        
+        $this->SetXY(12, 30);        
         $this->Cell(120, 4, "IVA REGIMEN COMUN", 0, 0, 'L', 0);        
         //INFORMACIÓN EMPRESA BLOQUE 2
         $this->SetXY(150, 10);
