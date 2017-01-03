@@ -335,21 +335,11 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $this->SetFillColor(200, 200, 200);
         $this->SetFont('Arial','',8);
-        //Logo
-        $this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
+        
+        //$this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
         //$this->Text(108, 40, $arConfiguracion->getNitEmpresa()."-".$arConfiguracion->getDigitoVerificacionEmpresa());
-        //INFORMACIÓN EMPRESA BLOQUE 1
-        $this->SetXY(10, 10);
-        $this->Cell(120, 4, utf8_decode($arConfiguracion->getDireccionEmpresa()), 0, 0, 'L', 0);
-        $this->SetXY(10, 14);
-        $this->Cell(120, 4, "PBX: ".$arConfiguracion->getTelefonoEmpresa(), 0, 0, 'L', 0);
-        //$this->Cell(120, 4, "NIT.: ".$arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa(), 0, 0, 'L', 0);
-        $this->SetXY(10, 18);
-        $this->Cell(120, 4, $arConfiguracion->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
-        $this->SetXY(10, 22);
-        $this->Cell(120, 4, "subgerencia@galaxiasegurdad.net", 0, 0, 'L', 0);
-        $this->SetXY(10, 26);
-        $this->Cell(120, 4, "VIGILADO ". $arConfiguracionTurno->getInformacionResolucionSupervigilanciaFactura(), 0, 0, 'L', 0);
+        
+        
         $this->SetXY(10, 30);        
         $this->Cell(120, 4, "IVA REGIMEN COMUN", 0, 0, 'L', 0);        
         //INFORMACIÓN EMPRESA BLOQUE 2
