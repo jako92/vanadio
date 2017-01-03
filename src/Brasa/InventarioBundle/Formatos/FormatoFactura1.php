@@ -37,7 +37,7 @@ class FormatoFactura1 extends \FPDF_FPDF {
 
         $this->SetFont('Arial', '', 7);
         $this->SetXY(110, 75);
-        $this->MultiCell(140, 3, $arConfiguracionInventario->getInformacionResolucionDianFactura(), 0, 'L');
+        $this->MultiCell(140, 3, $arConfiguracionInventario->getInformacionResolucionDianMovimiento(), 0, 'L');
         //$this->MultiCell(140, 3, "Informacion Resolucion Dian Factura", 0, 'L');
         $this->SetFont('Arial', 'B', 9);
 
@@ -87,7 +87,7 @@ class FormatoFactura1 extends \FPDF_FPDF {
 
         $List1 = array('',
             $arMovimiento->getFecha()->format('Y-m-d'),
-            $arMovimiento->getFecha()->format('Y-m-d'),
+            $arMovimiento->getFechaVence()->format('Y-m-d'),
             $arMovimiento->getTerceroRel()->getFormaPagoRel()->getNombre(),
             $arMovimiento->getTerceroRel()->getPlazoPagoCliente(),
             $arMovimiento->getSoporte());
@@ -170,7 +170,7 @@ class FormatoFactura1 extends \FPDF_FPDF {
             $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrPrecio(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
-            $pdf->SetAutoPageBreak(true, 15);
+            $pdf->SetAutoPageBreak(true, 110);
         }
     }
 
@@ -286,7 +286,7 @@ class FormatoFactura1 extends \FPDF_FPDF {
         $this->SetFont('Arial', '', 6);
         $this->GetY($this->SetY(228));
         $this->SetX(10);
-        $this->MultiCell(90, 3, $arConfiguracion->getInformacionLegalFactura());
+        $this->MultiCell(90, 3, $arConfiguracion->getInformacionLegalMovimiento());
 
         $this->SetFont('Arial', '', 7);
         $this->GetY($this->SetY(255));
@@ -309,10 +309,10 @@ class FormatoFactura1 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->GetY($this->SetY(261));
         $this->SetX(10);
-        $this->MultiCell(200, 3, $arConfiguracion->getInformacionPagoFactura(), 0, 'C');
+        $this->MultiCell(200, 3, $arConfiguracion->getInformacionPagoMovimiento(), 0, 'C');
         //$this->Text(20, $this->GetY($this->SetY(264)), $arConfiguracion->getInformacionPagoFactura());
         $this->SetFont('Arial', '', 7);
-        $this->Text(60, $this->GetY($this->SetY(273)), $arConfiguracion->getInformacionContactoFactura(), 0, 'C');
+        $this->Text(60, $this->GetY($this->SetY(273)), $arConfiguracion->getInformacionContactoMovimiento(), 0, 'C');
 
         //Número de página
         $this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');

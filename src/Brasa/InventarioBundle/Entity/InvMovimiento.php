@@ -44,6 +44,11 @@ class InvMovimiento
     private $fecha;    
     
     /**
+     * @ORM\Column(name="fecha_vence", type="date", nullable=true)
+     */    
+    private $fechaVence;
+    
+    /**
      * @ORM\Column(name="fecha1", type="datetime", nullable=true)
      */    
     private $fecha1;    
@@ -1164,5 +1169,29 @@ class InvMovimiento
     public function getMovimientosDescuentosFinancierosMovimientoRel()
     {
         return $this->movimientosDescuentosFinancierosMovimientoRel;
+    }
+
+    /**
+     * Set fechaVence
+     *
+     * @param \DateTime $fechaVence
+     *
+     * @return InvMovimiento
+     */
+    public function setFechaVence($fechaVence)
+    {
+        $this->fechaVence = $fechaVence;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVence
+     *
+     * @return \DateTime
+     */
+    public function getFechaVence()
+    {
+        return $this->fechaVence;
     }
 }

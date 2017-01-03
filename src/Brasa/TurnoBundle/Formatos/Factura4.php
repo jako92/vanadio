@@ -242,8 +242,8 @@ class Factura4 extends \FPDF_FPDF {
         $this->ln(7);
         $totales = array('SUBTOTAL: ' . " " . " ",            
             '(+)IVA: ' . " " . " ",
-            '(+)RTE FUENTE: ' . " " . " ",
-            '(+)RTE IVA: ' . " " . " ",
+            //'(+)RTE FUENTE: ' . " " . " ",
+            //'(+)RTE IVA: ' . " " . " ",
             'TOTAL GENERAL: ' . " " . " ",
             'BASE AIU: ' . " " . " "
         );
@@ -259,14 +259,14 @@ class Factura4 extends \FPDF_FPDF {
 
         $totales2 = array(number_format($arFactura->getVrSubtotal(), 0, '.', ','),            
             number_format($arFactura->getVrIva(), 0, '.', ','),
-            number_format($arFactura->getVrRetencionFuente(), 0, '.', ','),
-            number_format($arFactura->getVrRetencionIva(), 0, '.', ','),
+            //number_format($arFactura->getVrRetencionFuente(), 0, '.', ','),
+            //number_format($arFactura->getVrRetencionIva(), 0, '.', ','),
             number_format($arFactura->getVrTotalNeto(), 0, '.', ','),
             number_format($arFactura->getVrBaseAIU(), 0, '.', ',')
         );
 
         $this->SetFont('Arial', '', 7.5);
-        $this->SetXY(190, $this->GetY() - 36);
+        $this->SetXY(190, $this->GetY() - 28);
         $this->ln(12);
         for ($i = 0; $i < count($totales2); $i++) {
             $this->SetX(185);
@@ -274,7 +274,7 @@ class Factura4 extends \FPDF_FPDF {
             $this->ln();
         }
         $this->Rect(10, 205, 145, 42);
-        $this->SetY($this->GetY() - 24);
+        $this->SetY($this->GetY() - 17);
         $this->SetFont('Arial', 'B', 8);
         $this->SetX(10);
         //$this->Cell(145, 15, 'OBSERVACIONES:', 1, 'L');

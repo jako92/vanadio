@@ -17,29 +17,29 @@ class InvConfiguracion
     private $codigoConfiguracionPk;
     
     /**
-     * @ORM\Column(name="informacion_legal_factura", type="text", nullable=true)
+     * @ORM\Column(name="informacion_legal_movimiento", type="text", nullable=true)
      */    
-    private $informacionLegalFactura; 
+    private $informacionLegalMovimiento; 
 
     /**
-     * @ORM\Column(name="informacion_pago_factura", type="text", nullable=true)
+     * @ORM\Column(name="informacion_pago_movimiento", type="text", nullable=true)
      */    
-    private $informacionPagoFactura;     
+    private $informacionPagoMovimiento;     
     
     /**
-     * @ORM\Column(name="informacion_contacto_factura", type="text", nullable=true)
+     * @ORM\Column(name="informacion_contacto_movimiento", type="text", nullable=true)
      */    
-    private $informacionContactoFactura;    
+    private $informacionContactoMovimiento;    
     
     /**
-     * @ORM\Column(name="informacion_resolucion_dian_factura", type="text", nullable=true)
+     * @ORM\Column(name="informacion_resolucion_dian_movimiento", type="text", nullable=true)
      */    
-    private $informacionResolucionDianFactura;    
+    private $informacionResolucionDianMovimiento;    
     
     /**
-     * @ORM\Column(name="informacion_resolucion_supervigilancia_factura", type="text", nullable=true)
+     * @ORM\Column(name="informacion_resolucion_supervigilancia_Movimiento", type="text", nullable=true)
      */    
-    private $informacionResolucionSupervigilanciaFactura;    
+    private $informacionResolucionSupervigilanciaMovimiento;    
     
     /**
      * @ORM\Column(name="codigo_concepto_horas_descanso_fk", type="integer", nullable=true)
@@ -88,15 +88,17 @@ class InvConfiguracion
               
     
     /**
-     * @ORM\Column(name="codigo_formato_factura", type="integer")
+     * @ORM\Column(name="codigo_formato_movimiento", type="integer")
      */    
-    private $codigoFormatoFactura = 0;    
+    private $codigoFormatoMovimiento = 0;    
 
     /**
      * @ORM\Column(name="codigo_formato_programacion", type="integer")
      */    
     private $codigoFormatoProgramacion = 0;
     
+    
+
     
 
     /**
@@ -124,123 +126,123 @@ class InvConfiguracion
     }
 
     /**
-     * Set informacionLegalFactura
+     * Set informacionLegalMovimiento
      *
-     * @param string $informacionLegalFactura
+     * @param string $informacionLegalMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setInformacionLegalFactura($informacionLegalFactura)
+    public function setInformacionLegalMovimiento($informacionLegalMovimiento)
     {
-        $this->informacionLegalFactura = $informacionLegalFactura;
+        $this->informacionLegalMovimiento = $informacionLegalMovimiento;
 
         return $this;
     }
 
     /**
-     * Get informacionLegalFactura
+     * Get informacionLegalMovimiento
      *
      * @return string
      */
-    public function getInformacionLegalFactura()
+    public function getInformacionLegalMovimiento()
     {
-        return $this->informacionLegalFactura;
+        return $this->informacionLegalMovimiento;
     }
 
     /**
-     * Set informacionPagoFactura
+     * Set informacionPagoMovimiento
      *
-     * @param string $informacionPagoFactura
+     * @param string $informacionPagoMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setInformacionPagoFactura($informacionPagoFactura)
+    public function setInformacionPagoMovimiento($informacionPagoMovimiento)
     {
-        $this->informacionPagoFactura = $informacionPagoFactura;
+        $this->informacionPagoMovimiento = $informacionPagoMovimiento;
 
         return $this;
     }
 
     /**
-     * Get informacionPagoFactura
+     * Get informacionPagoMovimiento
      *
      * @return string
      */
-    public function getInformacionPagoFactura()
+    public function getInformacionPagoMovimiento()
     {
-        return $this->informacionPagoFactura;
+        return $this->informacionPagoMovimiento;
     }
 
     /**
-     * Set informacionContactoFactura
+     * Set informacionContactoMovimiento
      *
-     * @param string $informacionContactoFactura
+     * @param string $informacionContactoMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setInformacionContactoFactura($informacionContactoFactura)
+    public function setInformacionContactoMovimiento($informacionContactoMovimiento)
     {
-        $this->informacionContactoFactura = $informacionContactoFactura;
+        $this->informacionContactoMovimiento = $informacionContactoMovimiento;
 
         return $this;
     }
 
     /**
-     * Get informacionContactoFactura
+     * Get informacionContactoMovimiento
      *
      * @return string
      */
-    public function getInformacionContactoFactura()
+    public function getInformacionContactoMovimiento()
     {
-        return $this->informacionContactoFactura;
+        return $this->informacionContactoMovimiento;
     }
 
     /**
-     * Set informacionResolucionDianFactura
+     * Set informacionResolucionDianMovimiento
      *
-     * @param string $informacionResolucionDianFactura
+     * @param string $informacionResolucionDianMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura)
+    public function setInformacionResolucionDianMovimiento($informacionResolucionDianMovimiento)
     {
-        $this->informacionResolucionDianFactura = $informacionResolucionDianFactura;
+        $this->informacionResolucionDianMovimiento = $informacionResolucionDianMovimiento;
 
         return $this;
     }
 
     /**
-     * Get informacionResolucionDianFactura
+     * Get informacionResolucionDianMovimiento
      *
      * @return string
      */
-    public function getInformacionResolucionDianFactura()
+    public function getInformacionResolucionDianMovimiento()
     {
-        return $this->informacionResolucionDianFactura;
+        return $this->informacionResolucionDianMovimiento;
     }
 
     /**
-     * Set informacionResolucionSupervigilanciaFactura
+     * Set informacionResolucionSupervigilanciaMovimiento
      *
-     * @param string $informacionResolucionSupervigilanciaFactura
+     * @param string $informacionResolucionSupervigilanciaMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura)
+    public function setInformacionResolucionSupervigilanciaMovimiento($informacionResolucionSupervigilanciaMovimiento)
     {
-        $this->informacionResolucionSupervigilanciaFactura = $informacionResolucionSupervigilanciaFactura;
+        $this->informacionResolucionSupervigilanciaMovimiento = $informacionResolucionSupervigilanciaMovimiento;
 
         return $this;
     }
 
     /**
-     * Get informacionResolucionSupervigilanciaFactura
+     * Get informacionResolucionSupervigilanciaMovimiento
      *
      * @return string
      */
-    public function getInformacionResolucionSupervigilanciaFactura()
+    public function getInformacionResolucionSupervigilanciaMovimiento()
     {
-        return $this->informacionResolucionSupervigilanciaFactura;
+        return $this->informacionResolucionSupervigilanciaMovimiento;
     }
 
     /**
@@ -460,27 +462,27 @@ class InvConfiguracion
     }
 
     /**
-     * Set codigoFormatoFactura
+     * Set codigoFormatoMovimiento
      *
-     * @param integer $codigoFormatoFactura
+     * @param integer $codigoFormatoMovimiento
      *
      * @return InvConfiguracion
      */
-    public function setCodigoFormatoFactura($codigoFormatoFactura)
+    public function setCodigoFormatoMovimiento($codigoFormatoMovimiento)
     {
-        $this->codigoFormatoFactura = $codigoFormatoFactura;
+        $this->codigoFormatoMovimiento = $codigoFormatoMovimiento;
 
         return $this;
     }
 
     /**
-     * Get codigoFormatoFactura
+     * Get codigoFormatoMovimiento
      *
      * @return integer
      */
-    public function getCodigoFormatoFactura()
+    public function getCodigoFormatoMovimiento()
     {
-        return $this->codigoFormatoFactura;
+        return $this->codigoFormatoMovimiento;
     }
 
     /**

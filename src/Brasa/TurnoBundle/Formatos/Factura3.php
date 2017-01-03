@@ -133,10 +133,7 @@ class Factura3 extends \FPDF_FPDF {
     }
 
     public function Body($pdf) {
-        $pdf->Rect(15, 77, 139, 115);
-        $pdf->Rect(154, 77, 8, 115);
-        $pdf->Rect(162, 77, 22, 115);
-        $pdf->Rect(184, 77, 22, 115);
+        
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
@@ -320,6 +317,10 @@ class Factura3 extends \FPDF_FPDF {
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
+        $pdf->Rect(15, 77, 139, 115);
+        $pdf->Rect(154, 77, 8, 115);
+        $pdf->Rect(162, 77, 22, 115);
+        $pdf->Rect(184, 77, 22, 115);
         $this->SetFillColor(200, 200, 200);
         $this->SetXY(15,192);
         $this->SetFont('Arial', 'B', 8);

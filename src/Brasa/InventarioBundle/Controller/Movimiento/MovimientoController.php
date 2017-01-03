@@ -87,6 +87,7 @@ class MovimientoController extends Controller
      * @Route("/inv/movimiento/movimiento/nuevo/{codigoDocumento}/{codigoMovimiento}", name="brs_inv_movimiento_movimiento_nuevo")
      */
     public function nuevoAction(Request $request,$codigoDocumento, $codigoMovimiento) {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();        
@@ -96,6 +97,7 @@ class MovimientoController extends Controller
             $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         } else {
             $arMovimiento->setFecha(new \DateTime('now'));
+            $arMovimiento->setFechaVence(new \DateTime('now'));
         }
         $form = $this->createForm(InvMovimientoType::class, $arMovimiento);
         $form->handleRequest($request);
@@ -110,6 +112,8 @@ class MovimientoController extends Controller
                     $arMovimiento->setDocumentoRel($arDocumento);
                     $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
                     $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
+                    $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
+                    $arMovimiento->setFechaVence($dateFechaVence);
                     $em->persist($arMovimiento);
                     $em->flush();
 
@@ -195,7 +199,7 @@ class MovimientoController extends Controller
                     }
                     if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
                         $arConfiguracion = $em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
-                        $codigoFormato = $arConfiguracion->getCodigoFormatoFactura();                                               
+                        $codigoFormato = $arConfiguracion->getCodigoFormatoMovimiento();                                               
                     
                         if($codigoFormato <= 1) {
                             $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura1();
