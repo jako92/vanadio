@@ -1221,9 +1221,9 @@ class PedidoController extends Controller
                 }         
                 $em->persist($arPedidoDetalle);
             }
-            $em->flush();                
-            $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);            
+            $em->flush();                            
         }        
+        $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);            
     }
     
     private function actualizarDetalleCompuesto($arrControles, $codigoPedidoDetalle, $codigoPedido) {
@@ -1295,20 +1295,13 @@ class PedidoController extends Controller
                 $arPedidoDetalleConcepto = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleConcepto')->find($intCodigo);                
                 $cantidad = $arrControles['TxtCantidadConcepto' . $intCodigo];
                 $precio = $arrControles['TxtPrecioConcepto'. $intCodigo];                
-                $subtotal = $cantidad * $precio;
-                $subtotalAIU = $subtotal * 10/100;
-                $iva = ($subtotalAIU * $arPedidoDetalleConcepto->getPorIva())/100;                
-                $total = $subtotal + $iva;                
                 $arPedidoDetalleConcepto->setCantidad($cantidad);
                 $arPedidoDetalleConcepto->setPrecio($precio);
-                $arPedidoDetalleConcepto->setSubtotal($subtotal);                        
-                $arPedidoDetalleConcepto->setIva($iva);
-                $arPedidoDetalleConcepto->setTotal($total);                                                             
                 $em->persist($arPedidoDetalleConcepto);
             }
-            $em->flush();                
-            $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);            
+            $em->flush();                            
         }        
+        $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);            
     }  
     
     private function generarExcelDetalle($codigoPedido) {

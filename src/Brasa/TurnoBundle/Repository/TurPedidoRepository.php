@@ -289,7 +289,17 @@ class TurPedidoRepository extends EntityRepository {
         $arPedidoDetalleConceptos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
         $arPedidoDetalleConceptos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleConcepto')->findBy(array('codigoPedidoFk' => $codigoPedido));
         foreach ($arPedidoDetalleConceptos as $arPedidoDetalleConcepto) {
-            $floSubTotalConceptos += $arPedidoDetalleConcepto->getSubtotal();            
+            $arPedidoDetalleConceptoAct = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
+            $arPedidoDetalleConceptoAct = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->find($arPedidoDetalleConcepto->getCodigoPedidoDetalleConceptoPk());                            
+            $subtotal = $arPedidoDetalleConcepto->getCantidad() * $arPedidoDetalleConcepto->getPrecio();
+            $subtotalAIU = $subtotal * 10/100;
+            $iva = ($subtotalAIU * $arPedidoDetalleConcepto->getPorIva())/100;                
+            $total = $subtotal + $iva;     
+            $arPedidoDetalleConceptoAct->setSubtotal($subtotal);                        
+            $arPedidoDetalleConceptoAct->setIva($iva);
+            $arPedidoDetalleConceptoAct->setTotal($total); 
+            $em->persist($arPedidoDetalleConceptoAct);
+            $floSubTotalConceptos += $subtotal;            
         }      
         
         $arPedido->setHoras($douTotalHoras);

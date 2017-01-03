@@ -269,7 +269,8 @@ class TurServicioRepository extends EntityRepository {
             $total = $subtotal + $iva;     
             $arServicioDetalleConceptoAct->setSubtotal($subtotal);                        
             $arServicioDetalleConceptoAct->setIva($iva);
-            $arServicioDetalleConceptoAct->setTotal($total);            
+            $arServicioDetalleConceptoAct->setTotal($total);
+            $em->persist($arServicioDetalleConceptoAct);
             $floSubTotalConceptos += $subtotal;            
         }
         $arServicio->setHoras($douTotalHoras);
