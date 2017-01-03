@@ -31,27 +31,27 @@ class Factura5 extends \FPDF_FPDF {
         
         $this->GenerarEncabezadoFactura(self::$em); 
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
-        $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
-                        
+        $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);                        
         
-        $this->SetXY(12, 43);        
-        $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);
-        
-        $this->SetXY(12, 48);        
+        $this->SetXY(14, 38);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);        
+        $this->SetXY(14, 43); 
+        $this->SetFont('Arial', '', 8);
         $this->Cell(138, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
-        $this->SetXY(12, 53);        
+        $this->SetXY(14, 48);        
         $this->Cell(138, 5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
-        $this->SetXY(12, 58);        
+        $this->SetXY(14, 53);        
         $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
-        $this->SetXY(150, 43);        
+        $this->SetXY(135, 38);        
         $this->Cell(61, 5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
-        $this->SetXY(150, 48);        
+        $this->SetXY(135, 43);        
         $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
-        $this->SetXY(150, 53);        
+        $this->SetXY(135, 48);        
+        $this->Cell(61, 5, "VENDEDOR: 001 OJO", 0, 0, 'L', 0);                       
+        $this->SetXY(135, 53);        
         $this->Cell(61, 5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
-        $this->SetXY(150, 58);        
-        $this->Cell(61, 5, "", 0, 0, 'L', 0);                       
         
         $this->SetXY(110, 62);
         $this->SetMargins(5, 1, 5);
@@ -59,9 +59,9 @@ class Factura5 extends \FPDF_FPDF {
     }
 
     public function EncabezadoDetalles() {
-        $this->Ln(8);
-        $this->SetX(12);
-        $header = array('DESCRIPCION', 'CANT', 'VR. UNITARIO', 'IVA','VR. TOTAL');
+        $this->Ln(0);
+        $this->SetX(14);
+        $header = array('COD','DESCRIPCION', 'CANT', 'VLR. UNIT', 'IVA','VR. TOTAL');
         //$this->SetFillColor(236, 236, 236);
         //$this->SetTextColor(0);
         //$this->SetDrawColor(0, 0, 0);
@@ -69,12 +69,12 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetFont('', '', 8);
 
         //creamos la cabecera de la tabla.
-        $w = array(130, 8, 21, 21,21);
+        $w = array(10,123, 8, 21, 10,21);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
-                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'L',0);
+                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'L',0);
             else
-                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C',0);
+                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',0);
 
         //Restauración de colores y fuentes
         //$this->SetFillColor(224, 235, 255);
@@ -95,19 +95,20 @@ class Factura5 extends \FPDF_FPDF {
         if($arFactura->getImprimirRelacion() == false) {
             if($arFactura->getImprimirAgrupada() == 0) {
                 foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                    $pdf->SetX(12);
+                    $pdf->SetX(14);
+                    $pdf->Cell(10, 4, $arFacturaDetalle->getCodigoFacturaDetallePk(), 0, 0, 'L');                    
                     if($arFacturaDetalle->getCodigoModalidadServicioFk()) {
                         $modalidad = "-" . utf8_decode($arFacturaDetalle->getModalidadServicioRel()->getNombre());
                     }
-                    $pdf->Cell(130, 4, substr(utf8_decode($arFacturaDetalle->getPuestoRel()->getNombre()) . $modalidad, 0, 61), 0, 0, 'L');                    
+                    $pdf->Cell(123, 4, substr(utf8_decode($arFacturaDetalle->getPuestoRel()->getNombre()) . $modalidad, 0, 61), 0, 0, 'L');                    
                     $modalidad = "";                    
-                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');                    
+                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 2, '.', ','), 0, 0, 'C');                    
                     $pdf->SetFont('Arial', '', 8);
-                    $pdf->Cell(21, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(21, 4, number_format($arFacturaDetalle->getPorIva(), 0, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(21, 4, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getVrPrecio(), 2, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(10, 4, number_format($arFacturaDetalle->getPorIva(), 2, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getSubtotal(), 2, '.', ','), 0, 0, 'R');
                     $pdf->Ln();
-                    $pdf->SetX(12);
+                    /*$pdf->SetX(14);
                     $pdf->Cell(10, 4, '', 0, 0, 'R');
                     if($arFacturaDetalle->getTipoPedido() == 'FIJO') {
                         $strCampo = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " " . $arFacturaDetalle->getDetalle();
@@ -115,12 +116,12 @@ class Factura5 extends \FPDF_FPDF {
                         $strCampo = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacionAdicional() . " " . $arFacturaDetalle->getDetalle();
                     }
 
-                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
+                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');*/
                     //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Ln(-1);
-                    $pdf->SetAutoPageBreak(true, 86);
+                    $pdf->Ln(0);
+                    $pdf->SetAutoPageBreak(true, 120);
                 }
             } /*else {
                 $strSql = "SELECT tur_puesto.nombre AS puesto, tur_modalidad_servicio.nombre AS modalidadServicio, tur_concepto_servicio.nombre_facturacion AS conceptoServicio, cantidad  AS cantidad, vr_precio AS precio
@@ -259,49 +260,48 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
-        $this->Rect(10, 77, 130, 115);
-        $this->Rect(140, 77, 8, 115);
-        $this->Rect(148, 77, 21, 115);
-        $this->Rect(169, 77, 21, 115);
-        $this->Rect(190, 77, 21, 115);
-        $this->SetFillColor(200, 200, 200);
-        $this->SetXY(148,192);
-                                                
-        $this->Cell(42, 5, 'SUBTOTAL:', 1, 0, 'L');
-        $this->Cell(21, 5, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');        
-        $this->SetXY(148,197);
-        $this->Cell(42, 5, '+ I.V.A:', 1, 0, 'L');
-        $this->Cell(21, 5, number_format($arFactura->getVrIva(), 0, '.', ','), 1, 0, 'R');
-        $this->SetXY(148,202);        
-        $this->Cell(42, 5, 'TOTAL:', 1, 0, 'L');               
-        $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 1, 0, 'R');
-        $this->SetXY(148,207);        
-        $this->Cell(42, 5, '- RETEN FUENTE', 1, 0, 'L');               
-        $this->Cell(21, 5, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
-        $this->SetXY(148,212);        
-        $this->Cell(42, 5, 'TOTAL A CANCELAR', 1, 0, 'L',0);               
-        $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 1, 0, 'R',0);
-        $this->SetXY(148,217);        
-        $this->Cell(42, 5, 'BASE AIU 10%', 1, 0, 'L');               
-        $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 1, 0, 'R');
+        $this->Rect(14, 62, 196, 7);
+        //$this->Rect(140, 77, 8, 115);
+        //$this->Rect(148, 77, 21, 115);
+        //$this->Rect(169, 77, 21, 115);
+        //$this->Rect(190, 77, 21, 115);
+        //$this->SetFillColor(200, 200, 200);
+        $this->SetXY(148,165);                                                
+        $this->Cell(42, 5, 'SUBTOTAL:', 0, 0, 'L');
+        $this->Cell(21, 5, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');        
+        $this->SetXY(148,170);
+        $this->Cell(42, 5, '+ I.V.A:', 0, 0, 'L');
+        $this->Cell(21, 5, number_format($arFactura->getVrIva(), 0, '.', ','), 0, 0, 'R');
+        $this->SetXY(148,175);        
+        $this->Cell(42, 5, 'TOTAL:', 0, 0, 'L');               
+        $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 0, 0, 'R'); 
+        $this->SetXY(148,180);
+        $this->Cell(42, 5, 'TOTAL A CANCELAR', 0, 0, 'L',0);               
+        $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 0, 0, 'R',0);
+        $this->SetXY(148,185);        
+        $this->Cell(42, 5, 'BASE AIU 10%', 0, 0, 'L');               
+        $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 0, 0, 'R');
         
-        $this->SetXY(12,193);
-        $this->Rect(10, 192, 138, 30);
-        $this->SetFont('Arial', '', 7.3);
-        $this->MultiCell(137, 3, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 0, 'L');        
-        $this->SetXY(12,208);        
+        //$this->SetXY(14,193);
+        //$this->Rect(10, 192, 138, 30);
+        
+        //$this->MultiCell(137, 3, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 0, 'L');        
+        $this->SetXY(14,195);        
         $this->MultiCell(137, 3, "OBSERVACION: ". utf8_decode($arFactura->getComentarios()), 0, 'L');
-        $this->SetXY(12,223);        
-        $this->MultiCell(137, 3, $arConfiguracion->getInformacionLegalFactura(), 0, 'L');
-        $this->SetXY(12,235);        
-        $this->MultiCell(137, 3, "IMPRESO EN COMPUTADOR PARA GALAXIA SEGURIDAD LTDA AÑO 2014 NIT 811017575-1", 0, 'L');
-        $this->Rect(10, 222, 201, 40);
-        $this->Text(149, 225, "ACEPTADA Y RECIBIDA POR:");
-        $this->Text(149, 231, "NOMBRE LEGIBLE: __________________________");
-        $this->Text(149, 236, "NIT O CEDULA:        __________________________");
-        $this->Text(149, 242, "FECHA:                     __________________________");
-        $this->Text(149, 248, "SELLO: ");
-        $this->Text(12, 266, $arConfiguracion->getInformacionResolucionDianFactura());
+        $this->Text(14, 210, "_______________________________________________________________________________________________________________________________");
+        $this->SetXY(14,219);        
+        $this->MultiCell(118, 3, $arConfiguracion->getInformacionLegalFactura(), 0, 'L');
+        $this->SetXY(14,238);        
+        $this->MultiCell(118, 3, "IMPRESO EN COMPUTADOR PARA GALAXIA SEGURIDAD LTDA AÑO 2014 NIT 811017575-1", 0, 'L');
+        //$this->Rect(10, 222, 201, 40);
+        $this->Text(149, 214, "ACEPTADA Y RECIBIDA POR:");
+        $this->Text(149, 220, "NOMBRE LEGIBLE: __________________________");
+        $this->Text(149, 226, "NIT O CEDULA:        __________________________");
+        $this->Text(149, 232, "FECHA:                     __________________________");
+        $this->Text(149, 238, "SELLO: ");
+        $this->Text(14, 254, "_______________________________________________________________________________________________________________________________");
+        $this->Text(14, 258, $arConfiguracion->getInformacionResolucionDianFactura());
+        
         /*
         
         
@@ -332,24 +332,21 @@ class Factura5 extends \FPDF_FPDF {
         $arConfiguracionTurno = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
         $arConfiguracionTurno = self::$em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
-        $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
-        $this->SetFillColor(200, 200, 200);
-        $this->SetFont('Arial','',8);
+        $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);        
+        $this->SetFont('Arial','',8);        
+        //$this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
+        $this->Image('imagenes/logos/logo.jpg', 1, 1, 1, 1);
         
-        $this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
-        //$this->Text(108, 40, $arConfiguracion->getNitEmpresa()."-".$arConfiguracion->getDigitoVerificacionEmpresa());
-        
-        
-        $this->SetXY(12, 30);        
+        $this->SetXY(14, 30);        
         $this->Cell(120, 4, "IVA REGIMEN COMUN", 0, 0, 'L', 0);        
         //INFORMACIÓN EMPRESA BLOQUE 2
-        $this->SetXY(150, 10);
+        $this->SetXY(135, 10);
         $this->Cell(120, 4, "PAGINA No.: ". $this->PageNo() . ' de {nb}', 0, 0, 'L', 0);        
-        $this->SetXY(150, 14);
+        $this->SetXY(135, 14);
         $this->Cell(120, 4, "FECHA FACTURA (DD/MM/AAAA): ". $arFactura->getFecha()->format('d/m/Y'), 0, 0, 'L', 0);
-        $this->SetXY(150, 18);
+        $this->SetXY(135, 18);
         $this->Cell(120, 4, "FACTURA CAMBIARIA DE COMPRAVENTA ", 0, 0, 'L', 0);
-        $this->SetXY(150, 22);
+        $this->SetXY(135, 22);
         $this->Cell(120, 4, "No.: ".$arFactura->getNumero(), 0, 0, 'L', 0);
     }
 
