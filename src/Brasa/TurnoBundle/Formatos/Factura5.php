@@ -337,7 +337,7 @@ class Factura5 extends \FPDF_FPDF {
         //$this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
         $this->Image('imagenes/logos/logo.jpg', 1, 1, 1, 1);
         
-        $this->SetXY(14, 30);        
+        $this->SetXY(14, 32);        
         $this->Cell(120, 4, "IVA REGIMEN COMUN", 0, 0, 'L', 0);        
         //INFORMACIÓN EMPRESA BLOQUE 2
         $this->SetXY(135, 10);
