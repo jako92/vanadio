@@ -33,25 +33,25 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
                         
-        $this->SetFont('Arial', 'B', 8);
+        
         $this->SetXY(10, 43);        
-        $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 1);
-        $this->SetFont('Arial', '', 8);
+        $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);
+        
         $this->SetXY(10, 48);        
-        $this->Cell(138, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 1);
+        $this->Cell(138, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
         $this->SetXY(10, 53);        
-        $this->Cell(138, 5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 1);
+        $this->Cell(138, 5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
         $this->SetXY(10, 58);        
-        $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 1);
+        $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
         $this->SetXY(150, 43);        
-        $this->Cell(61, 5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 1);               
+        $this->Cell(61, 5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(150, 48);        
-        $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 1);               
+        $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(150, 53);        
-        $this->Cell(61, 5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 1);                       
+        $this->Cell(61, 5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
         $this->SetXY(150, 58);        
-        $this->Cell(61, 5, "", 0, 0, 'L', 1);                       
+        $this->Cell(61, 5, "", 0, 0, 'L', 0);                       
         
         $this->SetXY(110, 62);
         $this->SetMargins(5, 1, 5);
@@ -66,15 +66,15 @@ class Factura5 extends \FPDF_FPDF {
         //$this->SetTextColor(0);
         //$this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(.2);
-        $this->SetFont('', 'B', 7.5);
+        $this->SetFont('', '', 8);
 
         //creamos la cabecera de la tabla.
         $w = array(130, 8, 21, 21,21);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
-                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'L',1);
+                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'L',0);
             else
-                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',1);
+                $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C',0);
 
         //Restauración de colores y fuentes
         //$this->SetFillColor(224, 235, 255);
@@ -91,7 +91,7 @@ class Factura5 extends \FPDF_FPDF {
         $arFacturaDetalles = self::$em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => self::$codigoFactura));
                 
         $pdf->Ln(0);
-        $pdf->SetFont('Arial', '', 7.5);
+        $pdf->SetFont('Arial', '', 8);
         if($arFactura->getImprimirRelacion() == false) {
             if($arFactura->getImprimirAgrupada() == 0) {
                 foreach ($arFacturaDetalles as $arFacturaDetalle) {
@@ -102,7 +102,7 @@ class Factura5 extends \FPDF_FPDF {
                     $pdf->Cell(130, 4, substr(utf8_decode($arFacturaDetalle->getPuestoRel()->getNombre()) . $modalidad, 0, 61), 0, 0, 'L');                    
                     $modalidad = "";                    
                     $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');                    
-                    $pdf->SetFont('Arial', '', 7.5);
+                    $pdf->SetFont('Arial', '', 8);
                     $pdf->Cell(21, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Cell(21, 4, number_format($arFacturaDetalle->getPorIva(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Cell(21, 4, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
@@ -266,7 +266,7 @@ class Factura5 extends \FPDF_FPDF {
         $this->Rect(190, 77, 21, 115);
         $this->SetFillColor(200, 200, 200);
         $this->SetXY(148,192);
-        $this->SetFont('Arial', 'B', 8);                                         
+                                                
         $this->Cell(42, 5, 'SUBTOTAL:', 1, 0, 'L');
         $this->Cell(21, 5, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');        
         $this->SetXY(148,197);
@@ -279,8 +279,8 @@ class Factura5 extends \FPDF_FPDF {
         $this->Cell(42, 5, '- RETEN FUENTE', 1, 0, 'L');               
         $this->Cell(21, 5, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(148,212);        
-        $this->Cell(42, 5, 'TOTAL A CANCELAR', 1, 0, 'L',1);               
-        $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 1, 0, 'R',1);
+        $this->Cell(42, 5, 'TOTAL A CANCELAR', 1, 0, 'L',0);               
+        $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 1, 0, 'R',0);
         $this->SetXY(148,217);        
         $this->Cell(42, 5, 'BASE AIU 10%', 1, 0, 'L');               
         $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 1, 0, 'R');
@@ -334,10 +334,10 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $this->SetFillColor(200, 200, 200);
-        $this->SetFont('Arial','B',8);
+        $this->SetFont('Arial','',8);
         //Logo
         $this->Image('imagenes/logos/logo.jpg', 100, 10, 30, 25);
-        $this->Text(108, 40, $arConfiguracion->getNitEmpresa()."-".$arConfiguracion->getDigitoVerificacionEmpresa());
+        //$this->Text(108, 40, $arConfiguracion->getNitEmpresa()."-".$arConfiguracion->getDigitoVerificacionEmpresa());
         //INFORMACIÓN EMPRESA BLOQUE 1
         $this->SetXY(10, 10);
         $this->Cell(120, 4, utf8_decode($arConfiguracion->getDireccionEmpresa()), 0, 0, 'L', 0);
