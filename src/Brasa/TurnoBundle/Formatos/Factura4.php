@@ -13,7 +13,7 @@ class Factura4 extends \FPDF_FPDF {
         self::$codigoFactura = $codigoFactura;
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
-        $valor = round($arFactura->getVrTotalNeto());
+        $valor = round($arFactura->getVrTotal());
         $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
         self::$strLetras = $strLetras;
         ob_clean();
