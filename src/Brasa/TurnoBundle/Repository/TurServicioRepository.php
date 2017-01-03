@@ -261,7 +261,16 @@ class TurServicioRepository extends EntityRepository {
         $arServicioDetalleConceptos = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
         $arServicioDetalleConceptos = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->findBy(array('codigoServicioFk' => $codigoServicio));
         foreach ($arServicioDetalleConceptos as $arServicioDetalleConcepto) {
-            $floSubTotalConceptos += $arServicioDetalleConcepto->getSubtotal();            
+            $arServicioDetalleConceptoAct = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
+            $arServicioDetalleConceptoAct = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->find($arServicioDetalleConcepto->getCodigoServicioDetalleConceptoPk());                            
+            $subtotal = $arServicioDetalleConcepto->getCantidad() * $arServicioDetalleConcepto->getPrecio();
+            $subtotalAIU = $subtotal * 10/100;
+            $iva = ($subtotalAIU * $arServicioDetalleConcepto->getPorIva())/100;                
+            $total = $subtotal + $iva;     
+            $arServicioDetalleConceptoAct->setSubtotal($subtotal);                        
+            $arServicioDetalleConceptoAct->setIva($iva);
+            $arServicioDetalleConceptoAct->setTotal($total);            
+            $floSubTotalConceptos += $subtotal;            
         }
         $arServicio->setHoras($douTotalHoras);
         $arServicio->setHorasDiurnas($douTotalHorasDiurnas);

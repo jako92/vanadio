@@ -131,8 +131,11 @@ class FacturaController extends Controller
                     }
                     if($codigoFactura == 0) {
                         $arFactura->setImprimirAgrupada($arFactura->getClienteRel()->getFacturaAgrupada());
+                        if($arFactura->getPlazoPago() <= 0) {
+                            $arFactura->setPlazoPago($arCliente->getPlazoPago());
+                        }
                     }
-                    $dateFechaVence = $objFunciones->sumarDiasFecha($arCliente->getPlazoPago(), $arFactura->getFecha());
+                    $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
                     $arFactura->setFechaVence($dateFechaVence); 
                     $arUsuario = $this->getUser();
                     $arFactura->setUsuario($arUsuario->getUserName());
@@ -509,7 +512,7 @@ class FacturaController extends Controller
         if($codigoFacturaDetalle != 0) {
             $arFacturaDetalle = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->find($codigoFacturaDetalle);
         } 
-        $form = $this->createForm(new TurFacturaDetalleType, $arFacturaDetalle);
+        $form = $this->createForm(TurFacturaDetalleType::class, $arFacturaDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arFacturaDetalle = $form->getData();                        

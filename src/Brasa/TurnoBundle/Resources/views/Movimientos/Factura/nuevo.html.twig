@@ -70,7 +70,7 @@
                 <div class="col-sm-9">
                     {{ form_widget(form.descripcion, { 'attr': {'class': 'form-control'} }) }}                        
                 </div>                
-            </div> 
+            </div>                 
             <div class="form-group form-group-sm">
                 <label class="col-sm-3 control-label">Titulo relacion:</label>
                 <div class="col-sm-9">
@@ -81,6 +81,13 @@
                 <label class="col-sm-3 control-label">Detalle relacion:</label>
                 <div class="col-sm-9">
                     {{ form_widget(form.detalleRelacion, { 'attr': {'class': 'form-control'} }) }}                        
+                </div>                
+            </div>      
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">Plazo pago:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.plazoPago, { 'attr': {'class': 'form-control'} }) }}                        
+                    <p style="font-size: 0.8em;">* Si no es diligenciado se toma el plazo de pago del cliente</p>
                 </div>                
             </div>                
             <div class="form-group form-group-sm">

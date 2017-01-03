@@ -58,16 +58,16 @@
                     <tr>
                         <td class="titulo">SUBTIPO:</td>
                         <td class="td-in-well">{{ arFactura.facturaSubtipoRel.nombre | default('') }}</td>
-                        <td class="titulo">SOPORTE:</td>
-                        <td class="td-in-well">{{ arFactura.soporte }}</td>                       
+                        <td class="titulo">PLAZO PAGO:</td>
+                        <td class="td-in-well">{{ arFactura.plazoPago }}</td>
                         <td class="titulo" >IVA:</td>
                         <td align="right">{{ arFactura.vrIva | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arFactura.clienteRel.nombreCorto }}</td>
-                        <td class="titulo">USUARIO:</td>
-                        <td class="td-in-well">{{ arFactura.usuario }}</td> 
+                        <td class="titulo">SOPORTE:</td>
+                        <td class="td-in-well">{{ arFactura.soporte }}</td>                       
                         <td class="titulo" >RETENCION IVA:</td>
                         <td align="right">{{ arFactura.vrRetencionIva | number_format(0, '.', ',')}}</td>                        
 
@@ -75,16 +75,16 @@
                     <tr>
                         <td class="titulo">DESCRIPCION:</td>
                         <td class="td-in-well">{{ arFactura.descripcion }}</td>
-                        <td class="titulo">TIPO IMPRESION:</td>
-                        <td class="td-in-well">{% if arFactura.imprimirRelacion == 1 %}ANEXO{% endif %} {% if arFactura.imprimirAgrupada == 1 %}AGRUPADA{% endif %}</td> 
+                        <td class="titulo">USUARIO:</td>
+                        <td class="td-in-well">{{ arFactura.usuario }}</td> 
                         <td class="titulo" >RETENCION FUENTE:</td>
                         <td align="right">{{ arFactura.vrRetencionFuente | number_format(0, '.', ',')}}</td>                        
                     </tr>
                     <tr>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>                        
+                        <td class="titulo">TIPO IMPRESION:</td>
+                        <td class="td-in-well">{% if arFactura.imprimirRelacion == 1 %}ANEXO{% endif %} {% if arFactura.imprimirAgrupada == 1 %}AGRUPADA{% endif %}</td> 
                         <td class="titulo" >TOTAL BRUTO:</td>
                         <td align="right">{{ arFactura.vrTotal | number_format(0, '.', ',')}}</td>
                     </tr>

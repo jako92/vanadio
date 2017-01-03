@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -37,7 +38,8 @@ class TurFacturaType extends AbstractType
             ->add('soporte', TextType::class, array('required' => false))
             ->add('descripcion', TextType::class, array('required' => false))                            
             ->add('tituloRelacion', TextType::class, array('required' => false))                            
-            ->add('detalleRelacion', TextType::class, array('required' => false))                            
+            ->add('detalleRelacion', TextType::class, array('required' => false)) 
+            ->add('plazoPago', NumberType::class, array('required' => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

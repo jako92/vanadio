@@ -843,9 +843,9 @@ class ServicioController extends Controller
                     $em->persist($arServicioDetalle);                    
                 }
             }
-            $em->flush();                
-            $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);             
+            $em->flush();                                         
         }       
+        $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
     }
     
     private function actualizarDetalleCompuesto($arrControles, $codigoServicioDetalle, $codigoServicio) {
@@ -1105,20 +1105,13 @@ class ServicioController extends Controller
                 $arServicioDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
                 $arServicioDetalleConcepto = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->find($intCodigo);                
                 $cantidad = $arrControles['TxtCantidadConcepto' . $intCodigo];
-                $precio = $arrControles['TxtPrecioConcepto'. $intCodigo];                
-                $subtotal = $cantidad * $precio;
-                $subtotalAIU = $subtotal * 10/100;
-                $iva = ($subtotalAIU * $arServicioDetalleConcepto->getPorIva())/100;                
-                $total = $subtotal + $iva;                
+                $precio = $arrControles['TxtPrecioConcepto'. $intCodigo];                                
                 $arServicioDetalleConcepto->setCantidad($cantidad);
-                $arServicioDetalleConcepto->setPrecio($precio);
-                $arServicioDetalleConcepto->setSubtotal($subtotal);                        
-                $arServicioDetalleConcepto->setIva($iva);
-                $arServicioDetalleConcepto->setTotal($total);                                                             
+                $arServicioDetalleConcepto->setPrecio($precio);                                                             
                 $em->persist($arServicioDetalleConcepto);
             }
-            $em->flush();                
-            $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);            
-        }        
+            $em->flush();                                        
+        }   
+        $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
     }        
 }
