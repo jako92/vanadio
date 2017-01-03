@@ -218,21 +218,21 @@ class ServiciosDetallesController extends Controller
         $objPHPExcel->setActiveSheetIndex(0);
                    
         $objPHPExcel->createSheet(1)->setTitle('Otros')
-                ->setCellValue('A1', 'CLIENTE')
-                ->setCellValue('B1', 'CONCEPTO')
-                ->setCellValue('C1', 'CANT')
-                ->setCellValue('D1', 'PRECIO')
-                ->setCellValue('E1', 'SUBTOTAL')
-                ->setCellValue('F1', 'IVA')
-                ->setCellValue('G1', 'TOTAL');
+                ->setCellValue('A1', 'ID')
+                ->setCellValue('B1', 'CLIENTE')
+                ->setCellValue('C1', 'CONCEPTO')
+                ->setCellValue('D1', 'CANT')
+                ->setCellValue('E1', 'PRECIO')
+                ->setCellValue('F1', 'SUBTOTAL')
+                ->setCellValue('G1', 'IVA')
+                ->setCellValue('H1', 'TOTAL');
             $objPHPExcel->setActiveSheetIndex(1); 
             
             //$objPHPExcel->getActiveSheet()->get
-            for($col = 'A'; $col !== 'H'; $col++) {
-                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            for($col = 'A'; $col !== 'I'; $col++) {
+                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                
             }     
-            for($col = 'C'; $col !== 'H'; $col++) {
+            for($col = 'D'; $col !== 'I'; $col++) {
                 $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
                 $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
@@ -245,13 +245,14 @@ class ServiciosDetallesController extends Controller
             $arServiciosDetallesConceptos = $query->getResult();
             foreach ($arServiciosDetallesConceptos as $arServicioDetalleConcepto) {   
                 $objPHPExcel->setActiveSheetIndex(1)
-                        ->setCellValue('A' . $i, $arServicioDetalleConcepto->getServicioRel()->getClienteRel()->getNombreCorto())                                        
-                        ->setCellValue('B' . $i, $arServicioDetalleConcepto->getConceptoServicioRel()->getNombre())                                        
-                        ->setCellValue('C' . $i, $arServicioDetalleConcepto->getCantidad())
-                        ->setCellValue('D' . $i, $arServicioDetalleConcepto->getPrecio())                    
-                        ->setCellValue('E' . $i, $arServicioDetalleConcepto->getSubtotal())
-                        ->setCellValue('F' . $i, $arServicioDetalleConcepto->getIva()) 
-                        ->setCellValue('G' . $i, $arServicioDetalleConcepto->getTotal());               
+                        ->setCellValue('A' . $i, $arServicioDetalleConcepto->getCodigoServicioDetalleConceptoPk())                                        
+                        ->setCellValue('B' . $i, $arServicioDetalleConcepto->getServicioRel()->getClienteRel()->getNombreCorto())                                        
+                        ->setCellValue('C' . $i, $arServicioDetalleConcepto->getConceptoServicioRel()->getNombre())                                        
+                        ->setCellValue('D' . $i, $arServicioDetalleConcepto->getCantidad())
+                        ->setCellValue('E' . $i, $arServicioDetalleConcepto->getPrecio())                    
+                        ->setCellValue('F' . $i, $arServicioDetalleConcepto->getSubtotal())
+                        ->setCellValue('G' . $i, $arServicioDetalleConcepto->getIva()) 
+                        ->setCellValue('H' . $i, $arServicioDetalleConcepto->getTotal());               
                 $i++;
             }
    
