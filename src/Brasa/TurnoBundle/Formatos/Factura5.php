@@ -71,10 +71,12 @@ class Factura5 extends \FPDF_FPDF {
         //creamos la cabecera de la tabla.
         $w = array(10,123, 8, 23, 10,23);
         for ($i = 0; $i < count($header); $i++)
-            if ($i == 0)
+            if ($i >= 2) {
+                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'R',0);
+            } else {
                 $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',0);
-            else
-                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',0);
+            }
+                
 
         //Restauración de colores y fuentes
         //$this->SetFillColor(224, 235, 255);
@@ -110,16 +112,6 @@ class Factura5 extends \FPDF_FPDF {
                     $pdf->Cell(10, 4, number_format($arFacturaDetalle->getPorIva(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Cell(23, 4, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Ln();
-                    /*$pdf->SetX(14);
-                    $pdf->Cell(10, 4, '', 0, 0, 'R');
-                    if($arFacturaDetalle->getTipoPedido() == 'FIJO') {
-                        $strCampo = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " " . $arFacturaDetalle->getDetalle();
-                    } else {
-                        $strCampo = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacionAdicional() . " " . $arFacturaDetalle->getDetalle();
-                    }
-
-                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');*/
-                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
                     $pdf->Ln(0);
@@ -209,7 +201,7 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetXY(14,219);        
         $this->MultiCell(118, 3, $arConfiguracion->getInformacionLegalFactura(), 0, 'L');
         $this->SetXY(14,238);        
-        $this->MultiCell(118, 3, "IMPRESO EN COMPUTADOR PARA GALAXIA SEGURIDAD LTDA AÑO 2014 NIT 811017575-1", 0, 'L');
+        $this->MultiCell(118, 3, "IMPRESO EN COMPUTADOR POR JG EFECTIVOS NIT 900456778-3 PARA GALAXIA SEGURIDAD LTDA AÑO 2017 NIT 811017575-1", 0, 'L');
         //$this->Rect(10, 222, 201, 40);
         $this->Text(149, 214, "ACEPTADA Y RECIBIDA POR:");
         $this->Text(149, 220, "NOMBRE LEGIBLE: __________________________");
