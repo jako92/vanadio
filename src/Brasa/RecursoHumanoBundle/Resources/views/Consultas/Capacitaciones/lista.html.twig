@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Capacitaciones lista - Soga App{% endblock %}
+{% block title %}Consulta Capacitaciones lista - Soga App{% endblock %}
 {% block content %}
 <div class="container">
     <script type="text/javascript">
@@ -7,7 +7,7 @@
             $('.date').datepicker({ dateFormat: 'yy-mm-dd' ,dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" ], monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]})  });
     </script>
     <div class="page-header">
-        <h3>Lista capacitaciones</h3>
+        <h3>Consulta capacitaciones</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}                
@@ -65,10 +65,7 @@
                         <th>PERSONAS CAPACITAR</th>
                         <th>PERSONAS ASISTIERON</th>
                         <th>ABIERTO</th>
-                        <th>AUTORIZADO</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>AUTORIZADO</th>                        
                     </tr>
                     {% for arCapacitaciones in arCapacitaciones %}
                         <tr>
@@ -82,14 +79,8 @@
                             <td align="right">{{ arCapacitaciones.numeroPersonasCapacitar  }}</td>
                             <td align="right">{{ arCapacitaciones.numeroPersonasAsistieron  }}</td>
                             <td>{% if arCapacitaciones.estado == 0 %}SI{% else %}NO{% endif %}</td>
-                            <td>{% if arCapacitaciones.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
-                            {% if arCapacitaciones.estado == 0 %}
-                                <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_capacitacion_nuevo', { 'codigoCapacitacion':  arCapacitaciones.codigoCapacitacionPk }) }}', 'EditarCapacitacion', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
-                            {% else %}
-                                <td style="text-align: center"><a href="#" onclick="alert('Esta cerrada la capacitación, no se puede editar');"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
-                            {% endif %}
-                            <td style="text-align: center"><a href="{{ path('brs_rhu_capacitacion_detalle', { 'codigoCapacitacion': arCapacitaciones.codigoCapacitacionPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>                
-                            <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCapacitaciones.codigoCapacitacionPk }}" /></td>
+                            <td>{% if arCapacitaciones.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>                            
+                            
                         </tr>
                     {% endfor %}
                 </table>                       
@@ -101,19 +92,13 @@
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
             {{ knp_pagination_render(arCapacitaciones) }}       
         </div>
-        <div class="btn-toolbar" style="float: right">                           
-            <div class="btn-group">                
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_capacitacion_nuevo', { 'codigoCapacitacion': 0}) }}', 'AgregarCapacitacion', 600, 900)">Nuevo</a>            
-            </div>
+        <div class="btn-toolbar" style="float: right">                                       
             <div class="btn-group">                
                 {{ form_widget(form.BtnExcelDetalle, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
             </div>
             <div class="btn-group">                
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
-            </div>
-            <div class="btn-group">                
-                {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm', 'onclick': 'return confirm("Esta seguro de eliminar el registro?")'} }) }}                
-            </div>            
+            </div>                        
         </div>          
         <!-- Fin Botones Menu Items -->
         {{ form_rest(form) }}

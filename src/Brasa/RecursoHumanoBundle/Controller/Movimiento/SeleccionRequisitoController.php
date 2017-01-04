@@ -74,9 +74,10 @@ class SeleccionRequisitoController extends Controller
         if ($form->isValid()) { 
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arRequisito = $form->getData();
-            $arRequisito->setFecha(new \DateTime('now'));
+                        
             if($codigoSeleccionRequisito == 0) {
                 $arRequisito->setCodigoUsuario($arUsuario->getUserName());
+                $arRequisito->setFecha(new \DateTime('now'));
             }
             $em->persist($arRequisito);
             $em->flush();
