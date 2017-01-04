@@ -5853,6 +5853,8 @@ insert into `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tip
 insert into `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tipo`, `modulo`) VALUES('114','EDITAR PARAMETROS PRIMA','PROCESO','RECURSO HUMANO');
 INSERT INTO `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tipo`, `modulo`) VALUES('115','CONFIGURACION NOMINA PARAMETROS PRESTACIONES','CONFIGURACION','RECURSO HUMANO');
 INSERT INTO `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tipo`, `modulo`) VALUES('116','PROYECCION PARAMETROS','UTILIDAD','RECURSO HUMANO');
+INSERT INTO `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tipo`, `modulo`) VALUES('117','CAPACITACIONES','CONSULTA','RECURSO HUMANO');
+INSERT INTO `seg_permiso_especial` (`codigo_permiso_especial_pk`, `nombre`, `tipo`, `modulo`) VALUES('118','CAPACITACIONES DETALLE','CONSULTA','RECURSO HUMANO');
 
 insert into `rhu_visita_tipo` (`codigo_visita_tipo_pk`, `nombre`) values('1','PERIODICO');
 insert into `rhu_visita_tipo` (`codigo_visita_tipo_pk`, `nombre`) values('2','INGRESO');
