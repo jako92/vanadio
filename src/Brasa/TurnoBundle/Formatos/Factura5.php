@@ -33,7 +33,7 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);                        
         
-        $this->SetXY(14, 38);
+        $this->SetXY(14, 39);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);        
         $this->SetXY(14, 43); 
@@ -44,7 +44,7 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetXY(14, 53);        
         $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
-        $this->SetXY(135, 38);        
+        $this->SetXY(135, 39);        
         $this->Cell(61, 5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(135, 43);        
         $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
@@ -102,11 +102,11 @@ class Factura5 extends \FPDF_FPDF {
                     }
                     $pdf->Cell(123, 4, substr(utf8_decode($arFacturaDetalle->getPuestoRel()->getNombre()) . $modalidad, 0, 61), 0, 0, 'L');                    
                     $modalidad = "";                    
-                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 2, '.', ','), 0, 0, 'C');                    
+                    $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                    
                     $pdf->SetFont('Arial', '', 8);
-                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getVrPrecio(), 2, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(10, 4, number_format($arFacturaDetalle->getPorIva(), 2, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getSubtotal(), 2, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(10, 4, number_format($arFacturaDetalle->getPorIva(), 0, '.', ','), 0, 0, 'R');
+                    $pdf->Cell(23, 4, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
                     $pdf->Ln();
                     /*$pdf->SetX(14);
                     $pdf->Cell(10, 4, '', 0, 0, 'R');
