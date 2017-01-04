@@ -188,6 +188,9 @@ class Factura5 extends \FPDF_FPDF {
         $this->Cell(42, 5, 'TOTAL:', 0, 0, 'L');               
         $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 0, 0, 'R'); 
         $this->SetXY(148,185);        
+        $this->Cell(42, 5, 'RTE FUENTE:', 0, 0, 'L',0);               
+        $this->Cell(21, 5, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 0, 0, 'R',0);
+        $this->SetXY(148,190);        
         $this->Cell(42, 5, 'TOTAL A CANCELAR', 0, 0, 'L',0);               
         $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 0, 0, 'R',0);
         
