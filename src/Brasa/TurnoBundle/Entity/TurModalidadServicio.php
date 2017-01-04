@@ -23,6 +23,11 @@ class TurModalidadServicio
     private $nombre;    
 
     /**
+     * @ORM\Column(name="abreviatura", type="string", length=10, nullable=true)
+     */    
+    private $abreviatura;     
+    
+    /**
      * @ORM\Column(name="tipo", type="integer")
      */    
     private $tipo = 0;    
@@ -429,5 +434,29 @@ class TurModalidadServicio
     public function getCostosServiciosModalidadServicioRel()
     {
         return $this->costosServiciosModalidadServicioRel;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return TurModalidadServicio
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 }

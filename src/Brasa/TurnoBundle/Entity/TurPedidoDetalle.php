@@ -158,6 +158,11 @@ class TurPedidoDetalle
     private $vrPrecio = 0;     
     
     /**
+     * @ORM\Column(name="porcentaje_iva", type="float")
+     */
+    private $porcentajeIva = 0;    
+    
+    /**
      * @ORM\Column(name="vr_subtotal", type="float")
      */
     private $vrSubtotal = 0; 
@@ -2034,5 +2039,29 @@ class TurPedidoDetalle
     public function getCostosRecursosDetallesPedidoDetalleRel()
     {
         return $this->costosRecursosDetallesPedidoDetalleRel;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
     }
 }

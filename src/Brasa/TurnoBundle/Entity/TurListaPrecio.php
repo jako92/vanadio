@@ -61,6 +61,54 @@ class TurListaPrecio
     }
 
     /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return TurListaPrecio
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set vrSalario
+     *
+     * @param float $vrSalario
+     *
+     * @return TurListaPrecio
+     */
+    public function setVrSalario($vrSalario)
+    {
+        $this->vrSalario = $vrSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalario
+     *
+     * @return float
+     */
+    public function getVrSalario()
+    {
+        return $this->vrSalario;
+    }
+
+    /**
      * Set vrHoraDiurna
      *
      * @param float $vrHoraDiurna
@@ -140,53 +188,5 @@ class TurListaPrecio
     public function getClientesListaPrecioRel()
     {
         return $this->clientesListaPrecioRel;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     *
-     * @return TurListaPrecio
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set vrSalario
-     *
-     * @param float $vrSalario
-     *
-     * @return TurListaPrecio
-     */
-    public function setVrSalario($vrSalario)
-    {
-        $this->vrSalario = $vrSalario;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalario
-     *
-     * @return float
-     */
-    public function getVrSalario()
-    {
-        return $this->vrSalario;
     }
 }

@@ -35,7 +35,7 @@ class TurPedido
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
-    private $codigoClienteFk;    
+    private $codigoClienteFk;          
     
     /**
      * @ORM\Column(name="codigo_sector_fk", type="integer", nullable=true)
@@ -144,6 +144,11 @@ class TurPedido
     private $vrTotal = 0;   
     
     /**
+     * @ORM\Column(name="vr_base_precio_minimo", type="float")
+     */
+    private $vrBasePrecioMinimo = 0;     
+    
+    /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
      */    
     private $usuario;     
@@ -169,7 +174,7 @@ class TurPedido
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="pedidosSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
      */
-    protected $sectorRel;         
+    protected $sectorRel;                 
     
     /**
      * @ORM\OneToMany(targetEntity="TurPedidoDetalle", mappedBy="pedidoRel", cascade={"persist", "remove"})
@@ -187,6 +192,7 @@ class TurPedido
     public function __construct()
     {
         $this->pedidosDetallesPedidoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidosDetallesConceptosPedidoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -440,6 +446,54 @@ class TurPedido
     }
 
     /**
+     * Set estadoFacturado
+     *
+     * @param boolean $estadoFacturado
+     *
+     * @return TurPedido
+     */
+    public function setEstadoFacturado($estadoFacturado)
+    {
+        $this->estadoFacturado = $estadoFacturado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoFacturado
+     *
+     * @return boolean
+     */
+    public function getEstadoFacturado()
+    {
+        return $this->estadoFacturado;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return TurPedido
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
+    }
+
+    /**
      * Set cantidad
      *
      * @param integer $cantidad
@@ -608,6 +662,126 @@ class TurPedido
     }
 
     /**
+     * Set vrTotalOtros
+     *
+     * @param float $vrTotalOtros
+     *
+     * @return TurPedido
+     */
+    public function setVrTotalOtros($vrTotalOtros)
+    {
+        $this->vrTotalOtros = $vrTotalOtros;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalOtros
+     *
+     * @return float
+     */
+    public function getVrTotalOtros()
+    {
+        return $this->vrTotalOtros;
+    }
+
+    /**
+     * Set vrTotalServicio
+     *
+     * @param float $vrTotalServicio
+     *
+     * @return TurPedido
+     */
+    public function setVrTotalServicio($vrTotalServicio)
+    {
+        $this->vrTotalServicio = $vrTotalServicio;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalServicio
+     *
+     * @return float
+     */
+    public function getVrTotalServicio()
+    {
+        return $this->vrTotalServicio;
+    }
+
+    /**
+     * Set vrSubtotal
+     *
+     * @param float $vrSubtotal
+     *
+     * @return TurPedido
+     */
+    public function setVrSubtotal($vrSubtotal)
+    {
+        $this->vrSubtotal = $vrSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotal
+     *
+     * @return float
+     */
+    public function getVrSubtotal()
+    {
+        return $this->vrSubtotal;
+    }
+
+    /**
+     * Set vrIva
+     *
+     * @param float $vrIva
+     *
+     * @return TurPedido
+     */
+    public function setVrIva($vrIva)
+    {
+        $this->vrIva = $vrIva;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIva
+     *
+     * @return float
+     */
+    public function getVrIva()
+    {
+        return $this->vrIva;
+    }
+
+    /**
+     * Set vrBaseAiu
+     *
+     * @param float $vrBaseAiu
+     *
+     * @return TurPedido
+     */
+    public function setVrBaseAiu($vrBaseAiu)
+    {
+        $this->vrBaseAiu = $vrBaseAiu;
+
+        return $this;
+    }
+
+    /**
+     * Get vrBaseAiu
+     *
+     * @return float
+     */
+    public function getVrBaseAiu()
+    {
+        return $this->vrBaseAiu;
+    }
+
+    /**
      * Set vrTotal
      *
      * @param float $vrTotal
@@ -629,6 +803,54 @@ class TurPedido
     public function getVrTotal()
     {
         return $this->vrTotal;
+    }
+
+    /**
+     * Set vrBasePrecioMinimo
+     *
+     * @param float $vrBasePrecioMinimo
+     *
+     * @return TurPedido
+     */
+    public function setVrBasePrecioMinimo($vrBasePrecioMinimo)
+    {
+        $this->vrBasePrecioMinimo = $vrBasePrecioMinimo;
+
+        return $this;
+    }
+
+    /**
+     * Get vrBasePrecioMinimo
+     *
+     * @return float
+     */
+    public function getVrBasePrecioMinimo()
+    {
+        return $this->vrBasePrecioMinimo;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return TurPedido
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 
     /**
@@ -759,198 +981,6 @@ class TurPedido
     public function getPedidosDetallesPedidoRel()
     {
         return $this->pedidosDetallesPedidoRel;
-    }
-
-    /**
-     * Set estadoAnulado
-     *
-     * @param boolean $estadoAnulado
-     *
-     * @return TurPedido
-     */
-    public function setEstadoAnulado($estadoAnulado)
-    {
-        $this->estadoAnulado = $estadoAnulado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAnulado
-     *
-     * @return boolean
-     */
-    public function getEstadoAnulado()
-    {
-        return $this->estadoAnulado;
-    }
-
-    /**
-     * Set estadoFacturado
-     *
-     * @param boolean $estadoFacturado
-     *
-     * @return TurPedido
-     */
-    public function setEstadoFacturado($estadoFacturado)
-    {
-        $this->estadoFacturado = $estadoFacturado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoFacturado
-     *
-     * @return boolean
-     */
-    public function getEstadoFacturado()
-    {
-        return $this->estadoFacturado;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param string $usuario
-     *
-     * @return TurPedido
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return string
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set vrTotalOtros
-     *
-     * @param float $vrTotalOtros
-     *
-     * @return TurPedido
-     */
-    public function setVrTotalOtros($vrTotalOtros)
-    {
-        $this->vrTotalOtros = $vrTotalOtros;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalOtros
-     *
-     * @return float
-     */
-    public function getVrTotalOtros()
-    {
-        return $this->vrTotalOtros;
-    }
-
-    /**
-     * Set vrTotalServicio
-     *
-     * @param float $vrTotalServicio
-     *
-     * @return TurPedido
-     */
-    public function setVrTotalServicio($vrTotalServicio)
-    {
-        $this->vrTotalServicio = $vrTotalServicio;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalServicio
-     *
-     * @return float
-     */
-    public function getVrTotalServicio()
-    {
-        return $this->vrTotalServicio;
-    }
-
-    /**
-     * Set vrSubtotal
-     *
-     * @param float $vrSubtotal
-     *
-     * @return TurPedido
-     */
-    public function setVrSubtotal($vrSubtotal)
-    {
-        $this->vrSubtotal = $vrSubtotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSubtotal
-     *
-     * @return float
-     */
-    public function getVrSubtotal()
-    {
-        return $this->vrSubtotal;
-    }
-
-    /**
-     * Set vrIva
-     *
-     * @param float $vrIva
-     *
-     * @return TurPedido
-     */
-    public function setVrIva($vrIva)
-    {
-        $this->vrIva = $vrIva;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIva
-     *
-     * @return float
-     */
-    public function getVrIva()
-    {
-        return $this->vrIva;
-    }
-
-    /**
-     * Set vrBaseAiu
-     *
-     * @param float $vrBaseAiu
-     *
-     * @return TurPedido
-     */
-    public function setVrBaseAiu($vrBaseAiu)
-    {
-        $this->vrBaseAiu = $vrBaseAiu;
-
-        return $this;
-    }
-
-    /**
-     * Get vrBaseAiu
-     *
-     * @return float
-     */
-    public function getVrBaseAiu()
-    {
-        return $this->vrBaseAiu;
     }
 
     /**

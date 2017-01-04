@@ -69,7 +69,7 @@ class TurPedidoRepository extends EntityRepository {
         $em = $this->getEntityManager();        
         $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();        
         $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
-        $floValorBaseServicio = $arPedido->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arPedido->getSectorRel()->getPorcentaje();
+        $floValorBaseServicio = $arPedido->getVrBasePrecioMinimo() * $arPedido->getSectorRel()->getPorcentaje();
         $intCantidad = 0;
         $douTotalHoras = 0;
         $douTotalHorasDiurnas = 0;
@@ -244,10 +244,9 @@ class TurPedidoRepository extends EntityRepository {
                 $subtotalGeneral += $subTotalDetalle;
                 $baseAiuDetalle = $subTotalDetalle*10/100;
                 $baseAiuDetalle = $baseAiuDetalle;
-                $ivaDetalle = $baseAiuDetalle*16/100;
-                $ivaDetalle = $ivaDetalle;
+                $ivaDetalle = $baseAiuDetalle*$arPedidoDetalle->getPorcentajeIva()/100;               
+                $ivaGeneral += $ivaDetalle;
                 $totalDetalle = $subTotalDetalle + $ivaDetalle;
-                $totalDetalle = $totalDetalle;
                 $arPedidoDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arPedidoDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
                 $arPedidoDetalleActualizar->setVrIva($ivaDetalle);
@@ -310,17 +309,12 @@ class TurPedidoRepository extends EntityRepository {
         $arPedido->setVrTotalPrecioMinimo($douTotalMinimoServicio);
         $arPedido->setVrTotalOtros($floSubTotalConceptos);
         $arPedido->setVrTotalCosto($douTotalCostoCalculado);
-        $subtotal = $subtotalGeneral + $floSubTotalConceptos;
-        $subtotal = $subtotal;
-        $baseAiu = $subtotal*10/100;
-        $baseAiu = $baseAiu;
-        $iva = $baseAiu*16/100;
-        $iva = $iva;
-        $total = $subtotal + $iva;
-        $total = $total;
+        $subtotal = $subtotalGeneral + $floSubTotalConceptos;        
+        $baseAiu = $subtotal*10/100;        
+        $total = $subtotal + $ivaGeneral;        
         $arPedido->setVrSubtotal($subtotal);
         $arPedido->setVrBaseAiu($baseAiu);
-        $arPedido->setVrIva($iva);
+        $arPedido->setVrIva($ivaGeneral);
         $arPedido->setVrTotal($total);
         
         $em->persist($arPedido);

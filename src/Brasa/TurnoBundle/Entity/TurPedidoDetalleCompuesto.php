@@ -112,6 +112,11 @@ class TurPedidoDetalleCompuesto
      */
     private $vrTotalDetalle = 0;    
     
+    /**
+     * @ORM\Column(name="porcentaje_iva", type="float")
+     */
+    private $porcentajeIva = 0;    
+    
     /**     
      * @ORM\Column(name="lunes", type="boolean")
      */    
@@ -988,5 +993,29 @@ class TurPedidoDetalleCompuesto
     public function getDetalle()
     {
         return $this->detalle;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurPedidoDetalleCompuesto
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
     }
 }

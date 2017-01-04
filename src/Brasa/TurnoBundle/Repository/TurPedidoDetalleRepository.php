@@ -102,15 +102,16 @@ class TurPedidoDetalleRepository extends EntityRepository {
     
     public function liquidar($codigoPedidoDetalle) {        
         $em = $this->getEntityManager();        
-        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();        
+        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();         
         $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);         
-        $floValorBaseServicio = $arPedidoDetalle->getPedidoRel()->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arPedidoDetalle->getPedidoRel()->getSectorRel()->getPorcentaje();        
+        $floValorBaseServicio = $arPedidoDetalle->getPedidoRel()->getVrBasePrecioMinimo() * $arPedidoDetalle->getPedidoRel()->getSectorRel()->getPorcentaje();        
         $intCantidad = 0;
         $douTotalHoras = 0;
         $douTotalHorasDiurnas = 0;
         $douTotalHorasNocturnas = 0;
         $subtotalGeneral = 0;
         $douTotalServicio = 0;
+        $totalIva = 0;
         $douTotalMinimoServicio = 0;
         $douTotalCostoCalculado = 0;        
         $arPedidosDetalleCompuesto = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleCompuesto();        
@@ -279,7 +280,8 @@ class TurPedidoDetalleRepository extends EntityRepository {
             $subTotalDetalle = $floVrServicio;
             $subtotalGeneral += $subTotalDetalle;
             $baseAiuDetalle = $subTotalDetalle*10/100;
-            $ivaDetalle = $baseAiuDetalle*16/100;
+            $ivaDetalle = $baseAiuDetalle*$arPedidoDetalleCompuesto->getPorcentajeIva()/100;
+            $totalIva += $ivaDetalle;
             $totalDetalle = $subTotalDetalle + $ivaDetalle;
             
             $arPedidoDetalleCompuestoActualizar->setVrSubtotal($subTotalDetalle);
@@ -308,12 +310,11 @@ class TurPedidoDetalleRepository extends EntityRepository {
         $arPedidoDetalle->setHorasNocturnas($douTotalHorasNocturnas);
                 
         $arPedidoDetalle->setVrPrecioMinimo($douTotalMinimoServicio);        
-        $baseAiu = $subtotalGeneral*10/100;
-        $iva = $baseAiu*16/100;
-        $total = $subtotalGeneral + $iva;
+        $baseAiu = $subtotalGeneral*10/100;        
+        $total = $subtotalGeneral + $totalIva;
         $arPedidoDetalle->setVrSubtotal($subtotalGeneral);
         $arPedidoDetalle->setVrBaseAiu($baseAiu);
-        $arPedidoDetalle->setVrIva($iva);
+        $arPedidoDetalle->setVrIva($totalIva);
         $arPedidoDetalle->setVrTotalDetalle($total);        
         $arPedidoDetalle->setVrTotalDetallePendiente($subtotalGeneral - $arPedidoDetalle->getVrTotalDetalleAfectado());
         $em->persist($arPedidoDetalle);

@@ -70,7 +70,7 @@ class TurCliente
     /**
      * @ORM\Column(name="codigo_lista_precio_fk", type="integer", nullable=true)
      */    
-    private $codigoListaPrecioFk = 1;    
+    private $codigoListaPrecioFk;    
     
     /**
      * @ORM\Column(name="codigo_asesor_fk", type="integer", nullable=true)
@@ -624,6 +624,30 @@ class TurCliente
     public function getCodigoSectorFk()
     {
         return $this->codigoSectorFk;
+    }
+
+    /**
+     * Set codigoListaPrecioFk
+     *
+     * @param integer $codigoListaPrecioFk
+     *
+     * @return TurCliente
+     */
+    public function setCodigoListaPrecioFk($codigoListaPrecioFk)
+    {
+        $this->codigoListaPrecioFk = $codigoListaPrecioFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoListaPrecioFk
+     *
+     * @return integer
+     */
+    public function getCodigoListaPrecioFk()
+    {
+        return $this->codigoListaPrecioFk;
     }
 
     /**
@@ -1320,6 +1344,30 @@ class TurCliente
     public function getSectorRel()
     {
         return $this->sectorRel;
+    }
+
+    /**
+     * Set listaPrecioRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel
+     *
+     * @return TurCliente
+     */
+    public function setListaPrecioRel(\Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel = null)
+    {
+        $this->listaPrecioRel = $listaPrecioRel;
+
+        return $this;
+    }
+
+    /**
+     * Get listaPrecioRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurListaPrecio
+     */
+    public function getListaPrecioRel()
+    {
+        return $this->listaPrecioRel;
     }
 
     /**
@@ -2036,53 +2084,5 @@ class TurCliente
     public function getCostosRecursosDetallesClienteRel()
     {
         return $this->costosRecursosDetallesClienteRel;
-    }
-
-    /**
-     * Set codigoListaPrecioFk
-     *
-     * @param integer $codigoListaPrecioFk
-     *
-     * @return TurCliente
-     */
-    public function setCodigoListaPrecioFk($codigoListaPrecioFk)
-    {
-        $this->codigoListaPrecioFk = $codigoListaPrecioFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoListaPrecioFk
-     *
-     * @return integer
-     */
-    public function getCodigoListaPrecioFk()
-    {
-        return $this->codigoListaPrecioFk;
-    }
-
-    /**
-     * Set listaPrecioRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel
-     *
-     * @return TurCliente
-     */
-    public function setListaPrecioRel(\Brasa\TurnoBundle\Entity\TurListaPrecio $listaPrecioRel = null)
-    {
-        $this->listaPrecioRel = $listaPrecioRel;
-
-        return $this;
-    }
-
-    /**
-     * Get listaPrecioRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurListaPrecio
-     */
-    public function getListaPrecioRel()
-    {
-        return $this->listaPrecioRel;
     }
 }

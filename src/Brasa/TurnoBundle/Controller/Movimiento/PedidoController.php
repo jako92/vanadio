@@ -84,7 +84,7 @@ class PedidoController extends Controller
             $arPedido = $form->getData();            
             $arrControles = $request->request->All();
             if($arrControles['txtNit'] != '') {                
-                $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
+                $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();                
                 $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));                
                 if(count($arCliente) > 0) {
                     $arPedido->setClienteRel($arCliente);                    
@@ -97,9 +97,10 @@ class PedidoController extends Controller
                             $arPedido->setFechaProgramacion($fechaOriginal);
                             $objMensaje->Mensaje("error", "No se actualizo la fecha del pedido porque tiene detalles, debe eliminarlos antes de cambiar la fecha");
                         }
-                    } else {
+                    } else {                        
                         $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
-                        $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));                                                
+                        $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));     
+                        $arPedido->setVrBasePrecioMinimo($arCliente->getListaPrecioRel()->getVrSalario());
                     }
                     
                     $arUsuario = $this->getUser();
@@ -434,7 +435,9 @@ class PedidoController extends Controller
                 $arPedidoDetalle->setDiaDesde(1);
                 $arPedidoDetalle->setDiaHasta($intDiaFinalMes);
             }
-            
+            if($codigoPedidoDetalle == 0) {
+                $arPedidoDetalle->setPorcentajeIva($arPedidoDetalle->getConceptoServicioRel()->getPorIva());
+            }            
             $em->persist($arPedidoDetalle);
             $em->flush();
 
@@ -535,6 +538,7 @@ class PedidoController extends Controller
                             $arPedidoDetalle->setFestivo($arCotizacionDetalle->getFestivo());                            
                             $arPedidoDetalle->setCantidad($arCotizacionDetalle->getCantidad());
                             $arPedidoDetalle->setVrPrecioAjustado($arCotizacionDetalle->getVrPrecioAjustado());
+                            $arPedidoDetalle->setPorcentajeIva($arCotizacionDetalle->getConceptoServicioRel()->getPorIva());
                             $arPedidoDetalle->setLiquidarDiasReales($arCotizacionDetalle->getLiquidarDiasReales());
                             $arPedidoDetalle->setAnio($arPedido->getFechaProgramacion()->format('Y'));
                             $arPedidoDetalle->setMes($arPedido->getFechaProgramacion()->format('m'));
@@ -614,7 +618,7 @@ class PedidoController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigo) {                                                
-                        $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
+                        $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();                        
                         $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($codigo);
                         
                         $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
@@ -637,6 +641,7 @@ class PedidoController extends Controller
                         $arPedidoDetalle->setDomingo($arServicioDetalle->getDomingo());
                         $arPedidoDetalle->setFestivo($arServicioDetalle->getFestivo());                            
                         $arPedidoDetalle->setCantidad($arServicioDetalle->getCantidad());
+                        $arPedidoDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorIva());
                         $arPedidoDetalle->setVrPrecioAjustado($arServicioDetalle->getVrPrecioAjustado());
                         $arPedidoDetalle->setFechaIniciaPlantilla($arServicioDetalle->getFechaIniciaPlantilla());
                         $arPedidoDetalle->setAjusteProgramacion($arServicioDetalle->getAjusteProgramacion());
@@ -717,6 +722,7 @@ class PedidoController extends Controller
                                     $arPedidoDetalleCompuesto->setDomingo($arServicioDetalleCompuesto->getDomingo());
                                     $arPedidoDetalleCompuesto->setFestivo($arServicioDetalleCompuesto->getFestivo());                            
                                     $arPedidoDetalleCompuesto->setCantidad($arServicioDetalleCompuesto->getCantidad());
+                                    $arPedidoDetalleCompuesto->setPorcentajeIva($arServicioDetalleCompuesto->getConceptoServicioRel()->getPorIva());
                                     $arPedidoDetalleCompuesto->setVrPrecioAjustado($arServicioDetalleCompuesto->getVrPrecioAjustado());                                                                
                                     $arPedidoDetalleCompuesto->setLiquidarDiasReales($arServicioDetalleCompuesto->getLiquidarDiasReales());                                
 

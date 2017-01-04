@@ -47,64 +47,76 @@
                 <table width="100%" class="table table-condensed table-bordered">
                     <tr>
                         <td class="titulo">NUMERO:</td>
-                        <td class="td-in-well">{{ arPedido.numero }}</td>                    
+                        <td class="td-in-well">{{ arPedido.numero }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arPedido.fecha |date("Y/m/d") }}</td>                       
                         <td class="titulo" >COSTO:</td>
                         <td align="right">{{ arPedido.vrTotalCosto | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">TIPO:</td>
                         <td class="td-in-well">{{ arPedido.pedidoTipoRel.nombre }}</td>
-                        <td class="titulo" >MINIMO:</td>
-                        <td align="right">{{ arPedido.vrTotalPrecioMinimo | number_format(0, '.', ',')}}</td>
+                        <td class="titulo">FECHA PROGRAMACION:</td>
+                        <td class="td-in-well">{{ arPedido.fechaProgramacion |date("Y/m/d") }}</td>                        
+                        <td class="titulo" >BASE MINIMO:</td>
+                        <td align="right">{{ arPedido.vrBasePrecioMinimo | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arPedido.clienteRel.nombreCorto }}</td>
-                        <td class="titulo" >TOTAL OTROS:</td>
-                        <td align="right">{{ arPedido.vrTotalOtros | number_format(0, '.', ',')}}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >MINIMO:</td>
+                        <td align="right">{{ arPedido.vrTotalPrecioMinimo | number_format(0, '.', ',')}}</td>
                     </tr> 
                     <tr>
                         <td class="titulo">SECTOR:</td>
                         <td class="td-in-well">{{ arPedido.sectorRel.nombre }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >TOTAL OTROS:</td>
+                        <td align="right">{{ arPedido.vrTotalOtros | number_format(0, '.', ',')}}</td>
+                    </tr>                 
+                    <tr>
+                        <td class="titulo">LISTA PRECIOS:</td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
                         <td class="titulo" >TOTAL SERVICIO:</td>
                         <td align="right">{{ arPedido.vrTotalServicio | number_format(0, '.', ',')}}</td>
                     </tr>                 
                     <tr>
-                        <td class="titulo">FECHA:</td>
-                        <td class="td-in-well">{{ arPedido.fecha |date("Y/m/d") }}</td>
-                        <td class="titulo" >SUBTOTAL:</td>
-                        <td align="right">{{ arPedido.vrSubtotal | number_format(0, '.', ',')}}</td>
-                    </tr>                 
-                    <tr>
                         <td class="titulo">USUARIO:</td>
                         <td class="td-in-well">{{ arPedido.usuario}}</td>
-                        <td class="titulo" >BASE AIU:</td>
-                        <td align="right">{{ arPedido.vrBaseAiu | number_format(0, '.', ',')}}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >SUBTOTAL:</td>
+                        <td align="right">{{ arPedido.vrSubtotal | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo" >HORAS DIURNAS:</td>
                         <td align="right">{{ arPedido.horasDiurnas | number_format(0, '.', ',')}}</td>
-                        <td class="titulo" >IVA:</td>
-                        <td align="right">{{ arPedido.vrIVA | number_format(0, '.', ',')}}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >BASE AIU:</td>
+                        <td align="right">{{ arPedido.vrBaseAiu | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo" >HORAS NOCTURNAS:</td>
                         <td align="right">{{ arPedido.horasNocturnas | number_format(0, '.', ',')}}</td>
-                        <td class="titulo" >TOTAL:</td>
-                        <td align="right">{{ arPedido.vrTotal | number_format(0, '.', ',')}}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >IVA:</td>
+                        <td align="right">{{ arPedido.vrIVA | number_format(0, '.', ',')}}</td>
                     </tr> 
                     <tr>
                         <td class="titulo" >HORAS:</td>
                         <td align="right">{{ arPedido.horas | number_format(0, '.', ',')}}</td>
-                        <td class="titulo" ></td>
-                        <td align="right"></td>
-                    </tr>                     
-                    <tr>
-                        <td class="titulo">FECHA PROGRAMACION:</td>
-                        <td class="td-in-well">{{ arPedido.fechaProgramacion |date("Y/m/d") }}</td>
-                        <td class="titulo" ></td>
-                        <td align="right"></td>
-                    </tr>  
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
+                        <td class="titulo" >TOTAL:</td>
+                        <td align="right">{{ arPedido.vrTotal | number_format(0, '.', ',')}}</td>
+                    </tr>                      
                 </table>
             </div>
         </div>
@@ -124,9 +136,9 @@
                         <tr>
                             <th>COD</th>
                             <th>SERVICIO</th>
-                            <th>MODALIDAD</th>
-                            <th>PERIODO</th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Liquidar dias reales">LDR</p></th>                                                        
+                            <th>IVA</th>
+                            <th>MOD</th>
+                            <th>PERIODO</th>                            
                             <th>DES</th>
                             <th>HAS</th>
                             <th>CANT</th>
@@ -166,9 +178,9 @@
                             <tr {% if arPedidoDetalle.marca == 1 %} class="success" {% endif %}>
                                 <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_resumen', {'codigoPedidoDetalle': arPedidoDetalle.codigoPedidoDetallePk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arPedidoDetalle.codigoPedidoDetallePk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arPedidoDetalle.codigoPedidoDetallePk }}"></td>                                
                                 <td>{{ arPedidoDetalle.conceptoServicioRel.nombre  }}</td>                    
-                                <td>{{ arPedidoDetalle.modalidadServicioRel.nombre  }}</td>                    
-                                <td>{{ arPedidoDetalle.periodoRel.nombre  }}</td>
-                                <td>{% if arPedidoDetalle.compuesto == 0 %}{% if arPedidoDetalle.liquidarDiasReales == 1 %} SI {% else %} NO {% endif %}{% endif %}</td>                                                                                       
+                                <td>{{ arPedidoDetalle.porcentajeIva  }}</td>                    
+                                <td>{{ arPedidoDetalle.modalidadServicioRel.abreviatura  }}</td>                    
+                                <td>{{ arPedidoDetalle.periodoRel.nombre  }}</td>                                
                                 <td>{% if arPedidoDetalle.compuesto == 0 %}{{ arPedidoDetalle.diaDesde }}{% endif %}</td>    
                                 <td>{% if arPedidoDetalle.compuesto == 0 %}{{ arPedidoDetalle.diaHasta }}{% endif %}</td>    
                                 <td>{% if arPedidoDetalle.compuesto == 0 %}{{ arPedidoDetalle.cantidad  }}{% endif %}</td>
