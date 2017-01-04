@@ -61,7 +61,7 @@ class Factura5 extends \FPDF_FPDF {
     public function EncabezadoDetalles() {
         $this->Ln(0);
         $this->SetX(14);
-        $header = array('COD','DESCRIPCION', 'CANT', 'VLR. UNIT', 'IVA','VR. TOTAL');
+        $header = array('COD','DESCRIPCION', 'CANTIDAD', 'VLR. UNIT', 'IVA','VR. TOTAL');
         //$this->SetFillColor(236, 236, 236);
         //$this->SetTextColor(0);
         //$this->SetDrawColor(0, 0, 0);
