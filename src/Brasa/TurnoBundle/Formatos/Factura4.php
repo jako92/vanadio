@@ -171,7 +171,7 @@ class Factura4 extends \FPDF_FPDF {
             if($arFacturaDetalle->getDetalle()) {
                 $strDetalle = $arFacturaDetalle->getDetalle();
             } else {
-                $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombre() . " DESDE EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
+                $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " DESDE EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
                         . " HASTA EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
                 $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y');//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                
             }
