@@ -69,10 +69,10 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetFont('', '', 8);
 
         //creamos la cabecera de la tabla.
-        $w = array(10,123, 8, 21, 10,21);
+        $w = array(10,123, 8, 23, 10,23);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
-                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'L',0);
+                $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',0);
             else
                 $this->Cell($w[$i], 7, $header[$i], 0, 0, 'C',0);
 
