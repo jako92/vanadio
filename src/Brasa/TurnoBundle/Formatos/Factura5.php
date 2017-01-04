@@ -49,7 +49,7 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetXY(135, 43);        
         $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(135, 48);        
-        $this->Cell(61, 5, "VENDEDOR: 001 OJO", 0, 0, 'L', 0);                       
+        $this->Cell(61, 5, "VENDEDOR: 001", 0, 0, 'L', 0);                       
         $this->SetXY(135, 53);        
         $this->Cell(61, 5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
         
@@ -187,17 +187,17 @@ class Factura5 extends \FPDF_FPDF {
         $this->Cell(42, 5, 'SUBTOTAL:', 0, 0, 'L');
         $this->Cell(21, 5, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');        
         $this->SetXY(148,170);
+        $this->Cell(42, 5, 'BASE AIU 10%', 0, 0, 'L');               
+        $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 0, 0, 'R');        
+        $this->SetXY(148,175);
         $this->Cell(42, 5, '+ I.V.A:', 0, 0, 'L');
-        $this->Cell(21, 5, number_format($arFactura->getVrIva(), 0, '.', ','), 0, 0, 'R');
-        $this->SetXY(148,175);        
+        $this->Cell(21, 5, number_format($arFactura->getVrIva(), 0, '.', ','), 0, 0, 'R');        
+        $this->SetXY(148,180);        
         $this->Cell(42, 5, 'TOTAL:', 0, 0, 'L');               
         $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 0, 0, 'R'); 
-        $this->SetXY(148,180);
+        $this->SetXY(148,185);        
         $this->Cell(42, 5, 'TOTAL A CANCELAR', 0, 0, 'L',0);               
         $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 0, 0, 'R',0);
-        $this->SetXY(148,185);        
-        $this->Cell(42, 5, 'BASE AIU 10%', 0, 0, 'L');               
-        $this->Cell(21, 5, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 0, 0, 'R');
         
         //$this->SetXY(14,193);
         //$this->Rect(10, 192, 138, 30);

@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Capacitaciones consultas- Soga App{% endblock %}
+{% block title %}Consulta Detalle Capacitaciones lista - Soga App{% endblock %}
 {% block content %}
 <div class="container">
     <script type="text/javascript">
@@ -7,13 +7,33 @@
             $('.date').datepicker({ dateFormat: 'yy-mm-dd' ,dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" ], monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]})  });
     </script>
     <div class="page-header">
-        <h3>Consulta capacitaciones</h3>
+        <h3>Consulta capacitaciones detalle</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}                
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
+                <div class="form-group form-group-sm">
+                <label for="form_txtNumeroIdentificacion" class="col-sm-2 control-label">Empleado:</label>
+                <div class="col-sm-10">
+                    <div class="row">
+                      <div class="col-lg-2">
+                        <div class="input-group">
+                          {{ form_widget(form.txtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }} 
+                        </div>
+                      </div>
+                      <div class="col-lg-10">
+                        <div class="input-group">                                      
+                            {{ form_widget(form.txtNombreCorto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                          <span class="input-group-btn">                                        
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                </div>
                 <div class="form-group form-group-sm">
                     <label for="form_capacitacionTipoRel" class="col-sm-2 control-label">Tipo:</label>
                     <div class="col-sm-4">
@@ -57,44 +77,42 @@
                     <tr>
                         <th>CÓDIGO</th>
                         <th>FECHA</th>
+                        <th>IDENTIFICACION</th>
+                        <th>EMPLEADO</th>
                         <th>TIPO</th>
                         <th>TEMA</th>
                         <th>METODOLOGIA</th>
                         <th>ZONA</th>
-                        <th>LUGAR</th>
-                        <th>PERSONAS CAPACITAR</th>
-                        <th>PERSONAS ASISTIERON</th>
-                        <th>ABIERTO</th>
-                        <th>AUTORIZADO</th>                        
+                        <th>LUGAR</th>                        
+                                                
                     </tr>
-                    {% for arCapacitaciones in arCapacitaciones %}
+                    {% for arCapacitacionesDetalles in arCapacitacionesDetalles %}
                         <tr>
-                            <td><input type="hidden" name="LblCodigo[]" value="{{ arCapacitaciones.codigoCapacitacionPk }}">{{ arCapacitaciones.codigoCapacitacionPk }} </td>
-                            <td>{{ arCapacitaciones.fechaCapacitacion |date("Y/m/d :H:i:s")  }}</td>
-                            <td>{{ arCapacitaciones.capacitacionTipoRel.nombre  | default('') }}</td>
-                            <td>{{ arCapacitaciones.tema  }}</td>
-                            <td>{{ arCapacitaciones.capacitacionMetodologiaRel.nombre | default('')  }}</td>
-                            <td>{{ arCapacitaciones.zonaRel.nombre | default('')}}</td>
-                            <td>{{ arCapacitaciones.lugar | default('')}}</td>
-                            <td align="right">{{ arCapacitaciones.numeroPersonasCapacitar  }}</td>
-                            <td align="right">{{ arCapacitaciones.numeroPersonasAsistieron  }}</td>
-                            <td>{% if arCapacitaciones.estado == 0 %}SI{% else %}NO{% endif %}</td>
-                            <td>{% if arCapacitaciones.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>                            
+                            <td><input type="hidden" name="LblCodigo[]" value="{{ arCapacitacionesDetalles.codigoCapacitacionDetallePk }}">{{ arCapacitacionesDetalles.codigoCapacitacionDetallePk }} </td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.fechaCapacitacion |date("Y/m/d :H:i:s")  }}</td>
+                            <td>{{ arCapacitacionesDetalles.numeroIdentificacion }}</td>
+                            <td>{{ arCapacitacionesDetalles.nombreCorto }}</td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.capacitacionTipoRel.nombre  | default('') }}</td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.tema  }}</td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.capacitacionMetodologiaRel.nombre | default('')  }}</td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.zonaRel.nombre | default('')}}</td>
+                            <td>{{ arCapacitacionesDetalles.capacitacionRel.lugar | default('')}}</td>                            
+                            
                         </tr>
                     {% endfor %}
                 </table>                       
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arCapacitaciones.getTotalItemCount }}</span></div>                        
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arCapacitacionesDetalles.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-            {{ knp_pagination_render(arCapacitaciones) }}       
+            {{ knp_pagination_render(arCapacitacionesDetalles) }}       
         </div>
-        <div class="btn-toolbar" style="float: right">                                       
+        <div class="btn-toolbar" style="float: right">                                                   
             <div class="btn-group">                
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
-            </div>                      
+            </div>                        
         </div>          
         <!-- Fin Botones Menu Items -->
         {{ form_rest(form) }}
