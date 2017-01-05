@@ -264,7 +264,7 @@ class TurSoportePagoRepository extends EntityRepository {
             asort($arrTurnos);
             $horasIniciales = 0;
             foreach ($arrTurnos as $arrTurno) {
-                $strTurno = $arrTurno['turno'];
+                $strTurno = $arrTurno['turno'];                
                 if($turnoFijo == 1) {
                     if(!isset($arrTurnoFijo[$i])) {
                         $arrTurnoFijo[$i] = $strTurno;
@@ -412,7 +412,9 @@ class TurSoportePagoRepository extends EntityRepository {
             $boolFestivo2 = 1;
         }
         $arrHoras1 = null;
-        if(($intHoraInicio + $intMinutoInicio) <= $intHoraFinal){
+        //if(($intHoraInicio + $intMinutoInicio) < ($intHoraFinal+$intMinutoFinal)){
+        
+        if(($intHoraInicio + $intMinutoInicio) <= $intHoraFinal && $arTurno->getTurnoCompleto() == 0){
             $arrHoras = $this->turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $horasIniciales, $arTurno->getNovedad(), $arTurno->getDescanso());
             $horasTotales = $arrHoras['horas']+$arrHoras1['horas'];
         } else {

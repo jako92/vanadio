@@ -33,6 +33,7 @@ class TurTurnoType extends AbstractType
             ->add('ingreso', CheckboxType::class, array('required'  => false))
             ->add('retiro', CheckboxType::class, array('required'  => false))
             ->add('induccion', CheckboxType::class, array('required'  => false))
+            ->add('turnoCompleto', CheckboxType::class, array('required'  => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

@@ -112,6 +112,11 @@ class TurTurno
     private $complementario = false;     
     
     /**
+     * @ORM\Column(name="turno_completo", type="boolean")
+     */    
+    private $turnoCompleto = false;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="TurTurnoDetalle", mappedBy="turnoRel", cascade={"persist", "remove"})
      */
     protected $turnosDetallesTurnoRel;            
@@ -763,5 +768,29 @@ class TurTurno
     public function getInduccion()
     {
         return $this->induccion;
+    }
+
+    /**
+     * Set turnoCompleto
+     *
+     * @param boolean $turnoCompleto
+     *
+     * @return TurTurno
+     */
+    public function setTurnoCompleto($turnoCompleto)
+    {
+        $this->turnoCompleto = $turnoCompleto;
+
+        return $this;
+    }
+
+    /**
+     * Get turnoCompleto
+     *
+     * @return boolean
+     */
+    public function getTurnoCompleto()
+    {
+        return $this->turnoCompleto;
     }
 }
