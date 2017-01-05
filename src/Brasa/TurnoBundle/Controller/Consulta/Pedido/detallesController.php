@@ -146,10 +146,10 @@ class detallesController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AK'; $col++) {
+        for($col = 'A'; $col !== 'AN'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);         
         }      
-        for($col = 'AI'; $col !== 'AK'; $col++) {            
+        for($col = 'AI'; $col !== 'AN'; $col++) {            
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }        
         $objPHPExcel->setActiveSheetIndex(0)
@@ -187,8 +187,11 @@ class detallesController extends Controller
                     ->setCellValue('AF1', 'HDP')
                     ->setCellValue('AG1', 'HNP')                
                     ->setCellValue('AH1', 'DIAS')
-                    ->setCellValue('AI1', 'VALOR')
-                    ->setCellValue('AJ1', 'VR.PEND');
+                    ->setCellValue('AI1', 'P_MIN')
+                    ->setCellValue('AJ1', 'P_AJU')
+                    ->setCellValue('AK1', 'SUBTOTAL')
+                    ->setCellValue('AL1', 'TOTAL')
+                    ->setCellValue('AM1', 'PED_FAC');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -229,8 +232,11 @@ class detallesController extends Controller
                     ->setCellValue('AF' . $i, $arPedidoDetalle->getHorasDiurnasProgramadas())
                     ->setCellValue('AG' . $i, $arPedidoDetalle->getHorasNocturnasProgramadas())
                     ->setCellValue('AH' . $i, $arPedidoDetalle->getDias())
-                    ->setCellValue('AI' . $i, $arPedidoDetalle->getVrTotalDetalle())
-                    ->setCellValue('AJ' . $i, $arPedidoDetalle->getVrTotalDetallePendiente());
+                    ->setCellValue('AI' . $i, $arPedidoDetalle->getVrPrecioMinimo())
+                    ->setCellValue('AJ' . $i, $arPedidoDetalle->getVrPrecioAjustado())
+                    ->setCellValue('AK' . $i, $arPedidoDetalle->getVrSubtotal())
+                    ->setCellValue('AL' . $i, $arPedidoDetalle->getVrTotalDetalle())
+                    ->setCellValue('AM' . $i, $arPedidoDetalle->getVrTotalDetallePendiente());
             if($arPedidoDetalle->getPuestoRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('L' . $i, $arPedidoDetalle->getPuestoRel()->getNombre());

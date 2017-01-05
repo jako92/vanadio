@@ -49,6 +49,21 @@ class PedidoController extends Controller
                 $this->filtrar($form);
                 $form = $this->formularioFiltro();
                 $this->lista();
+                
+               /*$dql =  $em->getRepository('BrasaTurnoBundle:TurPedido')->listaDQL(
+                "", 
+                "", 
+                "", 
+                "",
+                "",
+                "",
+                "2017-01-01",
+                "2017-01-31");
+               $query = $em->createQuery($dql);
+               $arPedidos = $query->getResult();
+               foreach ($arPedidos as $arPedido) {
+                    $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($arPedido->getCodigoPedidoPk());
+               }*/               
             }
             if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrar($form);
