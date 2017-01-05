@@ -306,37 +306,39 @@ class ServicioController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $arrControles = $request->request->All();
                 $arPuesto = $form->get('puestoRel')->getData();
-                if(count($arrSeleccionados) > 0) {    
-                    foreach ($arrSeleccionados AS $codigo) {
-                        $arConceptoServicio = new \Brasa\TurnoBundle\Entity\TurConceptoServicio();
-                        $arConceptoServicio = $em->getRepository('BrasaTurnoBundle:TurConceptoServicio')->find($codigo);
-                        $cantidad = $arrControles['TxtCantidad' . $codigo];
-                        $precio = $arrControles['TxtPrecio' . $codigo];                        
-                        $subtotal = $cantidad * $precio;
-                        $subtotalAIU = $subtotal * $arConceptoServicio->getPorBaseIva()/100;
-                        $iva = ($subtotalAIU * $arConceptoServicio->getPorIva())/100;
-                        $total = $subtotal + $iva;
-                        $arServicioDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
-                        $arServicioDetalleConcepto->setServicioRel($arServicio);                        
-                        $arServicioDetalleConcepto->setConceptoServicioRel($arConceptoServicio);
-                        $arServicioDetalleConcepto->setPuestoRel($arPuesto);
-                        $arServicioDetalleConcepto->setPorIva($arConceptoServicio->getPorIva());
-                        $arServicioDetalleConcepto->setPorBaseIva($arConceptoServicio->getPorBaseIva());
-                        $arServicioDetalleConcepto->setCantidad($cantidad);
-                        $arServicioDetalleConcepto->setPrecio($precio);
-                        $arServicioDetalleConcepto->setSubtotal($subtotal);                        
-                        $arServicioDetalleConcepto->setIva($iva);
-                        $arServicioDetalleConcepto->setTotal($total);
-                        $em->persist($arServicioDetalleConcepto);  
-                    }
+                if($arPuesto) {
+                    if(count($arrSeleccionados) > 0) {    
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arConceptoServicio = new \Brasa\TurnoBundle\Entity\TurConceptoServicio();
+                            $arConceptoServicio = $em->getRepository('BrasaTurnoBundle:TurConceptoServicio')->find($codigo);
+                            $cantidad = $arrControles['TxtCantidad' . $codigo];
+                            $precio = $arrControles['TxtPrecio' . $codigo];                        
+                            $subtotal = $cantidad * $precio;
+                            $subtotalAIU = $subtotal * $arConceptoServicio->getPorBaseIva()/100;
+                            $iva = ($subtotalAIU * $arConceptoServicio->getPorIva())/100;
+                            $total = $subtotal + $iva;
+                            $arServicioDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
+                            $arServicioDetalleConcepto->setServicioRel($arServicio);                        
+                            $arServicioDetalleConcepto->setConceptoServicioRel($arConceptoServicio);
+                            $arServicioDetalleConcepto->setPuestoRel($arPuesto);
+                            $arServicioDetalleConcepto->setPorIva($arConceptoServicio->getPorIva());
+                            $arServicioDetalleConcepto->setPorBaseIva($arConceptoServicio->getPorBaseIva());
+                            $arServicioDetalleConcepto->setCantidad($cantidad);
+                            $arServicioDetalleConcepto->setPrecio($precio);
+                            $arServicioDetalleConcepto->setSubtotal($subtotal);                        
+                            $arServicioDetalleConcepto->setIva($iva);
+                            $arServicioDetalleConcepto->setTotal($total);
+                            $em->persist($arServicioDetalleConcepto);                             
+                        }
+                    }                    
+                    $em->flush();
+                    $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                                    
+                } else {
+                    $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+                    $objMensaje->Mensaje("error", "Debe seleccionar un puesto para crear el nuevo concepto");
                 }
-                $em->flush();
-                $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
             } 
-            if ($form->get('BtnFiltrar')->isClicked()) {            
-                $this->filtrarDetalleNuevo($form);
-            }
         }
         
         $arConceptosServicio = new \Brasa\TurnoBundle\Entity\TurConceptoServicio();

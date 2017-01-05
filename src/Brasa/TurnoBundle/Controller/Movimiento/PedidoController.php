@@ -310,32 +310,37 @@ class PedidoController extends Controller
                 $arrControles = $request->request->All();
                 if(count($arrSeleccionados) > 0) {  
                     $arPuesto = $form->get('puestoRel')->getData();
-                    foreach ($arrSeleccionados AS $codigo) {
-                        $arConceptoServicio = new \Brasa\TurnoBundle\Entity\TurConceptoServicio();
-                        $arConceptoServicio = $em->getRepository('BrasaTurnoBundle:TurConceptoServicio')->find($codigo);
-                        $cantidad = $arrControles['TxtCantidad' . $codigo];
-                        $precio = $arrControles['TxtPrecio' . $codigo];                        
-                        $subtotal = $cantidad * $precio;
-                        $subtotalAIU = $subtotal * $arConceptoServicio->getPorBaseIva()/100;
-                        $iva = ($subtotalAIU * $arConceptoServicio->getPorIva())/100;
-                        $total = $subtotal + $iva;
-                        $arPedidoDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
-                        $arPedidoDetalleConcepto->setPedidoRel($arPedido);                        
-                        $arPedidoDetalleConcepto->setConceptoServicioRel($arConceptoServicio);
-                        $arPedidoDetalleConcepto->setPuestoRel($arPuesto);
-                        $arPedidoDetalleConcepto->setPorIva($arConceptoServicio->getPorIva());
-                        $arPedidoDetalleConcepto->setPorBaseIva($arConceptoServicio->getPorBaseIva());
-                        $arPedidoDetalleConcepto->setCantidad($cantidad);
-                        $arPedidoDetalleConcepto->setPrecio($precio);
-                        $arPedidoDetalleConcepto->setSubtotal($subtotal);                        
-                        $arPedidoDetalleConcepto->setIva($iva);
-                        $arPedidoDetalleConcepto->setTotal($total);
-                        $em->persist($arPedidoDetalleConcepto);  
+                    if($arPuesto) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arConceptoServicio = new \Brasa\TurnoBundle\Entity\TurConceptoServicio();
+                            $arConceptoServicio = $em->getRepository('BrasaTurnoBundle:TurConceptoServicio')->find($codigo);
+                            $cantidad = $arrControles['TxtCantidad' . $codigo];
+                            $precio = $arrControles['TxtPrecio' . $codigo];                        
+                            $subtotal = $cantidad * $precio;
+                            $subtotalAIU = $subtotal * $arConceptoServicio->getPorBaseIva()/100;
+                            $iva = ($subtotalAIU * $arConceptoServicio->getPorIva())/100;
+                            $total = $subtotal + $iva;
+                            $arPedidoDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
+                            $arPedidoDetalleConcepto->setPedidoRel($arPedido);                        
+                            $arPedidoDetalleConcepto->setConceptoServicioRel($arConceptoServicio);
+                            $arPedidoDetalleConcepto->setPuestoRel($arPuesto);
+                            $arPedidoDetalleConcepto->setPorIva($arConceptoServicio->getPorIva());
+                            $arPedidoDetalleConcepto->setPorBaseIva($arConceptoServicio->getPorBaseIva());
+                            $arPedidoDetalleConcepto->setCantidad($cantidad);
+                            $arPedidoDetalleConcepto->setPrecio($precio);
+                            $arPedidoDetalleConcepto->setSubtotal($subtotal);                        
+                            $arPedidoDetalleConcepto->setIva($iva);
+                            $arPedidoDetalleConcepto->setTotal($total);
+                            $em->persist($arPedidoDetalleConcepto);  
+                        }   
+                        $em->flush();
+                        $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);
+                        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                                        
+                    } else {
+                        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+                        $objMensaje->Mensaje("error", "Debe seleccionar un puesto para crear el nuevo concepto");                        
                     }
                 }
-                $em->flush();
-                $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
             } 
             if ($form->get('BtnFiltrar')->isClicked()) {            
                 $this->filtrarDetalleNuevo($form);

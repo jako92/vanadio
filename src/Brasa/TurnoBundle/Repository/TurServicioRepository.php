@@ -264,7 +264,7 @@ class TurServicioRepository extends EntityRepository {
             $arServicioDetalleConceptoAct = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
             $arServicioDetalleConceptoAct = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->find($arServicioDetalleConcepto->getCodigoServicioDetalleConceptoPk());                            
             $subtotal = $arServicioDetalleConcepto->getCantidad() * $arServicioDetalleConcepto->getPrecio();
-            $subtotalAIU = $subtotal * 10/100;
+            $subtotalAIU = $subtotal * $arServicioDetalleConcepto->getConceptoServicioRel()->getPorBaseIva()/100;
             $iva = ($subtotalAIU * $arServicioDetalleConcepto->getPorIva())/100;                
             $total = $subtotal + $iva;     
             $arServicioDetalleConceptoAct->setSubtotal($subtotal);                        

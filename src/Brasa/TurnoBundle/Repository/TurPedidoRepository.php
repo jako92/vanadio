@@ -291,7 +291,7 @@ class TurPedidoRepository extends EntityRepository {
             $arPedidoDetalleConceptoAct = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
             $arPedidoDetalleConceptoAct = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleConcepto')->find($arPedidoDetalleConcepto->getCodigoPedidoDetalleConceptoPk());                            
             $subtotal = $arPedidoDetalleConcepto->getCantidad() * $arPedidoDetalleConcepto->getPrecio();
-            $subtotalAIU = $subtotal * 10/100;
+            $subtotalAIU = $subtotal * $arPedidoDetalleConcepto->getConceptoServicioRel()->getPorBaseIva() / 100;
             $iva = ($subtotalAIU * $arPedidoDetalleConcepto->getPorIva())/100;                
             $total = $subtotal + $iva;     
             $arPedidoDetalleConceptoAct->setSubtotal($subtotal);                        
