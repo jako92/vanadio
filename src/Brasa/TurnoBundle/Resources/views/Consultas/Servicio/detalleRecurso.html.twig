@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-{% block title %}Consutla servicio detalle - Soga App{% endblock %}
+{% block title %}Consulta servicio detalle - Soga App{% endblock %}
 {% block content %}
 <script>
     $(function () {
@@ -123,7 +123,8 @@
                     <td colspan="10"></td>
                     <td>{{ arServiciosDetallesRecursos.posicion }}</td>
                     <td>{{ arServiciosDetallesRecursos.codigoRecursoFk }}</td>
-                    <td colspan="13">{{ arServiciosDetallesRecursos.recursoRel.nombreCorto | default('')}}</td> 
+                    <td colspan="10">{{ arServiciosDetallesRecursos.recursoRel.nombreCorto | default('')}}</td> 
+                    <td style="text-align: center" ><a href="{{ path('brs_tur_movimiento_servicio_detalle_recurso', { 'codigoServicioDetalle': intCodigoServicioDetalle }) }}" target="_blank"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                                    
                 </tr>                
             {% endfor %}
             
