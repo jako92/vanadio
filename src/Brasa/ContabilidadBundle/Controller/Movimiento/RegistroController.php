@@ -50,7 +50,7 @@ class RegistroController extends Controller
     }
     
     private function lista() {   
-        $session = $this->getRequest()->getSession();
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
@@ -68,8 +68,8 @@ class RegistroController extends Controller
                     );
     }        
     
-    private function filtrar ($form, Request $request) {
-        $session = $this->get('session');                
+    private function filtrar ($form) {
+        $session = new Session();                
         $session->set('filtroCtbNumero', $form->get('TxtNumero')->getData());                
         $session->set('filtroCtbNumeroReferencia',$form->get('TxtNumeroReferencia')->getData());                
         $session->set('filtroCtbCodigoComprobante', $form->get('TxtComprobante')->getData());
@@ -82,7 +82,7 @@ class RegistroController extends Controller
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new Session();
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/')."01";
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
@@ -186,10 +186,8 @@ class RegistroController extends Controller
     /**
      * @Route("/ctb/movimiento/registro/eliminar", name="brs_ctb_movimiento_registro_eliminar")
      */    
-    public function eliminarMasivoAction() {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession(); 
+    public function eliminarMasivoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();                
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
             ->add('TxtNumeroRegistro', 'text', array('label'  => 'Codigo'))
@@ -198,10 +196,10 @@ class RegistroController extends Controller
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
-                'property' => 'nombre',
+                'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
-                'empty_value' => "TODOS",
+                'placeholder' => "TODOS",
                 'data' => ""))
             ->add('fechaDesde','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
             ->add('fechaHasta','date',array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                                            

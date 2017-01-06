@@ -73,36 +73,22 @@ class PedidoDevolucionController extends Controller
         $form = $this->createForm(TurPedidoDevolucionType::class, $arPedidoDevolucion);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arPedido = $form->getData();            
+            $arPedidoDevolucion = $form->getData();            
             $arrControles = $request->request->All();
             if($arrControles['txtNit'] != '') {                
                 $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
                 $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));                
                 if(count($arCliente) > 0) {
-                    $arPedido->setClienteRel($arCliente);                    
-                    if($codigoPedido != 0){
-                        $numeroRegistros = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->numeroRegistros($codigoPedido);
-                        if($numeroRegistros <= 0) {
-                            $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
-                            $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));                            
-                        } else {
-                            $arPedido->setFechaProgramacion($fechaOriginal);
-                            $objMensaje->Mensaje("error", "No se actualizo la fecha del pedido porque tiene detalles, debe eliminarlos antes de cambiar la fecha");
-                        }
-                    } else {
-                        $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
-                        $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));                                                
-                    }
-                    
+                    $arPedidoDevolucion->setClienteRel($arCliente);                                        
                     $arUsuario = $this->getUser();
-                    $arPedido->setUsuario($arUsuario->getUserName());
-                    $em->persist($arPedido);
+                    $arPedidoDevolucion->setUsuario($arUsuario->getUserName());
+                    $em->persist($arPedidoDevolucion);
                     $em->flush();
 
                     if($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_nuevo', array('codigoPedido' => 0 )));
+                        return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_nuevo', array('codigoPedidoDevolucion' => 0 )));
                     } else {
-                        return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $arPedido->getCodigoPedidoPk())));
+                        return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $arPedidoDevolucion->getCodigoPedidoDevolucionPk())));
                     }                       
                 } else {
                     $objMensaje->Mensaje("error", "El cliente no existe");
@@ -115,7 +101,7 @@ class PedidoDevolucionController extends Controller
     }
 
     /**
-     * @Route("/tur/movimiento/pedido/devolucion/detalle/{codigoPedido}", name="brs_tur_movimiento_pedido_devolucion_detalle")
+     * @Route("/tur/movimiento/pedido/devolucion/detalle/{codigoPedidoDevolucion}", name="brs_tur_movimiento_pedido_devolucion_detalle")
      */     
     public function detalleAction(Request $request, $codigoPedido) {
         $em = $this->getDoctrine()->getManager();
