@@ -233,10 +233,10 @@ class FacturaController extends Controller
         $form = $this->formularioDetalle($arFactura);
         $form->handleRequest($request);
         if($form->isValid()) {
-            if($form->get('BtnLiquidar')->isClicked()) {                                      
+            /*if($form->get('BtnLiquidar')->isClicked()) {                                      
                 $em->getRepository('BrasaTurnoBundle:TurFactura')->liquidar($codigoFactura);  
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));                                
-            }            
+            }*/            
             if($form->get('BtnAutorizar')->isClicked()) {      
                 $arrControles = $request->request->All();
                 $this->actualizarDetalle($arrControles, $codigoFactura);
@@ -719,7 +719,7 @@ class FacturaController extends Controller
         $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);        
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
-        $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);
+        //$arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);
         $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
@@ -741,8 +741,7 @@ class FacturaController extends Controller
         $form = $this->createFormBuilder()
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                                     
-                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
-                    ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                    
                     ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                
                     ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)

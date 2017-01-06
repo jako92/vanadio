@@ -273,9 +273,7 @@ class PedidoDevolucionController extends Controller
     private function filtrar ($form) {
         $session = new session;    
         $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
-        $session->set('filtroPedidoEstadoAutorizado', $form->get('estadoAutorizado')->getData());          
-        $session->set('filtroPedidoEstadoProgramado', $form->get('estadoProgramado')->getData());          
-        $session->set('filtroPedidoEstadoFacturado', $form->get('estadoFacturado')->getData());          
+        $session->set('filtroPedidoEstadoAutorizado', $form->get('estadoAutorizado')->getData());                          
         $session->set('filtroPedidoEstadoAnulado', $form->get('estadoAnulado')->getData());          
         $session->set('filtroNit', $form->get('TxtNit')->getData());                         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
