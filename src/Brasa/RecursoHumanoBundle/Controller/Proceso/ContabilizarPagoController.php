@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ContabilizarPagoController extends Controller
 {
@@ -150,7 +151,22 @@ class ContabilizarPagoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session; 
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arrayPropiedadesTipo = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoTipo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoPagoTipo')) {
+            $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoTipo", $session->get('filtroCodigoPagoTipo'));
+        }        
         $form = $this->createFormBuilder()
+            ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
             ->add('numeroDesde', NumberType::class, array('label'  => 'Numero desde'))
             ->add('numeroHasta', NumberType::class, array('label'  => 'Numero hasta'))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
@@ -160,13 +176,17 @@ class ContabilizarPagoController extends Controller
         $form->handleRequest($request);        
         if ($form->isValid()) {             
             if ($form->get('BtnDescontabilizar')->isClicked()) {
+                $codigoPagoTipo = '';
+                if($form->get('pagoTipoRel')->getData()) {
+                    $codigoPagoTipo = $form->get('pagoTipoRel')->getData()->getCodigoPagoTipoPk();
+                }                                        
                 $intNumeroDesde = $form->get('numeroDesde')->getData();
                 $intNumeroHasta = $form->get('numeroHasta')->getData();
                 $dateFechaDesde = $form->get('fechaDesde')->getData();
                 $dateFechaHasta = $form->get('fechaHasta')->getData();
                 if($intNumeroDesde != "" || $intNumeroHasta != "" || $dateFechaDesde != "" || $dateFechaHasta != "") {
                     $arRegistros = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                    $arRegistros = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->contabilizadosPagoNominaDql($intNumeroDesde,$intNumeroHasta,$dateFechaDesde,$dateFechaHasta);  
+                    $arRegistros = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->contabilizadosPagoNominaDql($intNumeroDesde,$intNumeroHasta,$dateFechaDesde,$dateFechaHasta, $codigoPagoTipo);  
                     foreach ($arRegistros as $codigoRegistro) {
                         $arRegistro = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                         $arRegistro = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($codigoRegistro);

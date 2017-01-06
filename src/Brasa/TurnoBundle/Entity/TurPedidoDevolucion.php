@@ -62,7 +62,25 @@ class TurPedidoDevolucion
      */    
     private $comentarios;         
     
+    /**
+     * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="pedidosDevolucionesClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;     
 
+    /**
+     * @ORM\OneToMany(targetEntity="TurPedidoDevolucionDetalle", mappedBy="pedidoDevolucionRel", cascade={"persist", "remove"})
+     */
+    protected $pedidosDevolucionesDetallesPedidoDevolucionRel;    
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pedidosDevolucionesDetallesPedidoDevolucionRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoPedidoDevolucionPk
@@ -288,5 +306,63 @@ class TurPedidoDevolucion
     public function getComentarios()
     {
         return $this->comentarios;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCliente $clienteRel
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
+    }
+
+    /**
+     * Add pedidosDevolucionesDetallesPedidoDevolucionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDevolucionRel
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function addPedidosDevolucionesDetallesPedidoDevolucionRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDevolucionRel)
+    {
+        $this->pedidosDevolucionesDetallesPedidoDevolucionRel[] = $pedidosDevolucionesDetallesPedidoDevolucionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pedidosDevolucionesDetallesPedidoDevolucionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDevolucionRel
+     */
+    public function removePedidosDevolucionesDetallesPedidoDevolucionRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDevolucionRel)
+    {
+        $this->pedidosDevolucionesDetallesPedidoDevolucionRel->removeElement($pedidosDevolucionesDetallesPedidoDevolucionRel);
+    }
+
+    /**
+     * Get pedidosDevolucionesDetallesPedidoDevolucionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPedidosDevolucionesDetallesPedidoDevolucionRel()
+    {
+        return $this->pedidosDevolucionesDetallesPedidoDevolucionRel;
     }
 }

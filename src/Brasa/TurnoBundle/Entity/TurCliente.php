@@ -293,6 +293,11 @@ class TurCliente
      * @ORM\OneToMany(targetEntity="TurPedido", mappedBy="clienteRel")
      */
     protected $pedidosClienteRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="TurPedidoDevolucion", mappedBy="clienteRel")
+     */
+    protected $pedidosDevolucionesClienteRel;
     
     /**
      * @ORM\OneToMany(targetEntity="TurServicio", mappedBy="clienteRel")
@@ -2084,5 +2089,39 @@ class TurCliente
     public function getCostosRecursosDetallesClienteRel()
     {
         return $this->costosRecursosDetallesClienteRel;
+    }
+
+    /**
+     * Add pedidosDevolucionesClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucion $pedidosDevolucionesClienteRel
+     *
+     * @return TurCliente
+     */
+    public function addPedidosDevolucionesClienteRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucion $pedidosDevolucionesClienteRel)
+    {
+        $this->pedidosDevolucionesClienteRel[] = $pedidosDevolucionesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pedidosDevolucionesClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucion $pedidosDevolucionesClienteRel
+     */
+    public function removePedidosDevolucionesClienteRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucion $pedidosDevolucionesClienteRel)
+    {
+        $this->pedidosDevolucionesClienteRel->removeElement($pedidosDevolucionesClienteRel);
+    }
+
+    /**
+     * Get pedidosDevolucionesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPedidosDevolucionesClienteRel()
+    {
+        return $this->pedidosDevolucionesClienteRel;
     }
 }

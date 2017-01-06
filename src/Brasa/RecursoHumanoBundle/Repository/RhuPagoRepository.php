@@ -192,7 +192,7 @@ class RhuPagoRepository extends EntityRepository {
         return $dql;
     }
     
-    public function contabilizadosPagoNominaDql($intNumeroDesde = 0, $intNumeroHasta = 0,$strDesde = "",$strHasta = "") {        
+    public function contabilizadosPagoNominaDql($intNumeroDesde = 0, $intNumeroHasta = 0,$strDesde = "",$strHasta = "", $codigoPagoTipo = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuPago p WHERE p.estadoContabilizado = 1 AND p.estadoPagado = 1";
         if($intNumeroDesde != "" || $intNumeroDesde != 0) {
@@ -207,6 +207,9 @@ class RhuPagoRepository extends EntityRepository {
         if($strHasta != "" || $strHasta != 0) {
             $dql .= " AND p.fechaHasta <='" . date_format($strHasta, ('Y-m-d')) . "'";
         }
+        if($codigoPagoTipo != "") {
+            $dql .= " AND p.codigoPagoTipoFk = " . $codigoPagoTipo;
+        }         
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         return $arrayResultado;
