@@ -927,6 +927,26 @@ class PedidoController extends Controller
                     ));
     }    
     
+    /**
+     * @Route("/tur/movimiento/pedido/detalle/concepto/resumen/{codigoPedidoDetalleConcepto}", name="brs_tur_movimiento_pedido_detalle_concepto_resumen")
+     */    
+    public function detalleResumenConceptoAction(Request $request, $codigoPedidoDetalleConcepto) {
+        $em = $this->getDoctrine()->getManager(); 
+        $arPedidoDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
+        $arPedidoDetalleConcepto = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleConcepto')->find($codigoPedidoDetalleConcepto);
+        $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();       
+        $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoPedidoDetalleConceptoFk' => $codigoPedidoDetalleConcepto));        
+        $arServicio = null;
+        if($arPedidoDetalleConcepto->getCodigoConceptoServicioFK()) {
+            $arServicio = $arPedidoDetalleConcepto->getConceptoServicioRel();
+        }
+        return $this->render('BrasaTurnoBundle:Movimientos/Pedido:detalleResumenConcepto.html.twig', array(
+                    'arPedidoDetalleConcepto' => $arPedidoDetalleConcepto,
+                    'arFacturaDetalles' => $arFacturaDetalles,                    
+                    'arServicio' => $arServicio
+                    ));
+    }    
+    
     private function lista() {   
         $session = new session;
         $em = $this->getDoctrine()->getManager();

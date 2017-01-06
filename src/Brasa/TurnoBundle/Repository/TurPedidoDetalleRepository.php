@@ -98,7 +98,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
         }      
         $dql .= " ORDER BY p.codigoClienteFk, pd.codigoGrupoFacturacionFk, pd.codigoPuestoFk";        
         return $dql;
-    }         
+    }                 
     
     public function liquidar($codigoPedidoDetalle) {        
         $em = $this->getEntityManager();        

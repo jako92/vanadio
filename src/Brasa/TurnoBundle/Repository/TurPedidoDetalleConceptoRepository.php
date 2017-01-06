@@ -21,7 +21,49 @@ class TurPedidoDetalleConceptoRepository extends EntityRepository {
             $dql .= "AND p.codigoClienteFk = " . $codigoCliente . " ";  
         }               
         return $dql;
-    }    
+    } 
+    
+    public function listaConsultaPendienteFacturarDql($numeroPedido = "", $codigoCliente = "", $boolEstadoAutorizado = "", $boolEstadoProgramado = "", $boolEstadoFacturado = "", $boolEstadoAnulado = "", $strFechaDesde = "", $strFechaHasta = "") {
+        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalleConcepto pd JOIN pd.pedidoRel p WHERE pd.total > 0 ";
+        if($numeroPedido != "") {
+            $dql .= " AND p.numero = " . $numeroPedido;  
+        }
+        if($codigoCliente != "") {
+            $dql .= " AND p.codigoClienteFk = " . $codigoCliente;  
+        } 
+        if($boolEstadoProgramado == 1 ) {
+            $dql .= " AND p.estadoProgramado = 1";
+        }
+        if($boolEstadoProgramado == "0") {
+            $dql .= " AND p.estadoProgramado = 0";
+        }  
+        if($boolEstadoAutorizado == 1 ) {
+            $dql .= " AND p.estadoAutorizado = 1";
+        }
+        if($boolEstadoAutorizado == "0") {
+            $dql .= " AND p.estadoAutorizado = 0";
+        }         
+        if($boolEstadoFacturado == 1 ) {
+            $dql .= " AND pd.estadoFacturado = 1";
+        }
+        if($boolEstadoFacturado == "0") {
+            $dql .= " AND pd.estadoFacturado = 0";
+        }        
+        if($boolEstadoAnulado == 1 ) {
+            $dql .= " AND p.estadoAnulado = 1";
+        }
+        if($boolEstadoAnulado == "0") {
+            $dql .= " AND p.estadoAnulado = 0";
+        }
+        if($strFechaDesde != "") {
+            $dql .= " AND p.fechaProgramacion >= '" . $strFechaDesde . "'";
+        }        
+        if($strFechaHasta != "") {
+            $dql .= " AND p.fechaProgramacion <= '" . $strFechaHasta . "'";
+        }      
+        //$dql .= " ORDER BY p.codigoClienteFk, pd.codigoGrupoFacturacionFk, pd.codigoPuestoFk";        
+        return $dql;
+    }         
     
     public function eliminar($arrSeleccionados) {        
         if(count($arrSeleccionados) > 0) {
