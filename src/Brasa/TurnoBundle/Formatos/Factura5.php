@@ -97,7 +97,7 @@ class Factura5 extends \FPDF_FPDF {
         if($arFactura->getImprimirRelacion() == false) {
             if($arFactura->getImprimirAgrupada() == 0) {
                 foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                    $descripcion = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " ". $this->devuelveMes($arFacturaDetalle->getFechaProgramacion()->format('m')) . ' DE ' . $arFacturaDetalle->getFechaProgramacion()->format('Y');                    
+                    $descripcion = $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " ". $this->devuelveMes($arFacturaDetalle->getFechaProgramacion()->format('m')) . ' DE ' . $arFacturaDetalle->getFechaProgramacion()->format('Y'). " - ". $arFacturaDetalle->getPuestoRel()->getNombre();                    
                     $pdf->SetX(14);
                     $pdf->Cell(10, 4, $arFacturaDetalle->getCodigoFacturaDetallePk(), 0, 0, 'L');                    
                     $modalidad = "";
