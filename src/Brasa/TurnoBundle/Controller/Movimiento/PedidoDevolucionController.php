@@ -158,6 +158,62 @@ class PedidoDevolucionController extends Controller
                     ));
     }
       
+    /**
+     * @Route("/tur/movimiento/pedido/devolucion/detalle/nuevo/{codigoPedidoDevolucion}/{codigoPedidoDevolucionDetalle}", name="brs_tur_movimiento_pedido_devolucion_detalle_nuevo")
+     */    
+    public function detalleNuevoAction(Request $request, $codigoPedidoDevolucion, $codigoPedidoDevolucionDetalle = 0) {
+        $em = $this->getDoctrine()->getManager();
+        $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();
+        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
+        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+        if($codigoPedidoDetalle != 0) {
+            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);
+        } else {
+            $arPedidoDetalle->setFechaIniciaPlantilla($arPedido->getFechaProgramacion());
+            $arPedidoDetalle->setPedidoRel($arPedido);
+            $arPedidoDetalle->setCantidad(1);
+            $arPedidoDetalle->setLunes(true);
+            $arPedidoDetalle->setMartes(true);
+            $arPedidoDetalle->setMiercoles(true);
+            $arPedidoDetalle->setJueves(true);
+            $arPedidoDetalle->setViernes(true);
+            $arPedidoDetalle->setSabado(true);
+            $arPedidoDetalle->setDomingo(true);
+            $arPedidoDetalle->setFestivo(true);            
+        }
+        $form = $this->createForm(TurPedidoDetalleType::class, $arPedidoDetalle);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $arPedidoDetalle = $form->getData();
+            $arPedidoDetalle->setAnio($arPedido->getFechaProgramacion()->format('Y'));
+            $arPedidoDetalle->setMes($arPedido->getFechaProgramacion()->format('m'));            
+            $arPeriodo = $form->get('periodoRel')->getData();
+            if($arPeriodo->getCodigoPeriodoPk() == 1) {
+                $intAnio = $arPedido->getFechaProgramacion()->format('Y');                
+                $intMes = $arPedido->getFechaProgramacion()->format('m');
+                $arPedidoDetalle->setAnio($intAnio);
+                $arPedidoDetalle->setMes($intMes);
+                $intDiaFinalMes = date("d",(mktime(0,0,0,$intMes+1,1,$intAnio)-1));
+                $arPedidoDetalle->setDiaDesde(1);
+                $arPedidoDetalle->setDiaHasta($intDiaFinalMes);
+            }
+            if($codigoPedidoDetalle == 0) {
+                $arPedidoDetalle->setPorcentajeIva($arPedidoDetalle->getConceptoServicioRel()->getPorIva());
+            }            
+            $em->persist($arPedidoDetalle);
+            $em->flush();
+
+            if($form->get('guardarnuevo')->isClicked()) {
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle_nuevo', array('codigoPedido' => $codigoPedido, 'codigoPedidoDetalle' => 0 )));
+            } else {
+                $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }
+        }
+        return $this->render('BrasaTurnoBundle:Movimientos/Pedido:detalleNuevo.html.twig', array(
+            'arPedido' => $arPedido,
+            'form' => $form->createView()));
+    }    
     
     private function lista() {   
         $session = new session;
@@ -243,28 +299,16 @@ class PedidoDevolucionController extends Controller
         $arrBotonFacturar = array('label' => 'Facturar', 'disabled' => true);        
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);        
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
-        $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);
-        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
-        $arrBotonDetalleDesprogramar = array('label' => 'Desprogramar', 'disabled' => false);
-        $arrBotonDetalleMarcar = array('label' => 'Marcar', 'disabled' => false);        
-        $arrBotonDetalleAjuste = array('label' => 'Ajuste', 'disabled' => false);                
-        $arrBotonDesprogramar = array('label' => 'Desprogramar', 'disabled' => true);        
-        $arrBotonDetalleConceptoActualizar = array('label' => 'Actualizar', 'disabled' => false);
-        $arrBotonDetalleConceptoEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        
+        $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);        
+        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);                
         if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;                        
             $arrBotonDetalleEliminar['disabled'] = true;
-            $arrBotonDetalleActualizar['disabled'] = true;
-            $arrBotonProgramar['disabled'] = false;
-            $arrBotonAnular['disabled'] = false; 
-            $arrBotonDetalleConceptoActualizar['disabled'] = true;
-            $arrBotonDetalleConceptoEliminar['disabled'] = true;            
+            $arrBotonDetalleActualizar['disabled'] = true;            
+            $arrBotonAnular['disabled'] = false;            
             if($ar->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonAnular['disabled'] = true;                
-                $arrBotonDetalleDesprogramar['disabled'] = true;
             } else {
                 if($ar->getEstadoFacturado() == 0) {
                     $arrBotonFacturar['disabled'] = false;
@@ -274,22 +318,13 @@ class PedidoDevolucionController extends Controller
             $arrBotonDesAutorizar['disabled'] = true;                        
             $arrBotonImprimir['disabled'] = true;            
         }
-        $form = $this->createFormBuilder()
-                    ->add('BtnFacturar', SubmitType::class, $arrBotonFacturar)                
-                    ->add('BtnProgramar', SubmitType::class, $arrBotonProgramar)            
+        $form = $this->createFormBuilder()                    
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                     
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
-                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
-                    ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
-                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
-                    ->add('BtnDetalleDesprogramar', SubmitType::class, $arrBotonDetalleDesprogramar)
-                    ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)
-                    ->add('BtnDetalleAjuste', SubmitType::class, $arrBotonDetalleAjuste)                
-                    ->add('BtnDesprogramar', SubmitType::class, $arrBotonDesprogramar)  
-                    ->add('BtnDetalleConceptoActualizar', SubmitType::class, $arrBotonDetalleConceptoActualizar)
-                    ->add('BtnDetalleConceptoEliminar', SubmitType::class, $arrBotonDetalleConceptoEliminar)                                
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)                    
+                    ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)                                                                                
                     ->getForm();
         return $form;
     }       
