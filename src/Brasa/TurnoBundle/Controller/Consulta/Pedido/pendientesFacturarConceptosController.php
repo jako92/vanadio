@@ -17,7 +17,7 @@ class pendientesFacturarConceptosController extends Controller
     var $strListaDql = "";
     
     /**
-     * @Route("/tur/consulta/pedidos/pendiente/facturar/otros", name="brs_tur_consulta_pedidos_pendientes_facturar_otros")
+     * @Route("/tur/consulta/pedidos/pendiente/facturar/conceptos", name="brs_tur_consulta_pedidos_pendientes_facturar_conceptos")
      */    
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
