@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ContabilizarPagoBancoController extends Controller
 {
@@ -249,6 +250,8 @@ class ContabilizarPagoBancoController extends Controller
         $form = $this->createFormBuilder()
             ->add('pagoDesde', NumberType::class, array('label'  => 'Pago desde'))
             ->add('pagoHasta', NumberType::class, array('label'  => 'Pago hasta'))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                                                            
             ->add('BtnDescontabilizar', SubmitType::class, array('label'  => 'Descontabilizar',))
             ->getForm();
         $form->handleRequest($request);
@@ -256,12 +259,14 @@ class ContabilizarPagoBancoController extends Controller
             if ($form->get('BtnDescontabilizar')->isClicked()) {
                 $intPagoDesde = $form->get('pagoDesde')->getData();
                 $intPagoHasta = $form->get('pagoHasta')->getData();
-                if($intPagoDesde != "" || $intPagoHasta != "") {
-                    $arRegistros = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
-                    $arRegistros = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->contabilizadosPagoBancoDql($intPagoDesde,$intPagoHasta);
+                $dateFechaDesde = $form->get('fechaDesde')->getData();
+                $dateFechaHasta = $form->get('fechaHasta')->getData();                
+                if($intPagoDesde != "" || $intPagoHasta != "" || $dateFechaDesde != "" || $dateFechaHasta != "") {
+                    $arRegistros = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
+                    $arRegistros = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->contabilizadosPagoBancoDql($intPagoDesde, $intPagoHasta, $dateFechaDesde, $dateFechaHasta);
                     foreach ($arRegistros as $codigoRegistro) {
-                        $arRegistro = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
-                        $arRegistro = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->find($codigoRegistro);
+                        $arRegistro = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
+                        $arRegistro = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoRegistro);
                         $arRegistro->setEstadoContabilizado(0);
                         $em->persist($arRegistro);
                     }

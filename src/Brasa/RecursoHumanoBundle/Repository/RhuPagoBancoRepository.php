@@ -44,6 +44,27 @@ class RhuPagoBancoRepository extends EntityRepository {
         $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.estadoContabilizado = 0 AND pb.estadoAutorizado = 1 ";       
         $dql .= " ORDER BY pb.codigoPagoBancoPk DESC";
         return $dql;
-    }    
+    } 
+    
+    public function contabilizadosPagoBancoDql($intPagoDesde = 0, $intPagoHasta = 0, $strDesde = "",$strHasta = "") {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.estadoContabilizado = 1";
+        if($intPagoDesde != "" || $intPagoDesde != 0) {
+            $dql .= " AND pb.codigoPagoFk >= " . $intPagoDesde;
+        }
+        if($intPagoHasta != "" || $intPagoHasta != 0) {
+            $dql .= " AND pb.codigoPagoFk <= " . $intPagoHasta;
+        }   
+        if($strDesde != "" || $strDesde != 0){
+            $dql .= " AND pb.fecha >='" . date_format($strDesde, ('Y-m-d')) . "'";
+        }
+        if($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND pb.fecha <='" . date_format($strHasta, ('Y-m-d')) . "'";
+        }        
+        
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        return $arrayResultado;
+    }     
     
 }
