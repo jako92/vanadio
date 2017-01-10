@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 class RhuCierreAnioRepository extends EntityRepository {
     public function listaDql() {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT ca FROM BrasaRecursoHumanoBundle:RhuCierreAnio ca WHERE ca.estadoCerrado = 0";
+        $dql   = "SELECT ca FROM BrasaRecursoHumanoBundle:RhuCierreAnio ca WHERE ca.codigoCierreAnioPk <> 0";
         $dql .= " ORDER BY ca.anio ASC";
         return $dql;
     }                            

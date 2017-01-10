@@ -24,49 +24,14 @@ class CierreAnioController extends Controller
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
-        $form->handleRequest($request);
-        $boolError = 0;
-        $arCierreAnios = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreAnio();
-        $arCierreAnios = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreAnio')->findBy(array('estadoCerrado' => 0));
-        $arrInconsistencias = array();
-        $inconsistenciasLiquidacion = "";
-        $inconsistenciasSsoPeriodo = "";
-        $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
-        $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findBy(array('estadoAutorizado' => 0));
-        if(count($arLiquidacion) > 0) {
-            $inconsistenciasLiquidacion = "HAY LIQUIDACIONES SIN AUTORIZAR Y NO SE PUEDE EFECTUAR EL CIERRE";
-        }
-        foreach ($arCierreAnios as $arCierreAnio) {
-            $anioCierre = $arCierreAnio->getAnio();
-            $arSsoPeriodos = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodo;
-            $arSsoPeriodos = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodo')->findBy(array('anio' => $anioCierre, 'estadoCerrado' => 0));
-            if(count($arSsoPeriodos) > 0) {
-                $inconsistenciasSsoPeriodo = "HAY PERIODOS DE SEGURIDAD SOCIAL SIN CERRAR Y NO SE PUEDE EFECTUAR EL CIERRE";
-            }
-        }
-        if ($inconsistenciasLiquidacion == "" && $inconsistenciasSsoPeriodo == ""){
-            $arrInconsistencias = array();
-        }else{
-            if ($inconsistenciasLiquidacion == "" && $inconsistenciasSsoPeriodo != ""){
-                $arrInconsistencias = array($inconsistenciasSsoPeriodo);
-            }else{
-                if ($inconsistenciasLiquidacion != "" && $inconsistenciasSsoPeriodo == ""){
-                    $arrInconsistencias = array($inconsistenciasLiquidacion);
-                }else{
-                    $arrInconsistencias = array($inconsistenciasLiquidacion,$inconsistenciasSsoPeriodo);
-                }
-            }
-        }
-        
+        $form->handleRequest($request);                       
         $this->listar();
         if($form->isValid()) {
 
         }
-
         $arCierresAnios = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreAnio:lista.html.twig', array(
             'arCierresAnios' => $arCierresAnios,
-            'arrInconsistencias' => $arrInconsistencias,
             'form' => $form->createView()));
     }
 
@@ -110,6 +75,8 @@ class CierreAnioController extends Controller
         $arCierreAnio = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreAnio')->find($codigoCierreAnio);                
         
         if ($form->isValid()) {  
+            set_time_limit(0);
+            ini_set("memory_limit", -1); 
             $floSalarioMinimo = $form->get('salarioMinimo')->getData();
             $floAuxilioTransporte = $form->get('auxilioTransporte')->getData();            
             $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
@@ -158,7 +125,7 @@ class CierreAnioController extends Controller
             $anioNuevoPeriodo->setAnio($arConfiguracion->getAnioActual());
             $anioNuevoPeriodo->setEstadoCerrado(0);
             $em->persist($anioNuevoPeriodo);
-            $em->flush();            
+            $em->flush();                                     
             return $this->redirect($this->generateUrl('brs_rhu_proceso_cierre_anio'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreAnio:cerrar.html.twig', array(
