@@ -44,13 +44,13 @@ class Factura5 extends \FPDF_FPDF {
         $this->SetXY(14, 52);        
         $this->Cell(138, 4.5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
-        $this->SetXY(135, 39);        
+        $this->SetXY(135, 39.5);        
         $this->Cell(61, 4.5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
-        $this->SetXY(135, 43);        
+        $this->SetXY(135, 44);        
         $this->Cell(61, 4.5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(135, 48);        
         $this->Cell(61, 4.5, "VENDEDOR: 001", 0, 0, 'L', 0);                       
-        $this->SetXY(135, 53);        
+        $this->SetXY(135, 52);        
         $this->Cell(61, 4.5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
         
         $this->SetXY(110, 62);
