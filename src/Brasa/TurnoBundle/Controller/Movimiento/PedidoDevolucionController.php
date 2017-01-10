@@ -209,16 +209,16 @@ class PedidoDevolucionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";        
-        $filtrarFecha = $session->get('filtroPedidoFiltrarFecha');
+        $filtrarFecha = $session->get('filtroPedidoDevolucionFiltrarFecha');
         if($filtrarFecha) {
-            $strFechaDesde = $session->get('filtroPedidoFechaDesde');
-            $strFechaHasta = $session->get('filtroPedidoFechaHasta');                    
+            $strFechaDesde = $session->get('filtroPedidoDevolucionFechaDesde');
+            $strFechaHasta = $session->get('filtroPedidoDevolucionFechaHasta');                    
         }
         $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->listaDQL(
-                $session->get('filtroPedidoNumero'), 
+                $session->get('filtroPedidoDevolucionNumero'), 
                 $session->get('filtroCodigoCliente'), 
-                $session->get('filtroPedidoEstadoAutorizado'), 
-                $session->get('filtroPedidoEstadoAnulado'),
+                $session->get('filtroPedidoDevolucionEstadoAutorizado'), 
+                $session->get('filtroPedidoDevolucionEstadoAnulado'),
                 $strFechaDesde,
                 $strFechaHasta);
     }      
@@ -229,28 +229,28 @@ class PedidoDevolucionController extends Controller
         $strDql =  $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->pendientesFacturarDql(
                 $codigoCliente, 
                 "",
-                $session->get('filtroPedidoNumero')
+                $session->get('filtroPedidoDevolucionNumero')
                 );
         return $strDql;
     }    
     
     private function filtrar ($form) {
         $session = new session;    
-        $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
-        $session->set('filtroPedidoEstadoAutorizado', $form->get('estadoAutorizado')->getData());                          
-        $session->set('filtroPedidoEstadoAnulado', $form->get('estadoAnulado')->getData());          
+        $session->set('filtroPedidoDevolucionNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroPedidoDevolucionEstadoAutorizado', $form->get('estadoAutorizado')->getData());                          
+        $session->set('filtroPedidoDevolucionEstadoAnulado', $form->get('estadoAnulado')->getData());          
         $session->set('filtroNit', $form->get('TxtNit')->getData());                         
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        $session->set('filtroPedidoFechaDesde', $dateFechaDesde->format('Y/m/d'));
-        $session->set('filtroPedidoFechaHasta', $dateFechaHasta->format('Y/m/d'));                 
-        $session->set('filtroPedidoFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroPedidoDevolucionFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroPedidoDevolucionFechaHasta', $dateFechaHasta->format('Y/m/d'));                 
+        $session->set('filtroPedidoDevolucionFiltrarFecha', $form->get('filtrarFecha')->getData());
         
     }    
     
     private function filtrarDetalleNuevo ($form) {
         $session = new session;        
-        $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroPedidoDevolucionNumero', $form->get('TxtNumero')->getData());
     }     
     
     private function formularioFiltro() {
@@ -273,23 +273,23 @@ class PedidoDevolucionController extends Controller
         $strFechaDesde = $dateFecha->format('Y/m/')."01";
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
         $strFechaHasta = $dateFecha->format('Y/m/').$intUltimoDia;
-        if($session->get('filtroPedidoFechaDesde') != "") {
-            $strFechaDesde = $session->get('filtroPedidoFechaDesde');
+        if($session->get('filtroPedidoDevolucionFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroPedidoDevolucionFechaDesde');
         }
-        if($session->get('filtroPedidoFechaHasta') != "") {
-            $strFechaHasta = $session->get('filtroPedidoFechaHasta');
+        if($session->get('filtroPedidoDevolucionFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroPedidoDevolucionFechaHasta');
         }    
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
-            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroPedidoEstadoAutorizado')))                
-            ->add('estadoAnulado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ANULADO' => '1', 'SIN ANULAR' => '0'), 'data' => $session->get('filtroPedidoEstadoAnulado')))                                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoDevolucionNumero')))
+            ->add('estadoAutorizado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroPedidoDevolucionEstadoAutorizado')))                
+            ->add('estadoAnulado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ANULADO' => '1', 'SIN ANULAR' => '0'), 'data' => $session->get('filtroPedidoDevolucionEstadoAnulado')))                                
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                
-            ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroPedidoFiltrarFecha')))                 
+            ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroPedidoDevolucionFiltrarFecha')))                 
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -325,7 +325,7 @@ class PedidoDevolucionController extends Controller
     private function formularioDetalleNuevo() {
         $session = new session;       
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero'), 'required'  => false))                
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoDevolucionNumero'), 'required'  => false))                
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar',))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();

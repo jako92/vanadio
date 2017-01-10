@@ -144,7 +144,7 @@
                     <td style="text-align: right" {% if arPedidosDetalles.horasDiurnas != arPedidosDetalles.horasDiurnasProgramadas %} class="danger" {% endif %}>{{ arPedidosDetalles.horasDiurnas | number_format(0, '.', ',') }}({{ arPedidosDetalles.horasDiurnasProgramadas | number_format(0, '.', ',') }})</td> 
                     <td style="text-align: right" {% if arPedidosDetalles.horasNocturnas != arPedidosDetalles.horasNocturnasProgramadas %} class="danger" {% endif %}>{{ arPedidosDetalles.horasNocturnas | number_format(0, '.', ',') }}({{ arPedidosDetalles.horasNocturnasProgramadas | number_format(0, '.', ',') }})</td> 
                     <td style="text-align: right">{{ arPedidosDetalles.dias | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arPedidosDetalles.vrTotalDetalle | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: right">{{ arPedidosDetalles.vrSubtotal | number_format(0, '.', ',') }}</td> 
                     <td style="text-align: right">{{ arPedidosDetalles.vrTotalDetallePendiente | number_format(0, '.', ',') }}</td> 
                 </tr>
             {% endfor %}

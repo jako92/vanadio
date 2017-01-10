@@ -915,6 +915,8 @@ class PedidoController extends Controller
         $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));
         $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();       
         $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));        
+        $arPedidoDevolucionDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();       
+        $arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));
         $arServicio = null;
         if($arPedidoDetalle->getCodigoServicioDetalleFk()) {
             $arServicio = $arPedidoDetalle->getServicioDetalleRel()->getServicioRel();
@@ -923,6 +925,7 @@ class PedidoController extends Controller
                     'arPedidoDetalle' => $arPedidoDetalle,
                     'arFacturaDetalles' => $arFacturaDetalles,
                     'arProgramacionDetalles' => $arProgramacionDetalles,
+                    'arPedidoDevolucionDetalles' => $arPedidoDevolucionDetalles,
                     'arServicio' => $arServicio
                     ));
     }    
