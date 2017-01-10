@@ -57,97 +57,20 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             //Validar que este en el año actual
             if($arProgramacionPagoProcesar->getFechaDesde()->format('Y') <= $arConfiguracion->getAnioActual()) {
                 $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
-                $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPagoProcesar->getCodigoCentroCostoFk());
-                
-                //Nomina && primas
-                if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 1 || $arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 2) { 
-                    ini_set("memory_limit", -1);
-                    $strSql = "DELETE rhu_pago_detalle FROM rhu_pago_detalle LEFT JOIN rhu_pago on rhu_pago_detalle.codigo_pago_fk = rhu_pago.codigo_pago_pk WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
-                    $em->getConnection()->executeQuery($strSql); 
-                    $strSql = "DELETE FROM rhu_pago WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
-                    $em->getConnection()->executeQuery($strSql);
-                    
-                    $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));
-                    foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                        
-                        $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->generarPago($arProgramacionPagoDetalle, $arProgramacionPagoProcesar, $arCentroCosto, $arConfiguracion);   
-                    }
-                    $arProgramacionPagoProcesar->setEstadoGenerado(1);
-                    $em->persist($arProgramacionPagoProcesar);
-                    $em->flush();                    
-                }                
-                
-                //Cesantias
-                if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 3) {
-                    $arProgramacionPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
-                    $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));
-                    foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {
-                        $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                        $arPago->setPagoTipoRel($arProgramacionPagoProcesar->getPagoTipoRel());
-                        $arContratoEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                        $arPago->setEmpleadoRel($arProgramacionPagoDetalle->getEmpleadoRel());
-                        $arPago->setCentroCostoRel($arCentroCosto);
-                        $arPago->setFechaDesde($arProgramacionPagoProcesar->getFechaDesde());
-                        $arPago->setFechaHasta($arProgramacionPagoProcesar->getFechaHasta());
-                        $arPago->setVrSalarioEmpleado($arProgramacionPagoDetalle->getVrSalario());
-                        $arPago->setVrSalarioPeriodo($arProgramacionPagoDetalle->getVrDevengado());
-                        $arPago->setProgramacionPagoRel($arProgramacionPagoProcesar);
-                        $arPago->setDiasPeriodo($arProgramacionPagoDetalle->getDias());
-                        if($arProgramacionPagoDetalle->getCodigoContratoFk()) {
-                            $arPago->setContratoRel($arProgramacionPagoDetalle->getContratoRel());
-                        }
-                        $em->persist($arPago);
-                        $douSalarioMinimo = $arConfiguracion->getVrSalario();
-                        $intDias = $arProgramacionPagoDetalle->getDias();
-                        $intDiasContinuos = $arProgramacionPagoDetalle->getFechaDesde()->diff($arProgramacionPagoDetalle->getFechaHasta());
-                        $intDiasContinuos = $intDiasContinuos->format('%a');
-                        $intDiasContinuos += 1;   
-                        
-                        $floIbp = $em->getRepository('BrasaRecursoHumanoBundle:RhuIngresoBase')->devuelveIbpFecha($arProgramacionPagoDetalle->getCodigoEmpleadoFk(), $arProgramacionPagoDetalle->getFechaDesdePago()->format('Y-m-d'), $arProgramacionPagoProcesar->getFechaHastaReal()->format('Y-m-d'), $arProgramacionPagoDetalle->getCodigoContratoFk());
-                        if($arCentroCosto->getPeriodoPagoRel()->getContinuo() == 1) {
-                            $floSalarioPromedio = ($floIbp / $intDiasContinuos) * 30;
-                        } else {
-                            $floSalarioPromedio = ($floIbp / $intDias) * 30;
-                        }                           
-                        $strMensajeAuxilioTransporte = "";
-                        if(round($floSalarioPromedio) <=  $douSalarioMinimo * 2 ) {
-                            $floSalarioPromedio += $arConfiguracion->getVrAuxilioTransporte();
-                            $strMensajeAuxilioTransporte = " + Aux. transporte (" . $arConfiguracion->getVrAuxilioTransporte() . ")";
-                        }
-                        $floTotalPago = ($floSalarioPromedio * $intDias) / 360;
+                $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPagoProcesar->getCodigoCentroCostoFk());                
+                ini_set("memory_limit", -1);
+                $strSql = "DELETE rhu_pago_detalle FROM rhu_pago_detalle LEFT JOIN rhu_pago on rhu_pago_detalle.codigo_pago_fk = rhu_pago.codigo_pago_pk WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
+                $em->getConnection()->executeQuery($strSql); 
+                $strSql = "DELETE FROM rhu_pago WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
+                $em->getConnection()->executeQuery($strSql);
 
-                        //Cesantias
-                        $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find(29);
-                        $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
-                        $arPagoDetalle->setPagoRel($arPago);
-                        $arPagoDetalle->setPagoConceptoRel($arPagoConcepto);
-                        $arPagoDetalle->setDetalle($intDias . " Dias de cesantias (IBP " . number_format($floIbp, 0, '.', ',') . " )" . $strMensajeAuxilioTransporte);
-                        $arPagoDetalle->setNumeroDias($intDias);
-                        $arPagoDetalle->setVrPago($floTotalPago);
-                        $arPagoDetalle->setOperacion($arPagoConcepto->getOperacion());
-                        $arPagoDetalle->setVrPagoOperado($floTotalPago * $arPagoConcepto->getOperacion());
-                        $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
-                        $em->persist($arPagoDetalle);
-                        
-                        $floPorcentajeIntereses = (($intDias * 12) / 360)/100;
-                        $floTotalPagoIntereses = $floTotalPago * $floPorcentajeIntereses;
-                        
-                        //Intereses cesantias
-                        $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find(30);
-                        $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
-                        $arPagoDetalle->setPagoRel($arPago);
-                        $arPagoDetalle->setPagoConceptoRel($arPagoConcepto);
-                        $arPagoDetalle->setNumeroDias($intDias);
-                        $arPagoDetalle->setVrPago($floTotalPagoIntereses);
-                        $arPagoDetalle->setOperacion($arPagoConcepto->getOperacion());
-                        $arPagoDetalle->setVrPagoOperado($floTotalPagoIntereses * $arPagoConcepto->getOperacion());
-                        $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
-                        $em->persist($arPagoDetalle);                        
-                    }
-                    $arProgramacionPagoProcesar->setEstadoGenerado(1);                                
-                    $em->persist($arProgramacionPagoProcesar);
-                    $em->flush();
-                    //$em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->liquidar($codigoProgramacionPago);
-                }                
+                $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));
+                foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                        
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->generarPago($arProgramacionPagoDetalle, $arProgramacionPagoProcesar, $arCentroCosto, $arConfiguracion);   
+                }
+                $arProgramacionPagoProcesar->setEstadoGenerado(1);
+                $em->persist($arProgramacionPagoProcesar);
+                $em->flush();                                                                               
             } else {
                 $strMensaje = "No se puede generar programacion porque el año es mayor al ultimo año cerrado";
             }                            
@@ -783,57 +706,109 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $arProgramacionPago->setNumeroEmpleados($intNumeroEmpleados);            
             $em->flush();           
         }
-        
+
         //Cesantias
         if($arProgramacionPago->getCodigoPagoTipoFk() == 3) {
+            $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+            $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);
+            $arParametrosPrestacion = new \Brasa\RecursoHumanoBundle\Entity\RhuParametroPrestacion();
+            $arParametrosPrestacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuParametroPrestacion')->findBy(array('tipo' => 'CES'));                                                                
+            $salarioMinimo = $arConfiguracion->getVrSalario();
+            $auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();            
             $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
                 . "WHERE c.codigoCentroCostoFk = " . $arProgramacionPago->getCodigoCentroCostoFk()
                 . " AND c.fechaUltimoPagoCesantias < '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "                    
                 . " AND c.fechaDesde <= '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "
                 . " AND (c.fechaHasta >= '" . $arProgramacionPago->getFechaDesde()->format('Y-m-d') . "' "
                 . " OR c.indefinido = 1) "
-                . " AND c.estadoLiquidado = 0 AND c.codigoContratoTipoFk <> 4 AND c.codigoContratoTipoFk <> 5 and c.salarioIntegral = 0";            
+                . " AND c.estadoLiquidado = 0 AND c.codigoContratoClaseFk <> 4 AND c.codigoContratoClaseFk <> 5 AND c.salarioIntegral = 0";           
+            
             $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
             $query = $em->createQuery($dql);
             $arContratos = $query->getResult();
             foreach ($arContratos as $arContrato) {
+                $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
+                $dateFechaHasta = $arProgramacionPago->getFechaHasta();
+                $dateFechaHastaPago = $arContrato->getFechaUltimoPago();
+                $douSalario = $arContrato->getVrSalarioPago();
+                $intDiasCesantia = 0;                                
+                $intDiasCesantia = $objFunciones->diasPrestaciones($dateFechaDesde, $dateFechaHasta);
+                $intDiasSalrioPromedio = $objFunciones->diasPrestaciones($dateFechaDesde, $dateFechaHastaPago);
+                $intDiasCesantiaLiquidar = $intDiasCesantia;
+                /*if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
+                    $intDiasCesantiaLiquidar -= 1;
+                    $intDiasSalrioPromedio -= 1;
+                    $intDiasCesantia -= 1;
+                }*/
+                $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();                    
+                $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHastaPago->format('Y-m-d'), $arContrato->getCodigoContratoPk());                
+                $ibpCesantias += $ibpCesantiasInicial;                                            
+                $salarioPromedioCesantias = 0;
+                if($arContrato->getCodigoSalarioTipoFk() == 2) {
+                    if($intDiasSalrioPromedio > 0) {
+                        $salarioPromedioCesantias = ($ibpCesantias / $intDiasSalrioPromedio) * 30;     
+                    } else {
+                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                            $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                        } else {
+                            $salarioPromedioCesantias = $douSalario;
+                        }                         
+                    }                                                        
+                } else {
+                    //Comisiones
+                    $ibpConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibpConceptos($dateFechaDesde->format('Y-m-d'), $dateFechaHastaPago->format('Y-m-d'), $arContrato->getCodigoContratoPk());                
+                    $otrosConceptos = 0;
+                    if($intDiasSalrioPromedio > 0) {
+                        $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
+                    }                    
+                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
+                    } else {
+                        $salarioPromedioCesantias = $douSalario + $otrosConceptos;
+                    }                                                
+                }      
+                $aplicaPorcentaje = true;
+                if($arContrato->getEmpleadoRel()->getPagadoEntidadSalud()) {
+                    $salarioPromedioCesantias = $douSalario;
+                    $aplicaPorcentaje = false;                
+                }                 
+                $porcentaje = 100;                                               
+                if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
+                    if($arContrato->getCodigoSalarioTipoFk() == 2 && $aplicaPorcentaje) {                                    
+                        $intDiasLaborados = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($arContrato->getFechaDesde(), $dateFechaHasta);                                
+                        foreach ($arParametrosPrestacion as $arParametroPrestacion) {
+                            if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
+                                if($arParametroPrestacion->getOrigen() == 'SAL') {
+                                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                                    } else {
+                                        $salarioPromedioCesantias = $douSalario;
+                                    } 
+                                } else {
+                                    $porcentaje = $arParametroPrestacion->getPorcentaje();
+                                    $salarioPromedioCesantias = ($salarioPromedioCesantias * $porcentaje)/100;                                
+                                }                                            
+                            }
+                        }                               
+                    }                                                        
+                }                   
+                $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                               
+                $salarioPromedioCesantias = round($salarioPromedioCesantias);                                                
                 $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
                 $arProgramacionPagoDetalle->setProgramacionPagoRel($arProgramacionPago);
                 $arProgramacionPagoDetalle->setEmpleadoRel($arContrato->getEmpleadoRel());
                 $arProgramacionPagoDetalle->setContratoRel($arContrato);
                 $arProgramacionPagoDetalle->setVrSalario($arContrato->getVrSalario());
-                $arProgramacionPagoDetalle->setIndefinido($arContrato->getIndefinido());
-                $dateFechaDesde =  "";
-                $dateFechaDesdePago =  "";
-                if($arContrato->getFechaUltimoPagoCesantias() <=  $arProgramacionPago->getFechaDesde() == true) {
-                    $dateFechaDesde = $arProgramacionPago->getFechaDesde();
-                    $dateFechaDesdePago = $arProgramacionPago->getFechaDesde();
-                    if($arContrato->getFechaDesde() >= $dateFechaDesde) {
-                        $dateFechaDesde = $arContrato->getFechaDesde();
-                        $dateFechaDesdePago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->fechaPrimerPago($arContrato->getCodigoContratoPk());
-                        if($dateFechaDesdePago) {
-                            $dateFechaDesdePago = date_create_from_format('Y-m-d H:i', $dateFechaDesdePago . "00:00");
-                        } else {
-                            $dateFechaDesdePago = $dateFechaDesde;                            
-                        }
-                    }
-                    
-                } else {
-                    $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
-                    $dateFechaDesdePago = $arContrato->getFechaUltimoPagoCesantias();
-                }
-                $intDia = $dateFechaDesde->format('j');
-                $intDiasMes = 31 - $intDia;                
-                $intMes = $dateFechaDesde->format('n');                
-                $intMesFinal = $arProgramacionPago->getFechaHasta()->format('n');
-                $intMeses = $intMesFinal - $intMes;
-                $intDias = ($intMeses * 30) + $intDiasMes;
-                
+                $arProgramacionPagoDetalle->setVrSalarioCesantia($salarioPromedioCesantias);
+                $arProgramacionPagoDetalle->setIndefinido($arContrato->getIndefinido());                
                 $arProgramacionPagoDetalle->setFechaDesde($dateFechaDesde);
                 $arProgramacionPagoDetalle->setFechaHasta($arProgramacionPago->getFechaHasta());
-                $arProgramacionPagoDetalle->setFechaDesdePago($dateFechaDesdePago);
-                $arProgramacionPagoDetalle->setDias($intDias);
-                $arProgramacionPagoDetalle->setDiasReales($intDias);
+                $arProgramacionPagoDetalle->setFechaDesdePago($dateFechaDesde);
+                $arProgramacionPagoDetalle->setDias($intDiasCesantiaLiquidar);
+                $arProgramacionPagoDetalle->setDiasReales($intDiasCesantiaLiquidar);
+                $arProgramacionPagoDetalle->setPorcentajeIbp($porcentaje);
+                $arProgramacionPagoDetalle->setDiasAusentismo($diasAusentismo);
                 $em->persist($arProgramacionPagoDetalle);
                 $intNumeroEmpleados++;
                 
@@ -1079,7 +1054,100 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $em->persist($arProgramacionPagoDetalle);                
             $em->flush();            
         }
-                
+              
+        //Cesantias
+        if($arProgramacionPago->getCodigoPagoTipoFk() == 3) {
+            $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+            $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);
+            $arParametrosPrestacionCesantia = new \Brasa\RecursoHumanoBundle\Entity\RhuParametroPrestacion();
+            $arParametrosPrestacionCesantia = $em->getRepository('BrasaRecursoHumanoBundle:RhuParametroPrestacion')->findBy(array('tipo' => 'PRI'));                                                                
+            $salarioMinimo = $arConfiguracion->getVrSalario();
+            $auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();            
+            $arContrato = $arProgramacionPagoDetalle->getContratoRel();            
+            
+            $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
+            $dateFechaHasta = $arProgramacionPago->getFechaHasta();
+            $dateFechaHastaPago = $arContrato->getFechaUltimoPago();
+            $douSalario = $arContrato->getVrSalarioPago();
+            $intDiasCesantia = 0;                                
+            $intDiasCesantia = $objFunciones->diasPrestaciones($dateFechaDesde, $dateFechaHasta);
+            $intDiasSalrioPromedio = $objFunciones->diasPrestaciones($dateFechaDesde, $dateFechaHastaPago);
+            $intDiasCesantiaLiquidar = $intDiasCesantia;
+            /*if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
+                $intDiasCesantiaLiquidar -= 1;
+                $intDiasSalrioPromedio -= 1;
+                $intDiasCesantia -= 1;
+            }*/
+            $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();                    
+            $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHastaPago->format('Y-m-d'), $arContrato->getCodigoContratoPk());                
+            $ibpCesantias += $ibpCesantiasInicial;                                            
+            $salarioPromedioCesantias = 0;
+            if($arContrato->getCodigoSalarioTipoFk() == 2) {
+                if($intDiasSalrioPromedio > 0) {
+                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasSalrioPromedio) * 30;     
+                } else {
+                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                    } else {
+                        $salarioPromedioCesantias = $douSalario;
+                    }                         
+                }                                                        
+            } else {
+                //Comisiones
+                $ibpConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibpConceptos($dateFechaDesde->format('Y-m-d'), $dateFechaHastaPago->format('Y-m-d'), $arContrato->getCodigoContratoPk());                
+                $otrosConceptos = 0;
+                if($intDiasSalrioPromedio > 0) {
+                    $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
+                }
+                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
+                } else {
+                    $salarioPromedioCesantias = $douSalario + $otrosConceptos;
+                }                                                
+            }   
+            $aplicaPorcentaje = true;
+            if($arContrato->getEmpleadoRel()->getPagadoEntidadSalud()) {
+                $salarioPromedioCesantias = $douSalario;
+                $aplicaPorcentaje = false;                
+            }             
+                                                                                
+            $porcentaje = 100;                                               
+            if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
+                if($arContrato->getCodigoSalarioTipoFk() == 2 && $aplicaPorcentaje) {                                    
+                    $intDiasLaborados = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($arContrato->getFechaDesde(), $dateFechaHasta);                                
+                    foreach ($arParametrosPrestacionCesantia as $arParametroPrestacion) {
+                        if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
+                            if($arParametroPrestacion->getOrigen() == 'SAL') {
+                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                                } else {
+                                    $salarioPromedioCesantias = $douSalario;
+                                } 
+                            } else {
+                                $porcentaje = $arParametroPrestacion->getPorcentaje();
+                                $salarioPromedioCesantias = ($salarioPromedioCesantias * $porcentaje)/100;                                
+                            }                                            
+                        }
+                    }                               
+                }                                                        
+            }                           
+            $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
+            
+            $salarioPromedioCesantias = round($salarioPromedioCesantias);                                                                                                 
+            $arProgramacionPagoDetalle->setVrSalario($arContrato->getVrSalario());
+            $arProgramacionPagoDetalle->setVrSalarioCesantia($salarioPromedioCesantias);
+            $arProgramacionPagoDetalle->setIndefinido($arContrato->getIndefinido());                
+            $arProgramacionPagoDetalle->setFechaDesde($dateFechaDesde);
+            $arProgramacionPagoDetalle->setFechaHasta($arProgramacionPago->getFechaHasta());
+            $arProgramacionPagoDetalle->setFechaDesdePago($dateFechaDesde);
+            $arProgramacionPagoDetalle->setDias($intDiasCesantiaLiquidar);
+            $arProgramacionPagoDetalle->setDiasReales($intDiasCesantiaLiquidar);
+            $arProgramacionPagoDetalle->setDiasAusentismo($diasAusentismo);
+            $em->persist($arProgramacionPagoDetalle);                
+            $em->flush();            
+        }        
+        
         return true;
     }    
     

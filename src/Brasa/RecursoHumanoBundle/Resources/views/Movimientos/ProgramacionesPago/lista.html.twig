@@ -126,8 +126,12 @@
                 {% endif %}                    
                 {% if arProgramacionPago.codigoPagoTipoFk == 1 %}
                     <td style="text-align: center"><a href="{{ path('brs_rhu_programaciones_pago_detalle', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
-                {% else %}
+                {% endif %}
+                {% if arProgramacionPago.codigoPagoTipoFk == 2 %}
                     <td style="text-align: center"><a href="{{ path('brs_rhu_programaciones_pago_detalle_prima', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                    
+                {% endif %} 
+                {% if arProgramacionPago.codigoPagoTipoFk == 3 %}
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_programaciones_pago_detalle_cesantia', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                    
                 {% endif %}                       
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}" /></td>
             </tr>

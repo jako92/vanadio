@@ -75,6 +75,11 @@ class RhuProgramacionPagoDetalle
     private $vrSalarioPrima = 0;
     
     /**
+     * @ORM\Column(name="vr_salario_cesantia", type="float")
+     */
+    private $vrSalarioCesantia = 0;    
+    
+    /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
      */    
     private $fechaDesde;    
@@ -269,6 +274,11 @@ class RhuProgramacionPagoDetalle
      */
     private $vrSalarioPrimaPropuesto = 0;    
 
+    /**
+     * @ORM\Column(name="vr_salario_cesantia_propuesto", type="float")
+     */
+    private $vrSalarioCesantiaPropuesto = 0;     
+    
     /**
      * @ORM\Column(name="dias_ausentismo", type="integer")
      */
@@ -1724,5 +1734,53 @@ class RhuProgramacionPagoDetalle
     public function getDiasAusentismo()
     {
         return $this->diasAusentismo;
+    }
+
+    /**
+     * Set vrSalarioCesantia
+     *
+     * @param float $vrSalarioCesantia
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrSalarioCesantia($vrSalarioCesantia)
+    {
+        $this->vrSalarioCesantia = $vrSalarioCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioCesantia
+     *
+     * @return float
+     */
+    public function getVrSalarioCesantia()
+    {
+        return $this->vrSalarioCesantia;
+    }
+
+    /**
+     * Set vrSalarioCesantiaPropuesto
+     *
+     * @param float $vrSalarioCesantiaPropuesto
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrSalarioCesantiaPropuesto($vrSalarioCesantiaPropuesto)
+    {
+        $this->vrSalarioCesantiaPropuesto = $vrSalarioCesantiaPropuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioCesantiaPropuesto
+     *
+     * @return float
+     */
+    public function getVrSalarioCesantiaPropuesto()
+    {
+        return $this->vrSalarioCesantiaPropuesto;
     }
 }

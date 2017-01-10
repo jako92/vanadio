@@ -311,6 +311,11 @@ class RhuConfiguracion
     private $codigoPrima;     
     
     /**
+     * @ORM\Column(name="codigo_cesantia", type="integer")
+     */
+    private $codigoCesantia;     
+    
+    /**
      * Si en el pago de primas se aplica un porcentaje en el salario
      * @ORM\Column(name="prestaciones_aplicar_porcentaje_salario", type="boolean")
      */
@@ -350,6 +355,11 @@ class RhuConfiguracion
      */
     private $omitirDescuentoEmbargoPrimas = false;    
     
+    /**
+     * Promedio primas utilizado por seracis
+     * @ORM\Column(name="omitir_descuento_embargo_cesantias", type="boolean")
+     */
+    private $omitirDescuentoEmbargoCesantias = false;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadRiesgoProfesional", inversedBy="configuracionEntidadRiesgoProfesionalRel")
@@ -1965,5 +1975,53 @@ class RhuConfiguracion
     public function getOmitirDescuentoEmbargoPrimas()
     {
         return $this->omitirDescuentoEmbargoPrimas;
+    }
+
+    /**
+     * Set codigoCesantia
+     *
+     * @param integer $codigoCesantia
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoCesantia($codigoCesantia)
+    {
+        $this->codigoCesantia = $codigoCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCesantia
+     *
+     * @return integer
+     */
+    public function getCodigoCesantia()
+    {
+        return $this->codigoCesantia;
+    }
+
+    /**
+     * Set omitirDescuentoEmbargoCesantias
+     *
+     * @param boolean $omitirDescuentoEmbargoCesantias
+     *
+     * @return RhuConfiguracion
+     */
+    public function setOmitirDescuentoEmbargoCesantias($omitirDescuentoEmbargoCesantias)
+    {
+        $this->omitirDescuentoEmbargoCesantias = $omitirDescuentoEmbargoCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirDescuentoEmbargoCesantias
+     *
+     * @return boolean
+     */
+    public function getOmitirDescuentoEmbargoCesantias()
+    {
+        return $this->omitirDescuentoEmbargoCesantias;
     }
 }

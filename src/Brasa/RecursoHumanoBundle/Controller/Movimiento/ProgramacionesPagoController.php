@@ -353,6 +353,80 @@ class ProgramacionesPagoController extends Controller
     }
 
     /**
+     * @Route("/rhu/programaciones/pago/detalle/cesantia/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_detalle_cesantia")
+     */
+    public function detalleCesantiaAction(Request $request, $codigoProgramacionPago) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = $this->get('mensajes_brasa');
+        $paginator  = $this->get('knp_paginator');
+        $permisoParametros = $em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 114); 
+        $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
+        $form = $this->formularioDetallePrima($arProgramacionPago);
+        $form->handleRequest($request);
+        if($form->isValid()) {
+            if($form->get('BtnGenerarEmpleados')->isClicked()) {
+                if($arProgramacionPago->getEstadoGenerado() == 0) {
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->generarEmpleados($codigoProgramacionPago);
+                    $arProgramacionPago->setEmpleadosGenerados(1);
+                    $em->persist($arProgramacionPago);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+                } else {
+                    $objMensaje->Mensaje("error", "No puede generar empleados cuando la programacion esta generada");
+                }
+            }                        
+            if($form->get('BtnEliminarEmpleados')->isClicked()) {               
+                    $arrSeleccionados = $request->request->get('ChkSeleccionarSede');
+                    if(count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigoProgramacionPagoSede) {
+                            $arProgramacionPagoDetalleSede = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalleSede();
+                            $arProgramacionPagoDetalleSede = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalleSede')->find($codigoProgramacionPagoSede);
+                            $em->remove($arProgramacionPagoDetalleSede);
+                        }
+                    }
+
+                    $arrSeleccionados = $request->request->get('ChkSeleccionarDetalle');
+                    if(count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoDetalleFk' => $codigo));
+                            foreach ($arPagos as $arPago) {
+                                $strSql = "DELETE FROM rhu_pago_detalle WHERE codigo_pago_fk = " . $arPago->getCodigoPagoPk();                           
+                                $em->getConnection()->executeQuery($strSql);                    
+                                $em->remove($arPago);
+                            }                                                        
+                            $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
+                            $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($codigo);
+                            $em->remove($arProgramacionPagoDetalle);
+                        }
+                    }
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+
+            }            
+            if($form->get('BtnEliminarTodoEmpleados')->isClicked()) {
+                if ($arProgramacionPago->getEstadoGenerado() == 0 ){
+                    $resultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->eliminarTodoEmpleados($codigoProgramacionPago);
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+            }
+
+        }
+        $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
+        $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPago->getCodigoCentroCostoFk());
+        
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->listaDQL($codigoProgramacionPago));
+        $arProgramacionPagoDetalles = $paginator->paginate($query, $request->query->get('page', 1), 2000);
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:detalleCesantia.html.twig', array(
+                    'arCentroCosto' => $arCentroCosto,                                        
+                    'arProgramacionPagoDetalles' => $arProgramacionPagoDetalles,
+                    'arProgramacionPago' => $arProgramacionPago,
+                    'permisoParametros' => $permisoParametros,
+                    'form' => $form->createView()
+                    ));
+    }    
+    
+    /**
      * @Route("/rhu/programaciones/pago/agregar/empleado/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_agregar_empleado")
      */
     public function agregarEmpleadoAction(Request $request, $codigoProgramacionPago) {
@@ -653,6 +727,37 @@ class ProgramacionesPagoController extends Controller
     }
     
     /**
+     * @Route("/rhu/movimiento/programacion/pago/detalle/parametros/cesantia/{codigoProgramacionPagoDetalle}", name="brs_rhu_movimiento_programacion_pago_detalle_parametros_cesantia")
+     */    
+    public function parametrosCesantiaAction(Request $request, $codigoProgramacionPagoDetalle) {
+        
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
+        $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($codigoProgramacionPagoDetalle);        
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('brs_rhu_movimiento_programacion_pago_detalle_parametros_cesantia', array('codigoProgramacionPagoDetalle' => $codigoProgramacionPagoDetalle)))            
+            ->add('porcentajeIbp', NumberType::class, array('data' => $arProgramacionPagoDetalle->getPorcentajeIbp() ,'required' => false))      
+            ->add('vrSalarioCesantiaPropuesto', NumberType::class, array('data' => $arProgramacionPagoDetalle->getVrSalarioCesantiaPropuesto() ,'required' => false))                                      
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {            
+            $porcentajeIbp = $form->get('porcentajeIbp')->getData();            
+            $vrSalarioCesantiaPropuesto = $form->get('vrSalarioCesantiaPropuesto')->getData();            
+            $arProgramacionPagoDetalle->setPorcentajeIbp($porcentajeIbp);
+            $arProgramacionPagoDetalle->setVrSalarioCesantiaPropuesto($vrSalarioCesantiaPropuesto);
+            $em->persist($arProgramacionPagoDetalle);
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $arProgramacionPagoDetalle->getCodigoProgramacionPagoFk())));
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:parametrosCesantia.html.twig', array(
+            'arProgramacionPagoDetalle' => $arProgramacionPagoDetalle,
+            'form' => $form->createView()           
+        ));
+    }     
+    
+    /**
      * @Route("/rhu/movimiento/programacion/pago/detalle/parametros/prima/{codigoProgramacionPagoDetalle}", name="brs_rhu_movimiento_programacion_pago_detalle_parametros_prima")
      */    
     public function parametrosPrimaAction(Request $request, $codigoProgramacionPagoDetalle) {
@@ -681,7 +786,7 @@ class ProgramacionesPagoController extends Controller
             'arProgramacionPagoDetalle' => $arProgramacionPagoDetalle,
             'form' => $form->createView()           
         ));
-    }     
+    }      
     
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();

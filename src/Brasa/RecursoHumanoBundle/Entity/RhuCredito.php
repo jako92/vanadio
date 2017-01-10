@@ -147,6 +147,11 @@ class RhuCredito
      */    
     private $aplicarCuotaPrima = false;    
     
+    /**     
+     * @ORM\Column(name="aplicar_cuota_cesantia", type="boolean")
+     */    
+    private $aplicarCuotaCesantia = false;     
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="creditosEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
@@ -1067,5 +1072,29 @@ class RhuCredito
     public function getVacacionesAdicionalesCreditoRel()
     {
         return $this->vacacionesAdicionalesCreditoRel;
+    }
+
+    /**
+     * Set aplicarCuotaCesantia
+     *
+     * @param boolean $aplicarCuotaCesantia
+     *
+     * @return RhuCredito
+     */
+    public function setAplicarCuotaCesantia($aplicarCuotaCesantia)
+    {
+        $this->aplicarCuotaCesantia = $aplicarCuotaCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicarCuotaCesantia
+     *
+     * @return boolean
+     */
+    public function getAplicarCuotaCesantia()
+    {
+        return $this->aplicarCuotaCesantia;
     }
 }
