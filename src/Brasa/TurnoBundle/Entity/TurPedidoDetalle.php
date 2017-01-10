@@ -192,6 +192,11 @@ class TurPedidoDetalle
      */
     private $vrTotalDetallePendiente = 0;    
     
+    /**
+     * @ORM\Column(name="vr_total_detalle_devolucion", type="float")
+     */
+    private $vrTotalDetalleDevolucion = 0;     
+    
     /**     
      * @ORM\Column(name="lunes", type="boolean")
      */    
@@ -356,12 +361,15 @@ class TurPedidoDetalle
      */
     protected $costosServiciosPedidoDetalleRel;    
     
-
     /**
      * @ORM\OneToMany(targetEntity="TurCostoRecursoDetalle", mappedBy="pedidoDetalleRel")
      */
     protected $costosRecursosDetallesPedidoDetalleRel;     
     
+    /**
+     * @ORM\OneToMany(targetEntity="TurPedidoDevolucionDetalle", mappedBy="pedidoDetalleRel")
+     */
+    protected $pedidosDevolucionesDetallesPedidoDetalleRel;    
 
     /**
      * Constructor
@@ -375,6 +383,7 @@ class TurPedidoDetalle
         $this->soportesPagosDetallesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosServiciosPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosRecursosDetallesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidosDevolucionesDetallesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1057,6 +1066,30 @@ class TurPedidoDetalle
     public function getVrPrecio()
     {
         return $this->vrPrecio;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
     }
 
     /**
@@ -2042,26 +2075,60 @@ class TurPedidoDetalle
     }
 
     /**
-     * Set porcentajeIva
+     * Add pedidosDevolucionesDetallesPedidoDetalleRel
      *
-     * @param float $porcentajeIva
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDetalleRel
      *
      * @return TurPedidoDetalle
      */
-    public function setPorcentajeIva($porcentajeIva)
+    public function addPedidosDevolucionesDetallesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDetalleRel)
     {
-        $this->porcentajeIva = $porcentajeIva;
+        $this->pedidosDevolucionesDetallesPedidoDetalleRel[] = $pedidosDevolucionesDetallesPedidoDetalleRel;
 
         return $this;
     }
 
     /**
-     * Get porcentajeIva
+     * Remove pedidosDevolucionesDetallesPedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDetalleRel
+     */
+    public function removePedidosDevolucionesDetallesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDetalleRel)
+    {
+        $this->pedidosDevolucionesDetallesPedidoDetalleRel->removeElement($pedidosDevolucionesDetallesPedidoDetalleRel);
+    }
+
+    /**
+     * Get pedidosDevolucionesDetallesPedidoDetalleRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPedidosDevolucionesDetallesPedidoDetalleRel()
+    {
+        return $this->pedidosDevolucionesDetallesPedidoDetalleRel;
+    }
+
+    /**
+     * Set vrTotalDetalleDevolucion
+     *
+     * @param float $vrTotalDetalleDevolucion
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setVrTotalDetalleDevolucion($vrTotalDetalleDevolucion)
+    {
+        $this->vrTotalDetalleDevolucion = $vrTotalDetalleDevolucion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalDetalleDevolucion
      *
      * @return float
      */
-    public function getPorcentajeIva()
+    public function getVrTotalDetalleDevolucion()
     {
-        return $this->porcentajeIva;
+        return $this->vrTotalDetalleDevolucion;
     }
 }

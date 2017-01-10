@@ -36,5 +36,39 @@ class TurPedidoDevolucionRepository extends EntityRepository {
         return $dql;
     }
  
+    public function liquidar($codigoPedidoDevolucion) {        
+        $em = $this->getEntityManager();        
+        $arPedidoDevolucion = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();            
+        $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);                
+        $total = 0;        
+        $arPedidoDevolucionDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();        
+        $arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDevolucionFk' => $codigoPedidoDevolucion));        
+        foreach ($arPedidoDevolucionDetalles as $arPedidoDevolucionDetalle) {
+            $total += $arPedidoDevolucionDetalle->getVrPrecio();
+        }
+        $arPedidoDevolucion->setVrTotal($total);
+        $em->persist($arPedidoDevolucion);
+        $em->flush();
+        return true;
+    } 
     
+    public function autorizar($codigoPedidoDevolucion) {        
+        $em = $this->getEntityManager();        
+        $arPedidoDevolucion = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();            
+        $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);                                
+        $arPedidoDevolucion->setEstadoAutorizado(1);
+        $em->persist($arPedidoDevolucion);
+        $em->flush();
+        return "";
+    }  
+    
+    public function desautorizar($codigoPedidoDevolucion) {        
+        $em = $this->getEntityManager();        
+        $arPedidoDevolucion = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();            
+        $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);                                
+        $arPedidoDevolucion->setEstadoAutorizado(0);
+        $em->persist($arPedidoDevolucion);
+        $em->flush();
+        return "";
+    }     
 }

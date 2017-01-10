@@ -31,6 +31,11 @@ class TurPedidoDevolucion
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
     private $codigoClienteFk;                     
+
+    /**
+     * @ORM\Column(name="codigo_pedido_devolucion_concepto_fk", type="integer", nullable=true)
+     */    
+    private $codigoPedidoDevolucionConceptoFk;
     
     /**     
      * @ORM\Column(name="estado_autorizado", type="boolean")
@@ -68,6 +73,12 @@ class TurPedidoDevolucion
      */
     protected $clienteRel;     
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TurPedidoDevolucionConcepto", inversedBy="pedidosDevolucionesPedidoDevolucionConceptoRel")
+     * @ORM\JoinColumn(name="codigo_pedido_devolucion_concepto_fk", referencedColumnName="codigo_pedido_devolucion_concepto_pk")
+     */
+    protected $pedidoDevolucionConceptoRel;     
+    
     /**
      * @ORM\OneToMany(targetEntity="TurPedidoDevolucionDetalle", mappedBy="pedidoDevolucionRel", cascade={"persist", "remove"})
      */
@@ -364,5 +375,53 @@ class TurPedidoDevolucion
     public function getPedidosDevolucionesDetallesPedidoDevolucionRel()
     {
         return $this->pedidosDevolucionesDetallesPedidoDevolucionRel;
+    }
+
+    /**
+     * Set codigoPedidoDevolucionConceptoFk
+     *
+     * @param integer $codigoPedidoDevolucionConceptoFk
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setCodigoPedidoDevolucionConceptoFk($codigoPedidoDevolucionConceptoFk)
+    {
+        $this->codigoPedidoDevolucionConceptoFk = $codigoPedidoDevolucionConceptoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDevolucionConceptoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPedidoDevolucionConceptoFk()
+    {
+        return $this->codigoPedidoDevolucionConceptoFk;
+    }
+
+    /**
+     * Set pedidoDevolucionConceptoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setPedidoDevolucionConceptoRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel = null)
+    {
+        $this->pedidoDevolucionConceptoRel = $pedidoDevolucionConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoDevolucionConceptoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto
+     */
+    public function getPedidoDevolucionConceptoRel()
+    {
+        return $this->pedidoDevolucionConceptoRel;
     }
 }

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="tur_pedido_devolucion_detalle")
- * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurPedidoDetalleRepository")
+ * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurPedidoDevolucionDetalleRepository")
  */
 class TurPedidoDevolucionDetalle
 {
@@ -23,6 +23,11 @@ class TurPedidoDevolucionDetalle
     private $codigoPedidoDevolucionFk;     
     
     /**
+     * @ORM\Column(name="codigo_pedido_detalle_fk", type="integer", nullable=true)
+     */    
+    private $codigoPedidoDetalleFk;    
+    
+    /**
      * @ORM\Column(name="vr_precio", type="float")
      */
     private $vrPrecio = 0;         
@@ -33,7 +38,13 @@ class TurPedidoDevolucionDetalle
      */
     protected $pedidoDevolucionRel;       
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TurPedidoDetalle", inversedBy="pedidosDevolucionesDetallesPedidoDetalleRel")
+     * @ORM\JoinColumn(name="codigo_pedido_detalle_fk", referencedColumnName="codigo_pedido_detalle_pk")
+     */
+    protected $pedidoDetalleRel;
 
+    
 
     /**
      * Get codigoPedidoDevolucionDetallePk
@@ -67,6 +78,30 @@ class TurPedidoDevolucionDetalle
     public function getCodigoPedidoDevolucionFk()
     {
         return $this->codigoPedidoDevolucionFk;
+    }
+
+    /**
+     * Set codigoPedidoDetalleFk
+     *
+     * @param integer $codigoPedidoDetalleFk
+     *
+     * @return TurPedidoDevolucionDetalle
+     */
+    public function setCodigoPedidoDetalleFk($codigoPedidoDetalleFk)
+    {
+        $this->codigoPedidoDetalleFk = $codigoPedidoDetalleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDetalleFk
+     *
+     * @return integer
+     */
+    public function getCodigoPedidoDetalleFk()
+    {
+        return $this->codigoPedidoDetalleFk;
     }
 
     /**
@@ -115,5 +150,29 @@ class TurPedidoDevolucionDetalle
     public function getPedidoDevolucionRel()
     {
         return $this->pedidoDevolucionRel;
+    }
+
+    /**
+     * Set pedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidoDetalleRel
+     *
+     * @return TurPedidoDevolucionDetalle
+     */
+    public function setPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidoDetalleRel = null)
+    {
+        $this->pedidoDetalleRel = $pedidoDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoDetalleRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPedidoDetalle
+     */
+    public function getPedidoDetalleRel()
+    {
+        return $this->pedidoDetalleRel;
     }
 }

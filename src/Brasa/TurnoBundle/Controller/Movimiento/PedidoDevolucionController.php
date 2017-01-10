@@ -113,29 +113,30 @@ class PedidoDevolucionController extends Controller
         $form->handleRequest($request);
         if($form->isValid()) {
             if($form->get('BtnAutorizar')->isClicked()) { 
-                $arrControles = $request->request->All();
-                //$this->actualizarDetalle($arrControles, $codigoPedido);                
-                $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedido')->autorizar($codigoPedidoDevolucion);
-                if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado);
+                if($arPedidoDevolucion->getEstadoAutorizado() == 0) {
+                    $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->autorizar($codigoPedidoDevolucion);
+                    if($strResultado != "") {
+                        $objMensaje->Mensaje("error", $strResultado);
+                    }                    
                 }
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));                
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));                
             }              
             
             if($form->get('BtnDesAutorizar')->isClicked()) {            
-                if($arPedido->getEstadoAutorizado() == 1) {
-                    $arPedido->setEstadoAutorizado(0);
-                    $em->persist($arPedido);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));                
+                if($arPedidoDevolucion->getEstadoAutorizado() == 1) {                    
+                    $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->desautorizar($codigoPedidoDevolucion);
+                    if($strResultado != "") {
+                        $objMensaje->Mensaje("error", $strResultado);
+                    }                    
                 }
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));                
             } 
            
             if($form->get('BtnDetalleEliminar')->isClicked()) {   
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->eliminarSeleccionados($arrSeleccionados);
-                $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
+                $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->eliminarSeleccionados($arrSeleccionados);
+                $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));
             }                  
           
             if($form->get('BtnImprimir')->isClicked()) {
@@ -162,56 +163,44 @@ class PedidoDevolucionController extends Controller
      * @Route("/tur/movimiento/pedido/devolucion/detalle/nuevo/{codigoPedidoDevolucion}/{codigoPedidoDevolucionDetalle}", name="brs_tur_movimiento_pedido_devolucion_detalle_nuevo")
      */    
     public function detalleNuevoAction(Request $request, $codigoPedidoDevolucion, $codigoPedidoDevolucionDetalle = 0) {
+        $paginator  = $this->get('knp_paginator');
         $em = $this->getDoctrine()->getManager();
-        $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();
-        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
-        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
-        if($codigoPedidoDetalle != 0) {
-            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);
-        } else {
-            $arPedidoDetalle->setFechaIniciaPlantilla($arPedido->getFechaProgramacion());
-            $arPedidoDetalle->setPedidoRel($arPedido);
-            $arPedidoDetalle->setCantidad(1);
-            $arPedidoDetalle->setLunes(true);
-            $arPedidoDetalle->setMartes(true);
-            $arPedidoDetalle->setMiercoles(true);
-            $arPedidoDetalle->setJueves(true);
-            $arPedidoDetalle->setViernes(true);
-            $arPedidoDetalle->setSabado(true);
-            $arPedidoDetalle->setDomingo(true);
-            $arPedidoDetalle->setFestivo(true);            
-        }
-        $form = $this->createForm(TurPedidoDetalleType::class, $arPedidoDetalle);
+        $arPedidoDevolucion = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();
+        $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);        
+        $form = $this->formularioDetalleNuevo();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $arPedidoDetalle = $form->getData();
-            $arPedidoDetalle->setAnio($arPedido->getFechaProgramacion()->format('Y'));
-            $arPedidoDetalle->setMes($arPedido->getFechaProgramacion()->format('m'));            
-            $arPeriodo = $form->get('periodoRel')->getData();
-            if($arPeriodo->getCodigoPeriodoPk() == 1) {
-                $intAnio = $arPedido->getFechaProgramacion()->format('Y');                
-                $intMes = $arPedido->getFechaProgramacion()->format('m');
-                $arPedidoDetalle->setAnio($intAnio);
-                $arPedidoDetalle->setMes($intMes);
-                $intDiaFinalMes = date("d",(mktime(0,0,0,$intMes+1,1,$intAnio)-1));
-                $arPedidoDetalle->setDiaDesde(1);
-                $arPedidoDetalle->setDiaHasta($intDiaFinalMes);
-            }
-            if($codigoPedidoDetalle == 0) {
-                $arPedidoDetalle->setPorcentajeIva($arPedidoDetalle->getConceptoServicioRel()->getPorIva());
-            }            
-            $em->persist($arPedidoDetalle);
-            $em->flush();
-
-            if($form->get('guardarnuevo')->isClicked()) {
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle_nuevo', array('codigoPedido' => $codigoPedido, 'codigoPedidoDetalle' => 0 )));
-            } else {
-                $em->getRepository('BrasaTurnoBundle:TurPedido')->liquidar($codigoPedido);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if(count($arrSeleccionados) > 0) {    
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+                        $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigo);                        
+                        $arPedidoDevolucionDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
+                        $arPedidoDevolucionDetalle->setPedidoDevolucionRel($arPedidoDevolucion);   
+                        $arPedidoDevolucionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+                        $arPedidoDevolucionDetalle->setVrPrecio($arPedidoDetalle->getVrTotalDetallePendiente());                                
+                        $em->persist($arPedidoDevolucionDetalle); 
+                        $devolucion = $arPedidoDetalle->getVrTotalDetalleDevolucion() + $arPedidoDevolucionDetalle->getVrPrecio();
+                        $arPedidoDetalle->setVrTotalDetalleDevolucion($devolucion);
+                        $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion());                                                
+                        $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+                        $em->persist($arPedidoDetalle);                        
+                    }
+                }
+                $em->flush();
+                $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+            } 
+            if ($form->get('BtnFiltrar')->isClicked()) {            
+                $this->filtrarDetalleNuevo($form);
             }
         }
-        return $this->render('BrasaTurnoBundle:Movimientos/Pedido:detalleNuevo.html.twig', array(
-            'arPedido' => $arPedido,
+        
+        $arPedidoDetalles = $paginator->paginate($em->createQuery($this->listaDetalleNuevo($arPedidoDevolucion->getCodigoClienteFk())), $request->query->get('page', 1), 500);        
+        return $this->render('BrasaTurnoBundle:Movimientos/PedidoDevolucion:detalleNuevoPedido.html.twig', array(
+            'arPedidoDevolucion' => $arPedidoDevolucion,
+            'arPedidoDetalles' => $arPedidoDetalles,            
             'form' => $form->createView()));
     }    
     
@@ -234,6 +223,17 @@ class PedidoDevolucionController extends Controller
                 $strFechaHasta);
     }      
     
+    private function listaDetalleNuevo($codigoCliente) {
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;
+        $strDql =  $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->pendientesFacturarDql(
+                $codigoCliente, 
+                "",
+                $session->get('filtroPedidoNumero')
+                );
+        return $strDql;
+    }    
+    
     private function filtrar ($form) {
         $session = new session;    
         $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
@@ -247,6 +247,11 @@ class PedidoDevolucionController extends Controller
         $session->set('filtroPedidoFiltrarFecha', $form->get('filtrarFecha')->getData());
         
     }    
+    
+    private function filtrarDetalleNuevo ($form) {
+        $session = new session;        
+        $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
+    }     
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
@@ -293,10 +298,7 @@ class PedidoDevolucionController extends Controller
     }
 
     private function formularioDetalle($ar) {        
-        $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);        
-        $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);        
-        $arrBotonProgramar = array('label' => 'Programar', 'disabled' => true);        
-        $arrBotonFacturar = array('label' => 'Facturar', 'disabled' => true);        
+        $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);                
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);        
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);        
@@ -305,29 +307,30 @@ class PedidoDevolucionController extends Controller
             $arrBotonAutorizar['disabled'] = true;                        
             $arrBotonDetalleEliminar['disabled'] = true;
             $arrBotonDetalleActualizar['disabled'] = true;            
-            $arrBotonAnular['disabled'] = false;            
-            if($ar->getEstadoAnulado() == 1) {
-                $arrBotonDesAutorizar['disabled'] = true;
-                $arrBotonAnular['disabled'] = true;                
-            } else {
-                if($ar->getEstadoFacturado() == 0) {
-                    $arrBotonFacturar['disabled'] = false;
-                }
-            }
+            
         } else {            
             $arrBotonDesAutorizar['disabled'] = true;                        
             $arrBotonImprimir['disabled'] = true;            
         }
         $form = $this->createFormBuilder()                    
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
-                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                     
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                                     
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                     ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)                    
                     ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)                                                                                
                     ->getForm();
         return $form;
     }       
+    
+    private function formularioDetalleNuevo() {
+        $session = new session;       
+        $form = $this->createFormBuilder()
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero'), 'required'  => false))                
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar',))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->getForm();
+        return $form;
+    }    
     
     private function generarExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();

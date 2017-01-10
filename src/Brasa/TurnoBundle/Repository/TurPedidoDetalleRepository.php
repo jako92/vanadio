@@ -455,7 +455,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
                 $totalAfectado = $arrFacturaDetalle['valor'];
             }
             $arPedidoDetalle->setVrTotalDetalleAfectado($totalAfectado);
-            $pendiente = $arPedidoDetalle->getVrSubtotal() - $totalAfectado;
+            $pendiente = $arPedidoDetalle->getVrSubtotal() - ($totalAfectado + $arPedidoDetalle->getVrTotalDetalleDevolucion());
             $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
             $em->persist($arPedidoDetalle);
         }       
