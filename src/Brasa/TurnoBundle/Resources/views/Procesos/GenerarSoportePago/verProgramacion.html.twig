@@ -19,7 +19,23 @@
                 <th>{{ arrDiaSemana.dia }}{{ arrDiaSemana.diaSemana }}</th>
                 {% endfor %}
             </tr>
-            {% for arProgramacionAlterna in arProgramacionAlterna %}               
+            {% set intCodigoCliente = '' %}
+            {% set intCodigoPuesto = '' %}
+            {% for arProgramacionAlterna in arProgramacionAlterna %}    
+               {% if intCodigoCliente != arProgramacionAlterna.codigoClienteFk %}
+                    <tr>
+                        <td id="suptipo" colspan="38"><b>{{ arProgramacionAlterna.clienteRel.nombreCorto | default('') }}</b></td>
+                    </tr>
+                    {% set intCodigoCliente = arProgramacionAlterna.codigoClienteFk %}
+                    {% set intCodigoPuesto = '' %}
+                {% endif %}
+                {% if intCodigoPuesto != arProgramacionAlterna.codigoPuestoFk %}
+                    <tr>
+                        <td colspan="3"></td>
+                        <td id="suptipo" colspan="38">{{ arProgramacionAlterna.puestoRel.nombre | default('') }}</td>
+                    </tr>
+                    {% set intCodigoPuesto = arProgramacionAlterna.codigoPuestoFk %}
+                {% endif %}                
                 <tr>                    
                     <td>{{ arProgramacionAlterna.recursoRel.nombreCorto |default('')  }}</td>
                     <td>{{ arProgramacionAlterna.dia1  }}</td>
@@ -61,10 +77,18 @@
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
                 {{ knp_pagination_render(arProgramacionAlterna) }}
-        </div>       
+        </div>    
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">                
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+            <div class="btn-group">                
+                {{ form_widget(form.BtnAsignarPuesto, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+        </div>         
         {{ form_rest(form) }}
     {{ form_end(form) }}
-    
+    <br /><br /><br />
 
 </div>
 {% endblock %}

@@ -492,14 +492,36 @@ class GenerarSoportePagoController extends Controller
     public function verProgramacionAction(Request $request, $codigoSoportePagoPeriodo) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $arSoportePagoPeriodo = new \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();
+        $arSoportePagoPeriodo = new \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();        
         $arSoportePagoPeriodo =  $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->find($codigoSoportePagoPeriodo);                                        
         $form = $this->formularioVerProgramacionAlterna();
         $form->handleRequest($request);        
         if ($form->isValid()) {
-            if ($form->get('BtnAnalizar')->isClicked()) {  
-                $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->analizarInconsistencias($codigoSoportePagoPeriodo);
-                return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_inconsistencia', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));                                
+            if ($form->get('BtnAsignarPuesto')->isClicked()) { 
+                set_time_limit(0);
+                ini_set("memory_limit", -1);  
+                $arProgramacionesAlternas = new \Brasa\TurnoBundle\Entity\TurProgramacionAlterna();
+                $arProgramacionesAlternas =  $em->getRepository('BrasaTurnoBundle:TurProgramacionAlterna')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));                                        
+                foreach ($arProgramacionesAlternas as $arProgramacionAlterna) {                    
+                    $arrProgramaciones = $em->getRepository('BrasaTurnoBundle:TurRecurso')->programacionFechaRecurso($arSoportePagoPeriodo->getAnio(), $arSoportePagoPeriodo->getMes(), $arProgramacionAlterna->getCodigoRecursoFk());
+                    if($arrProgramaciones) {
+                        $codigoPuesto = $arrProgramaciones[0]['codigo_puesto_fk'];
+                        if($codigoPuesto) {                                    
+                            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
+                            if($arPuesto) {
+                                $arProgramacionAlternaAct = $em->getRepository('BrasaTurnoBundle:TurProgramacionAlterna')->find($arProgramacionAlterna->getCodigoProgramacionAlternaPk());                
+                                $arProgramacionAlternaAct->setPuestoRel($arPuesto);
+                                $arProgramacionAlternaAct->setClienteRel($arPuesto->getClienteRel());
+                                $em->persist($arProgramacionAlternaAct);
+                            }
+                        }
+                    }                    
+                }
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_ver_programacion', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));                                
+            }
+            if ($form->get('BtnExcel')->isClicked()) {
+                $this->generarExcelProgramacionAlterna($codigoSoportePagoPeriodo);
             }
         }        
         $strAnio = $arSoportePagoPeriodo->getFechaDesde()->format('Y');
@@ -631,7 +653,8 @@ class GenerarSoportePagoController extends Controller
     
     private function formularioVerProgramacionAlterna() {
         $form = $this->createFormBuilder()     
-                            
+            ->add('BtnAsignarPuesto', SubmitType::class, array('label'  => 'Generar puesto'))                            
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))                            
             ->getForm();
         return $form;
     }    
@@ -1158,6 +1181,135 @@ class GenerarSoportePagoController extends Controller
         $objWriter->save('php://output');
         exit;
     }
+    
+    private function generarExcelProgramacionAlterna($codigoSoportePagoPeriodo) {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();        
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for($col = 'A'; $col !== 'AK'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+        }                   
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'NIT')
+                    ->setCellValue('B1', 'CLIENTE')
+                    ->setCellValue('C1', 'PUESTO')                
+                    ->setCellValue('D1', 'DOCUMENTO')                
+                    ->setCellValue('E1', 'RECURSO')
+                    ->setCellValue('F1', 'D1')
+                    ->setCellValue('G1', 'D2')
+                    ->setCellValue('H1', 'D3')
+                    ->setCellValue('I1', 'D4')
+                    ->setCellValue('J1', 'D5')
+                    ->setCellValue('K1', 'D6')
+                    ->setCellValue('L1', 'D7')
+                    ->setCellValue('M1', 'D8')
+                    ->setCellValue('N1', 'D9')
+                    ->setCellValue('O1', 'D10')
+                    ->setCellValue('P1', 'D11')
+                    ->setCellValue('Q1', 'D12')
+                    ->setCellValue('R1', 'D13')
+                    ->setCellValue('S1', 'D14')
+                    ->setCellValue('T1', 'D15')
+                    ->setCellValue('U1', 'D16')
+                    ->setCellValue('V1', 'D17')
+                    ->setCellValue('W1', 'D18')
+                    ->setCellValue('X1', 'D19')
+                    ->setCellValue('Y1', 'D20')
+                    ->setCellValue('Z1', 'D21')
+                    ->setCellValue('AA1', 'D22')
+                    ->setCellValue('AB1', 'D23')
+                    ->setCellValue('AC1', 'D24')
+                    ->setCellValue('AD1', 'D25')
+                    ->setCellValue('AE1', 'D26')
+                    ->setCellValue('AF1', 'D27')
+                    ->setCellValue('AG1', 'D28')
+                    ->setCellValue('AH1', 'D29')
+                    ->setCellValue('AI1', 'D30')
+                    ->setCellValue('AJ1', 'D31');
+        
+        $i = 2;
+        $dql =  $em->getRepository('BrasaTurnoBundle:TurProgramacionAlterna')->listaDql($codigoSoportePagoPeriodo);                        
+        $query = $em->createQuery($dql);
+        $arProgramacionesAlternas = new \Brasa\TurnoBundle\Entity\TurProgramacionAlterna();
+        $arProgramacionesAlternas = $query->getResult();
+        foreach ($arProgramacionesAlternas as $arProgramacionAlterna) {            
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('F' . $i, $arProgramacionAlterna->getDia1())
+                    ->setCellValue('G' . $i, $arProgramacionAlterna->getDia2())
+                    ->setCellValue('H' . $i, $arProgramacionAlterna->getDia3())
+                    ->setCellValue('I' . $i, $arProgramacionAlterna->getDia4())
+                    ->setCellValue('J' . $i, $arProgramacionAlterna->getDia5())
+                    ->setCellValue('K' . $i, $arProgramacionAlterna->getDia6())
+                    ->setCellValue('L' . $i, $arProgramacionAlterna->getDia7())
+                    ->setCellValue('M' . $i, $arProgramacionAlterna->getDia8())
+                    ->setCellValue('N' . $i, $arProgramacionAlterna->getDia9())
+                    ->setCellValue('O' . $i, $arProgramacionAlterna->getDia10())
+                    ->setCellValue('P' . $i, $arProgramacionAlterna->getDia11())
+                    ->setCellValue('Q' . $i, $arProgramacionAlterna->getDia12())
+                    ->setCellValue('R' . $i, $arProgramacionAlterna->getDia13())
+                    ->setCellValue('S' . $i, $arProgramacionAlterna->getDia14())
+                    ->setCellValue('T' . $i, $arProgramacionAlterna->getDia15())
+                    ->setCellValue('U' . $i, $arProgramacionAlterna->getDia16())
+                    ->setCellValue('V' . $i, $arProgramacionAlterna->getDia17())
+                    ->setCellValue('W' . $i, $arProgramacionAlterna->getDia18())
+                    ->setCellValue('X' . $i, $arProgramacionAlterna->getDia19())
+                    ->setCellValue('Y' . $i, $arProgramacionAlterna->getDia20())
+                    ->setCellValue('Z' . $i, $arProgramacionAlterna->getDia21())
+                    ->setCellValue('AA' . $i, $arProgramacionAlterna->getDia22())
+                    ->setCellValue('AB' . $i, $arProgramacionAlterna->getDia23())
+                    ->setCellValue('AC' . $i, $arProgramacionAlterna->getDia24())
+                    ->setCellValue('AD' . $i, $arProgramacionAlterna->getDia25())
+                    ->setCellValue('AE' . $i, $arProgramacionAlterna->getDia26())
+                    ->setCellValue('AF' . $i, $arProgramacionAlterna->getDia27())
+                    ->setCellValue('AG' . $i, $arProgramacionAlterna->getDia28())
+                    ->setCellValue('AH' . $i, $arProgramacionAlterna->getDia29())
+                    ->setCellValue('AI' . $i, $arProgramacionAlterna->getDia30())
+                    ->setCellValue('AJ' . $i, $arProgramacionAlterna->getDia31());  
+            
+            if($arProgramacionAlterna->getClienteRel()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A' . $i, $arProgramacionAlterna->getClienteRel()->getNit());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $i, $arProgramacionAlterna->getClienteRel()->getNombreCorto());
+            }            
+            if($arProgramacionAlterna->getPuestoRel()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $i, $arProgramacionAlterna->getPuestoRel()->getNombre());
+            }
+            if($arProgramacionAlterna->getRecursoRel()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arProgramacionAlterna->getRecursoRel()->getNumeroIdentificacion());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arProgramacionAlterna->getRecursoRel()->getNombreCorto());
+            }            
+            $i++;
+        }                
+        
+        $objPHPExcel->getActiveSheet()->setTitle('ProgramacionDetalle');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ProgramacionDetalle.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }      
     
     private function turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $intHoras, $boolNovedad = 0, $boolDescanso = 0) {        
         if($boolNovedad == 0) {

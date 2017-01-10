@@ -358,7 +358,11 @@ class TurCliente
      * @ORM\OneToMany(targetEntity="TurCostoRecursoDetalle", mappedBy="clienteRel")
      */
     protected $costosRecursosDetallesClienteRel;    
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="TurProgramacionAlterna", mappedBy="clienteRel")
+     */
+    protected $programacionesAlternasClienteRel;    
 
     /**
      * Constructor
@@ -2123,5 +2127,39 @@ class TurCliente
     public function getPedidosDevolucionesClienteRel()
     {
         return $this->pedidosDevolucionesClienteRel;
+    }
+
+    /**
+     * Add programacionesAlternasClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasClienteRel
+     *
+     * @return TurCliente
+     */
+    public function addProgramacionesAlternasClienteRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasClienteRel)
+    {
+        $this->programacionesAlternasClienteRel[] = $programacionesAlternasClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesAlternasClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasClienteRel
+     */
+    public function removeProgramacionesAlternasClienteRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasClienteRel)
+    {
+        $this->programacionesAlternasClienteRel->removeElement($programacionesAlternasClienteRel);
+    }
+
+    /**
+     * Get programacionesAlternasClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesAlternasClienteRel()
+    {
+        return $this->programacionesAlternasClienteRel;
     }
 }

@@ -33,6 +33,16 @@ class TurProgramacionAlterna
     private $codigoRecursoFk;    
     
     /**
+     * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
+     */    
+    private $codigoPuestoFk;    
+    
+    /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteFk;    
+    
+    /**
      * @ORM\Column(name="anio", type="integer")
      */    
     private $anio = 0;    
@@ -229,8 +239,19 @@ class TurProgramacionAlterna
      * @ORM\JoinColumn(name="codigo_recurso_fk", referencedColumnName="codigo_recurso_pk")
      */
     protected $recursoRel;     
-    
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TurPuesto", inversedBy="programacionesAlternasPuestoRel")
+     * @ORM\JoinColumn(name="codigo_puesto_fk", referencedColumnName="codigo_puesto_pk")
+     */
+    protected $puestoRel;    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="programacionesAlternasClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;    
+    
     /**
      * Get codigoProgramacionAlternaPk
      *
@@ -1247,5 +1268,101 @@ class TurProgramacionAlterna
     public function getSoportePagoRel()
     {
         return $this->soportePagoRel;
+    }
+
+    /**
+     * Set codigoPuestoFk
+     *
+     * @param integer $codigoPuestoFk
+     *
+     * @return TurProgramacionAlterna
+     */
+    public function setCodigoPuestoFk($codigoPuestoFk)
+    {
+        $this->codigoPuestoFk = $codigoPuestoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPuestoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPuestoFk()
+    {
+        return $this->codigoPuestoFk;
+    }
+
+    /**
+     * Set puestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuesto $puestoRel
+     *
+     * @return TurProgramacionAlterna
+     */
+    public function setPuestoRel(\Brasa\TurnoBundle\Entity\TurPuesto $puestoRel = null)
+    {
+        $this->puestoRel = $puestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get puestoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPuesto
+     */
+    public function getPuestoRel()
+    {
+        return $this->puestoRel;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return TurProgramacionAlterna
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCliente $clienteRel
+     *
+     * @return TurProgramacionAlterna
+     */
+    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 }

@@ -11,7 +11,7 @@ class TurProgramacionAlternaRepository extends EntityRepository {
         if($codigoSoportePagoPeriodo != '') {
             $dql .= " AND pa.codigoSoportePagoPeriodoFk = " . $codigoSoportePagoPeriodo;  
         }        
-        //$dql .= " ORDER BY pd.codigoPuestoFk";
+        $dql .= " ORDER BY pa.codigoClienteFk, pa.codigoPuestoFk";
         return $dql;
     }     
     

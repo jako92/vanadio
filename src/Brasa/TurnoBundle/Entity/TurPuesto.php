@@ -159,6 +159,11 @@ class TurPuesto
     protected $programacionesDetallesPuestoRel;        
 
     /**
+     * @ORM\OneToMany(targetEntity="TurProgramacionAlterna", mappedBy="puestoRel")
+     */
+    protected $programacionesAlternasPuestoRel;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="TurCostoServicio", mappedBy="puestoRel")
      */
     protected $costosServiciosPuestoRel; 
@@ -1117,5 +1122,39 @@ class TurPuesto
     public function getCostosRecursosDetallesPuestoRel()
     {
         return $this->costosRecursosDetallesPuestoRel;
+    }
+
+    /**
+     * Add programacionesAlternasPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasPuestoRel
+     *
+     * @return TurPuesto
+     */
+    public function addProgramacionesAlternasPuestoRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasPuestoRel)
+    {
+        $this->programacionesAlternasPuestoRel[] = $programacionesAlternasPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesAlternasPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasPuestoRel
+     */
+    public function removeProgramacionesAlternasPuestoRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasPuestoRel)
+    {
+        $this->programacionesAlternasPuestoRel->removeElement($programacionesAlternasPuestoRel);
+    }
+
+    /**
+     * Get programacionesAlternasPuestoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesAlternasPuestoRel()
+    {
+        return $this->programacionesAlternasPuestoRel;
     }
 }
