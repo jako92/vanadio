@@ -20,19 +20,13 @@ class TurFacturaSubtipo
     /**
      * @ORM\Column(name="nombre", type="string", length=50)
      */
-    private $nombre;                                
-    
-    /**     
-     * @ORM\Column(name="afecta_valor_pedido", type="boolean")
-     */    
-    private $afectaValorPedido = false;        
+    private $nombre;                                           
     
     /**
      * @ORM\OneToMany(targetEntity="TurFactura", mappedBy="facturaSubtipoRel")
      */
     protected $facturasFacturaSubtipoRel; 
     
-
     /**
      * Constructor
      */
@@ -73,30 +67,6 @@ class TurFacturaSubtipo
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Set afectaValorPedido
-     *
-     * @param boolean $afectaValorPedido
-     *
-     * @return TurFacturaSubtipo
-     */
-    public function setAfectaValorPedido($afectaValorPedido)
-    {
-        $this->afectaValorPedido = $afectaValorPedido;
-
-        return $this;
-    }
-
-    /**
-     * Get afectaValorPedido
-     *
-     * @return boolean
-     */
-    public function getAfectaValorPedido()
-    {
-        return $this->afectaValorPedido;
     }
 
     /**

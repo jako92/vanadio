@@ -170,12 +170,7 @@ class TurFactura
      /**
      * @ORM\Column(name="operacion", type="integer")
      */
-    private $operacion = 0;    
-    
-    /**     
-     * @ORM\Column(name="afecta_valor_pedido", type="boolean")
-     */    
-    private $afectaValorPedido = true;     
+    private $operacion = 0;           
     
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
@@ -986,27 +981,27 @@ class TurFactura
     }
 
     /**
-     * Set afectaValorPedido
+     * Set plazoPago
      *
-     * @param boolean $afectaValorPedido
+     * @param integer $plazoPago
      *
      * @return TurFactura
      */
-    public function setAfectaValorPedido($afectaValorPedido)
+    public function setPlazoPago($plazoPago)
     {
-        $this->afectaValorPedido = $afectaValorPedido;
+        $this->plazoPago = $plazoPago;
 
         return $this;
     }
 
     /**
-     * Get afectaValorPedido
+     * Get plazoPago
      *
-     * @return boolean
+     * @return integer
      */
-    public function getAfectaValorPedido()
+    public function getPlazoPago()
     {
-        return $this->afectaValorPedido;
+        return $this->plazoPago;
     }
 
     /**
@@ -1185,29 +1180,5 @@ class TurFactura
     public function getFacturasDetallesFacturaRel()
     {
         return $this->facturasDetallesFacturaRel;
-    }
-
-    /**
-     * Set plazoPago
-     *
-     * @param integer $plazoPago
-     *
-     * @return TurFactura
-     */
-    public function setPlazoPago($plazoPago)
-    {
-        $this->plazoPago = $plazoPago;
-
-        return $this;
-    }
-
-    /**
-     * Get plazoPago
-     *
-     * @return integer
-     */
-    public function getPlazoPago()
-    {
-        return $this->plazoPago;
     }
 }

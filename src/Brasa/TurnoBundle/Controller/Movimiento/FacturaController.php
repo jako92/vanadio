@@ -201,8 +201,7 @@ class FacturaController extends Controller
                     $arUsuario = $this->getUser();
                     $arFactura->setUsuario($arUsuario->getUserName());
                     $arFactura->setOperacion($arFactura->getFacturaTipoRel()->getOperacion());
-                    $arFacturaSubtipo = $form->get('facturaSubtipoRel')->getData();
-                    $arFactura->setAfectaValorPedido($arFacturaSubtipo->getAfectaValorPedido());
+                    $arFacturaSubtipo = $form->get('facturaSubtipoRel')->getData();                    
                     $em->persist($arFactura);
                     $em->flush();
 

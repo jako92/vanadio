@@ -216,25 +216,23 @@ class TurFacturaRepository extends EntityRepository {
                 }
             }
 
-            if($strResultado == "") {                
-                if($arFactura->getAfectaValorPedido() == 1) {
-                    $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-                    $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
-                    foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                        if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
+            if($strResultado == "") {                                
+                $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+                $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+                foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                    if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
 
-                                $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
-                                $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() - $arFacturaDetalle->getSubtotalOperado();
-                                $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);                            
-                                $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() + $arFacturaDetalle->getSubtotalOperado();
-                                $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
-                                if($floValorTotalPendiente <= 0) {
-                                    $arPedidoDetalle->setEstadoFacturado(1);
-                                }
-                                $em->persist($arPedidoDetalle);                            
-                        }                                                
-                    }
-                }                
+                            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
+                            $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() - $arFacturaDetalle->getSubtotalOperado();
+                            $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);                            
+                            $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() + $arFacturaDetalle->getSubtotalOperado();
+                            $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
+                            if($floValorTotalPendiente <= 0) {
+                                $arPedidoDetalle->setEstadoFacturado(1);
+                            }
+                            $em->persist($arPedidoDetalle);                            
+                    }                                                
+                }                                
                 $arFactura->setEstadoAutorizado(1);
                 $em->persist($arFactura);
                 $em->flush();
@@ -249,22 +247,20 @@ class TurFacturaRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
         $strResultado = "";
-        if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() == 0) {
-            if($arFactura->getAfectaValorPedido() == 1) {
-                $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-                $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
-                foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                    if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {                    
-                        $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());                        
-                        $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() + $arFacturaDetalle->getSubtotalOperado();
-                        $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);
-                        $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() - $arFacturaDetalle->getSubtotalOperado();
-                        $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
-                        $arPedidoDetalle->setEstadoFacturado(0);
-                        $em->persist($arPedidoDetalle);                        
-                    }
+        if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() == 0) {            
+            $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+            $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+            foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {                    
+                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());                        
+                    $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() + $arFacturaDetalle->getSubtotalOperado();
+                    $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);
+                    $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() - $arFacturaDetalle->getSubtotalOperado();
+                    $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
+                    $arPedidoDetalle->setEstadoFacturado(0);
+                    $em->persist($arPedidoDetalle);                        
                 }
-            }
+            }           
             $arFactura->setEstadoAutorizado(0);
             $em->persist($arFactura);
             $em->flush();
