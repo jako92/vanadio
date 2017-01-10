@@ -33,25 +33,25 @@ class Factura5 extends \FPDF_FPDF {
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);                        
         
-        $this->SetXY(14, 39);
+        $this->SetXY(14, 39.5);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(138, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);        
-        $this->SetXY(14, 43); 
+        $this->Cell(138, 4.5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);        
+        $this->SetXY(14, 44); 
         $this->SetFont('Arial', '', 8);
-        $this->Cell(138, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
+        $this->Cell(138, 4.5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
         $this->SetXY(14, 48);        
-        $this->Cell(138, 5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
-        $this->SetXY(14, 53);        
-        $this->Cell(138, 5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
+        $this->Cell(138, 4.5, "CIUDAD: " . $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 0);
+        $this->SetXY(14, 52);        
+        $this->Cell(138, 4.5, "TELEFONOS: " . $arFactura->getClienteRel()->getTelefono(), 0, 0, 'L', 0);
  
         $this->SetXY(135, 39);        
-        $this->Cell(61, 5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
+        $this->Cell(61, 4.5, "NIT/CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(135, 43);        
-        $this->Cell(61, 5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
+        $this->Cell(61, 4.5, "CEDULA: " . $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(), 0, 0, 'L', 0);               
         $this->SetXY(135, 48);        
-        $this->Cell(61, 5, "VENDEDOR: 001", 0, 0, 'L', 0);                       
+        $this->Cell(61, 4.5, "VENDEDOR: 001", 0, 0, 'L', 0);                       
         $this->SetXY(135, 53);        
-        $this->Cell(61, 5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
+        $this->Cell(61, 4.5, "FECHA VENCIMIENTO: " . $arFactura->getFechaVence()->format('d/m/Y'), 0, 0, 'L', 0);                       
         
         $this->SetXY(110, 62);
         $this->SetMargins(5, 1, 5);
