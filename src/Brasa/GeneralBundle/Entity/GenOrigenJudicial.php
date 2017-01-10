@@ -20,8 +20,8 @@ class GenOrigenJudicial
     /**
      * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
      */      
-    private $nombre;
-
+    private $nombre;    
+    
     /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCliente", mappedBy="origenJudicialRel")
      */

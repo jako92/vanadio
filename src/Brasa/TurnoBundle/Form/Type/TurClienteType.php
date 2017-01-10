@@ -124,6 +124,7 @@ class TurClienteType extends AbstractType
             ->add('celularContacto', TextType::class, array('required' => false))  
             ->add('telefonoContacto', TextType::class, array('required' => false))
             ->add('facturaAgrupada', CheckboxType::class, array('required'  => false))                            
+            ->add('regimenSimplificado', CheckboxType::class, array('required'  => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

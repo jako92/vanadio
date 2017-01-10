@@ -212,6 +212,11 @@ class TurCliente
      */
     private $codigoInterface;    
     
+    /**     
+     * @ORM\Column(name="regimen_simplificado", type="boolean")
+     */    
+    private $regimenSimplificado = false;      
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
@@ -2161,5 +2166,29 @@ class TurCliente
     public function getProgramacionesAlternasClienteRel()
     {
         return $this->programacionesAlternasClienteRel;
+    }
+
+    /**
+     * Set regimenSimplificado
+     *
+     * @param boolean $regimenSimplificado
+     *
+     * @return TurCliente
+     */
+    public function setRegimenSimplificado($regimenSimplificado)
+    {
+        $this->regimenSimplificado = $regimenSimplificado;
+
+        return $this;
+    }
+
+    /**
+     * Get regimenSimplificado
+     *
+     * @return boolean
+     */
+    public function getRegimenSimplificado()
+    {
+        return $this->regimenSimplificado;
     }
 }
