@@ -117,7 +117,9 @@ class PedidoDevolucionController extends Controller
                     $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->autorizar($codigoPedidoDevolucion);
                     if($strResultado != "") {
                         $objMensaje->Mensaje("error", $strResultado);
-                    }                    
+                    } else {
+                        $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);                        
+                    }                     
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));                
             }              
@@ -132,10 +134,19 @@ class PedidoDevolucionController extends Controller
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));                
             } 
            
-            if($form->get('BtnDetalleEliminar')->isClicked()) {   
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->eliminarSeleccionados($arrSeleccionados);
-                $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
+            if($form->get('BtnDetalleActualizar')->isClicked()) { 
+                if($arPedidoDevolucion->getEstadoAutorizado() == 0) {
+                    $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
+                }                
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));
+            }             
+            
+            if($form->get('BtnDetalleEliminar')->isClicked()) {  
+                if($arPedidoDevolucion->getEstadoAutorizado() == 0) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->eliminarSeleccionados($arrSeleccionados);
+                    $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);                    
+                }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));
             }                  
           
