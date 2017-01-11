@@ -50,17 +50,17 @@ class ProyeccionController extends Controller
                     $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();                    
                     $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoActivo' => 1));                    
                     foreach($arContratos as $arContrato) {
-                        $douSalario = $arContrato->getVrSalarioPago();
-                        $auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();
-                        $dateFechaHasta = $fechaHasta;
-                        $arProyeccion = new \Brasa\RecursoHumanoBundle\Entity\RhuProyeccion();
-                        $arProyeccion->setContratoRel($arContrato);
-                        $arProyeccion->setEmpleadoRel($arContrato->getEmpleadoRel());
-                        $arProyeccion->setVrSalario($arContrato->getVrSalario());                        
-                        $arProyeccion->setFechaHasta($fechaHasta);
-                        
-                        //Cesantias
-                        if($arContrato->getSalarioIntegral() == 0) {
+                        if($arContrato->getCodigoContratoClaseFk() != 4 && $arContrato->getCodigoContratoClaseFk() != 5 && $arContrato->getSalarioIntegral() == 0) {                        
+                            $douSalario = $arContrato->getVrSalarioPago();
+                            $auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();
+                            $dateFechaHasta = $fechaHasta;
+                            $arProyeccion = new \Brasa\RecursoHumanoBundle\Entity\RhuProyeccion();
+                            $arProyeccion->setContratoRel($arContrato);
+                            $arProyeccion->setEmpleadoRel($arContrato->getEmpleadoRel());
+                            $arProyeccion->setVrSalario($arContrato->getVrSalario());                        
+                            $arProyeccion->setFechaHasta($fechaHasta);
+
+                            //Cesantias
                             $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();   
                             $dateFechaHastaCesantias = $arContrato->getFechaUltimoPago();
                             $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();                            
@@ -116,12 +116,9 @@ class ProyeccionController extends Controller
                             $arProyeccion->setVrInteresesCesantias($douInteresesCesantias);
                             $arProyeccion->setFechaDesdeCesantias($dateFechaDesde);
                             $arProyeccion->setDiasAusentismo($intDiasAusentismo);                            
-                        } else {
-                            $arProyeccion->setFechaDesdeCesantias($dateFechaHasta);
-                        }
-                        
-                        //Primas  
-                        if($arContrato->getSalarioIntegral() == 0) {
+
+
+                            //Primas  
                             $dateFechaDesde = $arContrato->getFechaUltimoPagoPrimas();                        
                             $dateFechaHastaPrimas = $arContrato->getFechaUltimoPago();
                             $intDiasPrima = 0;                                        
@@ -180,12 +177,9 @@ class ProyeccionController extends Controller
                             $arProyeccion->setVrSalarioPromedioPrimas($salarioPromedioPrimas);
                             $arProyeccion->setVrPrimas($douPrima);
                             $arProyeccion->setDiasPrima($intDiasPrimaLiquidar);
-                            $arProyeccion->setFechaDesdePrima($dateFechaDesde);                             
-                        } else {
-                            $arProyeccion->setFechaDesdePrima($dateFechaHasta);                                               
+                            $arProyeccion->setFechaDesdePrima($dateFechaDesde);                                                     
+                            $em->persist($arProyeccion);                            
                         }
-                        
-                        $em->persist($arProyeccion);
                     }         
                     $em->flush();                    
                 }
