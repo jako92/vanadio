@@ -32,7 +32,8 @@ class IntercambioDatosController extends Controller
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if($form->get('BtnGenerarIlimitada')->isClicked()) {
-                
+                $this->filtrar($form, $request);
+                $this->listar();
                 $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);                                    
                 $strNombreArchivo = "ExpIlimitada" . date('YmdHis') . ".txt";
                 $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;                
@@ -40,34 +41,45 @@ class IntercambioDatosController extends Controller
                 $ar = fopen($strArchivo, "a") or
                         die("Problemas en la creacion del archivo plano");                
                 //fputs($ar, "Cuenta\tComprobante\tFecha\tDocumento\tDocumento Ref.\tNit\tDetalle\tTipo\tValor\tBase\tCentro de Costo\tTrans. Ext\tPlazo" . "\n");
-                $arRegistrosExportar = $em->getRepository('BrasaContabilidadBundle:CtbRegistroExportar')->findAll();                                    
-                foreach ($arRegistrosExportar as $arRegistroExportar) {
+                //$arRegistrosExportar = $em->getRepository('BrasaContabilidadBundle:CtbRegistroExportar')->findAll();                                    
+                $query = $em->createQuery($this->strDqlLista);
+                $arRegistros = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                $arRegistros = $query->getResult();
+                foreach ($arRegistros as $arRegistro) {
                     $floValor = 0;
-                    if($arRegistroExportar->getTipo() == 1) {
-                        $floValor = $arRegistroExportar->getDebito();
+                    $intTipo = 0;
+                    if($arRegistro->getCredito() == 0) {
+                        $floValor = $arRegistro->getDebito();
+                        $intTipo = 1;
                     } else {
-                        $floValor = $arRegistroExportar->getCredito();
+                        $floValor = $arRegistro->getCredito();
+                        $intTipo = 2;
                     }
-                    fputs($ar, $arRegistroExportar->getCuenta() . "\t");
-                    fputs($ar, $this->RellenarNr($arRegistroExportar->getComprobante(), "0", 5) . "\t");
-                    fputs($ar, $arRegistroExportar->getFecha()->format('m/d/Y') . "\t");
-                    fputs($ar, $this->RellenarNr($arRegistroExportar->getNumero(), "0", 9) . "\t");
-                    fputs($ar, $this->RellenarNr($arRegistroExportar->getNumero(), "0", 9) . "\t");
-                    fputs($ar, $arRegistroExportar->getNit() . "\t");
-                    fputs($ar, $arRegistroExportar->getDescripcionContable() . "\t");
-                    fputs($ar, $arRegistroExportar->getTipo() . "\t");
+                    $srtCentroCosto = "";
+                    if ($arRegistro->getCodigoCentroCostoFk() != null){
+                        $srtCentroCosto = $arRegistro->getCodigoCentroCostoFk();
+                    }
+                    $srtNit = "";
+                    if ($arRegistro->getCodigoTerceroFk() != null){
+                        $srtNit = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
+                    }
+                    fputs($ar, $arRegistro->getCodigoCuentaFk() . "\t");
+                    fputs($ar, $this->RellenarNr($arRegistro->getCodigoComprobanteFk(), "0", 5) . "\t");
+                    fputs($ar, $arRegistro->getFecha()->format('m/d/Y') . "\t");
+                    fputs($ar, $this->RellenarNr($arRegistro->getNumero(), "0", 9) . "\t");
+                    fputs($ar, $this->RellenarNr($arRegistro->getNumero(), "0", 9) . "\t");
+                    fputs($ar, $srtNit . "\t");
+                    fputs($ar, $arRegistro->getDescripcionContable() . "\t");
+                    fputs($ar, $intTipo . "\t");
                     fputs($ar, $floValor . "\t");
-                    fputs($ar, $arRegistroExportar->getBase() . "\t");
-                    fputs($ar, $arRegistroExportar->getCentroCosto() . "\t");
+                    fputs($ar, $arRegistro->getBase() . "\t");
+                    fputs($ar, $srtCentroCosto . "\t");
                     fputs($ar, "" . "\t");
                     fputs($ar, "" . "\t");
                     fputs($ar, "\n");
                 }
                 fclose($ar);
 
-                //$strSql = "TRUNCATE TABLE ctb_registro_exportar";           
-                //$em->getConnection()->executeQuery($strSql);                    
-                
                 header('Content-Description: File Transfer');
                 header('Content-Type: text/csv; charset=ISO-8859-15');
                 header('Content-Disposition: attachment; filename='.basename($strArchivo));
@@ -147,7 +159,7 @@ class IntercambioDatosController extends Controller
             ->add('fechaHasta', DateType::class,  array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                                                            
             ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroCtbRegistroFiltrarFecha')))                                                     
             ->add('BtnGenerarOfimatica', SubmitType::class, array('label'  => 'Ofimatica',))    
-            ->add('BtnGenerarIlimitada', SubmitType::class, array('label'  => 'Ilimitada',))                
+            ->add('BtnGenerarIlimitada', SubmitType::class, array('label'  => 'Ilimitada',))                            
             ->getForm();
         return $form;                
     }    
@@ -323,7 +335,7 @@ class IntercambioDatosController extends Controller
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }      
+    }                  
     
     public static function RellenarNr($Nro, $Str, $NroCr) {
         $Longitud = strlen($Nro);
