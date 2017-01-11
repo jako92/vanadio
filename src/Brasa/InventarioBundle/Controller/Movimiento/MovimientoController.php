@@ -143,7 +143,7 @@ class MovimientoController extends Controller
         $paginator  = $this->get('knp_paginator');
         $objMensaje = $this->get('mensajes_brasa');
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();        
-        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
+        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);        
         $form = $this->formularioDetalle($arMovimiento);
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -406,15 +406,13 @@ class MovimientoController extends Controller
                 $vence = date_create($vence);
                 $bodega = $arrControles['TxtBodega'][$codigo];
                 $cantidad = $arrControles['TxtCantidad'][$codigo];
-                $costo = $arrControles['TxtCosto'][$codigo];
-                $precio = $arrControles['TxtPrecio'][$codigo];
+                $valor = $arrControles['TxtValor'][$codigo];                
                 $descuento = $arrControles['TxtDescuento'][$codigo];                
                 $arMovimientoDetalle->setLoteFk($lote);                
                 $arMovimientoDetalle->setFechaVencimiento($vence);
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
-                $arMovimientoDetalle->setVrCosto($costo);
-                $arMovimientoDetalle->setVrPrecio($precio);
+                $arMovimientoDetalle->setValor($valor);
                 $arMovimientoDetalle->setVrDescuento($descuento);
                 $em->persist($arMovimientoDetalle);
             }

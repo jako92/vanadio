@@ -190,7 +190,7 @@ class InvMovimientoRepository extends EntityRepository {
         foreach ($arMovimientoDetalle as $arMovimientoDetalle) {
             $arMovimientoDetalleAct = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
             $arMovimientoDetalleAct = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->find($arMovimientoDetalle->getCodigoDetalleMovimientoPk());
-            $subtotalDetalle = $arMovimientoDetalle->getVrPrecio() * $arMovimientoDetalle->getCantidad();
+            $subtotalDetalle = $arMovimientoDetalle->getValor() * $arMovimientoDetalle->getCantidad();
             $subtotalDetalle = $subtotalDetalle - $arMovimientoDetalle->getVrDescuento();
             //$baseIvaDetalle = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeIva()) / 100;
             //$baseIvaDetalle = $baseIvaDetalle;

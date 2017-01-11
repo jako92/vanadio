@@ -63,9 +63,9 @@ class InvMovimientoDetalle
     private $cantidadAfectada = 0;      
     
     /**
-     * @ORM\Column(name="vr_costo", type="float")
+     * @ORM\Column(name="valor", type="float")
      */    
-    private $vrCosto = 0;
+    private $valor = 0;
 
     /**
      * @ORM\Column(name="vr_total_costo", type="float")
@@ -75,12 +75,7 @@ class InvMovimientoDetalle
     /**
      * @ORM\Column(name="vr_costo_promedio", type="float")
      */    
-    private $vrCostoPromedio = 0;    
-    
-    /**
-     * @ORM\Column(name="vr_precio", type="float")
-     */    
-    private $vrPrecio = 0;
+    private $vrCostoPromedio = 0;        
 
     /**
      * @ORM\Column(name="vr_subtotal", type="float")
@@ -175,7 +170,6 @@ class InvMovimientoDetalle
     protected $itemRel;
     
 
-    
 
     /**
      * Get codigoDetalleMovimientoPk
@@ -404,27 +398,27 @@ class InvMovimientoDetalle
     }
 
     /**
-     * Set vrCosto
+     * Set valor
      *
-     * @param float $vrCosto
+     * @param float $valor
      *
      * @return InvMovimientoDetalle
      */
-    public function setVrCosto($vrCosto)
+    public function setValor($valor)
     {
-        $this->vrCosto = $vrCosto;
+        $this->valor = $valor;
 
         return $this;
     }
 
     /**
-     * Get vrCosto
+     * Get valor
      *
      * @return float
      */
-    public function getVrCosto()
+    public function getValor()
     {
-        return $this->vrCosto;
+        return $this->valor;
     }
 
     /**
@@ -473,30 +467,6 @@ class InvMovimientoDetalle
     public function getVrCostoPromedio()
     {
         return $this->vrCostoPromedio;
-    }
-
-    /**
-     * Set vrPrecio
-     *
-     * @param float $vrPrecio
-     *
-     * @return InvMovimientoDetalle
-     */
-    public function setVrPrecio($vrPrecio)
-    {
-        $this->vrPrecio = $vrPrecio;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPrecio
-     *
-     * @return float
-     */
-    public function getVrPrecio()
-    {
-        return $this->vrPrecio;
     }
 
     /**
