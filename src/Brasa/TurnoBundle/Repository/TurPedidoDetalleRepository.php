@@ -445,20 +445,35 @@ class TurPedidoDetalleRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
         $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);
+        
+        $totalAfectado = 0;
         $dql   = "SELECT SUM(fd.subtotalOperado) as valor FROM BrasaTurnoBundle:TurFacturaDetalle fd JOIN fd.facturaRel f "
                 . "WHERE fd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " AND f.estadoAutorizado = 1";
         $query = $em->createQuery($dql);
-        $arrFacturaDetalle = $query->getSingleResult(); 
+        $arrFacturaDetalle = $query->getSingleResult();         
         if($arrFacturaDetalle) {
-            $totalAfectado = 0;
             if($arrFacturaDetalle['valor']) {
                 $totalAfectado = $arrFacturaDetalle['valor'];
-            }
-            $arPedidoDetalle->setVrTotalDetalleAfectado($totalAfectado);
-            $pendiente = $arPedidoDetalle->getVrSubtotal() - ($totalAfectado + $arPedidoDetalle->getVrTotalDetalleDevolucion());
-            $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
-            $em->persist($arPedidoDetalle);
+            }            
         }       
+        
+        $totalDevolucion = 0;
+        $dql   = "SELECT SUM(pdd.vrPrecio) as valor FROM BrasaTurnoBundle:TurPedidoDevolucionDetalle pdd "
+                . "WHERE pdd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle;
+        $query = $em->createQuery($dql);
+        $arrPedidoDevolucionDetalle = $query->getSingleResult();         
+        if($arrPedidoDevolucionDetalle) {
+            if($arrPedidoDevolucionDetalle['valor']) {
+                $totalDevolucion = $arrPedidoDevolucionDetalle['valor'];
+            }            
+        }                   
+
+        $arPedidoDetalle->setVrTotalDetalleAfectado($totalAfectado);
+        $arPedidoDetalle->setVrTotalDetalleDevolucion($totalDevolucion);
+        $pendiente = $arPedidoDetalle->getVrSubtotal() - ($totalAfectado + $totalDevolucion);
+        $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+        $em->persist($arPedidoDetalle);
+            
     }  
     
     public function actualizarHorasProgramadas($codigoPedidoDetalle) {        
