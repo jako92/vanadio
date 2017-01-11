@@ -88,6 +88,7 @@
                 <th>{{ knp_pagination_sortable(arPedidosDevolucion, 'CÓDIGO', 'p.codigoPedidoDevolucionPk') }}</th>                                
                 <th>FECHA</th>
                 <th>CLIENTE</th>
+                <th>CONCEPTO</th>
                 <th>VALOR</th>       
                 <th>AUT</th>                
                 <th></th>
@@ -99,6 +100,7 @@
                 <td>{{ arPedidosDevolucion.codigoPedidoDevolucionPk  }}</td>                                  
                 <td>{{ arPedidosDevolucion.fecha |date("Y/m/d")  }}</td>                                
                 <td>{{ arPedidosDevolucion.clienteRel.nombreCorto |default('') }}</td>  
+                <td>{{ arPedidosDevolucion.pedidoDevolucionConceptoRel.nombre |default('') }}</td> 
                 <td style="text-align: right">{{ arPedidosDevolucion.vrTotal | number_format(0, '.', ',') }}</td>                
                 <td>{% if arPedidosDevolucion.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>                                
                 <td style="text-align: center">{% if arPedidosDevolucion.estadoAutorizado == 0 %}<a href="{{ path('brs_tur_movimiento_pedido_devolucion_nuevo', {'codigoPedidoDevolucion': arPedidosDevolucion.codigoPedidoDevolucionPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>
