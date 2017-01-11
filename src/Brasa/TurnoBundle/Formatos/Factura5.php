@@ -35,7 +35,7 @@ class Factura5 extends \FPDF_FPDF {
         
         $this->SetXY(14, 39.5);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(138, 4.5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 0);        
+        $this->Cell(138, 4.5, utf8_decode($arFactura->getClienteRel()->getNombreCorto()), 0, 0, 'L', 0);        
         $this->SetXY(14, 44); 
         $this->SetFont('Arial', '', 8);
         $this->Cell(138, 4.5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 0);
