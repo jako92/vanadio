@@ -689,7 +689,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $diasAusentismo = 0;
                 if($arConfiguracion->getDiasAusentismoPrimas()) {
                     $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
-                }
+                }                
                 $salarioPromedioPrimas = round($salarioPromedioPrimas);                                                
                 $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
                 $arProgramacionPagoDetalle->setProgramacionPagoRel($arProgramacionPago);
@@ -800,6 +800,13 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     }                                                        
                 }                   
                 $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                               
+                if($salarioPromedioCesantias < $salarioMinimo) {
+                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                    } else {
+                        $salarioPromedioCesantias = $douSalario;
+                    }                                
+                }                
                 $salarioPromedioCesantias = round($salarioPromedioCesantias);                                                
                 $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
                 $arProgramacionPagoDetalle->setProgramacionPagoRel($arProgramacionPago);

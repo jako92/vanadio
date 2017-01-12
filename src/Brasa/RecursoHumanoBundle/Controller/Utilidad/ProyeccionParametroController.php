@@ -49,7 +49,7 @@ class ProyeccionParametroController extends Controller
                     $salarioMinimo = $arConfiguracion->getVrSalario();
                     $douAuxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();
                     $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                    $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoActivo' => 1));
+                    $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoActivo' => 1, 'codigoEmpleadoFk' => 3242));
                     foreach($arContratos as $arContrato) {
                         if($arContrato->getCodigoContratoClaseFk() != 4 && $arContrato->getCodigoContratoClaseFk() != 5 && $arContrato->getSalarioIntegral() == 0) {
                             $douSalario = $arContrato->getVrSalarioPago();
@@ -60,7 +60,6 @@ class ProyeccionParametroController extends Controller
                             $arProyeccion->setEmpleadoRel($arContrato->getEmpleadoRel());
                             $arProyeccion->setVrSalario($arContrato->getVrSalario());
                             $arProyeccion->setFechaHasta($fechaHasta);
-
 
                             //Cesantias                        
                             $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
@@ -83,10 +82,16 @@ class ProyeccionParametroController extends Controller
                                     }
                                 }
                             } else {
+                                //Comisiones
+                                $ibpConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibpConceptos($dateFechaDesde->format('Y-m-d'), $dateFechaHastaCesantias->format('Y-m-d'), $arContrato->getCodigoContratoPk());                
+                                $otrosConceptos = 0;
+                                if($intDiasCesantiasSalarioPromedio > 0) {
+                                    $otrosConceptos = ($ibpConceptos / $intDiasCesantiasSalarioPromedio) * 30;
+                                }
                                 if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
-                                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
                                 } else {
-                                    $salarioPromedioCesantias = $douSalario;
+                                    $salarioPromedioCesantias = $douSalario + $otrosConceptos;
                                 }
                             }
                             $aplicaPorcentaje = true;
