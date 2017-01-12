@@ -71,10 +71,10 @@ class ProyeccionParametroController extends Controller
                             $intDiasCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($dateFechaDesde, $dateFechaHasta);
                             $intDiasCesantiasSalarioPromedio = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($dateFechaDesde, $dateFechaHastaCesantias);
                             $intDiasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHastaCesantias->format('Y-m-d'), $arContrato->getCodigoContratoPk());
-                            $salarioPromedioCesantias = 0;
+                            $salarioPromedioCesantias = 0;                                                        
                             if($arContrato->getCodigoSalarioTipoFk() == 2) {
-                                if($intDiasCesantiasSalarioPromedio > 0) {                                    
-                                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantiasSalarioPromedio) * 30;
+                                if($intDiasCesantiasSalarioPromedio > 0) {
+                                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantiasSalarioPromedio) * 30;                                                                                                                 
                                 } else {
                                     if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
                                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
@@ -89,10 +89,16 @@ class ProyeccionParametroController extends Controller
                                     $salarioPromedioCesantias = $douSalario;
                                 }
                             }
+                            $aplicaPorcentaje = true;
+                            if($arContrato->getEmpleadoRel()->getPagadoEntidadSalud()) {
+                                $salarioPromedioCesantias = $douSalario;
+                                $aplicaPorcentaje = false;                
+                            }                                                                                    
+                            
                             $salarioPromedioCesantiasReal = $salarioPromedioCesantias;
                             $porcentaje = 100;
                             if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {
-                                if($arContrato->getCodigoSalarioTipoFk() == 2) {
+                                if($arContrato->getCodigoSalarioTipoFk() == 2 && $aplicaPorcentaje) {
                                     $intDiasLaborados = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($arContrato->getFechaDesde(), $dateFechaHasta);
                                     foreach ($arParametrosPrestacionCesantia as $arParametroPrestacion) {
                                         if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
@@ -151,9 +157,6 @@ class ProyeccionParametroController extends Controller
                             $ibpPrimas += $ibpPrimasInicial;
                             $ibpPrimas = round($ibpPrimas);
                             $salarioPromedioPrimas = 0;
-                            if($arContrato->getCodigoEmpleadoFk() == 5386) {
-                                echo "hola";
-                            }
                             if($arContrato->getCodigoSalarioTipoFk() == 2) {
                                 if($intDiasPrimaSalarioPromedio > 0) {
                                     //Se realiza para seracis
