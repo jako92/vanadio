@@ -117,7 +117,13 @@ class ProyeccionParametroController extends Controller
                                 }
                             }
                             $intDiasCesantias -= $intDiasAusentismo;
-
+                            if($salarioPromedioCesantias < $salarioMinimo) {
+                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                                } else {
+                                    $salarioPromedioCesantias = $douSalario;
+                                }                                
+                            }
                             $douCesantias = ($salarioPromedioCesantias * $intDiasCesantias) / 360;
                             $douCesantiasReal = ($salarioPromedioCesantiasReal * $intDiasCesantias) / 360;
                             $diferencia = $douCesantiasReal - $douCesantias;
