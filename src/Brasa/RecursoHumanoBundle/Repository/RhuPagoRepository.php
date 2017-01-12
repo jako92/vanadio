@@ -447,7 +447,7 @@ class RhuPagoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT SUM(p.diasAusentismo) as diasAusentismo FROM BrasaRecursoHumanoBundle:RhuPago p "
                 . "WHERE p.codigoContratoFk = " . $codigoContrato . " "
-                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaHastaPago <= '" . $fechaHasta . "'";
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         $intDiasAusentismo = $arrayResultado[0]['diasAusentismo'];
