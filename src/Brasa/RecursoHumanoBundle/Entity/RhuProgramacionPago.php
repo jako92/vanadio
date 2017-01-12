@@ -72,6 +72,11 @@ class RhuProgramacionPago
      */    
     private $estadoAnulado = false;            
     
+    /**
+     * @ORM\Column(name="estado_exportado_ardid", type="boolean")
+     */    
+    private $estadoExportadoArdid = false;    
+    
     /**     
      * @ORM\Column(name="verificar_pagos_adicionales", type="boolean")
      */    
@@ -1261,5 +1266,29 @@ class RhuProgramacionPago
     public function getFechaPagado()
     {
         return $this->fechaPagado;
+    }
+
+    /**
+     * Set estadoExportadoArdid
+     *
+     * @param boolean $estadoExportadoArdid
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setEstadoExportadoArdid($estadoExportadoArdid)
+    {
+        $this->estadoExportadoArdid = $estadoExportadoArdid;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoExportadoArdid
+     *
+     * @return boolean
+     */
+    public function getEstadoExportadoArdid()
+    {
+        return $this->estadoExportadoArdid;
     }
 }

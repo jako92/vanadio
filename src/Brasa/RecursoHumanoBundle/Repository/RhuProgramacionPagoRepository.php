@@ -338,7 +338,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
      * @param boolean   $boolMostrarGenerados   Generados
      * @param boolean   $boolMostrarPagados     Pagados
      */
-    public function listaDQL($strFechaDesde = "", $strFechaHasta = "", $codigoCentroCosto, $boolMostrarGenerados, $boolMostrarPagados, $intTipo = "") {
+    public function listaDQL($strFechaDesde = "", $strFechaHasta = "", $codigoCentroCosto, $boolMostrarGenerados, $boolMostrarPagados, $intTipo = "", $exportadoArdid = "") {
         $em = $this->getEntityManager();
         $dql   = "SELECT pp FROM BrasaRecursoHumanoBundle:RhuProgramacionPago pp WHERE pp.codigoProgramacionPagoPk <> 0 ";
         if($strFechaDesde != "" ) {
@@ -366,6 +366,12 @@ class RhuProgramacionPagoRepository extends EntityRepository {
         if($boolMostrarPagados == "0") {
             $dql .= " AND pp.estadoPagado = 0";
         }
+        if($exportadoArdid == 1 ) {
+            $dql .= " AND pp.estadoExportadoArdid = 1";
+        }
+        if($exportadoArdid == "0") {
+            $dql .= " AND pp.estadoExportadoArdid = 0";
+        }        
         $dql .= " ORDER BY pp.codigoProgramacionPagoPk DESC";
         return $dql;
     }
