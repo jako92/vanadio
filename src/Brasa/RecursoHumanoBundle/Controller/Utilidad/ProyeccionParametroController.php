@@ -49,7 +49,7 @@ class ProyeccionParametroController extends Controller
                     $salarioMinimo = $arConfiguracion->getVrSalario();
                     $douAuxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();
                     $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                    $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoActivo' => 1));
+                    $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoActivo' => 1));                    
                     foreach($arContratos as $arContrato) {
                         if($arContrato->getCodigoContratoClaseFk() != 4 && $arContrato->getCodigoContratoClaseFk() != 5 && $arContrato->getSalarioIntegral() == 0) {
                             $douSalario = $arContrato->getVrSalarioPago();
