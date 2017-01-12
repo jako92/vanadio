@@ -33,6 +33,11 @@ class TurFacturaServicio
     private $porRetencionFuente = 0;    
     
     /**
+     * @ORM\Column(name="tipo_retencion_fuente", type="integer")
+     */
+    private $tipo_retencion_fuente = 0;    
+    
+    /**
      * @ORM\Column(name="codigo_cuenta_cartera_fk", type="string", length=20, nullable=true)
      */     
     private $codigoCuentaCarteraFk;    
@@ -334,5 +339,29 @@ class TurFacturaServicio
     public function getFacturasFacturaServicioRel()
     {
         return $this->facturasFacturaServicioRel;
+    }
+
+    /**
+     * Set tipoRetencionFuente
+     *
+     * @param integer $tipoRetencionFuente
+     *
+     * @return TurFacturaServicio
+     */
+    public function setTipoRetencionFuente($tipoRetencionFuente)
+    {
+        $this->tipo_retencion_fuente = $tipoRetencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoRetencionFuente
+     *
+     * @return integer
+     */
+    public function getTipoRetencionFuente()
+    {
+        return $this->tipo_retencion_fuente;
     }
 }

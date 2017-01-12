@@ -24,6 +24,11 @@ class GenConfiguracion
     private $baseRetencionFuente = 0; 
 
     /**
+     * @ORM\Column(name="base_retencion_fuente_compras", type="float")
+     */
+    private $baseRetencionFuenteCompras = 0;    
+    
+    /**
      * @ORM\Column(name="base_retencion_cree", type="float")
      */
     private $baseRetencionCREE = 0;     
@@ -783,5 +788,29 @@ class GenConfiguracion
     public function getClaveIdentificacionPortalEmpleados()
     {
         return $this->claveIdentificacionPortalEmpleados;
+    }
+
+    /**
+     * Set baseRetencionFuenteCompras
+     *
+     * @param float $baseRetencionFuenteCompras
+     *
+     * @return GenConfiguracion
+     */
+    public function setBaseRetencionFuenteCompras($baseRetencionFuenteCompras)
+    {
+        $this->baseRetencionFuenteCompras = $baseRetencionFuenteCompras;
+
+        return $this;
+    }
+
+    /**
+     * Get baseRetencionFuenteCompras
+     *
+     * @return float
+     */
+    public function getBaseRetencionFuenteCompras()
+    {
+        return $this->baseRetencionFuenteCompras;
     }
 }
