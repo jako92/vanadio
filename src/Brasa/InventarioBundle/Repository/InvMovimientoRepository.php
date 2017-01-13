@@ -191,7 +191,11 @@ class InvMovimientoRepository extends EntityRepository {
             $arMovimientoDetalleAct = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
             $arMovimientoDetalleAct = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->find($arMovimientoDetalle->getCodigoDetalleMovimientoPk());
             $subtotalDetalle = $arMovimientoDetalle->getValor() * $arMovimientoDetalle->getCantidad();
-            $subtotalDetalle = $subtotalDetalle - $arMovimientoDetalle->getVrDescuento();
+            $descuento = 0;
+            if($arMovimientoDetalle->getPorcentajeDescuento() > 0){
+                $descuento = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeDescuento())/100;
+            }
+            $subtotalDetalle = $subtotalDetalle - $descuento;
             //$baseIvaDetalle = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeIva()) / 100;
             //$baseIvaDetalle = $baseIvaDetalle;
             $ivaDetalle = ($subtotalDetalle * $arMovimientoDetalle->getPorcentajeIva()) / 100;
@@ -201,7 +205,7 @@ class InvMovimientoRepository extends EntityRepository {
             $arMovimientoDetalleAct->setOperacionInventario($arMovimiento->getOperacionInventario());
             $arMovimientoDetalleAct->setVrSubtotal($subtotalDetalle);
             $arMovimientoDetalleAct->setVrSubtotalOperadoInventario($subtotalDetalle * $arMovimientoDetalleAct->getOperacionInventario());
-            //$arMovimientoDetalleAct->setBaseIva($baseIvaDetalle);
+            $arMovimientoDetalleAct->setVrDescuento($descuento);
             $arMovimientoDetalleAct->setVrIva($ivaDetalle);
             $arMovimientoDetalleAct->setVrTotal($totalDetalle);
             $em->persist($arMovimientoDetalleAct);

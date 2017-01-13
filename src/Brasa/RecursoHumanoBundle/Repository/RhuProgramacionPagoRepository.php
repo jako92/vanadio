@@ -600,7 +600,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();            
             $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
                 . "WHERE c.codigoCentroCostoFk = " . $arProgramacionPago->getCodigoCentroCostoFk()
-                . " AND c.fechaUltimoPagoPrimas < '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "                    
+                . " AND c.fechaUltimoPagoPrimas <= '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "                    
                 . " AND c.fechaDesde <= '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "
                 . " AND (c.fechaHasta >= '" . $arProgramacionPago->getFechaDesde()->format('Y-m-d') . "' "
                 . " OR c.indefinido = 1) "

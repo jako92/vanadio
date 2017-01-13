@@ -167,54 +167,11 @@ class FormatoFactura1 extends \FPDF_FPDF {
             $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getCantidad(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(15, 4, number_format($arMovimientoDetalle->getVrDescuento(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrIva(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrPrecio(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getValor(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 110);
         }
-    }
-
-    public function devuelveMes($intMes) {
-        $strMes = "";
-        switch ($intMes) {
-            case 1:
-                $strMes = "ENERO";
-                break;
-            case 2:
-                $strMes = "FEBRERO";
-                break;
-            case 3:
-                $strMes = "MARZO";
-                break;
-            case 4:
-                $strMes = "ABRIL";
-                break;
-            case 5:
-                $strMes = "MAYO";
-                break;
-            case 6:
-                $strMes = "JUNIO";
-                break;
-            case 7:
-                $strMes = "JULIO";
-                break;
-            case 8:
-                $strMes = "AGOSTO";
-                break;
-            case 9:
-                $strMes = "SEPTIEMBRE";
-                break;
-            case 10:
-                $strMes = "OCTUBRE";
-                break;
-            case 11:
-                $strMes = "NOVIEMBRE";
-                break;
-            case 12:
-                $strMes = "DICIEMBRE";
-                break;
-        }
-        return $strMes;
     }
 
     public function Footer() {

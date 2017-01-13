@@ -413,7 +413,7 @@ class MovimientoController extends Controller
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
                 $arMovimientoDetalle->setValor($valor);
-                $arMovimientoDetalle->setVrDescuento($descuento);
+                $arMovimientoDetalle->setPorcentajeDescuento($descuento);
                 $em->persist($arMovimientoDetalle);
             }
             $em->flush();                            

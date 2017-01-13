@@ -57,10 +57,7 @@ class TerceroController extends Controller
         return $form;
     }           
 
-    private function filtrarLista($form) {
-        $session = $this->getRequest()->getSession();
-        $request = $this->getRequest();
-        $controles = $request->request->get('form');
+    private function filtrarLista($form) {             
         $this->strNombre = $form->get('TxtNombre')->getData();
         $this->strNit = $form->get('TxtNit')->getData();
     }    

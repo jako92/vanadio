@@ -65,9 +65,9 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(115, 5, $arMovimiento->getTerceroRel()->getDireccion(), 0, 0, 'L', 1);
         $this->SetXY(156, 53);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(25, 5, utf8_decode("PEDIDO N°"), 0, 0, 'L', 1);
+        $this->Cell(25, 5, utf8_decode("FORMA PAGO"), 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, "0", 0, 0, 'L', 1);
+        $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getFormaPagoRel()->getNombre(), 0, 0, 'L', 1);
         $this->SetXY(15, 58);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "TELEFONO:", 0, 0, 'L', 1);
@@ -79,9 +79,9 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(45, 5, $arMovimiento->getTerceroRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 1);
         $this->SetXY(156, 58);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(25, 5, "FORMA PAGO", 0, 0, 'L', 1);
+        $this->Cell(25, 5, "PLAZO PAGO", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getFormaPagoRel()->getNombre(), 0, 0, 'L', 1);
+        $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getPlazoPagoCliente(), 0, 0, 'L', 1);
         //$this->Text(45, 70, utf8_decode($arMovimiento->getClienteRel()->getNombreCompleto()));
         /*$this->SetXY(44, 68);
         $this->MultiCell(90, 4, $arMovimiento->getClienteRel()->getNombreCompleto(), 0, 'L');
@@ -138,7 +138,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
             $pdf->Cell(139, 4, $arMovimientoDetalle->getItemRel()->getNombre(), 0, 0, 'L');
             $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');                    
             $pdf->SetFont('Arial', '', 8);
-            $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getValor(), 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetX(15);
@@ -146,50 +146,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
             $pdf->SetAutoPageBreak(true, 88);
         }
 
-    }
-
-    public function devuelveMes($intMes) {
-        $strMes = "";
-        switch ($intMes) {
-            case 1:
-                $strMes = "ENERO";
-                break;
-            case 2:
-                $strMes = "FEBRERO";
-                break;
-            case 3:
-                $strMes = "MARZO";
-                break;
-            case 4:
-                $strMes = "ABRIL";
-                break;
-            case 5:
-                $strMes = "MAYO";
-                break;
-            case 6:
-                $strMes = "JUNIO";
-                break;
-            case 7:
-                $strMes = "JULIO";
-                break;
-            case 8:
-                $strMes = "AGOSTO";
-                break;
-            case 9:
-                $strMes = "SEPTIEMBRE";
-                break;
-            case 10:
-                $strMes = "OCTUBRE";
-                break;
-            case 11:
-                $strMes = "NOVIEMBRE";
-                break;
-            case 12:
-                $strMes = "DICIEMBRE";
-                break;
-        }
-        return $strMes;
-    }
+    }    
 
     public function Footer() {
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
@@ -206,8 +163,8 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(40, 6, 'OBSERVACIONES:', 1, 0, 'L');        
         $this->Cell(35, 6, 'RETE FTE SUGERIDA:', 1, 0, 'L');        
         $this->Cell(22, 6, number_format($arMovimiento->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
-        $this->Cell(28, 6, 'AIU SERVICIO:', 1, 0, 'L');
-        $this->Cell(22, 6, number_format('0', 0, '.', ','), 1, 0, 'R');
+        $this->Cell(28, 6, '', 1, 0, 'L');
+        $this->Cell(22, 6, "", 1, 0, 'R');
         $this->Cell(22, 6, 'SUBTOTAL', 1, 0, 'L');
         $this->Cell(22, 6, number_format($arMovimiento->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(15,198);        
