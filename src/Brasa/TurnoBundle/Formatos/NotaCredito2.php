@@ -280,7 +280,7 @@ class NotaCredito2 extends \FPDF_FPDF {
         $this->Cell(50, 21, '', 1, 0, 'R');        
         $this->Cell(84, 21, '', 1, 0, 'R'); 
         $this->SetXY(15,217);
-        $this->Cell(134, 7, '', 1, 0, 'R');        
+        $this->Cell(134, 14, '', 1, 0, 'R');        
         $this->SetXY(149,196);
         $this->Cell(28, 7, 'SUB TOTAL', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');
@@ -291,8 +291,11 @@ class NotaCredito2 extends \FPDF_FPDF {
         $this->Cell(28, 7, 'IVA 19 %', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrIva(), 0, '.', ','), 1, 0, 'R'); 
         $this->SetXY(149,217);
+        $this->Cell(28, 7, 'Rete Fuente', 1, 0, 'L');        
+        $this->Cell(28, 7, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
+        $this->SetXY(149,224);
         $this->Cell(28, 7, 'TOTAL', 1, 0, 'L');        
-        $this->Cell(28, 7, number_format($arFactura->getVrTotal(), 0, '.', ','), 1, 0, 'R');                    
+        $this->Cell(28, 7, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 1, 0, 'R');
         $this->SetFont('Arial', '', 8);
         $plazoPago = $arFactura->getClienteRel()->getPlazoPago();
         $this->Text(66, 201, "CONDICIONES DE PAGO: A $plazoPago DIAS A PARTIR");
@@ -301,9 +304,9 @@ class NotaCredito2 extends \FPDF_FPDF {
         $this->Text(20, 201, "Recibi conforme:");
         $this->Text(20, 206, "Fecha y Nombre:");
         $this->Text(20, 211, "Sello:");
-        $this->Text(20, 221, "Actividad Comercial");
-        $this->Text(60, 221, $arFactura->getClienteRel()->getSectorComercialRel()->getNombre());
-        $this->Text(90, 221, "Estrato =");
+        $this->Text(20, 224, "Actividad Comercial");
+        $this->Text(60, 224, $arFactura->getClienteRel()->getSectorComercialRel()->getNombre());
+        $this->Text(90, 224, "Estrato =");
         $this->Ln(4);
         //$this->SetFont('Arial', '', 8);
         //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoFactura());
