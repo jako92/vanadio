@@ -604,7 +604,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 . " AND c.fechaDesde <= '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "
                 . " AND (c.fechaHasta >= '" . $arProgramacionPago->getFechaDesde()->format('Y-m-d') . "' "
                 . " OR c.indefinido = 1) "
-                . " AND c.estadoLiquidado = 0 AND c.codigoContratoClaseFk <> 4 AND c.codigoContratoClaseFk <> 5 AND c.salarioIntegral = 0";           
+                . " AND c.estadoActivo = 1 AND c.codigoContratoClaseFk <> 4 AND c.codigoContratoClaseFk <> 5 AND c.salarioIntegral = 0";           
             
             $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
             $query = $em->createQuery($dql);
@@ -728,7 +728,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 . " AND c.fechaDesde <= '" . $arProgramacionPago->getFechaHasta()->format('Y-m-d') . "' "
                 . " AND (c.fechaHasta >= '" . $arProgramacionPago->getFechaDesde()->format('Y-m-d') . "' "
                 . " OR c.indefinido = 1) "
-                . " AND c.estadoLiquidado = 0 AND c.codigoContratoClaseFk <> 4 AND c.codigoContratoClaseFk <> 5 AND c.salarioIntegral = 0";           
+                . " AND c.estadoActivo = 1 AND c.codigoContratoClaseFk <> 4 AND c.codigoContratoClaseFk <> 5 AND c.salarioIntegral = 0";           
             
             $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
             $query = $em->createQuery($dql);
@@ -1146,7 +1146,13 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 }                                                        
             }                           
             $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
-            
+            if($salarioPromedioCesantias < $salarioMinimo) {
+                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                } else {
+                    $salarioPromedioCesantias = $douSalario;
+                }                                
+            }            
             $salarioPromedioCesantias = round($salarioPromedioCesantias);                                                                                                 
             $arProgramacionPagoDetalle->setVrSalario($arContrato->getVrSalario());
             $arProgramacionPagoDetalle->setVrSalarioCesantia($salarioPromedioCesantias);
