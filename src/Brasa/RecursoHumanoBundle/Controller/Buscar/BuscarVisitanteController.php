@@ -14,8 +14,7 @@ class BuscarVisitanteController extends Controller
 {
     var $strDqlLista = "";     
     var $strIdentificacion = "";
-    var $strNombre = "";
-    
+    var $strNombre = "";    
      /**
      * @Route("/rhu/buscar/visitante", name="brs_rhu_buscar_visitante")
      */
