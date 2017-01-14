@@ -148,6 +148,11 @@ class GenConfiguracion
     private $correoGeneral;
     
     /**
+     * @ORM\Column(name="omitir_retencion_fuente_notas_credito", type="boolean")
+     */    
+    private $omitirRetencionFuenteNotasCredito = false;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="GenCiudad", inversedBy="configuracionesRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -812,5 +817,29 @@ class GenConfiguracion
     public function getBaseRetencionFuenteCompras()
     {
         return $this->baseRetencionFuenteCompras;
+    }
+
+    /**
+     * Set omitirRetencionFuenteNotasCredito
+     *
+     * @param boolean $omitirRetencionFuenteNotasCredito
+     *
+     * @return GenConfiguracion
+     */
+    public function setOmitirRetencionFuenteNotasCredito($omitirRetencionFuenteNotasCredito)
+    {
+        $this->omitirRetencionFuenteNotasCredito = $omitirRetencionFuenteNotasCredito;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirRetencionFuenteNotasCredito
+     *
+     * @return boolean
+     */
+    public function getOmitirRetencionFuenteNotasCredito()
+    {
+        return $this->omitirRetencionFuenteNotasCredito;
     }
 }
