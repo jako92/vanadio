@@ -148,9 +148,9 @@ class GenConfiguracion
     private $correoGeneral;
     
     /**
-     * @ORM\Column(name="omitir_retencion_fuente_notas_credito", type="boolean")
+     * @ORM\Column(name="aplicar_tope_retencion_fuente_notas_credito", type="boolean")
      */    
-    private $omitirRetencionFuenteNotasCredito = false;     
+    private $aplicarTopeRetencionFuenteNotasCredito = false;     
     
     /**
      * @ORM\ManyToOne(targetEntity="GenCiudad", inversedBy="configuracionesRel")
@@ -159,7 +159,6 @@ class GenConfiguracion
     protected $ciudadRel;
     
 
-    
 
     /**
      * Get codigoConfiguracionPk
@@ -193,6 +192,30 @@ class GenConfiguracion
     public function getBaseRetencionFuente()
     {
         return $this->baseRetencionFuente;
+    }
+
+    /**
+     * Set baseRetencionFuenteCompras
+     *
+     * @param float $baseRetencionFuenteCompras
+     *
+     * @return GenConfiguracion
+     */
+    public function setBaseRetencionFuenteCompras($baseRetencionFuenteCompras)
+    {
+        $this->baseRetencionFuenteCompras = $baseRetencionFuenteCompras;
+
+        return $this;
+    }
+
+    /**
+     * Get baseRetencionFuenteCompras
+     *
+     * @return float
+     */
+    public function getBaseRetencionFuenteCompras()
+    {
+        return $this->baseRetencionFuenteCompras;
     }
 
     /**
@@ -724,54 +747,6 @@ class GenConfiguracion
     }
 
     /**
-     * Set correoGeneral
-     *
-     * @param string $correoGeneral
-     *
-     * @return GenConfiguracion
-     */
-    public function setCorreoGeneral($correoGeneral)
-    {
-        $this->correoGeneral = $correoGeneral;
-
-        return $this;
-    }
-
-    /**
-     * Get correoGeneral
-     *
-     * @return string
-     */
-    public function getCorreoGeneral()
-    {
-        return $this->correoGeneral;
-    }
-
-    /**
-     * Set ciudadRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
-     *
-     * @return GenConfiguracion
-     */
-    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
-    {
-        $this->ciudadRel = $ciudadRel;
-
-        return $this;
-    }
-
-    /**
-     * Get ciudadRel
-     *
-     * @return \Brasa\GeneralBundle\Entity\GenCiudad
-     */
-    public function getCiudadRel()
-    {
-        return $this->ciudadRel;
-    }
-
-    /**
      * Set claveIdentificacionPortalEmpleados
      *
      * @param boolean $claveIdentificacionPortalEmpleados
@@ -796,50 +771,74 @@ class GenConfiguracion
     }
 
     /**
-     * Set baseRetencionFuenteCompras
+     * Set correoGeneral
      *
-     * @param float $baseRetencionFuenteCompras
+     * @param string $correoGeneral
      *
      * @return GenConfiguracion
      */
-    public function setBaseRetencionFuenteCompras($baseRetencionFuenteCompras)
+    public function setCorreoGeneral($correoGeneral)
     {
-        $this->baseRetencionFuenteCompras = $baseRetencionFuenteCompras;
+        $this->correoGeneral = $correoGeneral;
 
         return $this;
     }
 
     /**
-     * Get baseRetencionFuenteCompras
+     * Get correoGeneral
      *
-     * @return float
+     * @return string
      */
-    public function getBaseRetencionFuenteCompras()
+    public function getCorreoGeneral()
     {
-        return $this->baseRetencionFuenteCompras;
+        return $this->correoGeneral;
     }
 
     /**
-     * Set omitirRetencionFuenteNotasCredito
+     * Set aplicarTopeRetencionFuenteNotasCredito
      *
-     * @param boolean $omitirRetencionFuenteNotasCredito
+     * @param boolean $aplicarTopeRetencionFuenteNotasCredito
      *
      * @return GenConfiguracion
      */
-    public function setOmitirRetencionFuenteNotasCredito($omitirRetencionFuenteNotasCredito)
+    public function setAplicarTopeRetencionFuenteNotasCredito($aplicarTopeRetencionFuenteNotasCredito)
     {
-        $this->omitirRetencionFuenteNotasCredito = $omitirRetencionFuenteNotasCredito;
+        $this->aplicarTopeRetencionFuenteNotasCredito = $aplicarTopeRetencionFuenteNotasCredito;
 
         return $this;
     }
 
     /**
-     * Get omitirRetencionFuenteNotasCredito
+     * Get aplicarTopeRetencionFuenteNotasCredito
      *
      * @return boolean
      */
-    public function getOmitirRetencionFuenteNotasCredito()
+    public function getAplicarTopeRetencionFuenteNotasCredito()
     {
-        return $this->omitirRetencionFuenteNotasCredito;
+        return $this->aplicarTopeRetencionFuenteNotasCredito;
+    }
+
+    /**
+     * Set ciudadRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
+     *
+     * @return GenConfiguracion
+     */
+    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
+    {
+        $this->ciudadRel = $ciudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudadRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenCiudad
+     */
+    public function getCiudadRel()
+    {
+        return $this->ciudadRel;
     }
 }
