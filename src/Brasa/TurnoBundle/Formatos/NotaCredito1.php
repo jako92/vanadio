@@ -348,7 +348,7 @@ class NotaCredito1 extends \FPDF_FPDF {
         $this->SetXY(53, 26);
         $this->Cell(20, 4, utf8_decode("DIRECCIÓN:"), 0, 0, 'L', 1);
         $this->Cell(100, 4, $arConfiguracion->getDireccionEmpresa(), 0, 0, 'L', 0);
-        $this->SetXY(53, 30);
+        $this->SetXY(53, 30); 
         $this->Cell(20, 4, utf8_decode("TELÉFONO:"), 0, 0, 'L', 1);
         $this->Cell(100, 4, $arConfiguracion->getTelefonoEmpresa(), 0, 0, 'L', 0);
     }
