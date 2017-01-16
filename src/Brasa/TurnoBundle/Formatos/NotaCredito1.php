@@ -32,7 +32,10 @@ class NotaCredito1 extends \FPDF_FPDF {
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
         $this->SetFont('Arial', '', 12);
-        $this->Text(90, 50, "NOTA CREDITO " . $arFactura->getNumero());        
+        //$this->Text(90, 50, "NOTA CREDITO " . $arFactura->getNumero());        
+        $this->SetXY(15,45);
+        $this->SetFont('Arial', 'B', 8);
+        $this->MultiCell(191, 4, 'OBSERVACIONES: ' .$arFactura->getComentarios(), 1, 'L');
         $this->SetFont('Arial', '', 9);
         $this->Text(15, 65, "Fecha Factura");
         $this->Text(45, 65, ucwords(strtolower($this->devuelveMes($arFactura->getFecha()->format('m')))) . " " . $arFactura->getFecha()->format('d') . " de " . $arFactura->getFecha()->format('Y'));
@@ -136,8 +139,8 @@ class NotaCredito1 extends \FPDF_FPDF {
                     //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');                        
                     $pdf->Cell(28, 4, '', 0, 0, 'R');
                     $pdf->Cell(28, 4, '', 0, 0, 'R');            
-                    $pdf->Ln(2);
-                    $pdf->SetAutoPageBreak(true, 15);
+                    $pdf->Ln(1);
+                    $pdf->SetAutoPageBreak(true, 105);
                 }                
             } else {                
                 $strSql = "SELECT tur_puesto.nombre AS puesto, tur_modalidad_servicio.nombre AS modalidadServicio, tur_concepto_servicio.nombre_facturacion AS conceptoServicio, cantidad  AS cantidad, vr_precio AS precio                           
@@ -326,16 +329,28 @@ class NotaCredito1 extends \FPDF_FPDF {
     public function GenerarEncabezadoFactura($em) {
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-
-        $this->SetFont('Arial', '', 5);
-        $this->Text(188, 13, '');
-        $this->Image('imagenes/logos/logo.jpg', 0, 0, 0.01, 0.01);
-        $this->ln(11);
-        $this->SetFont('Arial', 'B', 12);
-        $this->ln(5);
-        $this->SetFont('Arial', 'B', 10);
-        //$this->Text(21, 35, "NIT " . $arConfiguracion->getNitEmpresa() . "-" . $arConfiguracion->getDigitoVerificacionEmpresa());
-        $this->SetXY(258, 18);
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
+        $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);
+        $this->SetFillColor(200, 200, 200);        
+        $this->SetFont('Arial','B',10);
+        //Logo
+        $this->SetXY(53, 10);
+        $this->Image('imagenes/logos/logo.jpg', 12, 7, 35, 17);
+        //INFORMACIÓN EMPRESA
+        $this->Cell(150, 7, utf8_decode("NOTA CREDITO ". $arFactura->getNumero()), 0, 0, 'C', 1);
+        $this->SetXY(53, 18);
+        $this->SetFont('Arial','B',9);
+        $this->Cell(20, 4, "EMPRESA:", 0, 0, 'L', 1);
+        $this->Cell(100, 4, $arConfiguracion->getNombreEmpresa(), 0, 0, 'L', 0);
+        $this->SetXY(53, 22);
+        $this->Cell(20, 4, "NIT:", 0, 0, 'L', 1);
+        $this->Cell(100, 4, $arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa(), 0, 0, 'L', 0);
+        $this->SetXY(53, 26);
+        $this->Cell(20, 4, utf8_decode("DIRECCIÓN:"), 0, 0, 'L', 1);
+        $this->Cell(100, 4, $arConfiguracion->getDireccionEmpresa(), 0, 0, 'L', 0);
+        $this->SetXY(53, 30);
+        $this->Cell(20, 4, utf8_decode("TELÉFONO:"), 0, 0, 'L', 1);
+        $this->Cell(100, 4, $arConfiguracion->getTelefonoEmpresa(), 0, 0, 'L', 0);
     }
 
 }
