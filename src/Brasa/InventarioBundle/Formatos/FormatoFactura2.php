@@ -188,8 +188,6 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->SetFont('Arial', 'B', 8);
         $this->MultiCell(191, 3.9, utf8_decode($arConfiguracion->getInformacionPagoMovimiento()), 1, 'C');
         $this->SetXY(15,258);
-        $this->SetFont('Arial', '', 8);
-        $this->MultiCell(191, 3.5, '', 1, 'L');
     }
 
     public function GenerarEncabezadoMovimiento($em) {
