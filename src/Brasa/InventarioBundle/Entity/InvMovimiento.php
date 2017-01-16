@@ -59,6 +59,11 @@ class InvMovimiento
     private $fecha2;    
     
     /**
+     * @ORM\Column(name="plazo_pago", type="integer", nullable=true)
+     */    
+    private $plazoPago = 0;    
+    
+    /**
      * @ORM\Column(name="codigo_tercero_fk", type="integer", nullable=true)
      */    
     private $codigoTerceroFk;
@@ -1193,5 +1198,29 @@ class InvMovimiento
     public function getFechaVence()
     {
         return $this->fechaVence;
+    }
+
+    /**
+     * Set plazoPago
+     *
+     * @param integer $plazoPago
+     *
+     * @return InvMovimiento
+     */
+    public function setPlazoPago($plazoPago)
+    {
+        $this->plazoPago = $plazoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get plazoPago
+     *
+     * @return integer
+     */
+    public function getPlazoPago()
+    {
+        return $this->plazoPago;
     }
 }

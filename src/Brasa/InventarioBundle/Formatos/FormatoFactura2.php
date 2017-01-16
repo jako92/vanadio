@@ -81,7 +81,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "PLAZO PAGO", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getPlazoPagoCliente(), 0, 0, 'L', 1);
+        $this->Cell(25, 5, $arMovimiento->getPlazoPago(), 0, 0, 'L', 1);
 
         $this->SetXY(110, 62);
         $this->SetMargins(5, 1, 5);
