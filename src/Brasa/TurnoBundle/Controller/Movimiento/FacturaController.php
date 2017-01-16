@@ -277,9 +277,9 @@ class FacturaController extends Controller
                 if($strResultado != "") {
                     $objMensaje->Mensaje("error", $strResultado);
                 } else {
+                    $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+                    $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                     if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
-                        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
-                        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                         if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
                             $objFactura = new \Brasa\TurnoBundle\Formatos\Factura1();
                             $objFactura->Generar($em, $codigoFactura);                            
@@ -302,8 +302,14 @@ class FacturaController extends Controller
                         }
                     } 
                     if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
-                        $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
-                        $objNotaCredito->Generar($em, $codigoFactura);                        
+                        if($arConfiguracion->getCodigoFormatoNotaCredito() <= 1) {
+                            $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito1();
+                            $objNotaCredito->Generar($em, $codigoFactura);                                                    
+                        }
+                        if($arConfiguracion->getCodigoFormatoNotaCredito() == 2) {
+                            $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
+                            $objNotaCredito->Generar($em, $codigoFactura);                                                    
+                        }                        
                     } 
                     if($arFactura->getFacturaTipoRel()->getTipo() == 3) {
                         $objNotaDebito = new \Brasa\TurnoBundle\Formatos\NotaDebito2();
@@ -312,10 +318,10 @@ class FacturaController extends Controller
                 }
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_factura_detalle', array('codigoFactura' => $codigoFactura)));                                                
             }
-            if($form->get('BtnVistaPrevia')->isClicked()) {                                
+            if($form->get('BtnVistaPrevia')->isClicked()) {          
+                $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+                $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                 if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
-                    $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                     if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
                         $objFactura = new \Brasa\TurnoBundle\Formatos\Factura1();
                         $objFactura->Generar($em, $codigoFactura);                            
@@ -338,9 +344,15 @@ class FacturaController extends Controller
                     }
                 } 
                 if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
-                    $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
-                    $objNotaCredito->Generar($em, $codigoFactura);                        
-                } 
+                    if($arConfiguracion->getCodigoFormatoNotaCredito() <= 1) {
+                        $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito1();
+                        $objNotaCredito->Generar($em, $codigoFactura);                                                    
+                    }
+                    if($arConfiguracion->getCodigoFormatoNotaCredito() == 2) {
+                        $objNotaCredito = new \Brasa\TurnoBundle\Formatos\NotaCredito2();
+                        $objNotaCredito->Generar($em, $codigoFactura);                                                    
+                    }                        
+                }
                 if($arFactura->getFacturaTipoRel()->getTipo() == 3) {
                     $objNotaDebito = new \Brasa\TurnoBundle\Formatos\NotaDebito2();
                     $objNotaDebito->Generar($em, $codigoFactura);                        

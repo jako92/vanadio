@@ -82,17 +82,6 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(25, 5, "PLAZO PAGO", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
         $this->Cell(25, 5, $arMovimiento->getTerceroRel()->getPlazoPagoCliente(), 0, 0, 'L', 1);
-        //$this->Text(45, 70, utf8_decode($arMovimiento->getClienteRel()->getNombreCompleto()));
-        /*$this->SetXY(44, 68);
-        $this->MultiCell(90, 4, $arMovimiento->getClienteRel()->getNombreCompleto(), 0, 'L');
-        $this->Text(135, 70, "Nit");
-        $this->Text(170, 70, $arMovimiento->getClienteRel()->getNit(). "-" . $arMovimiento->getClienteRel()->getDigitoVerificacion());
-        $this->Text(15, 80, "Direccion");
-        //$this->Text(45, 80, utf8_decode($arMovimiento->getClienteRel()->getDireccion()));
-        $this->SetXY(44, 77);
-        $this->MultiCell(90, 4,  $arMovimiento->getClienteRel()->getDireccion(), 0, 'L');
-        $this->Text(135, 80, "Telefono");
-        $this->Text(170, 80, $arMovimiento->getClienteRel()->getTelefono());                */
 
         $this->SetXY(110, 62);
         $this->SetMargins(5, 1, 5);
@@ -102,7 +91,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
     public function EncabezadoDetalles() {
         $this->Ln(8);
         $this->SetX(15);
-        $header = array('DESCRIPCION', 'CANT', 'VR. UNITARIO', 'VR. TOTAL');
+        $header = array('DESCRIPCION', 'CANT', 'VR.UND', 'DCTO', 'VR.TOTAL');
         //$this->SetFillColor(236, 236, 236);
         //$this->SetTextColor(0);
         //$this->SetDrawColor(0, 0, 0);
@@ -110,7 +99,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->SetFont('', 'B', 7.5);
 
         //creamos la cabecera de la tabla.
-        $w = array(139, 8, 22, 22);
+        $w = array(139, 8, 18, 8, 18);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
                 $this->Cell($w[$i], 7, $header[$i], 1, 0, 'L',1);
@@ -136,10 +125,10 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         foreach ($arMovimientoDetalles as $arMovimientoDetalle) {
             $pdf->SetX(15);                    
             $pdf->Cell(139, 4, $arMovimientoDetalle->getItemRel()->getNombre(), 0, 0, 'L');
-            $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getCantidad(), 1, '.', ','), 0, 0, 'C');                    
-            $pdf->SetFont('Arial', '', 8);
-            $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getValor(), 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(22, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                                
+            $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getValor(), 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(8, 4, number_format($arMovimientoDetalle->getPorcentajeDescuento(), 0, '.', ','), 0, 0, 'C');
+            $pdf->Cell(18, 4, number_format($arMovimientoDetalle->getVrSubTotal(), 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetX(15);
             $pdf->Cell(10, 4, '', 0, 0, 'R');                    
@@ -155,8 +144,9 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $arConfiguracion = self::$em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
         $this->Rect(15, 77, 139, 115);
         $this->Rect(154, 77, 8, 115);
-        $this->Rect(162, 77, 22, 115);
-        $this->Rect(184, 77, 22, 115);
+        $this->Rect(162, 77, 18, 115);
+        $this->Rect(154, 77, 8, 115);
+        $this->Rect(188, 77, 18, 115);
         $this->SetFillColor(200, 200, 200);
         $this->SetXY(15,192);
         $this->SetFont('Arial', 'B', 8);
@@ -200,28 +190,6 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->SetXY(15,258);
         $this->SetFont('Arial', '', 8);
         $this->MultiCell(191, 3.5, '', 1, 'L');
-        /*
-        $this->Text(20, 201, "Recibi conforme:");
-        $this->Text(20, 206, "Fecha y Nombre:");
-        $this->Text(20, 211, "Sello:");
-        $this->Text(20, 221, "Actividad Comercial");
-        $this->Text(60, 221, "Sector comercial");
-        //$this->Text(60, 221, utf8_decode($arMovimiento->getClienteRel()->getSectorComercialRel()->getNombre()));
-        $this->Text(90, 221, "Estrato =");
-        $this->Ln(4);
-        $this->SetFont('Arial', '', 8);
-        //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoMovimiento());
-        $this->SetXY(30,228);
-        $this->MultiCell(110, 5, $arConfiguracion->getInformacionPagoMovimiento(), 0, 'L');
-        $this->Ln();
-        $this->SetFont('Arial', 'B', 8);
-        $this->Text(30, 241, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
-        //$this->MultiCell(100, 5, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable", 0, 'L');
-        $this->SetFont('Arial', '', 7);
-        $this->Text(50, 251, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
-
-        //Número de página
-        //$this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');*/
     }
 
     public function GenerarEncabezadoMovimiento($em) {

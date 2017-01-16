@@ -112,6 +112,11 @@ class TurConfiguracion
     private $codigoFormatoFactura = 0;    
 
     /**
+     * @ORM\Column(name="codigo_formato_nota_credito", type="integer")
+     */    
+    private $codigoFormatoNotaCredito = 0;    
+    
+    /**
      * @ORM\Column(name="codigo_formato_programacion", type="integer")
      */    
     private $codigoFormatoProgramacion = 0;
@@ -701,5 +706,29 @@ class TurConfiguracion
     public function getOmitirAuxilioTransporteDevengadoPactado()
     {
         return $this->omitirAuxilioTransporteDevengadoPactado;
+    }
+
+    /**
+     * Set codigoFormatoNotaCredito
+     *
+     * @param integer $codigoFormatoNotaCredito
+     *
+     * @return TurConfiguracion
+     */
+    public function setCodigoFormatoNotaCredito($codigoFormatoNotaCredito)
+    {
+        $this->codigoFormatoNotaCredito = $codigoFormatoNotaCredito;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFormatoNotaCredito
+     *
+     * @return integer
+     */
+    public function getCodigoFormatoNotaCredito()
+    {
+        return $this->codigoFormatoNotaCredito;
     }
 }
