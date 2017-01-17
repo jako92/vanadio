@@ -339,12 +339,49 @@ class detallesController extends Controller
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
+        $codigoCliente = 0;
         $arPedidosDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
         $arPedidosDetalles = $query->getResult();
-
         foreach ($arPedidosDetalles as $arPedidoDetalle) { 
+            if($codigoCliente == 0) {
+                $codigoCliente = $arPedidoDetalle->getPedidoRel()->getCodigoClienteFk();
+            }
+            if($codigoCliente != $arPedidoDetalle->getPedidoRel()->getCodigoClienteFk()) {
+                $codigoCliente = $arPedidoDetalle->getPedidoRel()->getCodigoClienteFk();
+                $i++;
+            }            
             if($arPedidoDetalle->getCompuesto()) {
                 $arPedidosDetallesCompuestos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleCompuesto();
+                $arPedidosDetallesCompuestos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleCompuesto')->findBy(array('codigoPedidoDetalleFk' => $arPedidoDetalle->getCodigoPedidoDetallePk()));
+                foreach ($arPedidosDetallesCompuestos as $arPedidosDetalleCompuesto) {
+                    $fechaDesde = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaDesde();
+                    $fechaHasta = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaHasta();
+                    $objPHPExcel->setActiveSheetIndex(0)
+                            ->setCellValue('A' . $i, $arPedidoDetalle->getPedidoRel()->getPedidoTipoRel()->getNombre())
+                            ->setCellValue('B' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNit())
+                            ->setCellValue('C' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto())
+                            ->setCellValue('D' . $i, $arPedidoDetalle->getCodigoPuestoFk())
+                            ->setCellValue('F' . $i, $arPedidoDetalle->getModalidadServicioRel()->getNombre())                                                       
+                            ->setCellValue('G' . $i, $fechaDesde)
+                            ->setCellValue('H' . $i, $fechaHasta)                    
+                            ->setCellValue('I' . $i, $arPedidosDetalleCompuesto->getConceptoServicioRel()->getNombreFacturacion())                    
+                            ->setCellValue('J' . $i, $arPedidosDetalleCompuesto->getCantidad())
+                            ->setCellValue('K' . $i, $arPedidosDetalleCompuesto->getVrSubtotal())
+                            ->setCellValue('L' . $i, $arPedidosDetalleCompuesto->getVrBaseAiu())
+                            ->setCellValue('M' . $i, $arPedidosDetalleCompuesto->getVrIva())
+                            ->setCellValue('N' . $i, $arPedidosDetalleCompuesto->getVrTotalDetalle());
+                    if($arPedidoDetalle->getPuestoRel()) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arPedidoDetalle->getPuestoRel()->getNombre());                
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arPedidoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk());                
+                        if($arPedidoDetalle->getPuestoRel()->getZonaRel()) {
+                            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q' . $i, $arPedidoDetalle->getPuestoRel()->getZonaRel()->getNombre());
+                        }
+                    }
+                    if($arPedidoDetalle->getGrupoFacturacionRel()) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arPedidoDetalle->getGrupoFacturacionRel()->getNombre());                
+                    }
+                    $i++;
+                }                
             } else {
                 $fechaDesde = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaDesde();
                 $fechaHasta = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaHasta();
@@ -372,8 +409,9 @@ class detallesController extends Controller
                 if($arPedidoDetalle->getGrupoFacturacionRel()) {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arPedidoDetalle->getGrupoFacturacionRel()->getNombre());                
                 }                
+                $i++;
             }
-            $i++;
+
         }
 
         $objPHPExcel->getActiveSheet()->setTitle('PedidosDetalles');
