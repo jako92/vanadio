@@ -312,28 +312,30 @@ class detallesController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AN'; $col++) {
+        for($col = 'A'; $col !== 'Q'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);         
         }      
-        for($col = 'I'; $col !== 'M'; $col++) {            
+        for($col = 'J'; $col !== 'O'; $col++) {            
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }        
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'TIPO')
-                    ->setCellValue('B1', 'CLIENTE')
-                    ->setCellValue('C1', 'CODIGO')
-                    ->setCellValue('D1', 'PUESTO')
-                    ->setCellValue('E1', 'MODALIDAD')
-                    ->setCellValue('F1', 'DES')
-                    ->setCellValue('G1', 'HAS')
-                    ->setCellValue('H1', 'SERVICIO')                    
-                    ->setCellValue('I1', 'CANT')
-                    ->setCellValue('J1', 'SUBTOTAL')                   
-                    ->setCellValue('K1', 'IVA')
-                    ->setCellValue('L1', 'TOTAL')
-                    ->setCellValue('M1', 'G_F')
-                    ->setCellValue('N1', 'C_COSTO')
-                    ->setCellValue('O1', 'ZONA');
+                    ->setCellValue('B1', 'NIT')
+                    ->setCellValue('C1', 'CLIENTE')
+                    ->setCellValue('D1', 'CODIGO')
+                    ->setCellValue('E1', 'PUESTO')
+                    ->setCellValue('F1', 'MODALIDAD')
+                    ->setCellValue('G1', 'DES')
+                    ->setCellValue('H1', 'HAS')
+                    ->setCellValue('I1', 'SERVICIO')                    
+                    ->setCellValue('J1', 'CANT')
+                    ->setCellValue('K1', 'SUBTOTAL')                   
+                    ->setCellValue('L1', 'BASE')                   
+                    ->setCellValue('M1', 'IVA')
+                    ->setCellValue('N1', 'TOTAL')
+                    ->setCellValue('O1', 'G_F')
+                    ->setCellValue('P1', 'C_COSTO')
+                    ->setCellValue('Q1', 'ZONA');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -348,25 +350,27 @@ class detallesController extends Controller
                 $fechaHasta = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaHasta();
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $i, $arPedidoDetalle->getPedidoRel()->getPedidoTipoRel()->getNombre())
-                        ->setCellValue('B' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto())
-                        ->setCellValue('C' . $i, $arPedidoDetalle->getCodigoPuestoFk())
-                        ->setCellValue('E' . $i, $arPedidoDetalle->getModalidadServicioRel()->getNombre())                                                       
-                        ->setCellValue('F' . $i, $fechaDesde)
-                        ->setCellValue('G' . $i, $fechaHasta)                    
-                        ->setCellValue('H' . $i, $arPedidoDetalle->getConceptoServicioRel()->getNombreFacturacion())                    
-                        ->setCellValue('I' . $i, $arPedidoDetalle->getCantidad())
-                        ->setCellValue('J' . $i, $arPedidoDetalle->getVrSubtotal())
-                        ->setCellValue('K' . $i, $arPedidoDetalle->getVrIva())
-                        ->setCellValue('L' . $i, $arPedidoDetalle->getVrTotalDetalle());
+                        ->setCellValue('B' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNit())
+                        ->setCellValue('C' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto())
+                        ->setCellValue('D' . $i, $arPedidoDetalle->getCodigoPuestoFk())
+                        ->setCellValue('F' . $i, $arPedidoDetalle->getModalidadServicioRel()->getNombre())                                                       
+                        ->setCellValue('G' . $i, $fechaDesde)
+                        ->setCellValue('H' . $i, $fechaHasta)                    
+                        ->setCellValue('I' . $i, $arPedidoDetalle->getConceptoServicioRel()->getNombreFacturacion())                    
+                        ->setCellValue('J' . $i, $arPedidoDetalle->getCantidad())
+                        ->setCellValue('K' . $i, $arPedidoDetalle->getVrSubtotal())
+                        ->setCellValue('L' . $i, $arPedidoDetalle->getVrBaseAiu())
+                        ->setCellValue('M' . $i, $arPedidoDetalle->getVrIva())
+                        ->setCellValue('N' . $i, $arPedidoDetalle->getVrTotalDetalle());
                 if($arPedidoDetalle->getPuestoRel()) {
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arPedidoDetalle->getPuestoRel()->getNombre());                
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N' . $i, $arPedidoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk());                
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arPedidoDetalle->getPuestoRel()->getNombre());                
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arPedidoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk());                
                     if($arPedidoDetalle->getPuestoRel()->getZonaRel()) {
-                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arPedidoDetalle->getPuestoRel()->getZonaRel()->getNombre());
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q' . $i, $arPedidoDetalle->getPuestoRel()->getZonaRel()->getNombre());
                     }
                 }
                 if($arPedidoDetalle->getGrupoFacturacionRel()) {
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $i, $arPedidoDetalle->getGrupoFacturacionRel()->getNombre());                
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arPedidoDetalle->getGrupoFacturacionRel()->getNombre());                
                 }                
             }
             $i++;
