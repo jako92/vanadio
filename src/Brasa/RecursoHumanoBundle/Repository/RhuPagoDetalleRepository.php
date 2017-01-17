@@ -222,7 +222,47 @@ class RhuPagoDetalleRepository extends EntityRepository {
             $ibp = 0;
         }
         return $ibp;
-    }        
+    }
+    
+    public function auxTransporteCertificadoIngreso($fechaDesde, $fechaHasta, $codigoEmpleado,$codigoConceptoAuxTransporte) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as AuxTransporte FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE p.estadoPagado = 1 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoPagoConceptoFk = '" . $codigoConceptoAuxTransporte . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $auxTransporte = $arrayResultado[0]['AuxTransporte'];
+        if($auxTransporte == null) {
+            $auxTransporte = 0;
+        }
+        return $auxTransporte;
+    }
+    public function saludCertificadoIngreso($fechaDesde, $fechaHasta, $codigoEmpleado,$codigoConcepto) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as salud FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE p.estadoPagado = 1 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoPagoConceptoFk = '" . $codigoConcepto . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $vrSalud = $arrayResultado[0]['salud'];
+        if($vrSalud == null) {
+            $vrSalud = 0;
+        }
+        return $vrSalud;
+    }
+    public function pensionCertificadoIngreso($fechaDesde, $fechaHasta, $codigoEmpleado,$codigoConcepto) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as pension FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE p.estadoPagado = 1 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoPagoConceptoFk = '" . $codigoConcepto . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $vrPension = $arrayResultado[0]['pension'];
+        if($vrPension == null) {
+            $vrPension = 0;
+        }
+        return $vrPension;
+    }
     
     //Este no incluye concepto de auxilio transporte
     public function ibpVacaciones($fechaDesde, $fechaHasta, $codigoContrato) {

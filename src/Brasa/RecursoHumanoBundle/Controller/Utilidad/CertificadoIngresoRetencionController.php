@@ -63,14 +63,30 @@ class CertificadoIngresoRetencionController extends Controller
                             $arrayPrimasPagadas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->devuelvePrimasFechaCertificadoIngreso($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin );
                             $floPrimasPagadas = (float)$arrayPrimasPagadas[0]['Neto'];
                             $floPrestacional = (float)$arrayCostos[0]['Prestacional'];
-                            $floAuxTransporte = (float)$arrayCostos[0]['AuxTransporte'];
-                            //$floPension = (float)$arrayCostos[0]['Pension'];
-                            //$floSalud = (float)$arrayCostos[0]['Salud'];
+                            $douOtrosIngresos = (float)$arrayCostos[0]['NoPrestacional'];                            
+                            $floAuxTransporte = 0;
+                            $arConceptosAuxTransporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoAuxilioTransporte' => 1));
+                            foreach ($arConceptosAuxTransporte as $arConceptosAuxTransporte){
+                                $codigoConcepto = $arConceptosAuxTransporte->getCodigoPagoConceptoPk();
+                                $arrayAuxTransporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->auxTransporteCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                $floAuxTransporte += $arrayAuxTransporte;   
+                            }                            
                             $floSalud = 0;
-                            $floPension = 0;        
+                            $arConceptosSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoSalud' => 1));
+                            foreach ($arConceptosSalud as $arConceptosSalud){
+                                $codigoConcepto = $arConceptosSalud->getCodigoPagoConceptoPk();
+                                $ValorSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                $floSalud += $ValorSalud;   
+                            }
+                            $floPension = 0;
+                            $arConceptosPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoPension' => 1));
+                            foreach ($arConceptosPension as $arConceptosPension){
+                                $codigoConcepto = $arConceptosPension->getCodigoPagoConceptoPk();
+                                $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                $floPension += $ValorPension;   
+                            }
                             $datFechaInicio = $arrayCostos[0]['fechaInicio'];
-                            $datFechaFin = $arrayCostos[0]['fechaFin'];
-                            $douOtrosIngresos = (float)$arrayCostos[0]['NoPrestacional'];
+                            $datFechaFin = $arrayCostos[0]['fechaFin'];                            
                             $arrayPrestacionesSociales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->devuelvePrestacionesSocialesFecha($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin);
                             $floCesantiaseInteresesLiquidadas = (float)$arrayPrestacionesSociales[0]['CesantiaseIntereses'] + $arrayPrestacionesSociales[0]['InteresesCesantias'];
                             $floPrimaLiquidadas = (float)$arrayPrestacionesSociales[0]['Prima'];
@@ -132,9 +148,27 @@ class CertificadoIngresoRetencionController extends Controller
                                 $arrayPrimasPagadas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->devuelvePrimasFechaCertificadoIngreso($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin );
                                 $floPrimasPagadas = (float)$arrayPrimasPagadas[0]['Neto'];
                                 $floPrestacional = (float)$arrayCostos[0]['Prestacional'];
-                                $floAuxTransporte = (float)$arrayCostos[0]['AuxTransporte'];
-                                $floPension = (float)$arrayCostos[0]['Pension'];
-                                $floSalud = (float)$arrayCostos[0]['Salud'];
+                                $floAuxTransporte = 0;
+                                $arConceptosAuxTransporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoAuxilioTransporte' => 1));
+                                foreach ($arConceptosAuxTransporte as $arConceptosAuxTransporte){
+                                    $codigoConcepto = $arConceptosAuxTransporte->getCodigoPagoConceptoPk();
+                                    $arrayAuxTransporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->auxTransporteCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                    $floAuxTransporte += $arrayAuxTransporte;   
+                                }                            
+                                $floSalud = 0;
+                                $arConceptosSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoSalud' => 1));
+                                foreach ($arConceptosSalud as $arConceptosSalud){
+                                    $codigoConcepto = $arConceptosSalud->getCodigoPagoConceptoPk();
+                                    $ValorSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                    $floSalud += $ValorSalud;   
+                                }
+                                $floPension = 0;
+                                $arConceptosPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoPension' => 1));
+                                foreach ($arConceptosPension as $arConceptosPension){
+                                    $codigoConcepto = $arConceptosPension->getCodigoPagoConceptoPk();
+                                    $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                    $floPension += $ValorPension;   
+                                }
                                 $datFechaInicio = $arrayCostos[0]['fechaInicio'];
                                 $datFechaFin = $arrayCostos[0]['fechaFin'];
                                 $douOtrosIngresos = (float)$arrayCostos[0]['NoPrestacional'];
@@ -157,7 +191,7 @@ class CertificadoIngresoRetencionController extends Controller
                                 if ( $floPrestacional > 0){
                                     
                                     $objFormatoCertificadoIngreso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCertificadoIngreso();
-                                    $objFormatoCertificadoIngreso->Generar($this,$codigoEmpleado,$strFechaExpedicion,$strLugarExpedicion,$strFechaCertificado,$strAfc,$stCertifico1,$stCertifico2,$stCertifico3,$stCertifico4,$stCertifico5,$stCertifico6,$totalPrestacional,$floPension,$floSalud,$datFechaInicio,$datFechaFin,$totalCesantiaseIntereses,$douRetencion,$duoGestosRepresentacion,$douOtrosIngresos,$duoTotalIngresos,$strRuta);  
+                                    $objFormatoCertificadoIngreso->Generar($em,$codigoEmpleado,$strFechaExpedicion,$strLugarExpedicion,$strFechaCertificado,$strAfc,$stCertifico1,$stCertifico2,$stCertifico3,$stCertifico4,$stCertifico5,$stCertifico6,$totalPrestacional,$floPension,$floSalud,$datFechaInicio,$datFechaFin,$totalCesantiaseIntereses,$douRetencion,$duoGestosRepresentacion,$douOtrosIngresos,$duoTotalIngresos,$strRuta);  
                                     
                                 }
                                 
