@@ -788,6 +788,65 @@ class ProgramacionesPagoController extends Controller
         ));
     }      
     
+    /**
+     * @Route("/rhu/movimiento/programacion/pago/interes/cesantia/{codigoProgramacionPago}", name="brs_rhu_programacion_pago_intereses_cesantias")
+     */
+    public function interesCesantiaAction(Request $request, $codigoProgramacionPago) {        
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);        
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('brs_rhu_programacion_pago_intereses_cesantias', array('codigoProgramacionPago' => $codigoProgramacionPago)))            
+            ->add('pagoAdicionalPeriodoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('pap')
+                    ->where('pap.estadoCerrado = 0')                    
+                    ->orderBy('pap.fecha', 'DESC');},
+                'choice_label' => 'codigoPagoAdicionalPeriodoPk',
+                'required' => true))                 
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {  
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+            $arPagoAdicionalPeriodo = $form->get('pagoAdicionalPeriodoRel')->getData();            
+            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();            
+            $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);                    
+            $arPagoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();            
+            $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($arConfiguracion->getCodigoInteresCesantia());
+            
+            $arProgramacionPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
+            $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
+            foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {
+                $arPagoAdicional = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicional();                     
+                $arPagoAdicional->setEmpleadoRel($arProgramacionPagoDetalle->getEmpleadoRel());
+                $arPagoAdicional->setValor($arProgramacionPagoDetalle->getVrInteresCesantia());                    
+                $arPagoAdicional->setDetalle('INTERESES CESANTIAS');                    
+                $arPagoAdicional->setPagoConceptoRel($arPagoConcepto);                    
+                $arPagoAdicional->setPrestacional($arPagoConcepto->getPrestacional());
+                $arPagoAdicional->setTipoAdicional($arPagoConcepto->getTipoAdicional());                                
+                $arPagoAdicional->setAplicaDiaLaborado(0);
+                $arPagoAdicional->setAplicaDiaLaboradoSinDescanso(0);
+                $arPagoAdicional->setCodigoUsuario($arUsuario->getUserName());
+                $arPagoAdicional->setModalidad(2);
+                $arPagoAdicional->setCodigoPeriodoFk($arPagoAdicionalPeriodo->getCodigoPagoAdicionalPeriodoPk());   
+                $arPagoAdicional->setFecha($arPagoAdicionalPeriodo->getFecha());   
+                $arPagoAdicional->setPermanente(0);
+                $arPagoAdicional->setFechaCreacion(new \DateTime('now'));
+                $arPagoAdicional->setFechaUltimaEdicion(new \DateTime('now'));
+                $em->persist($arPagoAdicional);                                             
+            }          
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $codigoProgramacionPago)));
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:interesCesantia.html.twig', array(
+            'arProgramacionPago' => $arProgramacionPago,
+            'form' => $form->createView()           
+        ));
+    }         
+    
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');

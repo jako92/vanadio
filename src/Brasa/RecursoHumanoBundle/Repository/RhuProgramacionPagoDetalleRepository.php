@@ -726,9 +726,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
         }  
         
         //Cesantia
-        if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 3) {
-            $douVrSalarioMinimo = $arConfiguracion->getVrSalario();
-            
+        if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 3) {            
+            $douVrSalarioMinimo = $arConfiguracion->getVrSalario();            
             $arContrato = $arProgramacionPagoDetalle->getContratoRel();
             $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                                                          
             $arPago->setPagoTipoRel($arProgramacionPagoProcesar->getPagoTipoRel());                        
@@ -756,6 +755,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $salarioCesantia = $arProgramacionPagoDetalle->getVrSalarioCesantiaPropuesto();
             }
             $douCesantia = ($salarioCesantia * $dias) / 360;            
+            $douInteresesCesantias = $douCesantia * 0.12;
+            $douInteresesCesantias = round($douInteresesCesantias);
             $douCesantia = round($douCesantia);
             $devengado = $douCesantia;
             $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($arConfiguracion->getCodigoCesantia());
@@ -769,7 +770,11 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPagoDetalle->setVrPagoOperado($douCesantia * $arPagoConcepto->getOperacion());
             $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
             $em->persist($arPagoDetalle);                         
-            
+            $arProgramacionPagoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();            
+            $arProgramacionPagoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arProgramacionPagoDetalle->getCodigoProgramacionPagoDetallePk());                
+            $arProgramacionPagoDetalleAct->setVrInteresCesantia($douInteresesCesantias);
+            $em->persist($arProgramacionPagoDetalleAct);
+                
             if($guardar == 1) {
                 $em->flush();
                 $codigoPago = $arPago->getCodigoPagoPk();

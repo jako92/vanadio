@@ -316,6 +316,11 @@ class RhuConfiguracion
     private $codigoCesantia;     
     
     /**
+     * @ORM\Column(name="codigo_interes_cesantia", type="integer")
+     */
+    private $codigoInteresCesantia;    
+    
+    /**
      * Si en el pago de primas se aplica un porcentaje en el salario
      * @ORM\Column(name="prestaciones_aplicar_porcentaje_salario", type="boolean")
      */
@@ -2023,5 +2028,29 @@ class RhuConfiguracion
     public function getOmitirDescuentoEmbargoCesantias()
     {
         return $this->omitirDescuentoEmbargoCesantias;
+    }
+
+    /**
+     * Set codigoInteresCesantia
+     *
+     * @param integer $codigoInteresCesantia
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoInteresCesantia($codigoInteresCesantia)
+    {
+        $this->codigoInteresCesantia = $codigoInteresCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoInteresCesantia
+     *
+     * @return integer
+     */
+    public function getCodigoInteresCesantia()
+    {
+        return $this->codigoInteresCesantia;
     }
 }
