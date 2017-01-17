@@ -16,7 +16,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
         return $dql;
     }        
     
-    public function listaConsultaDql($numeroPedido = "", $codigoCliente = "", $boolEstadoAutorizado = "", $boolEstadoProgramado = "", $boolEstadoFacturado = "", $boolEstadoAnulado = "", $strFechaDesde = "", $strFechaHasta = "") {
+    public function listaConsultaDql($numeroPedido = "", $codigoCliente = "", $boolEstadoAutorizado = "", $boolEstadoProgramado = "", $boolEstadoFacturado = "", $boolEstadoAnulado = "", $strFechaDesde = "", $strFechaHasta = "", $codigoPedidoTipo = "") {
         $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p WHERE pd.codigoPedidoDetallePk <> 0 ";
         if($numeroPedido != "") {
             $dql .= " AND p.numero = " . $numeroPedido;  
@@ -24,6 +24,9 @@ class TurPedidoDetalleRepository extends EntityRepository {
         if($codigoCliente != "") {
             $dql .= " AND p.codigoClienteFk = " . $codigoCliente;  
         } 
+        if($codigoPedidoTipo != "") {
+            $dql .= " AND p.codigoPedidoTipoFk = " . $codigoPedidoTipo;  
+        }         
         if($boolEstadoProgramado == 1 ) {
             $dql .= " AND pd.estadoProgramado = 1";
         }

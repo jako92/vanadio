@@ -358,68 +358,40 @@ class PedidoDevolucionController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'S'; $col++) {
+        for($col = 'A'; $col !== 'E'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
         }     
-        for($col = 'M'; $col !== 'S'; $col++) {
+        for($col = 'D'; $col !== 'E'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIG0')
-                    ->setCellValue('B1', 'TIPO')
-                    ->setCellValue('C1', 'NÚMERO')
-                    ->setCellValue('D1', 'FECHA')
-                    ->setCellValue('E1', 'AÑO')
-                    ->setCellValue('F1', 'MES')
-                    ->setCellValue('G1', 'CLIENTE')
-                    ->setCellValue('H1', 'SECTOR')
-                    ->setCellValue('I1', 'AUT')
-                    ->setCellValue('J1', 'PRO')
-                    ->setCellValue('K1', 'FAC')
-                    ->setCellValue('L1', 'ANU')
-                    ->setCellValue('M1', 'HORAS')
-                    ->setCellValue('N1', 'H.DIURNAS')
-                    ->setCellValue('O1', 'H.NOCTURNAS')
-                    ->setCellValue('P1', 'P.MINIMO')
-                    ->setCellValue('Q1', 'P.AJUSTADO')
-                    ->setCellValue('R1', 'TOTAL');
+                    ->setCellValue('B1', 'FECHA')
+                    ->setCellValue('C1', 'CLIENTE')
+                    ->setCellValue('D1', 'TOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
-        $arPedidos = new \Brasa\TurnoBundle\Entity\TurPedido();
-        $arPedidos = $query->getResult();
+        $arPedidosDevoluciones = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();
+        $arPedidosDevoluciones = $query->getResult();
 
-        foreach ($arPedidos as $arPedido) {            
+        foreach ($arPedidosDevoluciones as $arPedidoDevolucion) {            
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arPedido->getCodigoPedidoPk())
-                    ->setCellValue('B' . $i, $arPedido->getPedidoTipoRel()->getNombre())
-                    ->setCellValue('C' . $i, $arPedido->getNumero())
-                    ->setCellValue('D' . $i, $arPedido->getFecha()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arPedido->getFechaProgramacion()->format('Y'))
-                    ->setCellValue('F' . $i, $arPedido->getFechaProgramacion()->format('F'))                    
-                    ->setCellValue('G' . $i, $arPedido->getClienteRel()->getNombreCorto())
-                    ->setCellValue('H' . $i, $arPedido->getSectorRel()->getNombre())
-                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arPedido->getEstadoAutorizado()))
-                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arPedido->getEstadoProgramado()))
-                    ->setCellValue('K' . $i, $objFunciones->devuelveBoolean($arPedido->getEstadoFacturado()))
-                    ->setCellValue('L' . $i, $objFunciones->devuelveBoolean($arPedido->getEstadoAnulado()))
-                    ->setCellValue('M' . $i, $arPedido->getHoras())
-                    ->setCellValue('N' . $i, $arPedido->getHorasDiurnas())
-                    ->setCellValue('O' . $i, $arPedido->getHorasNocturnas())
-                    ->setCellValue('P' . $i, $arPedido->getVrTotalPrecioMinimo())
-                    ->setCellValue('Q' . $i, $arPedido->getVrTotalPrecioAjustado())
-                    ->setCellValue('R' . $i, $arPedido->getVrTotal());
+                    ->setCellValue('A' . $i, $arPedidoDevolucion->getCodigoPedidoDevolucionPk())
+                    ->setCellValue('B' . $i, $arPedidoDevolucion->getFecha()->format('Y/m/d'))                   
+                    ->setCellValue('C' . $i, $arPedidoDevolucion->getClienteRel()->getNombreCorto())
+                    ->setCellValue('D' . $i, $arPedidoDevolucion->getVrTotal());
 
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('Pedidos');
+        $objPHPExcel->getActiveSheet()->setTitle('PedidoDevolucion');
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Pedidos.xlsx"');
+        header('Content-Disposition: attachment;filename="PedidoDevolucion.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

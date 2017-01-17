@@ -6,11 +6,14 @@ use Doctrine\ORM\EntityRepository;
 
 class TurPedidoRepository extends EntityRepository {
     
-    public function listaDql($numeroPedido = "", $codigoCliente = "", $boolEstadoAutorizado = "", $boolEstadoProgramado = "", $boolEstadoFacturado = "", $boolEstadoAnulado = "", $strFechaDesde = "", $strFechaHasta = "") {
+    public function listaDql($numeroPedido = "", $codigoCliente = "", $boolEstadoAutorizado = "", $boolEstadoProgramado = "", $boolEstadoFacturado = "", $boolEstadoAnulado = "", $strFechaDesde = "", $strFechaHasta = "", $codigoPedidoTipo = "") {
         $dql   = "SELECT p FROM BrasaTurnoBundle:TurPedido p WHERE p.codigoPedidoPk <> 0";
         if($numeroPedido != "") {
             $dql .= " AND p.numero = " . $numeroPedido;  
         }        
+        if($codigoPedidoTipo != "") {
+            $dql .= " AND p.codigoPedidoTipoFk = " . $codigoPedidoTipo;  
+        }         
         if($codigoCliente != "") {
             $dql .= " AND p.codigoClienteFk = " . $codigoCliente;  
         }    

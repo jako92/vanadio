@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class detallesController extends Controller
 {
@@ -41,6 +42,12 @@ class detallesController extends Controller
                 $this->lista();
                 $this->generarExcel();
             }
+            if ($form->get('BtnExcel2')->isClicked()) {
+                $this->filtrar($form);
+                $form = $this->formularioFiltro();
+                $this->lista();
+                $this->generarExcel2();
+            }            
         }
         
         $arPedidosDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 200);
@@ -67,11 +74,18 @@ class detallesController extends Controller
                 $session->get('filtroPedidoEstadoFacturado'),
                 $session->get('filtroPedidoEstadoAnulado'),
                 $strFechaDesde,
-                $strFechaHasta);
+                $strFechaHasta,
+                $session->get('filtroTurnosCodigoPedidoTipo'));
     }
 
     private function filtrar ($form) {
         $session = new session;
+        $arPedidoTipo = $form->get('pedidoTipoRel')->getData();
+        if($arPedidoTipo) {
+            $session->set('filtroTurnosCodigoPedidoTipo', $arPedidoTipo->getCodigoPedidoTipoPk());
+        } else {
+            $session->set('filtroTurnosCodigoPedidoTipo', null);
+        }         
         $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroPedidoEstadoAutorizado', $form->get('estadoAutorizado')->getData());          
         $session->set('filtroPedidoEstadoProgramado', $form->get('estadoProgramado')->getData());          
@@ -114,7 +128,23 @@ class detallesController extends Controller
         }    
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
+        $arrayPropiedadesPedidoTipo = array(
+                'class' => 'BrasaTurnoBundle:TurPedidoTipo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('pt')
+                    ->orderBy('pt.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroTurnosCodigoPedidoTipo')) {
+            $arrayPropiedadesPedidoTipo['data'] = $em->getReference("BrasaTurnoBundle:TurPedidoTipo", $session->get('filtroTurnosCodigoPedidoTipo'));
+        }        
+        
         $form = $this->createFormBuilder()
+             ->add('pedidoTipoRel', EntityType::class, $arrayPropiedadesPedidoTipo)
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
             ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
@@ -126,6 +156,7 @@ class detallesController extends Controller
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))                
             ->add('filtrarFecha', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroPedidoFiltrarFecha')))                             
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnExcel2', SubmitType::class, array('label'  => 'Excel2',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();
         return $form;
@@ -265,6 +296,95 @@ class detallesController extends Controller
         $objWriter->save('php://output');
         exit;
     }      
+    
+    private function generarExcel2() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();        
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for($col = 'A'; $col !== 'AN'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);         
+        }      
+        for($col = 'I'; $col !== 'M'; $col++) {            
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }        
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'TIPO')
+                    ->setCellValue('B1', 'CLIENTE')
+                    ->setCellValue('C1', 'CODIGO')
+                    ->setCellValue('D1', 'PUESTO')
+                    ->setCellValue('E1', 'DES')
+                    ->setCellValue('F1', 'HAS')
+                    ->setCellValue('G1', 'SERVICIO')
+                    ->setCellValue('H1', 'MODALIDAD')
+                    ->setCellValue('I1', 'CANT')
+                    ->setCellValue('J1', 'SUBTOTAL')                   
+                    ->setCellValue('K1', 'IVA')
+                    ->setCellValue('L1', 'TOTAL')
+                    ->setCellValue('M1', 'G_F')
+                    ->setCellValue('N1', 'C_COSTO')
+                    ->setCellValue('O1', 'ZONA');
+
+        $i = 2;
+        $query = $em->createQuery($this->strListaDql);
+        $arPedidosDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+        $arPedidosDetalles = $query->getResult();
+
+        foreach ($arPedidosDetalles as $arPedidoDetalle) { 
+            $fechaDesde = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaDesde();
+            $fechaHasta = $arPedidoDetalle->getAnio()."/" . $arPedidoDetalle->getMes() . "/" . $arPedidoDetalle->getDiaHasta();
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arPedidoDetalle->getPedidoRel()->getPedidoTipoRel()->getNombre())
+                    ->setCellValue('B' . $i, $arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto())
+                    ->setCellValue('C' . $i, $arPedidoDetalle->getCodigoPuestoFk())
+                    ->setCellValue('E' . $i, $fechaDesde)
+                    ->setCellValue('F' . $i, $fechaHasta)                    
+                    ->setCellValue('G' . $i, $arPedidoDetalle->getConceptoServicioRel()->getNombre())
+                    ->setCellValue('H' . $i, $arPedidoDetalle->getModalidadServicioRel()->getNombre())                                                       
+                    ->setCellValue('I' . $i, $arPedidoDetalle->getCantidad())
+                    ->setCellValue('J' . $i, $arPedidoDetalle->getVrSubtotal())
+                    ->setCellValue('K' . $i, $arPedidoDetalle->getVrIva())
+                    ->setCellValue('L' . $i, $arPedidoDetalle->getVrTotalDetalle());
+            if($arPedidoDetalle->getPuestoRel()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arPedidoDetalle->getPuestoRel()->getNombre());                
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N' . $i, $arPedidoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk());                
+                if($arPedidoDetalle->getPuestoRel()->getZonaRel()) {
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arPedidoDetalle->getPuestoRel()->getZonaRel()->getNombre());
+                }
+            }
+            if($arPedidoDetalle->getGrupoFacturacionRel()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $i, $arPedidoDetalle->getGrupoFacturacionRel()->getNombre());                
+            }
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('PedidosDetalles');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="PedidosDetalles.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }          
 
 
 }

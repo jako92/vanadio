@@ -165,10 +165,10 @@ class FechaServicioController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for($col = 'A'; $col !== 'L'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
         }               
-        for($col = 'J'; $col !== 'K'; $col++) {  
+        for($col = 'K'; $col !== 'L'; $col++) {  
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }         
@@ -182,7 +182,8 @@ class FechaServicioController extends Controller
                     ->setCellValue('G1', 'FECHA')
                     ->setCellValue('H1', 'F_PROG')
                     ->setCellValue('I1', 'SERVICIO')
-                    ->setCellValue('J1', 'SUBTOTAL');
+                    ->setCellValue('J1', 'T_SERVICIO')
+                    ->setCellValue('K1', 'SUBTOTAL');
         
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -199,7 +200,8 @@ class FechaServicioController extends Controller
                     ->setCellValue('G' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m-d'))
                     ->setCellValue('H' . $i, $arFacturaDetalle->getFechaProgramacion()->format('m'))
                     ->setCellValue('I' . $i, $arFacturaDetalle->getConceptoServicioRel()->getNombre())                                  
-                    ->setCellValue('J' . $i, $arFacturaDetalle->getSubtotal());  
+                    ->setCellValue('J' . $i, $arFacturaDetalle->getFacturaRel()->getFacturaServicioRel()->getNombre())                                  
+                    ->setCellValue('K' . $i, $arFacturaDetalle->getSubtotal());  
             
             /*if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getAnio());

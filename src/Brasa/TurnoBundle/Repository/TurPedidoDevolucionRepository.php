@@ -27,10 +27,10 @@ class TurPedidoDevolucionRepository extends EntityRepository {
             $dql .= " AND pd.estadoAnulado = 0";
         }        
         if($strFechaDesde != "") {
-            $dql .= " AND pd.fechaProgramacion >= '" . $strFechaDesde . "'";
+            $dql .= " AND pd.fecha >= '" . $strFechaDesde . "'";
         }        
         if($strFechaHasta != "") {
-            $dql .= " AND pd.fechaProgramacion <= '" . $strFechaHasta . "'";
+            $dql .= " AND pd.fecha <= '" . $strFechaHasta . "'";
         }        
         $dql .= " ORDER BY pd.fecha DESC";
         return $dql;

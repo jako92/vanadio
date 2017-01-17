@@ -41,9 +41,9 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                    <label for="form_estadoAutorizado" class="col-sm-2 control-label">Autorizado:</label>
+                    <label class="col-sm-2 control-label">Tipo:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoAutorizado, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.pedidoTipoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>                    
                 </div>    
                 <div class="form-group form-group-sm">  
@@ -53,8 +53,8 @@
                     </div>
                     <label for="form_estadoProgramado" class="col-sm-2 control-label">Programado:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoProgramado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
+                        {{ form_widget(form.estadoAutorizado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                     
                 </div>                    
                 <div class="form-group form-group-sm">  
                     <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
@@ -63,8 +63,8 @@
                     </div>
                     <label for="form_estadoFacturado" class="col-sm-2 control-label">Facturado:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoFacturado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
+                        {{ form_widget(form.estadoProgramado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
                 </div>
                 <div class="form-group form-group-sm">  
                     <label for="form_TxtNumero" class="col-sm-2 control-label">Filtrar por fecha:</label>
@@ -72,6 +72,16 @@
                         {{ form_widget(form.filtrarFecha) }}
                     </div>
                     <label for="form_estadoAnulado" class="col-sm-2 control-label">Anulado:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.estadoFacturado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>    
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4"> 
+                        
+                    </div>
+                    <label class="col-sm-2 control-label">Anulado:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.estadoAnulado, { 'attr': {'class': 'form-control'} }) }}
                     </div>                    
@@ -165,6 +175,7 @@
         </div>
         <div class="btn-toolbar" style="float: right">
             <div class="btn-group">                                
+                {{ form_widget(form.BtnExcel2, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
         </div>

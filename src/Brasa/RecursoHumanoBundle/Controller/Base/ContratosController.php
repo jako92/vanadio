@@ -503,7 +503,7 @@ class ContratosController extends Controller
                                                                 if($arParametroPrestacion->getOrigen() == 'SAL') {
                                                                     $arLiquidacion->setLiquidarSalario(1);
                                                                 } else {
-                                                                    $arLiquidacion->getPorcentajeIbp($arParametroPrestacion->getPorcentaje());
+                                                                    $arLiquidacion->setPorcentajeIbp($arParametroPrestacion->getPorcentaje());
                                                                 }
                                                             }
                                                         }                                            
