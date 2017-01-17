@@ -340,7 +340,7 @@ class RhuPagoRepository extends EntityRepository {
     
     public function devuelveCostosFechaCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT SUM(p.vrIngresoBaseCotizacion) as IBC, SUM(p.vrPension) as Pension, SUM(p.vrEps) as Salud, SUM(p.vrAuxilioTransporte) as AuxilioTransporte, MIN(p.fechaDesde) as fechaInicio, MAX(p.fechaHasta) as fechaFin, SUM(p.vrAdicionalValorNoPrestasional) as NoPrestacional, SUM(p.vrAuxilioTransporte) as AuxTransporte, SUM(p.vrIngresoBaseCotizacion) as Prestacional FROM BrasaRecursoHumanoBundle:RhuPago p "
+        $dql   = "SELECT SUM(p.vrIngresoBaseCotizacion) as IBC, SUM(p.vrAuxilioTransporte) as AuxilioTransporte, MIN(p.fechaDesde) as fechaInicio, MAX(p.fechaHasta) as fechaFin, SUM(p.vrAdicionalValorNoPrestasional) as NoPrestacional, SUM(p.vrAuxilioTransporte) as AuxTransporte, SUM(p.vrIngresoBaseCotizacion) as Prestacional FROM BrasaRecursoHumanoBundle:RhuPago p "
                 . "WHERE p.codigoEmpleadoFk = " . $codigoEmpleado . " AND p.estadoPagado = 1 "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
         $query = $em->createQuery($dql);

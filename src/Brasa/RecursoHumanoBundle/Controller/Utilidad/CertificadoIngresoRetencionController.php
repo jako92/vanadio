@@ -64,8 +64,10 @@ class CertificadoIngresoRetencionController extends Controller
                             $floPrimasPagadas = (float)$arrayPrimasPagadas[0]['Neto'];
                             $floPrestacional = (float)$arrayCostos[0]['Prestacional'];
                             $floAuxTransporte = (float)$arrayCostos[0]['AuxTransporte'];
-                            $floPension = (float)$arrayCostos[0]['Pension'];
-                            $floSalud = (float)$arrayCostos[0]['Salud'];
+                            //$floPension = (float)$arrayCostos[0]['Pension'];
+                            //$floSalud = (float)$arrayCostos[0]['Salud'];
+                            $floSalud = 0;
+                            $floPension = 0;        
                             $datFechaInicio = $arrayCostos[0]['fechaInicio'];
                             $datFechaFin = $arrayCostos[0]['fechaFin'];
                             $douOtrosIngresos = (float)$arrayCostos[0]['NoPrestacional'];
@@ -84,7 +86,7 @@ class CertificadoIngresoRetencionController extends Controller
                             $strRuta = "";
                             if ( $floPrestacional > 0){
                                 $objFormatoCertificadoIngreso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCertificadoIngreso();
-                                $objFormatoCertificadoIngreso->Generar($this,$codigoEmpleado,$strFechaExpedicion,$strLugarExpedicion,$strFechaCertificado,$strAfc,$stCertifico1,$stCertifico2,$stCertifico3,$stCertifico4,$stCertifico5,$stCertifico6,$totalPrestacional,$floPension,$floSalud,$datFechaInicio,$datFechaFin,$totalCesantiaseIntereses,$douRetencion,$duoGestosRepresentacion,$douOtrosIngresos,$duoTotalIngresos,$strRuta);  
+                                $objFormatoCertificadoIngreso->Generar($em,$codigoEmpleado,$strFechaExpedicion,$strLugarExpedicion,$strFechaCertificado,$strAfc,$stCertifico1,$stCertifico2,$stCertifico3,$stCertifico4,$stCertifico5,$stCertifico6,$totalPrestacional,$floPension,$floSalud,$datFechaInicio,$datFechaFin,$totalCesantiaseIntereses,$douRetencion,$duoGestosRepresentacion,$douOtrosIngresos,$duoTotalIngresos,$strRuta);  
                             } else {
                                 $objMensaje->Mensaje("error", "Este empleado no registra información de ingresos  y retenciones para el año ". $strFechaCertificado."");                
                             }
