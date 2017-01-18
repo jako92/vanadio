@@ -324,12 +324,12 @@ class EmpleadoController extends Controller
                 $objArchivo = $form['attachment']->getData();
                 $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                 $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($codigoEmpleado);
-                $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+                $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();                
                 $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
                 $strNombreArchivo = $arEmpleado->getCodigoEmpleadoPk() . "_" . $objArchivo->getClientOriginalName();
-                $strRuta = $arConfiguracion->getRutaAlmacenamiento() . "imagenes/empleados/" . $strNombreArchivo;
+                $strRuta = $arConfiguracion->getRutaImagenes() . "imagenes/empleados/" . $strNombreArchivo;
                 if(!file_exists($strRuta)) {
-                    $form['attachment']->getData()->move($arConfiguracion->getRutaAlmacenamiento() . "imagenes/empleados", $strNombreArchivo);
+                    $form['attachment']->getData()->move($arConfiguracion->getRutaImagenes() . "imagenes/empleados", $strNombreArchivo);
                     $arEmpleado->setRutaFoto($strNombreArchivo);
                     $em->persist($arEmpleado);
                     $em->flush();
