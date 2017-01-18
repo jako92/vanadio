@@ -1185,7 +1185,8 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('E1', 'CONCEPTO')
                     ->setCellValue('F1', 'HORAS')
                     ->setCellValue('G1', 'DEVENGADO')
-                    ->setCellValue('H1', 'DEDUCCION');
+                    ->setCellValue('H1', 'DEDUCCION')
+                    ->setCellValue('I1', 'DEDUCCION');
             
             $objPHPExcel->setActiveSheetIndex(1); 
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
@@ -1208,7 +1209,8 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('C' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getNombreCorto())
                         ->setCellValue('D' . $i, $arPagoDetalle->getCodigoPagoConceptoFk())
                         ->setCellValue('E' . $i, $arPagoDetalle->getPagoConceptoRel()->getNombre())
-                        ->setCellValue('F' . $i, $arPagoDetalle->getNumeroHoras());
+                        ->setCellValue('F' . $i, $arPagoDetalle->getNumeroHoras())
+                        ->setCellValue('I' . $i, $arPagoDetalle->getProgramacionPagoDetalleRel()->getVrInteresCesantia());
                 if($arPagoDetalle->getOperacion() == 1) {
                     $objPHPExcel->setActiveSheetIndex(1)->setCellValue('G' . $i, $arPagoDetalle->getVrPago());
                 }
@@ -1223,8 +1225,9 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('A1', 'TIPO')
                     ->setCellValue('B1', 'DESDE')
                     ->setCellValue('C1', 'HASTA')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'DIAS');
+                    ->setCellValue('D1', 'IDENTIFICACION')
+                    ->setCellValue('E1', 'EMPLEADO')
+                    ->setCellValue('F1', 'DIAS');
             $objPHPExcel->setActiveSheetIndex(2);             
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
             $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);                  
@@ -1237,8 +1240,9 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('A' . $i, $arIncapacidad->getIncapacidadTipoRel()->getNombre())
                         ->setCellValue('B' . $i, $arIncapacidad->getFechaDesde()->format('Y/m/d'))
                         ->setCellValue('C' . $i, $arIncapacidad->getFechaHasta()->format('Y/m/d'))
-                        ->setCellValue('D' . $i, $arIncapacidad->getEmpleadoRel()->getNombreCorto())
-                        ->setCellValue('E' . $i, $arIncapacidad->getCantidad());
+                        ->setCellValue('D' . $i, $arIncapacidad->getEmpleadoRel()->getNumeroIdentificacion())
+                        ->setCellValue('E' . $i, $arIncapacidad->getEmpleadoRel()->getNombreCorto())                        
+                        ->setCellValue('F' . $i, $arIncapacidad->getCantidad());
                 $i++;
             }              
             
