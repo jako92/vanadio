@@ -93,8 +93,13 @@ class CertificadoIngresoRetencionController extends Controller
                             $floVacacionesLiquidadas = (float)$arrayPrestacionesSociales[0]['Vacaciones'];
                             $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin);
                             $floVacacionesPagadas = (float)$arrayVacaciones[0]['Vacaciones'];
-                            $douRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($codigoEmpleado, $strFechaCertificado);
-                            $douRetencion = (float)$douRetencion;
+                            $douRetencion = 0;
+                            $arConceptosRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoFondoSolidaridadPensional' => 1));                
+                            foreach ($arConceptosRetencion as $arConceptosRetencion){
+                                $codigoConcepto = $arConceptosRetencion->getCodigoPagoConceptoPk();
+                                $ValorRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                $douRetencion += $ValorRetencion;   
+                            }
                             $duoGestosRepresentacion = 0;
                             $totalCesantiaseIntereses = $floInteresesCesantiasPagadas + $floCesantiaseInteresesLiquidadas;
                             $totalPrestacional = $floPrestacional + $floPrimasPagadas + $floAuxTransporte + $floPrimaLiquidadas + $floVacacionesLiquidadas + $floVacacionesPagadas;
@@ -178,8 +183,13 @@ class CertificadoIngresoRetencionController extends Controller
                                 $floVacacionesLiquidadas = (float)$arrayPrestacionesSociales[0]['Vacaciones'];
                                 $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin);
                                 $floVacacionesPagadas = (float)$arrayVacaciones[0]['Vacaciones'];
-                                $douRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($codigoEmpleado, $strFechaCertificado);
-                                $douRetencion = (float)$douRetencion;
+                                $douRetencion = 0;
+                                $arConceptosRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoFondoSolidaridadPensional' => 1));                
+                                foreach ($arConceptosRetencion as $arConceptosRetencion){
+                                    $codigoConcepto = $arConceptosRetencion->getCodigoPagoConceptoPk();
+                                    $ValorRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($datFechaCertificadoInicio, $datFechaCertificadoFin,$codigoEmpleado, $codigoConcepto );
+                                    $douRetencion += $ValorRetencion;   
+                                }
                                 $duoGestosRepresentacion = 0;
                                 $totalCesantiaseIntereses = $floInteresesCesantiasPagadas + $floCesantiaseInteresesLiquidadas;
                                 $totalPrestacional = $floPrestacional + $floPrimasPagadas + $floAuxTransporte + $floPrimaLiquidadas + $floVacacionesLiquidadas + $floVacacionesPagadas;

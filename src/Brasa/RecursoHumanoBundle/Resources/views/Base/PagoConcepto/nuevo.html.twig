@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+    {% extends '::base.html.twig' %}
 {% block title %}Pago concepto nuevo - Soga App{% endblock %} 
 {% block content %}
     <div class="container">    
@@ -115,7 +115,13 @@
                     <div class="col-sm-8">
                         {{ form_widget(form.codigoInterface, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
-                </div>                 
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-4 control-label">Concepto solidaridad pensional:</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.conceptoFondoSolidaridadPensional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>    
             </div>
         </div>
         <div class="panel panel-default">

@@ -30,6 +30,7 @@
             <th>C.COM</th>
             <th>T.ADIC</th>
             <th>COD.INT</th>
+            <th>FSP</th>
             <th></th>
             <th></th>
         </tr>
@@ -56,6 +57,7 @@
                 <td>{{arPagoConceptos.codigoCuentaComercialFK}}{% if arPagoConceptos.TipoCuentaComercial == 1%}D{% else %}C{% endif%}</td>
                 <td>{{arPagoConceptos.TipoAdicional}}</td>
                 <td>{{arPagoConceptos.codigoInterface}}</td>
+                <td>{% if arPagoConceptos.conceptoFondoSolidaridadPensional == 1%} SI {% else %}NO{% endif%}</td>
                 <td><a href="{{ path('brs_rhu_base_pago_concepto_nuevo',{'codigoPagoConcepto': arPagoConceptos.codigoPagoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagoConceptos.codigoPagoConceptoPk }}" /></td>
             {%endfor%}

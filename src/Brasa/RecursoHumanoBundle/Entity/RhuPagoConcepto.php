@@ -216,7 +216,12 @@ class RhuPagoConcepto
     /**
      * @ORM\OneToMany(targetEntity="RhuVacacionAdicional", mappedBy="pagoConceptoRel")
      */
-    protected $vacacionesAdicionalesPagoConceptoRel;     
+    protected $vacacionesAdicionalesPagoConceptoRel; 
+
+    /**
+     * @ORM\Column(name="concepto_fondo_solidaridad_pensional", type="boolean")
+     */    
+    private $conceptoFondoSolidaridadPensional = false;
     
 
     /**
@@ -1326,5 +1331,29 @@ class RhuPagoConcepto
     public function getConceptoComision()
     {
         return $this->conceptoComision;
+    }
+
+    /**
+     * Set conceptoFondoSolidaridadPensional
+     *
+     * @param boolean $conceptoFondoSolidaridadPensional
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoFondoSolidaridadPensional($conceptoFondoSolidaridadPensional)
+    {
+        $this->conceptoFondoSolidaridadPensional = $conceptoFondoSolidaridadPensional;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoFondoSolidaridadPensional
+     *
+     * @return boolean
+     */
+    public function getConceptoFondoSolidaridadPensional()
+    {
+        return $this->conceptoFondoSolidaridadPensional;
     }
 }

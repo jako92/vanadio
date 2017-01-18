@@ -124,15 +124,18 @@ class RhuPagoDetalleRepository extends EntityRepository {
         return $arPagosDetalles;
     }
     
-    public function devuelveRetencionFuenteEmpleadoFecha($codigoEmpleado, $strFechaCertificado) {
+    public function devuelveRetencionFuenteEmpleadoFecha($fechaDesde, $fechaHasta, $codigoEmpleado,$codigoConcepto) {
         $em = $this->getEntityManager();
         $dql   = "SELECT SUM(pd.vrPago) as Retencion FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
-                . "WHERE p.codigoEmpleadoFk = " . $codigoEmpleado . " "
-                . "AND pd.codigoPagoConceptoFk = 26"
-                . "AND p.fechaDesde like '%" . $strFechaCertificado . "%' ";
+                . "WHERE p.estadoPagado = 1 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoPagoConceptoFk = '" . $codigoConcepto . "'";
         $query = $em->createQuery($dql);
-        $douRetencion = $query->getSingleScalarResult();
-        return $douRetencion;
+        $arrayResultado = $query->getResult();
+        $retencion = $arrayResultado[0]['Retencion'];
+        if($retencion == null) {
+            $retencion = 0;
+        }
+        return $retencion;
     }
     
     public function devuelveInteresesCesantiasFechaCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
