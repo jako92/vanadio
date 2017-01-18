@@ -156,7 +156,7 @@ class EmpleadoController extends Controller
         if($arEmpleado->getRutaFoto() != "") {
             $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
             $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-            $strRutaImagen = $arConfiguracion->getRutaImagenes()."empleados/" . $arEmpleado->getRutaFoto();
+            $strRutaImagen = "/recursos/web/brasa/imagenes/empleados/" . $arEmpleado->getRutaFoto();
         }
         //$verRuta = $arConfiguracion->getRutaImagenes()."empleados/" . $arEmpleado->getRutaFoto();
         $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
