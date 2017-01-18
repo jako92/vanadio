@@ -115,7 +115,7 @@ class SeguridadSocialPeriodosController extends Controller
         {
             $arPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodo')->find($codigoPeriodo);
         }    
-        $form = $this->createForm(new RhuSsoPeriodoType(), $arPeriodo);
+        $form = $this->createForm(RhuSsoPeriodoType::class, $arPeriodo);
         $form->handleRequest($request);
         if ($form->isValid())
         {
