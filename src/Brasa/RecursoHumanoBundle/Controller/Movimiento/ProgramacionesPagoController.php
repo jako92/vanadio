@@ -1186,7 +1186,7 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('F1', 'HORAS')
                     ->setCellValue('G1', 'DEVENGADO')
                     ->setCellValue('H1', 'DEDUCCION')
-                    ->setCellValue('I1', 'DEDUCCION');
+                    ->setCellValue('I1', 'INTERESES CESANTIAS');
             
             $objPHPExcel->setActiveSheetIndex(1); 
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
