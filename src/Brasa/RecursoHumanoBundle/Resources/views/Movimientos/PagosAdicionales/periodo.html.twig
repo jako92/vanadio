@@ -33,7 +33,8 @@
             </div>
         </div>    
         <table class="table table-striped table-bordered table-condensed">
-            <tr>                       
+            <tr>
+                <th>ID</th>
                 <th>FECHA</th>
                 <th>CERRAR</th>
                 <th>DETALLE</th>                
@@ -42,7 +43,7 @@
             {% for arPagosAdicionalesPeriodos in arPagosAdicionalesPeriodos %}                
             <tr>                
                 <input type="hidden" name="LblCodigoGuia[]" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}">                                
-                
+                <td>{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}</td>
                 <td>{{ arPagosAdicionalesPeriodos.fecha |date('Y/m/d')}}</td>                
                 <td align="center">{% if arPagosAdicionalesPeriodos.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }}">Cerrar</button>{% endif %}</td>
                 <td align="center"><a href="{{ path('brs_rhu_pagos_adicionales_lista', { 'modalidad': 2, 'periodo': arPagosAdicionalesPeriodos.codigoPagoAdicionalPeriodoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
