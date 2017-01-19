@@ -344,7 +344,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
                 if($arPago->getCodigoSoportePagoFk() && $arPago->getCentroCostoRel()->getImprimirProgramacionFormato()) {
                     $pdf->Ln();
                 } else {
-                    $pdf->Ln(5);
+                    $pdf->Ln(15);
                 }
                 
             if($arConfiguracion->getImprimirMensajePago()) {
