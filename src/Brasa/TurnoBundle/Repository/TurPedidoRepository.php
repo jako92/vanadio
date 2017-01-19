@@ -70,7 +70,7 @@ class TurPedidoRepository extends EntityRepository {
     
     public function liquidar($codigoPedido) {        
         $em = $this->getEntityManager();        
-        $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();        
+        $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido(); 
         $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
         $floValorBaseServicio = $arPedido->getVrBasePrecioMinimo() * $arPedido->getSectorRel()->getPorcentaje();
         $intCantidad = 0;
@@ -253,8 +253,9 @@ class TurPedidoRepository extends EntityRepository {
                 $arPedidoDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arPedidoDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
                 $arPedidoDetalleActualizar->setVrIva($ivaDetalle);
-                $arPedidoDetalleActualizar->setVrTotalDetalle($totalDetalle); 
-                $arPedidoDetalleActualizar->setVrTotalDetallePendiente($floVrServicio - $arPedidoDetalle->getVrTotalDetalleAfectado());
+                $arPedidoDetalleActualizar->setVrTotalDetalle($totalDetalle);
+                $pendienteFacturar = $subTotalDetalle - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion());
+                $arPedidoDetalleActualizar->setVrTotalDetallePendiente($pendienteFacturar);
                 $arPedidoDetalleActualizar->setVrPrecioMinimo($floVrMinimoServicio);
                 $arPedidoDetalleActualizar->setVrPrecio($precio);
                 $arPedidoDetalleActualizar->setVrCosto($douCostoCalculado);
@@ -314,8 +315,7 @@ class TurPedidoRepository extends EntityRepository {
         $arPedido->setVrTotalCosto($douTotalCostoCalculado);
         $subtotal = $subtotalGeneral + $floSubTotalConceptos;        
         $baseAiu = $subtotal*10/100;        
-        $total = $subtotal + $ivaGeneral;        
-        $arPedido->setVrSubtotal($subtotal);
+        $total = $subtotal + $ivaGeneral;                
         $arPedido->setVrBaseAiu($baseAiu);
         $arPedido->setVrIva($ivaGeneral);
         $arPedido->setVrTotal($total);

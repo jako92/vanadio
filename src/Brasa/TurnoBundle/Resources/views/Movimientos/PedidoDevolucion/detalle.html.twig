@@ -23,7 +23,7 @@
                 <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_pedido_nuevo', {'codigoPedido': 0 }) }}">Nuevo</a>
                 {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
                 {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
-                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
+                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
         </div>
         <div style="float:right">
@@ -46,23 +46,23 @@
                         <td class="td-in-well">{{ arPedidoDevolucion.fecha | date('Y-m-d') }}</td>
                         <td class="titulo" ></td>
                         <td align="right"></td>
-                    </tr>                    
+                    </tr>
                     <tr>
                         <td class="titulo">TIPO:</td>
                         <td class="td-in-well">{{ arPedidoDevolucion.pedidoDevolucionConceptoRel.nombre |default('') }}</td>
                         <td class="titulo" ></td>
                         <td align="right"></td>
-                    </tr>                    
+                    </tr>
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arPedidoDevolucion.clienteRel.nombreCorto }}</td>
                         <td class="titulo" >TOTAL:</td>
                         <td align="right">{{ arPedidoDevolucion.vrTotal | number_format(0, '.', ',')}}</td>
-                    </tr>                    
+                    </tr>
                     <tr>
                         <td class="titulo" >COMENTARIO: </td>
-                        <td class="td-in-well" colspan="5">{{ arPedidoDevolucion.comentarios }}</td>                        
-                    </tr>                     
+                        <td class="td-in-well" colspan="5">{{ arPedidoDevolucion.comentarios }}</td>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -80,15 +80,17 @@
                     <table class="table table-striped table-bordered table-condensed">
                         <tr>
                             <th>ID</th>
+                            <th>PEDIDO</th>
                             <th>PED_DET</th>
-                            <th>PRECIO</th>                            
+                            <th>PRECIO</th>
                             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
                         </tr>
                         {% for arPedidoDevolucionDetalle in arPedidoDevolucionDetalle %}
                             <tr>
-                                <td>{{ arPedidoDevolucionDetalle.codigoPedidoDevolucionDetallePk }}</td>                                                                                                                              
-                                <td>{{ arPedidoDevolucionDetalle.codigoPedidoDetalleFk }}</td>                                                                                                                                                              
-                                <td style="text-align: right">{{ arPedidoDevolucionDetalle.vrPrecio | number_format(0, '.', ',') }}</td>                                                                                     
+                                <td>{{ arPedidoDevolucionDetalle.codigoPedidoDevolucionDetallePk }}</td>
+                                <td>{{ arPedidoDevolucionDetalle.pedidoDetalleRel.pedidoRel.numero | default('') }}</td>
+                                <td>{{ arPedidoDevolucionDetalle.codigoPedidoDetalleFk }}</td>
+                                <td style="text-align: right">{{ arPedidoDevolucionDetalle.vrPrecio | number_format(0, '.', ',') }}</td>
                                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidoDevolucionDetalle.codigoPedidoDevolucionDetallePk }}" /></td>
                             </tr>
                         {% endfor %}
