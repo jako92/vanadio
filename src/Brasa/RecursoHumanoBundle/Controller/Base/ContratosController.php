@@ -724,6 +724,7 @@ class ContratosController extends Controller
             ->add('fechaUltimoPagoCesantias', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoCesantias(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoPrimas', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoPrimas(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoVacaciones', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoVacaciones(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaUltimoPago', DateType::class, array('data' =>$arContrato->getFechaUltimoPago(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $formIbpAdicional->handleRequest($request);    
@@ -735,12 +736,14 @@ class ContratosController extends Controller
             $fechaUltimoPagoCesantias = $formIbpAdicional->get('fechaUltimoPagoCesantias')->getData();
             $fechaUltimoPagoPrimas = $formIbpAdicional->get('fechaUltimoPagoPrimas')->getData();
             $fechaUltimoPagoVacaciones = $formIbpAdicional->get('fechaUltimoPagoVacaciones')->getData(); 
+            $fechaUltimoPago = $formIbpAdicional->get('fechaUltimoPago')->getData(); 
             $arContrato->setIbpCesantiasInicial($ibpCesantiasInicial);
             $arContrato->setIbpPrimasInicial($ibpPrimasInicial);
             $arContrato->setPromedioRecargoNocturnoInicial($promedioRecargoNocturnoInicial);
             $arContrato->setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias);
             $arContrato->setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas);
             $arContrato->setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones);
+            $arContrato->setFechaUltimoPago($fechaUltimoPago);
             $em->persist($arContrato);
             $em->flush();
        

@@ -37,8 +37,14 @@ class ContabilizarLiquidacionController extends Controller
                     $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteLiquidacion());
                     $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(1);
                     $codigoCuentaCesantias = $arCuenta->getCodigoCuentaFk();
-                    $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(2);
+                    $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(2);                    
                     $codigoCuentaInteresesCesantias = $arCuenta->getCodigoCuentaFk();
+                    //Cesantias año anterior
+                    $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(17);
+                    $codigoCuentaCesantiasAnterior = $arCuenta->getCodigoCuentaFk();
+                    $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(18);
+                    $codigoCuentaInteresesCesantiasAnterior = $arCuenta->getCodigoCuentaFk();
+                    
                     $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(3);
                     $codigoCuentaPrimas = $arCuenta->getCodigoCuentaFk();
                     $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(4);
@@ -104,6 +110,40 @@ class ContabilizarLiquidacionController extends Controller
                                 }             
                             }  
 
+                            //Cesantias anteriores
+                            if($arLiquidacion->getVrCesantiasAnterior() > 0) {
+                                $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaCesantiasAnterior); 
+                                if($arCuenta) {
+                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
+                                    $arRegistro->setComprobanteRel($arComprobanteContable);                                    
+                                    $arRegistro->setCuentaRel($arCuenta);
+                                    $arRegistro->setTerceroRel($arTercero);
+                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setFecha($arLiquidacion->getFechaHasta());
+                                    $arRegistro->setDebito($arLiquidacion->getVrCesantiasAnterior());                            
+                                    $arRegistro->setDescripcionContable('CESANTIAS AÑO ANTERIOR');
+                                    $em->persist($arRegistro);
+                                }             
+                            }
+
+                            //Intereses cesantias anteriores
+                            if($arLiquidacion->getVrInteresesCesantiasAnterior() > 0) {                                    
+                                $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaInteresesCesantiasAnterior); 
+                                if($arCuenta) {
+                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
+                                    $arRegistro->setComprobanteRel($arComprobanteContable);                                    
+                                    $arRegistro->setCuentaRel($arCuenta);
+                                    $arRegistro->setTerceroRel($arTercero);
+                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setFecha($arLiquidacion->getFechaHasta());
+                                    $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantiasAnterior());                            
+                                    $arRegistro->setDescripcionContable('INTERESES CESANTIAS AÑO ANTERIOR');
+                                    $em->persist($arRegistro);
+                                }             
+                            }                            
+                            
                             //Primas
                             if($arLiquidacion->getVrPrima() > 0) {                                    
                                 $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaPrimas); 
