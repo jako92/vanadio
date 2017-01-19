@@ -68,6 +68,16 @@ class RhuLiquidacion
     private $VrInteresesCesantias = 0;        
 
     /**
+     * @ORM\Column(name="vr_cesantias_anterior", type="float")
+     */
+    private $VrCesantiasAnterior = 0;    
+
+    /**
+     * @ORM\Column(name="vr_intereses_cesantias_anterior", type="float")
+     */
+    private $VrInteresesCesantiasAnterior = 0;    
+    
+    /**
      * @ORM\Column(name="vr_prima", type="float")
      */
     private $VrPrima = 0;    
@@ -98,9 +108,19 @@ class RhuLiquidacion
     private $diasCesantias = 0;     
 
     /**
-     * @ORM\Column(name="dias_cesantiasAusentismo", type="integer")
+     * @ORM\Column(name="dias_cesantias_ausentismo", type="integer")
      */    
     private $diasCesantiasAusentismo = 0;
+
+    /**
+     * @ORM\Column(name="dias_cesantias_anterior", type="integer")
+     */    
+    private $diasCesantiasAnterior = 0;     
+
+    /**
+     * @ORM\Column(name="dias_cesantias_ausentismo_anterior", type="integer")
+     */    
+    private $diasCesantiasAusentismo_anterior = 0;
     
     /**
      * @ORM\Column(name="dias_vacaciones", type="integer")
@@ -226,6 +246,11 @@ class RhuLiquidacion
      * @ORM\Column(name="fecha_ultimo_pago_cesantias", type="date", nullable=true)
      */    
     private $fechaUltimoPagoCesantias;    
+    
+    /**
+     * @ORM\Column(name="fecha_ultimo_pago_cesantias_anterior", type="date", nullable=true)
+     */    
+    private $fechaUltimoPagoCesantiasAnterior;     
     
     /**
      * @ORM\Column(name="vr_deducciones", type="float")
@@ -1973,5 +1998,125 @@ class RhuLiquidacion
     public function getDiasAusentismoPropuesto()
     {
         return $this->diasAusentismoPropuesto;
+    }
+
+    /**
+     * Set vrCesantiasAnterior
+     *
+     * @param float $vrCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrCesantiasAnterior($vrCesantiasAnterior)
+    {
+        $this->VrCesantiasAnterior = $vrCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrCesantiasAnterior()
+    {
+        return $this->VrCesantiasAnterior;
+    }
+
+    /**
+     * Set vrInteresesCesantiasAnterior
+     *
+     * @param float $vrInteresesCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior)
+    {
+        $this->VrInteresesCesantiasAnterior = $vrInteresesCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrInteresesCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrInteresesCesantiasAnterior()
+    {
+        return $this->VrInteresesCesantiasAnterior;
+    }
+
+    /**
+     * Set diasCesantiasAnterior
+     *
+     * @param integer $diasCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasCesantiasAnterior($diasCesantiasAnterior)
+    {
+        $this->diasCesantiasAnterior = $diasCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get diasCesantiasAnterior
+     *
+     * @return integer
+     */
+    public function getDiasCesantiasAnterior()
+    {
+        return $this->diasCesantiasAnterior;
+    }
+
+    /**
+     * Set diasCesantiasAusentismoAnterior
+     *
+     * @param integer $diasCesantiasAusentismoAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior)
+    {
+        $this->diasCesantiasAusentismo_anterior = $diasCesantiasAusentismoAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get diasCesantiasAusentismoAnterior
+     *
+     * @return integer
+     */
+    public function getDiasCesantiasAusentismoAnterior()
+    {
+        return $this->diasCesantiasAusentismo_anterior;
+    }
+
+    /**
+     * Set fechaUltimoPagoCesantiasAnterior
+     *
+     * @param \DateTime $fechaUltimoPagoCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior)
+    {
+        $this->fechaUltimoPagoCesantiasAnterior = $fechaUltimoPagoCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaUltimoPagoCesantiasAnterior
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltimoPagoCesantiasAnterior()
+    {
+        return $this->fechaUltimoPagoCesantiasAnterior;
     }
 }
