@@ -336,11 +336,12 @@ class PagoMasivo2 extends \FPDF_FPDF {
                             for($j=$desde; $j<=$hasta; $j++) {                            
                                 $pdf->Cell(6.2, 4, $detalle[$j], 1, 0, 'L');
                             }
-                            $pdf->Ln(1);
+                            $pdf->Ln();
                             $pdf->SetAutoPageBreak(true, 15);
                         }                                        
                     }
                 }
+                $pdf->Ln();
             if($arConfiguracion->getImprimirMensajePago()) {
                     $pdf->SetFont('Arial', 'B', 7);
                     $pdf->Cell(193, 4, utf8_decode($arPago->getProgramacionPagoRel()->getMensajePago()), 0, 0, 'C');                    
