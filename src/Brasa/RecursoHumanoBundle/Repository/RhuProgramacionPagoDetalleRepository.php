@@ -755,7 +755,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $salarioCesantia = $arProgramacionPagoDetalle->getVrSalarioCesantiaPropuesto();
             }
             $douCesantia = ($salarioCesantia * $dias) / 360;            
-            $douInteresesCesantias = $douCesantia * 0.12;
+            $porcentajeIntereses = (($dias * 12) / 360)/100;
+            $douInteresesCesantias = $douCesantia * $porcentajeIntereses;
             $douInteresesCesantias = round($douInteresesCesantias);
             $douCesantia = round($douCesantia);
             $devengado = $douCesantia;
