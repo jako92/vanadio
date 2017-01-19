@@ -826,7 +826,7 @@ class FacturaController extends Controller
                     ->setCellValue('M1', 'IVA')
                     ->setCellValue('N1', 'RTEIVA')
                     ->setCellValue('O1', 'RTEFTE')
-                    ->setCellValue('P1', 'TOTAL BRUTO');
+                    ->setCellValue('P1', 'TOTAL NETO');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
