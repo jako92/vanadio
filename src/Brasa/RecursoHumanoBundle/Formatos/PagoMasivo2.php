@@ -336,7 +336,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
                             for($j=$desde; $j<=$hasta; $j++) {                            
                                 $pdf->Cell(6.2, 4, $detalle[$j], 1, 0, 'L');
                             }
-                            $pdf->Ln();
+                            $pdf->Ln(1);
                             $pdf->SetAutoPageBreak(true, 15);
                         }                                        
                     }
