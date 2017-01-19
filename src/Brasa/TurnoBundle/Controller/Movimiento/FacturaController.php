@@ -815,18 +815,18 @@ class FacturaController extends Controller
                     ->setCellValue('C1', 'SERVICIO')
                     ->setCellValue('D1', 'NUMERO')
                     ->setCellValue('E1', 'FECHA')
-                    ->setCellValue('E1', 'VENCE')
-                    ->setCellValue('F1', 'NIT')                    
-                    ->setCellValue('G1', 'CLIENTE')
-                    ->setCellValue('H1', 'AUT')
-                    ->setCellValue('I1', 'ANU')
-                    ->setCellValue('J1', 'TOTAL BRUTO')    
-                    ->setCellValue('K1', 'SUBTOTAL')    
-                    ->setCellValue('L1', 'BASE AUI')
-                    ->setCellValue('M1', 'IVA')
-                    ->setCellValue('N1', 'RTEIVA')
-                    ->setCellValue('O1', 'RTEFTE')
-                    ->setCellValue('P1', 'TOTAL NETO');
+                    ->setCellValue('F1', 'VENCE')
+                    ->setCellValue('G1', 'NIT')                    
+                    ->setCellValue('H1', 'CLIENTE')
+                    ->setCellValue('I1', 'AUT')
+                    ->setCellValue('J1', 'ANU')
+                    ->setCellValue('K1', 'TOTAL BRUTO')    
+                    ->setCellValue('L1', 'SUBTOTAL')    
+                    ->setCellValue('M1', 'BASE AUI')
+                    ->setCellValue('N1', 'IVA')
+                    ->setCellValue('O1', 'RTEIVA')
+                    ->setCellValue('P1', 'RTEFTE')
+                    ->setCellValue('Q1', 'TOTAL NETO');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -840,18 +840,18 @@ class FacturaController extends Controller
                     ->setCellValue('C' . $i, $arFactura->getFacturaServicioRel()->getNombre())
                     ->setCellValue('D' . $i, $arFactura->getNumero())
                     ->setCellValue('E' . $i, $arFactura->getFecha()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
-                    ->setCellValue('F' . $i, $arFactura->getClienteRel()->getNit())
-                    ->setCellValue('G' . $i, $arFactura->getClienteRel()->getNombreCorto())
-                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAutorizado()))
-                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAnulado()))
-                    ->setCellValue('J' . $i, $arFactura->getVrTotal())
-                    ->setCellValue('K' . $i, $arFactura->getVrSubtotal())
-                    ->setCellValue('L' . $i, $arFactura->getVrBaseAIU())
-                    ->setCellValue('M' . $i, $arFactura->getVrIva())
-                    ->setCellValue('N' . $i, $arFactura->getVrRetencionIva())
-                    ->setCellValue('O' . $i, $arFactura->getVrRetencionFuente())
-                    ->setCellValue('P' . $i, $arFactura->getVrTotalNeto());
+                    ->setCellValue('F' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
+                    ->setCellValue('G' . $i, $arFactura->getClienteRel()->getNit())
+                    ->setCellValue('H' . $i, $arFactura->getClienteRel()->getNombreCorto())
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAutorizado()))
+                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arFactura->getEstadoAnulado()))
+                    ->setCellValue('K' . $i, $arFactura->getVrTotal())
+                    ->setCellValue('L' . $i, $arFactura->getVrSubtotal())
+                    ->setCellValue('M' . $i, $arFactura->getVrBaseAIU())
+                    ->setCellValue('N' . $i, $arFactura->getVrIva())
+                    ->setCellValue('O' . $i, $arFactura->getVrRetencionIva())
+                    ->setCellValue('P' . $i, $arFactura->getVrRetencionFuente())
+                    ->setCellValue('Q' . $i, $arFactura->getVrTotalNeto());
             $i++;
         }
 
