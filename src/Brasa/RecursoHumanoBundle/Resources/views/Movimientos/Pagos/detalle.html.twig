@@ -17,7 +17,13 @@
             {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}            
             <a class="btn btn-default btn-sm btn-default"  href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_resumen_turno', { 'codigoPago': arPago.codigoPagoPk }) }}', 'VerSoportePagoTurno', 400, 1000)" >Turnos</a>                                    
             {{ form_widget(form.BtnEnviarCorreo, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                        
+            {{ form_widget(form.BtnAnular, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                        
         </div>
+            <div style="float:right">
+        {% if arPago.estadoPagadoBanco == 1 %}<span class="label label-default">Pagado banco</span>{% endif %}                
+        {% if arPago.estadoContabilizado == 1 %}<span class="label label-default">Contabilizado</span>{% endif %}                
+        {% if arPago.estadoAnulado == 1 %}<span class="label label-danger">Anulado</span>{% endif %}                
+    </div>
     <br /><br />
     <!-- Encabezado Movimiento -->
     <div class="panel panel-default">

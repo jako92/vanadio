@@ -108,12 +108,16 @@ class PagosController extends Controller
         $arPagoDetalles = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 50);                                       
         $arPagoDetallesSede = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalleSede();
         $arPagoDetallesSede = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalleSede')->findBy(array('codigoPagoFk' => $codigoPago));        
-        $form = $this->createFormBuilder()            
-            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))           
-            ->add('BtnEnviarCorreo', SubmitType::class, array('label'  => 'Correo',))           
-            ->getForm();
+        $form = $this->formularioDetalle($arPago);
         $form->handleRequest($request);
         if($form->isValid()) {
+            if($form->get('BtnAnular')->isClicked()) {
+                $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->anular($codigoPago);
+                if($respuesta != "") {
+                   $objMensaje->Mensaje('error', $respuesta); 
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_pagos_detalle', array('codigoPago' => $codigoPago)));
+            }
             if($form->get('BtnImprimir')->isClicked()) {
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
@@ -282,6 +286,22 @@ class PagosController extends Controller
             ->getForm();        
         return $form;
     }      
+    
+    private function formularioDetalle($ar) {
+        $arrBotonAnular = array('label' => 'Anular', 'disabled' => false);        
+        if($ar->getEstadoPagadoBanco() == 1) {            
+            $arrBotonAnular['disabled'] = true;
+        }
+        if($ar->getEstadoContabilizado() == 1) {            
+            $arrBotonAnular['disabled'] = true;
+        }
+        $form = $this->createFormBuilder()    
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)   
+                    ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))           
+                    ->add('BtnEnviarCorreo', SubmitType::class, array('label'  => 'Correo',)) 
+                    ->getForm();  
+        return $form;
+    }     
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();                

@@ -119,7 +119,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                 }
                 $intDiasCesantias = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);                  
                 if($arContrato->getCodigoSalarioTipoFk() == 2) {
-                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;                                    
+                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
                 } else {                                        
                     if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
@@ -138,6 +138,16 @@ class RhuLiquidacionRepository extends EntityRepository {
                     }
                     
                 }
+                
+                //No se puede liquidar por menos del minimo
+                $salarioPromedioMinimo = $salarioMinimo;
+                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    $salarioPromedioMinimo += $auxilioTransporte;
+                }
+                if($salarioPromedioCesantias < $salarioPromedioMinimo) {
+                    $salarioPromedioCesantias = $salarioPromedioMinimo;
+                }
+                
                 if($arLiquidacion->getVrSalarioCesantiasPropuesto() > 0) {
                     $salarioPromedioCesantias = $arLiquidacion->getVrSalarioCesantiasPropuesto();
                 }        
@@ -208,6 +218,13 @@ class RhuLiquidacionRepository extends EntityRepository {
                         }
                         
                     }  
+                    $salarioPromedioMinimo = $salarioMinimo;
+                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        $salarioPromedioMinimo += $auxilioTransporte;
+                    }
+                    if($salarioPromedioPrimas < $salarioPromedioMinimo) {
+                        $salarioPromedioPrimas = $salarioPromedioMinimo;
+                    }                    
                     if($arLiquidacion->getVrSalarioPrimaPropuesto() > 0) {
                         $salarioPromedioPrimas = $arLiquidacion->getVrSalarioPrimaPropuesto();
                     }

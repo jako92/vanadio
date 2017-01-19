@@ -11,6 +11,68 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuPagoRepository extends EntityRepository {
     
+    public function anular($codigoPago) {        
+        $em = $this->getEntityManager();
+        $respuesta = "";
+        $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();  
+        $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($codigoPago);                                
+        if($arPago->getEstadoPagadoBanco() == 0) {
+            if($arPago->getEstadoPagadoBanco() == 0) {
+                $arPago->setVrAdicionalCotizacion(0);
+                $arPago->setVrAdicionalTiempo(0);
+                $arPago->setVrAdicionalValor(0);
+                $arPago->setVrAdicionalValorNoPrestasional(0);
+                $arPago->setVrAuxilioTransporte(0);
+                $arPago->setVrAuxilioTransporteCotizacion(0);
+                $arPago->setVrBruto(0);
+                $arPago->setVrCosto(0);
+                $arPago->setVrDeducciones(0);
+                $arPago->setVrDevengado(0);
+                $arPago->setVrIngresoBaseCotizacion(0);
+                $arPago->setVrIngresoBasePrestacion(0);
+                $arPago->setVrNeto(0);
+                $arPago->setVrSalario(0);
+                $arPago->setVrSalarioEmpleado(0);
+                $arPago->setVrSalarioPeriodo(0);
+                $arPago->setDiasAusentismo(0);
+                $arPago->setDiasLaborados(0);
+                $arPago->setDiasPeriodo(0);
+                $arPago->setEstadoAnulado(1);
+                $em->persist($arPago);
+                $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $codigoPago)); 
+                foreach ($arPagoDetalles as $arPagoDetalle) {
+                    $arPagoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                    $arPagoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->find($arPagoDetalle->getCodigoPagoDetallePk()); 
+                    $arPagoDetalleAct->setVrDia(0);
+                    $arPagoDetalleAct->setVrExtra(0);
+                    $arPagoDetalleAct->setVrHora(0);
+                    $arPagoDetalleAct->setVrIngresoBaseCotizacion(0);
+                    $arPagoDetalleAct->setVrIngresoBaseCotizacionAdicional(0);
+                    $arPagoDetalleAct->setVrIngresoBaseCotizacionIncapacidad(0);
+                    $arPagoDetalleAct->setVrIngresoBaseCotizacionSalario(0);
+                    $arPagoDetalleAct->setVrIngresoBasePrestacion(0);
+                    $arPagoDetalleAct->setVrPago(0);
+                    $arPagoDetalleAct->setVrPagoOperado(0);
+                    $arPagoDetalleAct->setVrTotal(0);
+                    $arPagoDetalleAct->setNumeroDias(0);
+                    $arPagoDetalleAct->setNumeroHoras(0);
+                    $arPagoDetalleAct->setSalud(0);
+                    $arPagoDetalleAct->setPension(0);                    
+                    $em->persist($arPagoDetalleAct);
+                }
+                
+                $em->flush();
+            } else {
+                $respuesta = "El pago no puede estar anulado para anularse";
+            }
+        } else {
+            $respuesta = "El pago no puede estar pagado por banco para anularse";
+        }
+        
+        return $respuesta;
+    }        
+    
     public function liquidar($codigoPago, $arConfiguracion) {        
         $em = $this->getEntityManager();
         $douSalario = 0;

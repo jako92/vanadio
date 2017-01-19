@@ -178,6 +178,11 @@ class RhuPago
      * @ORM\Column(name="estado_pagado_banco", type="boolean")
      */    
     private $estadoPagadoBanco = 0;    
+
+    /**
+     * @ORM\Column(name="estado_anulado", type="boolean")
+     */    
+    private $estadoAnulado = 0;  
     
     /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
@@ -1557,5 +1562,29 @@ class RhuPago
     public function getPagosBancosDetallePagoRel()
     {
         return $this->pagosBancosDetallePagoRel;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuPago
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
     }
 }
