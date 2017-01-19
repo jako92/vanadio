@@ -203,6 +203,11 @@ class RhuLiquidacion
     private $VrSalarioPromedioCesantias = 0;    
 
     /**
+     * @ORM\Column(name="vr_salario_promedio_cesantias_anterior", type="float")
+     */
+    private $VrSalarioPromedioCesantiasAnterior = 0;     
+    
+    /**
      * @ORM\Column(name="vr_salario_promedio_primas", type="float")
      */
     private $VrSalarioPromedioPrimas = 0;
@@ -2118,5 +2123,29 @@ class RhuLiquidacion
     public function getFechaUltimoPagoCesantiasAnterior()
     {
         return $this->fechaUltimoPagoCesantiasAnterior;
+    }
+
+    /**
+     * Set vrSalarioPromedioCesantiasAnterior
+     *
+     * @param float $vrSalarioPromedioCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior)
+    {
+        $this->VrSalarioPromedioCesantiasAnterior = $vrSalarioPromedioCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioPromedioCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrSalarioPromedioCesantiasAnterior()
+    {
+        return $this->VrSalarioPromedioCesantiasAnterior;
     }
 }
