@@ -21,6 +21,11 @@ class TurFacturaServicio
      * @ORM\Column(name="nombre", type="string", length=50)
      */
     private $nombre;                                                    
+
+    /**
+     * @ORM\Column(name="porcentaje_iva", type="float")
+     */
+    private $porcentajeIva = 0; 
     
     /**
      * @ORM\Column(name="por_base_retencion_fuente", type="float")
@@ -363,5 +368,29 @@ class TurFacturaServicio
     public function getTipoRetencionFuente()
     {
         return $this->tipo_retencion_fuente;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurFacturaServicio
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
     }
 }

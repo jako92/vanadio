@@ -7,12 +7,12 @@ use Doctrine\ORM\EntityRepository;
 class TurFacturaServicioRepository extends EntityRepository {    
     public function ListaDql($strNombre = "", $strCodigo = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT nt FROM BrasaTurnoBundle:TurFacturaTipo nt WHERE nt.codigoFacturaTipoPk <> 0";
+        $dql   = "SELECT nt FROM BrasaTurnoBundle:TurFacturaServicio nt WHERE nt.codigoFacturaServicioPk <> 0";
         if($strNombre != "" ) {
             $dql .= " AND nt.nombre LIKE '%" . $strNombre . "%'";
         }
         if($strCodigo != "" ) {
-            $dql .= " AND nt.codigoFacturaTipoPk = " . $strCodigo;
+            $dql .= " AND nt.codigoFacturaServicioPk = " . $strCodigo;
         }        
         $dql .= " ORDER BY nt.nombre";
         return $dql;

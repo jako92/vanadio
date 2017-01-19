@@ -287,8 +287,9 @@ class NotaCredito2 extends \FPDF_FPDF {
         $this->SetXY(149,203);
         $this->Cell(28, 7, 'Base Gravable', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrBaseAIU(), 0, '.', ',') , 1, 0, 'R');
+        $porcentajeIva = $arFactura->getFacturaServicioRel()->getPorcentajeIva();
         $this->SetXY(149,210);
-        $this->Cell(28, 7, 'IVA 16%', 1, 0, 'L');        
+        $this->Cell(28, 7, 'IVA ' . $porcentajeIva . '%', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrIva(), 0, '.', ','), 1, 0, 'R'); 
 
         $this->SetXY(149,217);
