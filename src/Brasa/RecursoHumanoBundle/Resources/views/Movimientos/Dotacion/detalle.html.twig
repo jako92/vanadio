@@ -50,11 +50,9 @@
             <table class="table table-striped table-bordered table-condensed">
                 <tr>
                     <th>CÓDIGO</th>
-                    <th>ELEMENTO DOTACIÓN</th>
+                    <th>NOMBRE</th>
                     <th>CANTIDAD</th>
                     <th>DEVUELTA</th>
-                    <th>SERIE</th>
-                    <th>LOTE</th>
                     <th>ENLACE</th>
                     <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
                 </tr>
@@ -64,11 +62,9 @@
                         <input type="hidden" name="LblCodigoGuia[]" value="{{ arDotacionDetalles.codigoDotacionDetallePk }}">
                         <span class="badge">{{ arDotacionDetalles.codigoDotacionDetallePk }}</span>
                     </td>
-                    <td>{{ arDotacionDetalles.dotacionElementoRel.dotacion }}</td>
+                    <td>{{ arDotacionDetalles.dotacionElementoRel.nombre }}</td>
                     <td style="text-align: right">{{ arDotacionDetalles.cantidadAsignada }}</td>
                     <td style="text-align: right">{{ arDotacionDetalles.cantidadDevuelta }}</td>                                        
-                    <td style="text-align: right">{{ arDotacionDetalles.serie }}</td>
-                    <td style="text-align: right">{{ arDotacionDetalles.lote }}</td>
                     <td style="text-align: right">{{ arDotacionDetalles.codigoDotacionDetalleEnlaceFk }}</td>
                     <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arDotacionDetalles.codigoDotacionDetallePk }}" /></td>
                 </tr>

@@ -23,9 +23,14 @@ class RhuDotacionElemento
     private $codigoDotacionElementoTipoFk;
     
     /**
-     * @ORM\Column(name="dotacion", type="string", nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=120, nullable=true)
      */
-    private $dotacion;
+    private $nombre;
+    
+    /**
+     * @ORM\Column(name="codigo_item_fk", type="integer", nullable=true)
+     */    
+    private $codigoItemFk;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuDotacionElementoTipo", inversedBy="dotacionesElementosDotacionElementoTipoRel")
@@ -88,27 +93,51 @@ class RhuDotacionElemento
     }
 
     /**
-     * Set dotacion
+     * Set nombre
      *
-     * @param string $dotacion
+     * @param string $nombre
      *
      * @return RhuDotacionElemento
      */
-    public function setDotacion($dotacion)
+    public function setNombre($nombre)
     {
-        $this->dotacion = $dotacion;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get dotacion
+     * Get nombre
      *
      * @return string
      */
-    public function getDotacion()
+    public function getNombre()
     {
-        return $this->dotacion;
+        return $this->nombre;
+    }
+
+    /**
+     * Set codigoItemFk
+     *
+     * @param integer $codigoItemFk
+     *
+     * @return RhuDotacionElemento
+     */
+    public function setCodigoItemFk($codigoItemFk)
+    {
+        $this->codigoItemFk = $codigoItemFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoItemFk
+     *
+     * @return integer
+     */
+    public function getCodigoItemFk()
+    {
+        return $this->codigoItemFk;
     }
 
     /**

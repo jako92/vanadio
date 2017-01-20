@@ -40,17 +40,7 @@ class RhuDotacionDetalle
     /**
      * @ORM\Column(name="cantidad_devuelta", type="integer", nullable=true)
      */    
-    private $cantidadDevuelta = 0;   
-    
-    /**
-     * @ORM\Column(name="serie", type="string", nullable=false)
-     */
-    private $serie;
-    
-    /**
-     * @ORM\Column(name="lote", type="string", nullable=false)
-     */
-    private $lote;         
+    private $cantidadDevuelta = 0;              
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuDotacion", inversedBy="dotacionesDetallesDotacionRel")
@@ -64,6 +54,7 @@ class RhuDotacionDetalle
      */
     protected $dotacionElementoRel;
    
+
 
     /**
      * Get codigoDotacionDetallePk
@@ -193,54 +184,6 @@ class RhuDotacionDetalle
     public function getCantidadDevuelta()
     {
         return $this->cantidadDevuelta;
-    }
-
-    /**
-     * Set serie
-     *
-     * @param string $serie
-     *
-     * @return RhuDotacionDetalle
-     */
-    public function setSerie($serie)
-    {
-        $this->serie = $serie;
-
-        return $this;
-    }
-
-    /**
-     * Get serie
-     *
-     * @return string
-     */
-    public function getSerie()
-    {
-        return $this->serie;
-    }
-
-    /**
-     * Set lote
-     *
-     * @param string $lote
-     *
-     * @return RhuDotacionDetalle
-     */
-    public function setLote($lote)
-    {
-        $this->lote = $lote;
-
-        return $this;
-    }
-
-    /**
-     * Get lote
-     *
-     * @return string
-     */
-    public function getLote()
-    {
-        return $this->lote;
     }
 
     /**
