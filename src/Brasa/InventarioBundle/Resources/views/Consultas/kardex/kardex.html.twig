@@ -53,8 +53,8 @@
                 <tr>                    
                     <td>{{ arKardex.codigoDetalleMovimientoPk }}</td>                       
                     <td>{{ arKardex.itemRel.nombre | default('')  }}</td>
-                    <td style="text-align: right">{{ arKardex.cantidad }}</td>                    
-                    <td style="text-align: right">{{ arKardex.vrPrecio | number_format(0, '.', ',') }}</td>                                                                                    
+                    <td style="text-align: right">{{ arKardex.cantidadOperada }}</td>                    
+                    <td style="text-align: right">{{ arKardex.valor | number_format(0, '.', ',') }}</td>                                                                                    
                 </tr>
             {% endfor %}
         </table>

@@ -90,7 +90,7 @@ class MovimientoController extends Controller
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();        
+        $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();            
         $arDocumento = $em->getRepository('BrasaInventarioBundle:InvDocumento')->find($codigoDocumento);
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         if($codigoMovimiento != 0) {
@@ -114,6 +114,12 @@ class MovimientoController extends Controller
                     $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
                     $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
                     $arMovimiento->setFechaVence($dateFechaVence);
+                    if($arDocumento->getAsignarConsecutivoCreacion()) {
+                        $consecutivo = $arDocumento->getConsecutivo();
+                        $arDocumento->setConsecutivo($consecutivo + 1);
+                        $em->persist($arDocumento);
+                        $arMovimiento->setNumero($consecutivo);                            
+                    }
                     $em->persist($arMovimiento);
                     $em->flush();
 
@@ -412,6 +418,7 @@ class MovimientoController extends Controller
                 $arMovimientoDetalle->setFechaVencimiento($vence);
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
+                $arMovimientoDetalle->setCantidadOperada($cantidad*$arMovimientoDetalle->getOperacionInventario());
                 $arMovimientoDetalle->setValor($valor);
                 $arMovimientoDetalle->setPorcentajeDescuento($descuento);
                 $em->persist($arMovimientoDetalle);

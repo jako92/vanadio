@@ -49,6 +49,7 @@ class InvLoteRepository extends EntityRepository {
         $cantidad = ($operacion * $cantidad) * $tipo; 
         $cantidad += $arLote->getCantidadExistencia();
         $arLote->setCantidadExistencia($cantidad);
+        $arLote->setCantidadDisponible($cantidad);
         $em->persist($arLote);
     }        
 }

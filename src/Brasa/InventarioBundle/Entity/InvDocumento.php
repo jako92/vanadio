@@ -175,6 +175,11 @@ class InvDocumento
     private $codigoCuentaCarteraFk;    
 
     /**
+     * @ORM\Column(name="asignar_consecutivo_creacion", type="boolean")
+     */          
+    private $asignarConsecutivoCreacion = 0;    
+    
+    /**
      * @ORM\Column(name="asignar_consecutivo_impresion", type="boolean")
      */          
     private $asignarConsecutivoImpresion = 0;          
@@ -946,5 +951,29 @@ class InvDocumento
     public function getMovimientosDocumentoRel()
     {
         return $this->movimientosDocumentoRel;
+    }
+
+    /**
+     * Set asignarConsecutivoCreacion
+     *
+     * @param boolean $asignarConsecutivoCreacion
+     *
+     * @return InvDocumento
+     */
+    public function setAsignarConsecutivoCreacion($asignarConsecutivoCreacion)
+    {
+        $this->asignarConsecutivoCreacion = $asignarConsecutivoCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get asignarConsecutivoCreacion
+     *
+     * @return boolean
+     */
+    public function getAsignarConsecutivoCreacion()
+    {
+        return $this->asignarConsecutivoCreacion;
     }
 }

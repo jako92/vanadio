@@ -44,6 +44,7 @@
                 <th>ITEM</th>
                 <th>LOTE</th>
                 <th>BODEGA</th>
+                <th>EXISTENCIA</th>
                 <th></th>
             </tr>
             {% for arLotes in arLotes %}
@@ -51,6 +52,7 @@
                 <td>{{ arLotes.loteFk }} </td>
                 <td>{{ arLotes.itemRel.nombre }}</td> 
                 <td>{{ arLotes.codigoBodegaFk }}</td> 
+                <td>{{ arLotes.cantidadExistencia }}</td> 
                 <td style="text-align: center"><a href="javascript:selLote('{{ arLotes.loteFk }}','{{ campoLote }}')" ><img src="{{ asset('imagenes/bootstrap/glyphicons_198_ok.png') }}" width=20 height=20></a></td>                                                
             </tr>
             {% endfor %} 

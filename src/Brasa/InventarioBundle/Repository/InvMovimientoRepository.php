@@ -49,10 +49,17 @@ class InvMovimientoRepository extends EntityRepository {
     
     public function autorizar($codigoMovimiento) {
         $em = $this->getEntityManager();
-        $respuesta = $this->validarIngreso($codigoMovimiento);
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
+        if($arMovimiento->getOperacionInventario() == 1) {
+            $respuesta = $this->validarEntrada($codigoMovimiento);
+        } 
+        if($arMovimiento->getOperacionInventario() == -1) {
+            $respuesta = $this->validarSalida($codigoMovimiento);
+        }
+        
         if($respuesta == "") {
-            $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
-            $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
+
             $dql   = "SELECT md.codigoBodegaFk, md.codigoItemFk, md.loteFk, md.fechaVencimiento, md.codigoBodegaFk, md.operacionInventario, md.cantidad, md.afectaInventario FROM BrasaInventarioBundle:InvMovimientoDetalle md "
                     . "WHERE md.codigoMovimientoFk = " . $codigoMovimiento;
             $query = $em->createQuery($dql);
@@ -148,7 +155,7 @@ class InvMovimientoRepository extends EntityRepository {
         return $respuesta;
     }    
     
-    public function validarIngreso($codigoMovimiento) {
+    public function validarEntrada($codigoMovimiento) {
         $em = $this->getEntityManager();
         $respuesta = "";
         //Valida si tiene registros
@@ -172,6 +179,37 @@ class InvMovimientoRepository extends EntityRepository {
         }
         return $respuesta;        
     }
+    
+    public function validarSalida($codigoMovimiento) {
+        $em = $this->getEntityManager();
+        $respuesta = "";
+        //Valida si tiene registros
+        $validarNumeroRegistros = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->numeroRegistros($codigoMovimiento);
+        if($validarNumeroRegistros <= 0) {
+            $respuesta = "El movimiento no tiene registros";            
+        }
+        //Valida las cantidades
+        $validarCantidad = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->validarCantidad($codigoMovimiento);
+        if($validarCantidad > 0) {
+            $respuesta = "Existen detalles con cantidad en cero";
+        }  
+        
+        $validarLote = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->validarLote($codigoMovimiento);
+        if($validarLote > 0) {
+            $respuesta = "Existen detalles sin lote";
+        }         
+        $validarBodega = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->validarBodega($codigoMovimiento);
+        if($validarBodega > 0) {
+            $respuesta = "Existen detalles sin bodega o con codigo de bodega incorrecta";
+        }
+        if($respuesta == "") {
+            $validarExistencia = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->validarExistencia($codigoMovimiento);
+            if($validarExistencia == FALSE) {
+                $respuesta = "Cantidades con existencias insuficientes";
+            }               
+        }     
+        return $respuesta;        
+    }    
     
     public function liquidar($codigoMovimiento) {
         $em = $this->getEntityManager();

@@ -85,6 +85,25 @@ class InvMovimientoDetalleRepository extends EntityRepository
         return $intNumeroRegistros;     
     }
 
+    public function validarExistencia($codigoMovimiento) {
+        $em = $this->getEntityManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $validado = TRUE;
+        $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+        $arMovimientoDetalle = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->findBy(array('codigoMovimientoFk' => $codigoMovimiento));
+        foreach ($arMovimientoDetalle as $arMovimientoDetalle) {
+            $arLote = new \Brasa\InventarioBundle\Entity\InvLote();             
+            $arLote = $em->getRepository('BrasaInventarioBundle:InvLote')->find(array('codigoItemFk' => $arMovimientoDetalle->getCodigoItemFk(), 'loteFk' => $arMovimientoDetalle->getLoteFk(), 'codigoBodegaFk' => $arMovimientoDetalle->getCodigoBodegaFk()));
+            if($arLote) {
+                if($arMovimientoDetalle->getCantidad() > $arLote->getCantidadExistencia()) {
+                    $objMensaje->Mensaje("error", "Cantidad del item " . $arMovimientoDetalle->getItemRel()->getNombre() . " no tiene existencia suficiente");
+                    $validado = FALSE;
+                }
+            }
+        }        
+        return $validado;     
+    }    
+    
     public function eliminarSeleccionados($arrSeleccionados) {        
         if(count($arrSeleccionados) > 0) {
             $em = $this->getEntityManager();

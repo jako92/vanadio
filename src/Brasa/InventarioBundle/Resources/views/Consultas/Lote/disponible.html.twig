@@ -44,6 +44,7 @@
         </div>
             <table class="table table-striped table-bordered table-condensed">
             <tr>
+                <th>CODIGO</th>
                 <th>ITEM</th>
                 <th>LOTE</th>
                 <th>EXISTENCIA</th>
@@ -53,6 +54,7 @@
             </tr>
             {% for arLotes in arLotes %}
                 <tr>                    
+                    <td>{{ arLotes.codigoItemFk| default('')  }}</td>
                     <td>{{ arLotes.itemRel.nombre | default('')  }}</td>                       
                     <td>{{ arLotes.LoteFk  }}</td>
                     <td align="Right">{{ arLotes.cantidadExistencia  }}</td>
