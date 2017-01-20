@@ -274,8 +274,8 @@ class CreditosController extends Controller
                             $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrayDetalle[0]));
                             if(count($arEmpleado) > 0) {
-                                $arEmpleadoValidar = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrayDetalle[0], 'codigoCentroCostoFk' => null));
-                                if (count($arEmpleadoValidar) > 0){
+                                $arEmpleadoValidar = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrayDetalle[0]));
+                                if (count($arEmpleadoValidar) == NULL){
                                     $empleadoSinContrato = "El numero de identificación " .$arrayDetalle[0]. " No tiene contrato";
                                 }else{
                                     //Créditos
