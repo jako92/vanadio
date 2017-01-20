@@ -418,7 +418,7 @@ class RhuPagoRepository extends EntityRepository {
     }*/
     public function devuelveCostosFechaCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT MIN(p.fechaDesde) as fechaInicio, MAX(p.fechaHasta) as fechaFin, SUM(p.vrAdicionalValorNoPrestasional) as NoPrestacional, SUM(p.vrIngresoBaseCotizacion) as Prestacional FROM BrasaRecursoHumanoBundle:RhuPago p "
+        $dql   = "SELECT MIN(p.fechaDesde) as fechaInicio, MAX(p.fechaHasta) as fechaFin, SUM(p.vrAdicionalValorNoPrestasional) as NoPrestacional, SUM(p.vrIngresoBasePrestacion) as Prestacional FROM BrasaRecursoHumanoBundle:RhuPago p "
                 . "WHERE p.codigoEmpleadoFk = " . $codigoEmpleado . " AND p.estadoPagado = 1 "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
         $query = $em->createQuery($dql);
@@ -491,7 +491,7 @@ class RhuPagoRepository extends EntityRepository {
     public function devuelveCostosDane($fechaDesde, $fechaHasta, $fechaProceso) {
         $em = $this->getEntityManager();
         $dql   = "SELECT p, c FROM BrasaRecursoHumanoBundle:RhuPago p JOIN p.contratoRel c WHERE p.codigoPagoPk <> 0"
-                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND p.codigoPagoTipoFk != 3 '";
                 if ($fechaProceso != ""){
                     $dql .= " AND p.fechaDesde LIKE '%".$fechaProceso. "%' AND p.fechaHasta LIKE '%".$fechaProceso. "%'";
                 }

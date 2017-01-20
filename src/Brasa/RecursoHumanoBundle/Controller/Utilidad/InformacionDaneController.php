@@ -48,7 +48,7 @@ class InformacionDaneController extends Controller
                     //empleados por trimestre o por año
                     $proceso = true;
                     $empleadosContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->contratosPeriodo($controles['fechaDesde'],$controles['fechaHasta']);                    
-                    //devengado y prestaciones pagadas
+                    //devengado y primas pagadas
                     $salariosEmpleados = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->devuelveCostosDane($controles['fechaDesde'],$controles['fechaHasta'],"");
                     //parafiscales
                     $parafiscalesSsoEmpleados = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoAporte')->devuelveCostosParafiscales($controles['fechaDesde'],$controles['fechaHasta'],"");
@@ -84,10 +84,10 @@ class InformacionDaneController extends Controller
                     $salarioEmpleadoFijo = 0;
                     $salarioEmpleadoIndefinido = 0;
                     $salarioEmpleadoAprendiz = 0;
-                    $salarioEmpleadoPracticante = 0;                    
+                    $salarioEmpleadoPracticante = 0;                                     
                     foreach ($salariosEmpleados as $salariosEmpleado) {
                         if ($salariosEmpleado->getContratoRel()->getCodigoContratoTipoFk() == 1){
-                            $salarioEmpleadoObraLabor = $salarioEmpleadoObraLabor +  $salariosEmpleado->getVrDevengado();
+                            $salarioEmpleadoObraLabor = $salarioEmpleadoObraLabor +  $salariosEmpleado->getVrDevengado();                                                        
                         }
                         if ($salariosEmpleado->getContratoRel()->getCodigoContratoTipoFk() == 2){
                             $salarioEmpleadoFijo = $salarioEmpleadoFijo +  $salariosEmpleado->getVrDevengado();
@@ -130,13 +130,13 @@ class InformacionDaneController extends Controller
                     $prestacionesLiquidadasEmpleadosIndefinido = 0;
                     foreach ($prestacionesLiquidadasEmpleados as $prestacionesLiquidadasEmpleado) {
                         if ($prestacionesLiquidadasEmpleado->getContratoRel()->getCodigoContratoTipoFk() == 1){
-                            $prestacionesLiquidadasEmpleadosObraLabor = $prestacionesLiquidadasEmpleadosObraLabor + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
+                            $prestacionesLiquidadasEmpleadosObraLabor = $prestacionesLiquidadasEmpleadosObraLabor + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrCesantiasAnterior() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
                         }
                         if ($prestacionesLiquidadasEmpleado->getContratoRel()->getCodigoContratoTipoFk() == 2){
-                            $prestacionesLiquidadasEmpleadosFijo = $prestacionesLiquidadasEmpleadosFijo + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
+                            $prestacionesLiquidadasEmpleadosFijo = $prestacionesLiquidadasEmpleadosFijo + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrCesantiasAnterior() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
                         }
                         if ($prestacionesLiquidadasEmpleado->getContratoRel()->getCodigoContratoTipoFk() == 3){
-                            $prestacionesLiquidadasEmpleadosIndefinido = $prestacionesLiquidadasEmpleadosIndefinido + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
+                            $prestacionesLiquidadasEmpleadosIndefinido = $prestacionesLiquidadasEmpleadosIndefinido + $prestacionesLiquidadasEmpleado->getVrCesantias() + $prestacionesLiquidadasEmpleado->getVrCesantiasAnterior() + $prestacionesLiquidadasEmpleado->getVrInteresesCesantias() + $prestacionesLiquidadasEmpleado->getVrPrima() + $prestacionesLiquidadasEmpleado->getVrVacaciones();
                         }
                     }
                     $objPHPExcel->getProperties()->setCreator("EMPRESA")

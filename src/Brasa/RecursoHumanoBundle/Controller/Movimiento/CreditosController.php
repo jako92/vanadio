@@ -299,6 +299,7 @@ class CreditosController extends Controller
                                     $arCredito->setFechaInicio($dateFecha);
                                     $intVrSeguro = $arrayDetalle[6];
                                     $arCredito->setSeguro($intVrSeguro);
+                                    $arCredito->setSaldo($intVrCredito);
                                     $em->persist($arCredito);
                                 }
                             }else{
