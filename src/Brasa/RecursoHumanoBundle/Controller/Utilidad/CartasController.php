@@ -47,18 +47,22 @@ class CartasController extends Controller
             if($arrControles['form_txtNumeroIdentificacion'] != '') {
                 $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                 $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
+                $codigoContrato = $arEmpleado->getCodigoContratoActivoFk();
+                if ($codigoContrato == null){
+                    $codigoContrato = $arEmpleado->getCodigoContratoUltimoFk();
+                }
                 if(count($arEmpleado) > 0) {
-                    if($arEmpleado->getCodigoContratoActivoFk() != '') {                        
+                    //if($arEmpleado->getCodigoContratoActivoFk() != '') {                        
                         $arCartaTipo = $form->get('cartaTipoRel')->getData();
                         $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
                         $fechaProceso = $form->get('fecha')->getData()->format('Y-m-d');
                         $fechaOpcional = $form->get('fechaOpcional')->getData();
-                        $codigoContrato = $arEmpleado->getCodigoContratoActivoFk();
+                        //$codigoContrato = $arEmpleado->getCodigoContratoActivoFk();
                         $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
                         $objFormatoCarta->Generar($this, $em, $arUsuario, $codigoCartaTipo, $fechaProceso, $fechaOpcional, $codigoContrato,"","","","","","");
-                    } else {
+                    /*}// else {
                         $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
-                    }
+                    }*/
                 } else {
                     $objMensaje->Mensaje("error", "El empleado no existe");
                 }
