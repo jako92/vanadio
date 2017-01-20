@@ -284,7 +284,8 @@ class MovimientoController extends Controller
         $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvMovimiento')->listaDql(
             $codigoDocumento,
             $session->get('filtroInvCodigoMovimiento'), 
-            $session->get('filtroInvNumeroMovimiento')
+            $session->get('filtroInvNumeroMovimiento'),
+            $session->get('filtroInvSoporteMovimiento')
             );
     }
 
@@ -292,6 +293,7 @@ class MovimientoController extends Controller
         $session = new Session;    
         $session->set('filtroInvCodigoMovimiento', $form->get('TxtCodigo')->getData());        
         $session->set('filtroInvNumeroMovimiento', $form->get('TxtNumero')->getData());
+        $session->set('filtroInvSoporteMovimiento', $form->get('TxtSoporte')->getData());
     }        
 
     private function formularioLista() {
@@ -300,6 +302,7 @@ class MovimientoController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroInvNumeroMovimiento')))
             ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroInvCodigoMovimiento')))    
+            ->add('TxtSoporte', TextType::class, array('label'  => 'Soporte','data' => $session->get('filtroInvSoporteMovimiento')))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))             

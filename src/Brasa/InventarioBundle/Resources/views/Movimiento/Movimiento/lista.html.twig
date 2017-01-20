@@ -16,15 +16,35 @@
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">                                                   
                 <div class="form-group form-group-sm">  
-                    <label for="form_TxtCodigo" class="col-sm-2 control-label">Codigo:</label>
+                    <label class="col-sm-2 control-label">Codigo:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.TxtCodigo, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                    <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
+                    <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                        
                     </div>                    
                 </div>                                                                         
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Numero:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">                  
+                        
+                    </div>                    
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Soporte:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtSoporte, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">                  
+                        
+                    </div>                    
+                </div>                     
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -36,7 +56,8 @@
             <tr>
                 <th>CODIGO</th>
                 <th>FECHA</th>
-                <th>NUMERO</th>                
+                <th>NUMERO</th>
+                <th>SOPORTE</th>                
                 <th>TERCERO</th>
                 <th>TOTAL</th>
                 <th>AUT</th>
@@ -49,6 +70,7 @@
                 <td>{{ arMovimientos.codigoMovimientoPk  }}</td>             
                 <td>{{ arMovimientos.fecha | date('Y/m/d')  }}</td>
                 <td>{{ arMovimientos.numero  }}</td>
+                <td>{{ arMovimientos.soporte  }}</td>
                 <td>{{ arMovimientos.terceroRel.nombreCorto | default('')  }}</td>
                 <td style="text-align: right">{{ arMovimientos.vrTotal | number_format(0, '.', ',') }}</td>                
                 <td>{% if arMovimientos.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>               

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class InvMovimientoRepository extends EntityRepository { 
     
-    public function listaDql($codigoDocumento = '', $strCodigo = '', $strNumero = '') {
+    public function listaDql($codigoDocumento = '', $strCodigo = '', $strNumero = '', $soporte = '') {
         $dql   = "SELECT m FROM BrasaInventarioBundle:InvMovimiento m WHERE m.codigoDocumentoFk = $codigoDocumento ";
         if($strNumero != "" ) {
             $dql .= " AND m.numero = " . $strNumero;
@@ -21,6 +21,9 @@ class InvMovimientoRepository extends EntityRepository {
         if($strCodigo != "" ) {
             $dql .= " AND m.codigoMovimientoPk = " . $strCodigo;
         }       
+        if($soporte != "" ) {
+            $dql .= " AND m.soporte = '" . $soporte . "'";
+        }        
         $dql .= " ORDER BY m.codigoMovimientoPk";
         return $dql;
     }

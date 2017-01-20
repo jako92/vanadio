@@ -177,7 +177,43 @@ class DotacionController extends Controller
                     $objFormatoDotacionDetalle->Generar($em, $codigoDotacion);
                 }    
             }
-            
+            if($form->get('BtnGenerarSalidaInventario')->isClicked()) {
+                if($arDotacion->getEstadoAutorizado() == 1 && $arDotacion->getEstadoSalidaInventario() == 0) {
+                    $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();
+                    $arDocumento = $em->getRepository('BrasaInventarioBundle:InvDocumento')->find(2);
+                    $arTercero = new \Brasa\InventarioBundle\Entity\InvTercero();
+                    $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->find(11);
+                    $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+                    $arMovimiento->setTerceroRel($arTercero);
+                    $arMovimiento->setFormaPagoRel($arTercero->getFormaPagoRel());
+                    $arMovimiento->setDocumentoRel($arDocumento);
+                    $arMovimiento->setSoporte('DOT'.$arDotacion->getCodigoDotacionPk());
+                    $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
+                    $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
+                    $arMovimiento->setFechaVence(new \DateTime('now'));
+                    $arMovimiento->setFecha(new \DateTime('now'));
+                    $em->persist($arMovimiento);
+                    $arDotacionDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionDetalle();
+                    $arDotacionDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacionDetalle')->findBy(array('codigoDotacionFk' => $codigoDotacion));
+                    foreach ($arDotacionDetalles as $arDotacionDetalle) {
+                        $arItem = new \Brasa\InventarioBundle\Entity\InvItem();
+                        $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($arDotacionDetalle->getDotacionElementoRel()->getCodigoItemFk());
+                        $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+                        $arMovimientoDetalle->setMovimientoRel($arMovimiento);
+                        $arMovimientoDetalle->setItemRel($arItem);                        
+                        $arMovimientoDetalle->setFechaVencimiento(new \DateTime('now'));
+                        $arMovimientoDetalle->setAfectaInventario($arItem->getAfectaInventario());
+                        $arMovimientoDetalle->setOperacionInventario($arMovimiento->getOperacionInventario());                        
+                        $arMovimientoDetalle->setPorcentajeIva($arItem->getPorcentajeIva());                        
+                        $arMovimientoDetalle->setCantidad($arDotacionDetalle->getCantidadAsignada());
+                        $em->persist($arMovimientoDetalle);                        
+                    }
+                    $arDotacion->setEstadoSalidaInventario(1);
+                    $em->persist($arDotacion);
+                    $em->flush();                    
+                }    
+                return $this->redirect($this->generateUrl('brs_rhu_dotacion_detalle', array('codigoDotacion' => $codigoDotacion)));
+            }            
             if($form->get('BtnEliminarDetalle')->isClicked()) {
                 if($arDotacion->getEstadoAutorizado() == 0) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -198,20 +234,6 @@ class DotacionController extends Controller
                     return $this->redirect($this->generateUrl('brs_rhu_dotacion_detalle', array('codigoDotacion' => $codigoDotacion)));
                 }
             }
-            /*if($form->get('BtnCerrar')->isClicked()) {
-                $arDotacionDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->dotacionDevolucion($arDotaciones->getCodigoEmpleadoFk());
-                $intRegistros = count($arDotacionDetalle);
-                if ($intRegistros > 0){
-                    $objMensaje->Mensaje("error", "No se puede cerrar, el empleado tiene devoluciones pendientes");
-                }else{
-                    $arCerrarDotaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->findBy(array('codigoEmpleadoFk' => $arDotaciones->getCodigoEmpleadoFk()));
-                    foreach ($arCerrarDotaciones as $arCerrarDotacion) {
-                        $arCerrarDotacion->setEstadoCerrado(1);
-                        $em->persist($arCerrarDotacion);
-                    }
-                    $em->flush();
-                }
-            }*/
 
         }
         $arDotacionDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionDetalle();
@@ -367,22 +389,28 @@ class DotacionController extends Controller
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
     }    
     
-    private function formularioDetalle($arDotacion) {
+    private function formularioDetalle($ar) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
         $arrBotonEliminarDetalle = array('label' => 'Eliminar', 'disabled' => false);        
-        if($arDotacion->getEstadoAutorizado() == 1) {            
+        $arrBotonGenerarSalidaInventario = array('label' => 'Generar salida inventario', 'disabled' => true);
+        if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;            
-            $arrBotonEliminarDetalle['disabled'] = true;            
+            $arrBotonEliminarDetalle['disabled'] = true;
+            if($ar->getEstadoSalidaInventario() == 0) { 
+                $arrBotonGenerarSalidaInventario['disabled'] = false;            
+            }
+            
         } else {
             $arrBotonDesAutorizar['disabled'] = true;
             $arrBotonImprimir['disabled'] = true;
         }
-        $form = $this->createFormBuilder()    
+        $form = $this->createFormBuilder()                        
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
-                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)            
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)    
+                    ->add('BtnGenerarSalidaInventario', SubmitType::class, $arrBotonGenerarSalidaInventario)                
                     ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)                                
                     ->getForm();  
         return $form;

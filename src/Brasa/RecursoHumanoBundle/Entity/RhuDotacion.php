@@ -57,6 +57,11 @@ class RhuDotacion
      */    
     private $estadoAutorizado = 0;    
     
+    /**     
+     * @ORM\Column(name="estado_salida_inventario", type="boolean")
+     */    
+    private $estadoSalidaInventario = 0;     
+    
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
@@ -454,5 +459,29 @@ class RhuDotacion
     public function getDotacionesDetallesDotacionRel()
     {
         return $this->dotacionesDetallesDotacionRel;
+    }
+
+    /**
+     * Set estadoSalidaInventario
+     *
+     * @param boolean $estadoSalidaInventario
+     *
+     * @return RhuDotacion
+     */
+    public function setEstadoSalidaInventario($estadoSalidaInventario)
+    {
+        $this->estadoSalidaInventario = $estadoSalidaInventario;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoSalidaInventario
+     *
+     * @return boolean
+     */
+    public function getEstadoSalidaInventario()
+    {
+        return $this->estadoSalidaInventario;
     }
 }
