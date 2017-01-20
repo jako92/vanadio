@@ -120,7 +120,7 @@ class FormatoDotacionDetalle extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(10);
-        $header = array(utf8_decode('CÓDIGO'), utf8_decode('ELEMENTO DOTACIÓN'), 'CANTIDAD ASIGNADA', 'CANTIDAD DEVUELTA', 'SERIE', 'LOTE');
+        $header = array(utf8_decode('CÓDIGO'), utf8_decode('ELEMENTO DOTACIÓN'), 'CANTIDAD ASIGNADA', 'CANTIDAD DEVUELTA');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -128,7 +128,7 @@ class FormatoDotacionDetalle extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7);
 
         //creamos la cabecera de la tabla.
-        $w = array(15, 58, 30, 30, 30, 30);
+        $w = array(15, 118, 30, 30, 30, 30);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -150,11 +150,9 @@ class FormatoDotacionDetalle extends \FPDF_FPDF {
         foreach ($arDotacionDetalle as $arDotacionDetalle) {            
             $pdf->SetFont('Arial', '', 8);
             $pdf->Cell(15, 4, $arDotacionDetalle->getCodigoDotacionDetallePk(), 1, 0, 'L');
-            $pdf->Cell(58, 4, $arDotacionDetalle->getDotacionElementoRel()->getDotacion(), 1, 0, 'L');
+            $pdf->Cell(118, 4, $arDotacionDetalle->getDotacionElementoRel()->getNombre(), 1, 0, 'L');
             $pdf->Cell(30, 4, $arDotacionDetalle->getCantidadAsignada(), 1, 0, 'R');
             $pdf->Cell(30, 4, $arDotacionDetalle->getCantidadDevuelta(), 1, 0, 'R');
-            $pdf->Cell(30, 4, $arDotacionDetalle->getSerie(), 1, 0, 'R');
-            $pdf->Cell(30, 4, $arDotacionDetalle->getLote(), 1, 0, 'R');            
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }
