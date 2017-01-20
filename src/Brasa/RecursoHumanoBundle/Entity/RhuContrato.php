@@ -492,7 +492,12 @@ class RhuContrato
     /**
      * @ORM\OneToMany(targetEntity="RhuDisciplinario", mappedBy="contratoRel")
      */
-    protected $disciplinariosContratoRel;     
+    protected $disciplinariosContratoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="contratoRel")
+     */
+    protected $contratosAdicionalesContratoRel;
     
 
     /**
@@ -2903,5 +2908,39 @@ class RhuContrato
     public function getContratoGrupoRel()
     {
         return $this->contratoGrupoRel;
+    }
+
+    /**
+     * Add contratosAdicionalesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel)
+    {
+        $this->contratosAdicionalesContratoRel[] = $contratosAdicionalesContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratosAdicionalesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel
+     */
+    public function removeContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel)
+    {
+        $this->contratosAdicionalesContratoRel->removeElement($contratosAdicionalesContratoRel);
+    }
+
+    /**
+     * Get contratosAdicionalesContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratosAdicionalesContratoRel()
+    {
+        return $this->contratosAdicionalesContratoRel;
     }
 }

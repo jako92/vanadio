@@ -743,6 +743,11 @@ class RhuEmpleado
      */
     protected $visitasEmpleadoRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="empleadoRel")
+     */
+    protected $contratosAdicionalesEmpleadoRel;
+    
         
     /**
      * Constructor
@@ -4486,5 +4491,39 @@ class RhuEmpleado
     public function getReclamosEmpleadoRel()
     {
         return $this->reclamosEmpleadoRel;
+    }
+
+    /**
+     * Add contratosAdicionalesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addContratosAdicionalesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel)
+    {
+        $this->contratosAdicionalesEmpleadoRel[] = $contratosAdicionalesEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratosAdicionalesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel
+     */
+    public function removeContratosAdicionalesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel)
+    {
+        $this->contratosAdicionalesEmpleadoRel->removeElement($contratosAdicionalesEmpleadoRel);
+    }
+
+    /**
+     * Get contratosAdicionalesEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratosAdicionalesEmpleadoRel()
+    {
+        return $this->contratosAdicionalesEmpleadoRel;
     }
 }
