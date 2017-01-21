@@ -148,8 +148,9 @@
             <li><a href="#sedes" data-toggle="tab">Sedes</a></li>
             <li><a href="#traslados" data-toggle="tab">Traslados</a></li>
             {% if arContrato.codigoContratoClaseFk == 2 %}
-            <li><a href="#prorroga" data-toggle="tab">Prorrogas</a></li>
+            <li><a href="#prorroga" data-toggle="tab">Prorrogas</a></li>            
             {% endif %}
+            <li><a href="#adicion" data-toggle="tab">Adicion</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="cambiosalario">
@@ -398,7 +399,35 @@
                 <div class="btn-toolbar" style="float: left">
                     {{ knp_pagination_render(arContratoProrrogas) }}
                 </div>
-            </div>  
+            </div>
+            <div class="tab-pane" id="adicion">
+                <br />
+                <table class="table table-striped table-bordered table-condensed">
+                    <tr>
+                        <th>CÓDIGO</th>
+                        <th>FECHA</th>                        
+                        <th>CONTENIDO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for arContratoAdicion in arContratoAdicion %}
+                        <tr>
+                            <td><input type="hidden" name="LblCodigo[]" value="{{ arContratoAdicion.codigoContratoAdicionPk }}">{{ arContratoAdicion.codigoContratoAdicionPk }} </td>
+                            <td>{{ arContratoAdicion.fecha |date("Y/m/d")  }}</td>                                                        
+                            <td>{{ arContratoAdicion.contenido  }}</td>                            
+                            <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_contrato_adicion_nuevo', { 'codigoContrato': arContrato.codigoContratoPk,  'codigoContratoAdicion': arContratoAdicion.codigoContratoAdicionPk}) }}', 'EditarContratoAdicion', 600, 1200)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                            
+                            <td align="center"><button class="btn btn-default btn-xs" type="submit" name="ImprimirContratoAdicion" value="{{ arContratoAdicion.codigoContratoAdicionPk }}">Imprimir</button></td>                             
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">                        
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_contrato_adicion_nuevo', {'codigoContrato': arContrato.codigoContratoPk, 'codigoContratoAdicion': 0 }) }}', 'AgregarContratoAdicion', 600, 1200)" >Nuevo</a>                        
+                    </div>
+                </div>                        
+                {{ knp_pagination_render(arContratoAdicion) }}       
+                
+            </div>    
         </div>
         <div class="btn-toolbar" style="float:left">
             <div class="btn-group">

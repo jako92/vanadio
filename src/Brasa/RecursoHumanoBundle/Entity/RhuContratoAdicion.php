@@ -20,38 +20,23 @@ class RhuContratoAdicion
     /**
      * @ORM\Column(name="codigo_contrato_fk", type="integer")
      */    
-    private $codigoContratoFk;         
-    
-    /**
-     * @ORM\Column(name="codigo_empleado_fk", type="integer")
-     */    
-    private $codigoEmpleadoFk;    
+    private $codigoContratoFk;                    
     
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
      */    
-    private $fecha;                 
+    private $fecha;                                           
     
     /**
-     * @ORM\Column(name="vr_bonificacion", type="float")
-     */
-    private $VrBonificacion = 0;                    
-    
-    /**
-     * @ORM\Column(name="detalle", type="string", length=250, nullable=true)
+     * @ORM\Column(name="contenido", type="text", nullable=true)
      */    
-    private $detalle;
+    private $contenido;
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */    
     private $codigoUsuario;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="contratosAdicionalesEmpleadoRel")
-     * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
-     */
-    protected $empleadoRel;    
+           
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="contratosAdicionalesContratoRel")
@@ -60,7 +45,7 @@ class RhuContratoAdicion
     protected $contratoRel;     
 
 
-    
+        
 
     /**
      * Get codigoContratoAdicionPk
@@ -97,30 +82,6 @@ class RhuContratoAdicion
     }
 
     /**
-     * Set codigoEmpleadoFk
-     *
-     * @param integer $codigoEmpleadoFk
-     *
-     * @return RhuContratoAdicion
-     */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
-        $this->codigoEmpleadoFk = $codigoEmpleadoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoEmpleadoFk
-     *
-     * @return integer
-     */
-    public function getCodigoEmpleadoFk()
-    {
-        return $this->codigoEmpleadoFk;
-    }
-
-    /**
      * Set fecha
      *
      * @param \DateTime $fecha
@@ -145,51 +106,27 @@ class RhuContratoAdicion
     }
 
     /**
-     * Set vrBonificacion
+     * Set contenido
      *
-     * @param float $vrBonificacion
+     * @param string $contenido
      *
      * @return RhuContratoAdicion
      */
-    public function setVrBonificacion($vrBonificacion)
+    public function setContenido($contenido)
     {
-        $this->VrBonificacion = $vrBonificacion;
+        $this->contenido = $contenido;
 
         return $this;
     }
 
     /**
-     * Get vrBonificacion
-     *
-     * @return float
-     */
-    public function getVrBonificacion()
-    {
-        return $this->VrBonificacion;
-    }
-
-    /**
-     * Set detalle
-     *
-     * @param string $detalle
-     *
-     * @return RhuContratoAdicion
-     */
-    public function setDetalle($detalle)
-    {
-        $this->detalle = $detalle;
-
-        return $this;
-    }
-
-    /**
-     * Get detalle
+     * Get contenido
      *
      * @return string
      */
-    public function getDetalle()
+    public function getContenido()
     {
-        return $this->detalle;
+        return $this->contenido;
     }
 
     /**
@@ -214,30 +151,6 @@ class RhuContratoAdicion
     public function getCodigoUsuario()
     {
         return $this->codigoUsuario;
-    }
-
-    /**
-     * Set empleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
-     *
-     * @return RhuContratoAdicion
-     */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
-        $this->empleadoRel = $empleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get empleadoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
-     */
-    public function getEmpleadoRel()
-    {
-        return $this->empleadoRel;
     }
 
     /**

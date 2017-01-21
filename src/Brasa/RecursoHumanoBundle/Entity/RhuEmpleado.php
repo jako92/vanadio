@@ -742,11 +742,7 @@ class RhuEmpleado
      * @ORM\OneToMany(targetEntity="RhuVisita", mappedBy="empleadoRel")
      */
     protected $visitasEmpleadoRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="empleadoRel")
-     */
-    protected $contratosAdicionalesEmpleadoRel;
+        
     
         
     /**
@@ -794,6 +790,8 @@ class RhuEmpleado
         $this->pagosBancosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->visitasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    
 
     /**
      * Get codigoEmpleadoPk
@@ -4368,6 +4366,40 @@ class RhuEmpleado
     }
 
     /**
+     * Add reclamosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addReclamosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel)
+    {
+        $this->reclamosEmpleadoRel[] = $reclamosEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove reclamosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel
+     */
+    public function removeReclamosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel)
+    {
+        $this->reclamosEmpleadoRel->removeElement($reclamosEmpleadoRel);
+    }
+
+    /**
+     * Get reclamosEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReclamosEmpleadoRel()
+    {
+        return $this->reclamosEmpleadoRel;
+    }
+
+    /**
      * Set puestoRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurPuesto $puestoRel
@@ -4457,73 +4489,5 @@ class RhuEmpleado
     public function getVisitasEmpleadoRel()
     {
         return $this->visitasEmpleadoRel;
-    }
-
-    /**
-     * Add reclamosEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel
-     *
-     * @return RhuEmpleado
-     */
-    public function addReclamosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel)
-    {
-        $this->reclamosEmpleadoRel[] = $reclamosEmpleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove reclamosEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel
-     */
-    public function removeReclamosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuReclamo $reclamosEmpleadoRel)
-    {
-        $this->reclamosEmpleadoRel->removeElement($reclamosEmpleadoRel);
-    }
-
-    /**
-     * Get reclamosEmpleadoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReclamosEmpleadoRel()
-    {
-        return $this->reclamosEmpleadoRel;
-    }
-
-    /**
-     * Add contratosAdicionalesEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel
-     *
-     * @return RhuEmpleado
-     */
-    public function addContratosAdicionalesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel)
-    {
-        $this->contratosAdicionalesEmpleadoRel[] = $contratosAdicionalesEmpleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove contratosAdicionalesEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel
-     */
-    public function removeContratosAdicionalesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesEmpleadoRel)
-    {
-        $this->contratosAdicionalesEmpleadoRel->removeElement($contratosAdicionalesEmpleadoRel);
-    }
-
-    /**
-     * Get contratosAdicionalesEmpleadoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getContratosAdicionalesEmpleadoRel()
-    {
-        return $this->contratosAdicionalesEmpleadoRel;
     }
 }

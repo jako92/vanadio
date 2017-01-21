@@ -140,7 +140,13 @@ class ContratosController extends Controller
                 $codigoTrasladoSalud = $request->request->get('ImprimirTrasladoSalud');
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoTrasladoSalud = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaTrasladoSalud();
-                $objFormatoTrasladoSalud->Generar($em, $codigoTrasladoSalud, $arUsuario);
+                $objFormatoTrasladoSalud->Generar($em, $codigoTrasladoSalud, $arUsuario);                
+            }
+            if($request->request->get('ImprimirContratoAdicion')) {
+                $codigoContratoAdicion = $request->request->get('ImprimirContratoAdicion');
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                $objFormatoContratoAdicion = new \Brasa\RecursoHumanoBundle\Formatos\FormatoContratoAdicion();
+                $objFormatoContratoAdicion->Generar($em, $codigoContrato, $codigoContratoAdicion, $arUsuario);
                 
             }
         }
@@ -155,11 +161,13 @@ class ContratosController extends Controller
         $arContratoSedes = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoSede();
         $arContratoSedes = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoSede')->findBy(array('codigoContratoFk' => $codigoContrato));
         $arContratoSedes = $paginator->paginate($arContratoSedes, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
-        //$arContratoSedes = $paginator->paginate($arContratoSedes, $this->get('Request')->query->get('page', 1),5);
-        
+        //$arContratoSedes = $paginator->paginate($arContratoSedes, $this->get('Request')->query->get('page', 1),5);        
         $arContratoProrrogas = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoProrroga')->findBy(array('codigoContratoFk' => $codigoContrato), array('codigoContratoProrrogaPk' => 'DESC'));
         $arContratoProrrogas = $paginator->paginate($arContratoProrrogas, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
         //$arContratoProrrogas = $paginator->paginate($arContratoProrrogas, $this->get('Request')->query->get('page', 1),10);
+        $arContratoAdicion = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion();
+        $arContratoAdicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->findBy(array('codigoContratoFk' => $codigoContrato));
+        $arContratoAdicion = $paginator->paginate($arContratoAdicion, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
         return $this->render('BrasaRecursoHumanoBundle:Base/Contrato:detalle.html.twig', array(
                     'arContrato' => $arContrato,
                     'arCambiosSalario' => $arCambiosSalario,
@@ -168,6 +176,7 @@ class ContratosController extends Controller
                     'arTrasladoPension' => $arTrasladoPension,
                     'arTrasladoSalud' => $arTrasladoSalud,
                     'arContratoProrrogas' => $arContratoProrrogas,
+                    'arContratoAdicion' => $arContratoAdicion,
                     'form' => $form->createView()
                     ));
     }

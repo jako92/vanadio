@@ -52,6 +52,11 @@ class GenContenidoFormato
      */    
     private $requiereFormatoIso = false;
     
+    /**
+     * @ORM\Column(name="adicional", type="boolean")
+     */    
+    private $adicional = false;
+    
      /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuDisciplinarioTipo", mappedBy="contenidoFormatoRel")
      */
@@ -357,5 +362,29 @@ class GenContenidoFormato
     public function getContratosTiposContenidoFormatoRel()
     {
         return $this->contratosTiposContenidoFormatoRel;
+    }
+
+    /**
+     * Set adicional
+     *
+     * @param boolean $adicional
+     *
+     * @return GenContenidoFormato
+     */
+    public function setAdicional($adicional)
+    {
+        $this->adicional = $adicional;
+
+        return $this;
+    }
+
+    /**
+     * Get adicional
+     *
+     * @return boolean
+     */
+    public function getAdicional()
+    {
+        return $this->adicional;
     }
 }
