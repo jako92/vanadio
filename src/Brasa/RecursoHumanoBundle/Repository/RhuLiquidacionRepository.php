@@ -233,9 +233,16 @@ class RhuLiquidacionRepository extends EntityRepository {
                     if($arLiquidacion->getVrSalarioPrimaPropuesto() > 0) {
                         $salarioPromedioPrimas = $arLiquidacion->getVrSalarioPrimaPropuesto();
                     }
-                    $diasAusentismo = 0;
+                    $diasAusentismo = 0;                   
                     if($arConfiguracion->getDiasAusentismoPrimas()) {
                         $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
+                        $diasAusentismo += $arLiquidacion->getDiasAusentismoAdicional();
+                        if($arLiquidacion->getDiasAusentismoPropuesto() > 0) {
+                            $diasAusentismo = $arLiquidacion->getDiasAusentismoPropuesto();
+                        }
+                        if($arLiquidacion->getEliminarAusentismo() > 0) {
+                            $intDiasAusentismo = 0;
+                        }                         
                     }      
                     $diasPrimaLiquidarFinal = $intDiasPrimaLiquidar - $diasAusentismo;
                     $salarioPromedioPrimas = round($salarioPromedioPrimas);
