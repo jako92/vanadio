@@ -664,7 +664,7 @@ class EmpleadoController extends Controller
                     ->setCellValue('AD' . $i, $banco)
                     ->setCellValue('AE' . $i, $fechaContrato)
                     ->setCellValue('AF' . $i, $fechaFinalizacionContrato)
-                    ->setCellValue('AG' . $i, $cargo)
+                    ->setCellValue('AG' . $i, $cargo) 
                     ->setCellValue('AH' . $i, $arEmpleado->getCargoDescripcion())
                     ->setCellValue('AI' . $i, $tipoPension)
                     ->setCellValue('AJ' . $i, $tipoCotizante)
