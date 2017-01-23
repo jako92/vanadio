@@ -190,7 +190,9 @@ class RhuLiquidacionRepository extends EntityRepository {
                     $intDiasPrima = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);    
                     $intDiasPrimaLiquidar = $intDiasPrima;
                     if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
-                        $intDiasPrimaLiquidar = $intDiasPrimaLiquidar - 1;
+                        if($dateFechaHasta->format('m-d') != '01-01') {
+                            $intDiasPrimaLiquidar = $intDiasPrimaLiquidar - 1;
+                        }
                     }
                     $ibpPrimasInicial = $arContrato->getIbpPrimasInicial();                    
                     $ibpPrimasInicial = round($ibpPrimasInicial);
@@ -231,10 +233,16 @@ class RhuLiquidacionRepository extends EntityRepository {
                     if($arLiquidacion->getVrSalarioPrimaPropuesto() > 0) {
                         $salarioPromedioPrimas = $arLiquidacion->getVrSalarioPrimaPropuesto();
                     }
+                    $diasAusentismo = 0;
+                    if($arConfiguracion->getDiasAusentismoPrimas()) {
+                        $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
+                    }      
+                    $diasPrimaLiquidarFinal = $intDiasPrimaLiquidar - $diasAusentismo;
                     $salarioPromedioPrimas = round($salarioPromedioPrimas);
-                    $douPrima = ($salarioPromedioPrimas * $intDiasPrimaLiquidar) / 360;                
+                    $douPrima = ($salarioPromedioPrimas * $diasPrimaLiquidarFinal) / 360;                
                     $douPrima = round($douPrima);
                     $arLiquidacion->setDiasPrimas($intDiasPrimaLiquidar);                    
+                    $arLiquidacion->setDiasPrimasAusentismo($diasAusentismo);                   
                     $arLiquidacion->setVrPrima($douPrima);    
                     $arLiquidacion->setVrIngresoBasePrestacionPrimas($ibpPrimas);
                     $arLiquidacion->setVrIngresoBasePrestacionPrimasInicial($ibpPrimasInicial);

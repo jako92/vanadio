@@ -136,6 +136,11 @@ class RhuLiquidacion
      * @ORM\Column(name="dias_primas", type="integer")
      */    
     private $diasPrimas = 0;           
+
+    /**
+     * @ORM\Column(name="dias_primas_ausentismo", type="integer")
+     */    
+    private $diasPrimasAusentismo = 0; 
     
     /**
      * @ORM\Column(name="dias_laborados", type="integer")
@@ -2147,5 +2152,29 @@ class RhuLiquidacion
     public function getVrSalarioPromedioCesantiasAnterior()
     {
         return $this->VrSalarioPromedioCesantiasAnterior;
+    }
+
+    /**
+     * Set diasPrimasAusentismo
+     *
+     * @param integer $diasPrimasAusentismo
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasPrimasAusentismo($diasPrimasAusentismo)
+    {
+        $this->diasPrimasAusentismo = $diasPrimasAusentismo;
+
+        return $this;
+    }
+
+    /**
+     * Get diasPrimasAusentismo
+     *
+     * @return integer
+     */
+    public function getDiasPrimasAusentismo()
+    {
+        return $this->diasPrimasAusentismo;
     }
 }
