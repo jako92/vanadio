@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProgramacionesPagoController extends Controller
-{
+class ProgramacionesPagoController extends Controller {
+
     var $strDqlLista = "";
     var $intNumero = 0;
 
@@ -16,37 +16,28 @@ class ProgramacionesPagoController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 1, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
-        }*/
-        $paginator  = $this->get('knp_paginator');
+        /* if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 1, 1)) {
+          return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+          } */
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
-        $this->listar();        
-        if($form->isValid()) {
-            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                     
-            $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-            $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
-            $cliente = new \nusoap_client($direccionServidor);
-            /*$result = $cliente->call("getInsertarEmpleado",
-                    array(
-                        "codigoIdentificacionTipo" => "CC",
-                        "identificacionNumero" => "70143086",
-                        "nombre1" => "MARIO",
-                        "nombre2" => "ANDRES",
-                        "apellido1" => "ESTRADA",
-                        "apellido2" => "ZULUAGA",
-                        "nombreCorto" => "MARIO ANDRES ESTRADA ZULUAGA",)); */
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($request->request->get('OpTransferir')) {
-                $codigoProgramacionPago = $request->request->get('OpTransferir');
-                $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
-                $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
-                $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
-                foreach ($arPagos as $arPago) {
-                    $result = $cliente->call("getInsertarEmpleado",
-                            array(
+        $this->listar();
+        if ($form->isValid()) {
+            if ($request->request->get('OpTransferir')) {
+                $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+                $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                if ($arConfiguracion->getCodigoEmpresaArdid() != 0) {
+                    $codigoProgramacionPago = $request->request->get('OpTransferir');
+                    $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
+                    if ($arProgramacionPago->getEstadoExportadoArdid() == 0) {
+                        $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
+                        $cliente = new \nusoap_client($direccionServidor);
+                        $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+                        //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
+                        $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
+                        foreach ($arPagos as $arPago) {
+                            $result = $cliente->call("getInsertarEmpleado", array(
                                 "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                 "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
                                 "nombre1" => $arPago->getEmpleadoRel()->getNombre1(),
@@ -55,31 +46,30 @@ class ProgramacionesPagoController extends Controller
                                 "apellido2" => $arPago->getEmpleadoRel()->getApellido2(),
                                 "nombreCorto" => $arPago->getEmpleadoRel()->getNombreCorto(),
                                 "correo" => $arPago->getEmpleadoRel()->getCorreo(),));
-                    //echo "emp" . $result;
-                    if($result == '01') {
-                        $pension = "";
-                        $salud = "";
-                        $cargo = "";
-                        if($arPago->getEmpleadoRel()) {
-                            if($arPago->getEmpleadoRel()->getEntidadPensionRel()) {
-                                $pension = $arPago->getEmpleadoRel()->getEntidadPensionRel()->getNombre();
-                            }
-                            if($arPago->getEmpleadoRel()->getEntidadSaludRel()) {
-                                $salud = $arPago->getEmpleadoRel()->getEntidadSaludRel()->getNombre();
-                            }
-                            if($arPago->getEmpleadoRel()->getCargoRel()) {
-                                $cargo = $arPago->getEmpleadoRel()->getCargoRel()->getNombre();
-                            }                            
-                        }
-                        $result = $cliente->call("getInsertarPago",
-                                array(
+                            echo "emp" . $result;
+                            if ($result == '01') {
+                                $pension = "";
+                                $salud = "";
+                                $cargo = "";
+                                if ($arPago->getEmpleadoRel()) {
+                                    if ($arPago->getEmpleadoRel()->getEntidadPensionRel()) {
+                                        $pension = $arPago->getEmpleadoRel()->getEntidadPensionRel()->getNombre();
+                                    }
+                                    if ($arPago->getEmpleadoRel()->getEntidadSaludRel()) {
+                                        $salud = $arPago->getEmpleadoRel()->getEntidadSaludRel()->getNombre();
+                                    }
+                                    if ($arPago->getEmpleadoRel()->getCargoRel()) {
+                                        $cargo = $arPago->getEmpleadoRel()->getCargoRel()->getNombre();
+                                    }
+                                }
+                                $result = $cliente->call("getInsertarPago", array(
                                     "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                     "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
                                     "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
                                     "numero" => $arPago->getNumero(),
                                     "codigoPagoTipo" => $arPago->getCodigoPagoTipoFk(),
                                     "fechaDesde" => $arPago->getFechaDesde()->format('Y-m-d'),
-                                    "fechaHasta" => $arPago->getFechaDesde()->format('Y-m-d'),
+                                    "fechaHasta" => $arPago->getFechaHasta()->format('Y-m-d'),
                                     "vrSalario" => $arPago->getVrSalario(),
                                     "vrSalarioEmpleado" => $arPago->getVrSalarioEmpleado(),
                                     "vrDeduccion" => $arPago->getVrDeducciones(),
@@ -94,55 +84,53 @@ class ProgramacionesPagoController extends Controller
                                     "pension" => $pension,
                                     "salud" => $salud
                                 ));
-                        //echo "pago" . $result;
-                        if($result == '01') {
-                            $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
-                            $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));
-                            foreach ($arPagoDetalles as $arPagoDetalle) {
-                                $result = $cliente->call("getInsertarPagoDetalle",
-                                    array(
-                                        "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
-                                        "numero" => $arPago->getNumero(),
-                                        "codigo" => $arPagoDetalle->getCodigoPagoDetallePk(),
-                                        "codigoConcepto" => $arPagoDetalle->getCodigoPagoConceptoFk(),
-                                        "nombreConcepto" => $arPagoDetalle->getPagoConceptoRel()->getNombre(),
-                                        "operacion" => $arPagoDetalle->getOperacion(),
-                                        "horas" => $arPagoDetalle->getNumeroHoras(),
-                                        "dias" => $arPagoDetalle->getNumeroDias(),
-                                        "porcentaje" => $arPagoDetalle->getPorcentajeAplicado(),
-                                        "vrHora" => $arPagoDetalle->getVrHora(),
-                                        "vrPago" => $arPagoDetalle->getVrPago()
-                                    ));
+                                echo "pago" . $result;
+                                if ($result == '01') {
+                                    $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                                    $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));
+                                    foreach ($arPagoDetalles as $arPagoDetalle) {
+                                        $result = $cliente->call("getInsertarPagoDetalle", array(
+                                            "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
+                                            "numero" => $arPago->getNumero(),
+                                            "codigo" => $arPagoDetalle->getCodigoPagoDetallePk(),
+                                            "codigoConcepto" => $arPagoDetalle->getCodigoPagoConceptoFk(),
+                                            "nombreConcepto" => $arPagoDetalle->getPagoConceptoRel()->getNombre(),
+                                            "operacion" => $arPagoDetalle->getOperacion(),
+                                            "horas" => $arPagoDetalle->getNumeroHoras(),
+                                            "dias" => $arPagoDetalle->getNumeroDias(),
+                                            "porcentaje" => $arPagoDetalle->getPorcentajeAplicado(),
+                                            "vrHora" => $arPagoDetalle->getVrHora(),
+                                            "vrPago" => $arPagoDetalle->getVrPago()
+                                        ));
+                                    }
+                                }
                             }
                         }
-                    }
+                        $arProgramacionPago->setEstadoExportadoArdid(1);
+                        $em->persist($arProgramacionPago);
+                        $em->flush();
+                    }                    
                 }
-                //return $this->redirect($this->generateUrl('brs_rhu_utilidad_intercambio_ardid_programacion'));
             }
+            return $this->redirect($this->generateUrl('brs_rhu_utilidad_intercambio_ardid_programacion'));
         }
-        $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/*page number*/,50/*limit per page*/);
+        $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/* page number */, 50/* limit per page */);
         return $this->render('BrasaRecursoHumanoBundle:Utilidades/Intercambio/Ardid:lista.html.twig', array(
-            'arProgramacionPago' => $arProgramacionPago,
-            'form' => $form->createView()));
+                    'arProgramacionPago' => $arProgramacionPago,
+                    'form' => $form->createView()));
     }
 
     private function formularioLista() {
         $form = $this->createFormBuilder()
-            ->getForm();
+                ->getForm();
         return $form;
     }
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->listaDQL(
-                    "",
-                    "",
-                    "",
-                    "",
-                    1,
-                    "",
-                    0
-                    );
+                "", "", "", "", 1, "", 0
+        );
     }
-}
 
+}
