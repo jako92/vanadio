@@ -455,7 +455,7 @@ class RhuPagoRepository extends EntityRepository {
     }
     
     public function tiempoSuplementarioCartaLaboral($intPeriodo, $codigoContrato) {
-        $em = $this->getEntityManager();
+        $em = $this->getEntityManager(); 
         $dql   = "SELECT vr_devengado FROM rhu_pago "
                 . "WHERE estado_pagado = 1 " 
                 . "AND codigo_pago_tipo_fk = 1 " 
