@@ -125,6 +125,8 @@ class SupervigilanciaParafiscalesController extends Controller
 
     private function generarExcel() {
         ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $objPHPExcel = new \PHPExcel();
