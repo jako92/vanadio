@@ -623,6 +623,14 @@ class EmpleadoController extends Controller
             } else {
                 $banco = "";
             }
+            $fechaContrato = "";
+            if ($arEmpleado->getFechaContrato() != null){
+                $fechaContrato = $arEmpleado->getFechaContrato()->Format('Y-m-d');
+            }
+            $fechaFinalizacionContrato = "";
+            if ($arEmpleado->getFechaFinalizaContrato() != null){
+                $fechaFinalizacionContrato = $arEmpleado->getFechaFinalizaContrato()->Format('Y-m-d');
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                     ->setCellValue('B' . $i, $arEmpleado->getTipoIdentificacionRel()->getNombre())
@@ -654,8 +662,8 @@ class EmpleadoController extends Controller
                     ->setCellValue('AB' . $i, $clasificacionRiesgo)
                     ->setCellValue('AC' . $i, $arEmpleado->getCuenta())
                     ->setCellValue('AD' . $i, $banco)
-                    ->setCellValue('AE' . $i, $arEmpleado->getFechaContrato()->Format('Y-m-d'))
-                    ->setCellValue('AF' . $i, $arEmpleado->getFechaFinalizaContrato()->Format('Y-m-d'))
+                    ->setCellValue('AE' . $i, $fechaContrato)
+                    ->setCellValue('AF' . $i, $fechaFinalizacionContrato)
                     ->setCellValue('AG' . $i, $cargo)
                     ->setCellValue('AH' . $i, $arEmpleado->getCargoDescripcion())
                     ->setCellValue('AI' . $i, $tipoPension)
