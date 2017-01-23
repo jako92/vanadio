@@ -378,6 +378,11 @@ class RhuConfiguracion
     private $direccionServidorArdid;   
 
     /**
+     * @ORM\Column(name="codigo_empresa_ardid", type="integer")
+     */    
+    private $codigoEmpresaArdid = 0;    
+    
+    /**
      * Set codigoConfiguracionPk
      *
      * @param integer $codigoConfiguracionPk
@@ -2079,5 +2084,29 @@ class RhuConfiguracion
     public function getDireccionServidorArdid()
     {
         return $this->direccionServidorArdid;
+    }
+
+    /**
+     * Set codigoEmpresaArdid
+     *
+     * @param integer $codigoEmpresaArdid
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoEmpresaArdid($codigoEmpresaArdid)
+    {
+        $this->codigoEmpresaArdid = $codigoEmpresaArdid;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEmpresaArdid
+     *
+     * @return integer
+     */
+    public function getCodigoEmpresaArdid()
+    {
+        return $this->codigoEmpresaArdid;
     }
 }

@@ -79,7 +79,7 @@ class Factura4 extends \FPDF_FPDF {
         $this->ln(1);
         $this->SetY(20);
 
-        $List1 = array('FACTURA DE VENTA', 'Fecha emision:', 'Fecha vencimiento:', 'Forma pago:', 'Plazo:', '');
+        $List1 = array('FACTURA DE VENTA', 'Fecha emision:', 'Fecha vencimiento:', 'Forma pago:', 'Plazo:', 'Fecha suspension:', 'Fecha cancelacion:');
         $this->SetFont('Arial', 'B', 8);
         foreach ($List1 as $col) {
             if ($col == 'FACTURA DE VENTA'){
@@ -97,7 +97,7 @@ class Factura4 extends \FPDF_FPDF {
             $arFactura->getFechaVence()->format('Y-m-d'),
             $arFactura->getClienteRel()->getFormaPagoRel()->getNombre(),
             $arFactura->getPlazoPago(),
-            $arFactura->getSoporte());
+            "", "");
         $this->SetXY(175,20);
         $this->SetFont('Arial', '', 14);        
         $this->Cell(30, 3, $arFactura->getNumero(), 0, 0, 'R'); 

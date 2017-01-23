@@ -24,7 +24,7 @@ class ProgramacionesPagoController extends Controller
         $form->handleRequest($request);
         $this->listar();        
         if($form->isValid()) {
-            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();            
+            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                     
             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
             $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
             $cliente = new \nusoap_client($direccionServidor);
@@ -42,7 +42,7 @@ class ProgramacionesPagoController extends Controller
                 $codigoProgramacionPago = $request->request->get('OpTransferir');
                 $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
                 $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
+                $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
                 $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
                 foreach ($arPagos as $arPago) {
                     $result = $cliente->call("getInsertarEmpleado",
@@ -55,10 +55,11 @@ class ProgramacionesPagoController extends Controller
                                 "apellido2" => $arPago->getEmpleadoRel()->getApellido2(),
                                 "nombreCorto" => $arPago->getEmpleadoRel()->getNombreCorto(),
                                 "correo" => $arPago->getEmpleadoRel()->getCorreo(),));
-                    echo "emp" . $result;
+                    //echo "emp" . $result;
                     if($result == '01') {
                         $pension = "";
                         $salud = "";
+                        $cargo = "";
                         if($arPago->getEmpleadoRel()) {
                             if($arPago->getEmpleadoRel()->getEntidadPensionRel()) {
                                 $pension = $arPago->getEmpleadoRel()->getEntidadPensionRel()->getNombre();
@@ -66,12 +67,15 @@ class ProgramacionesPagoController extends Controller
                             if($arPago->getEmpleadoRel()->getEntidadSaludRel()) {
                                 $salud = $arPago->getEmpleadoRel()->getEntidadSaludRel()->getNombre();
                             }
+                            if($arPago->getEmpleadoRel()->getCargoRel()) {
+                                $cargo = $arPago->getEmpleadoRel()->getCargoRel()->getNombre();
+                            }                            
                         }
                         $result = $cliente->call("getInsertarPago",
                                 array(
                                     "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                     "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
-                                    "codigoEmpresa" => 1,
+                                    "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
                                     "numero" => $arPago->getNumero(),
                                     "codigoPagoTipo" => $arPago->getCodigoPagoTipoFk(),
                                     "fechaDesde" => $arPago->getFechaDesde()->format('Y-m-d'),
@@ -81,6 +85,7 @@ class ProgramacionesPagoController extends Controller
                                     "vrDeduccion" => $arPago->getVrDeducciones(),
                                     "vrNeto" => $arPago->getVrNeto(),
                                     "vrDevengado" => $arPago->getVrDevengado(),
+                                    "cargo" => $cargo,
                                     "grupoDePago" => $arPago->getCentroCostoRel()->getNombre(),
                                     "zona" => $arPago->getEmpleadoRel()->getZonaRel()->getNombre(),
                                     "periodoPago" => $arPago->getCentroCostoRel()->getPeriodoPagoRel()->getNombre(),
@@ -89,14 +94,14 @@ class ProgramacionesPagoController extends Controller
                                     "pension" => $pension,
                                     "salud" => $salud
                                 ));
-                        echo $result;
+                        //echo "pago" . $result;
                         if($result == '01') {
                             $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                             $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));
                             foreach ($arPagoDetalles as $arPagoDetalle) {
                                 $result = $cliente->call("getInsertarPagoDetalle",
                                     array(
-                                        "codigoEmpresa" => 1,
+                                        "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
                                         "numero" => $arPago->getNumero(),
                                         "codigo" => $arPagoDetalle->getCodigoPagoDetallePk(),
                                         "codigoConcepto" => $arPagoDetalle->getCodigoPagoConceptoFk(),
