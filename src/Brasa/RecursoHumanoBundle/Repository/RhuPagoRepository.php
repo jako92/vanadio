@@ -470,8 +470,7 @@ class RhuPagoRepository extends EntityRepository {
         $results = $statement->fetchAll();
         $dato = 0;
         foreach ($results as $results) {
-            $dato += $results['vr_devengado'];
-            
+            $dato += $results['vr_devengado'];            
         }
         //$floSuplementario = $arrayResultado[0]['suplementario'];
         return $dato;
