@@ -456,16 +456,22 @@ class RhuPagoRepository extends EntityRepository {
     
     public function tiempoSuplementarioCartaLaboral($intPeriodo, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuPago p  "
-                . "WHERE p.estadoPagado = 1 "
-                . "AND p.codigoContratoFk = " . $codigoContrato . " ";
-        $query = $em->createQuery($dql)
+        $dql   = "SELECT vr_devengado FROM rhu_pago "
+                . "WHERE estado_pagado = 1 " 
+                . "AND codigo_pago_tipo_fk = 1 " 
+                . "AND codigo_contrato_fk = " . $codigoContrato . " "
+                . "ORDER BY codigo_pago_pk DESC LIMIT 2";
+        /*$query = $em->createQuery($dql)
                     ->setFirstResult(0)
-                    ->setMaxResults($intPeriodo);
-        $arrayResultado = $query->getResult();
+                    ->setMaxResults($intPeriodo);*/
+        $connection = $em->getConnection();
+        $statement = $connection->prepare($dql);        
+        $statement->execute();
+        $results = $statement->fetchAll();
         $dato = 0;
-        foreach ($arrayResultado as $arrayResultado) {
-            $dato += $arrayResultado->getVrIngresoBasePrestacion();   
+        foreach ($results as $results) {
+            $dato += $results['vr_devengado'];
+            
         }
         //$floSuplementario = $arrayResultado[0]['suplementario'];
         return $dato;
@@ -473,16 +479,22 @@ class RhuPagoRepository extends EntityRepository {
     
     public function noPrestacionalCartaLaboral($intPeriodo, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuPago p  "
-                . "WHERE p.estadoPagado = 1 "
-                . "AND p.codigoContratoFk = " . $codigoContrato . " ";
-        $query = $em->createQuery($dql)
+        $dql   = "SELECT vr_adicional_valor_no_prestacional FROM rhu_pago "
+                . "WHERE estado_pagado = 1 " 
+                . "AND codigo_pago_tipo_fk = 1 " 
+                . "AND codigo_contrato_fk = " . $codigoContrato . " "
+                . "ORDER BY codigo_pago_pk DESC LIMIT 2";
+        /*$query = $em->createQuery($dql)
                     ->setFirstResult(0)
-                    ->setMaxResults($intPeriodo);
-        $arrayResultado = $query->getResult();
+                    ->setMaxResults($intPeriodo);*/
+        $connection = $em->getConnection();
+        $statement = $connection->prepare($dql);        
+        $statement->execute();
+        $results = $statement->fetchAll();
         $dato = 0;
-        foreach ($arrayResultado as $arrayResultado) {
-            $dato += $arrayResultado->getVrAdicionalValorNoPrestasional();   
+        foreach ($results as $results) {
+            $dato += $results['vr_adicional_valor_no_prestacional'];
+            
         }
         //$floSuplementario = $arrayResultado[0]['suplementario'];
         return $dato;
