@@ -146,8 +146,8 @@
                         <td align="right">{{ arLiquidacion.fechaUltimoPagoVacaciones|date("Y/m/d") }}</td>                        
                         <td class="titulo">PRIMA:</td>
                         <td align="right">$ {{ arLiquidacion.vrPrima | number_format(0, '.', ',') }}</td>
-                        <td class="titulo">DIAS:</td>
-                        <td align="right">{{ arLiquidacion.diasPrimas }}</td>  
+                        <td class="titulo">DIAS(AUS):</td>
+                        <td align="right">{{ arLiquidacion.diasPrimas }}({{ arLiquidacion.diasPrimasAusentismo }})</td>  
                     </tr>
                     <tr>
                         <td class="titulo">PAGADO:</td>

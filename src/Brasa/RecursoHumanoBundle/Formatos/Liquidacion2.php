@@ -222,6 +222,8 @@ class Liquidacion2 extends \FPDF_FPDF {
         $this->Cell(11, 5, number_format($arLiquidacion->getDiasCesantiasAusentismoAnterior(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + $intXlinea, 99);
         $this->Cell(11, 5, number_format($arLiquidacion->getDiasCesantiasAusentismoAnterior(), 0, '.', ','), 1, 0, 'R', 1);
+        $this->SetXY($intX + $intXlinea, 105);
+        $this->Cell(11, 5, number_format($arLiquidacion->getDiasPrimasAusentismo(), 0, '.', ','), 1, 0, 'R', 1);        
         $this->SetXY($intX + $intXlinea, 111);
         $this->Cell(11, 5, number_format($arLiquidacion->getDiasVacacionesAusentismo(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + $intXlinea, 117);

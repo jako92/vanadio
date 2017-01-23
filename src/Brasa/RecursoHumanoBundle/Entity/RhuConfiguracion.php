@@ -372,7 +372,10 @@ class RhuConfiguracion
      */
     protected $entidadRiesgoProfesionalRel;  
         
-   
+    /**
+     * @ORM\Column(name="direccion_servidor_ardid", type="string", length=800, nullable=true)
+     */
+    private $direccionServidorArdid;   
 
     /**
      * Set codigoConfiguracionPk
@@ -2052,5 +2055,29 @@ class RhuConfiguracion
     public function getCodigoInteresCesantia()
     {
         return $this->codigoInteresCesantia;
+    }
+
+    /**
+     * Set direccionServidorArdid
+     *
+     * @param string $direccionServidorArdid
+     *
+     * @return RhuConfiguracion
+     */
+    public function setDireccionServidorArdid($direccionServidorArdid)
+    {
+        $this->direccionServidorArdid = $direccionServidorArdid;
+
+        return $this;
+    }
+
+    /**
+     * Get direccionServidorArdid
+     *
+     * @return string
+     */
+    public function getDireccionServidorArdid()
+    {
+        return $this->direccionServidorArdid;
     }
 }
