@@ -199,6 +199,7 @@ class FormatoCarta extends \FPDF_FPDF {
             $motivoTerminacionContrato = $arContrato->getTerminacionContratoRel()->getMotivo();
         } 
         $sustitucion21 = $motivoTerminacionContrato;
+        $sustitucion22 = $arContrato->getCiudadContratoRel()->getNombre();
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -221,6 +222,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $patron19 = '/#j/';
         $patron20 = '/#k/';
         $patron21 = '/#l/';
+        $patron22 = '/#m/';
         if (self::$codigoTipoCarta == 5){
             //salario
             if (self::$booleamSalario == FALSE && self::$salarioSugerido == null){
@@ -308,6 +310,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron19, $sustitucion19, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron20, $sustitucion20, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron21, $sustitucion21, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron22, $sustitucion22, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 
