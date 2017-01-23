@@ -104,7 +104,7 @@ class CertificadoIngresoController extends Controller
                 $datFechaFin = $arrayCostos[0]['fechaFin'];
                 $douOtrosIngresos = (float)$arrayCostos[0]['NoPrestacional'];
                 $arrayPrestacionesSociales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->devuelvePrestacionesSocialesFecha($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin);
-                $floCesantiaseInteresesLiquidadas = (float)$arrayPrestacionesSociales[0]['CesantiaseIntereses'] + $arrayPrestacionesSociales[0]['InteresesCesantias'];
+                $floCesantiaseInteresesLiquidadas = (float)$arrayPrestacionesSociales[0]['Cesantias'] + $arrayPrestacionesSociales[0]['CesantiasAnterior'] + $arrayPrestacionesSociales[0]['InteresesCesantias'] + $arrayPrestacionesSociales[0]['InteresesCesantiasAnterior'];
                 $floPrimaLiquidadas = (float)$arrayPrestacionesSociales[0]['Prima'];
                 $floVacacionesLiquidadas = (float)$arrayPrestacionesSociales[0]['Vacaciones'];
                 $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado,$datFechaCertificadoInicio, $datFechaCertificadoFin);
