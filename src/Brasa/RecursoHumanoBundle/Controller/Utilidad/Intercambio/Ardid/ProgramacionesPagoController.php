@@ -20,6 +20,7 @@ class ProgramacionesPagoController extends Controller {
           return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
           } */
         $paginator = $this->get('knp_paginator');
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -33,8 +34,9 @@ class ProgramacionesPagoController extends Controller {
                     if ($arProgramacionPago->getEstadoExportadoArdid() == 0) {
                         $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
                         $cliente = new \nusoap_client($direccionServidor);
+                        $error = FALSE;
                         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                        //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
+                        $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
                         $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
                         foreach ($arPagos as $arPago) {
                             $result = $cliente->call("getInsertarEmpleado", array(
@@ -46,12 +48,20 @@ class ProgramacionesPagoController extends Controller {
                                 "apellido2" => $arPago->getEmpleadoRel()->getApellido2(),
                                 "nombreCorto" => $arPago->getEmpleadoRel()->getNombreCorto(),
                                 "correo" => $arPago->getEmpleadoRel()->getCorreo(),));
-                            echo "emp" . $result;
-                            if ($result == '01') {
+                            $indiceRespuesta = substr($result, 0, 2);   
+                            $contenidoRespuesta = substr($result, 2, strlen($result));
+                            if ($indiceRespuesta == '01') {
                                 $pension = "";
                                 $salud = "";
                                 $cargo = "";
+                                $zona = "";
+                                $grupoPago = "";
+                                $periodoPago = "";
+                                $cuenta = "";
+                                $banco = "";
                                 if ($arPago->getEmpleadoRel()) {
+                                    $cuenta = $arPago->getEmpleadoRel()->getCuenta();
+                                    $banco = $arPago->getEmpleadoRel()->getBancoRel()->getNombre();
                                     if ($arPago->getEmpleadoRel()->getEntidadPensionRel()) {
                                         $pension = $arPago->getEmpleadoRel()->getEntidadPensionRel()->getNombre();
                                     }
@@ -61,6 +71,13 @@ class ProgramacionesPagoController extends Controller {
                                     if ($arPago->getEmpleadoRel()->getCargoRel()) {
                                         $cargo = $arPago->getEmpleadoRel()->getCargoRel()->getNombre();
                                     }
+                                    if ($arPago->getEmpleadoRel()->getZonaRel()) {
+                                        $zona = $arPago->getEmpleadoRel()->getZonaRel()->getNombre();
+                                    }                                    
+                                }
+                                if($arPago->getCentroCostoRel()) {
+                                    $grupoPago = $arPago->getCentroCostoRel()->getNombre();
+                                    $periodoPago = $arPago->getCentroCostoRel()->getPeriodoPagoRel()->getNombre();
                                 }
                                 $result = $cliente->call("getInsertarPago", array(
                                     "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
@@ -76,16 +93,17 @@ class ProgramacionesPagoController extends Controller {
                                     "vrNeto" => $arPago->getVrNeto(),
                                     "vrDevengado" => $arPago->getVrDevengado(),
                                     "cargo" => $cargo,
-                                    "grupoDePago" => $arPago->getCentroCostoRel()->getNombre(),
-                                    "zona" => $arPago->getEmpleadoRel()->getZonaRel()->getNombre(),
-                                    "periodoPago" => $arPago->getCentroCostoRel()->getPeriodoPagoRel()->getNombre(),
-                                    "cuenta" => $arPago->getEmpleadoRel()->getCuenta(),
-                                    "banco" => $arPago->getEmpleadoRel()->getBancoRel()->getNombre(),
+                                    "grupoDePago" => $grupoPago,
+                                    "zona" => $zona,
+                                    "periodoPago" => $periodoPago,
+                                    "cuenta" => $cuenta,
+                                    "banco" => $banco,
                                     "pension" => $pension,
                                     "salud" => $salud
                                 ));
-                                echo "pago" . $result;
-                                if ($result == '01') {
+                                $indiceRespuesta = substr($result, 0, 2);   
+                                $contenidoRespuesta = substr($result, 2, strlen($result));   
+                                if ($indiceRespuesta == '01') {
                                     $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                                     $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));
                                     foreach ($arPagoDetalles as $arPagoDetalle) {
@@ -94,21 +112,38 @@ class ProgramacionesPagoController extends Controller {
                                             "numero" => $arPago->getNumero(),
                                             "codigo" => $arPagoDetalle->getCodigoPagoDetallePk(),
                                             "codigoConcepto" => $arPagoDetalle->getCodigoPagoConceptoFk(),
-                                            "nombreConcepto" => $arPagoDetalle->getPagoConceptoRel()->getNombre(),
+                                            "nombreConcepto" => utf8_decode($arPagoDetalle->getPagoConceptoRel()->getNombre()),
                                             "operacion" => $arPagoDetalle->getOperacion(),
                                             "horas" => $arPagoDetalle->getNumeroHoras(),
                                             "dias" => $arPagoDetalle->getNumeroDias(),
                                             "porcentaje" => $arPagoDetalle->getPorcentajeAplicado(),
                                             "vrHora" => $arPagoDetalle->getVrHora(),
                                             "vrPago" => $arPagoDetalle->getVrPago()
-                                        ));
+                                        )); 
+                                        $indiceRespuesta = substr($result, 0, 2);   
+                                        $contenidoRespuesta = substr($result, 2, strlen($result));
+                                        if ($indiceRespuesta == '02') {                                        
+                                            $objMensaje->Mensaje("error", "Se presento un error con el servicio web trasmitiendo el detalle del pago " . $arPago->getCodigoPagoPk() . ":" . $contenidoRespuesta);
+                                            $error = TRUE;
+                                            break 2;                                            
+                                        }
                                     }
+                                } else {
+                                    $objMensaje->Mensaje("error", "Se presento un error con el servicio web trasmitiendo el pago " . $arPago->getCodigoPagoPk() . ":" . $contenidoRespuesta);
+                                    $error = TRUE;
+                                    break;
                                 }
+                            } else {
+                                    $objMensaje->Mensaje("error", "Se presento un error con el servicio web trasmitiendo el empleado del pago  " . $arPago->getCodigoPagoPk() . ":" . $contenidoRespuesta);
+                                    $error = TRUE;
+                                    break;
                             }
                         }
-                        $arProgramacionPago->setEstadoExportadoArdid(1);
-                        $em->persist($arProgramacionPago);
-                        $em->flush();
+                        if($error == FALSE) {
+                            $arProgramacionPago->setEstadoExportadoArdid(1);
+                            $em->persist($arProgramacionPago);
+                            $em->flush();                            
+                        }
                     }                    
                 }
             }
