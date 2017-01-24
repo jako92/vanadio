@@ -72,6 +72,10 @@ class GenContenidoFormato
      */
     protected $contratosTiposContenidoFormatoRel;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo", mappedBy="contenidoFormatoRel")
+     */
+    protected $contratosAdicionesTiposContenidoFormatoRel;
     
     
     /**
@@ -386,5 +390,39 @@ class GenContenidoFormato
     public function getAdicional()
     {
         return $this->adicional;
+    }
+
+    /**
+     * Add contratosAdicionesTiposContenidoFormatoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContenidoFormatoRel
+     *
+     * @return GenContenidoFormato
+     */
+    public function addContratosAdicionesTiposContenidoFormatoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContenidoFormatoRel)
+    {
+        $this->contratosAdicionesTiposContenidoFormatoRel[] = $contratosAdicionesTiposContenidoFormatoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratosAdicionesTiposContenidoFormatoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContenidoFormatoRel
+     */
+    public function removeContratosAdicionesTiposContenidoFormatoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContenidoFormatoRel)
+    {
+        $this->contratosAdicionesTiposContenidoFormatoRel->removeElement($contratosAdicionesTiposContenidoFormatoRel);
+    }
+
+    /**
+     * Get contratosAdicionesTiposContenidoFormatoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratosAdicionesTiposContenidoFormatoRel()
+    {
+        return $this->contratosAdicionesTiposContenidoFormatoRel;
     }
 }

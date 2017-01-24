@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuContratoAdicionType;
 use Doctrine\ORM\EntityRepository;
 
 class ContratoAdicionController extends Controller
@@ -29,34 +31,34 @@ class ContratoAdicionController extends Controller
             $arContratoAdicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find($codigoContratoAdicion);
             $dateAplicacion = $arContratoAdicion->getFecha();
             $contenido = $arContratoAdicion->getContenido();
+            $dato = "SI";
         }else {
             $dateAplicacion = new \DateTime('now');
-            $arContenidoFormatoAdicion = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-            $arContenidoFormatoAdicion = $em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->findOneBy(array('adicional' => 1));
-            $contenido = "Sin formato";
-            if ($arContenidoFormatoAdicion != null){
-                $contenido = $arContenidoFormatoAdicion->getContenido();
-            }                        
-        }    
-        $form = $this->createFormBuilder()            
-            ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
-            ->add('contenido', TextareaType::class, array('required' => true, 'data' => $contenido))
-            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
-            ->getForm();
+            $dato = "NO";
+        }            
+        $form = $this->createForm(RhuContratoAdicionType::class, $arContratoAdicion); 
         $form->handleRequest($request);
         if ($form->isValid())
         {
+            $arContratoAdicionTipo = $form->get('contratoAdicionTipoRel')->getData();
+            if ($codigoContratoAdicion == 0){
+                $arContenidoFormato = $em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContratoAdicionTipo->getCodigoContenidoFormatoFk());
+                $contenido = $arContenidoFormato->getContenido();
+            } else {
+                $contenido = $form->get('contenido')->getData();
+            }
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();            
             $arContratoAdicion->setContratoRel($arContrato);            
             $arContratoAdicion->setFecha($form->get('fecha')->getData());            
             $arContratoAdicion->setCodigoUsuario($arUsuario->getUserName());            
-            $arContratoAdicion->setContenido($form->get('contenido')->getData());            
+            $arContratoAdicion->setContenido($contenido);            
             $em->persist($arContratoAdicion);                       
             $em->flush();
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                                         
         }
         return $this->render('BrasaRecursoHumanoBundle:ContratoAdicion:nuevo.html.twig', array(
             'form' => $form->createView(),
+            'edicion' => $dato
         ));
     }
 

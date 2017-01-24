@@ -20,7 +20,12 @@ class RhuContratoAdicion
     /**
      * @ORM\Column(name="codigo_contrato_fk", type="integer")
      */    
-    private $codigoContratoFk;                    
+    private $codigoContratoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_contrato_adicion_tipo_fk", type="integer")
+     */    
+    private $codigoContratoAdicionTipoFk;
     
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
@@ -44,8 +49,15 @@ class RhuContratoAdicion
      */
     protected $contratoRel;     
 
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuContratoAdicionTipo", inversedBy="contratosAdicionesContratoAdicionTipoRel")
+     * @ORM\JoinColumn(name="codigo_contrato_adicion_tipo_fk", referencedColumnName="codigo_contrato_adicion_tipo_pk")
+     */
+    protected $contratoAdicionTipoRel;
 
         
+
+    
 
     /**
      * Get codigoContratoAdicionPk
@@ -79,6 +91,30 @@ class RhuContratoAdicion
     public function getCodigoContratoFk()
     {
         return $this->codigoContratoFk;
+    }
+
+    /**
+     * Set codigoContratoAdicionTipoFk
+     *
+     * @param integer $codigoContratoAdicionTipoFk
+     *
+     * @return RhuContratoAdicion
+     */
+    public function setCodigoContratoAdicionTipoFk($codigoContratoAdicionTipoFk)
+    {
+        $this->codigoContratoAdicionTipoFk = $codigoContratoAdicionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoContratoAdicionTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoContratoAdicionTipoFk()
+    {
+        return $this->codigoContratoAdicionTipoFk;
     }
 
     /**
@@ -175,5 +211,29 @@ class RhuContratoAdicion
     public function getContratoRel()
     {
         return $this->contratoRel;
+    }
+
+    /**
+     * Set contratoAdicionTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratoAdicionTipoRel
+     *
+     * @return RhuContratoAdicion
+     */
+    public function setContratoAdicionTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratoAdicionTipoRel = null)
+    {
+        $this->contratoAdicionTipoRel = $contratoAdicionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get contratoAdicionTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo
+     */
+    public function getContratoAdicionTipoRel()
+    {
+        return $this->contratoAdicionTipoRel;
     }
 }

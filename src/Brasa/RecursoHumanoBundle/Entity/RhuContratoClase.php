@@ -30,7 +30,12 @@ class RhuContratoClase
     /**
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="contratoClaseRel")
      */
-    protected $contratosContratoClaseRel;    
+    protected $contratosContratoClaseRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContratoAdicionTipo", mappedBy="contratoClaseRel")
+     */
+    protected $contratosAdicionesTiposContratoClaseRel;
     
     /**
      * Constructor
@@ -140,5 +145,39 @@ class RhuContratoClase
     public function getContratosContratoClaseRel()
     {
         return $this->contratosContratoClaseRel;
+    }
+
+    /**
+     * Add contratosAdicionesTiposContratoClaseRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContratoClaseRel
+     *
+     * @return RhuContratoClase
+     */
+    public function addContratosAdicionesTiposContratoClaseRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContratoClaseRel)
+    {
+        $this->contratosAdicionesTiposContratoClaseRel[] = $contratosAdicionesTiposContratoClaseRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratosAdicionesTiposContratoClaseRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContratoClaseRel
+     */
+    public function removeContratosAdicionesTiposContratoClaseRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicionTipo $contratosAdicionesTiposContratoClaseRel)
+    {
+        $this->contratosAdicionesTiposContratoClaseRel->removeElement($contratosAdicionesTiposContratoClaseRel);
+    }
+
+    /**
+     * Get contratosAdicionesTiposContratoClaseRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratosAdicionesTiposContratoClaseRel()
+    {
+        return $this->contratosAdicionesTiposContratoClaseRel;
     }
 }
