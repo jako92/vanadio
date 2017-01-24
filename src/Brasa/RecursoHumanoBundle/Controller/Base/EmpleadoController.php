@@ -631,13 +631,18 @@ class EmpleadoController extends Controller
             if ($arEmpleado->getFechaFinalizaContrato() != null){
                 $fechaFinalizacionContrato = $arEmpleado->getFechaFinalizaContrato()->Format('Y-m-d');
             }
+            $fechaExpedicionIdentificacion = "";
+            if ($arEmpleado->getFechaExpedicionIdentificacion() != null){
+                $fechaExpedicionIdentificacion = $arEmpleado->getFechaExpedicionIdentificacion()->Format('Y-m-d');   
+            }
+            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                     ->setCellValue('B' . $i, $arEmpleado->getTipoIdentificacionRel()->getNombre())
                     ->setCellValue('C' . $i, $arEmpleado->getNumeroIdentificacion())
                     ->setCellValue('D' . $i, $arEmpleado->getDigitoVerificacion())
                     ->setCellValue('E' . $i, $ciudadExpedicion)
-                    ->setCellValue('F' . $i, $arEmpleado->getFechaExpedicionIdentificacion()->Format('Y-m-d'))
+                    ->setCellValue('F' . $i, $fechaExpedicionIdentificacion)
                     ->setCellValue('G' . $i, $arEmpleado->getLibretaMilitar())
                     ->setCellValue('H' . $i, $centroCosto)
                     ->setCellValue('I' . $i, $arEmpleado->getNombreCorto())
