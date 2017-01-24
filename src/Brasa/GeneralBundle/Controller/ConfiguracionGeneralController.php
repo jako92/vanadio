@@ -64,6 +64,7 @@ class ConfiguracionGeneralController extends Controller
             ->add('rutaTemporal', TextType::class, array('data' => $arConfiguracionGeneral->getRutaTemporal(), 'required' => true))    
             ->add('rutaAlmacenamiento', TextType::class, array('data' => $arConfiguracionGeneral->getRutaAlmacenamiento(), 'required' => true))                
             ->add('rutaImagenes', TextType::class, array('data' => $arConfiguracionGeneral->getRutaImagenes(), 'required' => true))                
+            ->add('rutaImagenesVer', TextType::class, array('data' => $arConfiguracionGeneral->getRutaImagenesVer(), 'required' => true))                
             ->add('rutaDirectorio', TextType::class, array('data' => $arConfiguracionGeneral->getRutaDirectorio(), 'required' => true))                                
             ->add('paginaWeb', TextType::class, array('data' => $arConfiguracionGeneral->getPaginaWeb(), 'required' => true))                                                
             ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))            
@@ -90,6 +91,7 @@ class ConfiguracionGeneralController extends Controller
                 $RutaTemporal = $controles['rutaTemporal'];
                 $RutaAlmacenamiento = $controles['rutaAlmacenamiento'];
                 $RutaImagenes = $controles['rutaImagenes'];
+                $RutaImagenesVer = $controles['rutaImagenesVer'];
                 $RutaDirectorio = $controles['rutaDirectorio'];
                 $PaginaWeb = $controles['paginaWeb'];
                 // guardar la tarea en la base de datos
@@ -111,6 +113,7 @@ class ConfiguracionGeneralController extends Controller
                 $arConfiguracionGeneral->setRutaTemporal($RutaTemporal);
                 $arConfiguracionGeneral->setRutaAlmacenamiento($RutaAlmacenamiento);
                 $arConfiguracionGeneral->setRutaImagenes($RutaImagenes);
+                $arConfiguracionGeneral->setRutaImagenesVer($RutaImagenesVer);
                 $arConfiguracionGeneral->setRutaDirectorio($RutaDirectorio);
                 $arConfiguracionGeneral->setPaginaWeb($PaginaWeb);
                 $em->persist($arConfiguracionGeneral);

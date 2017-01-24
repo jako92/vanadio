@@ -154,9 +154,9 @@ class EmpleadoController extends Controller
         }
         $strRutaImagen = "";
         if($arEmpleado->getRutaFoto() != "") {
-            $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+            $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();            
             $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-            $strRutaImagen = "/recursos/web/brasa/imagenes/empleados/" . $arEmpleado->getRutaFoto();
+            $strRutaImagen = $arConfiguracion->getRutaImagenesVer() . $arEmpleado->getRutaFoto();
         }
         //$verRuta = $arConfiguracion->getRutaImagenes()."empleados/" . $arEmpleado->getRutaFoto();
         $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1)/*page number*/,5/*limit per page*/);                                               
@@ -327,9 +327,9 @@ class EmpleadoController extends Controller
                 $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();                
                 $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
                 $strNombreArchivo = $arEmpleado->getCodigoEmpleadoPk() . "_" . $objArchivo->getClientOriginalName();
-                $strRuta = $arConfiguracion->getRutaImagenes() . "imagenes/empleados/" . $strNombreArchivo;
+                $strRuta = $arConfiguracion->getRutaImagenes() . $strNombreArchivo;
                 if(!file_exists($strRuta)) {
-                    $form['attachment']->getData()->move($arConfiguracion->getRutaImagenes() . "imagenes/empleados", $strNombreArchivo);
+                    $form['attachment']->getData()->move($arConfiguracion->getRutaImagenes(), $strNombreArchivo);
                     $arEmpleado->setRutaFoto($strNombreArchivo);
                     $em->persist($arEmpleado);
                     $em->flush();
