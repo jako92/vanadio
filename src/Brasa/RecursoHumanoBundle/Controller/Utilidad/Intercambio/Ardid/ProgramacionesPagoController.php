@@ -122,7 +122,7 @@ class ProgramacionesPagoController extends Controller {
                                         )); 
                                         $indiceRespuesta = substr($result, 0, 2);   
                                         $contenidoRespuesta = substr($result, 2, strlen($result));
-                                        if ($indiceRespuesta == '01') {                                        
+                                        if ($indiceRespuesta == '02') {                                        
                                             $objMensaje->Mensaje("error", "Se presento un error con el servicio web trasmitiendo el detalle del pago " . $arPago->getCodigoPagoPk() . ":" . $contenidoRespuesta);
                                             $error = TRUE;
                                             break 2;                                            
