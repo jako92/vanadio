@@ -104,7 +104,7 @@ class Factura5 extends \FPDF_FPDF {
                     if($arFacturaDetalle->getCodigoModalidadServicioFk()) {
                         $modalidad = "-" . utf8_decode($arFacturaDetalle->getModalidadServicioRel()->getNombre());
                     }
-                    $pdf->Cell(123, 4, substr(utf8_decode($descripcion), 0, 61), 0, 0, 'L');                    
+                    $pdf->Cell(123, 4, substr(utf8_decode($descripcion), 0, 80), 0, 0, 'L');                    
                     $modalidad = "";                    
                     $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                    
                     $pdf->SetFont('Arial', '', 8);
