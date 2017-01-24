@@ -89,6 +89,11 @@ class User implements UserInterface, \Serializable
      */
     protected $permisosDocumentosUsuarioRel;    
     
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\GeneralBundle\Entity\GenLog", mappedBy="usuarioRel")
+     */
+    protected $logsUsuarioRel;     
+    
     public function __construct()
     {
         $this->isActive = true;
@@ -489,5 +494,39 @@ class User implements UserInterface, \Serializable
     public function getTareasPendientes()
     {
         return $this->tareasPendientes;
+    }
+
+    /**
+     * Add logsUsuarioRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel
+     *
+     * @return User
+     */
+    public function addLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel)
+    {
+        $this->logsUsuarioRel[] = $logsUsuarioRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove logsUsuarioRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel
+     */
+    public function removeLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel)
+    {
+        $this->logsUsuarioRel->removeElement($logsUsuarioRel);
+    }
+
+    /**
+     * Get logsUsuarioRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogsUsuarioRel()
+    {
+        return $this->logsUsuarioRel;
     }
 }

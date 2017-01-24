@@ -38,6 +38,11 @@ class SegDocumento
     protected $permisosDocumentosDocumentoRel;  
     
     /**
+     * @ORM\OneToMany(targetEntity="Brasa\GeneralBundle\Entity\GenLog", mappedBy="documentoRel")
+     */
+    protected $logsDocumentoRel;    
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -159,5 +164,39 @@ class SegDocumento
     public function getPermisosDocumentosDocumentoRel()
     {
         return $this->permisosDocumentosDocumentoRel;
+    }
+
+    /**
+     * Add logsDocumentoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
+     *
+     * @return SegDocumento
+     */
+    public function addLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
+    {
+        $this->logsDocumentoRel[] = $logsDocumentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove logsDocumentoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
+     */
+    public function removeLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
+    {
+        $this->logsDocumentoRel->removeElement($logsDocumentoRel);
+    }
+
+    /**
+     * Get logsDocumentoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogsDocumentoRel()
+    {
+        return $this->logsDocumentoRel;
     }
 }

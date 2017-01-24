@@ -268,8 +268,7 @@ class ContratosController extends Controller
                                         $arContrato->setVrSalarioPago($arContrato->getVrSalario());
                                     }                                    
                                     $arContrato->setCodigoUsuario($arUsuario->getUserName());
-                                    $em->persist($arContrato);                                        
-
+                                    $em->persist($arContrato);                                                                            
                                     //Insertar el recurso en recursos
                                     if($codigoContrato == 0) {
                                         if($arEmpleado->getEmpleadoTipoRel()->getTipo() == 2) {
@@ -299,9 +298,8 @@ class ContratosController extends Controller
                                             }                                                 
                                         }                                           
                                     }
-
                                     $em->flush();
-
+                                    $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 33, 1, $arContrato->getCodigoContratoPk());
                                     if($codigoContrato == 0 && $arContrato->getVrSalario() <= $douSalarioMinimo * 2) {
                                         $arEmpleado->setAuxilioTransporte(1);
                                     } else {
@@ -360,6 +358,7 @@ class ContratosController extends Controller
                             }
                             $em->persist($arContrato);
                             $em->flush();
+                            $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 33, 2, $arContrato->getCodigoContratoPk());                            
                             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);//SALARIO MINIMO
                             $douSalarioMinimo = $arConfiguracion->getVrSalario();
                             //$douSalarioMinimo = 644350;
