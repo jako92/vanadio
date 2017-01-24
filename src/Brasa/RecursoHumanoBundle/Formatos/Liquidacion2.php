@@ -286,7 +286,7 @@ class Liquidacion2 extends \FPDF_FPDF {
         $this->SetXY($intX + 128, 123);
         $this->Cell(32, 5, number_format($arLiquidacion->getVrBonificaciones(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + 128, 129);
-        $this->Cell(32, 5, number_format($arLiquidacion->getVrCesantias()+$arLiquidacion->getVrInteresesCesantias()+$arLiquidacion->getVrPrima()+$arLiquidacion->getVrVacaciones()+$arLiquidacion->getVrIndemnizacion()+$arLiquidacion->getVrBonificaciones(), 0, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(32, 5, number_format($arLiquidacion->getVrCesantias()+$arLiquidacion->getVrInteresesCesantias()+$arLiquidacion->getVrCesantiasAnterior()+$arLiquidacion->getVrInteresesCesantiasAnterior()+$arLiquidacion->getVrPrima()+$arLiquidacion->getVrVacaciones()+$arLiquidacion->getVrIndemnizacion()+$arLiquidacion->getVrBonificaciones(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + 128, 135);
         $this->Cell(32, 5, number_format($arLiquidacion->getVrDeducciones(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + 128, 141);
