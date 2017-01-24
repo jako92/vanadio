@@ -392,6 +392,7 @@ class FacturaController extends Controller
             $arFacturaDetalle->setPorBaseIva($arConceptoFactura->getPorBaseIva());
             $arFacturaDetalle->setFechaProgramacion($arFactura->getFecha());
             $arFacturaDetalle->setOperacion($arFactura->getOperacion());
+            $arFacturaDetalle->setCiudadRel($arFacturaDetalle->getPuestoRel()->getCiudadRel());
             $em->persist($arFacturaDetalle);
             $em->flush();
             $em->getRepository('BrasaTurnoBundle:TurFactura')->liquidar($codigoFactura);

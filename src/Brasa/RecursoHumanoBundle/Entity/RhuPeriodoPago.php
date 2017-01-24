@@ -48,6 +48,12 @@ class RhuPeriodoPago
      * @ORM\OneToMany(targetEntity="RhuCentroCosto", mappedBy="periodoPagoRel")
      */
     protected $centrosCostosPeriodoPagoRel;     
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="periodoPagoRel")
+     */
+    protected $pagosPeriodoPagoRel;     
+    
     /**
      * Constructor
      */
@@ -218,5 +224,39 @@ class RhuPeriodoPago
     public function getLimiteHorasExtra()
     {
         return $this->limiteHorasExtra;
+    }
+
+    /**
+     * Add pagosPeriodoPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosPeriodoPagoRel
+     *
+     * @return RhuPeriodoPago
+     */
+    public function addPagosPeriodoPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosPeriodoPagoRel)
+    {
+        $this->pagosPeriodoPagoRel[] = $pagosPeriodoPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosPeriodoPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosPeriodoPagoRel
+     */
+    public function removePagosPeriodoPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosPeriodoPagoRel)
+    {
+        $this->pagosPeriodoPagoRel->removeElement($pagosPeriodoPagoRel);
+    }
+
+    /**
+     * Get pagosPeriodoPagoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosPeriodoPagoRel()
+    {
+        return $this->pagosPeriodoPagoRel;
     }
 }

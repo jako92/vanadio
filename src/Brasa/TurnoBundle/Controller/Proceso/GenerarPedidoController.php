@@ -199,6 +199,19 @@ class GenerarPedidoController extends Controller
                                 }                                                                                               
                             }  
                             
+                            $arServicioDetalleConceptos = new \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto();
+                            $arServicioDetalleConceptos =  $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->findBy(array('codigoServicioFk' => $arServicio->getCodigoServicioPk()));                             
+                            foreach ($arServicioDetalleConceptos as $arServicioDetalleConcepto) {
+                                $arPedidoDetalleConcepto = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleConcepto();
+                                $arPedidoDetalleConcepto->setPedidoRel($arPedidoNuevo);
+                                $arPedidoDetalleConcepto->setPuestoRel($arServicioDetalleConcepto->getPuestoRel());
+                                $arPedidoDetalleConcepto->setConceptoServicioRel($arServicioDetalleConcepto->getConceptoServicioRel());
+                                $arPedidoDetalleConcepto->setCantidad($arServicioDetalleConcepto->getCantidad());
+                                $arPedidoDetalleConcepto->setPrecio($arServicioDetalleConcepto->getPrecio());
+                                $arPedidoDetalleConcepto->setPorIva($arServicioDetalleConcepto->getPorIva());
+                                $arPedidoDetalleConcepto->setPorBaseIva($arServicioDetalleConcepto->getPorBaseIva());
+                                $em->persist($arPedidoDetalleConcepto);
+                            }
                             $arServicio->setFechaGeneracion($fecha);
                             $em->persist($arServicio);
                             $em->flush();

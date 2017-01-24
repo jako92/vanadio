@@ -31,6 +31,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPago->setPagoTipoRel($arProgramacionPagoProcesar->getPagoTipoRel());                        
             $arPago->setEmpleadoRel($arProgramacionPagoDetalle->getEmpleadoRel());
             $arPago->setCentroCostoRel($arCentroCosto);
+            $arPago->setPeriodoPagoRel($arCentroCosto->getPeriodoPagoRel());
             $arPago->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
             $arPago->setFechaDesde($arProgramacionPagoProcesar->getFechaDesde());
             $arPago->setFechaHasta($arProgramacionPagoProcesar->getFechaHasta());

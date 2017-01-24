@@ -23,6 +23,11 @@ class RhuPago
     private $codigoPagoTipoFk;     
     
     /**
+     * @ORM\Column(name="codigo_periodo_pago_fk", type="integer", nullable=true)
+     */    
+    private $codigoPeriodoPagoFk;     
+    
+    /**
      * @ORM\Column(name="numero", type="integer")
      */    
     private $numero = 0;     
@@ -219,6 +224,12 @@ class RhuPago
      * @ORM\JoinColumn(name="codigo_pago_tipo_fk", referencedColumnName="codigo_pago_tipo_pk")
      */
     protected $pagoTipoRel;     
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuPeriodoPago", inversedBy="pagosPeriodoPagoRel")
+     * @ORM\JoinColumn(name="codigo_periodo_pago_fk", referencedColumnName="codigo_periodo_pago_pk")
+     */
+    protected $periodoPagoRel;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="pagosCentroCostoRel")
@@ -1586,5 +1597,53 @@ class RhuPago
     public function getEstadoAnulado()
     {
         return $this->estadoAnulado;
+    }
+
+    /**
+     * Set codigoPeriodoPagoFk
+     *
+     * @param integer $codigoPeriodoPagoFk
+     *
+     * @return RhuPago
+     */
+    public function setCodigoPeriodoPagoFk($codigoPeriodoPagoFk)
+    {
+        $this->codigoPeriodoPagoFk = $codigoPeriodoPagoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPeriodoPagoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPeriodoPagoFk()
+    {
+        return $this->codigoPeriodoPagoFk;
+    }
+
+    /**
+     * Set periodoPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel
+     *
+     * @return RhuPago
+     */
+    public function setPeriodoPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel = null)
+    {
+        $this->periodoPagoRel = $periodoPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get periodoPagoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago
+     */
+    public function getPeriodoPagoRel()
+    {
+        return $this->periodoPagoRel;
     }
 }
