@@ -32,6 +32,8 @@ class ProgramacionesPagoController extends Controller {
                     $codigoProgramacionPago = $request->request->get('OpTransferir');
                     $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
                     if ($arProgramacionPago->getEstadoExportadoArdid() == 0) {
+                        set_time_limit(0);
+                        ini_set("memory_limit", -1);                         
                         $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
                         $cliente = new \nusoap_client($direccionServidor);
                         $error = FALSE;

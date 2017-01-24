@@ -18,8 +18,7 @@
                 <th>DIAS</th>
                 <th>NETO</th>
                 <th><p style="margin: 0" data-toggle="tooltip" data-placement="top" title="Numero de empleados y/o contratos a procesar">#</p></th>                
-                <th></th>
-                <th></th>                
+                <th></th>                                
             </tr>
             {% for arProgramacionPago in arProgramacionPago %}
                 {% if arProgramacionPago.inconsistencias %}
@@ -36,8 +35,7 @@
                 <td>{{ arProgramacionPago.dias  }}</td>
                 <td style="text-align: right">{{ arProgramacionPago.vrNeto | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arProgramacionPago.numeroEmpleados | number_format(0, '.', ',') }}</td>                                                                                                                  
-                <td><button class="btn btn-default btn-xs" type="submit" name="OpTransferir" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}">Transferir</button></td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}" /></td>
+                <td><button class="btn btn-default btn-xs" type="submit" name="OpTransferir" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}">Transferir</button></td>                
             </tr>
             {% endfor %}
         </table>
