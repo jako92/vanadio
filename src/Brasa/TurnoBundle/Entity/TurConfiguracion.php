@@ -106,6 +106,11 @@ class TurConfiguracion
      */    
     private $habilitarProgramacionAlterna = false;      
     
+    /**     
+     * @ORM\Column(name="habilitar_ajustar_devengado", type="boolean")
+     */    
+    private $habilitarAjustarDevengado = false;     
+    
     /**
      * @ORM\Column(name="codigo_formato_factura", type="integer")
      */    
@@ -730,5 +735,29 @@ class TurConfiguracion
     public function getCodigoFormatoNotaCredito()
     {
         return $this->codigoFormatoNotaCredito;
+    }
+
+    /**
+     * Set habilitarAjustarDevengado
+     *
+     * @param boolean $habilitarAjustarDevengado
+     *
+     * @return TurConfiguracion
+     */
+    public function setHabilitarAjustarDevengado($habilitarAjustarDevengado)
+    {
+        $this->habilitarAjustarDevengado = $habilitarAjustarDevengado;
+
+        return $this;
+    }
+
+    /**
+     * Get habilitarAjustarDevengado
+     *
+     * @return boolean
+     */
+    public function getHabilitarAjustarDevengado()
+    {
+        return $this->habilitarAjustarDevengado;
     }
 }

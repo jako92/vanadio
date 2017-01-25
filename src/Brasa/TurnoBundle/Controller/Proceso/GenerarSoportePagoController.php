@@ -153,6 +153,14 @@ class GenerarSoportePagoController extends Controller
                     $em->getRepository('BrasaTurnoBundle:TurSoportePago')->resumen($arSoportePagoPeriodo);                
                     $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->analizarInconsistencias($codigoSoportePagoPeriodo);                                                                                                    
                     $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                                        
+                    
+                    if($arCentroCosto->getCompensacionAutomatica()) {
+                        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+                        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
+                        $em->getRepository('BrasaTurnoBundle:TurSoportePago')->compensar("", $codigoSoportePagoPeriodo, $arConfiguracion->getTipoCompensacion());
+                        $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                        
+                    }
+                    
                 }
 
                 return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago'));
@@ -606,7 +614,7 @@ class GenerarSoportePagoController extends Controller
         $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);        
         $arrBotonLiquidarCompensacion = array('label' => 'Compensacion', 'disabled' => true);        
         $arrBotonGenerarProgramacionAlterna = array('label' => 'Generar programacion alterna', 'disabled' => true);
-        $arrBotonAjustarDevengado = array('label' => 'Ajustar devengado', 'disabled' => false);
+        $arrBotonAjustarDevengado = array('label' => 'Ajustar devengado', 'disabled' => true);
 
         if($arConfiguracion->getHabilitarCompesacion()) {
             $arrBotonLiquidarCompensacion['disabled'] = false;
@@ -614,10 +622,12 @@ class GenerarSoportePagoController extends Controller
         if($arConfiguracion->getHabilitarProgramacionAlterna()) {
             $arrBotonGenerarProgramacionAlterna['disabled'] = false;
         }
+        if($arConfiguracion->getHabilitarAjustarDevengado()) {
+            $arrBotonAjustarDevengado['disabled'] = false;
+        }        
         if($ar->getEstadoAprobadoPagoNomina() == 1) {
             $arrBotonLiquidarCompensacion['disabled'] = true;
-            $arrBotonGenerarProgramacionAlterna['disabled'] = true;
-            $arrBotonAjustarDevengado['disabled'] = true;
+            $arrBotonGenerarProgramacionAlterna['disabled'] = true;            
             $arrBotonLiquidar['disabled'] = true;
             $arrBotonEliminarDetalle['disabled'] = true;
         }        

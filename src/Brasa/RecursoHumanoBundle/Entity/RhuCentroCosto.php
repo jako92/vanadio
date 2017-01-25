@@ -178,6 +178,11 @@ class RhuCentroCosto
      */    
     private $descansoCompensacionFijo = false;    
     
+    /**     
+     * @ORM\Column(name="compensacion_automatica", type="boolean")
+     */    
+    private $compensacionAutomatica = false;    
+    
     /**
      * @ORM\Column(name="dias_descanso_compensacion_fijo", type="integer", nullable=true)
      */    
@@ -1121,6 +1126,30 @@ class RhuCentroCosto
     public function getDescansoCompensacionFijo()
     {
         return $this->descansoCompensacionFijo;
+    }
+
+    /**
+     * Set compensacionAutomatica
+     *
+     * @param boolean $compensacionAutomatica
+     *
+     * @return RhuCentroCosto
+     */
+    public function setCompensacionAutomatica($compensacionAutomatica)
+    {
+        $this->compensacionAutomatica = $compensacionAutomatica;
+
+        return $this;
+    }
+
+    /**
+     * Get compensacionAutomatica
+     *
+     * @return boolean
+     */
+    public function getCompensacionAutomatica()
+    {
+        return $this->compensacionAutomatica;
     }
 
     /**

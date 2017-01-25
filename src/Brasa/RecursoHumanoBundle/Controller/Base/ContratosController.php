@@ -541,7 +541,12 @@ class ContratosController extends Controller
                                             $arRecurso->setEstadoActivo(0);
                                             $em->persist($arRecurso);
                                         }
-
+                                            
+                                        //Inactivar adicionales al pago                                                                                
+                                        $dql = "UPDATE BrasaRecursoHumanoBundle:RhuPagoAdicional pa SET pa.estadoInactivo = 1 WHERE pa.codigoEmpleadoFk = " . $arContrato->getCodigoEmpleadoFk() . " AND pa.permanente = 1 ";
+                                        $query = $em->createQuery($dql);        
+                                        $query->getResult();  
+                                        
                                         $em->flush();                                     
                                     } else {
                                         $objMensaje->Mensaje("error", "No puede terminar este contrato porque el recurso esta siendo utilizando para un servicio permanente, por favor verifique con el programador");

@@ -63,7 +63,8 @@
             </div>
         </div>
         <table class="table table-striped table-bordered table-condensed">
-            <tr>                       
+            <tr>
+                <th>ID</th>
                 <th>FECHA</th>
                 <th>CONCEPTO</th>
                 <th>DETALLE</th>
@@ -84,6 +85,7 @@
             {% for arPagosAdicionales in arPagosAdicionales %}                
             <tr {% if arPagosAdicionales.empleadoRel.codigoCentroCostoFk == null %} class = "danger" {% endif %}>                
                 <input type="hidden" name="LblCodigoGuia[]" value="{{ arPagosAdicionales.codigoPagoAdicionalPk }}">                                
+                <td>{{ arPagosAdicionales.codigoPagoAdicionalPk }}</td>                        
                 <td>{{ arPagosAdicionales.fecha |date('Y/m/d')}}</td>                        
                 <td>{{ arPagosAdicionales.pagoConceptoRel.nombre}}</td>                        
                 <td>{{ arPagosAdicionales.detalle }}</td>
