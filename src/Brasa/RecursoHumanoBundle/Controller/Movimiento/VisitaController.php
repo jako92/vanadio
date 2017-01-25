@@ -321,12 +321,15 @@ class VisitaController extends Controller
                 $arVisitas = $query->getResult();
 
                 foreach ($arVisitas as $arVisita) {
-
+                    $centroCosto = "";
+                    if ($arVisita->getEmpleadoRel()->getCodigoCentroCostoFk() != null){
+                        $centroCosto = $arVisita->getEmpleadoRel()->getCentroCostoRel()->getNombre();
+                    }
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arVisita->getCodigoVisitaPk())
                             ->setCellValue('B' . $i, $arVisita->getFecha()->format('Y/m/d H:i:s'))
                             ->setCellValue('C' . $i, $arVisita->getVisitaTipoRel()->getNombre())
-                            ->setCellValue('D' . $i, $arVisita->getEmpleadoRel()->getCentroCostoRel()->getNombre())
+                            ->setCellValue('D' . $i, $centroCosto)
                             ->setCellValue('E' . $i, $arVisita->getEmpleadoRel()->getNumeroIdentificacion())
                             ->setCellValue('F' . $i, $arVisita->getEmpleadoRel()->getNombreCorto())
                             ->setCellValue('G' . $i, $arVisita->getNombreQuienVisita())
