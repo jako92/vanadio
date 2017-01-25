@@ -16,8 +16,7 @@ class GenContenidoFormatoType extends AbstractType
         $builder                                                                                    
             ->add('titulo', TextType::class, array('required' => true))
             ->add('codigoFormatoIso', TextType::class, array('required' => false))
-            ->add('requiereFormatoIso', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))    
-            ->add('adicional', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))        
+            ->add('requiereFormatoIso', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                
             ->add('version', TextType::class, array('required' => false))
             ->add('fechaVersion',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('contenido', TextareaType::class, array('required' => true))                                
