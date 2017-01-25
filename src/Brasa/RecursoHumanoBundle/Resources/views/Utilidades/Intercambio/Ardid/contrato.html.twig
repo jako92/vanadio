@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+{% block title %}Intercambio ardid contrato - Soga App{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h3>Sincronizar contratos (Ardid)</h3>
+    </div>
+    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+            {{ form_errors(form) }}
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnSincronizar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>          
+        {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+</div>
+{% endblock %}
+

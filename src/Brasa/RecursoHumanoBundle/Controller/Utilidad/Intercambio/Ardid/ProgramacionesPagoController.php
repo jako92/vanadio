@@ -38,7 +38,7 @@ class ProgramacionesPagoController extends Controller {
                         $cliente = new \nusoap_client($direccionServidor);
                         $error = FALSE;
                         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                        $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
+                        //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
                         $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
                         foreach ($arPagos as $arPago) {
                             $result = $cliente->call("getInsertarEmpleado", array(
@@ -152,7 +152,7 @@ class ProgramacionesPagoController extends Controller {
             return $this->redirect($this->generateUrl('brs_rhu_utilidad_intercambio_ardid_programacion'));
         }
         $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/* page number */, 50/* limit per page */);
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/Intercambio/Ardid:lista.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/Intercambio/Ardid:programacionPago.html.twig', array(
                     'arProgramacionPago' => $arProgramacionPago,
                     'form' => $form->createView()));
     }

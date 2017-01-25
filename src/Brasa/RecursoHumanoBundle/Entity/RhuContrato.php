@@ -135,7 +135,7 @@ class RhuContrato
     /**     
      * @ORM\Column(name="indefinido", type="boolean")
      */    
-    private $indefinido = 0;     
+    private $indefinido = false;     
     
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer")
