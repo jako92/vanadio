@@ -326,7 +326,7 @@ class Liquidacion1 extends \FPDF_FPDF {
     public function Body($pdf) {
         $arLiquidacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales();
         $arLiquidacionAdicionales = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacionAdicionales')->findBy(array('codigoLiquidacionFk' => self::$codigoLiquidacion));
-        $pdf->SetXY(10,167);
+        $pdf->SetXY(10,179);//167
         $pdf->SetFont('Arial', '', 7);
         foreach ($arLiquidacionAdicionales as $arLiquidacionAdicional) {
             $pdf->Cell(12, 4, $arLiquidacionAdicional->getCodigoPagoConceptoFk(), 1, 0, 'L');
