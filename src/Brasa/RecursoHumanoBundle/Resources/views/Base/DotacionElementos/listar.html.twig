@@ -18,7 +18,7 @@
             {%for arDotacionElementos in arDotacionElementos %}
                <tr>
                 <td>{{arDotacionElementos.codigoDotacionElementoPk}}</td>
-                <td>{{arDotacionElementos.dotacion}}</td>
+                <td>{{arDotacionElementos.nombre}}</td>
                 <td>{{arDotacionElementos.dotacionElementoTipoRel.nombre}}</td>
                 <td align="center"><a href="{{ path('brs_rhu_base_dotacion_elemento_nuevo',{'codigoDotacionElemento': arDotacionElementos.codigoDotacionElementoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arDotacionElementos.codigoDotacionElementoPk }}" /></td>

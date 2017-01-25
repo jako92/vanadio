@@ -110,8 +110,8 @@ class DotacionController extends Controller
                                     $arDotacionDetalle->setDotacionRel($arDotacion);
                                     $arDotacionDetalle->setDotacionElementoRel($arDotacionCargo->getDotacionElementoRel());
                                     $arDotacionDetalle->setCantidadAsignada($arDotacionCargo->getCantidadAsignada());
-                                    $arDotacionDetalle->setSerie(0);
-                                    $arDotacionDetalle->setLote(0);
+                                    //$arDotacionDetalle->setSerie(0);
+                                    //$arDotacionDetalle->setLote(0);
                                     $em->persist($arDotacionDetalle);
                                 }
                             

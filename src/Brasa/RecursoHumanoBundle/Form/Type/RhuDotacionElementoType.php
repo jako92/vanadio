@@ -16,7 +16,7 @@ class RhuDotacionElementoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dotacion', TextType::class, array('required' => true))
+            ->add('nombre', TextType::class, array('required' => true))
             ->add('dotacionElementoTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuDotacionElementoTipo',
                 'choice_label' => 'nombre',
