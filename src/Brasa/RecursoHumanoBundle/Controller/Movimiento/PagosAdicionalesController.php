@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -196,119 +197,113 @@ class PagosAdicionalesController extends Controller
                     ));
     }
     
-    private function formularioLista() {
+    /**
+     * @Route("/rhu/movimiento/pago/adicional/cargar/{periodo}", name="brs_rhu_movimiento_pago_adicional_cargar")
+     */
+    public function cargarAction(Request $request, $periodo) {
         $em = $this->getDoctrine()->getManager();
-        $session = new Session;
-        $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
-        }
-        $arrayPropiedadesConcepto = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('pc')
-                    ->orderBy('pc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoPagoConcepto')) {
-            $arrayPropiedadesConcepto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $session->get('filtroCodigoPagoConcepto'));
-        }
-        $strNombreCorto = "";
-        if($session->get('filtroNumeroIdentificacion')) {
-            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroNumeroIdentificacion')));
-            if($arEmpleado) {
-                $session->set('filtroNumeroIdentificacion', $arEmpleado->getNumeroIdentificacion());
-                $strNombreCorto = $arEmpleado->getNombreCorto();
-            }  else {
-                $session->set('filtroNumeroIdentificacion', null);
-            }          
-        } else {
-            $session->set('filtroNumeroIdentificacion', null);
-        }       
-        
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
+        $rutaTemporal = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $rutaTemporal = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Numero Identificacion','data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
-            ->add('txtNombreCorto', TextType::class, array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesConcepto)    
-            ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
-            ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
-            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
-            ->add('estadoInactivo', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('attachment', FileType::class)
+            ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar'))
             ->getForm();
-        return $form;
-    }
-    
-    private function formularioPeriodo() {
-        $em = $this->getDoctrine()->getManager();
-        $session = new Session;                 
-        $form = $this->createFormBuilder()
-            ->add('estadoCerrado', ChoiceType::class, array('choices' => array('SIN CERRAR' => '0', 'CERRADO' => '1', 'TODOS' => '2'), 'data' => $session->get('filtroRhuPagoAdicionalPeriodoEstadoCerrado')))                                
-            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
-        return $form;
-    }
-    
-    private function listar($form, $modalidad, $periodo) {
-        $session = new Session;
-        $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->listaAdicionalesDql(                    
-            $session->get('filtroNumeroIdentificacion'),
-            $session->get('filtroAplicarDiaLaborado'),        
-            $session->get('filtroCodigoCentroCosto'),
-            $session->get('filtroCodigoPagoConcepto'),
-            $session->get('filtroPagoAdicionalEstadoInactivo'),
-            $modalidad,
-            $periodo
-            );
-    }
-
-    private function listarPeriodo() {
-        $session = new Session;
-        $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo')->listaDql(                    
-            $session->get('filtroRhuPagoAdicionalPeriodoEstadoCerrado'));
-    }    
-    
-    private function filtrarLista($form) {
-        
-        $session = new Session;
-        
-        $codigoCentroCosto = '';
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }
-        $codigoPagoConcepto = '';
-        if($form->get('pagoConceptoRel')->getData()) {
-            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();
-        }        
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
-        $session->set('filtroNumeroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
-        $session->set('filtroAplicarDiaLaborado', $form->get('aplicarDiaLaborado')->getData());
-        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
-        $session->set('filtroPagoAdicionalEstadoInactivo', $form->get('estadoInactivo')->getData());
-    }
-
-    private function filtrarListaPeriodo($form) {        
-        $session = new Session;
-        $session->set('filtroRhuPagoAdicionalPeriodoEstadoCerrado', $form->get('estadoCerrado')->getData());
+        $form->handleRequest($request);
+        if($form->isValid()) {
+            if($form->get('BtnCargar')->isClicked()) {
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                set_time_limit(0);
+                ini_set("memory_limit", -1);
+                $fecha = new \DateTime('now');
+                if($periodo != 0 && $periodo != "") {
+                    $arPagoAdicionalPeriodo = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicionalPeriodo();                                    
+                    $arPagoAdicionalPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo')->find($periodo);            
+                    $fecha = $arPagoAdicionalPeriodo->getFecha();                    
+                }
+                
+                $form['attachment']->getData()->move($rutaTemporal->getRutaTemporal(), "archivo.xls");                
+                $ruta = $rutaTemporal->getRutaTemporal(). "archivo.xls";                
+                $arrCarga = array();
+                $objPHPExcel = \PHPExcel_IOFactory::load($ruta);                
+                foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+                    $worksheetTitle     = $worksheet->getTitle();
+                    $highestRow         = $worksheet->getHighestRow(); // e.g. 10
+                    $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
+                    $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                    $nrColumns = ord($highestColumn) - 64;
+                    for ($row = 2; $row <= $highestRow; ++ $row) {                        
+                        $cell = $worksheet->getCellByColumnAndRow(0, $row);
+                        $concepto = $cell->getValue();
+                        $cell = $worksheet->getCellByColumnAndRow(1, $row);
+                        $identificacion = $cell->getValue();                       
+                        $cell = $worksheet->getCellByColumnAndRow(2, $row);
+                        $tipo = $cell->getValue();                                                
+                        $cell = $worksheet->getCellByColumnAndRow(3, $row);
+                        $valor = $cell->getValue();  
+                        $cell = $worksheet->getCellByColumnAndRow(4, $row);
+                        $detalle = $cell->getValue();                          
+                        $arrCarga[] = array(
+                            'concepto' => $concepto,
+                            'identificacion' => $identificacion,
+                            'tipo' => $tipo,
+                            'valor' => $valor,
+                            'detalle' => $detalle);
+                    }
+                }
+                $error = "";
+                foreach ($arrCarga as $carga) {
+                    if($carga['concepto'] != null && $carga['identificacion'] != null && $carga['valor'] != null && $carga['tipo'] != null) {
+                        $arPagoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
+                        if($carga['concepto']) {
+                            $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($carga['concepto']);                        
+                        } 
+                        $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                        if($carga['identificacion']) {
+                            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $carga['identificacion']));    
+                        }                    
+                        if($arPagoConcepto) {
+                            if($arEmpleado) {
+                                $arPagoAdicional = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoAdicional();                            
+                                $arPagoAdicional->setPagoConceptoRel($arPagoConcepto);
+                                $arPagoAdicional->setEmpleadoRel($arEmpleado);
+                                $arPagoAdicional->setPermanente(1);
+                                $arPagoAdicional->setValor($carga['valor']);
+                                $arPagoAdicional->setTipoAdicional($carga['tipo']);
+                                $arPagoAdicional->setDetalle($carga['detalle']);
+                                $arPagoAdicional->setModalidad(1);
+                                if($periodo != 0 && $periodo != "") {
+                                    $arPagoAdicional->setPermanente(0);
+                                    $arPagoAdicional->setModalidad(2);
+                                    $arPagoAdicional->setCodigoPeriodoFk($periodo);
+                                    $arPagoAdicional->setFecha($fecha);
+                                }
+                                $arPagoAdicional->setFechaCreacion(new \DateTime('now'));
+                                $arPagoAdicional->setFechaUltimaEdicion(new \DateTime('now'));                            
+                                $arPagoAdicional->setCodigoUsuario($arUsuario->getUserName());                            
+                                $em->persist($arPagoAdicional);                             
+                            } else {
+                                $error .= "Empleado" . $carga['identificacion'] . " no existe ";
+                            }                       
+                        } else {
+                            $error .= "Concepto" . $carga['concepto'] . " no existe ";
+                        }                        
+                    }                    
+                }
+                if($error != "") {
+                    //echo "Error al cargar:" . $error;
+                    $objMensaje->Mensaje('error', "Error al cargar:" . $error, $this);
+                } else {
+                    $em->flush();
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+                }
+                
+                
+            }                                   
+        }         
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:cargarAdicionalesPago.html.twig', array(
+            'form' => $form->createView()
+            ));
     }    
     
     /**
@@ -528,7 +523,122 @@ class PagosAdicionalesController extends Controller
             'arProgramacionPago' => $arProgramacionPago,
             'form' => $form->createView()
             ));
+    }    
+    
+    private function formularioLista() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session;
+        $arrayPropiedades = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCosto')) {
+            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
+        }
+        $arrayPropiedadesConcepto = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('pc')
+                    ->orderBy('pc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoPagoConcepto')) {
+            $arrayPropiedadesConcepto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $session->get('filtroCodigoPagoConcepto'));
+        }
+        $strNombreCorto = "";
+        if($session->get('filtroNumeroIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroNumeroIdentificacion')));
+            if($arEmpleado) {
+                $session->set('filtroNumeroIdentificacion', $arEmpleado->getNumeroIdentificacion());
+                $strNombreCorto = $arEmpleado->getNombreCorto();
+            }  else {
+                $session->set('filtroNumeroIdentificacion', null);
+            }          
+        } else {
+            $session->set('filtroNumeroIdentificacion', null);
+        }       
+        
+        $form = $this->createFormBuilder()
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Numero Identificacion','data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'NombreCorto','data' => $strNombreCorto))                    
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+            ->add('pagoConceptoRel', EntityType::class, $arrayPropiedadesConcepto)    
+            ->add('BtnRetirarConcepto', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnInactivar', SubmitType::class, array('label'  => 'Inactivar',))            
+            ->add('aplicarDiaLaborado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1'), 'data' => $session->get('filtroAplicarDiaLaborado')))                
+            ->add('estadoInactivo', ChoiceType::class, array('choices' => array('TODOS' => '2', 'NO' => '0', 'SI' => '1'), 'data' => $session->get('filtroPagoAdicionalEstadoInactivo')))                                
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->getForm();
+        return $form;
     }
+    
+    private function formularioPeriodo() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session;                 
+        $form = $this->createFormBuilder()
+            ->add('estadoCerrado', ChoiceType::class, array('choices' => array('SIN CERRAR' => '0', 'CERRADO' => '1', 'TODOS' => '2'), 'data' => $session->get('filtroRhuPagoAdicionalPeriodoEstadoCerrado')))                                
+            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->getForm();
+        return $form;
+    }
+    
+    private function listar($form, $modalidad, $periodo) {
+        $session = new Session;
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->listaAdicionalesDql(                    
+            $session->get('filtroNumeroIdentificacion'),
+            $session->get('filtroAplicarDiaLaborado'),        
+            $session->get('filtroCodigoCentroCosto'),
+            $session->get('filtroCodigoPagoConcepto'),
+            $session->get('filtroPagoAdicionalEstadoInactivo'),
+            $modalidad,
+            $periodo
+            );
+    }
+
+    private function listarPeriodo() {
+        $session = new Session;
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicionalPeriodo')->listaDql(                    
+            $session->get('filtroRhuPagoAdicionalPeriodoEstadoCerrado'));
+    }    
+    
+    private function filtrarLista($form) {
+        
+        $session = new Session;
+        
+        $codigoCentroCosto = '';
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $codigoPagoConcepto = '';
+        if($form->get('pagoConceptoRel')->getData()) {
+            $codigoPagoConcepto = $form->get('pagoConceptoRel')->getData()->getCodigoPagoConceptoPk();
+        }        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroNumeroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroAplicarDiaLaborado', $form->get('aplicarDiaLaborado')->getData());
+        $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
+        $session->set('filtroPagoAdicionalEstadoInactivo', $form->get('estadoInactivo')->getData());
+    }
+
+    private function filtrarListaPeriodo($form) {        
+        $session = new Session;
+        $session->set('filtroRhuPagoAdicionalPeriodoEstadoCerrado', $form->get('estadoCerrado')->getData());
+    }        
     
     private function listarTiempoSuplementarioMasivo($ar) {
         $em = $this->getDoctrine()->getManager();                
@@ -549,8 +659,7 @@ class PagosAdicionalesController extends Controller
         }
         $session->set('filtroCodigoDepartamentoEmpresa', $codigoDepartamentoEmpresa);
         //$session->set('filtroCodigoDepartamentoEmpresa', $form->get('departamentoEmpresaRel')->getData());
-    }
-    
+    }    
     
     public function generarMasivoValorDetalleAction(Request $request, $codigoCentroCosto) {
         $em = $this->getDoctrine()->getManager();

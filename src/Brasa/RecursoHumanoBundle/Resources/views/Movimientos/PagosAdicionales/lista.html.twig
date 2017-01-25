@@ -117,7 +117,7 @@
 
         <div class="btn-toolbar" style="float:right">
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_cargar_adicionales_pago', {'periodo': periodo }) }}', 'CargarPagosAdicionales', 600, 900)" >Cargar</a>
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_adicional_cargar', {'periodo': periodo }) }}', 'CargarPagosAdicionales', 600, 900)" >Cargar</a>
             </div>
             <div class="btn-group">
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
