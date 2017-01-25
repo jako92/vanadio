@@ -5992,6 +5992,7 @@ INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) 
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('134','MOVIMIENTO','MOVIMIENTO','INVENTARIO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('135','TERCERO','ADMINISTRACION','INVENTARIO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('136','INCAPACIDAD DIAGNOSTICOS','ADMINISTRACION','RECURSO HUMANO');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('137','TIPO CONTRATO ADICION','ADMINISTRACION','RECURSO HUMANO');
 
 INSERT INTO `seg_roles` (`codigo_rol_pk`, `nombre`) VALUES('ROLE_ADMIN','ADMINISTRADOR');
 INSERT INTO `seg_roles` (`codigo_rol_pk`, `nombre`) VALUES('ROLE_USER','USUARIO');

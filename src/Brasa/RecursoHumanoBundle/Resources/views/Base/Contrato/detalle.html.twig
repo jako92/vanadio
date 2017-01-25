@@ -406,6 +406,7 @@
                         <th>CÓDIGO</th>
                         <th>FECHA</th>                        
                         <th>CONTENIDO</th>
+                        <th>TIPO</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -413,7 +414,8 @@
                         <tr>
                             <td><input type="hidden" name="LblCodigo[]" value="{{ arContratoAdicion.codigoContratoAdicionPk }}">{{ arContratoAdicion.codigoContratoAdicionPk }} </td>
                             <td>{{ arContratoAdicion.fecha |date("Y/m/d")  }}</td>                                                        
-                            <td>{{ arContratoAdicion.contenido  }}</td>                            
+                            <td>{{ arContratoAdicion.contenido  }}</td>
+                            <td>{{ arContratoAdicion.contratoAdicionTipoRel.nombre  }}</td>                            
                             <td style="text-align: center">{% if arContrato.indefinido == 1%}<a href="javascript:abrirVentana3('{{ path('brs_rhu_contrato_adicion_nuevo', { 'codigoContrato': arContrato.codigoContratoPk,  'codigoContratoAdicion': arContratoAdicion.codigoContratoAdicionPk}) }}', 'EditarContratoAdicion', 600, 1200)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                            
                             <td align="center"><button class="btn btn-default btn-xs" type="submit" name="ImprimirContratoAdicion" value="{{ arContratoAdicion.codigoContratoAdicionPk }}">Imprimir</button></td>                             
                         </tr>

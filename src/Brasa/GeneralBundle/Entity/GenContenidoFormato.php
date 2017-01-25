@@ -51,11 +51,7 @@ class GenContenidoFormato
      * @ORM\Column(name="requiere_formato_iso", type="boolean")
      */    
     private $requiereFormatoIso = false;
-    
-    /**
-     * @ORM\Column(name="adicional", type="boolean")
-     */    
-    private $adicional = false;
+        
     
      /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuDisciplinarioTipo", mappedBy="contenidoFormatoRel")
@@ -78,6 +74,7 @@ class GenContenidoFormato
     protected $contratosAdicionesTiposContenidoFormatoRel;
     
     
+    
     /**
      * Constructor
      */
@@ -86,6 +83,7 @@ class GenContenidoFormato
         $this->disciplinariosTiposContenidoFormatoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cartasTiposContenidoFormatoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosTiposContenidoFormatoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratosAdicionesTiposContenidoFormatoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -366,30 +364,6 @@ class GenContenidoFormato
     public function getContratosTiposContenidoFormatoRel()
     {
         return $this->contratosTiposContenidoFormatoRel;
-    }
-
-    /**
-     * Set adicional
-     *
-     * @param boolean $adicional
-     *
-     * @return GenContenidoFormato
-     */
-    public function setAdicional($adicional)
-    {
-        $this->adicional = $adicional;
-
-        return $this;
-    }
-
-    /**
-     * Get adicional
-     *
-     * @return boolean
-     */
-    public function getAdicional()
-    {
-        return $this->adicional;
     }
 
     /**
