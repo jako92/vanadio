@@ -49,13 +49,13 @@ class FormatoContratoAdicion extends \FPDF_FPDF {
         $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
         $arContratoAdicion = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion();
         $arContratoAdicion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find(self::$codigoContratoAdicion);        
-        $arContenidoFormatoAdicion = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormatoAdicion = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->findOneBy(array('adicional' => 1));        
+        //$arContenidoFormatoAdicion = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
+        //$arContenidoFormatoAdicion = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->findOneBy(array('adicional' => 1));        
         $contenido = $arContratoAdicion->getContenido();                      
         $cadena = $contenido;                       
         $pdf->SetXY(50, 36);
         $pdf->SetFont('Arial','B',12);
-        $pdf->Cell(110, 6, utf8_decode($arContenidoFormatoAdicion->getTitulo()) , 0, 0, 'C');
+        $pdf->Cell(110, 6, utf8_decode($arContratoAdicion->getContratoAdicionTipoRel()->getNombre()) , 0, 0, 'C');
         //$pdf->MultiCell(110, 2, $arContenidoFormato->getTitulo(), 0, 'C');
         $pdf->SetXY(50, 44);
         $pdf->Cell(110, 6, utf8_decode($arConfiguracion->getNombreEmpresa()) , 0, 0, 'C');
