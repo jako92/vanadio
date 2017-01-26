@@ -99,6 +99,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $fechaUltimoPago = $arProgramacionPagoDetalle->getFechaDesde();
                         $arLiquidacion->setCodigoProgramacionPagoDetalleFk($arPago->getCodigoProgramacionPagoDetalleFk());
                     }
+                    $arLiquidacion->setCodigoPagoFk($arPago->getCodigoPagoPk());
                 }
                 $arLiquidacion->setDiasCesantiasAnterior($diasCesantiaAnterior);                
                 $arLiquidacion->setVrCesantiasAnterior($cesantiaAnterior);
@@ -390,7 +391,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                     $deduccion = $arLiquidacionCredito->getVrDeduccion();
                     $saldo = $arCredito->getSaldo();
                     if ($saldo < $deduccion ){
-                        $validar = 1;
+                        $validar = "Hay saldos en creditos que son inferiores a la deducciones";
                     } else {
                         $arCredito->setSaldo($saldo - $deduccion);                        
                         $arCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual() + 1);
@@ -405,24 +406,31 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $arPagoCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual());
                     }
                 }    
-            }
-            if ($validar == '' && $deduccion != 0){
-                $em->persist($arCredito);
-                if ($arCredito->getSaldo() <= 0){
-                    $arCredito->setEstadoPagado(1);        
-                    $em->persist($arCredito);
-                }                  
-                if($arLiquidacion->getCodigoProgramacionPagoDetalleFk()) {
-                    $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                                                            
-                    $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arLiquidacion->getCodigoProgramacionPagoDetalleFk());                                    
-                    $arProgramacionPagoDetalle->setVrInteresCesantiaPagado($arProgramacionPagoDetalle->getVrInteresCesantia());                    
-                    $em->persist($arProgramacionPagoDetalle);
-                }
-                $em->flush($arCredito);
-                $em->persist($arPagoCredito);
-            }
+            }            
         }    
         
+        if ($validar == '' && $deduccion != 0){
+            $em->persist($arCredito);
+            if ($arCredito->getSaldo() <= 0){
+                $arCredito->setEstadoPagado(1);        
+                $em->persist($arCredito);
+            }                  
+            if($arLiquidacion->getCodigoProgramacionPagoDetalleFk()) {
+                $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                                                            
+                $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arLiquidacion->getCodigoProgramacionPagoDetalleFk());                                    
+                $arProgramacionPagoDetalle->setVrInteresCesantiaPagado($arProgramacionPagoDetalle->getVrInteresCesantia());                    
+                $em->persist($arProgramacionPagoDetalle);
+            }                        
+            $em->persist($arPagoCredito);
+        }
+
+        if($arLiquidacion->getCodigoPagoFk()) {
+            $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                                                                            
+            $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arLiquidacion->getCodigoPagoFk());                                                    
+            if($arPago->getEstadoPagadoBanco()) {
+               $validar = "El pago de las cesantias anteriores fue efectuado y no puede ser pagado en la liquidacion"; 
+            }
+        }        
         
         return $validar;
         

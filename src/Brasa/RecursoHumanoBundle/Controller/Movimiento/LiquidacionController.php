@@ -163,16 +163,15 @@ class LiquidacionController extends Controller
             }
             
             if($form->get('BtnGenerarPago')->isClicked()) {            
-                if($arLiquidacion->getEstadoAutorizado() == 1) {
-                    
-                    $validar = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagar($codigoLiquidacion);
-                    if ($validar == ''){
+                if($arLiquidacion->getEstadoAutorizado() == 1) {                    
+                    $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagar($codigoLiquidacion);
+                    if ($respuesta == ''){
                         $arLiquidacion->setEstadoPagoGenerado(1);
                         $em->persist($arLiquidacion);
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "Hay saldos en creditos que son inferiores a la deducciones");
+                        $objMensaje->Mensaje("error", $respuesta);
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                     }                    
                 } else {

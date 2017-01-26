@@ -356,6 +356,11 @@ class RhuLiquidacion
      * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer")
      */    
     private $codigoProgramacionPagoDetalleFk;    
+
+    /**
+     * @ORM\Column(name="codigo_pago_fk", type="integer")
+     */    
+    private $codigoPagoFk;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="liquidacionesEmpleadoRel")
@@ -2205,5 +2210,29 @@ class RhuLiquidacion
     public function getCodigoProgramacionPagoDetalleFk()
     {
         return $this->codigoProgramacionPagoDetalleFk;
+    }
+
+    /**
+     * Set codigoPagoFk
+     *
+     * @param integer $codigoPagoFk
+     *
+     * @return RhuLiquidacion
+     */
+    public function setCodigoPagoFk($codigoPagoFk)
+    {
+        $this->codigoPagoFk = $codigoPagoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPagoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPagoFk()
+    {
+        return $this->codigoPagoFk;
     }
 }
