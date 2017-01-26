@@ -53,6 +53,7 @@ class TurClientePuestoType extends AbstractType
             ->add('telefono', TextType::class, array('required'  => false))
             ->add('celular', TextType::class, array('required'  => false))
             ->add('contacto', TextType::class, array('required'  => false))
+            ->add('numeroComunicacion', TextType::class, array('required'  => false))
             ->add('telefonoContacto', TextType::class, array('required'  => false))
             ->add('celularContacto', TextType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)

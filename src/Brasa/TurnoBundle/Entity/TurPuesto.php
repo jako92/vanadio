@@ -36,6 +36,11 @@ class TurPuesto
      * @ORM\Column(name="celular", type="string", length=30, nullable=true)
      */
     private $celular;     
+
+    /**
+     * @ORM\Column(name="numero_comunicacion", type="string", length=30, nullable=true)
+     */
+    private $numeroComunicacion;
     
     /**
      * @ORM\Column(name="contacto", type="string", length=90, nullable=true)
@@ -193,7 +198,12 @@ class TurPuesto
      */
     protected $costosRecursosDetallesPuestoRel;    
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="TurControlPuestoDetalle", mappedBy="puestoRel")
+     */
+    protected $conrtolesPuestosDetallesPuestoRel; 
+    
+    
     /**
      * Constructor
      */
@@ -1156,5 +1166,63 @@ class TurPuesto
     public function getProgramacionesAlternasPuestoRel()
     {
         return $this->programacionesAlternasPuestoRel;
+    }
+
+    /**
+     * Add conrtolesPuestosDetallesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $conrtolesPuestosDetallesPuestoRel
+     *
+     * @return TurPuesto
+     */
+    public function addConrtolesPuestosDetallesPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $conrtolesPuestosDetallesPuestoRel)
+    {
+        $this->conrtolesPuestosDetallesPuestoRel[] = $conrtolesPuestosDetallesPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove conrtolesPuestosDetallesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $conrtolesPuestosDetallesPuestoRel
+     */
+    public function removeConrtolesPuestosDetallesPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $conrtolesPuestosDetallesPuestoRel)
+    {
+        $this->conrtolesPuestosDetallesPuestoRel->removeElement($conrtolesPuestosDetallesPuestoRel);
+    }
+
+    /**
+     * Get conrtolesPuestosDetallesPuestoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConrtolesPuestosDetallesPuestoRel()
+    {
+        return $this->conrtolesPuestosDetallesPuestoRel;
+    }
+
+    /**
+     * Set numeroComunicacion
+     *
+     * @param string $numeroComunicacion
+     *
+     * @return TurPuesto
+     */
+    public function setNumeroComunicacion($numeroComunicacion)
+    {
+        $this->numeroComunicacion = $numeroComunicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroComunicacion
+     *
+     * @return string
+     */
+    public function getNumeroComunicacion()
+    {
+        return $this->numeroComunicacion;
     }
 }
