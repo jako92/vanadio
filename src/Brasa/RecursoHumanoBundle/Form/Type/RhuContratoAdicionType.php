@@ -19,7 +19,7 @@ class RhuContratoAdicionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fecha', DateType::class, array('data' => new \DateTime('now')))
+            ->add('fecha', DateType::class)
             ->add('contenido', TextareaType::class, array('required' => false))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->add('contratoAdicionTipoRel', EntityType::class, array(

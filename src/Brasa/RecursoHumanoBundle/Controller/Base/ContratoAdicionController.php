@@ -28,12 +28,11 @@ class ContratoAdicionController extends Controller
         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
         if ($codigoContratoAdicion != 0)
         {
-            $arContratoAdicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find($codigoContratoAdicion);
-            $dateAplicacion = $arContratoAdicion->getFecha();
-            $contenido = $arContratoAdicion->getContenido();
+            $arContratoAdicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find($codigoContratoAdicion);            
             $dato = "SI";
         }else {
             $dateAplicacion = new \DateTime('now');
+            $arContratoAdicion->setFecha($dateAplicacion);
             $dato = "NO";
         }            
         $form = $this->createForm(RhuContratoAdicionType::class, $arContratoAdicion); 
@@ -45,7 +44,11 @@ class ContratoAdicionController extends Controller
                 $arContenidoFormato = $em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContratoAdicionTipo->getCodigoContenidoFormatoFk());
                 $contenido = $arContenidoFormato->getContenido();
             } else {
-                $contenido = $form->get('contenido')->getData();
+                if ($arContratoAdicion->getCodigoContratoAdicionTipoFk() != $arContratoAdicionTipo->getCodigoContratoAdicionTipoPk()){
+                    $arTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicionTipo')->find($arContratoAdicion->getCodigoContratoAdicionTipoFk());
+                    $arContratoAdicion->setContratoAdicionTipoRel($arTipo);
+                }
+                $contenido = $form->get('contenido')->getData();                
             }
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();            
             $arContratoAdicion->setContratoRel($arContrato);            
