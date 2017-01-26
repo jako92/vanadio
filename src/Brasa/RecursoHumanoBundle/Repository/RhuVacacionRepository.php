@@ -165,43 +165,41 @@ class RhuVacacionRepository extends EntityRepository {
     
     public function pagar($codigoVacacion) {        
         $em = $this->getEntityManager();
-        $validar = '';
-        
-        $arVacacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionAdicional();
-        $arVacacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->findBy(array('codigoVacacionFk' => $codigoVacacion));                                 
-        $deduccion = 0;
-        if ($arVacacionAdicionales != null){
+        $validar = "";
+        $arrCreditos =  $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->recumenCredito($codigoVacacion);
+        foreach ($arrCreditos as $arrCredito) {
+            $arCredito = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($arrCredito['codigoCreditoFk']);
+            if($arCredito->getSaldo() < $arrCredito['total']) {
+                $validar = "El credito " . $arrCredito['codigoCreditoFk'] . " tiene un saldo de " . $arCredito->getSaldo() . " y la deduccion de " . $arrCredito['total'] . " lo supera";
+            }
+        }        
+        if($validar == "") {
+            $arVacacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionAdicional();
+            $arVacacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->findBy(array('codigoVacacionFk' => $codigoVacacion));                                 
             foreach ($arVacacionAdicionales as $arVacacionAdicional){
                 if ($arVacacionAdicional->getCodigoCreditoFk() != null){
-                    $arCredito = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($arVacacionAdicional->getCodigoCreditoFk());
-                    $deduccion = $arVacacionAdicional->getVrDeduccion();
-                    $saldo = $arCredito->getSaldo();
-                    if ($saldo < $deduccion ){
-                        $validar = 1;
-                    } else {
-                        $arCredito->setSaldo($saldo - $deduccion);                        
-                        $arCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual() + 1);
-                        $arCredito->setTotalPagos($arCredito->getTotalPagos() + $deduccion);
-                        $arPagoCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCreditoPago();
-                        $arPagoCredito->setCreditoRel($arCredito);                        
-                        $arPagoCredito->setfechaPago(new \ DateTime("now"));
-                        $arCreditoTipoPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuCreditoTipoPago')->find(3);
-                        $arPagoCredito->setCreditoTipoPagoRel($arCreditoTipoPago);
-                        $arPagoCredito->setVrCuota($deduccion);
-                        $arPagoCredito->setSaldo($arCredito->getSaldo());
-                        $arPagoCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual());
-                    }
-                }    
-            }
-            if ($validar == '' && $deduccion != 0){
-                if ($arCredito->getSaldo() <= 0){
-                    $arCredito->setEstadoPagado(1);        
+                    $arCredito = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->find($arVacacionAdicional->getCodigoCreditoFk());                   
+                    $arCredito->setSaldo($arCredito->getSaldo() - $arVacacionAdicional->getVrDeduccion());                        
+                    $arCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual() + 1);
+                    $arCredito->setTotalPagos($arCredito->getTotalPagos() + $arVacacionAdicional->getVrDeduccion());
+                    
+                    $arPagoCredito = new \Brasa\RecursoHumanoBundle\Entity\RhuCreditoPago();
+                    $arPagoCredito->setCreditoRel($arCredito);                        
+                    $arPagoCredito->setfechaPago(new \ DateTime("now"));
+                    $arCreditoTipoPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuCreditoTipoPago')->find(3);
+                    $arPagoCredito->setCreditoTipoPagoRel($arCreditoTipoPago);
+                    $arPagoCredito->setVrCuota($arVacacionAdicional->getVrDeduccion());
+                    $arPagoCredito->setSaldo($arCredito->getSaldo());
+                    $arPagoCredito->setNumeroCuotaActual($arCredito->getNumeroCuotaActual());
+                    $em->persist($arPagoCredito);
+                    if($arCredito->getSaldo() <= 0){
+                        $arCredito->setEstadoPagado(1);        
+                    }                    
                     $em->persist($arCredito);
-                }
-                $em->persist($arCredito);
-                $em->persist($arPagoCredito);
-            }
-        }    
+                }    
+            }                         
+        } 
+        
         return $validar;
         
     }

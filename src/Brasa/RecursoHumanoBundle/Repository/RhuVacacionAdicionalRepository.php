@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RhuVacacionAdicionalRepository extends EntityRepository {    
+    
     public function listaDql($codigoVacacion = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT va FROM BrasaRecursoHumanoBundle:RhuVacacionAdicional va WHERE va.codigoVacacionAdicionalPk <> 0";
@@ -20,6 +21,7 @@ class RhuVacacionAdicionalRepository extends EntityRepository {
         $dql .= " ORDER BY va.codigoVacacionAdicionalPk";
         return $dql;
     }     
+    
     public function listaConsultaDql($fechaDesde = "", $fechaHasta = "", $codigoEmpleado = "", $codigoPagoConcepto = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT va FROM BrasaRecursoHumanoBundle:RhuVacacionAdicional va JOIN va.vacacionRel v WHERE va.codigoVacacionAdicionalPk <> 0";        
@@ -31,5 +33,15 @@ class RhuVacacionAdicionalRepository extends EntityRepository {
             $dql .= " AND va.codigoPagoConceptoFk = " . $codigoPagoConcepto;
         }        
         return $dql;
+    }   
+    
+    public function recumenCredito($codigoVacacion) {
+        $em = $this->getEntityManager();                
+        $dql   = "SELECT va.codigoCreditoFk, SUM(va.vrDeduccion) as total FROM BrasaRecursoHumanoBundle:RhuVacacionAdicional va "
+                . "WHERE va.codigoVacacionFk = " . $codigoVacacion . " "
+                . "AND va.codigoCreditoFk IS NOT NULL GROUP BY va.codigoCreditoFk";
+        $query = $em->createQuery($dql);
+        $arrCredito = $query->getResult();
+        return $arrCredito;        
     }    
 }

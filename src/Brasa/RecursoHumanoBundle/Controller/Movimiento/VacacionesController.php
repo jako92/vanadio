@@ -236,8 +236,8 @@ class VacacionesController extends Controller
                 if($arVacacion->getEstadoAutorizado() == 1) {
                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                     $arContrato =  $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arVacacion->getCodigoContratoFk());
-                    $validar = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->pagar($codigoVacacion);
-                    if ($validar == ''){
+                    $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->pagar($codigoVacacion);
+                    if ($respuesta == ''){
                         $arContrato->setFechaUltimoPagoVacaciones($arVacacion->getFechaHastaPeriodo());
                         $arVacacion->setEstadoPagoGenerado(1);
                         $em->persist($arContrato);
@@ -245,7 +245,7 @@ class VacacionesController extends Controller
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     } else {
-                        $objMensaje->Mensaje("error", "Una de las deducciones de creditos es mayor al saldo pendiente, por favor verifique los creditos del empleado");
+                        $objMensaje->Mensaje("error", $respuesta);
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     }
                 } else {
