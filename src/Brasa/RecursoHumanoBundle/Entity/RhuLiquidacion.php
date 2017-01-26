@@ -353,6 +353,11 @@ class RhuLiquidacion
     private $diasAusentismoPropuesto = 0;     
     
     /**
+     * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer")
+     */    
+    private $codigoProgramacionPagoDetalleFk;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="liquidacionesEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
@@ -2176,5 +2181,29 @@ class RhuLiquidacion
     public function getDiasPrimasAusentismo()
     {
         return $this->diasPrimasAusentismo;
+    }
+
+    /**
+     * Set codigoProgramacionPagoDetalleFk
+     *
+     * @param integer $codigoProgramacionPagoDetalleFk
+     *
+     * @return RhuLiquidacion
+     */
+    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk)
+    {
+        $this->codigoProgramacionPagoDetalleFk = $codigoProgramacionPagoDetalleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoProgramacionPagoDetalleFk
+     *
+     * @return integer
+     */
+    public function getCodigoProgramacionPagoDetalleFk()
+    {
+        return $this->codigoProgramacionPagoDetalleFk;
     }
 }

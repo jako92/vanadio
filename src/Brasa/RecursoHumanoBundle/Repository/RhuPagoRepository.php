@@ -61,14 +61,14 @@ class RhuPagoRepository extends EntityRepository {
                     $arPagoDetalleAct->setPension(0);                    
                     $em->persist($arPagoDetalleAct);
                 }
-                $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                
+                /*$arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                
                 $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arPago->getCodigoProgramacionPagoDetalleFk()); 
                 if($arProgramacionPagoDetalle) {
                     if($arPago->getCodigoPagoTipoFk() == 3) {
                         $arProgramacionPagoDetalle->setVrInteresCesantia(0);                        
                     }
                     $em->persist($arProgramacionPagoDetalle);
-                }
+                }*/
                 $em->flush();
             } else {
                 $respuesta = "El pago no puede estar anulado para anularse";

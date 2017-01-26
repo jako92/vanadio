@@ -77,6 +77,7 @@
                 <th>DÍAS</th>       
                 <th>D_AUS</th>
                 <th>INTERES</th>
+                <th>INTERES_P</th>
                 <th>NETO</th>
                 <th></th>
                 <th></th>
@@ -96,6 +97,7 @@
                 <td style="text-align: right">{{ arProgramacionPagoDetalles.dias | number_format(0, '.', ',') }}</td>                
                 <td style="text-align: right">{{ arProgramacionPagoDetalles.diasAusentismo | number_format(0, '.', ',') }}</td>                
                 <td style="text-align: right">{{ arProgramacionPagoDetalles.vrInteresCesantia | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arProgramacionPagoDetalles.vrInteresCesantiaPagado | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arProgramacionPagoDetalles.vrNetoPagar | number_format(0, '.', ',') }}</td>
                 <td>{% if permisoParametros %} <a class="btn btn-default btn-xs" id="{{ path('brs_rhu_movimiento_programacion_pago_detalle_parametros_cesantia', { 'codigoProgramacionPagoDetalle': arProgramacionPagoDetalles.codigoProgramacionPagoDetallePk }) }}" style="float:left">...</a>{% endif %}</td>
                 <td><a href="javascript:abrirVentana3('{{ path('brs_rhu_programacion_pago_resumen_turno_ver', {'codigoProgramacionPagoDetalle': arProgramacionPagoDetalles.codigoProgramacionPagoDetallePk }) }}', 'VerDetalleSoportePago', 600, 1000)"><img src="{{ asset('imagenes/bootstrap/glyphicons_090_table.png') }}" width=20 height=20 title="Ver"></a></td>               

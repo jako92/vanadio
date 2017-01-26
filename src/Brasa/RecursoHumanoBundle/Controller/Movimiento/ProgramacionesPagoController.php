@@ -944,7 +944,12 @@ class ProgramacionesPagoController extends Controller
                 $arPagoAdicional->setPermanente(0);
                 $arPagoAdicional->setFechaCreacion(new \DateTime('now'));
                 $arPagoAdicional->setFechaUltimaEdicion(new \DateTime('now'));
-                $em->persist($arPagoAdicional);                                             
+                $em->persist($arPagoAdicional);   
+                $arProgramacionPagoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
+                $arProgramacionPagoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arProgramacionPagoDetalle->getCodigoProgramacionPagoDetallePk());                
+                $arProgramacionPagoDetalleAct->setVrInteresCesantiaPagado($arProgramacionPagoDetalle->getVrInteresCesantia());
+                $arProgramacionPagoDetalleAct->setVrInteresCesantia(0);
+                $em->persist($arProgramacionPagoDetalleAct);                
             }          
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_programaciones_pago_detalle_cesantia', array('codigoProgramacionPago' => $codigoProgramacionPago)));

@@ -283,6 +283,11 @@ class RhuProgramacionPagoDetalle
      * @ORM\Column(name="vr_interes_cesantia", type="float")
      */
     private $vrInteresCesantia = 0;     
+
+    /**
+     * @ORM\Column(name="vr_interes_cesantia_pagado", type="float")
+     */
+    private $vrInteresCesantiaPagado = 0;
     
     /**
      * @ORM\Column(name="dias_ausentismo", type="integer")
@@ -1811,5 +1816,29 @@ class RhuProgramacionPagoDetalle
     public function getVrInteresCesantia()
     {
         return $this->vrInteresCesantia;
+    }
+
+    /**
+     * Set vrInteresCesantiaPagado
+     *
+     * @param float $vrInteresCesantiaPagado
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrInteresCesantiaPagado($vrInteresCesantiaPagado)
+    {
+        $this->vrInteresCesantiaPagado = $vrInteresCesantiaPagado;
+
+        return $this;
+    }
+
+    /**
+     * Get vrInteresCesantiaPagado
+     *
+     * @return float
+     */
+    public function getVrInteresCesantiaPagado()
+    {
+        return $this->vrInteresCesantiaPagado;
     }
 }

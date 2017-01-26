@@ -97,6 +97,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $diasCesantiaAusentismoAnterior = $arProgramacionPagoDetalle->getDiasAusentismo();
                         $salarioPromedioCesantiasAnterior = $arProgramacionPagoDetalle->getVrSalarioCesantia();
                         $fechaUltimoPago = $arProgramacionPagoDetalle->getFechaDesde();
+                        $arLiquidacion->setCodigoProgramacionPagoDetalleFk($arPago->getCodigoProgramacionPagoDetalleFk());
                     }
                 }
                 $arLiquidacion->setDiasCesantiasAnterior($diasCesantiaAnterior);                
@@ -107,68 +108,79 @@ class RhuLiquidacionRepository extends EntityRepository {
                 $arLiquidacion->setFechaUltimoPagoCesantiasAnterior($fechaUltimoPago);       
                 $dateFechaDesde = $arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias();            
                 $dateFechaHasta = $arLiquidacion->getContratoRel()->getFechaHasta();
-                $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();  
-                $ibpCesantiasInicial = round($ibpCesantiasInicial);
-                $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
-                $ibpCesantias += $ibpCesantiasInicial+$douIBPAdicional;                  
-                $ibpCesantias = round($ibpCesantias);
-                $intDiasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                            
-                $intDiasAusentismo += $arLiquidacion->getDiasAusentismoAdicional();
-                if($arLiquidacion->getDiasAusentismoPropuesto() > 0) {
-                    $intDiasAusentismo = $arLiquidacion->getDiasAusentismoPropuesto();
-                }
-                if($arLiquidacion->getEliminarAusentismo() > 0) {
-                    $intDiasAusentismo = 0;
-                }
-                $intDiasCesantias = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);                  
-                if($arContrato->getCodigoSalarioTipoFk() == 2) {
-                    $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
-                } else {                                        
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
-                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
-                    } else {
-                        $salarioPromedioCesantias = $douSalario;
-                    }                                            
-                }
-                if($arLiquidacion->getPorcentajeIbp() > 0) {
-                    $salarioPromedioCesantias = ($salarioPromedioCesantias * $arLiquidacion->getPorcentajeIbp())/100;
-                }
-                if($arLiquidacion->getLiquidarSalario() == true) {
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
-                        $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
-                    } else {
-                        $salarioPromedioCesantias = $douSalario;
+                if($dateFechaHasta > $dateFechaDesde) {
+                    $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();  
+                    $ibpCesantiasInicial = round($ibpCesantiasInicial);
+                    $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
+                    $ibpCesantias += $ibpCesantiasInicial+$douIBPAdicional;                  
+                    $ibpCesantias = round($ibpCesantias);
+                    $intDiasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                            
+                    $intDiasAusentismo += $arLiquidacion->getDiasAusentismoAdicional();
+                    if($arLiquidacion->getDiasAusentismoPropuesto() > 0) {
+                        $intDiasAusentismo = $arLiquidacion->getDiasAusentismoPropuesto();
                     }
-                    
+                    if($arLiquidacion->getEliminarAusentismo() > 0) {
+                        $intDiasAusentismo = 0;
+                    }
+                    $intDiasCesantias = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);                  
+                    if($arContrato->getCodigoSalarioTipoFk() == 2) {
+                        $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
+                    } else {                                        
+                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                            $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                        } else {
+                            $salarioPromedioCesantias = $douSalario;
+                        }                                            
+                    }
+                    if($arLiquidacion->getPorcentajeIbp() > 0) {
+                        $salarioPromedioCesantias = ($salarioPromedioCesantias * $arLiquidacion->getPorcentajeIbp())/100;
+                    }
+                    if($arLiquidacion->getLiquidarSalario() == true) {
+                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                            $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
+                        } else {
+                            $salarioPromedioCesantias = $douSalario;
+                        }                    
+                    }
+
+                    //No se puede liquidar por menos del minimo
+                    $salarioPromedioMinimo = $salarioMinimo;
+                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        $salarioPromedioMinimo += $auxilioTransporte;
+                    }
+                    if($salarioPromedioCesantias < $salarioPromedioMinimo) {
+                        $salarioPromedioCesantias = $salarioPromedioMinimo;
+                    }
+
+                    if($arLiquidacion->getVrSalarioCesantiasPropuesto() > 0) {
+                        $salarioPromedioCesantias = $arLiquidacion->getVrSalarioCesantiasPropuesto();
+                    }        
+                    $salarioPromedioCesantias = round($salarioPromedioCesantias);
+                    $intDiasCesantias = $intDiasCesantias - $intDiasAusentismo;
+                    $douCesantias = ($salarioPromedioCesantias * $intDiasCesantias) / 360; 
+                    $douCesantias = round($douCesantias);
+                    $floPorcentajeIntereses = (($intDiasCesantias * 12) / 360)/100;
+                    $douInteresesCesantias = $douCesantias * $floPorcentajeIntereses;
+                    $douInteresesCesantias = round($douInteresesCesantias);
+                    $arLiquidacion->setFechaUltimoPagoCesantias($dateFechaDesde);
+                    $arLiquidacion->setDiasCesantias($intDiasCesantias);                
+                    $arLiquidacion->setVrCesantias($douCesantias);
+                    $arLiquidacion->setVrInteresesCesantias($douInteresesCesantias);                 
+                    $arLiquidacion->setVrIngresoBasePrestacionCesantias($ibpCesantias);
+                    $arLiquidacion->setVrIngresoBasePrestacionCesantiasInicial($ibpCesantiasInicial); 
+                    $arLiquidacion->setVrSalarioPromedioCesantias($salarioPromedioCesantias);
+                    $arLiquidacion->setDiasCesantiasAusentismo($intDiasAusentismo);                    
+                } else {
+                    $arLiquidacion->setDiasCesantias(0);                
+                    $arLiquidacion->setVrCesantias(0);
+                    $arLiquidacion->setVrInteresesCesantias(0);                 
+                    $arLiquidacion->setVrIngresoBasePrestacionCesantias(0);
+                    $arLiquidacion->setVrIngresoBasePrestacionCesantiasInicial(0); 
+                    $arLiquidacion->setVrSalarioPromedioCesantias(0);
+                    $arLiquidacion->setDiasCesantiasAusentismo(0); 
+                    $arLiquidacion->setFechaUltimoPagoCesantias($arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias());
+                    $arLiquidacion->setFechaUltimoPagoCesantiasAnterior($arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias());                    
                 }
-                
-                //No se puede liquidar por menos del minimo
-                $salarioPromedioMinimo = $salarioMinimo;
-                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
-                    $salarioPromedioMinimo += $auxilioTransporte;
-                }
-                if($salarioPromedioCesantias < $salarioPromedioMinimo) {
-                    $salarioPromedioCesantias = $salarioPromedioMinimo;
-                }
-                
-                if($arLiquidacion->getVrSalarioCesantiasPropuesto() > 0) {
-                    $salarioPromedioCesantias = $arLiquidacion->getVrSalarioCesantiasPropuesto();
-                }        
-                $salarioPromedioCesantias = round($salarioPromedioCesantias);
-                $intDiasCesantias = $intDiasCesantias - $intDiasAusentismo;
-                $douCesantias = ($salarioPromedioCesantias * $intDiasCesantias) / 360; 
-                $douCesantias = round($douCesantias);
-                $floPorcentajeIntereses = (($intDiasCesantias * 12) / 360)/100;
-                $douInteresesCesantias = $douCesantias * $floPorcentajeIntereses;
-                $douInteresesCesantias = round($douInteresesCesantias);
-                $arLiquidacion->setFechaUltimoPagoCesantias($dateFechaDesde);
-                $arLiquidacion->setDiasCesantias($intDiasCesantias);                
-                $arLiquidacion->setVrCesantias($douCesantias);
-                $arLiquidacion->setVrInteresesCesantias($douInteresesCesantias);                 
-                $arLiquidacion->setVrIngresoBasePrestacionCesantias($ibpCesantias);
-                $arLiquidacion->setVrIngresoBasePrestacionCesantiasInicial($ibpCesantiasInicial); 
-                $arLiquidacion->setVrSalarioPromedioCesantias($salarioPromedioCesantias);
-                $arLiquidacion->setDiasCesantiasAusentismo($intDiasAusentismo);
             } else {                
                 $arLiquidacion->setDiasCesantias(0);                
                 $arLiquidacion->setVrCesantias(0);
@@ -399,11 +411,19 @@ class RhuLiquidacionRepository extends EntityRepository {
                 if ($arCredito->getSaldo() <= 0){
                     $arCredito->setEstadoPagado(1);        
                     $em->persist($arCredito);
-                }        
+                }                  
+                if($arLiquidacion->getCodigoProgramacionPagoDetalleFk()) {
+                    $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                                                            
+                    $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arLiquidacion->getCodigoProgramacionPagoDetalleFk());                                    
+                    $arProgramacionPagoDetalle->setVrInteresCesantiaPagado($arProgramacionPagoDetalle->getVrInteresCesantia());                    
+                    $em->persist($arProgramacionPagoDetalle);
+                }
                 $em->flush($arCredito);
                 $em->persist($arPagoCredito);
             }
         }    
+        
+        
         return $validar;
         
     }
