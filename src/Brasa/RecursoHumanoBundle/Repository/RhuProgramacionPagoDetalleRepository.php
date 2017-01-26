@@ -177,6 +177,13 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
 
                 $intHorasLaboradas = $intHorasLaboradas - $intHorasProcesarLicencia;                                                                    
                 $douPagoDetalle = $intHorasProcesarLicencia * $douVrHora;
+                if($arConfiguracion->getPagarLicenciaSalarioPactado()){                    
+                    $devengadoPactado = $arContrato->getVrDevengadoPactado();
+                    if($devengadoPactado > 0) {
+                        $vrHoraDevengadoPactado = $devengadoPactado / 30 / 8;
+                        $douPagoDetalle = $intHorasProcesarLicencia * $vrHoraDevengadoPactado;
+                    } 
+                }
                 $douIngresoBasePrestacional = $douIngresoBasePrestacional + $douPagoDetalle;                                        
                 $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                    
                 if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {

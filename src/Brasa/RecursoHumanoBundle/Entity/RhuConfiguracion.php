@@ -383,6 +383,11 @@ class RhuConfiguracion
     private $codigoEmpresaArdid = 0;    
     
     /**
+     * @ORM\Column(name="pagar_licencia_salario_pactado", type="boolean")
+     */
+    private $pagarLicenciaSalarioPactado = false;    
+    
+    /**
      * Set codigoConfiguracionPk
      *
      * @param integer $codigoConfiguracionPk
@@ -2108,5 +2113,29 @@ class RhuConfiguracion
     public function getCodigoEmpresaArdid()
     {
         return $this->codigoEmpresaArdid;
+    }
+
+    /**
+     * Set pagarLicenciaSalarioPactado
+     *
+     * @param boolean $pagarLicenciaSalarioPactado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setPagarLicenciaSalarioPactado($pagarLicenciaSalarioPactado)
+    {
+        $this->pagarLicenciaSalarioPactado = $pagarLicenciaSalarioPactado;
+
+        return $this;
+    }
+
+    /**
+     * Get pagarLicenciaSalarioPactado
+     *
+     * @return boolean
+     */
+    public function getPagarLicenciaSalarioPactado()
+    {
+        return $this->pagarLicenciaSalarioPactado;
     }
 }
