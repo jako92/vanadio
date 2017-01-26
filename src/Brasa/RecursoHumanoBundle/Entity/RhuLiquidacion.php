@@ -353,12 +353,12 @@ class RhuLiquidacion
     private $diasAusentismoPropuesto = 0;     
     
     /**
-     * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer")
+     * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer", nullable=true)
      */    
     private $codigoProgramacionPagoDetalleFk;    
 
     /**
-     * @ORM\Column(name="codigo_pago_fk", type="integer")
+     * @ORM\Column(name="codigo_pago_fk", type="integer", nullable=true)
      */    
     private $codigoPagoFk;
     
@@ -657,6 +657,54 @@ class RhuLiquidacion
     }
 
     /**
+     * Set vrCesantiasAnterior
+     *
+     * @param float $vrCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrCesantiasAnterior($vrCesantiasAnterior)
+    {
+        $this->VrCesantiasAnterior = $vrCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrCesantiasAnterior()
+    {
+        return $this->VrCesantiasAnterior;
+    }
+
+    /**
+     * Set vrInteresesCesantiasAnterior
+     *
+     * @param float $vrInteresesCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior)
+    {
+        $this->VrInteresesCesantiasAnterior = $vrInteresesCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrInteresesCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrInteresesCesantiasAnterior()
+    {
+        return $this->VrInteresesCesantiasAnterior;
+    }
+
+    /**
      * Set vrPrima
      *
      * @param float $vrPrima
@@ -825,6 +873,54 @@ class RhuLiquidacion
     }
 
     /**
+     * Set diasCesantiasAnterior
+     *
+     * @param integer $diasCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasCesantiasAnterior($diasCesantiasAnterior)
+    {
+        $this->diasCesantiasAnterior = $diasCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get diasCesantiasAnterior
+     *
+     * @return integer
+     */
+    public function getDiasCesantiasAnterior()
+    {
+        return $this->diasCesantiasAnterior;
+    }
+
+    /**
+     * Set diasCesantiasAusentismoAnterior
+     *
+     * @param integer $diasCesantiasAusentismoAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior)
+    {
+        $this->diasCesantiasAusentismo_anterior = $diasCesantiasAusentismoAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get diasCesantiasAusentismoAnterior
+     *
+     * @return integer
+     */
+    public function getDiasCesantiasAusentismoAnterior()
+    {
+        return $this->diasCesantiasAusentismo_anterior;
+    }
+
+    /**
      * Set diasVacaciones
      *
      * @param integer $diasVacaciones
@@ -894,6 +990,30 @@ class RhuLiquidacion
     public function getDiasPrimas()
     {
         return $this->diasPrimas;
+    }
+
+    /**
+     * Set diasPrimasAusentismo
+     *
+     * @param integer $diasPrimasAusentismo
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasPrimasAusentismo($diasPrimasAusentismo)
+    {
+        $this->diasPrimasAusentismo = $diasPrimasAusentismo;
+
+        return $this;
+    }
+
+    /**
+     * Get diasPrimasAusentismo
+     *
+     * @return integer
+     */
+    public function getDiasPrimasAusentismo()
+    {
+        return $this->diasPrimasAusentismo;
     }
 
     /**
@@ -1209,6 +1329,30 @@ class RhuLiquidacion
     }
 
     /**
+     * Set vrSalarioPromedioCesantiasAnterior
+     *
+     * @param float $vrSalarioPromedioCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior)
+    {
+        $this->VrSalarioPromedioCesantiasAnterior = $vrSalarioPromedioCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioPromedioCesantiasAnterior
+     *
+     * @return float
+     */
+    public function getVrSalarioPromedioCesantiasAnterior()
+    {
+        return $this->VrSalarioPromedioCesantiasAnterior;
+    }
+
+    /**
      * Set vrSalarioPromedioPrimas
      *
      * @param float $vrSalarioPromedioPrimas
@@ -1422,6 +1566,30 @@ class RhuLiquidacion
     public function getFechaUltimoPagoCesantias()
     {
         return $this->fechaUltimoPagoCesantias;
+    }
+
+    /**
+     * Set fechaUltimoPagoCesantiasAnterior
+     *
+     * @param \DateTime $fechaUltimoPagoCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior)
+    {
+        $this->fechaUltimoPagoCesantiasAnterior = $fechaUltimoPagoCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaUltimoPagoCesantiasAnterior
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltimoPagoCesantiasAnterior()
+    {
+        return $this->fechaUltimoPagoCesantiasAnterior;
     }
 
     /**
@@ -1833,6 +2001,78 @@ class RhuLiquidacion
     }
 
     /**
+     * Set diasAusentismoPropuesto
+     *
+     * @param integer $diasAusentismoPropuesto
+     *
+     * @return RhuLiquidacion
+     */
+    public function setDiasAusentismoPropuesto($diasAusentismoPropuesto)
+    {
+        $this->diasAusentismoPropuesto = $diasAusentismoPropuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get diasAusentismoPropuesto
+     *
+     * @return integer
+     */
+    public function getDiasAusentismoPropuesto()
+    {
+        return $this->diasAusentismoPropuesto;
+    }
+
+    /**
+     * Set codigoProgramacionPagoDetalleFk
+     *
+     * @param integer $codigoProgramacionPagoDetalleFk
+     *
+     * @return RhuLiquidacion
+     */
+    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk)
+    {
+        $this->codigoProgramacionPagoDetalleFk = $codigoProgramacionPagoDetalleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoProgramacionPagoDetalleFk
+     *
+     * @return integer
+     */
+    public function getCodigoProgramacionPagoDetalleFk()
+    {
+        return $this->codigoProgramacionPagoDetalleFk;
+    }
+
+    /**
+     * Set codigoPagoFk
+     *
+     * @param integer $codigoPagoFk
+     *
+     * @return RhuLiquidacion
+     */
+    public function setCodigoPagoFk($codigoPagoFk)
+    {
+        $this->codigoPagoFk = $codigoPagoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPagoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPagoFk()
+    {
+        return $this->codigoPagoFk;
+    }
+
+    /**
      * Set empleadoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
@@ -1994,245 +2234,5 @@ class RhuLiquidacion
     public function getPagosBancosDetallesLiquidacionRel()
     {
         return $this->pagosBancosDetallesLiquidacionRel;
-    }
-
-    /**
-     * Set diasAusentismoPropuesto
-     *
-     * @param integer $diasAusentismoPropuesto
-     *
-     * @return RhuLiquidacion
-     */
-    public function setDiasAusentismoPropuesto($diasAusentismoPropuesto)
-    {
-        $this->diasAusentismoPropuesto = $diasAusentismoPropuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get diasAusentismoPropuesto
-     *
-     * @return integer
-     */
-    public function getDiasAusentismoPropuesto()
-    {
-        return $this->diasAusentismoPropuesto;
-    }
-
-    /**
-     * Set vrCesantiasAnterior
-     *
-     * @param float $vrCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setVrCesantiasAnterior($vrCesantiasAnterior)
-    {
-        $this->VrCesantiasAnterior = $vrCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrCesantiasAnterior()
-    {
-        return $this->VrCesantiasAnterior;
-    }
-
-    /**
-     * Set vrInteresesCesantiasAnterior
-     *
-     * @param float $vrInteresesCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior)
-    {
-        $this->VrInteresesCesantiasAnterior = $vrInteresesCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrInteresesCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrInteresesCesantiasAnterior()
-    {
-        return $this->VrInteresesCesantiasAnterior;
-    }
-
-    /**
-     * Set diasCesantiasAnterior
-     *
-     * @param integer $diasCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setDiasCesantiasAnterior($diasCesantiasAnterior)
-    {
-        $this->diasCesantiasAnterior = $diasCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get diasCesantiasAnterior
-     *
-     * @return integer
-     */
-    public function getDiasCesantiasAnterior()
-    {
-        return $this->diasCesantiasAnterior;
-    }
-
-    /**
-     * Set diasCesantiasAusentismoAnterior
-     *
-     * @param integer $diasCesantiasAusentismoAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior)
-    {
-        $this->diasCesantiasAusentismo_anterior = $diasCesantiasAusentismoAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get diasCesantiasAusentismoAnterior
-     *
-     * @return integer
-     */
-    public function getDiasCesantiasAusentismoAnterior()
-    {
-        return $this->diasCesantiasAusentismo_anterior;
-    }
-
-    /**
-     * Set fechaUltimoPagoCesantiasAnterior
-     *
-     * @param \DateTime $fechaUltimoPagoCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior)
-    {
-        $this->fechaUltimoPagoCesantiasAnterior = $fechaUltimoPagoCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaUltimoPagoCesantiasAnterior
-     *
-     * @return \DateTime
-     */
-    public function getFechaUltimoPagoCesantiasAnterior()
-    {
-        return $this->fechaUltimoPagoCesantiasAnterior;
-    }
-
-    /**
-     * Set vrSalarioPromedioCesantiasAnterior
-     *
-     * @param float $vrSalarioPromedioCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior)
-    {
-        $this->VrSalarioPromedioCesantiasAnterior = $vrSalarioPromedioCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioPromedioCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrSalarioPromedioCesantiasAnterior()
-    {
-        return $this->VrSalarioPromedioCesantiasAnterior;
-    }
-
-    /**
-     * Set diasPrimasAusentismo
-     *
-     * @param integer $diasPrimasAusentismo
-     *
-     * @return RhuLiquidacion
-     */
-    public function setDiasPrimasAusentismo($diasPrimasAusentismo)
-    {
-        $this->diasPrimasAusentismo = $diasPrimasAusentismo;
-
-        return $this;
-    }
-
-    /**
-     * Get diasPrimasAusentismo
-     *
-     * @return integer
-     */
-    public function getDiasPrimasAusentismo()
-    {
-        return $this->diasPrimasAusentismo;
-    }
-
-    /**
-     * Set codigoProgramacionPagoDetalleFk
-     *
-     * @param integer $codigoProgramacionPagoDetalleFk
-     *
-     * @return RhuLiquidacion
-     */
-    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk)
-    {
-        $this->codigoProgramacionPagoDetalleFk = $codigoProgramacionPagoDetalleFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoProgramacionPagoDetalleFk
-     *
-     * @return integer
-     */
-    public function getCodigoProgramacionPagoDetalleFk()
-    {
-        return $this->codigoProgramacionPagoDetalleFk;
-    }
-
-    /**
-     * Set codigoPagoFk
-     *
-     * @param integer $codigoPagoFk
-     *
-     * @return RhuLiquidacion
-     */
-    public function setCodigoPagoFk($codigoPagoFk)
-    {
-        $this->codigoPagoFk = $codigoPagoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPagoFk
-     *
-     * @return integer
-     */
-    public function getCodigoPagoFk()
-    {
-        return $this->codigoPagoFk;
     }
 }
