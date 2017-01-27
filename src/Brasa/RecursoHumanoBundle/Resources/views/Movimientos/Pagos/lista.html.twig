@@ -1,7 +1,7 @@
-{% extends '::base.html.twig' %}
+{% extends '::base2.html.twig' %}
 {% block title %}Pagos lista - Soga App{% endblock %}
 {% block content %}
-<div class="container">
+
     <script type="text/javascript">
             $(document).ready(function() {
             $('.date').datepicker({ dateFormat: 'yy-mm-dd' ,dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" ], monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]})  });
@@ -131,5 +131,5 @@
         {{ form_rest(form) }}
     {{ form_end(form) }}
 
-</div>
+
 {% endblock %}

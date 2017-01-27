@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::base2.html.twig' %}
 {% block title %}Pagos detalle - Soga App{% endblock %}
 {% block content %}
 <script>
@@ -7,9 +7,9 @@
         $(this).tab('show');
     })
 </script>
-<div class="container">
+
     <div class="page-header">
-        <h3>Pago</h3>
+        <h3>Pago detalle</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
@@ -229,5 +229,4 @@
     </div>
         {{ form_rest(form) }}
     {{ form_end(form) }}
-</div>
 {% endblock %}
