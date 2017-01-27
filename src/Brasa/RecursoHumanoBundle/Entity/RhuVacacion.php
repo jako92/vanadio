@@ -108,6 +108,11 @@ class RhuVacacion
     private $diasPeriodo = 0;    
     
     /**
+     * @ORM\Column(name="meses_periodo", type="float")
+     */
+    private $mesesPeriodo = 0;    
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;
@@ -215,6 +220,7 @@ class RhuVacacion
      */
     protected $pagosBancosDetallesVacacionRel;    
     
+
 
     /**
      * Constructor
@@ -665,6 +671,30 @@ class RhuVacacion
     public function getDiasPeriodo()
     {
         return $this->diasPeriodo;
+    }
+
+    /**
+     * Set mesesPeriodo
+     *
+     * @param float $mesesPeriodo
+     *
+     * @return RhuVacacion
+     */
+    public function setMesesPeriodo($mesesPeriodo)
+    {
+        $this->mesesPeriodo = $mesesPeriodo;
+
+        return $this;
+    }
+
+    /**
+     * Get mesesPeriodo
+     *
+     * @return float
+     */
+    public function getMesesPeriodo()
+    {
+        return $this->mesesPeriodo;
     }
 
     /**

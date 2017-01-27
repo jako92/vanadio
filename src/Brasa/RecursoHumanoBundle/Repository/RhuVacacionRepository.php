@@ -62,9 +62,16 @@ class RhuVacacionRepository extends EntityRepository {
         $fechaHastaPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestacionesHasta($intDias, $fechaDesdePeriodo);
         $arVacacion->setFechaDesdePeriodo($fechaDesdePeriodo);
         $arVacacion->setFechaHastaPeriodo($fechaHastaPeriodo);                        
+        //365 dias reales 
         $interval = date_diff($fechaDesdePeriodo, $fechaHastaPeriodo);
         $diasPeriodo = $interval->format('%a');        
+        
+        //360 dias para que de 12 meses
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        $diasPeriodo = $objFunciones->diasPrestaciones($fechaDesdePeriodo, $fechaHastaPeriodo);  
+        $mesesPeriodo = $diasPeriodo / 30;        
         $arVacacion->setDiasPeriodo($diasPeriodo);
+        $arVacacion->setMesesPeriodo($mesesPeriodo);
         $intDias = $arVacacion->getDiasVacaciones();
         $floSalario = $arVacacion->getEmpleadoRel()->getVrSalario();        
         //Analizar cambios de salario
@@ -87,7 +94,7 @@ class RhuVacacionRepository extends EntityRepository {
         $recargosNocturnosInicial = $arContrato->getPromedioRecargoNocturnoInicial();
         $arVacacion->setVrRecargoNocturnoInicial($recargosNocturnosInicial);
         $recargosNocturnosTotal = $recargosNocturnos + $recargosNocturnosInicial;        
-        $promedioRecargosNocturnosTotal = $recargosNocturnosTotal / ($diasPeriodo / 30);
+        $promedioRecargosNocturnosTotal = $recargosNocturnosTotal / $mesesPeriodo;
         $promedioRecargosNocturnosTotal = round($promedioRecargosNocturnosTotal);
 
         $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnosTotal);
