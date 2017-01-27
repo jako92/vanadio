@@ -1118,7 +1118,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_movimiento_cuentacobrar_listar') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1130,7 +1130,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_movimiento_anticipo_listar') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1142,7 +1142,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li><a href="{{ path('brs_cartera_movimiento_recibo_listar') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>
@@ -1154,7 +1154,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_movimiento_notacredito_listar') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1166,7 +1166,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_movimiento_notadebito_listar') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1187,7 +1187,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_cuentacobrar_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1199,9 +1199,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Resumen</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_anticipo_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_anticipo_resumen') }}"><i class="fa fa-circle-o"></i> Resumen</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_anticipo_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1213,9 +1213,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Resumen</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_recibo_resumen') }}"><i class="fa fa-circle-o"></i> Resumen</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_recibo_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_recibo_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1227,8 +1227,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_notacredito_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_notacredito_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1240,8 +1240,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_notadebito_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_cartera_consulta_notadebito_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>                                              
@@ -1255,7 +1255,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Cliente</a></li>
+                            <li><a href="{{ path('brs_cartera_base_cliente_listar') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
                             <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> General
                                     <span class="pull-right-container">
@@ -1263,10 +1263,10 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo recibo</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo cuenta cobro</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto nota credito</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto nota debito</a></li>                                                                        
+                                    <li><a href="{{ path('brs_cartera_base_recibo_tipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo recibo</a></li>
+                                    <li><a href="{{ path('brs_cartera_base_cuentacobrar_tipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo cuenta cobro</a></li>
+                                    <li><a href="{{ path('brs_cartera_base_notacredito_concepto_listar') }}"><i class="fa fa-circle-o"></i> Concepto nota credito</a></li>
+                                    <li><a href="{{ path('brs_cartera_base_notadebito_concepto_listar') }}"><i class="fa fa-circle-o"></i> Concepto nota debito</a></li>                                                                        
                                 </ul>
                             </li>                            
 
