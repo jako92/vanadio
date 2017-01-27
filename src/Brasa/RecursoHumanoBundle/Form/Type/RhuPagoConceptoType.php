@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class RhuPagoConceptoType extends AbstractType
 {
@@ -29,8 +29,8 @@ class RhuPagoConceptoType extends AbstractType
             ->add('generaIngresoBaseCotizacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('operacion', NumberType::class, array('required' => true))
             ->add('conceptoAdicion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
-            ->add('conceptoIncapacidad', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
-            ->add('conceptoAuxilioTransporte', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('conceptoIncapacidad', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))            
+            ->add('conceptoAuxilioTransporte', CheckboxType::class, array('required'  => false))     
             ->add('codigoCuentaFk', TextType::class, array('required' => true))
             ->add('tipoCuenta', NumberType::class, array('required' => true))    
             ->add('codigoCuentaOperacionFk', TextType::class, array('required' => true))
@@ -38,6 +38,7 @@ class RhuPagoConceptoType extends AbstractType
             ->add('tipoCuentaOperacion', NUmberType::class, array('required' => true))                    
             ->add('conceptoPension', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('conceptoSalud', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
+            ->add('recargoNocturno', CheckboxType::class, array('required'  => false))     
             ->add('provisionIndemnizacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
             ->add('provisionVacacion', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                
             ->add('tipoAdicional', NumberType::class, array('required' => true))

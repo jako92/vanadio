@@ -218,7 +218,8 @@ class PagoDetalleController extends Controller
                     ->setCellValue('T1', 'ZONA')
                     ->setCellValue('U1', 'SUBZONA')
                     ->setCellValue('V1', 'TIPO EMPLEADO')
-                    ->setCellValue('W1', 'C_COSTO');
+                    ->setCellValue('W1', 'C_COSTO')
+                    ->setCellValue('X1', 'VR_EXTRA');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
@@ -253,7 +254,8 @@ class PagoDetalleController extends Controller
                     ->setCellValue('P' . $i, round($arPagoDetalle->getVrIngresoBasePrestacion()))
                     ->setCellValue('Q' . $i, $arPagoDetalle->getCodigoCreditoFk())
                     ->setCellValue('R' . $i, $objFunciones->devuelveBoolean($arPagoDetalle->getPension()))
-                    ->setCellValue('S' . $i, $objFunciones->devuelveBoolean($arPagoDetalle->getSalud()));
+                    ->setCellValue('S' . $i, $objFunciones->devuelveBoolean($arPagoDetalle->getSalud()))
+                    ->setCellValue('X' . $i, $arPagoDetalle->getVrExtra());
             if($arPagoDetalle->getPagoRel()->getEmpleadoRel()->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getZonaRel()->getNombre());
             }

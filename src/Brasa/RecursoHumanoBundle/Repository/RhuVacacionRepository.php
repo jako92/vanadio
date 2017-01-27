@@ -49,7 +49,7 @@ class RhuVacacionRepository extends EntityRepository {
             $fechaDesdePeriodo = $arContrato->getFechaDesde();
         }
         $fechaHastaPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestacionesHasta(360, $fechaDesdePeriodo);
-        $intDias = ($arVacacion->getDiasDisfrutados() + $arVacacion->getDiasPagados()) * 24;
+        $intDias = ($arVacacion->getDiasDisfrutados() + $arVacacion->getDiasPagados()) * 24;        
         $fechaDesdePeriodo = $arContrato->getFechaUltimoPagoVacaciones();
         if ($fechaDesdePeriodo == null){
             $fechaDesdePeriodo = $arContrato->getFechaDesde();
@@ -61,7 +61,10 @@ class RhuVacacionRepository extends EntityRepository {
 
         $fechaHastaPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestacionesHasta($intDias, $fechaDesdePeriodo);
         $arVacacion->setFechaDesdePeriodo($fechaDesdePeriodo);
-        $arVacacion->setFechaHastaPeriodo($fechaHastaPeriodo);        
+        $arVacacion->setFechaHastaPeriodo($fechaHastaPeriodo);                        
+        $interval = date_diff($fechaDesdePeriodo, $fechaHastaPeriodo);
+        $diasPeriodo = $interval->format('%a');        
+        $arVacacion->setDiasPeriodo($diasPeriodo);
         $intDias = $arVacacion->getDiasVacaciones();
         $floSalario = $arVacacion->getEmpleadoRel()->getVrSalario();        
         //Analizar cambios de salario
@@ -73,35 +76,25 @@ class RhuVacacionRepository extends EntityRepository {
         $fechaDesdeRecargos = $arVacacion->getFecha()->format('Y-m-d');
         $nuevafecha = strtotime ( '-365 day' , strtotime ( $fechaDesdeRecargos ) ) ;
         $nuevafecha = date ( 'Y-m-d' , $nuevafecha );        
-        $fechaDesde = date_create($nuevafecha);
-        if($fechaDesde > $arContrato->getFechaDesde()) {            
-            $fechaDesdeRecargos = $nuevafecha;
-            $fechaHastaRecargos = $arVacacion->getFecha()->format('Y-m-d');
-            $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());        
-            $recargosNocturnos = $recargosNocturnos / 12;            
-        } else {
-            $fechaDesdeRecargos = $arContrato->getFechaDesde()->format('Y-m-d');
-            $fechaHastaRecargos = $arVacacion->getFecha()->format('Y-m-d');
-            $interval = date_diff($arContrato->getFechaDesde(), $arVacacion->getFecha()); 
-            $meses = $interval->format('%m');
-            if($meses <= 0) {
-                $meses = 1;
-            }
-            $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());        
-            $recargosNocturnos = $recargosNocturnos / $meses;                         
-        }
-
+        $fechaDesde = date_create($nuevafecha);      
+        
+        $fechaDesdeRecargos = $nuevafecha;
+        $fechaHastaRecargos = $arVacacion->getFecha()->format('Y-m-d');
+        $interval = date_diff($fechaDesdePeriodo, $fechaHastaPeriodo);
+        $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());                    
+             
+        $arVacacion->setVrRecargoNocturno($recargosNocturnos);
         $recargosNocturnosInicial = $arContrato->getPromedioRecargoNocturnoInicial();
-        $promedioRecargosNocturnos = $recargosNocturnosInicial + $recargosNocturnos;
-        if ($promedioRecargosNocturnos == null){
-            $promedioRecargosNocturnos = 0;
-        }
-        $promedioRecargosNocturnos = round($promedioRecargosNocturnos);
-        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnos);
+        $arVacacion->setVrRecargoNocturnoInicial($recargosNocturnosInicial);
+        $recargosNocturnosTotal = $recargosNocturnos + $recargosNocturnosInicial;        
+        $promedioRecargosNocturnosTotal = $recargosNocturnosTotal / ($diasPeriodo / 30);
+        $promedioRecargosNocturnosTotal = round($promedioRecargosNocturnosTotal);
+
+        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnosTotal);
         if($arContrato->getCodigoSalarioTipoFk() == 1) {
             $floSalarioPromedio = $arContrato->getVrSalario();
         } else {            
-            $floSalarioPromedio = $arContrato->getVrSalario() + $promedioRecargosNocturnos;
+            $floSalarioPromedio = $arContrato->getVrSalario() + $promedioRecargosNocturnosTotal;
         }       
         if($arVacacion->getVrSalarioPromedioPropuesto() > 0) {
             $floSalarioPromedio = $arVacacion->getVrSalarioPromedioPropuesto();
