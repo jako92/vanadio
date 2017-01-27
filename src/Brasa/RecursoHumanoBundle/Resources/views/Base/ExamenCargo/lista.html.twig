@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Exámenes cargo lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado exámenes por cargo</h3>
     </div>
@@ -31,15 +30,15 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arExamenesCargos in arExamenesCargos %}
-               <tr>
+        {%for arExamenesCargos in arExamenesCargos %}
+            <tr>
                 <td>{{arExamenesCargos.codigoExamenCargoPk}}</td>
                 <td>{{arExamenesCargos.cargoRel.nombre}}</td>
                 <td>{{arExamenesCargos.examenTipoRel.nombre}}</td>
                 <td><a href="{{ path('brs_rhu_base_examen_cargo_nuevo',{'codigoExamenCargo': arExamenesCargos.codigoExamenCargoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arExamenesCargos.codigoExamenCargoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arExamenesCargos.getTotalItemCount }}</span></div>                        
@@ -60,5 +59,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

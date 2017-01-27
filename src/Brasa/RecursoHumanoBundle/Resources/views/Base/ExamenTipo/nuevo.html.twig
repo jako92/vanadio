@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Exámen tipo nuevo - Soga App{% endblock %} 
 {% block content %}
-<div class="container">    
     {{ form_start(formExamenTipo, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(formExamenTipo) }}
     <h3>Nuevo examen tipo</h3>
@@ -20,12 +19,11 @@
                     {{ form_widget(formExamenTipo.ingreso) }}
                 </div>
             </div>  
-</div>
-</div>
+        </div>
+    </div>
     <div class="modal-footer">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_examentipo_listar') }}">Cancelar</a>
-            {{ form_widget(formExamenTipo.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_examentipo_listar') }}">Cancelar</a>
+        {{ form_widget(formExamenTipo.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>            
     {{ form_end(formExamenTipo) }}
-</div>
 {% endblock %}

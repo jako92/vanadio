@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Elementos dotación lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado elementos dotación</h3>
     </div>
@@ -15,15 +14,15 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arDotacionElementos in arDotacionElementos %}
-               <tr>
+        {%for arDotacionElementos in arDotacionElementos %}
+            <tr>
                 <td>{{arDotacionElementos.codigoDotacionElementoPk}}</td>
                 <td>{{arDotacionElementos.nombre}}</td>
                 <td>{{arDotacionElementos.dotacionElementoTipoRel.nombre}}</td>
                 <td align="center"><a href="{{ path('brs_rhu_base_dotacion_elemento_nuevo',{'codigoDotacionElemento': arDotacionElementos.codigoDotacionElementoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arDotacionElementos.codigoDotacionElementoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Dotación elementos <span class="badge">{{ arDotacionElementos.getTotalItemCount }}</span></div>                        
@@ -44,5 +43,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

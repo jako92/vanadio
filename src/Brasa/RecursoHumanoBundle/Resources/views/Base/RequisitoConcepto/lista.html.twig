@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Requisitos concepto lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado requisitos por concepto</h3>
     </div>
@@ -15,15 +14,15 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arRequisitosConceptos in arRequisitosConceptos %}
-               <tr>
+        {%for arRequisitosConceptos in arRequisitosConceptos %}
+            <tr>
                 <td>{{arRequisitosConceptos.codigoRequisitoConceptoPk}}</td>
                 <td>{{arRequisitosConceptos.nombre}}</td>
                 <td>{% if arRequisitosConceptos.general == 1 %} SI {% else %} NO {% endif %}</td>
                 <td><a href="{{ path('brs_rhu_base_requisito_concepto_nuevo',{'codigoRequisitoConcepto': arRequisitosConceptos.codigoRequisitoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arRequisitosConceptos.codigoRequisitoConceptoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arRequisitosConceptos.getTotalItemCount }}</span></div>                        
@@ -44,5 +43,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

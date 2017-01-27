@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Cargos lista - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">
         <h3>Listado cargos</h3>
     </div>
@@ -34,15 +33,15 @@
             <th></th>
         </tr>
 
-            {%for arCargos in arCargos %}
-               <tr>
+        {%for arCargos in arCargos %}
+            <tr>
                 <td>{{arCargos.codigoCargoPk}}</td>
                 <td>{{arCargos.nombre}}</td>
                 <td>{{arCargos.cargoSupervigilanciaRel.nombre | default('')}}</td>
                 <td><a href="{{ path('brs_rhu_base_cargo_nuevo',{'codigoCargoPk': arCargos.codigoCargoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCargos.codigoCargoPk }}" /></td>
-            {%endfor%}
-            </tr>
+                {%endfor%}
+        </tr>
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Cargos <span class="badge">{{ arCargos.getTotalItemCount }}</span></div>
@@ -63,5 +62,4 @@
     </div>
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

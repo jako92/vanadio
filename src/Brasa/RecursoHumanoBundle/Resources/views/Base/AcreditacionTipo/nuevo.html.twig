@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Tipo acreditacion nuevo - Soga App{% endblock %} 
 {% block content %}
-<div class="container">    
     {{ form_start(formAcreditacionTipo, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(formAcreditacionTipo) }}
     <h3>Nuevo tipo acreditacion</h3>
@@ -39,5 +38,4 @@
             {{ form_widget(formAcreditacionTipo.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>
     {{ form_end(formAcreditacionTipo) }}
-</div>    
 {% endblock %}

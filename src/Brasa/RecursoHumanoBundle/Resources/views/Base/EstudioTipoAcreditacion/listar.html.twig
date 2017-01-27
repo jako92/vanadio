@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Estudio tipo acreditacion lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado estudio tipo acreditacion</h3>
     </div>
@@ -16,16 +15,16 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arEstudioTipoAcreditacion in arEstudioTipoAcreditacion %}
-               <tr>
+        {%for arEstudioTipoAcreditacion in arEstudioTipoAcreditacion %}
+            <tr>
                 <td>{{arEstudioTipoAcreditacion.codigoEstudioTipoAcreditacionPk}}</td>
                 <td>{{arEstudioTipoAcreditacion.codigoEstudioAcreditacion}}</td>
                 <td>{{arEstudioTipoAcreditacion.nombre}}</td>
                 <td>{{arEstudioTipoAcreditacion.cargo}}</td>
                 <td><a href="{{ path('brs_rhu_base_estudiotipoacreditacion_nuevo',{'codigoEstudioTipoAcreditacionPk': arEstudioTipoAcreditacion.codigoEstudioTipoAcreditacionPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arEstudioTipoAcreditacion.codigoEstudioTipoAcreditacionPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Estudio tipos acreditaciones <span class="badge">{{ arEstudioTipoAcreditacion.getTotalItemCount }}</span></div>                        
@@ -46,5 +45,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

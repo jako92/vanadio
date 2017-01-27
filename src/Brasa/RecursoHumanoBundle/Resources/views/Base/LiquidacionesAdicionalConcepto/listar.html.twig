@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Liquidaciones adicionales concepto lista - Soga App{% endblock %}
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado liquidación adicional concepto</h3>
     </div>
@@ -15,15 +14,15 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arLiquidacionesAdicionalConceptos in arLiquidacionesAdicionalConceptos %}
-               <tr>
+        {%for arLiquidacionesAdicionalConceptos in arLiquidacionesAdicionalConceptos %}
+            <tr>
                 <td>{{arLiquidacionesAdicionalConceptos.codigoLiquidacionAdicionalConceptoPk}}</td>
                 <td>{{arLiquidacionesAdicionalConceptos.nombre}}</td>
                 <td>{% if arLiquidacionesAdicionalConceptos.tipo == 1 %}DESCUENTO{% else %}BONIFICACIÓN{% endif %}</td>
                 <td><a href="{{ path('brs_rhu_liquidacion_adicional_concepto_nuevo',{'codigoAdicionalConcepto': arLiquidacionesAdicionalConceptos.codigoLiquidacionAdicionalConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arLiquidacionesAdicionalConceptos.codigoLiquidacionAdicionalConceptoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Liquidación adicional concepto <span class="badge">{{ arLiquidacionesAdicionalConceptos.getTotalItemCount }}</span></div>                        
@@ -44,5 +43,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

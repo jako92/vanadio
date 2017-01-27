@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Licencias tipo listar - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipos de licencias</h3>
     </div>
@@ -17,8 +16,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arLicenciaTipos in arLicenciaTipos %}
-               <tr>
+        {%for arLicenciaTipos in arLicenciaTipos %}
+            <tr>
                 <td>{{arLicenciaTipos.codigoLicenciaTipoPk}}</td>
                 <td>{{arLicenciaTipos.nombre}}</td>
                 <td>{{arLicenciaTipos.pagoConceptoRel.nombre}}</td>
@@ -26,8 +25,8 @@
                 <td>{% if arLicenciaTipos.ausentismo == 1 %}SI{% else %}NO{% endif %}</td>
                 <td><a href="{{ path('brs_rhu_base_licenciatipo_nuevo',{'codigoLicenciaTipoPk': arLicenciaTipos.codigoLicenciaTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arLicenciaTipos.codigoLicenciaTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Licencia Tipos <span class="badge">{{ arLicenciaTipos.getTotalItemCount }}</span></div>                        
@@ -46,5 +45,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Pago concepto lista - Soga App{% endblock %}
 {% block content %}
-    <div class="container">
     <div class="page-header">
         <h3>Listado pago conceptos</h3>
     </div>
@@ -34,8 +33,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arPagoConceptos in arPagoConceptos %}
-               <tr>
+        {%for arPagoConceptos in arPagoConceptos %}
+            <tr>
                 <td>{{arPagoConceptos.codigoPagoConceptoPk}}</td>
                 <td>{{arPagoConceptos.nombre}}</td>
                 <td>{% if arPagoConceptos.componeSalario == 1%} SI {% else %}NO{% endif%}</td>
@@ -60,8 +59,8 @@
                 <td>{% if arPagoConceptos.conceptoFondoSolidaridadPensional == 1%} SI {% else %}NO{% endif%}</td>
                 <td><a href="{{ path('brs_rhu_base_pago_concepto_nuevo',{'codigoPagoConcepto': arPagoConceptos.codigoPagoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagoConceptos.codigoPagoConceptoPk }}" /></td>
-            {%endfor%}
-            </tr>
+                {%endfor%}
+        </tr>
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Pago Conceptos <span class="badge">{{ arPagoConceptos.getTotalItemCount }}</span></div>
@@ -82,5 +81,4 @@
     </div>
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

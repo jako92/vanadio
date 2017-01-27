@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Riesgos profesionales lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado entidades riesgos profesionales</h3>
     </div>
@@ -18,8 +17,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arEntidadesRiesgosProfesionales in arEntidadesRiesgosProfesionales %}
-               <tr>
+        {%for arEntidadesRiesgosProfesionales in arEntidadesRiesgosProfesionales %}
+            <tr>
                 <td>{{arEntidadesRiesgosProfesionales.codigoEntidadRiesgoPk}}</td>
                 <td>{{arEntidadesRiesgosProfesionales.nombre}}</td>
                 <td>{{arEntidadesRiesgosProfesionales.nit}}</td>
@@ -28,8 +27,8 @@
                 <td>{{arEntidadesRiesgosProfesionales.codigoInterface}}</td>
                 <td><a href="{{ path('brs_rhu_base_riesgoProfesional_nuevo',{'codigoEntidadRiesgoProfesionalPk': arEntidadesRiesgosProfesionales.codigoEntidadRiesgoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arEntidadesRiesgosProfesionales.codigoEntidadRiesgoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Entidades riesgos profesionales <span class="badge">{{ arEntidadesRiesgosProfesionales.getTotalItemCount }}</span></div>                        
@@ -51,5 +50,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

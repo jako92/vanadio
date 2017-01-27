@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Desempeño concepto lista - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado de conceptos de gestión del desempeño</h3>
     </div>
@@ -15,15 +14,15 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arDesempenoConceptos in arDesempenoConceptos %}
-               <tr>
+        {%for arDesempenoConceptos in arDesempenoConceptos %}
+            <tr>
                 <td>{{arDesempenoConceptos.codigoDesempenoConceptoPk}}</td>
                 <td>{{arDesempenoConceptos.desempenoConceptoTipoRel().nombre}}</td>
                 <td>{{arDesempenoConceptos.nombre}}</td>
                 <td><a href="{{ path('brs_rhu_base_desempeno_concepto_nuevo',{'codigoDesempenoConcepto': arDesempenoConceptos.codigoDesempenoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arDesempenoConceptos.codigoDesempenoConceptoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Conceptos gestión del desempeño <span class="badge">{{ arDesempenoConceptos.getTotalItemCount }}</span></div>                        
@@ -44,5 +43,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

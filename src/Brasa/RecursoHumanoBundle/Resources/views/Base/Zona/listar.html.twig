@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Zonas lista - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">
         <h3>Listado zonas</h3>
     </div>
@@ -33,14 +32,14 @@
             <th></th>
         </tr>
 
-            {%for arZonas in arZonas %}
-               <tr>
+        {%for arZonas in arZonas %}
+            <tr>
                 <td>{{ arZonas.codigoZonaPk }}</td>
                 <td>{{ arZonas.nombre }}</td>
                 <td><a href="{{ path('brs_rhu_base_zona_nuevo',{'codigoZonaPk': arZonas.codigoZonaPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arZonas.codigoZonaPk }}" /></td>
-            {%endfor%}
-            </tr>
+                {%endfor%}
+        </tr>
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Zonas <span class="badge">{{ arZonas.getTotalItemCount }}</span></div>
@@ -61,5 +60,4 @@
     </div>
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Incapacidad diagnosticos lista - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">
         <h3>Listado incapacidad diagnosticos</h3>
     </div>
@@ -39,15 +38,15 @@
             <th></th>
         </tr>
 
-            {%for arIncapacidadDiagnosticos in arIncapacidadDiagnosticos %}
-               <tr>
+        {%for arIncapacidadDiagnosticos in arIncapacidadDiagnosticos %}
+            <tr>
                 <td>{{ arIncapacidadDiagnosticos.codigoIncapacidadDiagnosticoPk }}</td>
                 <td>{{ arIncapacidadDiagnosticos.nombre }}</td>
                 <td>{{ arIncapacidadDiagnosticos.codigo }}</td>
                 <td><a href="{{ path('brs_rhu_base_incapacidaddiagnostico_nuevo',{'codigoIncapacidadDiagnosticoPk': arIncapacidadDiagnosticos.codigoIncapacidadDiagnosticoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arIncapacidadDiagnosticos.codigoIncapacidadDiagnosticoPk }}" /></td>
-            {%endfor%}
-            </tr>
+                {%endfor%}
+        </tr>
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arIncapacidadDiagnosticos.getTotalItemCount }}</span></div>
@@ -68,5 +67,4 @@
     </div>
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

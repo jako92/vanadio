@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Proceso disciplinario tipo lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipos de procesos disciplinarios</h3>
     </div>
@@ -14,15 +13,15 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arDisciplinarioTipos in arDisciplinarioTipos %}
-               <tr>
+
+        {%for arDisciplinarioTipos in arDisciplinarioTipos %}
+            <tr>
                 <td>{{arDisciplinarioTipos.codigoDisciplinarioTipoPk}}</td>
                 <td>{{arDisciplinarioTipos.nombre}}</td>
                 <td><a href="{{ path('brs_rhu_base_disciplinario_tipo_nuevo',{'codigoDisciplinarioTipo': arDisciplinarioTipos.codigoDisciplinarioTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arDisciplinarioTipos.codigoDisciplinarioTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Disciplinario tipos <span class="badge">{{ arDisciplinarioTipos.getTotalItemCount }}</span></div>                        
@@ -37,9 +36,8 @@
         <div class="btn-group">
             {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}</td>                   
         </div>
-        
+
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

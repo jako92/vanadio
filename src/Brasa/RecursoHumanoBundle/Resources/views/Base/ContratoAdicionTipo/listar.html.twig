@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Contratos adicion tipo lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipos de contratos adicion</h3>
     </div>
@@ -15,15 +14,15 @@
             <th></th>
             <th></th>
         </tr>        
-            {%for arContratosAdicionTipos in arContratosAdicionTipos %}
-               <tr>
+        {%for arContratosAdicionTipos in arContratosAdicionTipos %}
+            <tr>
                 <td>{{arContratosAdicionTipos.codigoContratoAdicionTipoPk}}</td>
                 <td>{{arContratosAdicionTipos.nombre}}</td>
                 <td>{{arContratosAdicionTipos.contratoClaseRel.nombre |default('')}}</td>
                 <td><a href="{{ path('brs_rhu_base_contrato_adicion_tipo_nuevo',{'codigoContratoAdicionTipo': arContratosAdicionTipos.codigoContratoAdicionTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arContratosAdicionTipos.codigoContratoAdicionTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Contrato tipos adicion<span class="badge">{{ arContratosAdicionTipos.getTotalItemCount }}</span></div>                        
@@ -38,9 +37,8 @@
         <div class="btn-group">
             {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}</td>                   
         </div>
-        
+
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

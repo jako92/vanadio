@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Banco lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado entidades bancarias</h3>
     </div>
@@ -20,8 +19,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arBancos in arBancos %}
-               <tr>
+        {%for arBancos in arBancos %}
+            <tr>
                 <td>{{arBancos.codigoBancoPk}}</td>
                 <td>{{arBancos.nombre}}</td>
                 <td>{{arBancos.nit}}</td>
@@ -32,8 +31,8 @@
                 <td>{{arBancos.direccion}}</td>
                 <td><a href="{{ path('brs_rhu_base_banco_nuevo',{'codigoBancoPk': arBancos.codigoBancoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arBancos.codigoBancoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Bancos <span class="badge">{{ arBancos.getTotalItemCount }}</span></div>                        
@@ -55,5 +54,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

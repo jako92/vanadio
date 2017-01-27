@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Tipo acreditacion lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipo acreditacion</h3>
     </div>
@@ -17,8 +16,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arAcreditacionTipo in arAcreditacionTipo %}
-               <tr>
+        {%for arAcreditacionTipo in arAcreditacionTipo %}
+            <tr>
                 <td>{{arAcreditacionTipo.codigoAcreditacionTipoPk}}</td>
                 <td>{{arAcreditacionTipo.codigo}}</td>
                 <td>{{arAcreditacionTipo.nombre}}</td>
@@ -26,8 +25,8 @@
                 <td>{{arAcreditacionTipo.cargoCodigo}}</td>
                 <td><a href="{{ path('brs_rhu_base_acreditacion_tipo_nuevo',{'codigoAcreditacionTipoPk': arAcreditacionTipo.codigoAcreditacionTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arAcreditacionTipo.codigoAcreditacionTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Tipos acreditaciones <span class="badge">{{ arAcreditacionTipo.getTotalItemCount }}</span></div>                        
@@ -48,5 +47,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

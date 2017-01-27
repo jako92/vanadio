@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Turno lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado turnos</h3>
     </div>
@@ -26,8 +25,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arTurnos in arTurnos %}
-               <tr>
+        {%for arTurnos in arTurnos %}
+            <tr>
                 <td>{{arTurnos.codigoTurnoPk}}</td>
                 <td>{{arTurnos.nombre}}</td>
                 <td>{{arTurnos.horaDesde|date('H:i:s')}}</td>
@@ -42,11 +41,11 @@
                 <td>{% if arTurnos.licencia == 1 %} SI {% else %} NO {% endif %}</td>
                 <td>{% if arTurnos.vacacion == 1 %} SI {% else %} NO {% endif %}</td>
                 <td>{% if arTurnos.salidaDiaSiguiente == 1 %} SI {% else %} NO {% endif %}</td>
-                
+
                 <td><a href="{{ path('brs_rhu_base_turno_nuevo',{'codigoTurnoPk': arTurnos.codigoTurnoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arTurnos.codigoTurnoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Turnos <span class="badge">{{ arTurnos.getTotalItemCount }}</span></div>                        
@@ -67,5 +66,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

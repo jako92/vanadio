@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Crédito tipo lista - Soga App{% endblock %} 
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipos de créditos</h3>
     </div>
@@ -17,8 +16,8 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arCreditoTipos in arCreditoTipos %}
-               <tr>
+        {%for arCreditoTipos in arCreditoTipos %}
+            <tr>
                 <td>{{arCreditoTipos.codigoCreditoTipoPk}}</td>
                 <td>{{arCreditoTipos.nombre}}</td>
                 <td>{{arCreditoTipos.cupoMaximo}}</td>
@@ -26,8 +25,8 @@
                 <td><a href="{{ path('brs_rhu_base_creditotipo_nuevo',{'codigoCreditoTipoPk': arCreditoTipos.codigoCreditoTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20></a></td>
                 <td><a href="{{ path('brs_rhu_base_creditotipo_detalle', { 'codigoCreditoTipoPk': arCreditoTipos.codigoCreditoTipoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCreditoTipos.codigoCreditoTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Crédito Tipos <span class="badge">{{ arCreditoTipos.getTotalItemCount }}</span></div>                        
@@ -47,5 +46,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

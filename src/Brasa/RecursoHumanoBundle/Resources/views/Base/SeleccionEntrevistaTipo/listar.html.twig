@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Selección entrevista tipo lista - Soga App{% endblock %}  
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado tipos de entrevistas de selección</h3>
     </div>
@@ -14,14 +13,14 @@
             <th></th>
             <th></th>
         </tr>
-            {%for arSeleccionEntrevistasTipo in arSeleccionEntrevistasTipo %}
-               <tr>
+        {%for arSeleccionEntrevistasTipo in arSeleccionEntrevistasTipo %}
+            <tr>
                 <td>{{arSeleccionEntrevistasTipo.codigoSeleccionEntrevistaTipoPk}}</td>
                 <td>{{arSeleccionEntrevistasTipo.nombre}}</td>
                 <td><a href="{{ path('brs_rhu_base_seleccion_entrevista_tipo_nuevo',{'codigoSeleccionEntrevistaTipo': arSeleccionEntrevistasTipo.codigoSeleccionEntrevistaTipoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arSeleccionEntrevistasTipo.codigoSeleccionEntrevistaTipoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Entrevistas tipo <span class="badge">{{ arSeleccionEntrevistasTipo.getTotalItemCount }}</span></div>                        
@@ -42,5 +41,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}
