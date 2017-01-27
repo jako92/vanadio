@@ -27,15 +27,723 @@
             <li class="header">MENU PRINCIPAL</li>
             <li class="active treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i> <span>Recurso humano</span>
+                    <i class="fa fa-share"></i> <span>Recurso humano</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active"><a href="{{ path('brs_rhu_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pagos</a></li>       
+                    <li>
+                        <a href="#"><i class="fa fa-circle-o"></i> Movimientos
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seleccion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisicion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aspirante</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Seleccion</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Examen</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago examen</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Contratacion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisitos</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Nomina
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago banco</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Adicional pago (Permanente)</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Adicional pago (Fecha)</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Licencia</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Incapacidad</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago incapacidad</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacaciones</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Embargos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Creditos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Reclamaciones</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Comercial
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Factura</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Dotacion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Salud ocupacional
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Accidente trabajo</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Informacion interna
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Recurso humano
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proceso disciplinario</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Capacitacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Gestion desempeño</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Permiso</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Acreditacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Estudio</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitas</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Control acceso
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-            </li>  
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-circle-o"></i> Consultas
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Aspirantes inconsistencias
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Adicionales al pago
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Costos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Empleados
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Completo</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Creditos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Servicios
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Pagos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Concepto pago
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Consolidado (nom, vac, liq)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Incapacidades
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aportes</a></li>
+                                </ul>
+                            </li>
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Contratos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha ingreso</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha terminacion (Inactivos)</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por periodo</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacaciones por pagar</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha vencimiento (activos)</a></li>
+                                </ul>
+                            </li>
+                        </ul>   
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Pago banco
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                </ul>
+                            </li>
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Dotaciones
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                </ul>
+                            </li>
+                        </ul>  
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Examenes
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vencimiento</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                </ul>
+                            </li>
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Procesos disciplinarios
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Control acceso
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                </ul>
+                            </li>
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Permisos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                </ul>
+                            </li>
+                        </ul>     
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Visitas
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Fecha vencimiento</a></li>                                    
+                                </ul>
+                            </li>
+                        </ul>   
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Capacitaciones
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                </ul>
+                            </li>
+                        </ul>                         
+                    </li>
+                </ul>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-circle-o"></i> Administracion
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Cliente</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Empleado
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Zona</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Subzona</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Contratos</a></li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> General
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo credito</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo estudio</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo examen</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo licencia</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo capacitacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo contrato</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo contrato adicion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo proceso disciplinario</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo carta</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo informacion interna empleado</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo concepto gestion desempeño</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo permiso</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto gestion desempeño</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto pago</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Examen por cargo</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Contratacion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Cargos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto requisito</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisito por cargo</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Bancos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Departamentos empresa</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Horario</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Turno</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Sucursales aportes</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad salud</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad pension</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad caja compensacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo salud</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo pension</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Salud ocupacional
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Clasificacion de riesgos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad riesgos</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Incapacidad diagnostico</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seleccion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo prueba</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo entrevista</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Motivo cierre</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Motivo descarte</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Acreditacion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Academia</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo acreditacion</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Dotacion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo dotacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Elementos dotacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Dotacion por cargo</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Entidad examen</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Sedes</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Otros</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-circle-o"></i> Utilidades
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Programacion pago
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Generar periodo</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Descargar comprobante masivo (pdf)</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Enviar comprobante correo</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Notificaciones
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Cierre programacion pago</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aportes</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>  
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Medios magneticos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Dian</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>                        
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Informacion DANE
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> DANE</a></li>
+                                </ul>
+                            </li>                            
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Proyeccion
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proyeccion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proyeccion (Parametros)</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>  
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Supervigilancia
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago parafiscales</a></li>                                    
+                                </ul>
+                            </li>                            
+                        </ul> 
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Cartas
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Notificaciones</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Carta laboral</a></li>
+                                </ul>
+                            </li>                                                        
+                        </ul>                        
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Certificado ingresos retenciones</a></li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Horario acceso
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                </ul>
+                            </li>                                                        
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Intercambio datos
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="#"><i class="fa fa-circle-o"></i> Ardid
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="#"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
+                                            <li><a href="#"><i class="fa fa-circle-o"></i> Contrato</a></li>
+                                        </ul>
+                                    </li>                                                        
+                                </ul>
+                            </li>                                                        
+                        </ul>                        
+                    </li>
+                </ul>  
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-circle-o"></i> Procesos
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Cierre de año</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Provision</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Generar soporte pago horario</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Control acceso</a></li>                            
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Contabilizar
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Provision</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacacion</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago banco</a></li>
+                                </ul>
+                            </li>                            
+                        </ul>                                                                  
+                    </li>
+                </ul>                  
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-laptop"></i>
@@ -49,7 +757,7 @@
                     <li><a href="#"><i class="fa fa-circle-o"></i> Informacion empresa</a></li>
                     <li><a href="#"><i class="fa fa-circle-o"></i> Liquidar nomina</a></li>
                 </ul>
-            </li>                            
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
@@ -61,7 +769,7 @@
                 <ul class="treeview-menu">
                     <li><a href="#"><i class="fa fa-circle-o"></i> Pagos</a></li>
                 </ul>
-            </li>  
+            </li>
             <li>
                 <a href="#">
                     <i class="fa fa-envelope"></i> <span>Correo</span>
@@ -71,8 +779,8 @@
                         <small class="label pull-right bg-red">5</small>
                     </span>
                 </a>
-            </li>                            
-            <li><a href="#"><i class="fa fa-book"></i> <span>Documentacion</span></a></li>                            
+            </li>
+            <li><a href="#"><i class="fa fa-book"></i> <span>Documentacion</span></a></li>
             <li class="header">RELACIONADOS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Ayuda</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Contactenos</span></a></li>
