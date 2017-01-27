@@ -47,9 +47,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisicion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aspirante</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Seleccion</a></li>
+                                    <li><a href="{{ path('brs_rhu_seleccionrequisito_lista') }}"><i class="fa fa-circle-o"></i> Requisicion</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_aspirante_lista') }}"><i class="fa fa-circle-o"></i> Aspirante</a></li>
+                                    <li><a href="{{ path('brs_rhu_seleccion_lista') }}"><i class="fa fa-circle-o"></i> Seleccion</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -61,8 +61,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Examen</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago examen</a></li>
+                                    <li><a href="{{ path('brs_rhu_examen_listar') }}"><i class="fa fa-circle-o"></i> Examen</a></li>
+                                    <li><a href="{{ path('brs_rhu_pago_examen_lista') }}"><i class="fa fa-circle-o"></i> Pago examen</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -74,7 +74,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisitos</a></li>
+                                    <li><a href="{{ path('brs_rhu_requisito_lista') }}"><i class="fa fa-circle-o"></i> Requisitos</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -86,19 +86,19 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago banco</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Adicional pago (Permanente)</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Adicional pago (Fecha)</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Licencia</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Incapacidad</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago incapacidad</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacaciones</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Embargos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Creditos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Reclamaciones</a></li>
+                                    <li><a href="{{ path('brs_rhu_programaciones_pago_lista') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
+                                    <li><a href="{{ path('brs_rhu_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_pagos_adicionales_lista', { 'modalidad': 1, 'periodo': 0 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Permanente)</a></li>
+                                    <li><a href="{{ path('brs_rhu_pagos_adicionales_lista_fecha', { 'modalidad': 2 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Fecha)</a></li>
+                                    <li><a href="{{ path('brs_rhu_licencias_lista') }}"><i class="fa fa-circle-o"></i> Licencia</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_incapacidad') }}"><i class="fa fa-circle-o"></i> Incapacidad</a></li>
+                                    <li><a href="{{ path('brs_rhu_incapacidades_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago incapacidad</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_vacacion') }}"><i class="fa fa-circle-o"></i> Vacaciones</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_embargo') }}"><i class="fa fa-circle-o"></i> Embargos</a></li>
+                                    <li><a href="{{ path('brs_rhu_creditos_lista') }}"><i class="fa fa-circle-o"></i> Creditos</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_reclamo') }}"><i class="fa fa-circle-o"></i> Reclamaciones</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -110,7 +110,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Factura</a></li>
+                                    <li><a href="{{ path('brs_rhu_facturas_lista') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -122,7 +122,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_dotacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -134,7 +134,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Accidente trabajo</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_accidente_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Accidente trabajo</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -146,7 +146,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_empleado_informacion_interna_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -158,13 +158,13 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proceso disciplinario</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Capacitacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Gestion desempeño</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Permiso</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Acreditacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Estudio</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitas</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_disciplinario') }}"><i class="fa fa-circle-o"></i> Proceso disciplinario</a></li>
+                                    <li><a href="{{ path('brs_rhu_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Capacitacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_desempeno_lista') }}"><i class="fa fa-circle-o"></i> Gestion desempeño</a></li>
+                                    <li><a href="{{ path('brs_rhu_permiso_lista') }}"><i class="fa fa-circle-o"></i> Permiso</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_acreditacion') }}"><i class="fa fa-circle-o"></i> Acreditacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_estudio_lista') }}"><i class="fa fa-circle-o"></i> Estudio</a></li>
+                                    <li><a href="{{ path('brs_rhu_movimiento_visita') }}"><i class="fa fa-circle-o"></i> Visitas</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -176,7 +176,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                    <li><a href="{{ path('brs_rhu_control_acceso_empleado_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -197,7 +197,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_aspirantes_inconsistencias') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -209,7 +209,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_adicionales_pago') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -221,7 +221,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_costo') }}"><i class="fa fa-circle-o"></i> General</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -233,12 +233,12 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Completo</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_empleado') }}"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado') }}"><i class="fa fa-circle-o"></i> Completo</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_pagos_deducciones_empleado') }}"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado_estudios_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_empleado_centro_costo_mes') }}"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -250,7 +250,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_creditos_general') }}"><i class="fa fa-circle-o"></i> General</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -262,7 +262,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_servicios_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -274,8 +274,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_pago') }}"><i class="fa fa-circle-o"></i> Pagos</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_pago_detalle') }}"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -287,7 +287,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Consolidado (nom, vac, liq)</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_pago_concepto') }}"><i class="fa fa-circle-o"></i> Consolidado (nom, vac, liq)</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -299,8 +299,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_incapacidades_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_incapacidades_cobrar_pago') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -312,7 +312,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aportes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_sso_aportes') }}"><i class="fa fa-circle-o"></i> Aportes</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -324,11 +324,11 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha ingreso</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha terminacion (Inactivos)</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por periodo</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacaciones por pagar</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por fecha vencimiento (activos)</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_contrato_fecha_ingreso') }}"><i class="fa fa-circle-o"></i> Por fecha ingreso</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_contrato_fecha_terminacion') }}"><i class="fa fa-circle-o"></i> Por fecha terminacion (Inactivos)</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_contrato_periodo') }}"><i class="fa fa-circle-o"></i> Por periodo</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_contrato_vacaciones_pagar') }}"><i class="fa fa-circle-o"></i> Vacaciones por pagar</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_contrato_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Por fecha vencimiento (activos)</a></li>
                                 </ul>
                             </li>
                         </ul>   
@@ -340,7 +340,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_pago_pendientes_banco') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -352,7 +352,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_dotacion_pendiente') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
                                 </ul>
                             </li>
                         </ul>  
@@ -364,8 +364,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vencimiento</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_examenes_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_examen_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -377,7 +377,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li><a href="{{ path('brs_rhu_consultas_procesos_disciplinarios') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>
@@ -389,8 +389,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleados</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_control_acceso_empleados') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_control_acceso_visitantes') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -402,7 +402,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li><a href="{{ path('brs_rhu_consultas_permisos') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>     
@@ -414,7 +414,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Fecha vencimiento</a></li>                                    
+                                    <li><a href="{{ path('brs_rhu_consulta_visita_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Fecha vencimiento</a></li>                                    
                                 </ul>
                             </li>
                         </ul>   
@@ -426,8 +426,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_capacitacion_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>                         
@@ -441,21 +441,21 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Cliente</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
+                            <li><a href="{{ path('brs_rhu_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
+                            <li><a href="{{ path('brs_rhu_base_centros_costos_lista') }}"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
                             <li>
-                                <a href="#"><i class="fa fa-circle-o"></i> Empleado
+                                <a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleado</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Zona</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Subzona</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_zona') }}"><i class="fa fa-circle-o"></i> Zona</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_subzona') }}"><i class="fa fa-circle-o"></i> Subzona</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Contratos</a></li>
+                            <li><a href="{{ path('brs_rhu_base_contratos_lista') }}"><i class="fa fa-circle-o"></i> Contratos</a></li>
                             <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> General
                                     <span class="pull-right-container">
@@ -463,21 +463,21 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo credito</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo estudio</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo examen</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo licencia</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo capacitacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo contrato</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo contrato adicion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo proceso disciplinario</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo carta</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo informacion interna empleado</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo concepto gestion desempeño</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo permiso</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto gestion desempeño</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto pago</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Examen por cargo</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_creditotipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo credito</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_empleado_estudio_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo estudio</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_examentipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo examen</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_licenciatipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo licencia</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_capacitacion_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo capacitacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_contrato_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo contrato</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_contrato_adicion_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo contrato adicion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_disciplinario_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo proceso disciplinario</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_carta_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo carta</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_empleado_informacion_interna_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo informacion interna empleado</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_desempeno_concepto_tipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo concepto gestion desempeño</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_permiso_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo permiso</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_desempeno_concepto_listar') }}"><i class="fa fa-circle-o"></i> Concepto gestion desempeño</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_pago_concepto_lista') }}"><i class="fa fa-circle-o"></i> Concepto pago</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_examentipo_listar') }}"><i class="fa fa-circle-o"></i> Examen por cargo</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -487,13 +487,13 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Cargos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Concepto requisito</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Requisito por cargo</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Bancos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Departamentos empresa</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Horario</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Turno</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_cargo') }}"><i class="fa fa-circle-o"></i> Cargos</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_requisito_concepto_lista') }}"><i class="fa fa-circle-o"></i> Concepto requisito</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_requisito_cargo_lista') }}"><i class="fa fa-circle-o"></i> Requisito por cargo</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_banco_listar') }}"><i class="fa fa-circle-o"></i> Bancos</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_departamento_empresa_listar') }}"><i class="fa fa-circle-o"></i> Departamentos empresa</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_horario_listar') }}"><i class="fa fa-circle-o"></i> Horario</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_turno_listar') }}"><i class="fa fa-circle-o"></i> Turno</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -503,12 +503,12 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Sucursales aportes</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad salud</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad pension</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad caja compensacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo salud</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo pension</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_ssosucursal_listar') }}"><i class="fa fa-circle-o"></i> Sucursales aportes</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_salud_listar') }}"><i class="fa fa-circle-o"></i> Entidad salud</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_pension_listar') }}"><i class="fa fa-circle-o"></i> Entidad pension</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_caja_listar') }}"><i class="fa fa-circle-o"></i> Entidad caja compensacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_salud_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo salud</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_pension_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo pension</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -518,9 +518,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Clasificacion de riesgos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Entidad riesgos</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Incapacidad diagnostico</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_clasificacion_listar') }}"><i class="fa fa-circle-o"></i> Clasificacion de riesgos</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_riesgoProfesional_listar') }}"><i class="fa fa-circle-o"></i> Entidad riesgos</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_incapacidaddiagnostico') }}"><i class="fa fa-circle-o"></i> Incapacidad diagnostico</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -530,10 +530,10 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo prueba</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo entrevista</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Motivo cierre</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Motivo descarte</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_seleccion_prueba_tipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo prueba</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_seleccion_entrevista_tipo_listar') }}"><i class="fa fa-circle-o"></i> Tipo entrevista</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_motivocierre_seleccion_listar') }}"><i class="fa fa-circle-o"></i> Motivo cierre</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_motivodescarte_aspirante_listar') }}"><i class="fa fa-circle-o"></i> Motivo descarte</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -543,8 +543,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Academia</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo acreditacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_academia_listar') }}"><i class="fa fa-circle-o"></i> Academia</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_acreditacion_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo acreditacion</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -554,14 +554,14 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Tipo dotacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Elementos dotacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Dotacion por cargo</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_dotacion_elemento_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo dotacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_dotacion_elemento_lista') }}"><i class="fa fa-circle-o"></i> Elementos dotacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_base_dotacion_cargo_lista') }}"><i class="fa fa-circle-o"></i> Dotacion por cargo</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Entidad examen</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Sedes</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Otros</a></li>
+                            <li><a href="{{ path('brs_rhu_base_entidadexamen_listar') }}"><i class="fa fa-circle-o"></i> Entidad examen</a></li>
+                            <li><a href="{{ path('brs_rhu_base_sede_listar') }}"><i class="fa fa-circle-o"></i> Sedes</a></li>
+                            <li><a href="{{ path('sonata_admin_dashboard') }}"><i class="fa fa-circle-o"></i> Otros</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -580,9 +580,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Generar periodo</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Descargar comprobante masivo (pdf)</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Enviar comprobante correo</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_pagos_generar_periodo') }}"><i class="fa fa-circle-o"></i> Generar periodo</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_programacion_pago_comprobante_masivo', { 'codigoProgramacionPago': 0 }) }}"><i class="fa fa-circle-o"></i> Descargar comprobante masivo (pdf)</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_programacion_pago_comprobante_correo', { 'codigoProgramacionPago': 0 }) }}"><i class="fa fa-circle-o"></i> Enviar comprobante correo</a></li>
                                 </ul>
                             </li>                            
                         </ul>
@@ -594,7 +594,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Cierre programacion pago</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_notificaciones_cierreprogramacionpago') }}"><i class="fa fa-circle-o"></i> Cierre programacion pago</a></li>
                                 </ul>
                             </li>                            
                         </ul>
@@ -606,7 +606,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Aportes</a></li>
+                                    <li><a href="{{ path('brs_rhu_ss_periodo_lista') }}"><i class="fa fa-circle-o"></i> Aportes</a></li>
                                 </ul>
                             </li>                            
                         </ul>  
@@ -618,7 +618,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Dian</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_medios_magneticos_informe') }}"><i class="fa fa-circle-o"></i> Dian</a></li>
                                 </ul>
                             </li>                            
                         </ul>                        
@@ -630,7 +630,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> DANE</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_informacion_dane_informe') }}"><i class="fa fa-circle-o"></i> DANE</a></li>
                                 </ul>
                             </li>                            
                         </ul> 
@@ -642,8 +642,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proyeccion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Proyeccion (Parametros)</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_proyeccion') }}"><i class="fa fa-circle-o"></i> Proyeccion</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_proyeccion_parametro') }}"><i class="fa fa-circle-o"></i> Proyeccion (Parametros)</a></li>
                                 </ul>
                             </li>                            
                         </ul>  
@@ -655,7 +655,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago parafiscales</a></li>                                    
+                                    <li><a href="{{ path('brs_rhu_utilidades_supervigilancia_parafiscales') }}"><i class="fa fa-circle-o"></i> Pago parafiscales</a></li>                                    
                                 </ul>
                             </li>                            
                         </ul> 
@@ -667,13 +667,13 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Notificaciones</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Carta laboral</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_cartas_generar') }}"><i class="fa fa-circle-o"></i> Notificaciones</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_carta_laboral') }}"><i class="fa fa-circle-o"></i> Carta laboral</a></li>
                                 </ul>
                             </li>                                                        
                         </ul>                        
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Certificado ingresos retenciones</a></li>
+                            <li><a href="{{ path('brs_rhu_utilidades_certificado_ingreso_retencion') }}"><i class="fa fa-circle-o"></i> Certificado ingresos retenciones</a></li>
                         </ul>
                         <ul class="treeview-menu">
                             <li>
@@ -683,8 +683,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Empleados</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidad_horario_acceso_empleado') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li><a href="{{ path('brs_rhu_utilidades_control_acceso_visitante') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li>
                                 </ul>
                             </li>                                                        
                         </ul>
@@ -703,8 +703,8 @@
                                             </span>
                                         </a>
                                         <ul class="treeview-menu">
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Contrato</a></li>
+                                            <li><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_programacion') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
+                                            <li><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li>
                                         </ul>
                                     </li>                                                        
                                 </ul>
@@ -720,10 +720,10 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Cierre de año</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Provision</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Generar soporte pago horario</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Control acceso</a></li>                            
+                            <li><a href="{{ path('brs_rhu_proceso_cierre_anio') }}"><i class="fa fa-circle-o"></i> Cierre de año</a></li>
+                            <li><a href="{{ path('brs_rhu_proceso_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
+                            <li><a href="{{ path('brs_rhu_proceso_soporte_pago_horario') }}"><i class="fa fa-circle-o"></i> Generar soporte pago horario</a></li>
+                            <li><a href="{{ path('brs_rhu_proceso_control_acceso_horario_periodo_listar') }}"><i class="fa fa-circle-o"></i> Control acceso</a></li>                            
                         </ul>
                         <ul class="treeview-menu">
                             <li>
@@ -733,11 +733,11 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Provision</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Vacacion</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Pago banco</a></li>
+                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_pago') }}"><i class="fa fa-circle-o"></i> Pago</a></li>
+                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
+                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_vacacion') }}"><i class="fa fa-circle-o"></i> Vacacion</a></li>
+                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li>
                                 </ul>
                             </li>                            
                         </ul>                                                                  
