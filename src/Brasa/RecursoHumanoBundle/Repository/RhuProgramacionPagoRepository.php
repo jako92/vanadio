@@ -701,6 +701,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $arProgramacionPagoDetalle->setFechaDesde($dateFechaDesde);
                 $arProgramacionPagoDetalle->setFechaHasta($arProgramacionPago->getFechaHasta());
                 $arProgramacionPagoDetalle->setFechaDesdePago($dateFechaDesde);
+                $arProgramacionPagoDetalle->setFechaHastaPago($arProgramacionPago->getFechaHasta());                
                 $arProgramacionPagoDetalle->setDias($intDiasPrimaLiquidar);
                 $arProgramacionPagoDetalle->setDiasReales($intDiasPrimaLiquidar);
                 $arProgramacionPagoDetalle->setPorcentajeIbp($porcentaje);
@@ -818,6 +819,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $arProgramacionPagoDetalle->setFechaDesde($dateFechaDesde);
                 $arProgramacionPagoDetalle->setFechaHasta($arProgramacionPago->getFechaHasta());
                 $arProgramacionPagoDetalle->setFechaDesdePago($dateFechaDesde);
+                $arProgramacionPagoDetalle->setFechaHastaPago($arProgramacionPago->getFechaHasta());                
                 $arProgramacionPagoDetalle->setDias($intDiasCesantiaLiquidar);
                 $arProgramacionPagoDetalle->setDiasReales($intDiasCesantiaLiquidar);
                 $arProgramacionPagoDetalle->setPorcentajeIbp($porcentaje);
