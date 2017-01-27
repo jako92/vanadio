@@ -380,7 +380,8 @@ class RhuLiquidacionRepository extends EntityRepository {
     public function pagar($codigoLiquidacion) {        
         $em = $this->getEntityManager();
         $validar = '';
-        
+        $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();                
+        $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);         
         $arLiquidacionCreditos = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales();
         $arLiquidacionCreditos = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacionAdicionales')->findBy(array('codigoLiquidacionFk' => $codigoLiquidacion));                                 
         $deduccion = 0;
