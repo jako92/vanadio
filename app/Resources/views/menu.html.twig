@@ -1444,11 +1444,11 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Asesor</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Banco</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Cuenta bancaria</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Formato principal</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Formato secundario</a></li>
+                            <li><a href="{{ path('brs_gen_base_asesor') }}"><i class="fa fa-circle-o"></i> Asesor</a></li>
+                            <li><a href="{{ path('brs_gen_base_bancos') }}"><i class="fa fa-circle-o"></i> Banco</a></li>
+                            <li><a href="{{ path('brs_gen_base_cuentas') }}"><i class="fa fa-circle-o"></i> Cuenta bancaria</a></li>
+                            <li><a href="{{ path('brs_gen_base_contenido_formato_lista') }}"><i class="fa fa-circle-o"></i> Formato principal</a></li>
+                            <li><a href="{{ path('brs_gen_base_contenido_formato_secundario_lista') }}"><i class="fa fa-circle-o"></i> Formato secundario</a></li>
                         </ul>                     
                     </li>
                 </ul>
@@ -1460,8 +1460,8 @@
                             </span>
                         </a>                        
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Calendario</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Gestor archivos</a></li>
+                            <li><a href="{{ path('brs_gen_utilidad_calendario') }}"><i class="fa fa-circle-o"></i> Calendario</a></li>
+                            <li><a href="{{ path('brs_gen_utilidad_gestorarchivo', {'codigoDirectorioPadre': 0}) }}"><i class="fa fa-circle-o"></i> Gestor archivos</a></li>
                         </ul>                                                                           
                     </li>
                 </ul>                   
