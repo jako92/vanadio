@@ -1342,7 +1342,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Registro</a></li>
+                            <li><a href="{{ path('brs_ctb_movimiento_registro') }}"><i class="fa fa-circle-o"></i> Registro</a></li>
                             <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Asiento
                                     <span class="pull-right-container">
@@ -1350,7 +1350,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li><a href="{{ path('brs_ctb_mov_asientos_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                             
@@ -1366,8 +1366,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Registro</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Balance prueba</a></li>
+                            <li><a href="{{ path('brs_ctb_consultas_registros') }}"><i class="fa fa-circle-o"></i> Registro</a></li>
+                            <li><a href="{{ path('brs_ctb_consultas_balance_prueba')}}"><i class="fa fa-circle-o"></i> Balance prueba</a></li>
                         </ul>                     
                     </li>
                 </ul>
@@ -1379,10 +1379,10 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Tercero</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Comprobante</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Cuenta</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Centro costo</a></li>
+                            <li><a href="{{ path('brs_ctb_base_terceros_lista') }}"><i class="fa fa-circle-o"></i> Tercero</a></li>
+                            <li><a href="{{ path('brs_ctb_base_comprobantes_lista') }}"><i class="fa fa-circle-o"></i> Comprobante</a></li>
+                            <li><a href="{{ path('brs_ctb_base_cuentas_lista') }}"><i class="fa fa-circle-o"></i> Cuenta</a></li>
+                            <li><a href="{{ path('brs_ctb_base_centro_costo_lista') }}"><i class="fa fa-circle-o"></i> Centro costo</a></li>
                         </ul>                     
                     </li>
                 </ul>
@@ -1401,7 +1401,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Exportar</a></li>
+                                    <li><a href="{{ path('brs_ctb_utilidades_intercambio_datos_exportar') }}"><i class="fa fa-circle-o"></i> Exportar</a></li>
                                 </ul>
                             </li>                            
                         </ul>                       
@@ -1422,13 +1422,13 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Asiento</a></li>                                    
+                                    <li><a href="{{ path('brs_ctb_procesos_contabilizar_asientos') }}"><i class="fa fa-circle-o"></i> Asiento</a></li>                                    
                                 </ul>
                             </li>                            
                         </ul>                                                                                        
                     </li>
                 </ul>                  
-            </li>     
+            </li>    
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-share"></i> <span>General</span>
