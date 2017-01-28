@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Cartera Recibo tipo nuevo - Soga App{% endblock %} 
 {% block content %}
-<div class="container">
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(form) }}
     <h3>Nuevo tipo recibo</h3>
@@ -22,5 +21,4 @@
         {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>
     {{ form_end(form) }}
-</div>
 {% endblock %}

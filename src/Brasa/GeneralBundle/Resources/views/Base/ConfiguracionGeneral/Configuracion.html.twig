@@ -1,16 +1,14 @@
 {% extends '::base.html.twig' %}
 {% block title %}Configuración general - Soga App{% endblock %}
-{% block content %}
-    <div class="container">    
-
-        <h3>Configuración general</h3>
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#general" data-toggle="tab">General</a></li>
-            <li><a href="#notificaciones" data-toggle="tab">Notificaciones</a></li>
-        </ul>    
-        <div class="tab-content">
-            <div class="tab-pane active" id="general">  
-                <div id="general" style="width: 100%">
+{% block content %}   
+    <h3>Configuración general</h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+        <li><a href="#notificaciones" data-toggle="tab">Notificaciones</a></li>
+    </ul>    
+    <div class="tab-content">
+        <div class="tab-pane active" id="general">  
+            <div id="general" style="width: 100%">
                 <br />
                 {{ form_start(formConfiguracionGeneral, { 'attr': {'class': 'form-horizontal'} }) }}
                 {{ form_errors(formConfiguracionGeneral) }}
@@ -151,13 +149,13 @@
                 </div>    
                 {{ form_end(formConfiguracionGeneral) }}
             </div>
-            </div>
-            <div class="tab-pane" id="notificaciones">
-                <div id="notificaciones" style="width: 100%">                    
-                    {{ form_start(formConfiguracionNotificaciones, { 'attr': {'class': 'form-horizontal'} }) }}
-                    {{ form_errors(formConfiguracionNotificaciones) }}
-                    <br />
-                    <div class="panel panel-default">                    
+        </div>
+        <div class="tab-pane" id="notificaciones">
+            <div id="notificaciones" style="width: 100%">                    
+                {{ form_start(formConfiguracionNotificaciones, { 'attr': {'class': 'form-horizontal'} }) }}
+                {{ form_errors(formConfiguracionNotificaciones) }}
+                <br />
+                <div class="panel panel-default">                    
                     <div class="panel-heading">Notificaciones</div>
                     <div class="panel-body">
                         <div class="form-group form-group-sm">
@@ -168,15 +166,13 @@
                         </div>  
                     </div>
                 </div>                    
-                    
-                    <div class="modal-footer">                        
-                        {{ form_widget(formConfiguracionNotificaciones.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-                    </div>                    
-                    {{ form_end(formConfiguracionNotificaciones) }}                    
-                </div>
-            </div>                
-        </div>
 
+                <div class="modal-footer">                        
+                    {{ form_widget(formConfiguracionNotificaciones.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+                </div>                    
+                {{ form_end(formConfiguracionNotificaciones) }}                    
+            </div>
+        </div>                
     </div>
-</div>    
+
 {% endblock %}

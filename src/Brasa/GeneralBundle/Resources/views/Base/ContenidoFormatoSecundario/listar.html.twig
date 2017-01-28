@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Contenido formatos secundarios lista - Soga App{% endblock %} 
-{% block content %}
-    <div class="container">
+{% block content %}    
     <div class="page-header">    
         <h3>Listado contenidos de formatos</h3>
     </div>
@@ -17,9 +16,9 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arContenidoFormatos in arContenidoFormatos %}
-               <tr>
+
+        {%for arContenidoFormatos in arContenidoFormatos %}
+            <tr>
                 <td>{{arContenidoFormatos.codigoContenidoFormatoSecundarioPk}}</td>
                 <td align="justify">{{arContenidoFormatos.titulo}}</td>
                 <td align="justify">{{arContenidoFormatos.codigoFormatoIso}}</td>
@@ -27,8 +26,8 @@
                 <td align="justify">{% if arContenidoFormatos.fechaVersion != null %}{{arContenidoFormatos.fechaVersion | date('Y-m-d')}}{% else %}{% endif %}</td>
                 <td><a href="{{ path('brs_gen_base_contenido_formato_secundario_nuevo',{'codigoContenidoFormato': arContenidoFormatos.codigoContenidoFormatoSecundarioPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arContenidoFormatos.codigoContenidoFormatoSecundarioPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Contenido Formatos <span class="badge">{{ arContenidoFormatos.getTotalItemCount }}</span></div>                        
@@ -43,9 +42,8 @@
         <div class="btn-group">
             {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}</td>                   
         </div>
-        
+
     </div>     
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}   
 {% endblock %}

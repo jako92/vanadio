@@ -1,15 +1,14 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block content %}
-{% block javascripts %} 
-    <script>
-            function enviarValores(codigo,nombre,campoCodigo, campoNombre) {                                                                               
-                window.opener.document.getElementById(campoCodigo).value=codigo;
-		window.opener.document.getElementById(campoNombre).value=nombre;
-		self.close();
+    {% block javascripts %} 
+        <script>
+            function enviarValores(codigo, nombre, campoCodigo, campoNombre) {
+                window.opener.document.getElementById(campoCodigo).value = codigo;
+                window.opener.document.getElementById(campoNombre).value = nombre;
+                self.close();
             }
-    </script>
-{% endblock %}
-<div class="container"> 
+        </script>
+    {% endblock %}
     <div class="well">        
         <form class="form-horizontal" role="form"  id="FrmBusqueda" action="{{ path('brs_gen_buscar_ciudad', {'campoCodigo': campoCodigo , 'campoNombre': campoNombre}) }}" method="POST" novalidate>
             <div class="form-group">
@@ -42,13 +41,12 @@
             </tr>
 
             {% for arCiudades in arCiudades %}
-            <tr> 
-                <td><input type="hidden" name="LblCodigoTercero[]" value="{{ arCiudades.codigoCiudadPk }}">{{ arCiudades.codigoCiudadPk }}</td>  
-                <td>{{ arCiudades.nombre }}</td>                 
-                <td style="text-align: center"><a href="#"><image src="{{asset('imagenes/bootstrap/glyphicons_206_ok_2.png')}}" title="Seleccionar" onclick="enviarValores('{{ arCiudades.codigoCiudadPk }}','{{ arCiudades.nombre }}','{{ campoCodigo }}','{{ campoNombre }}')"/></a></td>
-            </tr>
+                <tr> 
+                    <td><input type="hidden" name="LblCodigoTercero[]" value="{{ arCiudades.codigoCiudadPk }}">{{ arCiudades.codigoCiudadPk }}</td>  
+                    <td>{{ arCiudades.nombre }}</td>                 
+                    <td style="text-align: center"><a href="#"><image src="{{asset('imagenes/bootstrap/glyphicons_206_ok_2.png')}}" title="Seleccionar" onclick="enviarValores('{{ arCiudades.codigoCiudadPk }}', '{{ arCiudades.nombre }}', '{{ campoCodigo }}', '{{ campoNombre }}')"/></a></td>
+                </tr>
             {% endfor %}                                
         </table>
     </form>        
-</div>
 {% endblock %}

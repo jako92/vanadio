@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Terceros cuentas lista - Soga App{% endblock %}
-{% block content %}
-    <div class="container">
+{% block content %}    
     <div class="page-header">    
         <h3>Listado cuentas bancarias</h3>
     </div>
@@ -9,7 +8,7 @@
     {{ form_errors(form) }} 
     <table class="table table-striped table-bordered table-condensed table-hover">
         <tr>
-            
+
             <th>CÓDIGO</th>
             <th>{{ knp_pagination_sortable(arCuentas, 'NOMBRE', 'codigo') }}</th>             
             <th>NUMERO CUENTA</th>
@@ -19,9 +18,9 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arCuentas in arCuentas %}
-               <tr>
+
+        {%for arCuentas in arCuentas %}
+            <tr>
                 <td>{{arCuentas.codigoCuentaPk}}</td>
                 <td>{{arCuentas.nombre}}</td>
                 <td>{{arCuentas.cuenta}}</td>
@@ -30,8 +29,8 @@
                 <td>{{arCuentas.codigoCuentaFk}}</td>
                 <td><a href="{{ path('brs_gen_base_cuentas_nuevo',{'codigoCuenta': arCuentas.codigoCuentaPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCuentas.codigoCuentaPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     {{ knp_pagination_render(arCuentas) }}
     <div class="btn-toolbar" style="float: right">              
@@ -46,6 +45,5 @@
         </div>
     </div>     
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}   
 {% endblock %}

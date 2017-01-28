@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Gestor de archivos lista - Soga App{% endblock %}
-{% block content %}
-    <div class="container">
+{% block content %}   
     <div class="page-header">    
         <h3>Listado directorio gestor de archivos</h3>
     </div>
@@ -10,9 +9,9 @@
     <ol class="breadcrumb">        
         {% for breadCrumb in breadCrumb %}
             <li><a href="{{ path('brs_gen_utilidad_gestorarchivo', { 'codigoDirectorioPadre': breadCrumb.codigo }) }}">{{breadCrumb.directorio}}</a></li>                                 
-        {% endfor %}
+            {% endfor %}
     </ol>
-       
+
     <div>    
         <h4>Directorios</h4>
     </div>
@@ -25,9 +24,9 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arDirectorios in arDirectorios %}
-               <tr>
+
+        {%for arDirectorios in arDirectorios %}
+            <tr>
                 <td>
                     <input type="hidden" name="LblCodigoGuia[]" value="{{ arDirectorios.codigoDirectorioPk }}">
                     <span class="badge">{{ arDirectorios.codigoDirectorioPk }}</span>
@@ -37,8 +36,8 @@
                 <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_gen_utilidad_gestorarchivo_directorio_nuevo',{'codigoDirectorio': arDirectorios.codigoDirectorioPk, 'codigoDirectorioPadre': arDirectorios.codigoDirectorioPadreFk })}}', 'Archivos', 400, 800)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td style="text-align: center"><a href="{{ path('brs_gen_utilidad_gestorarchivo', { 'codigoDirectorioPadre': arDirectorios.codigoDirectorioPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_144_folder_open.png') }}" width=22 height=22 title="Detalle del registro"></a></td>                
                 <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarDirectorio[]" value="{{ arDirectorios.codigoDirectorioPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     {{ knp_pagination_render(arDirectorios) }}
     <div>    
@@ -54,21 +53,21 @@
             <th></th>
         </tr>
         {% for arArchivos in arArchivos %}
-        <tr>
-            <td>
-                <input type="hidden" name="LblCodigoGuia[]" value="{{ arArchivos.codigoArchivoPk }}">
-                <span class="badge">{{ arArchivos.codigoArchivoPk }}</span>
-            </td>
-            <td>{{ arArchivos.nombre }}</td>
-            <td>{{ arArchivos.archivo }}</td>
-            <td>{{ arArchivos.descripcion }}</td>
-            <td style="text-align: center"><a href="{{ path('brs_gen_utilidad_gestorarchivo_descargar_archivo', { 'codigoArchivo': arArchivos.codigoArchivoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_181_download_alt.png') }}" width=22 height=22></a></td>                        
-            <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarArchivo[]" value="{{ arArchivos.codigoArchivoPk }}" /></td>
-        </tr>
+            <tr>
+                <td>
+                    <input type="hidden" name="LblCodigoGuia[]" value="{{ arArchivos.codigoArchivoPk }}">
+                    <span class="badge">{{ arArchivos.codigoArchivoPk }}</span>
+                </td>
+                <td>{{ arArchivos.nombre }}</td>
+                <td>{{ arArchivos.archivo }}</td>
+                <td>{{ arArchivos.descripcion }}</td>
+                <td style="text-align: center"><a href="{{ path('brs_gen_utilidad_gestorarchivo_descargar_archivo', { 'codigoArchivo': arArchivos.codigoArchivoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_181_download_alt.png') }}" width=22 height=22></a></td>                        
+                <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarArchivo[]" value="{{ arArchivos.codigoArchivoPk }}" /></td>
+            </tr>
         {% endfor %}
     </table>
     {{ knp_pagination_render(arArchivos) }}
-        
+
     <div class="btn-toolbar" style="float: right">              
         <div class="btn-group">
             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_gen_utilidad_gestorarchivo_cargar_archivo', { 'codigoDirectorioPadre': codigoDirectorioPadre  }) }}', 'Archivos', 400, 800)" >Cargar archivo</a>
@@ -84,6 +83,5 @@
         </div>
     </div>     
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}    
 {% endblock %}

@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Clientes lista - Soga App{% endblock %}
-{% block content %}
-    <div class="container">
+{% block content %}    
     <div class="page-header">    
         <h3>Listado clientes</h3>
     </div>
@@ -46,9 +45,9 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arClientes in arClientes %}
-               <tr>
+
+        {%for arClientes in arClientes %}
+            <tr>
                 <td>{{arClientes.codigoClientePk}}</td>
                 <td>{{arClientes.codigoListaPrecioFk}}</td>
                 <td>{{arClientes.listaPrecioRel.nombre | default('')}}</td>
@@ -63,8 +62,8 @@
                 <td>{% if arClientes.pagaManejoCorriente == 1 %}SI{% else %}NO{% endif %}</td>
                 <td><a href="{{ path('brs_tte_base_clientes_nuevo',{'codigoCliente': arClientes.codigoClientePk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arClientes.codigoClientePk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     {{ knp_pagination_render(arClientes) }}
     <div class="btn-toolbar" style="float: right">              
@@ -79,6 +78,5 @@
         </div>
     </div>     
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}    
 {% endblock %}

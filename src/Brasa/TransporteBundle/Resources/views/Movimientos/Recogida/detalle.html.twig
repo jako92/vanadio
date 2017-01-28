@@ -1,13 +1,12 @@
 {% extends '::base.html.twig' %}
 {% block title %}Recogida detalle - Soga App{% endblock %}
 {% block content %}
-<script>
-    $('#myTab a').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-</script>
-<div class="container">
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
     <div class="page-header">
         <h3>Detalle recogida</h3>
     </div>
@@ -21,8 +20,8 @@
     <br /><br />
     <!-- Encabezado Movimiento -->
     <div class="panel panel-default">
-      <div class="panel-heading">Información</div>
-      <div class="panel-body">
+        <div class="panel-heading">Información</div>
+        <div class="panel-body">
             <table width="100%" class="table table-condensed table-bordered">
                 <tr>
                     <td class="titulo">CÓDIGO:</td>
@@ -65,13 +64,9 @@
                     <td class="td-in-well" colspan="5">{{ arRecogida.comentarios }}</td>
                 </tr>
             </table>
-      </div>
+        </div>
     </div>
-
-
-
-        {{ form_rest(form) }}
+    {{ form_rest(form) }}
     {{ form_end(form) }}
     <a  class="btn btn-default btn-sm" href="{{ path('brs_tte_recogida_lista') }}">Volver</a>
-</div>
 {% endblock %}

@@ -1,7 +1,5 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block content %}
-<div class="container">
-    
+{% block content %}    
     <h3>Lista logs</h3>
     <div class="panel panel-default">
         <div class="panel-heading">Registro de acciones</div>
@@ -15,17 +13,16 @@
                         <th>FECHA</th>
                     </tr>
                     {% for arLogs in arLogs %}
-                    <tr>
-                        <td><input type="hidden" name="LblCodigo[]" value="{{ arLogs.codigoLogPk }}">{{ arLogs.codigoLogPk }} </td>                        
-                        <td>{{ arLogs.usuarioRel.Username  }}</td>
-                        <td>{{ arLogs.logAccionRel.nombre }}</td>
-                        <td>{{ arLogs.fecha |date('Y-m-d H:i')  }}</td>
-                    </tr>
+                        <tr>
+                            <td><input type="hidden" name="LblCodigo[]" value="{{ arLogs.codigoLogPk }}">{{ arLogs.codigoLogPk }} </td>                        
+                            <td>{{ arLogs.usuarioRel.Username  }}</td>
+                            <td>{{ arLogs.logAccionRel.nombre }}</td>
+                            <td>{{ arLogs.fecha |date('Y-m-d H:i')  }}</td>
+                        </tr>
                     {% endfor %}
                 </table>
                 {{ knp_pagination_render(arLogs) }}
             </div>                                            
         </div>
     </div>                   
-</div>
 {% endblock %}

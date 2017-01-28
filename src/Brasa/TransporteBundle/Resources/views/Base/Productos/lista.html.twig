@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Productos lista - Soga App{% endblock %}
-{% block content %}
-    <div class="container">
+{% block content %}    
     <div class="page-header">    
         <h3>Listado productos</h3>
     </div>
@@ -14,15 +13,15 @@
             <th></th>
             <th></th>
         </tr>
-        
-            {%for arProductos in arProductos %}
-               <tr>
+
+        {%for arProductos in arProductos %}
+            <tr>
                 <td>{{arProductos.codigoProductoPk}}</td>
                 <td>{{arProductos.nombre}}</td>
                 <td><a href="{{ path('brs_tte_base_productos_nuevo',{'codigoProducto': arProductos.codigoProductoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProductos.codigoProductoPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     {{ knp_pagination_render(arProductos) }}
     <div class="btn-toolbar" style="float: right">              
@@ -37,6 +36,5 @@
         </div>
     </div>     
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}    
 {% endblock %}

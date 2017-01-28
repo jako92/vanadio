@@ -1,7 +1,7 @@
 
 {% block stylesheets %}            
-<link href="{{ asset('bootstrap-3.3.2-dist/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" />
-<link href="{{ asset('css/signin.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('bootstrap-3.3.2-dist/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/signin.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}                 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,18 +14,17 @@
 
         <title>Recuperar clave</title>
     </head>
-    <body>
-        <div class="container">
-            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-            <div class="panel panel-default">
-                <div class="panel-heading">Recuperar clave</div>
-                <div class="panel-body">                           
-                    <div class="form-group form-group-sm">
-                        <label for="form_username" class="col-sm-3 control-label">Usuario:</label>
-                        <div class="col-sm-9">
-                            {{ form_widget(form.username, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                        </div>
-                    </div>                
+    <body>        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Recuperar clave</div>
+            <div class="panel-body">                           
+                <div class="form-group form-group-sm">
+                    <label for="form_username" class="col-sm-3 control-label">Usuario:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.username, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>                
             </div>                
             <div class="modal-footer">   
                 <a class="btn btn-default btn-sm" href="{{ path('login') }}">Cancelar</a>        
