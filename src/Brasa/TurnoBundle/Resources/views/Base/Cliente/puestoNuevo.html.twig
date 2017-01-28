@@ -1,6 +1,5 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block content %}
-<div class="container">
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     <h3>Nuevo puesto</h3>
     <div class="panel panel-default">
@@ -70,20 +69,20 @@
     </div> 
     <div class="panel panel-default">
         <div class="panel-heading">Información control</div>       
-            <div class="panel-body">   
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Zona:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.zonaRel, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>                 
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Operacion:</label>
-                    <div class="col-sm-9">
-                            {{ form_widget(form.operacionRel, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>                           
-            </div>
+        <div class="panel-body">   
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">Zona:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.zonaRel, { 'attr': {'class': 'form-control'} }) }}                        
+                </div>                
+            </div>                 
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3 control-label">Operacion:</label>
+                <div class="col-sm-9">
+                    {{ form_widget(form.operacionRel, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>                           
+        </div>
     </div>                 
     <div class="panel panel-default">
         <div class="panel-heading">Información contabilidad</div>
@@ -91,7 +90,7 @@
             <div class="form-group form-group-sm">
                 <label class="col-sm-3 control-label">Centro costo:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.centroCostoContabilidadRel, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.centroCostoContabilidadRel, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>                           
         </div>
@@ -101,5 +100,4 @@
         {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>
     {{ form_end(form) }}
-</div>
 {% endblock %}

@@ -1,28 +1,26 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Actualizar precios (masivo) - Soga App{% endblock %}
 {% block content %}
-<script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>    
-<div class="container">
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>    
     <div class="page-header">
         <h3>Actualizar precios (Masivo)</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-        <div class="panel panel-default">
-            <div class="panel-heading">Filtros de busqueda</div>
-            <div class="panel-body">                                          
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnActualizar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
-                    </div>
+    {{ form_errors(form) }}
+    <div class="panel panel-default">
+        <div class="panel-heading">Filtros de busqueda</div>
+        <div class="panel-body">                                          
+            <div class="form-group form-group-sm">
+                <div class="col-sm-offset-2 col-sm-10">
+                    {{ form_widget(form.BtnActualizar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                 </div>
             </div>
-        </div>   
-        {{ form_rest(form) }}
+        </div>
+    </div>   
+    {{ form_rest(form) }}
     {{ form_end(form) }}
-</div>
 {% endblock %}

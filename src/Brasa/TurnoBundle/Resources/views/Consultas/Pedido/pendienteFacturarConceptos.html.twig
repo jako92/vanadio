@@ -1,139 +1,136 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Consulta pendientes facturar - Soga App{% endblock %}
 {% block content %}
-<script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-</script> 
-<div class="container">
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script> 
     <div class="page-header">
         <h3>Consulta pedidos pendientes facturar</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-        <div class="panel panel-default">
-            <div class="panel-heading">Filtros de busqueda</div>
-            <div class="panel-body">
-                <div     class="form-group form-group-sm">
-                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
-                    <div class="col-sm-10">
-                        <div class="row">
-                          <div class="col-lg-2">
+    {{ form_errors(form) }}
+    <div class="panel panel-default">
+        <div class="panel-heading">Filtros de busqueda</div>
+        <div class="panel-body">
+            <div     class="form-group form-group-sm">
+                <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-lg-2">
                             <div class="input-group">
-                              {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
+                                {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
                             </div>
-                          </div>
-                          <div class="col-lg-10">
+                        </div>
+                        <div class="col-lg-10">
                             <div class="input-group">     
-                              {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
-                              <span class="input-group-btn">                                        
-                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
-                              </span>
+                                {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                <span class="input-group-btn">                                        
+                                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                </span>
                             </div>
-                          </div>
                         </div>
                     </div>
-                </div>                 
-                    
-                <div class="form-group form-group-sm">  
-                    <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                    <label for="form_estadoAutorizado" class="col-sm-2 control-label">Autorizado:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoAutorizado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
-                </div>    
-                <div class="form-group form-group-sm">  
-                    <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
-                    <div class="col-sm-4">  
-                        {{ form_widget(form.fechaDesde) }}
-                    </div>
-                    <label for="form_estadoProgramado" class="col-sm-2 control-label">Programado:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoProgramado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
-                </div>                    
-                <div class="form-group form-group-sm">  
-                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
-                    <div class="col-sm-4">   
-                        {{ form_widget(form.fechaHasta) }}
-                    </div>
-                    <label for="form_estadoFacturado" class="col-sm-2 control-label">Facturado:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoFacturado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
                 </div>
-                <div class="form-group form-group-sm">  
-                    <label for="form_TxtNumero" class="col-sm-2 control-label">Filtrar por fecha:</label>
-                    <div class="col-sm-4"> 
-                        {{ form_widget(form.filtrarFecha) }}
-                    </div>
-                    <label for="form_estadoAnulado" class="col-sm-2 control-label">Anulado:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoAnulado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
+            </div>                 
+
+            <div class="form-group form-group-sm">  
+                <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
+                <div class="col-sm-4">
+                    {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <label for="form_estadoAutorizado" class="col-sm-2 control-label">Autorizado:</label>
+                <div class="col-sm-4">                  
+                    {{ form_widget(form.estadoAutorizado, { 'attr': {'class': 'form-control'} }) }}
                 </div>                    
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
-                    </div>
+            </div>    
+            <div class="form-group form-group-sm">  
+                <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
+                <div class="col-sm-4">  
+                    {{ form_widget(form.fechaDesde) }}
+                </div>
+                <label for="form_estadoProgramado" class="col-sm-2 control-label">Programado:</label>
+                <div class="col-sm-4">                  
+                    {{ form_widget(form.estadoProgramado, { 'attr': {'class': 'form-control'} }) }}
+                </div>                    
+            </div>                    
+            <div class="form-group form-group-sm">  
+                <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
+                <div class="col-sm-4">   
+                    {{ form_widget(form.fechaHasta) }}
+                </div>
+                <label for="form_estadoFacturado" class="col-sm-2 control-label">Facturado:</label>
+                <div class="col-sm-4">                  
+                    {{ form_widget(form.estadoFacturado, { 'attr': {'class': 'form-control'} }) }}
+                </div>                    
+            </div>
+            <div class="form-group form-group-sm">  
+                <label for="form_TxtNumero" class="col-sm-2 control-label">Filtrar por fecha:</label>
+                <div class="col-sm-4"> 
+                    {{ form_widget(form.filtrarFecha) }}
+                </div>
+                <label for="form_estadoAnulado" class="col-sm-2 control-label">Anulado:</label>
+                <div class="col-sm-4">                  
+                    {{ form_widget(form.estadoAnulado, { 'attr': {'class': 'form-control'} }) }}
+                </div>                    
+            </div>                    
+            <div class="form-group form-group-sm">
+                <div class="col-sm-offset-2 col-sm-10">
+                    {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                 </div>
             </div>
         </div>
-            <table class="table table-striped table-bordered table-condensed">
-            <tr>
-                <th>COD</th>                
-                <th>NUMERO</th>
-                <th>FECHA</th>
-                <th>PUESTO</th>                
-                <th>SERVICIO</th>
-                <th>CANTIDAD</th>
-                <th>PRECIO</th>
-                <th>IVA</th>                                
-                <th>SUBTOTAL</th>
-                <th>TOTAL</th>
-            </tr>
-            {% set intCodigoCliente = '' %}
-            {% for arPedidosDetallesConceptos in arPedidosDetallesConceptos %}
-               {% if intCodigoCliente != arPedidosDetallesConceptos.pedidoRel.codigoClienteFk %}
-                    <tr> 
-                        <td id="suptipo" colspan="38">{{ arPedidosDetallesConceptos.pedidoRel.clienteRel.nombreCorto | default('') }}</td>
-                    </tr>
-                    {% set intCodigoCliente = arPedidosDetallesConceptos.pedidoRel.codigoClienteFk %}
-                {% endif %}                 
-                <tr>
-                    <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_concepto_resumen', {'codigoPedidoDetalleConcepto': arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }}"></td>                                
-                    <td>{{ arPedidosDetallesConceptos.pedidoRel.numero }}</td>                     
-                    <td>{{ arPedidosDetallesConceptos.pedidoRel.fechaProgramacion | date('Y/m') }}</td>                     
-                    <td>{{ arPedidosDetallesConceptos.puestoRel.nombre | default('') }}</td> 
-                    <td>{{ arPedidosDetallesConceptos.conceptoServicioRel.nombre  }}</td>                                                                                                    
-                    <td style="text-align: right">{{ arPedidosDetallesConceptos.cantidad }}</td>                                                                                                                          
-                    <td style="text-align: right">{{ arPedidosDetallesConceptos.precio | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arPedidosDetallesConceptos.iva | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arPedidosDetallesConceptos.subtotal | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arPedidosDetallesConceptos.total | number_format(0, '.', ',') }}</td> 
+    </div>
+    <table class="table table-striped table-bordered table-condensed">
+        <tr>
+            <th>COD</th>                
+            <th>NUMERO</th>
+            <th>FECHA</th>
+            <th>PUESTO</th>                
+            <th>SERVICIO</th>
+            <th>CANTIDAD</th>
+            <th>PRECIO</th>
+            <th>IVA</th>                                
+            <th>SUBTOTAL</th>
+            <th>TOTAL</th>
+        </tr>
+        {% set intCodigoCliente = '' %}
+        {% for arPedidosDetallesConceptos in arPedidosDetallesConceptos %}
+            {% if intCodigoCliente != arPedidosDetallesConceptos.pedidoRel.codigoClienteFk %}
+                <tr> 
+                    <td id="suptipo" colspan="38">{{ arPedidosDetallesConceptos.pedidoRel.clienteRel.nombreCorto | default('') }}</td>
                 </tr>
-            {% endfor %}
-        </table>        
+                {% set intCodigoCliente = arPedidosDetallesConceptos.pedidoRel.codigoClienteFk %}
+            {% endif %}                 
+            <tr>
+                <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_concepto_resumen', {'codigoPedidoDetalleConcepto': arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arPedidosDetallesConceptos.codigoPedidoDetalleConceptoPk }}"></td>                                
+                <td>{{ arPedidosDetallesConceptos.pedidoRel.numero }}</td>                     
+                <td>{{ arPedidosDetallesConceptos.pedidoRel.fechaProgramacion | date('Y/m') }}</td>                     
+                <td>{{ arPedidosDetallesConceptos.puestoRel.nombre | default('') }}</td> 
+                <td>{{ arPedidosDetallesConceptos.conceptoServicioRel.nombre  }}</td>                                                                                                    
+                <td style="text-align: right">{{ arPedidosDetallesConceptos.cantidad }}</td>                                                                                                                          
+                <td style="text-align: right">{{ arPedidosDetallesConceptos.precio | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arPedidosDetallesConceptos.iva | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arPedidosDetallesConceptos.subtotal | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arPedidosDetallesConceptos.total | number_format(0, '.', ',') }}</td> 
+            </tr>
+        {% endfor %}
+    </table>        
 
-        <!-- Botones Menu Items -->
-        <div class="btn-group" style="float: left">
-                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPedidosDetallesConceptos.getTotalItemCount }}</span></div>                        
+    <!-- Botones Menu Items -->
+    <div class="btn-group" style="float: left">
+        <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPedidosDetallesConceptos.getTotalItemCount }}</span></div>                        
+    </div>
+    <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+        {{ knp_pagination_render(arPedidosDetallesConceptos) }}       
+    </div>
+    <div class="btn-toolbar" style="float: right">
+        <div class="btn-group">                                
+            {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
         </div>
-        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-                {{ knp_pagination_render(arPedidosDetallesConceptos) }}       
-        </div>
-        <div class="btn-toolbar" style="float: right">
-            <div class="btn-group">                                
-                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
-            </div>
-        </div>
-        <!-- Fin Botones Menu Items -->
-        {{ form_rest(form) }}
+    </div>
+    <!-- Fin Botones Menu Items -->
+    {{ form_rest(form) }}
     {{ form_end(form) }}
-
-</div>
 {% endblock %}

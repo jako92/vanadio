@@ -1,6 +1,5 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
-<div class="container">
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(form) }}
     <h3>Nuevo cliente</h3>
@@ -10,7 +9,7 @@
             <div class="form-group form-group-sm">
                 <label for="form_tipoIdentificacionRel" class="col-sm-3 control-label">Tipo:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.tipoIdentificacionRel, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.tipoIdentificacionRel, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>            
             <div class="form-group form-group-sm">
@@ -40,30 +39,30 @@
             <div class="form-group form-group-sm">
                 <label for="form_nombre1" class="col-sm-3 control-label">Nombre 1:</label>
                 <div class="col-sm-9">
-                        
+
                     {{ form_widget(form.nombre1, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
-                    
+
                 </div>
             </div>
             <div class="form-group form-group-sm">
                 <label for="form_nombre2" class="col-sm-3 control-label">Nombre 2:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.nombre2, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                    {{ form_widget(form.nombre2, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>
             <div class="form-group form-group-sm">
                 <label for="form_apellido1" class="col-sm-3 control-label">Apellido 1:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.apellido1, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                    {{ form_widget(form.apellido1, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>
             <div class="form-group form-group-sm">
                 <label for="form_apellido2" class="col-sm-3 control-label">Apellido 2:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.apellido2, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                    {{ form_widget(form.apellido2, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>                
-                
+
             <div class="form-group form-group-sm">
                 <label for="form_asesorRel" class="col-sm-3 control-label">Asesor:</label>
                 <div class="col-sm-9">
@@ -187,7 +186,7 @@
             <div class="form-group">
                 <label for="form_comentarios" class="col-sm-3 control-label">Comentarios:</label>
                 <div class="col-sm-9">
-                   {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                    {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>                 
         </div>                
@@ -256,12 +255,11 @@
             </div>                                         
         </div>
     </div>                
-                
+
     <div class="modal-footer">
         <a class="btn btn-default btn-sm" href="{{ path('brs_tur_base_cliente') }}">Cancelar</a>        
         {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
         {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>
     {{ form_end(form) }}
-</div>
 {% endblock %}
