@@ -1,7 +1,6 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Información interna lista - Soga App{% endblock %}
 {% block content %}
-    <div class="container">
     <div class="page-header">    
         <h3>Listado información interna</h3>
     </div>
@@ -17,8 +16,8 @@
             <th>COMENTARIOS</th>
             <th></th>
         </tr>
-            {%for arEmpleadoInformacionInterna in arEmpleadoInformacionInterna %}
-               <tr>
+        {%for arEmpleadoInformacionInterna in arEmpleadoInformacionInterna %}
+            <tr>
                 <td>{{arEmpleadoInformacionInterna.codigoEmpleadoInformacionInternaPk}}</td>
                 <td>{{arEmpleadoInformacionInterna.empleadoRel.numeroIdentificacion}}</td>
                 <td>{{arEmpleadoInformacionInterna.empleadoRel.nombreCorto}}</td>
@@ -26,8 +25,8 @@
                 <td>{{arEmpleadoInformacionInterna.fecha | date('Y-m-d')}}</td>
                 <td>{{arEmpleadoInformacionInterna.comentarios}}</td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arEmpleadoInformacionInterna.codigoEmpleadoInformacionInternaPk }}" /></td>
-            {%endfor%}
-            </tr>            
+                {%endfor%}
+        </tr>            
     </table>
     <div class="btn-group" style="float: left">
         <div class="btn btn-default btn-sm">Información interna <span class="badge">{{ arEmpleadoInformacionInterna.getTotalItemCount }}</span></div>                        
@@ -48,5 +47,4 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
-    </div>
 {% endblock %}

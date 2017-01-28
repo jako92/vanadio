@@ -1,31 +1,30 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Permiso detalle - Soga App{% endblock %}
 {% block content %}
-<script>
-    $('#myTab a').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-</script>
-<div class="container">
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
     <div class="page-header">
         <h3>Permiso</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-        <div class="btn-toolbar" style="float:left">
-            <div class="btn-group">
-                {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
-                {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
-                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 12,  'numero': arPermiso.codigoPermisoPk }) }}', 'Archivos', 500, 700)" >Archivos</a>
-            </div>
+    {{ form_errors(form) }}
+    <div class="btn-toolbar" style="float:left">
+        <div class="btn-group">
+            {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 12,  'numero': arPermiso.codigoPermisoPk }) }}', 'Archivos', 500, 700)" >Archivos</a>
         </div>
-        <br /><br />
+    </div>
+    <br /><br />
     <!-- Encabezado Movimiento -->
     <div class="panel panel-default">
-      <div class="panel-heading">Información disciplinario</div>
-      <div class="panel-body">
+        <div class="panel-heading">Información disciplinario</div>
+        <div class="panel-body">
             <table width="100%" class="table table-condensed table-bordered">
                 <tr>
                     <td class="titulo">CÓDIGO:</td>
@@ -80,13 +79,12 @@
                     <td colspan="5" >{{ arPermiso.observaciones }}</td>
                 </tr>
             </table>
-      </div>
+        </div>
     </div>
 
     <!-- Fin Encabezado Movimiento -->
-    
-        {{ form_rest(form) }}
+
+    {{ form_rest(form) }}
     {{ form_end(form) }}
     <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_permiso_lista') }}">Volver</a>
-</div>
 {% endblock %}

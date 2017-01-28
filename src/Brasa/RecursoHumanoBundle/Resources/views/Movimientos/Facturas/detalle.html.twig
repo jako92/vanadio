@@ -1,26 +1,25 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Factura detalle - Soga App{% endblock %}
 {% block content %}
-<script>
-    $('#myTab a').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-</script>
-<div class="container">
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
     <div class="page-header">
         <h3>Factura detalle</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-        <div class="btn-group">                        
-            {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                            
-        </div>
+    {{ form_errors(form) }}
+    <div class="btn-group">                        
+        {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                            
+    </div>
     <br /><br />
     <!-- Encabezado Movimiento -->
     <div class="panel panel-default">
-      <div class="panel-heading">Información general factura</div>
-      <div class="panel-body">
+        <div class="panel-heading">Información general factura</div>
+        <div class="panel-body">
             <table width="100%" class="table table-condensed table-bordered ">
                 <tr>
                     <td class="titulo">CODIGO:</td>
@@ -91,7 +90,7 @@
                     <td colspan="7"></td>
                 </tr>
             </table>
-      </div>
+        </div>
     </div>
     <!-- Fin Encabezado Movimiento -->
     <ul class="nav nav-tabs">
@@ -226,7 +225,6 @@
     <div class="btn-group">
         <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_facturas_lista') }}" style="float:left">Volver</a>
     </div>
-        {{ form_rest(form) }}
+    {{ form_rest(form) }}
     {{ form_end(form) }}
-</div>
 {% endblock %}

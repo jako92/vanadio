@@ -1,11 +1,11 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Reclamo nueva - Soga App{% endblock %}
 {% block content %}
-<div class="container">
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     <script type="text/javascript">
-        $(document).ready(function() {
-        $('.date').datepicker({ dateFormat: 'yy-mm-dd' ,dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" ], monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]})  });
+        $(document).ready(function () {
+            $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
+        });
     </script>
     <h3>Nueva reclamo</h3>    
     <div class="panel panel-default">
@@ -15,19 +15,19 @@
                 <label for="form_txtNumeroIdentificacion" class="col-sm-3 control-label">Empleado:</label>
                 <div class="col-sm-9">
                     <div class="row">
-                      <div class="col-lg-2">
-                        <div class="input-group">
-                          <input id="form_txtNumeroIdentificacion"  name="form_txtNumeroIdentificacion"  type="text" class="form-control" value="{{ arReclamo.empleadoRel.numeroIdentificacion |default('') }}"/>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="form_txtNumeroIdentificacion"  name="form_txtNumeroIdentificacion"  type="text" class="form-control" value="{{ arReclamo.empleadoRel.numeroIdentificacion |default('') }}"/>
+                            </div>
                         </div>
-                      </div>
-                      <div class="col-lg-10">
-                        <div class="input-group">                                      
-                          <input id="form_txtNombreCorto"  name="form_txtNombreCorto"  type="text" class="form-control" value="{{ arReclamo.empleadoRel.nombreCorto |default('') }}" readOnly="ReadOnly" />
-                          <span class="input-group-btn">                                        
-                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
-                          </span>
+                        <div class="col-lg-10">
+                            <div class="input-group">                                      
+                                <input id="form_txtNombreCorto"  name="form_txtNombreCorto"  type="text" class="form-control" value="{{ arReclamo.empleadoRel.nombreCorto |default('') }}" readOnly="ReadOnly" />
+                                <span class="input-group-btn">                                        
+                                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                </span>
+                            </div>
                         </div>
-                      </div>
                     </div>
                 </div>
             </div>              
@@ -40,13 +40,13 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Reclamo:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.reclamo, { 'attr': {'class': 'form-control', 'rows': 8} }) }}
+                    {{ form_widget(form.reclamo, { 'attr': {'class': 'form-control', 'rows': 8} }) }}
                 </div>
             </div>                
             <div class="form-group">
                 <label class="col-sm-3 control-label">Comentarios:</label>
                 <div class="col-sm-9">
-                            {{ form_widget(form.comentarios, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.comentarios, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>    
         </div>
@@ -57,5 +57,4 @@
         {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>    
     {{ form_end(form) }}
-</div>
 {% endblock %}

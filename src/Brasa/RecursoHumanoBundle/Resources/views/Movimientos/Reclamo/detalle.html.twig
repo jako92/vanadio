@@ -1,22 +1,21 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Reclamo detalle - Soga App{% endblock %}
 {% block content %}
-<script>
-    $('#myTab a').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-</script>
-<div class="container">
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
     <div class="page-header">
         <h3>Reclamo</h3>
     </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
+    {{ form_errors(form) }}
     <!-- Encabezado Movimiento -->
     <div class="panel panel-default">
-      <div class="panel-heading">Información reclamo</div>
-      <div class="panel-body">
+        <div class="panel-heading">Información reclamo</div>
+        <div class="panel-body">
             <table width="100%" class="table table-condensed table-bordered">
                 <tr>
                     <td class="titulo">CÓDIGO:</td>
@@ -35,13 +34,12 @@
                     <td colspan="5" >{{ arReclamo.comentarios }}</td>
                 </tr>                
             </table>
-      </div>
+        </div>
     </div>
 
     <!-- Fin Encabezado Movimiento -->
-    
-        {{ form_rest(form) }}
+
+    {{ form_rest(form) }}
     {{ form_end(form) }}
     <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_reclamo') }}">Volver</a>
-</div>
 {% endblock %}

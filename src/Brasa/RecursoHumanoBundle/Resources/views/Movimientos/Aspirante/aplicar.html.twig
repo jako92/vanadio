@@ -1,6 +1,5 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block content %}
-<div class="container">
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     <h3>Aplicar a requisición</h3>
     <div class="panel panel-default">
@@ -9,7 +8,7 @@
             <div class="form-group form-group-sm">
                 <label for="form_seleccionRequisicionRel" class="col-sm-3 control-label">Requisición:</label>
                 <div class="col-sm-9">
-                        {{ form_widget(form.seleccionRequisicionRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    {{ form_widget(form.seleccionRequisicionRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                 </div>
             </div>                            
         </div>
@@ -18,6 +17,4 @@
         {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
     </div>    
     {{ form_end(form) }}
-
-</div>
 {% endblock %}
