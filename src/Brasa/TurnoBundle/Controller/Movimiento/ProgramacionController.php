@@ -49,7 +49,6 @@ class ProgramacionController extends Controller
                 $this->generarExcel();
             }
         }
-
         $arProgramaciones = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Movimientos/Programacion:lista.html.twig', array(
             'arProgramaciones' => $arProgramaciones,

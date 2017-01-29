@@ -1,47 +1,31 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
-    <div class="jumbotron">
-        <h1>Soga!</h1>
-        <p>Estamos trabajando para hacerlo mas simple...</p>
-        <p>
-            <a class="btn btn-lg btn-primary" href="http://www.appsoga.com/sogaweb" role="button" target="_blank" >Ver mas &raquo;</a>
-        </p>
-    </div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Inicio
+            <small>SogaApp V.1.0</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>            
+        </ol>
+    </section>
 
-    <div class="row">
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img data-src="holder.js/100%x200" alt="100%x200" src="{{ asset('imagenes/rhu/rrhh_1.png') }}" data-holder-rendered="true" style="height: 200px; width: 100%; display: block;">
-                <div class="caption">
-                    <h3>Recursos humanos </h3>
-                    <p>La aplicacion es un recurso integral con todas las caracteristica de manejo de una planta de recusos humanos, gestion de ingreso "seleccion, examenes" hasta el el reporte automatico de la seguridad social, liquidacion</p><br />
-                    <p><a href="{{ path('brs_rhu_inicio') }}" class="btn btn-primary" role="button">Ver mas &raquo;</a> <a href="{{ path('brs_rhu_como_iniciar') }}" class="btn btn-default" role="button">¿Como iniciar?</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img data-src="holder.js/100%x200" alt="100%x200" src="{{ asset('imagenes/contabilidad/contabilidad.jpg') }}" data-holder-rendered="true" style="height: 200px; width: 100%; display: block;">
-                <div class="caption">
-                    <h3>Contabilidad</h3>
-                    <p>La representacion contable de los procesos corportarativos es el lenguaje universal que une a las compañias con el mundo de, esto le pluralidad al uso de la aplacion en cualquier medio y para cualquier publico.</p><br />
-                    <p><a href="#" class="btn btn-primary" role="button">Ver mas &raquo;</a> <a href="#" class="btn btn-default" role="button">¿Como iniciar?</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img data-src="holder.js/100%x200" alt="100%x200" src="{{ asset('imagenes/inventario/inventario.jpg') }}" data-holder-rendered="true" style="height: 200px; width: 100%; display: block;">
-                <div class="caption">
-                    <h3>Inventario</h3>
-                    <p>En la carrera de fuerzas empresariales lo que no se puede contar, no se puede medir; inventario de recursos y materias son impresindibles y Soga implementa los metodos mas sencillos de manejo y la forma de costearlos.</p> <br />
-                    <p><a href="#" class="btn btn-primary" role="button">Ver mas &raquo;</a> <a href="#" class="btn btn-default" role="button">¿Como iniciar?</a></p>
-                </div>
-            </div>
-        </div>
+    <!-- Main content -->
+    <section class="content">
 
-    </div>
-    <!--
-<div id="linechart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>                
-    -->
+        <div class="jumbotron">
+            <h2>Actualizacion V1.0 - En esto estabamos trabajando, gracias por su paciencia!</h2>
+            <p>
+                Esta version mejora la experiencia de navegacion, sabemos que no todos somos amarillos o naranjas, muchos quizas un arco iris de opciones, le damos la libertad de escoger lo que mas te guste en los
+                colores de la aplicacion. Menu de acceso rapido y elementemos que mejoran la forma uso para hacerlo mas sencillo, mas practico, mas legible. 
+                Nuevas herramientas de comunicacion usuario-app, usuario-usuario, usuario-equipo_trabajo, velocidad de carga de las paginas aumentada, documentacion.
+                <br /><br />
+                Nuestro equipo de trabajo crece en talentos, valores, metas, retos realizados y nuevos. <br />
+                Para nuestros clientes: el producto de hacer lo que mas nos gusta como trabajo. <br />
+            </p>
+            <p><a class="btn btn-primary btn-lg" role="button">Leer mas</a></p>
+        </div>      
+    </section>
+    <!-- /.content -->
 {% endblock %}
