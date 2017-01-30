@@ -1,37 +1,52 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block title %}Contrato adicion nuevo - Soga App{% endblock %} 
 {% block content %}
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-    {{ form_errors(form) }}
-    <h3>Nuevo contrato adicion</h3>
-    <div class="panel panel-default">
-        <div class="panel-heading">Información general</div>
-        <div class="panel-body">
-            <div class="form-group form-group-sm">            
-            </div> 
-            <div class="form-group form-group-sm">
-                <label for="form_fecha" class="col-sm-2 control-label">Fecha:</label>
-                <div class="col-sm-10">
-                    {{ form_widget(form.fecha, { 'attr': {'class': 'form-control'} }) }}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_errors(form) }}
+        <h3>Nuevo contrato adicion</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">            
+                </div> 
+                <div class="form-group form-group-sm">
+                    <label for="form_fecha" class="col-sm-2 control-label">Fecha:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.fecha, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label for="form_contratoAdicionTipoRel" class="col-sm-2 control-label">Tipo contrato adicion:</label>
-                <div class="col-sm-10">                       
-                    {{ form_widget(form.contratoAdicionTipoRel, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group form-group-sm">
+                    <label for="form_contratoAdicionTipoRel" class="col-sm-2 control-label">Tipo contrato adicion:</label>
+                    <div class="col-sm-10">                       
+                        {{ form_widget(form.contratoAdicionTipoRel, { 'attr': {'class': 'form-control'} }) }}
 
-                </div>
-            </div>    
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Contenido:</label>
-                <div class="col-sm-10">
-                    {{ form_widget(form.contenido, { 'attr': {'class': 'form-control', 'rows': 20} }) }}
-                </div>
-            </div>        
+                    </div>
+                </div>    
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Contenido:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.contenido, { 'attr': {'class': 'form-control', 'rows': 20} }) }}
+                    </div>
+                </div>        
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-    </div>
-    {{ form_end(form) }}
+        <div class="modal-footer">
+            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}

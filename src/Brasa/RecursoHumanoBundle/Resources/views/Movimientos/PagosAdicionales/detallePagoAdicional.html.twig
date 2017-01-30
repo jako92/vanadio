@@ -1,58 +1,73 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Pago adicional detalle - Soga App{% endblock %}
 {% block content %}
-    <div class="page-header">
-        <h3>Detalles de pago adicional</h3>
-    </div>
-
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-    {{ form_errors(form) }}
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Información de las vacaciones</div>
-        <div class="panel-body">    
-            <table widtd="100%" class="table table-condensed table-bordered">
-                <tr>
-                    <td class="titulo">CODIGO:</td>
-                    <td class="td-in-well">{{ arPagoAdicional.codigoPagoAdicionalPk }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                    <td class="titulo">VALOR:</td>
-                    <td class="td-in-well" align="right">{{ arPagoAdicional.valor | number_format(0, '.', ',')}}</td>                        
-                </tr> 
-                <tr>
-                    <td class="titulo">FECHA CREACION:</td>
-                    <td class="td-in-well">{{ arPagoAdicional.fechaCreacion | date('Y/m/d H:i') }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well" align="right"></td>                        
-                </tr>     
-                <tr>
-                    <td class="titulo">FECHA ULTIMA EDICION:</td>
-                    <td class="td-in-well">{{ arPagoAdicional.fechaUltimaEdicion | date('Y/m/d H:i') }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well" align="right"></td>                        
-                </tr>
-                <tr>
-                    <td class="titulo">USUARIO ULTIMA EDICION:</td>
-                    <td class="td-in-well">{{ arPagoAdicional.codigoUsuarioUltimaEdicion }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well" align="right"></td>                        
-                </tr>                     
-                <tr>
-                    <td class="titulo" >DETALLE: </td>
-                    <td class="td-in-well" colspan="7">{{ arPagoAdicional.detalle }}</td>
-                </tr>                    
-            </table>
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        <div class="page-header">
+            <h3>Detalles de pago adicional</h3>
         </div>
-    </div>                                     
+
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Información de las vacaciones</div>
+            <div class="panel-body">    
+                <table widtd="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td class="td-in-well">{{ arPagoAdicional.codigoPagoAdicionalPk }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">VALOR:</td>
+                        <td class="td-in-well" align="right">{{ arPagoAdicional.valor | number_format(0, '.', ',')}}</td>                        
+                    </tr> 
+                    <tr>
+                        <td class="titulo">FECHA CREACION:</td>
+                        <td class="td-in-well">{{ arPagoAdicional.fechaCreacion | date('Y/m/d H:i') }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well" align="right"></td>                        
+                    </tr>     
+                    <tr>
+                        <td class="titulo">FECHA ULTIMA EDICION:</td>
+                        <td class="td-in-well">{{ arPagoAdicional.fechaUltimaEdicion | date('Y/m/d H:i') }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well" align="right"></td>                        
+                    </tr>
+                    <tr>
+                        <td class="titulo">USUARIO ULTIMA EDICION:</td>
+                        <td class="td-in-well">{{ arPagoAdicional.codigoUsuarioUltimaEdicion }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well" align="right"></td>                        
+                    </tr>                     
+                    <tr>
+                        <td class="titulo" >DETALLE: </td>
+                        <td class="td-in-well" colspan="7">{{ arPagoAdicional.detalle }}</td>
+                    </tr>                    
+                </table>
+            </div>
+        </div>                                     
 
 
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}

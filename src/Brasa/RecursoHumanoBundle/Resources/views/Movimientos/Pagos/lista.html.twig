@@ -1,16 +1,29 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Pagos lista - Soga App{% endblock %}
 {% block content %}
-
-    <script type="text/javascript">
-            $(document).ready(function() {
-            $('.date').datepicker({ dateFormat: 'yy-mm-dd' ,dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" ], monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ]})  });
-    </script>
-    <div class="page-header">
-        <h3>Pagos</h3>
-    </div>
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-            {{ form_errors(form) }}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
+            });
+        </script>
+        <div class="page-header">
+            <h3>Pagos</h3>
+        </div>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
@@ -18,25 +31,25 @@
                     <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Empleado:</label>
                     <div class="col-sm-10">
                         <div class="row">
-                          <div class="col-lg-2">
-                            <div class="input-group">
-                              {{ form_widget(form.txtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }} 
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.txtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }} 
+                                </div>
                             </div>
-                          </div>
-                          <div class="col-lg-10">
-                            <div class="input-group">                                      
-                                {{ form_widget(form.txtNombreCorto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
-                              <span class="input-group-btn">                                        
-                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
-                              </span>
+                            <div class="col-lg-10">
+                                <div class="input-group">                                      
+                                    {{ form_widget(form.txtNombreCorto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
                             </div>
-                          </div>
                         </div>
                     </div>
                 </div>
-                                
-                  
-                                                                         
+
+
+
                 <div class="form-group form-group-sm">  
                     <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
                     <div class="col-sm-2">                  
@@ -46,7 +59,7 @@
                     <div class="col-sm-4">                  
                         {{ form_widget(form.centroCostoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                    
+
                 </div>
                 <div class="form-group form-group-sm">  
                     <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
@@ -60,9 +73,9 @@
                 </div>    
                 <div class="form-group form-group-sm">  
                     <label for="form_TxtNumero" class="col-sm-8 control-label">Numero:</label>
-                        <div class="col-sm-4">                  
-                            {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
-                        </div>    
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                    </div>    
                 </div>   
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -90,23 +103,23 @@
                 <th></th>
             </tr>
             {% for arPagos in arPagos %}
-            <tr>
-                <td><input type="hidden" name="LblCodigo[]" value="{{ arPagos.codigoPagoPk }}">{{ arPagos.codigoPagoPk }} </td>
-                <td>{{ arPagos.numero  }}</td>
-                <td>{{ arPagos.pagoTipoRel.nombre  }}</td>
-                <td>{{ arPagos.empleadoRel.numeroIdentificacion  }}</td>
-                <td>{{ arPagos.empleadoRel.nombreCorto  }}</td>
-                <td>{{ arPagos.centroCostoRel.nombre  }}</td>                
-                <td>{{ arPagos.fechaDesdePago |date("Y/m/d")  }}</td>
-                <td>{{ arPagos.fechaDesde |date("Y/m/d")  }}</td>
-                <td>{{ arPagos.fechaHasta |date("Y/m/d")  }}</td>
-                <td style="text-align: right">{{ arPagos.vrSalario | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arPagos.vrDevengado | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arPagos.vrDeducciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arPagos.vrNeto | number_format(0, '.', ',') }}</td>
-                <td style="text-align: center"><a href="{{ path('brs_rhu_pagos_detalle', { 'codigoPago': arPagos.codigoPagoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagos.codigoPagoPk }}" /></td>
-            </tr>
+                <tr>
+                    <td><input type="hidden" name="LblCodigo[]" value="{{ arPagos.codigoPagoPk }}">{{ arPagos.codigoPagoPk }} </td>
+                    <td>{{ arPagos.numero  }}</td>
+                    <td>{{ arPagos.pagoTipoRel.nombre  }}</td>
+                    <td>{{ arPagos.empleadoRel.numeroIdentificacion  }}</td>
+                    <td>{{ arPagos.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arPagos.centroCostoRel.nombre  }}</td>                
+                    <td>{{ arPagos.fechaDesdePago |date("Y/m/d")  }}</td>
+                    <td>{{ arPagos.fechaDesde |date("Y/m/d")  }}</td>
+                    <td>{{ arPagos.fechaHasta |date("Y/m/d")  }}</td>
+                    <td style="text-align: right">{{ arPagos.vrSalario | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arPagos.vrDevengado | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arPagos.vrDeducciones | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arPagos.vrNeto | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_pagos_detalle', { 'codigoPago': arPagos.codigoPagoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagos.codigoPagoPk }}" /></td>
+                </tr>
             {% endfor %}
         </table>
         <div class="btn-toolbar" style="float: left">
@@ -127,9 +140,10 @@
                 {{ form_widget(form.BtnExcelDetalle, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
             </div>
         </div>
-        
+
         {{ form_rest(form) }}
-    {{ form_end(form) }}
+        {{ form_end(form) }}
 
-
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}
