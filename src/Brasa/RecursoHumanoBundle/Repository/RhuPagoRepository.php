@@ -581,7 +581,7 @@ class RhuPagoRepository extends EntityRepository {
                     COUNT(codigo_pago_pk) as numeroPagos,
                     SUM(vr_devengado) as vrDevengado                                        
                     FROM rhu_pago                                                            
-                    WHERE rhu_pago.codigo_empleado_fk = $codigoEmpleado AND (rhu_pago.fecha_desde_pago >='$strDesde' AND rhu_pago.fecha_desde_pago <='$strHasta')
+                    WHERE rhu_pago.codigo_empleado_fk = $codigoEmpleado AND rhu_pago.codigo_pago_tipo_fk = 1 AND (rhu_pago.fecha_desde_pago >='$strDesde' AND rhu_pago.fecha_desde_pago <='$strHasta')
                     GROUP BY codigo_empleado_fk"; 
         $connection = $em->getConnection();
         $statement = $connection->prepare($strSql);        
