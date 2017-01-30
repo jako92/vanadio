@@ -3,14 +3,14 @@
 {% block content %}
     <section class="content-header">
         <h1>
-            Programacion turnos
-            <small>Programaciones: lista</small>
+            Recurso humano
+            <small>Proceso disciplinario: detalle</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Proceso disciplinario</a></li>
+            <li class="active">Detalle</li>
         </ol>
     </section>    
     <section class="content">        	
@@ -19,10 +19,7 @@
                 e.preventDefault();
                 $(this).tab('show');
             })
-        </script>
-        <div class="page-header">
-            <h3>Proceso disciplinario</h3>
-        </div>
+        </script>        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">

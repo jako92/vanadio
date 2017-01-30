@@ -1,15 +1,15 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Capacitaciones lista - Soga App{% endblock %}
+{% block title %}Capacitacion lista - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
-            Programacion turnos
-            <small>Programaciones: lista</small>
+            Recurso humano
+            <small>Capacitación: lista</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Capacitación</a></li>
             <li class="active">Lista</li>
         </ol>
     </section>    
@@ -19,8 +19,7 @@
                 $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
             });
         </script>
-        <div class="page-header">
-            <h3>Lista capacitaciones</h3>
+        <div class="page-header">            
         </div>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}                

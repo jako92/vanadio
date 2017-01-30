@@ -3,14 +3,14 @@
 {% block content %}
     <section class="content-header">
         <h1>
-            Programacion turnos
-            <small>Programaciones: lista</small>
+            Recurso humano
+            <small>Aspirante: detalle</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Aspirante</a></li>
+            <li class="active">Detalle</li>
         </ol>
     </section>    
     <section class="content">        	
@@ -21,10 +21,7 @@
             })
         </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-        <div class="page-header">
-            <h3>Aspirante</h3>
-        </div>
+        {{ form_errors(form) }}        
         <div class="btn-group">
             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_aplicar', {'codigoAspirante': arAspirante.codigoAspirantePk }) }}', 'Archivos', 500, 700)" >Aplicar</a>
             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 18,  'numero': arAspirante.codigoAspirantePk }) }}', 'Archivos', 500, 700)" >Archivos</a>        
