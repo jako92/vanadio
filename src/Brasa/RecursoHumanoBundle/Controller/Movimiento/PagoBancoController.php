@@ -221,6 +221,13 @@ class PagoBancoController extends Controller
                     $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
                 }
             }
+            if($form->get('BtnArchivoDaviviendaXlsx')->isClicked()) {
+                if($arPagoBanco->getEstadoAutorizado() == 1) {
+                    $this->generarArchivoDaviviendaXlsx($arPagoBanco);
+                } else {
+                    $objMensaje->Mensaje('error', 'El pago al banco debe estar autorizado ');
+                }
+            }
             if ($form->get('BtnDetalleExcel')->isClicked()) {                
                 $this->generarDetalleExcel($codigoPagoBanco);
             }
@@ -796,7 +803,8 @@ class PagoBancoController extends Controller
         $arrBotonArchivoAvvillasOtros = array('label' => 'Av Villas Otros', 'disabled' => false);
         $arrBotonArchivoDavivienda = array('label' => 'Davivienda', 'disabled' => false);
         $arrBotonArchivoBogota = array('label' => 'Bogota', 'disabled' => false);
-        $arrBotonArchivoColpatriaCsv = array('label' => 'Colpatria csv', 'disabled' => false);        
+        $arrBotonArchivoColpatriaCsv = array('label' => 'Colpatria csv', 'disabled' => false);
+        $arrBotonArchivoDaviendaXlsx = array('label' => 'Davivienda xlsx', 'disabled' => false);        
         if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarDetalle['disabled'] = true;
@@ -818,6 +826,7 @@ class PagoBancoController extends Controller
                     ->add('BtnArchivoDavivienda', SubmitType::class, $arrBotonArchivoDavivienda)
                     ->add('BtnArchivoBogota', SubmitType::class, $arrBotonArchivoBogota)
                     ->add('BtnArchivoColpatriaCsv', SubmitType::class, $arrBotonArchivoColpatriaCsv)
+                    ->add('BtnArchivoDaviviendaXlsx', SubmitType::class, $arrBotonArchivoDaviendaXlsx)
                     ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
                     ->add('BtnDetalleExcel', SubmitType::class, array('label' => 'Excel'))
                     ->getForm();  
@@ -1327,6 +1336,65 @@ class PagoBancoController extends Controller
         header('Content-Length: ' . filesize($strArchivo));
         readfile($strArchivo);
         exit; 
+    }
+    
+    private function generarArchivoDaviviendaXlsx($arPagoBanco) {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();        
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'CÓDIGO')
+                    ->setCellValue('B1', 'DESCRIPCIÓN')
+                    ->setCellValue('C1', 'CUENTA')
+                    ->setCellValue('D1', 'FECHA TRANSMISIÓN')
+                    ->setCellValue('E1', 'FECHA APLICACIÓN')
+                    ->setCellValue('F1', 'SECUENCIA');
+                    
+        $i = 2;
+        //$query = $em->createQuery($this->strSqlLista);
+        //$arPagoBanco = $query->getResult();
+        $codigo = $arPagoBanco->getCodigoPagoBancoPk();
+        $arPagoBancoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->findBy(array('codigoPagoBancoFk' => $codigo));
+        $nro = count($arPagoBancoDetalles);
+        foreach ($arPagoBancoDetalles as $arPagoBancoDetalles) {
+            
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
+                    ->setCellValue('B' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
+                    ->setCellValue('C' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
+                    ->setCellValue('D' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
+                    ->setCellValue('E' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
+                    ->setCellValue('F' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk());
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('PagoBancoDetalles');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="PagoBancoDetalles.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
     }
     
     //Rellenar numeros

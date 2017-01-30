@@ -26,7 +26,7 @@
             <div class="btn-group">                
                 {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                
                 {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                
-                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                                
+                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm' } }) }}                                                                
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm">Archivo banco</button>
                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -40,6 +40,7 @@
                         <li class="dropdown-submenu">{{ form_widget(form.BtnArchivoDavivienda, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
                         <li class="dropdown-submenu">{{ form_widget(form.BtnArchivoBogota, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
                         <li class="dropdown-submenu">{{ form_widget(form.BtnArchivoColpatriaCsv, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
+                        <li class="dropdown-submenu">{{ form_widget(form.BtnArchivoDaviviendaXlsx, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
                     </ul>
                 </div> 
                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 7,  'numero': arPagoBanco.codigoPagoBancoPK }) }}', 'Archivos', 500, 700)" >Archivos</a>                    
