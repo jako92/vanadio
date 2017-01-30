@@ -1,6 +1,19 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Proceso disciplinario tipo lista - Soga App{% endblock %}  
 {% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
     <div class="page-header">    
         <h3>Listado tipos de procesos disciplinarios</h3>
     </div>
@@ -40,4 +53,6 @@
     </div>     
     {{ form_rest(form) }}
     {{ form_end(form) }}
+    <br/><br/><br/><br/>
+    </section>
 {% endblock %}

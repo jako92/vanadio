@@ -1,6 +1,19 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Academia nuevo - Soga App{% endblock %} 
 {% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">
     {{ form_start(formAcademia, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(formAcademia) }}
     <h3>Nuevo academia</h3>
@@ -57,4 +70,6 @@
         {{ form_widget(formAcademia.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div>
     {{ form_end(formAcademia) }}
+    <br/><br/><br/><br/>
+    </section>
 {% endblock %}

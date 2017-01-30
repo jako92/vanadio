@@ -1,23 +1,38 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Motivo cierre seleccion nuevo - Soga App{% endblock %} 
 {% block content %}
-    {{ form_start(formMotivo, { 'attr': {'class': 'form-horizontal'} }) }}
-    {{ form_errors(formMotivo) }}
-    <h3>Nuevo Motivo cierre seleccion</h3>
-    <div class="panel panel-default">
-        <div class="panel-heading">Información general</div>
-        <div class="panel-body">
-            <div class="form-group form-group-sm">
-                <label class="col-sm-2 control-label">Nombre:</label>
-                <div class="col-sm-10">
-                    {{ form_widget(formMotivo.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                </div>
-            </div>                                                               
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        {{ form_start(formMotivo, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_errors(formMotivo) }}
+        <h3>Nuevo Motivo cierre seleccion</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(formMotivo.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>                                                               
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_motivocierre_seleccion_listar') }}">Cancelar</a>
-        {{ form_widget(formMotivo.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-    </div>
-    {{ form_end(formMotivo) }}
+        <div class="modal-footer">
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_motivocierre_seleccion_listar') }}">Cancelar</a>
+            {{ form_widget(formMotivo.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>
+        {{ form_end(formMotivo) }}
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}
