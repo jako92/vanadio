@@ -1,21 +1,20 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Selección requisito nuevo - Soga App{% endblock %}
+{% block title %}Selección requisición nuevo - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Selección requisición: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Selección requisición</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">        	
-        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-        <h3>Nuevo requisición selección</h3>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body">
