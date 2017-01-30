@@ -3,20 +3,19 @@
 {% block content %}
     <section class="content-header">
         <h1>
-            Programacion turnos
-            <small>Programaciones: lista</small>
+            Recurso humano
+            <small>Academia: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Academia</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">
     {{ form_start(formAcademia, { 'attr': {'class': 'form-horizontal'} }) }}
-    {{ form_errors(formAcademia) }}
-    <h3>Nuevo academia</h3>
+    {{ form_errors(formAcademia) }}    
     <div class="panel panel-default">
         <div class="panel-heading">Información general</div>
         <div class="panel-body">
