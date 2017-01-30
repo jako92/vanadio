@@ -1,35 +1,51 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Comprobante nuevo - Soga App{% endblock %}
 {% block content %}
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-    {{ form_errors(form) }}
-    <h3>Nuevo comprobante</h3>
-    <div class="panel panel-default">
-        <div class="panel-heading">Información general</div>
-        <div class="panel-body">
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Código:</label>
-                <div class="col-sm-9">
-                    {% if form_errors(form.codigoComprobantePk) %}
-                        {{ form_widget(form.codigoComprobantePk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                        <div class="alert alert-danger" role="alert">{{ form_errors(form.codigoComprobantePk)}}</div>
-                    {% else %}
-                        {{ form_widget(form.codigoComprobantePk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    {% endif %}    
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>   
+    <section class="content"> 
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_errors(form) }}
+        <h3>Nuevo comprobante</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Código:</label>
+                    <div class="col-sm-9">
+                        {% if form_errors(form.codigoComprobantePk) %}
+                            {{ form_widget(form.codigoComprobantePk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                            <div class="alert alert-danger" role="alert">{{ form_errors(form.codigoComprobantePk)}}</div>
+                        {% else %}
+                            {{ form_widget(form.codigoComprobantePk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        {% endif %}    
 
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Nombre:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
                 </div>
             </div>
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Nombre:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                </div>
+            <div class="modal-footer">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_ctb_base_comprobantes_lista') }}">Cancelar</a>
+                {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
             </div>
-        </div>
-        <div class="modal-footer">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_ctb_base_comprobantes_lista') }}">Cancelar</a>
-            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-        </div>
-        {{ form_end(form) }}
-    </div>    
+            {{ form_end(form) }}
+            <br/><br/><br/><br/>
+    </section>
+</div>    
 {% endblock %}

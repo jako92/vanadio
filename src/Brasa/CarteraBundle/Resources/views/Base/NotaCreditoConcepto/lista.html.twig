@@ -1,15 +1,29 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Cartera nota credito concepto lista - Soga App{% endblock %} 
 {% block content %}
-<script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-    <div class="page-header">
-        <h3>Lista notas credito conceptos</h3>
-    </div>
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>   
+    <section class="content"> 
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        <div class="page-header">
+            <h3>Lista notas credito conceptos</h3>
+        </div>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
@@ -43,22 +57,22 @@
                 <th></th>
             </tr>
             {% for arNotaCreditoConceptos in arNotaCreditoConceptos %}
-            <tr>
-                <td>{{ arNotaCreditoConceptos.codigoNotaCreditoConceptoPk  }}</td>
-                <td>{{ arNotaCreditoConceptos.nombre }}</td>
-                <td style="text-align: center"><a href="{{ path('brs_cartera_base_notacredito_concepto_nuevo', {'codigoNotaCreditoConcepto': arNotaCreditoConceptos.codigoNotaCreditoConceptoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arNotaCreditoConceptos.codigoNotaCreditoConceptoPk }}" /></td>
-            </tr>
+                <tr>
+                    <td>{{ arNotaCreditoConceptos.codigoNotaCreditoConceptoPk  }}</td>
+                    <td>{{ arNotaCreditoConceptos.nombre }}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_cartera_base_notacredito_concepto_nuevo', {'codigoNotaCreditoConcepto': arNotaCreditoConceptos.codigoNotaCreditoConceptoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arNotaCreditoConceptos.codigoNotaCreditoConceptoPk }}" /></td>
+                </tr>
 
             {% endfor %}
         </table>
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arNotaCreditoConceptos.getTotalItemCount }}</span></div>
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arNotaCreditoConceptos.getTotalItemCount }}</span></div>
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-                {{ knp_pagination_render(arNotaCreditoConceptos) }}
+            {{ knp_pagination_render(arNotaCreditoConceptos) }}
         </div>
         <div class="btn-toolbar" style="float: right">
             <div class="btn-group">
@@ -73,6 +87,7 @@
         </div>
         <!-- Fin Botones Menu Items -->
         {{ form_rest(form) }}
-    {{ form_end(form) }}
-
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}
