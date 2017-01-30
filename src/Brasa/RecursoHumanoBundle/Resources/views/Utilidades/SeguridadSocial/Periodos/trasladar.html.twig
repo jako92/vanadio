@@ -1,6 +1,19 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block title %}Seguridad social empleados - Soga App{% endblock %}
 {% block content %}
+        <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content"> 
     <div class="page-header">
         <h3>Lista empleados aporte</h3>
     </div>
@@ -69,5 +82,7 @@
     </div>
     <!-- Fin Botones Menu Items -->
     {{ form_rest(form) }}
-    {{ form_end(form) }}   
+    {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>      
 {% endblock %}

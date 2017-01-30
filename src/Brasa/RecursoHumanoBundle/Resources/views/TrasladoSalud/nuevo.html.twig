@@ -1,6 +1,19 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block title %}Traslado salud nuevo - Soga App{% endblock %} 
 {% block content %}
+        <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programaciones: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content"> 
     {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(form) }}
     <h3>Nuevo traslado salud</h3>
@@ -48,4 +61,6 @@
         <p>Tener presente que si va a cambiar la EPS, posiblemente deba cambiar la EPS de alguno(s) de los familiares en EMPLEADO FAMILIA</p>
     </blockquote>
     {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>      
 {% endblock %}
