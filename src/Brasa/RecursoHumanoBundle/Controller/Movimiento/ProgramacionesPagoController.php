@@ -1287,10 +1287,55 @@ class ProgramacionesPagoController extends Controller
                 }
                 $i++;
             }
-            $objPHPExcel->getActiveSheet()->setTitle('Pagos');
+            $objPHPExcel->getActiveSheet()->setTitle('Pago');
                        
+            //Pago2
+            $objPHPExcel->createSheet(1)->setTitle('Pago2')
+                        ->setCellValue('A1', 'CODIGO')
+                        ->setCellValue('B1', 'DOCUMENTO')
+                        ->setCellValue('C1', 'NOMBRE')
+                        ->setCellValue('D1', 'BANCO')
+                        ->setCellValue('E1', 'CUENTA')
+                        ->setCellValue('F1', 'DESDE')
+                        ->setCellValue('G1', 'HASTA')
+                        ->setCellValue('H1', 'SALARIO')
+                        ->setCellValue('I1', 'DEVENGADO')
+                        ->setCellValue('J1', 'DEV_PAC')
+                        ->setCellValue('K1', 'DEDUCCIONES')
+                        ->setCellValue('L1', 'NETO')
+                        ->setCellValue('M1', 'PUESTO')
+                        ->setCellValue('N1', 'CLIENTE');
             
-            $objPHPExcel->createSheet(1)->setTitle('PagosDetalle')
+            $i = 2;
+
+            $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+            $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
+            foreach ($arPagos as $arPago) {
+                $objPHPExcel->setActiveSheetIndex(1)
+                        ->setCellValue('A' . $i, $arPago->getCodigoEmpleadoFk())
+                        ->setCellValue('B' . $i, $arPago->getEmpleadoRel()->getNumeroIdentificacion())
+                        ->setCellValue('C' . $i, $arPago->getEmpleadoRel()->getNombreCorto())                    
+                        ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getCuenta())
+                        ->setCellValue('F' . $i, $arPago->getFechaDesde()->format('Y/m/d'))
+                        ->setCellValue('G' . $i, $arPago->getFechaHasta()->format('Y/m/d'))
+                        ->setCellValue('H' . $i, $arPago->getVrSalarioEmpleado())
+                        ->setCellValue('I' . $i, $arPago->getVrDevengado())
+                        ->setCellValue('J' . $i, $arPago->getContratoRel()->getVrDevengadoPactado())
+                        ->setCellValue('K' . $i, $arPago->getVrDeducciones())
+                        ->setCellValue('L' . $i, $arPago->getVrNeto());
+                if($arPago->getEmpleadoRel()->getCodigoBancoFk()) {
+                    $objPHPExcel->setActiveSheetIndex(1)->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getBancoRel()->getNombre());
+                }
+                if($arPago->getEmpleadoRel()->getCodigoPuestoFk()) {
+                    $objPHPExcel->setActiveSheetIndex(1)->setCellValue('M' . $i, $arPago->getEmpleadoRel()->getPuestoRel()->getNombre());
+                    $objPHPExcel->setActiveSheetIndex(1)->setCellValue('N' . $i, $arPago->getEmpleadoRel()->getPuestoRel()->getClienteRel()->getNombreCorto());
+                }                
+                $i++;
+            }            
+            
+            
+            //Pago Detalle
+            $objPHPExcel->createSheet(2)->setTitle('PagosDetalle')
                     ->setCellValue('A1', 'CODIGO')
                     ->setCellValue('B1', 'DOCUMENTO')
                     ->setCellValue('C1', 'EMPLEADO')
@@ -1301,22 +1346,22 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('H1', 'DEDUCCION')
                     ->setCellValue('I1', 'INTERESES CESANTIAS');
             
-            $objPHPExcel->setActiveSheetIndex(1); 
+            $objPHPExcel->setActiveSheetIndex(2); 
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-            $objPHPExcel->getActiveSheet(1)->getStyle('1')->getFont()->setBold(true);     
+            $objPHPExcel->getActiveSheet(2)->getStyle('1')->getFont()->setBold(true);     
             for($col = 'A'; $col !== 'I'; $col++) {
-                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                  
+                $objPHPExcel->getActiveSheet(2)->getColumnDimension($col)->setAutoSize(true);                  
             }            
             for($col = 'F'; $col !== 'I'; $col++) { 
-                $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');                 
-                $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+                $objPHPExcel->getActiveSheet(2)->getStyle($col)->getAlignment()->setHorizontal('right');                 
+                $objPHPExcel->getActiveSheet(2)->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
             }             
             
             $i = 2;
             $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
             $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->pagosDetallesProgramacionPago($codigoProgramacionPago);            
             foreach ($arPagoDetalles as $arPagoDetalle) {
-                $objPHPExcel->setActiveSheetIndex(1)
+                $objPHPExcel->setActiveSheetIndex(2)
                         ->setCellValue('A' . $i, $arPagoDetalle->getCodigoPagoDetallePk())
                         ->setCellValue('B' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getNumeroIdentificacion())
                         ->setCellValue('C' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getNombreCorto())
@@ -1325,13 +1370,14 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('F' . $i, $arPagoDetalle->getNumeroHoras())
                         ->setCellValue('I' . $i, $arPagoDetalle->getProgramacionPagoDetalleRel()->getVrInteresCesantia());
                 if($arPagoDetalle->getOperacion() == 1) {
-                    $objPHPExcel->setActiveSheetIndex(1)->setCellValue('G' . $i, $arPagoDetalle->getVrPago());
+                    $objPHPExcel->setActiveSheetIndex(2)->setCellValue('G' . $i, $arPagoDetalle->getVrPago());
                 }
                 if($arPagoDetalle->getOperacion() == -1) {
-                    $objPHPExcel->setActiveSheetIndex(1)->setCellValue('H' . $i, $arPagoDetalle->getVrPago());
+                    $objPHPExcel->setActiveSheetIndex(2)->setCellValue('H' . $i, $arPagoDetalle->getVrPago());
                 }                
                 $i++;
-            }             
+            } 
+            
             
             //Incapacidades
             $objPHPExcel->createSheet()->setTitle('Incapacidades')
@@ -1341,7 +1387,7 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('D1', 'IDENTIFICACION')
                     ->setCellValue('E1', 'EMPLEADO')
                     ->setCellValue('F1', 'DIAS');
-            $objPHPExcel->setActiveSheetIndex(2);             
+            $objPHPExcel->setActiveSheetIndex(3);             
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
             $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);                  
             
@@ -1349,7 +1395,7 @@ class ProgramacionesPagoController extends Controller
             $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
             $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->periodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), "", $arProgramacionPago->getCodigoCentroCostoFk());                       
             foreach ($arIncapacidades as $arIncapacidad) {
-                $objPHPExcel->setActiveSheetIndex(2)
+                $objPHPExcel->setActiveSheetIndex(3)
                         ->setCellValue('A' . $i, $arIncapacidad->getIncapacidadTipoRel()->getNombre())
                         ->setCellValue('B' . $i, $arIncapacidad->getFechaDesde()->format('Y/m/d'))
                         ->setCellValue('C' . $i, $arIncapacidad->getFechaHasta()->format('Y/m/d'))
