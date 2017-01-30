@@ -1,43 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>A ocurrido un error - SogaApp</title>  
-  <link href="{{ asset('css/error.css') }}" media="all" rel="stylesheet" type="text/css" />
-  <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-</head>
+{% extends '::base2.html.twig' %}
+{% block content %}
+    <!-- Main content -->
+    <section class="content">
+        <div class="error-page">
+            <h2 class="headline text-red">{{ status_code }}</h2>
 
-<body>
-  <header class="page-container page-container-responsive space-top-4">
-    <a href="#" class="icon link-icon h2">
-      <span class="screen-reader-only">
-        <img src="{{ asset('imagenes/logos/logosoga.jpg') }}" width=150 height=150>SogaApp
-      </span>
-    </a>
-  </header>
+            <div class="error-content">
+                <h3><i class="fa fa-warning text-red"></i> Oops! Ha ocurrido un error.</h3>
 
-  <div class="page-container page-container-responsive">
-    <div class="row space-top-8 space-8 row-table">
-        <div class="col-5 col-middle">
-          <h1 class="text-jumbo text-ginormous">Oops!</h1>
-          <h2>Parece que ha ocurrido un error en la aplicacion.</h2>
-          <h6>Error code: {{ status_code }} {{ status_text }}</h6>          
-          <ul class="list-unstyled">
-            <li>Puede ir a:</li>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Pagina appsoga.com</a></li>
-            <li><a href="#">Ayuda</a></li>
-            <li><a href="#">Reportar error</a></li>
-          </ul>
-          <br />
-            <h6>Por favor reporte este caso al numero 4448120 ext 120 (Medellin -Ant)</h6>          
-        </div>
-        <div class="col-5 col-middle text-center">
-          <img src="{{ asset('imagenes/error/error.gif') }}" width="313" height="428" alt="Girl has dropped her ice cream.">
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+                <p> 
+                    Estamos trabajando para arreglarlo inmediatamente. {{ status_text }}
+                    Mientras tanto usted pues <a href="{{ path('brasa_general_inicio') }}">volver a inicio </a> o buscar otro contenido.
+                </p>
+
+                <form class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" name="submit" class="btn btn-danger btn-flat"><i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.input-group -->
+                </form>
+            </div>
+        </div>        
+    </section>
+
+
+    <!-- /.content -->
+{% endblock %}
