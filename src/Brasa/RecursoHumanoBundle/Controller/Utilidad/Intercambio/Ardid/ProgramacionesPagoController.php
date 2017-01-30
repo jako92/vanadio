@@ -87,6 +87,7 @@ class ProgramacionesPagoController extends Controller {
                                     "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
                                     "numero" => $arPago->getNumero(),
                                     "codigoPagoTipo" => $arPago->getCodigoPagoTipoFk(),
+                                    "codigoContrato" => $arPago->getCodigoContratoFk(),
                                     "fechaDesde" => $arPago->getFechaDesde()->format('Y-m-d'),
                                     "fechaHasta" => $arPago->getFechaHasta()->format('Y-m-d'),
                                     "vrSalario" => $arPago->getVrSalario(),

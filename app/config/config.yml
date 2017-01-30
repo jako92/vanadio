@@ -79,6 +79,7 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    delivery_addresses: ['maestradaz3@gmail.com']
 
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
