@@ -1,6 +1,19 @@
-{% extends '::base.html.twig' %}
+{% extends '::base2.html.twig' %}
 {% block title %}Detalle usuario - Soga App{% endblock %}
 {% block content %}
+    <section class="content-header">
+        <h1>
+            Seguridad
+            <small>Usuario: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Seguridad</a></li>
+                <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Usuario</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">     
     <script>
         $('#myTab a').click(function (e) {
             e.preventDefault();
@@ -159,4 +172,6 @@
     {{ form_rest(form) }}
     {{ form_end(form) }}
     <a  class="btn btn-default btn-sm" href="{{ path('brs_seg_admin_usuario_lista') }}">Volver</a>
+        <br/><br/><br/><br/>
+    </section>    
 {% endblock %}

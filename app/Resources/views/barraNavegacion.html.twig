@@ -91,7 +91,11 @@
                     <li class="user-body">
                         <div class="row">
                             <div class="col-xs-4 text-center">
-                                <a href="#">Usuarios</a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('brs_seg_admin_usuario_lista') }}">Usuarios</a>
+                                  {% else %}                                
+                                      <a href="#">Usuarios</a>
+                                  {% endif %}
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a href="#">Configuracion</a>
