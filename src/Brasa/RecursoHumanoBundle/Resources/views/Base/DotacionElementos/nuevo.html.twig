@@ -4,19 +4,20 @@
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Elemento de dotacion: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Dotacion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Elementos de dotaciones</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">        	
         {{ form_start(formDotacionElemento, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(formDotacionElemento) }}
-        <h3>Nueva Dotación</h3>
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body">
