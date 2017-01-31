@@ -4,14 +4,8 @@
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
-        </ol>
+            <small>Contrato prorroga: nuevo</small>
+        </h1>        
     </section>    
     <section class="content">        	
         <script type="text/javascript">
@@ -20,8 +14,7 @@
             });
         </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-        {{ form_errors(form) }}
-        <h3>Nuevo contrato prorroga</h3>
+        {{ form_errors(form) }}        
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body"> 

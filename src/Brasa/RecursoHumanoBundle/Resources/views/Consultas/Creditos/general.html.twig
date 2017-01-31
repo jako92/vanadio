@@ -1,16 +1,17 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Consulta créditos empleados - Soga App{% endblock %}
+{% block title %}Consulta créditos general - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Crédito: general</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Consultas</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Crédito</a></li>
+            <li class="active">General</li>
         </ol>
     </section>    
     <section class="content">        	
@@ -19,8 +20,7 @@
                 $(document).ready(function () {
                     $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
                 });
-            </script>
-            <h3>Consulta creditos general</h3>
+            </script>            
         </div>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
