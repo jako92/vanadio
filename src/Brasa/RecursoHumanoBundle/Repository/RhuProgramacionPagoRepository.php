@@ -738,6 +738,9 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
                 $dateFechaHasta = $arProgramacionPago->getFechaHasta();
                 $dateFechaHastaPago = $arContrato->getFechaUltimoPago();
+                if($dateFechaHastaPago > $dateFechaHasta) {
+                    $dateFechaHastaPago = $dateFechaHasta;
+                }
                 $douSalario = $arContrato->getVrSalarioPago();
                 $intDiasCesantia = 0;                                
                 $intDiasCesantia = $objFunciones->diasPrestaciones($dateFechaDesde, $dateFechaHasta);
