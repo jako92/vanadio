@@ -79,34 +79,38 @@ class RhuLiquidacionRepository extends EntityRepository {
 
             //Liquidar cesantias
             if($arLiquidacion->getLiquidarCesantias() == 1) {
+
                 $salarioPromedioCesantiasAnterior = 0;
                 $diasCesantiaAnterior = 0;
                 $cesantiaAnterior = 0;
                 $interesCesantiaAnterior = 0;
                 $diasCesantiaAusentismoAnterior = 0;
                 $fechaUltimoPago = $arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias();
-                $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                
-                $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findOneBy(array('codigoPagoTipoFk' => 3, 'codigoEmpleadoFk' => $arLiquidacion->getCodigoEmpleadoFk(), 'estadoPagadoBanco' => 0));                
-                if($arPago) {
-                    $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                                        
-                    $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arPago->getCodigoProgramacionPagoDetalleFk());                
-                    if($arProgramacionPagoDetalle) {
-                        $diasCesantiaAnterior = $arProgramacionPagoDetalle->getDias();
-                        $cesantiaAnterior = $arProgramacionPagoDetalle->getVrNetoPagar();
-                        $interesCesantiaAnterior = $arProgramacionPagoDetalle->getVrInteresCesantia();
-                        $diasCesantiaAusentismoAnterior = $arProgramacionPagoDetalle->getDiasAusentismo();
-                        $salarioPromedioCesantiasAnterior = $arProgramacionPagoDetalle->getVrSalarioCesantia();
-                        $fechaUltimoPago = $arProgramacionPagoDetalle->getFechaDesde();
-                        $arLiquidacion->setCodigoProgramacionPagoDetalleFk($arPago->getCodigoProgramacionPagoDetalleFk());
-                    }
-                    $arLiquidacion->setCodigoPagoFk($arPago->getCodigoPagoPk());
+                if($arLiquidacion->getOmitirCesantiasAnterior() == False) {
+                    $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                
+                    $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findOneBy(array('codigoPagoTipoFk' => 3, 'codigoEmpleadoFk' => $arLiquidacion->getCodigoEmpleadoFk(), 'estadoPagadoBanco' => 0));                
+                    if($arPago) {
+                        $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();                                        
+                        $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($arPago->getCodigoProgramacionPagoDetalleFk());                
+                        if($arProgramacionPagoDetalle) {
+                            $diasCesantiaAnterior = $arProgramacionPagoDetalle->getDias();
+                            $cesantiaAnterior = $arProgramacionPagoDetalle->getVrNetoPagar();
+                            $interesCesantiaAnterior = $arProgramacionPagoDetalle->getVrInteresCesantia();
+                            $diasCesantiaAusentismoAnterior = $arProgramacionPagoDetalle->getDiasAusentismo();
+                            $salarioPromedioCesantiasAnterior = $arProgramacionPagoDetalle->getVrSalarioCesantia();
+                            $fechaUltimoPago = $arProgramacionPagoDetalle->getFechaDesde();
+                            $arLiquidacion->setCodigoProgramacionPagoDetalleFk($arPago->getCodigoProgramacionPagoDetalleFk());
+                        }
+                        $arLiquidacion->setCodigoPagoFk($arPago->getCodigoPagoPk());
+                    }                    
                 }
                 $arLiquidacion->setDiasCesantiasAnterior($diasCesantiaAnterior);                
                 $arLiquidacion->setVrCesantiasAnterior($cesantiaAnterior);
                 $arLiquidacion->setVrInteresesCesantiasAnterior($interesCesantiaAnterior);                 
                 $arLiquidacion->setDiasCesantiasAusentismoAnterior($diasCesantiaAusentismoAnterior); 
                 $arLiquidacion->setVrSalarioPromedioCesantiasAnterior($salarioPromedioCesantiasAnterior);
-                $arLiquidacion->setFechaUltimoPagoCesantiasAnterior($fechaUltimoPago);       
+                $arLiquidacion->setFechaUltimoPagoCesantiasAnterior($fechaUltimoPago);   
+                
                 $dateFechaDesde = $arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias();            
                 $dateFechaHasta = $arLiquidacion->getContratoRel()->getFechaHasta();
                 if($dateFechaHasta > $dateFechaDesde) {

@@ -362,6 +362,11 @@ class RhuLiquidacion
      */    
     private $codigoPagoFk;
     
+    /**     
+     * @ORM\Column(name="omitir_cesantias_anterior", type="boolean")
+     */    
+    private $omitirCesantiasAnterior = false;     
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="liquidacionesEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
@@ -2234,5 +2239,29 @@ class RhuLiquidacion
     public function getPagosBancosDetallesLiquidacionRel()
     {
         return $this->pagosBancosDetallesLiquidacionRel;
+    }
+
+    /**
+     * Set omitirCesantiasAnterior
+     *
+     * @param boolean $omitirCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior)
+    {
+        $this->omitirCesantiasAnterior = $omitirCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirCesantiasAnterior
+     *
+     * @return boolean
+     */
+    public function getOmitirCesantiasAnterior()
+    {
+        return $this->omitirCesantiasAnterior;
     }
 }

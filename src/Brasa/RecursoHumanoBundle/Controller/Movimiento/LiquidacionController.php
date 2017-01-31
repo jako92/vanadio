@@ -334,6 +334,7 @@ class LiquidacionController extends Controller
             ->add('vrSalarioPrimaPropuesto', NumberType::class, array('data' =>$arLiquidacion->getVrSalarioPrimaPropuesto() ,'required' => false))                                      
             ->add('vrSalarioCesantiasPropuesto', NumberType::class, array('data' =>$arLiquidacion->getVrSalarioCesantiasPropuesto() ,'required' => false))                                      
             ->add('eliminarAusentismo', CheckboxType::class, array('required'  => false, 'data' =>$arLiquidacion->getEliminarAusentismo()))                
+            ->add('omitirCesantiasAnterior', CheckboxType::class, array('required'  => false, 'data' =>$arLiquidacion->getOmitirCesantiasAnterior()))                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
@@ -348,6 +349,7 @@ class LiquidacionController extends Controller
             $vrSalarioPrimaPropuesto = $form->get('vrSalarioPrimaPropuesto')->getData();
             $vrSalarioCesantiasPropuesto = $form->get('vrSalarioCesantiasPropuesto')->getData();
             $eliminarAusentismo = $form->get('eliminarAusentismo')->getData();
+            $omitirCesantiasAnterior = $form->get('omitirCesantiasAnterior')->getData();
             $arLiquidacion->setPorcentajeIbp($porcentajeIbp);
             $arLiquidacion->setLiquidarSalario($liquidarSalario);
             $arLiquidacion->setVrIndemnizacion($vrIndemnizacion);
@@ -357,6 +359,7 @@ class LiquidacionController extends Controller
             $arLiquidacion->setVrSalarioPrimaPropuesto($vrSalarioPrimaPropuesto);
             $arLiquidacion->setVrSalarioCesantiasPropuesto($vrSalarioCesantiasPropuesto);
             $arLiquidacion->setEliminarAusentismo($eliminarAusentismo);
+            $arLiquidacion->setOmitirCesantiasAnterior($omitirCesantiasAnterior);
             $em->persist($arLiquidacion);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
