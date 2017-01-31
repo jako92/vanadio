@@ -195,7 +195,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
             $recargosNocturnos = 0;
         }
         $recargosNocturnos = $recargosNocturnos / $meses;
-        $recargosNocturnos =  $recargosNocturnos + $arContrato->getPromedioRecargoNocturnoInicial();
+        //$recargosNocturnos =  $recargosNocturnos + $arContrato->getPromedioRecargoNocturnoInicial();
         return $recargosNocturnos;
     }   
     
