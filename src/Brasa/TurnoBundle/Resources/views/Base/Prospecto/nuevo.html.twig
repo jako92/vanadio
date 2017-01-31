@@ -1,22 +1,23 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+     <section class="content-header">
         <h1>
             Programacion turnos
-            <small>Programaciones: lista</small>
+            <small>Prospecto: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cliente</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Prospecto</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content"> 
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(form) }}
-        <h3>Nuevo prospecto</h3>
         <div class="panel panel-default">
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">                                      
