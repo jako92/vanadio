@@ -734,6 +734,7 @@ class ContratosController extends Controller
             ->add('ibpCesantiasInicial', NumberType::class, array('data' =>$arContrato->getIbpCesantiasInicial() ,'required' => false))      
             ->add('ibpPrimasInicial', NumberType::class, array('data' =>$arContrato->getIbpPrimasInicial() ,'required' => false))                      
             ->add('promedioRecargoNocturnoInicial', NumberType::class, array('data' =>$arContrato->getPromedioRecargoNocturnoInicial() ,'required' => false))                                      
+            ->add('recargoNocturnoInicial', NumberType::class, array('data' =>$arContrato->getRecargoNocturnoInicial() ,'required' => false))                                      
             ->add('fechaUltimoPagoCesantias', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoCesantias(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoPrimas', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoPrimas(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoVacaciones', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoVacaciones(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
@@ -746,6 +747,7 @@ class ContratosController extends Controller
             $ibpCesantiasInicial = $formIbpAdicional->get('ibpCesantiasInicial')->getData();
             $ibpPrimasInicial = $formIbpAdicional->get('ibpPrimasInicial')->getData();
             $promedioRecargoNocturnoInicial = $formIbpAdicional->get('promedioRecargoNocturnoInicial')->getData();
+            $recargoNocturnoInicial = $formIbpAdicional->get('recargoNocturnoInicial')->getData();
             $fechaUltimoPagoCesantias = $formIbpAdicional->get('fechaUltimoPagoCesantias')->getData();
             $fechaUltimoPagoPrimas = $formIbpAdicional->get('fechaUltimoPagoPrimas')->getData();
             $fechaUltimoPagoVacaciones = $formIbpAdicional->get('fechaUltimoPagoVacaciones')->getData(); 
@@ -753,6 +755,7 @@ class ContratosController extends Controller
             $arContrato->setIbpCesantiasInicial($ibpCesantiasInicial);
             $arContrato->setIbpPrimasInicial($ibpPrimasInicial);
             $arContrato->setPromedioRecargoNocturnoInicial($promedioRecargoNocturnoInicial);
+            $arContrato->setRecargoNocturnoInicial($recargoNocturnoInicial);
             $arContrato->setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias);
             $arContrato->setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas);
             $arContrato->setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones);

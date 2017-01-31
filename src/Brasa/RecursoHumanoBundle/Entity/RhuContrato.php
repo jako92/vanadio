@@ -188,6 +188,11 @@ class RhuContrato
      */
     private $promedioRecargoNocturnoInicial = 0;    
     
+    /**     
+     * @ORM\Column(name="recargo_nocturno_inicial", type="float")
+     */
+    private $recargoNocturnoInicial = 0;    
+    
     /**
      * Este factor se utiliza para saber de cuantas horas se compone un dia
      * @ORM\Column(name="factor", type="integer", nullable=true)     
@@ -500,6 +505,7 @@ class RhuContrato
     protected $contratosAdicionalesContratoRel;
     
 
+
     /**
      * Constructor
      */
@@ -524,6 +530,7 @@ class RhuContrato
         $this->soportesPagosHorariosDetallesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cambiosTiposContratosContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratosAdicionalesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1353,6 +1360,30 @@ class RhuContrato
     }
 
     /**
+     * Set recargoNocturnoInicial
+     *
+     * @param float $recargoNocturnoInicial
+     *
+     * @return RhuContrato
+     */
+    public function setRecargoNocturnoInicial($recargoNocturnoInicial)
+    {
+        $this->recargoNocturnoInicial = $recargoNocturnoInicial;
+
+        return $this;
+    }
+
+    /**
+     * Get recargoNocturnoInicial
+     *
+     * @return float
+     */
+    public function getRecargoNocturnoInicial()
+    {
+        return $this->recargoNocturnoInicial;
+    }
+
+    /**
      * Set factor
      *
      * @param integer $factor
@@ -1665,6 +1696,30 @@ class RhuContrato
     }
 
     /**
+     * Set codigoContratoGrupoFk
+     *
+     * @param integer $codigoContratoGrupoFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoContratoGrupoFk($codigoContratoGrupoFk)
+    {
+        $this->codigoContratoGrupoFk = $codigoContratoGrupoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoContratoGrupoFk
+     *
+     * @return integer
+     */
+    public function getCodigoContratoGrupoFk()
+    {
+        return $this->codigoContratoGrupoFk;
+    }
+
+    /**
      * Set limitarHoraExtra
      *
      * @param boolean $limitarHoraExtra
@@ -1734,6 +1789,30 @@ class RhuContrato
     public function getTurnoFijoOrdinario()
     {
         return $this->turnoFijoOrdinario;
+    }
+
+    /**
+     * Set secuencia
+     *
+     * @param integer $secuencia
+     *
+     * @return RhuContrato
+     */
+    public function setSecuencia($secuencia)
+    {
+        $this->secuencia = $secuencia;
+
+        return $this;
+    }
+
+    /**
+     * Get secuencia
+     *
+     * @return integer
+     */
+    public function getSecuencia()
+    {
+        return $this->secuencia;
     }
 
     /**
@@ -1830,6 +1909,30 @@ class RhuContrato
     public function getContratoTipoRel()
     {
         return $this->contratoTipoRel;
+    }
+
+    /**
+     * Set contratoGrupoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel
+     *
+     * @return RhuContrato
+     */
+    public function setContratoGrupoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel = null)
+    {
+        $this->contratoGrupoRel = $contratoGrupoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get contratoGrupoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo
+     */
+    public function getContratoGrupoRel()
+    {
+        return $this->contratoGrupoRel;
     }
 
     /**
@@ -2836,78 +2939,6 @@ class RhuContrato
     public function getDisciplinariosContratoRel()
     {
         return $this->disciplinariosContratoRel;
-    }
-
-    /**
-     * Set secuencia
-     *
-     * @param integer $secuencia
-     *
-     * @return RhuContrato
-     */
-    public function setSecuencia($secuencia)
-    {
-        $this->secuencia = $secuencia;
-
-        return $this;
-    }
-
-    /**
-     * Get secuencia
-     *
-     * @return integer
-     */
-    public function getSecuencia()
-    {
-        return $this->secuencia;
-    }
-
-    /**
-     * Set codigoContratoGrupoFk
-     *
-     * @param integer $codigoContratoGrupoFk
-     *
-     * @return RhuContrato
-     */
-    public function setCodigoContratoGrupoFk($codigoContratoGrupoFk)
-    {
-        $this->codigoContratoGrupoFk = $codigoContratoGrupoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoContratoGrupoFk
-     *
-     * @return integer
-     */
-    public function getCodigoContratoGrupoFk()
-    {
-        return $this->codigoContratoGrupoFk;
-    }
-
-    /**
-     * Set contratoGrupoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel
-     *
-     * @return RhuContrato
-     */
-    public function setContratoGrupoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel = null)
-    {
-        $this->contratoGrupoRel = $contratoGrupoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get contratoGrupoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo
-     */
-    public function getContratoGrupoRel()
-    {
-        return $this->contratoGrupoRel;
     }
 
     /**

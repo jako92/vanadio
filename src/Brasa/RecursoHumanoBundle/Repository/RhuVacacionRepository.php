@@ -91,13 +91,16 @@ class RhuVacacionRepository extends EntityRepository {
         $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());                    
              
         $arVacacion->setVrRecargoNocturno($recargosNocturnos);
-        $recargosNocturnosInicial = $arContrato->getPromedioRecargoNocturnoInicial();
-        $arVacacion->setVrRecargoNocturnoInicial($recargosNocturnosInicial);
-        $recargosNocturnosTotal = $recargosNocturnos + $recargosNocturnosInicial;        
-        $promedioRecargosNocturnosTotal = $recargosNocturnosTotal / $mesesPeriodo;
+        $arVacacion->setVrRecargoNocturnoInicial($arContrato->getRecargoNocturnoInicial());
+        $arVacacion->setVrPromedioRecargoNocturnoInicial($arContrato->getPromedioRecargoNocturnoInicial());
+        $recargosNocturnosTotal = $recargosNocturnos + $arContrato->getRecargoNocturnoInicial();        
+        $promedioRecargosNocturnos = $recargosNocturnosTotal / $mesesPeriodo;
+        $promedioRecargosNocturnosTotal = $promedioRecargosNocturnos + $arContrato->getPromedioRecargoNocturnoInicial();
+        
         $promedioRecargosNocturnosTotal = round($promedioRecargosNocturnosTotal);
 
-        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnosTotal);
+        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnos);
+        $arVacacion->setVrPromedioRecargoNocturnoTotal($promedioRecargosNocturnosTotal);
         if($arContrato->getCodigoSalarioTipoFk() == 1) {
             $floSalarioPromedio = $arContrato->getVrSalario();
         } else {            
