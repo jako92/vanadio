@@ -88,7 +88,7 @@ class RhuVacacionRepository extends EntityRepository {
         $fechaDesdeRecargos = $nuevafecha;
         $fechaHastaRecargos = $arVacacion->getFecha()->format('Y-m-d');
         $interval = date_diff($fechaDesdePeriodo, $fechaHastaPeriodo);
-        $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());                    
+        $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdePeriodo->format('Y-m-d'), $fechaHastaPeriodo->format('Y-m-d'), $arContrato->getCodigoContratoPk());                    
              
         $arVacacion->setVrRecargoNocturno($recargosNocturnos);
         $arVacacion->setVrRecargoNocturnoInicial($arContrato->getIbpRecargoNocturnoInicial());                
