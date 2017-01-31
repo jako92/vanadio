@@ -4,19 +4,20 @@
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Zona: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Empleado</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Zona</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">        	
         {{ form_start(formZona, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(formZona) }}
-        <h3>Nuevo zona</h3>
         <div class="panel panel-default">
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">
