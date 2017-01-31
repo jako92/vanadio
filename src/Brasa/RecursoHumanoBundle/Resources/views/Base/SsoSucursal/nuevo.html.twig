@@ -1,22 +1,23 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Seguridad social sucursales nuevo - Soga App{% endblock %} 
 {% block content %}
-    <section class="content-header">
+        <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Sucursales aportantes: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Seguridad social</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Sucursales aportantes</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">        	
         {{ form_start(formSsoSucursal, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(formSsoSucursal) }}
-        <h3>Nueva sucursal</h3>
         <div class="panel panel-default">
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">
