@@ -1,22 +1,22 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Proceso disciplinario tipo nuevo - Soga App{% endblock %} 
 {% block content %}
-    <section class="content-header">
+     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Tipo proceso disciplinario: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Tipo proceso disciplinario</a></li>
+            <li class="active">Nuevo</li>
         </ol>
-    </section>    
+    </section>      
     <section class="content">        	
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(form) }}
-        <h3>Nuevo disciplinario tipo</h3>
         <div class="panel panel-default">
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">
