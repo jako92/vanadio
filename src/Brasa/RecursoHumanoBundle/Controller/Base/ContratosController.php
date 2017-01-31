@@ -733,8 +733,7 @@ class ContratosController extends Controller
             ->setAction($this->generateUrl('brs_rhu_contratos_informacion_inicial', array('codigoContrato' => $codigoContrato)))
             ->add('ibpCesantiasInicial', NumberType::class, array('data' =>$arContrato->getIbpCesantiasInicial() ,'required' => false))      
             ->add('ibpPrimasInicial', NumberType::class, array('data' =>$arContrato->getIbpPrimasInicial() ,'required' => false))                      
-            ->add('promedioRecargoNocturnoInicial', NumberType::class, array('data' =>$arContrato->getPromedioRecargoNocturnoInicial() ,'required' => false))                                      
-            ->add('recargoNocturnoInicial', NumberType::class, array('data' =>$arContrato->getRecargoNocturnoInicial() ,'required' => false))                                      
+            ->add('ibpRecargoNocturnoInicial', NumberType::class, array('data' =>$arContrato->getIbpRecargoNocturnoInicial() ,'required' => false))                                                  
             ->add('fechaUltimoPagoCesantias', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoCesantias(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoPrimas', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoPrimas(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                 
             ->add('fechaUltimoPagoVacaciones', DateType::class, array('data' =>$arContrato->getFechaUltimoPagoVacaciones(), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
@@ -746,16 +745,14 @@ class ContratosController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $ibpCesantiasInicial = $formIbpAdicional->get('ibpCesantiasInicial')->getData();
             $ibpPrimasInicial = $formIbpAdicional->get('ibpPrimasInicial')->getData();
-            $promedioRecargoNocturnoInicial = $formIbpAdicional->get('promedioRecargoNocturnoInicial')->getData();
-            $recargoNocturnoInicial = $formIbpAdicional->get('recargoNocturnoInicial')->getData();
+            $ibpRecargoNocturnoInicial = $formIbpAdicional->get('ibpRecargoNocturnoInicial')->getData();
             $fechaUltimoPagoCesantias = $formIbpAdicional->get('fechaUltimoPagoCesantias')->getData();
             $fechaUltimoPagoPrimas = $formIbpAdicional->get('fechaUltimoPagoPrimas')->getData();
             $fechaUltimoPagoVacaciones = $formIbpAdicional->get('fechaUltimoPagoVacaciones')->getData(); 
             $fechaUltimoPago = $formIbpAdicional->get('fechaUltimoPago')->getData(); 
             $arContrato->setIbpCesantiasInicial($ibpCesantiasInicial);
             $arContrato->setIbpPrimasInicial($ibpPrimasInicial);
-            $arContrato->setPromedioRecargoNocturnoInicial($promedioRecargoNocturnoInicial);
-            $arContrato->setRecargoNocturnoInicial($recargoNocturnoInicial);
+            $arContrato->setIbpRecargoNocturnoInicial($ibpRecargoNocturnoInicial);
             $arContrato->setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias);
             $arContrato->setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas);
             $arContrato->setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones);
