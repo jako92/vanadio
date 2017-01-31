@@ -1,26 +1,22 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Cliente detalle - Soga App{% endblock %}
 {% block content %}
-    <section class="content-header">
+      <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Cliente: detalle</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cliente</a></li>
+            <li class="active">Detalle</li>
         </ol>
-    </section>    
+    </section>     
     <section class="content">        	
-    <div class="page-header">
-        <h3>Detalle cliente</h3>
-    </div>
-
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
     {{ form_errors(form) }}
-
     <div class="panel panel-default">
         <div class="panel-heading">Información cliente</div>
         <div class="panel-body">

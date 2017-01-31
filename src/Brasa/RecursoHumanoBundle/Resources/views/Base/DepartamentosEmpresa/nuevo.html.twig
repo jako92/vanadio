@@ -1,22 +1,22 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Departamento empresa nuevo - Soga App{% endblock %} 
 {% block content %}
-    <section class="content-header">
+     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
+            <small>Departamento empresa: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Contratacion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Departamentos empresa</a></li>
+            <li class="active">Nuevo</li>
         </ol>
     </section>    
     <section class="content">        	
     {{ form_start(formDepartamentoEmpresa, { 'attr': {'class': 'form-horizontal'} }) }}
     {{ form_errors(formDepartamentoEmpresa) }}
-    <h3>Nuevo Departamento Empresa</h3>
     <div class="panel panel-default">
         <div class="panel-heading">Información general</div>
         <div class="panel-body">
