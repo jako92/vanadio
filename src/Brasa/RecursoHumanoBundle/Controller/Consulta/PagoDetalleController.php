@@ -308,6 +308,9 @@ class PagoDetalleController extends Controller
         for($col = 'A'; $col !== 'O'; $col++) {
                     $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
                 } 
+        for($col = 'F'; $col !== 'I'; $col++) {            
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }                
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CODIGO')
@@ -315,8 +318,9 @@ class PagoDetalleController extends Controller
                     ->setCellValue('C1', 'EMPLEADO')
                     ->setCellValue('D1', 'CODIGO')
                     ->setCellValue('E1', 'CONCEPTO')
-                    ->setCellValue('F1', 'DEVENGADO')
-                    ->setCellValue('G1', 'DEDUCCION');
+                    ->setCellValue('F1', 'HORAS')
+                    ->setCellValue('G1', 'DEVENGADO')
+                    ->setCellValue('H1', 'DEDUCCION');
 
         $i = 2;
         /*$query = $em->createQuery($this->strDqlLista);
@@ -351,8 +355,9 @@ class PagoDetalleController extends Controller
                     ->setCellValue('C' . $i, $arPagoDetalle['Empleado'])
                     ->setCellValue('D' . $i, $arPagoDetalle['codigoConcepto'])
                     ->setCellValue('E' . $i, $arPagoDetalle['Concepto'])
-                    ->setCellValue('F' . $i, $devengado)
-                    ->setCellValue('G' . $i, $deduccion);
+                    ->setCellValue('F' . $i, $arPagoDetalle['Horas'])
+                    ->setCellValue('G' . $i, $devengado)
+                    ->setCellValue('H' . $i, $deduccion);
             $i++;
         }
 
