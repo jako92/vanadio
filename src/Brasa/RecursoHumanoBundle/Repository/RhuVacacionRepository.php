@@ -91,20 +91,15 @@ class RhuVacacionRepository extends EntityRepository {
         $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnos($fechaDesdeRecargos, $fechaHastaRecargos, $arContrato->getCodigoContratoPk());                    
              
         $arVacacion->setVrRecargoNocturno($recargosNocturnos);
-        $arVacacion->setVrRecargoNocturnoInicial($arContrato->getRecargoNocturnoInicial());
-        $arVacacion->setVrPromedioRecargoNocturnoInicial($arContrato->getPromedioRecargoNocturnoInicial());
-        $recargosNocturnosTotal = $recargosNocturnos + $arContrato->getRecargoNocturnoInicial();        
-        $promedioRecargosNocturnos = $recargosNocturnosTotal / $mesesPeriodo;
-        $promedioRecargosNocturnosTotal = $promedioRecargosNocturnos + $arContrato->getPromedioRecargoNocturnoInicial();
-        
-        $promedioRecargosNocturnosTotal = round($promedioRecargosNocturnosTotal);
-
-        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnos);
-        $arVacacion->setVrPromedioRecargoNocturnoTotal($promedioRecargosNocturnosTotal);
+        $arVacacion->setVrRecargoNocturnoInicial($arContrato->getIbpRecargoNocturnoInicial());                
+        $recargosNocturnosTotal = $recargosNocturnos + $arContrato->getIbpRecargoNocturnoInicial();        
+        $promedioRecargosNocturnos = $recargosNocturnosTotal / $mesesPeriodo;               
+        $promedioRecargosNocturnos = round($promedioRecargosNocturnos);
+        $arVacacion->setVrPromedioRecargoNocturno($promedioRecargosNocturnos);        
         if($arContrato->getCodigoSalarioTipoFk() == 1) {
             $floSalarioPromedio = $arContrato->getVrSalario();
         } else {            
-            $floSalarioPromedio = $arContrato->getVrSalario() + $promedioRecargosNocturnosTotal;
+            $floSalarioPromedio = $arContrato->getVrSalario() + $promedioRecargosNocturnos;
         }       
         if($arVacacion->getVrSalarioPromedioPropuesto() > 0) {
             $floSalarioPromedio = $arVacacion->getVrSalarioPromedioPropuesto();

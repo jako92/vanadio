@@ -180,18 +180,12 @@ class RhuContrato
     /**
      * @ORM\Column(name="ibp_primas_inicial", type="float", nullable=true)
      */
-    private $ibpPrimasInicial = 0;
-    
-    /**
-     * Se utiliza para liquidar vacaciones cuando no se tiene historia de los recargos nocturnos
-     * @ORM\Column(name="promedio_recargo_nocturno_inicial", type="float", nullable=true)
-     */
-    private $promedioRecargoNocturnoInicial = 0;    
+    private $ibpPrimasInicial = 0;       
     
     /**     
-     * @ORM\Column(name="recargo_nocturno_inicial", type="float")
+     * @ORM\Column(name="ibp_recargo_nocturno_inicial", type="float")
      */
-    private $recargoNocturnoInicial = 0;    
+    private $ibpRecargoNocturnoInicial = 0;    
     
     /**
      * Este factor se utiliza para saber de cuantas horas se compone un dia
@@ -504,8 +498,6 @@ class RhuContrato
      */
     protected $contratosAdicionalesContratoRel;
     
-
-
     /**
      * Constructor
      */
@@ -1336,51 +1328,27 @@ class RhuContrato
     }
 
     /**
-     * Set promedioRecargoNocturnoInicial
+     * Set ibpRecargoNocturnoInicial
      *
-     * @param float $promedioRecargoNocturnoInicial
+     * @param float $ibpRecargoNocturnoInicial
      *
      * @return RhuContrato
      */
-    public function setPromedioRecargoNocturnoInicial($promedioRecargoNocturnoInicial)
+    public function setIbpRecargoNocturnoInicial($ibpRecargoNocturnoInicial)
     {
-        $this->promedioRecargoNocturnoInicial = $promedioRecargoNocturnoInicial;
+        $this->ibpRecargoNocturnoInicial = $ibpRecargoNocturnoInicial;
 
         return $this;
     }
 
     /**
-     * Get promedioRecargoNocturnoInicial
+     * Get ibpRecargoNocturnoInicial
      *
      * @return float
      */
-    public function getPromedioRecargoNocturnoInicial()
+    public function getIbpRecargoNocturnoInicial()
     {
-        return $this->promedioRecargoNocturnoInicial;
-    }
-
-    /**
-     * Set recargoNocturnoInicial
-     *
-     * @param float $recargoNocturnoInicial
-     *
-     * @return RhuContrato
-     */
-    public function setRecargoNocturnoInicial($recargoNocturnoInicial)
-    {
-        $this->recargoNocturnoInicial = $recargoNocturnoInicial;
-
-        return $this;
-    }
-
-    /**
-     * Get recargoNocturnoInicial
-     *
-     * @return float
-     */
-    public function getRecargoNocturnoInicial()
-    {
-        return $this->recargoNocturnoInicial;
+        return $this->ibpRecargoNocturnoInicial;
     }
 
     /**

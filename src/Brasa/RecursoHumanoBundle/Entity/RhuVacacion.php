@@ -173,6 +173,11 @@ class RhuVacacion
     private $codigoUsuario;
 
     /**
+     * @ORM\Column(name="vr_recargo_nocturno_inicial", type="float")
+     */
+    private $vrRecargoNocturnoInicial = 0;    
+    
+    /**
      * @ORM\Column(name="vr_recargo_nocturno", type="float")
      */
     private $vrRecargoNocturno = 0;
@@ -180,22 +185,7 @@ class RhuVacacion
     /**
      * @ORM\Column(name="vr_promedio_recargo_nocturno", type="float")
      */
-    private $vrPromedioRecargoNocturno = 0;    
-
-    /**
-     * @ORM\Column(name="vr_promedio_recargo_nocturno_total", type="float")
-     */
-    private $vrPromedioRecargoNocturnoTotal = 0;    
-    
-    /**
-     * @ORM\Column(name="vr_recargo_nocturno_inicial", type="float")
-     */
-    private $vrRecargoNocturnoInicial = 0; 
-    
-    /**
-     * @ORM\Column(name="vr_promedio_recargo_nocturno_inicial", type="float")
-     */
-    private $vrPromedioRecargoNocturnoInicial = 0;     
+    private $vrPromedioRecargoNocturno = 0;              
     
     /**
      * @ORM\Column(name="vr_ibc_promedio", type="float")
@@ -996,6 +986,30 @@ class RhuVacacion
     }
 
     /**
+     * Set vrRecargoNocturnoInicial
+     *
+     * @param float $vrRecargoNocturnoInicial
+     *
+     * @return RhuVacacion
+     */
+    public function setVrRecargoNocturnoInicial($vrRecargoNocturnoInicial)
+    {
+        $this->vrRecargoNocturnoInicial = $vrRecargoNocturnoInicial;
+
+        return $this;
+    }
+
+    /**
+     * Get vrRecargoNocturnoInicial
+     *
+     * @return float
+     */
+    public function getVrRecargoNocturnoInicial()
+    {
+        return $this->vrRecargoNocturnoInicial;
+    }
+
+    /**
      * Set vrRecargoNocturno
      *
      * @param float $vrRecargoNocturno
@@ -1041,30 +1055,6 @@ class RhuVacacion
     public function getVrPromedioRecargoNocturno()
     {
         return $this->vrPromedioRecargoNocturno;
-    }
-
-    /**
-     * Set vrRecargoNocturnoInicial
-     *
-     * @param float $vrRecargoNocturnoInicial
-     *
-     * @return RhuVacacion
-     */
-    public function setVrRecargoNocturnoInicial($vrRecargoNocturnoInicial)
-    {
-        $this->vrRecargoNocturnoInicial = $vrRecargoNocturnoInicial;
-
-        return $this;
-    }
-
-    /**
-     * Get vrRecargoNocturnoInicial
-     *
-     * @return float
-     */
-    public function getVrRecargoNocturnoInicial()
-    {
-        return $this->vrRecargoNocturnoInicial;
     }
 
     /**
@@ -1229,53 +1219,5 @@ class RhuVacacion
     public function getPagosBancosDetallesVacacionRel()
     {
         return $this->pagosBancosDetallesVacacionRel;
-    }
-
-    /**
-     * Set vrPromedioRecargoNocturnoInicial
-     *
-     * @param float $vrPromedioRecargoNocturnoInicial
-     *
-     * @return RhuVacacion
-     */
-    public function setVrPromedioRecargoNocturnoInicial($vrPromedioRecargoNocturnoInicial)
-    {
-        $this->vrPromedioRecargoNocturnoInicial = $vrPromedioRecargoNocturnoInicial;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPromedioRecargoNocturnoInicial
-     *
-     * @return float
-     */
-    public function getVrPromedioRecargoNocturnoInicial()
-    {
-        return $this->vrPromedioRecargoNocturnoInicial;
-    }
-
-    /**
-     * Set vrPromedioRecargoNocturnoTotal
-     *
-     * @param float $vrPromedioRecargoNocturnoTotal
-     *
-     * @return RhuVacacion
-     */
-    public function setVrPromedioRecargoNocturnoTotal($vrPromedioRecargoNocturnoTotal)
-    {
-        $this->vrPromedioRecargoNocturnoTotal = $vrPromedioRecargoNocturnoTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPromedioRecargoNocturnoTotal
-     *
-     * @return float
-     */
-    public function getVrPromedioRecargoNocturnoTotal()
-    {
-        return $this->vrPromedioRecargoNocturnoTotal;
     }
 }
