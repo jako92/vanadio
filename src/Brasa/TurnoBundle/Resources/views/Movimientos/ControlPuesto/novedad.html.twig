@@ -12,7 +12,13 @@
       {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
       <div class="modal-body">
         <div class="form-group">
-            <label class="col-sm-4 control-label">Comentario novedad:</label>
+            <label class="col-sm-4 control-label">Numero comunicacion:</label>
+            <div class="col-sm-8">
+                    {{ form_widget(form.numeroComunicacion, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+        </div>           
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Novedad:</label>
             <div class="col-sm-8">
                     {{ form_widget(form.novedad, { 'attr': {'class': 'form-control'} }) }}
             </div>

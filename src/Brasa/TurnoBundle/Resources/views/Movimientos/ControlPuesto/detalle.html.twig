@@ -15,17 +15,6 @@
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">
@@ -68,6 +57,8 @@
                             <th>CODIGO</th>
                             <th>PUESTO</th>
                             <th>NUMERO_C</th>
+                            <th>NOVEDAD</th>
+                            <th></th>
                             <th></th>
                             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
                         </tr>
@@ -79,9 +70,9 @@
                                 <td>{{ arControlPuestoDetalle.codigoPuestoFk }}</td>
                                 <td>{{ arControlPuestoDetalle.puestoRel.nombre | default('') }}</td>
                                 <td>{{ arControlPuestoDetalle.numeroComunicacion }}</td>
-                                <td>
-                                    {% if arControlPuestoDetalle.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arControlPuestoDetalle.codigoControlPuestoDetallePk }}">Cerrar</button>{% endif %}
-                                </td>
+                                <td>{{ arControlPuestoDetalle.novedad }}</td>                                
+                                <td style="text-align: center">{% if arControlPuestoDetalle.estadoCerrado == 0 %} <a class="btn btn-default btn-xs" id="{{ path('brs_tur_movimiento_control_puesto_detalle_novedad', {'codigoControlPuestoDetalle': arControlPuestoDetalle.codigoControlPuestoDetallePk}) }}" style="float:left">Novedad</a> {% endif %}</td>
+                                <td>{% if arControlPuestoDetalle.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arControlPuestoDetalle.codigoControlPuestoDetallePk }}">Cerrar</button>{% endif %}</td>
                                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arControlPuestoDetalle.codigoControlPuestoDetallePk }}" /></td>
                             </tr>
                         {% endfor %}

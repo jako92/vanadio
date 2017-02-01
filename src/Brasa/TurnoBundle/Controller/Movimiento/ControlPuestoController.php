@@ -127,6 +127,11 @@ class ControlPuestoController extends Controller {
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
             }
+            if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);                
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
+            }            
         }
 
         $dql = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->listaDql($codigoControlPuesto);
@@ -139,22 +144,32 @@ class ControlPuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/movimiento/puesto/novedad/{codigoControlPuesto}", name="novedad")
+     * @Route("/tur/movimiento/control/puesto/detalle/novedad/{codigoControlPuestoDetalle}", name="brs_tur_movimiento_control_puesto_detalle_novedad")
      */
-    public function novedad(Request $request, $codigoControlPuesto) {
+    public function detalleNovedadAction(Request $request, $codigoControlPuestoDetalle) {
         $em = $this->getDoctrine()->getManager();
-        $arControlpuesto = new \Brasa\TurnoBundle\Entity\TurControlPuesto();
-        $arControlpuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
+        $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+        $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);                        
         $form = $this->createFormBuilder()
-               // ->setAction($this->generateUrl('novedad', array('codigoControlPuesto' => $codigoControlPuesto)))
-                ->add('novedad', TextareaType::class, array('required' => false))
+                ->setAction($this->generateUrl('brs_tur_movimiento_control_puesto_detalle_novedad', array('codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)))
+                ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
+                ->add('novedad', TextareaType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNovedad()))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $form->handleRequest($request);
-
-       //return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto'));
+        if ($form->isValid()) {
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $novedad = $form->get('novedad')->getData();
+                $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                $arControlPuestoDetalle->setNovedad($novedad);
+                $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                $em->persist($arControlPuestoDetalle);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
+            }
+        }
+       
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:novedad.html.twig', array(
-                    'arControlpuesto' => $arControlpuesto,
                     'form' => $form->createView()
         ));
     }

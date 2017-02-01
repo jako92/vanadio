@@ -34,8 +34,10 @@ class TurControlPuestoDetalleRepository extends EntityRepository {
         $em = $this->getEntityManager();
         if(count($arrSeleccionados) > 0) {
             foreach ($arrSeleccionados AS $codigo) {
-                $ar = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigo);
-                $em->remove($ar);
+                $ar = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigo);
+                if($ar->getEstadoCerrado() == 0) {
+                    $em->remove($ar);
+                }                
             }
             $em->flush();
         }
