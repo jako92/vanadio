@@ -58,7 +58,7 @@ class FormatoHojaVida extends \FPDF_FPDF {
             //$strRuta = $arConfiguracion->getRutaAlmacenamiento() . "imagenes/empleados/" . $arEmpleado->getRutaFoto(); 
             $strRuta = $arConfiguracion->getRutaImagenesVer() . $arEmpleado->getRutaFoto();
             if(file_exists($strRuta)){
-                //$this->Image($strRuta, 167, 40, 30, 35);            
+                $this->Image($strRuta, 167, 40, 30, 35);            
             }            
         }
         
