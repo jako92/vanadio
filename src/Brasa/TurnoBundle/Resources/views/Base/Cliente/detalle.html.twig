@@ -135,6 +135,7 @@
                             <th>TELEFONO</th>
                             <th>CONTACTO</th>
                             <th>OPERACION</th>
+                            <th>C_P</th>
                             <th>C.COSTO</th>
                             <th>C.DOTACION</th>
                             <th></th>
@@ -153,6 +154,7 @@
                                 <td>{{ arPuestos.telefono  }}</td>                                
                                 <td>{{ arPuestos.contacto  }}</td>
                                 <td>{{ arPuestos.operacionRel.nombre |default('')  }}</td>
+                                <td>{% if arPuestos.controlPuesto == 1 %} SI {% else %} NO {% endif %}</td>                
                                 <td>{{ arPuestos.codigoCentroCostoContabilidadFk }}</td>
                                 <td style="text-align: right">{{ arPuestos.costoDotacion | number_format(0, '.', ',') }}</td>
                                 <td><a href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_puesto_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoPuesto': arPuestos.codigoPuestoPk }) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                        

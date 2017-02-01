@@ -1523,25 +1523,6 @@ class TurProgramacionDetalleRepository extends EntityRepository {
             $em->flush();       
         }
         
-    }    
-    
-    public function puestoTurno($strDia = "", $strAnio = "", $strMes = "") {
-        $em = $this->getEntityManager();             
-        $strSql = "SELECT
-                    codigo_puesto_fk
-                    FROM
-                    tur_programacion_detalle
-                    RIGHT JOIN tur_recurso ON tur_programacion_detalle.codigo_recurso_fk = tur_recurso.codigo_recurso_pk
-                    LEFT OUTER JOIN tur_turno ON tur_programacion_detalle.dia_$strDia = tur_turno.codigo_turno_pk     
-                    WHERE                       
-                        dia_$strDia IS NOT NULL                        
-                    GROUP BY codigo_puesto_fk limit 10"; 
-        $connection = $em->getConnection();
-        $statement = $connection->prepare($strSql);        
-        $statement->execute();
-        $results = $statement->fetchAll();        
-        
-        return $results;
-    }    
+    }         
     
 }

@@ -432,8 +432,10 @@ class RhuLiquidacionRepository extends EntityRepository {
         if($arLiquidacion->getCodigoPagoFk()) {
             $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                                                                            
             $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arLiquidacion->getCodigoPagoFk());                                                    
-            if($arPago->getEstadoPagadoBanco()) {
-               $validar = "El pago de las cesantias anteriores fue efectuado y no puede ser pagado en la liquidacion"; 
+            if($arPago) {
+                if($arPago->getEstadoPagadoBanco()) {
+                   $validar = "El pago de las cesantias anteriores fue efectuado y no puede ser pagado en la liquidacion"; 
+                }                
             }
         }        
         

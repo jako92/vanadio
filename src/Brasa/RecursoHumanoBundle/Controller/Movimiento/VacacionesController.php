@@ -231,7 +231,6 @@ class VacacionesController extends Controller
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->liquidar($codigoVacacion);
                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
             }
-
             if($form->get('BtnGenerarPago')->isClicked()) {
                 if($arVacacion->getEstadoAutorizado() == 1) {
                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
@@ -252,7 +251,6 @@ class VacacionesController extends Controller
                     $objMensaje->Mensaje("error", "No esta autorizado, no se puede generar pago");
                 }
             }
-
             if($form->get('BtnEliminarAdicional')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
@@ -265,22 +263,11 @@ class VacacionesController extends Controller
                 }
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->liquidar($codigoVacacion);
                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
+            }   
+            if($form->get('BtnCartaAnuncio')->isClicked()) {
+                $formato = new \Brasa\RecursoHumanoBundle\Formatos\VacacionAnuncio();
+                $formato->Generar($em, $codigoVacacion, $this->get('security.token_storage')->getToken()->getUser());
             }            
-            if($form->get('BtnEliminarBonificacion')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionarBonificacion');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoVacacionBonificacion) {
-                        $arVacacionBonificacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionBonificacion();
-                        $arVacacionBonificacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionBonificacion')->find($codigoVacacionBonificacion);
-                        $em->remove($arVacacionBonificacion);
-                    }
-                    $em->flush();
-                }
-                $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->liquidar($codigoVacacion);
-                return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
-            }
-            
-
         }
 
         $dql = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->listaDql($codigoVacacion);
@@ -561,6 +548,7 @@ class VacacionesController extends Controller
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $arrBotonCartaAnuncio = array('label' => 'Imprimir carta anuncio', 'disabled' => false);
         $arrBotonGenerarPago = array('label' => 'Generar pago', 'disabled' => false);
         $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);
         $arrBotonEliminarAdicional = array('label'  => 'Eliminar', 'disabled' => false);
@@ -587,6 +575,7 @@ class VacacionesController extends Controller
                     ->add('BtnGenerarPago', SubmitType::class, $arrBotonGenerarPago)
                     ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
                     ->add('BtnEliminarAdicional', SubmitType::class, $arrBotonEliminarAdicional)
+                    ->add('BtnCartaAnuncio', SubmitType::class, $arrBotonCartaAnuncio)
                     ->getForm();
         return $form;
     }

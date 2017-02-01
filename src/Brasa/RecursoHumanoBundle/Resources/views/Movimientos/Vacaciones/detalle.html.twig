@@ -28,6 +28,17 @@
             {% if arVacaciones.estadoPagoGenerado == 1 %}
                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_vacacion_modificar', {'codigoVacacion': arVacaciones.codigoVacacionPk }) }}', 'Archivos', 600, 900)" >Modificar</a>
             {% endif %}    
+            <!-- Split button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-sm">Utilidades</button>
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>{{ form_widget(form.BtnCartaAnuncio, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
+              </ul>
+            </div>        
         </div>
     </div>
     <br /><br />

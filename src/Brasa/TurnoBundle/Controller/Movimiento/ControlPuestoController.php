@@ -44,8 +44,8 @@ class ControlPuestoController extends Controller
                 ini_set("memory_limit", -1);
                 $codigoControlPuesto = $request->request->get('OpGenerar');  
                 $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
-                //$arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();        
-                $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->puestoTurno('1', 2017, 1);                
+                $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();                        
+                $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find();                
                 foreach ($arProgramacionDetalles as $arProgramacionDetalle) {
                     $arPuesto = new \Brasa\TurnoBundle\Entity\TurPuesto();
                     $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionDetalle['codigo_puesto_fk']);                    
@@ -97,13 +97,7 @@ class ControlPuestoController extends Controller
             $arControlPuesto->setUsuario($arUsuario->getUserName());
             $em->persist($arControlPuesto);
             $em->flush();
-
-            if($form->get('guardarnuevo')->isClicked()) {
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_nuevo', array('codigoControlPuesto' => 0 )));
-            } else {
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuesto->getCodigoControlPuestoPk())));
-            }                                                   
-                      
+            return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto'));                                                                        
         }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:nuevo.html.twig', array(
             'arControlPuesto' => $arControlPuesto,

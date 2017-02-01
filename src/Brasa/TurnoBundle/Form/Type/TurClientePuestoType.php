@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TurClientePuestoType extends AbstractType
 {
@@ -56,6 +57,7 @@ class TurClientePuestoType extends AbstractType
             ->add('numeroComunicacion', TextType::class, array('required'  => false))
             ->add('telefonoContacto', TextType::class, array('required'  => false))
             ->add('celularContacto', TextType::class, array('required'  => false))
+            ->add('controlPuesto', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
