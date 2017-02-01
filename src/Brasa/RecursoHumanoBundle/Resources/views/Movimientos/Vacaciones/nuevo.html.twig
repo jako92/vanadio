@@ -69,6 +69,12 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Fecha inicia labores:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.fechaInicioLabor, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>                    
+                <div class="form-group form-group-sm">
                     <label class="col-sm-3 control-label">Salario promedio (propuesto):</label>
                     <div class="col-sm-9">
                         {{ form_widget(form.vrSalarioPromedioPropuesto , { 'attr': {'class': 'form-control'} }) }}
