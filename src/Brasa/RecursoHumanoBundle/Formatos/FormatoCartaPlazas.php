@@ -2,7 +2,7 @@
 namespace Brasa\RecursoHumanoBundle\Formatos;
 use Symfony\Component\HttpFoundation\Request;
 
-class FormatoCarta extends \FPDF_FPDF {
+class FormatoCartaPlazas extends \FPDF_FPDF {
     public static $em;
     public static $arUsuario;
     public static $request;
@@ -34,7 +34,7 @@ class FormatoCarta extends \FPDF_FPDF {
         self::$salarioSugerido = $salarioSugerido; //carta laboral        
         self::$promedioIbpSugerido = $promedioIbpSugerido; //carta laboral
         self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
-        $pdf = new FormatoCarta();
+        $pdf = new FormatoCartaPlazas();
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 12);
@@ -76,7 +76,7 @@ class FormatoCarta extends \FPDF_FPDF {
             $this->SetXY(150, 45);
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
         } else {            
-            //$this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
+            $this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
             //$this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
             //$this->Image('imagenes/logos/piedepagina.jpg' , 10 ,260, 190 , 40,'JPG'); //x,y,largo,ancho
             //$this->Image('imagenes/logos/firma.jpg' , 10 ,175, 50 , 30,'JPG');

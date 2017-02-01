@@ -49,6 +49,10 @@ class CartaLaboralController extends Controller
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
                     $objFormatoCarta->Generar($this, $em, '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
+                if ($arConfiguracion->getCodigoFormatoCarta() == 2){
+                    $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPlazas();
+                    $objFormatoCarta->Generar($this, $em, '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                }
             }
             if($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form, $request);
