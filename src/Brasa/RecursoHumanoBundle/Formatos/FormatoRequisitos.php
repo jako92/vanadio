@@ -90,6 +90,10 @@ class FormatoRequisitos extends \FPDF_FPDF {
     public function Body($pdf) {
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 8);
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisito();
+        $arRequisito = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->find(self::$codigoRequisito);
         $arRequisitoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
         $arRequisitoDetalle = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoDetalle')->findBy(array('codigoRequisitoFk' => self::$codigoRequisito));
         foreach ($arRequisitoDetalle as $arRequisitoDetalle) {
@@ -115,7 +119,7 @@ class FormatoRequisitos extends \FPDF_FPDF {
             }
 
             $pdf->Ln();
-            $pdf->SetAutoPageBreak(true, 15);
+            $pdf->SetAutoPageBreak(true, 7);
         }
         $pdf->Ln(12);
         $pdf->SetFont('Arial', '', 10);
@@ -137,23 +141,32 @@ class FormatoRequisitos extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
+        
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->Text(10, 270, "FIRMA: _____________________________________________");        
+        $pdf->Text(10, 277, $arRequisito->getNombreCorto());
+        $pdf->Text(10, 284, "C.C.:     ______________________ de ____________________");
+        $pdf->Text(105, 270, "FIRMA: _____________________________________________");
+        $pdf->Text(105, 277, $arConfiguracion->getNombreEmpresa());
+        $pdf->Text(105, 284, "NIT: ". $arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa());
+        
 
     }
+    
 
     public function Footer() {
 
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arRequisito = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisito();
-        $arRequisito = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->find(self::$codigoRequisito);
-        $this->SetFont('Arial', 'B', 9);
+        $arRequisito = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->find(self::$codigoRequisito);        
 
-        $this->Text(10, 240, "FIRMA: _____________________________________________");
+        /*$this->Text(10, 240, "FIRMA: _____________________________________________");
         $this->Text(10, 247, $arRequisito->getNombreCorto());
         $this->Text(10, 254, "C.C.:     ______________________ de ____________________");
         $this->Text(105, 240, "FIRMA: _____________________________________________");
         $this->Text(105, 247, $arConfiguracion->getNombreEmpresa());
-        $this->Text(105, 254, "NIT: ". $arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa());
+        $this->Text(105, 254, "NIT: ". $arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa());*/
         $this->SetFont('Arial', '', 8);
         $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
     }
