@@ -33,7 +33,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->Cell(90, 10, utf8_decode(""), 1, 0, 'C', 1); //cuardo mitad arriba
         $this->SetXY(60, 20);
         $this->SetFillColor(236, 236, 236);
-        $this->SetFont('Arial','B',13);
+        $this->SetFont('Arial','B',11);
         $this->Cell(90, 20, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial','B',10);
@@ -42,7 +42,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->SetXY(150, 10);
         $this->Cell(50, 10, utf8_decode('Página ') . $this->PageNo() . ' de {nb}', 1, 0, 'C', 1); //cuadro derecho arriba
         $this->SetXY(150, 20);
-        $this->Cell(50, 20, utf8_decode(""), 1, 0, 'C', 1); //cuadro derecho mitad 1
+        $this->Cell(50, 20, utf8_decode("Código: "). $arContenidoFormato->getCodigoFormatoIso(), 1, 0, 'C', 1); //cuadro derecho mitad 1
         $this->SetXY(150, 40);
         $this->Cell(50, 5, utf8_decode("Versión 01"), 1, 0, 'C', 1); //cuadro derecho abajo 1
         $this->SetXY(150, 45);
