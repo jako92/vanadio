@@ -139,14 +139,14 @@ class ControlPuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/administracion/cliente/puesto/novedad/{codigoControlPuesto}", name="novedad")
+     * @Route("/tur/movimiento/puesto/novedad/{codigoControlPuesto}", name="novedad")
      */
     public function novedad(Request $request, $codigoControlPuesto) {
         $em = $this->getDoctrine()->getManager();
         $arControlpuesto = new \Brasa\TurnoBundle\Entity\TurControlPuesto();
         $arControlpuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
         $form = $this->createFormBuilder()
-                ->setAction($this->generateUrl('novedad', array('codigoControlPuesto' => $codigoControlPuesto)))
+               // ->setAction($this->generateUrl('novedad', array('codigoControlPuesto' => $codigoControlPuesto)))
                 ->add('novedad', TextareaType::class, array('required' => false))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
