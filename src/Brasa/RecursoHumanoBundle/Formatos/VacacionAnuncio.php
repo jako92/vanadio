@@ -20,6 +20,8 @@ class VacacionAnuncio extends \FPDF_FPDF {
     } 
     
     public function Header() {
+        $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenido')->find(1);    
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial','B',10);
         $this->SetXY(10, 10);
@@ -31,8 +33,8 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->Cell(90, 10, utf8_decode(""), 1, 0, 'C', 1); //cuardo mitad arriba
         $this->SetXY(60, 20);
         $this->SetFillColor(236, 236, 236);
-        $this->SetFont('Arial','B',16);
-        $this->Cell(90, 20, utf8_decode("CARTA PRESENTACIÓN"), 1, 0, 'C', 1); //cuardo mitad medio
+        $this->SetFont('Arial','B',13);
+        $this->Cell(90, 20, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial','B',10);
         $this->SetXY(60, 40);
@@ -44,7 +46,11 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->SetXY(150, 40);
         $this->Cell(50, 5, utf8_decode("Versión 01"), 1, 0, 'C', 1); //cuadro derecho abajo 1
         $this->SetXY(150, 45);
-        $this->Cell(50, 5, "Fecha: 01/09/2015", 1, 0, 'C', 1); //cuadro derecho abajo 2
+        $fechaVerson = "";
+        if ($arContenidoFormato->getFechaVersion() != null){
+            $fechaVerson = $arContenidoFormato->getFechaVersion()->format('Y-m-d');    
+        }
+        $this->Cell(50, 5, "Fecha:  ". $fechaVerson, 1, 0, 'C', 1); //cuadro derecho abajo 2
         
         $this->EncabezadoDetalles();        
     }
@@ -54,36 +60,51 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);        
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(19);        
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenido')->find(1);        
         $this->SetXY(10, 10);
         $this->Ln(10);
         //$this->Cell(0, 0, $this->Image('imagenes/logos/firmanomina.jpg' , 15 ,150, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
     }
 
     public function Body($pdf) {
-        $pdf->SetXY(10, 80);
+        $pdf->SetXY(10, 60);
         $pdf->SetFont('Arial', '', 10);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(19);
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenido')->find(1);
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracionNomina = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
         setlocale(LC_ALL,"es_ES@euro","es_ES","esp");
-        $pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
+        //$pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
         $usuarioCarta = self::$usuario;
         $usuarioCarta = $usuarioCarta->getNombreCorto();
         //se reemplaza el contenido de la tabla contenido formato
-        $sustitucion1 = $arVacacion->getEmpleadoRel()->getNumeroIdentificacion();
-        $sustitucion2 = $arVacacion->getEmpleadoRel()->getNombreCorto();
-        
+        $sustitucion1 = $arVacacion->getEmpleadoRel()->getNombreCorto();
+        $sustitucion2 = date('Y/m/d');
+        $sustitucion3 = $arVacacion->getFechaDesdeDisfrute()->format('Y/m/d');
+        $disfruteDesde = $arVacacion->getFechaDesdeDisfrute();
+        $disfruteDesde = strftime("%d de ". $this->MesesEspañol($disfruteDesde->format('m')) ." de %Y", strtotime($sustitucion3));
+        $sustitucion3 = $disfruteDesde;
+        $sustitucion4 = $arVacacion->getFechaHastaDisfrute()->format('Y/m/d');
+        $disfruteHasta = $arVacacion->getFechaHastaDisfrute();
+        $disfruteHasta = strftime("%d de ". $this->MesesEspañol($disfruteHasta->format('m')) ." de %Y", strtotime($sustitucion4));
+        $sustitucion4 = $disfruteHasta;
+        $sustitucion5 = $arVacacion->getFechaHastaDisfrute()->format('Y/m/d');
+        $disfruteHasta = $arVacacion->getFechaHastaDisfrute();
+        $disfruteHasta = strftime("%d de ". $this->MesesEspañol($disfruteHasta->format('m')) ." de %Y", strtotime($sustitucion4));
+        $sustitucion5 = $disfruteHasta;
         $cadena = $arContenidoFormato->getContenido();
-        $patron1 = '/#1/';
-        $patron2 = '/#2/';
+        $patron1 = '/#a/';
+        $patron2 = '/#b/';
+        $patron3 = '/#c/';
+        $patron4 = '/#d/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron4, $sustitucion4, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 
@@ -144,6 +165,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
 
         return $mesEspañol;
     }
+    
 }
 
 ?>
