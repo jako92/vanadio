@@ -1,69 +1,82 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block title %}Editar permiso para documento - Soga App{% endblock %}
 {% block content %}
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-    <h3>Editar permiso documento</h3>   
-    <div class="panel panel-default">
-        <div class="panel-heading">Informacion general</div>
-        <div class="panel-body">               
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Ingreso:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.ingreso) }}
+    <section class="content-header">
+        <h1>
+            Seguridad
+            <small>Usuario: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Seguridad</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Usuario</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">  
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <h3>Editar permiso documento</h3>   
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion general</div>
+            <div class="panel-body">               
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Ingreso:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.ingreso) }}
+                    </div>
+                </div>          
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Nuevo:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.nuevo) }}
+                    </div>
+                </div>                                
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Editar:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.editar) }}
+                    </div>
+                </div>  
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Eliminar:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.eliminar) }}
+                    </div>
+                </div>                              
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Autorizar:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.autorizar) }}
+                    </div>
+                </div>                               
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Desautorizar:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.desautorizar) }}
+                    </div>
+                </div>                                
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Aprobar:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.aprobar) }}
+                    </div>
                 </div>
-            </div>          
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Nuevo:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.nuevo) }}
-                </div>
-            </div>                                
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Editar:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.editar) }}
-                </div>
-            </div>  
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Eliminar:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.eliminar) }}
-                </div>
-            </div>                              
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Autorizar:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.autorizar) }}
-                </div>
-            </div>                               
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Desautorizar:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.desautorizar) }}
-                </div>
-            </div>                                
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Aprobar:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.aprobar) }}
-                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Anular:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.anular) }}
+                    </div>
+                </div> 
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Imprimir:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.imprimir) }}
+                    </div>
+                </div>     
             </div>
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Anular:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.anular) }}
-                </div>
-            </div> 
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Imprimir:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(form.imprimir) }}
-                </div>
-            </div>     
-        </div>
-    </div>                  
-    <div class="modal-footer">            
-        {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-    </div>  
-    {{ form_end(form) }}
-{% endblock %}
+        </div>                  
+        <div class="modal-footer">            
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>  
+        {{ form_end(form) }}
+    {% endblock %}

@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Seguridad</a></li>
-                <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Usuario</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Usuario</a></li>
             <li class="active">Detalle</li>
         </ol>
     </section>    
@@ -20,9 +20,6 @@
             $(this).tab('show');
         })
     </script>    
-    <div class="page-header">
-        <h3>Detalles del usuario</h3>
-    </div>
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
     {{ form_errors(form) }}
     <!-- Encabezado Movimiento -->
