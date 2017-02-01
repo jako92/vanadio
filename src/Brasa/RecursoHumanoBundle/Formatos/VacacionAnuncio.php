@@ -36,7 +36,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->SetFont('Arial','B',11);
         $this->Cell(90, 20, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
         $this->SetFillColor(272, 272, 272);
-        $this->SetFont('Arial','B',10);
+        $this->SetFont('Arial','B',10); 
         $this->SetXY(60, 40);
         $this->Cell(90, 10, utf8_decode(" "), 1, 0, 'C', 1); //cuardo mitad abajo
         $this->SetXY(150, 10);
