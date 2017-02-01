@@ -50,7 +50,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         if ($arContenidoFormato->getFechaVersion() != null){ 
             $fechaVerson = $arContenidoFormato->getFechaVersion()->format('Y-m-d');    
         }
-        $this->Cell(50, 5, "Fecha:  ". $fechaVerson, 1, 0, 'C', 1); //cuadro derecho abajo 2
+        $this->Cell(50, 5, "Fecha: ". $fechaVerson, 1, 0, 'C', 1); //cuadro derecho abajo 2
         
         $this->EncabezadoDetalles();        
     }
