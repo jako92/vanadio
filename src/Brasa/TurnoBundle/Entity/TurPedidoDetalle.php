@@ -278,6 +278,16 @@ class TurPedidoDetalle
     private $detallePuesto;     
     
     /**
+     * @ORM\Column(name="fecha_desde_servicio", type="date", nullable=true)
+     */    
+    private $fechaDesdeServicio;    
+
+    /**
+     * @ORM\Column(name="fecha_hasta_servicio", type="date", nullable=true)
+     */    
+    private $fechaHastaServicio;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurPedido", inversedBy="pedidosDetallesPedidoRel")
      * @ORM\JoinColumn(name="codigo_pedido_fk", referencedColumnName="codigo_pedido_pk")
      */
@@ -2130,5 +2140,53 @@ class TurPedidoDetalle
     public function getVrTotalDetalleDevolucion()
     {
         return $this->vrTotalDetalleDevolucion;
+    }
+
+    /**
+     * Set fechaDesdeServicio
+     *
+     * @param \DateTime $fechaDesdeServicio
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setFechaDesdeServicio($fechaDesdeServicio)
+    {
+        $this->fechaDesdeServicio = $fechaDesdeServicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesdeServicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesdeServicio()
+    {
+        return $this->fechaDesdeServicio;
+    }
+
+    /**
+     * Set fechaHastaServicio
+     *
+     * @param \DateTime $fechaHastaServicio
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setFechaHastaServicio($fechaHastaServicio)
+    {
+        $this->fechaHastaServicio = $fechaHastaServicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHastaServicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaHastaServicio()
+    {
+        return $this->fechaHastaServicio;
     }
 }

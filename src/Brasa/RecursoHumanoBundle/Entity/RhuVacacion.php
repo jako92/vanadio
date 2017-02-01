@@ -53,6 +53,11 @@ class RhuVacacion
     private $fechaHastaDisfrute;    
     
     /**
+     * @ORM\Column(name="fecha_inicio_labor", type="date", nullable=true)
+     */    
+    private $fechaInicioLabor;    
+    
+    /**
      * @ORM\Column(name="vr_salud", type="float")
      */
     private $vrSalud = 0;
@@ -1219,5 +1224,29 @@ class RhuVacacion
     public function getPagosBancosDetallesVacacionRel()
     {
         return $this->pagosBancosDetallesVacacionRel;
+    }
+
+    /**
+     * Set fechaInicioLabor
+     *
+     * @param \DateTime $fechaInicioLabor
+     *
+     * @return RhuVacacion
+     */
+    public function setFechaInicioLabor($fechaInicioLabor)
+    {
+        $this->fechaInicioLabor = $fechaInicioLabor;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioLabor
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicioLabor()
+    {
+        return $this->fechaInicioLabor;
     }
 }

@@ -75,10 +75,10 @@ class TurFacturaDetalleRepository extends EntityRepository {
             $dql .= " AND f.estadoAnulado = 0";
         }
         if($strFechaDesde != "") {
-            $dql .= " AND fd.fechaProgramacion >= '" . $strFechaDesde . " 00:00:00'";
+            $dql .= " AND f.fecha >= '" . $strFechaDesde . " 00:00:00'";
         }
         if($strFechaHasta != "") {
-            $dql .= " AND fd.fechaProgramacion <= '" . $strFechaHasta . " 23:59:59'";
+            $dql .= " AND f.fecha <= '" . $strFechaHasta . " 23:59:59'";
         }
         $dql .= " ORDER BY f.codigoFacturaTipoFk, f.fecha DESC, f.numero DESC";
         return $dql;
