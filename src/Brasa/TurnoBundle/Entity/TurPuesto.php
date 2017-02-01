@@ -102,6 +102,11 @@ class TurPuesto
      */    
     private $codigoCentroCostoContabilidadFk;     
     
+    /**     
+     * @ORM\Column(name="control_puesto", type="boolean")
+     */    
+    private $controlPuesto = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="puestosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
@@ -1224,5 +1229,29 @@ class TurPuesto
     public function getNumeroComunicacion()
     {
         return $this->numeroComunicacion;
+    }
+
+    /**
+     * Set controlPuesto
+     *
+     * @param boolean $controlPuesto
+     *
+     * @return TurPuesto
+     */
+    public function setControlPuesto($controlPuesto)
+    {
+        $this->controlPuesto = $controlPuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get controlPuesto
+     *
+     * @return boolean
+     */
+    public function getControlPuesto()
+    {
+        return $this->controlPuesto;
     }
 }

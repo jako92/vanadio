@@ -57,20 +57,20 @@
                     <section class="content-header">
                         {% for flashMessage in app.session.flashbag.get('informacion') %}
                             <div id="informacion" class="alert alert-info fade in" >
-                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                 <p>{{ flashMessage }}</p>
-                             </div>                
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <p>{{ flashMessage }}</p>
+                            </div>                
                         {% endfor %} 
                         {% for flashMessage in app.session.flashbag.get('error') %}
                             <div id="error" class="alert alert-danger fade in" >
-                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                 <p>{{ flashMessage }}</p>
-                             </div> 
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <p>{{ flashMessage }}</p>
+                            </div> 
                         {% endfor %}                        
                     </section>                        
-                {% block content %}                    
-                    
-                {% endblock %}
+                    {% block content %}                    
+
+                    {% endblock %}
                 </div> 
                 <div id="ventanamodal"></div>
                 <!-- /.content-wrapper -->
@@ -92,6 +92,7 @@
 
         {% endblock %} 
         {% block javascripts %}
+            <script src="{{ asset('js/general.js') }}"></script>
             <!-- jQuery 2.2.3 -->
             <script src="{{ asset('recursos/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
             <!-- jQuery UI 1.11.4 -->
@@ -99,13 +100,21 @@
             <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
             <script>
                 $.widget.bridge('uibutton', $.ui.button);
+                $(document).ready(function () {
+                    $('a').click(
+                            function () {
+                                var value = $(this).attr('id');
+                                $('#ventanamodal').load(value);
+                            }
+                    );
+                });
             </script>
-            
+
             <!-- Bootstrap 3.3.6 -->
             <script src="{{ asset('recursos/bootstrap/js/bootstrap.min.js') }}"></script>
             <!-- Morris.js charts -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-            
+
             <!-- Sparkline -->
             <script src="{{ asset('recursos/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
             <!-- jvectormap -->
@@ -130,8 +139,8 @@
             <!-- AdminLTE for demo purposes -->
             <script src="{{ asset('recursos/dist/js/demo.js') }}"></script> 
             <!-- Funciones personales -->
-            <script src="{{ asset('js/general.js') }}"></script>  
-            
+
+
         {% endblock %}              
     </body>
 </html>
