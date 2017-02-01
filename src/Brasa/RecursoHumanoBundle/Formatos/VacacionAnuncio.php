@@ -92,19 +92,21 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $disfruteHasta = $arVacacion->getFechaHastaDisfrute();
         $disfruteHasta = strftime("%d de ". $this->MesesEspañol($disfruteHasta->format('m')) ." de %Y", strtotime($sustitucion4));
         $sustitucion4 = $disfruteHasta;
-        $sustitucion5 = $arVacacion->getFechaHastaDisfrute()->format('Y/m/d');
-        $disfruteHasta = $arVacacion->getFechaHastaDisfrute();
-        $disfruteHasta = strftime("%d de ". $this->MesesEspañol($disfruteHasta->format('m')) ." de %Y", strtotime($sustitucion4));
-        $sustitucion5 = $disfruteHasta;
+        $sustitucion5 = $arVacacion->getFechaInicioLabor()->format('Y/m/d');
+        $disfruteInicioLabor = $arVacacion->getFechaInicioLabor();
+        $disfruteInicioLabor = strftime("%d de ". $this->MesesEspañol($disfruteInicioLabor->format('m')) ." de %Y", strtotime($sustitucion5));
+        $sustitucion5 = $disfruteInicioLabor;
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#a/';
         $patron2 = '/#b/';
         $patron3 = '/#c/';
         $patron4 = '/#d/';
+        $patron5 = '/#e/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron4, $sustitucion4, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron5, $sustitucion5, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 
