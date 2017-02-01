@@ -40,12 +40,24 @@ class TurControlPuesto
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
-    private $comentarios;     
+    private $comentarios;  
+    
+      /**
+     * @ORM\Column(name="novedad", type="string", length=500, nullable=true)
+     */    
+    private $novedad;   
     
     /**
      * @ORM\OneToMany(targetEntity="TurControlPuestoDetalle", mappedBy="controlPuestoRel", cascade={"persist", "remove"})
      */
     protected $controlesPuestosDetallesControlPuestoRel;     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->controlesPuestosDetallesControlPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoControlPuestoPk
@@ -79,71 +91,6 @@ class TurControlPuesto
     public function getFecha()
     {
         return $this->fecha;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->controlesPuestosDetallesControlPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add controlesPuestosDetallesControlPuestoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel
-     *
-     * @return TurControlPuesto
-     */
-    public function addControlesPuestosDetallesControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel)
-    {
-        $this->controlesPuestosDetallesControlPuestoRel[] = $controlesPuestosDetallesControlPuestoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove controlesPuestosDetallesControlPuestoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel
-     */
-    public function removeControlesPuestosDetallesControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel)
-    {
-        $this->controlesPuestosDetallesControlPuestoRel->removeElement($controlesPuestosDetallesControlPuestoRel);
-    }
-
-    /**
-     * Get controlesPuestosDetallesControlPuestoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getControlesPuestosDetallesControlPuestoRel()
-    {
-        return $this->controlesPuestosDetallesControlPuestoRel;
-    }
-
-    /**
-     * Set comentarios
-     *
-     * @param string $comentarios
-     *
-     * @return TurControlPuesto
-     */
-    public function setComentarios($comentarios)
-    {
-        $this->comentarios = $comentarios;
-
-        return $this;
-    }
-
-    /**
-     * Get comentarios
-     *
-     * @return string
-     */
-    public function getComentarios()
-    {
-        return $this->comentarios;
     }
 
     /**
@@ -216,5 +163,87 @@ class TurControlPuesto
     public function getEstadoCerrado()
     {
         return $this->estadoCerrado;
+    }
+
+    /**
+     * Set comentarios
+     *
+     * @param string $comentarios
+     *
+     * @return TurControlPuesto
+     */
+    public function setComentarios($comentarios)
+    {
+        $this->comentarios = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return string
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Set novedad
+     *
+     * @param string $novedad
+     *
+     * @return TurControlPuesto
+     */
+    public function setNovedad($novedad)
+    {
+        $this->novedad = $novedad;
+
+        return $this;
+    }
+
+    /**
+     * Get novedad
+     *
+     * @return string
+     */
+    public function getNovedad()
+    {
+        return $this->novedad;
+    }
+
+    /**
+     * Add controlesPuestosDetallesControlPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel
+     *
+     * @return TurControlPuesto
+     */
+    public function addControlesPuestosDetallesControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel)
+    {
+        $this->controlesPuestosDetallesControlPuestoRel[] = $controlesPuestosDetallesControlPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove controlesPuestosDetallesControlPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel
+     */
+    public function removeControlesPuestosDetallesControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel)
+    {
+        $this->controlesPuestosDetallesControlPuestoRel->removeElement($controlesPuestosDetallesControlPuestoRel);
+    }
+
+    /**
+     * Get controlesPuestosDetallesControlPuestoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getControlesPuestosDetallesControlPuestoRel()
+    {
+        return $this->controlesPuestosDetallesControlPuestoRel;
     }
 }

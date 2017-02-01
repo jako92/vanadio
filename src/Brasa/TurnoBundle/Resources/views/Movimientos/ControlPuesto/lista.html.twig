@@ -53,6 +53,7 @@
                             <button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arControlPuestos.codigoControlPuestoPk }}">Deshacer</button>                                                                          
                         {% endif %}
                     </td>
+                    <td style="text-align: center"><a class="btn btn-default btn-xs" href="{{ path('novedad', {'codigoControlPuesto': arControlPuestos.codigoControlPuestoPk}) }}" style="float:left">Novedad</a></td>     
                     <td style="text-align: center">{% if arControlPuestos.estadoGenerado == 0 %}<a href="{{ path('brs_tur_movimiento_control_puesto_nuevo', {'codigoControlPuesto': arControlPuestos.codigoControlPuestoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                
                     <td style="text-align: center"><a href="{{ path('brs_tur_movimiento_control_puesto_detalle', { 'codigoControlPuesto': arControlPuestos.codigoControlPuestoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                                
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arControlPuestos.codigoControlPuestoPk }}" /></td>
