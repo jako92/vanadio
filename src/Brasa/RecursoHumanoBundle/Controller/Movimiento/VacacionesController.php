@@ -100,6 +100,7 @@ class VacacionesController extends Controller
             $arVacacion->setFecha(new \DateTime('now'));
             $arVacacion->setFechaDesdeDisfrute(new \DateTime('now'));
             $arVacacion->setFechaHastaDisfrute(new \DateTime('now'));
+            $arVacacion->setFechaInicioLabor(new \DateTime('now'));
         }
         $form = $this->createForm(RhuVacacionType::class, $arVacacion);
         $form->handleRequest($request);

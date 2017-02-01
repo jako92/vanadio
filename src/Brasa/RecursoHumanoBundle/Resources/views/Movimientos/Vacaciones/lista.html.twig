@@ -72,10 +72,11 @@
                 <th>GRUPO PAGO</th>
                 <th>IDENTIFICACIÓN</th>
                 <th>EMPLEADO</th>
-                <th>P. DESDE</th>
-                <th>P. HASTA</th>
-                <th>D. DESDE</th>
-                <th>D. HASTA</th>                
+                <th>P_DESDE</th>
+                <th>P_HASTA</th>
+                <th>DESDE</th>
+                <th>HASTA</th>
+                <th>INICIO</th>                
                 <th>DIAS</th>
                 <th>DD</th>
                 <th>DDR</th>
@@ -98,6 +99,7 @@
                 <td>{{ arVacaciones.fechaHastaPeriodo |date("Y/m/d")  }}</td>
                 <td>{{ arVacaciones.fechaDesdeDisfrute |date("Y/m/d")  }}</td>
                 <td>{{ arVacaciones.fechaHastaDisfrute |date("Y/m/d")  }}</td>                
+                <td>{{ arVacaciones.fechaInicioLabor |date("Y/m/d")  }}</td>                
                 <td style="text-align: right">{{ arVacaciones.diasVacaciones  }}</td>
                 <td style="text-align: right">{{ arVacaciones.diasDisfrutados  }}</td>
                 <td style="text-align: right">{{ arVacaciones.diasDisfrutadosReales  }}</td>

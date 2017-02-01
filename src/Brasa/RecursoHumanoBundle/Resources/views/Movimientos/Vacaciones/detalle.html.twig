@@ -95,16 +95,16 @@
                     <td class="td-label" align="right">{{ arVacaciones.vrSalud | number_format(0, '.', ',')}}</td>
                 </tr>
                 <tr>
-                    <td class="titulo">GRUPO PAGO:</td>
-                    <td class="td-in-well">{{ arVacaciones.centroCostoRel.nombre }}</td>
+                    <td class="titulo">FECHA INICIO LABOR:</td>
+                    <td class="td-in-well">{{ arVacaciones.fechaInicioLabor |date("Y/m/d") }}</td>
                     <td class="titulo">USUARIO:</td>
                     <td class="td-in-well">{{ arVacaciones.codigoUsuario }}</td>
                     <td class="titulo">VR. PENSIÓN:</td>
                     <td class="td-label" align="right">{{ arVacaciones.vrPension | number_format(0, '.', ',')}}</td>
                 </tr>
                 <tr>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
+                    <td class="titulo">GRUPO PAGO:</td>
+                    <td class="td-in-well">{{ arVacaciones.centroCostoRel.nombre }}</td>
                     <td class="titulo">AUTORIZADO:</td>
                     <td> {% if arVacaciones.estadoAutorizado == 1 %}SI{% else %} NO {% endif %}</td>
                     <td class="titulo">TOTAL VACACIONES:</td>
