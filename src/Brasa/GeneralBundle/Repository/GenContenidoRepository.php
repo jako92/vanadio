@@ -10,5 +10,10 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class GenContenidoRepository extends EntityRepository {
-        
+    
+    public function listaDql() {        
+        $dql   = "SELECT c FROM BrasaGeneralBundle:GenContenido c WHERE c.codigoContenidoPk <> 0";        
+        $dql .= " ORDER BY c.codigoContenidoPk";
+        return $dql;
+    }    
 }
