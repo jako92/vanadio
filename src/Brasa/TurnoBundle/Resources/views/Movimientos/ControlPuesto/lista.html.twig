@@ -49,10 +49,8 @@
                     <td>
                         {% if arControlPuestos.estadoGenerado == 0 %}
                             <button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arControlPuestos.codigoControlPuestoPk }}">Generar</button>
-                        {% else %}    
-                            {% if arControlPuestos.estadoCerrado == 0 %}
-                                <button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arControlPuestos.codigoControlPuestoPk }}">Deshacer</button>                       
-                            {% endif %}                        
+                        {% else %}                               
+                            <button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arControlPuestos.codigoControlPuestoPk }}">Deshacer</button>                                                                          
                         {% endif %}
                     </td>
                     <td style="text-align: center">{% if arControlPuestos.estadoGenerado == 0 %}<a href="{{ path('brs_tur_movimiento_control_puesto_nuevo', {'codigoControlPuesto': arControlPuestos.codigoControlPuestoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                

@@ -45,16 +45,16 @@ class ControlPuestoController extends Controller
                 $codigoControlPuesto = $request->request->get('OpGenerar');  
                 $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
                 $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();                        
-                $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find();                
-                foreach ($arProgramacionDetalles as $arProgramacionDetalle) {
-                    $arPuesto = new \Brasa\TurnoBundle\Entity\TurPuesto();
-                    $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionDetalle['codigo_puesto_fk']);                    
+                $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->findBy(array('controlPuesto' => 1));                
+                foreach ($arPuestos as $arPuesto) {
                     $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
                     $arControlPuestoDetalle->setControlPuestoRel($arControlPuesto);
                     $arControlPuestoDetalle->setPuestoRel($arPuesto);
                     $arControlPuestoDetalle->setNumeroComunicacion($arPuesto->getNumeroComunicacion());
                     $em->persist($arControlPuestoDetalle);                    
                 } 
+                $arControlPuesto->setEstadoGenerado(1);
+                $em->persist($arControlPuesto);                       
                 $em->flush();
            }
 
