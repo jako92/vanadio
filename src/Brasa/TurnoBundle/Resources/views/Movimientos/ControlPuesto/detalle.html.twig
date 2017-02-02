@@ -21,6 +21,9 @@
             <div class="btn-group">
                 <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_control_puesto_nuevo', {'codigoControlPuesto': 0 }) }}">Nuevo</a>
             </div>
+               <div class="btn-group">
+                            {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }} 
+               </div>
         </div>
         <br /><br />
         <!-- Encabezado Movimiento -->
@@ -87,17 +90,18 @@
                         </div>
                     </div>
                     <div class="btn-toolbar" style="float: right">
-                        <div class="btn-group">
+                            <div class="btn-group">
                             {{ form_widget(form.BtnDetalleEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
         {{ form_rest(form) }}
         {{ form_end(form) }}
         <br/><br/><br/><br/>
     </section>
 {% endblock %}
+
+
+

@@ -128,8 +128,15 @@ class ControlPuestoController extends Controller {
                 $arControlPuestoDetalle->setEstadoCerrado(1);
                 $em->persist($arControlPuestoDetalle);
                 $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle'=>$codigoControlPuestoDetalle)));
             }
+            
+             if ($form->get('BtnImprimir')->isClicked()) {
+                $objFormatoControlPuesto = new \Brasa\TurnoBundle\Formatos\ControlPuesto();
+                $objFormatoControlPuesto->Generar($em, $codigoControlPuesto);
+            }
+            
+            
             if ($form->get('BtnDetalleEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);                
@@ -200,7 +207,9 @@ class ControlPuestoController extends Controller {
 
     private function formularioDetalle($ar) {
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $form = $this->createFormBuilder()
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir) 
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->getForm();
         return $form;
