@@ -23,6 +23,7 @@ class ContabilizarPagoController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');        
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -32,6 +33,7 @@ class ContabilizarPagoController extends Controller
                 ini_set("memory_limit", -1);                
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
+                    $respuesta = '';
                     $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion;
@@ -59,12 +61,19 @@ class ContabilizarPagoController extends Controller
                                 $arTercero->setEmail($arPago->getEmpleadoRel()->getCorreo());
                                 $em->persist($arTercero);                                 
                             }  
-                            $this->contabilizarPagoNomina($codigo,$arComprobanteContable, $arPago->getEmpleadoRel()->getCentroCostoContabilidadRel(), $arTercero,$arPago, $arConfiguracionNomina);  
+                            $respuesta = $this->contabilizarPagoNomina($codigo,$arComprobanteContable, $arPago->getEmpleadoRel()->getCentroCostoContabilidadRel(), $arTercero,$arPago, $arConfiguracionNomina);  
+                            if($respuesta != '') {
+                                break;
+                            }
                             $arPago->setEstadoContabilizado(1);                                
                             $em->persist($arPago);                            
                         }
                     }
-                    $em->flush();
+                    if($respuesta == '') {
+                        $em->flush();
+                    } else {
+                        $objMensaje->Mensaje('error', $respuesta);
+                    }                   
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_pago'));
             }            
@@ -90,57 +99,65 @@ class ContabilizarPagoController extends Controller
     
     private function contabilizarPagoNomina($codigo,$arComprobanteContable,$arCentroCosto,$arTercero,$arPago, $arConfiguracionNomina) {
         $em = $this->getDoctrine()->getManager();
+        $respuesta = "";
         $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
         $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $codigo));
         foreach ($arPagoDetalles as $arPagoDetalle) {
             if($arPagoDetalle->getVrPago() > 0) {
-                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                 
-                if($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getTipo() == 1) {
-                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoDetalle->getPagoConceptoRel()->getCodigoCuentaFk());                            
-                } 
-                if($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getTipo() == 2) {
-                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoDetalle->getPagoConceptoRel()->getCodigoCuentaOperacionFk());                            
-                }
-                if($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getTipo() == 3) {
-                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoDetalle->getPagoConceptoRel()->getCodigoCuentaComercialFk());                            
-                }
-                $arRegistro->setComprobanteRel($arComprobanteContable);
-                if($arCuenta->getExigeCentroCostos() == 1) {
-                    $arRegistro->setCentroCostoRel($arCentroCosto);    
-                }                
-                $arRegistro->setCuentaRel($arCuenta);
-                $arRegistro->setTerceroRel($arTercero);
-                $arRegistro->setNumero($arPago->getNumero());
-                $arRegistro->setNumeroReferencia($arPago->getNumero());
-                $arRegistro->setFecha($arPago->getFechaHasta());
-                if($arPagoDetalle->getPagoConceptoRel()->getTipoCuenta() == 1) {
-                    $arRegistro->setDebito($arPagoDetalle->getVrPago());
+                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();                
+                $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->findOneBy(array('codigoPagoConceptoFk' => $arPagoDetalle->getCodigoPagoConceptoFk(), 'codigoEmpleadoTipoFk' => $arPago->getEmpleadoRel()->getCodigoEmpleadoTipoFk()));                                                               
+                if($arPagoConceptoCuenta) {
+                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoConceptoCuenta->getCodigoCuentaFk());                                                            
+                    if($arCuenta) {
+                        $arRegistro->setComprobanteRel($arComprobanteContable);
+                        if($arCuenta->getExigeCentroCostos() == 1) {
+                            $arRegistro->setCentroCostoRel($arCentroCosto);    
+                        }                
+                        $arRegistro->setCuentaRel($arCuenta);
+                        $arRegistro->setTerceroRel($arTercero);
+                        $arRegistro->setNumero($arPago->getNumero());
+                        $arRegistro->setNumeroReferencia($arPago->getNumero());
+                        $arRegistro->setFecha($arPago->getFechaHasta());
+                        if($arPagoConceptoCuenta->getTipoCuenta() == 1) {
+                            $arRegistro->setDebito($arPagoDetalle->getVrPago());
+                        } else {
+                            $arRegistro->setCredito($arPagoDetalle->getVrPago());
+                        }
+                        $arRegistro->setDescripcionContable($arPagoDetalle->getPagoConceptoRel()->getNombre());
+                        $em->persist($arRegistro);                         
+                    }  else {
+                        $respuesta = "La cuenta " . $arPagoConceptoCuenta->getCodigoCuentaFk() . " no existe en el plan de cuentas";
+                        break;
+                    }
                 } else {
-                    $arRegistro->setCredito($arPagoDetalle->getVrPago());
-                }
-                $arRegistro->setDescripcionContable($arPagoDetalle->getPagoConceptoRel()->getNombre());
-                $em->persist($arRegistro);                 
+                    $respuesta = "El concepto de pago " . $arPagoDetalle->getCodigoPagoConceptoFk() . " no tiene cuenta para el tipo de empleado " . $arPago->getEmpleadoRel()->getCodigoEmpleadoTipoFk();
+                    break;
+                }                
             }                                           
         }
-        //Nomina por pagar
-        if($arPago->getVrNeto() > 0) {
-            if($arConfiguracionNomina->getCuentaNominaPagar() != '') {           
-                $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arConfiguracionNomina->getCuentaNominaPagar()); //estaba 250501                           
-                if($arCuenta) {
-                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
-                    $arRegistro->setComprobanteRel($arComprobanteContable);
-                    //$arRegistro->setCentroCostoRel($arCentroCosto);
-                    $arRegistro->setCuentaRel($arCuenta);
-                    $arRegistro->setTerceroRel($arTercero);
-                    $arRegistro->setNumero($arPago->getNumero());
-                    $arRegistro->setNumeroReferencia($arPago->getNumero());
-                    $arRegistro->setFecha($arPago->getFechaHasta());
-                    $arRegistro->setCredito($arPago->getVrNeto());                            
-                    $arRegistro->setDescripcionContable('NOMINA POR PAGAR');
-                    $em->persist($arRegistro);
+        if($respuesta == '') {
+            //Nomina por pagar
+            if($arPago->getVrNeto() > 0) {
+                if($arConfiguracionNomina->getCuentaNominaPagar() != '') {           
+                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arConfiguracionNomina->getCuentaNominaPagar()); //estaba 250501                           
+                    if($arCuenta) {
+                        $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
+                        $arRegistro->setComprobanteRel($arComprobanteContable);
+                        //$arRegistro->setCentroCostoRel($arCentroCosto);
+                        $arRegistro->setCuentaRel($arCuenta);
+                        $arRegistro->setTerceroRel($arTercero);
+                        $arRegistro->setNumero($arPago->getNumero());
+                        $arRegistro->setNumeroReferencia($arPago->getNumero());
+                        $arRegistro->setFecha($arPago->getFechaHasta());
+                        $arRegistro->setCredito($arPago->getVrNeto());                            
+                        $arRegistro->setDescripcionContable('NOMINA POR PAGAR');
+                        $em->persist($arRegistro);
+                    }            
                 }            
-            }            
-        }        
+            }             
+        }
+        return $respuesta;
     }    
  
     /**

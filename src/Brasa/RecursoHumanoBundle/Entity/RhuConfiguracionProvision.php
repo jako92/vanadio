@@ -29,18 +29,23 @@ class RhuConfiguracionProvision
     /**
      * @ORM\Column(name="tipo_cuenta", type="bigint")
      */     
-    private $tipoCuenta = 1;     
+    private $tipoCuenta = 1; 
+
+    /**
+     * @ORM\Column(name="codigo_empleado_tipo_fk", type="integer", nullable=true)
+     */    
+    private $codigoEmpleadoTipoFk;    
+    
+        /**
+     * @ORM\Column(name="tipo", type="bigint")
+     */     
+    private $tipo = 0;
     
     /**
-     * @ORM\Column(name="codigo_cuenta_operacion_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaOperacionFk;          
-    
-    /**
-     * @ORM\Column(name="codigo_cuenta_comercial_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaComercialFk;    
-    
+     * @ORM\ManyToOne(targetEntity="RhuEmpleadoTipo", inversedBy="configuracionesProvisionesEmpleadoTipoRel")
+     * @ORM\JoinColumn(name="codigo_empleado_tipo_fk", referencedColumnName="codigo_empleado_tipo_pk")
+     */
+    protected $empleadoTipoRel;    
 
     /**
      * Set codigoConfiguracionProvisionPk
@@ -139,50 +144,74 @@ class RhuConfiguracionProvision
     }
 
     /**
-     * Set codigoCuentaOperacionFk
+     * Set codigoEmpleadoTipoFk
      *
-     * @param string $codigoCuentaOperacionFk
+     * @param integer $codigoEmpleadoTipoFk
      *
      * @return RhuConfiguracionProvision
      */
-    public function setCodigoCuentaOperacionFk($codigoCuentaOperacionFk)
+    public function setCodigoEmpleadoTipoFk($codigoEmpleadoTipoFk)
     {
-        $this->codigoCuentaOperacionFk = $codigoCuentaOperacionFk;
+        $this->codigoEmpleadoTipoFk = $codigoEmpleadoTipoFk;
 
         return $this;
     }
 
     /**
-     * Get codigoCuentaOperacionFk
+     * Get codigoEmpleadoTipoFk
      *
-     * @return string
+     * @return integer
      */
-    public function getCodigoCuentaOperacionFk()
+    public function getCodigoEmpleadoTipoFk()
     {
-        return $this->codigoCuentaOperacionFk;
+        return $this->codigoEmpleadoTipoFk;
     }
 
     /**
-     * Set codigoCuentaComercialFk
+     * Set empleadoTipoRel
      *
-     * @param string $codigoCuentaComercialFk
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoTipo $empleadoTipoRel
      *
      * @return RhuConfiguracionProvision
      */
-    public function setCodigoCuentaComercialFk($codigoCuentaComercialFk)
+    public function setEmpleadoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoTipo $empleadoTipoRel = null)
     {
-        $this->codigoCuentaComercialFk = $codigoCuentaComercialFk;
+        $this->empleadoTipoRel = $empleadoTipoRel;
 
         return $this;
     }
 
     /**
-     * Get codigoCuentaComercialFk
+     * Get empleadoTipoRel
      *
-     * @return string
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoTipo
      */
-    public function getCodigoCuentaComercialFk()
+    public function getEmpleadoTipoRel()
     {
-        return $this->codigoCuentaComercialFk;
+        return $this->empleadoTipoRel;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param integer $tipo
+     *
+     * @return RhuConfiguracionProvision
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return integer
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 }

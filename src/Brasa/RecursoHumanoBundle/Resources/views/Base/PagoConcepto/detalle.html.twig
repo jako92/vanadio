@@ -1,0 +1,90 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Empleado detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Concepto pago: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Concepto pago</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Información empleado</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td class="td-in-well">{{ arPagoConcepto.codigoPagoConceptoPk }}</td>
+                        <td class="titulo">NOMBRE:</td>
+                        <td class="td-in-well">{{ arPagoConcepto.nombre }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>                   
+
+        <a name="marcador"></a>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#cuenta" data-toggle="tab">Cuentas</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="cuenta">
+                <br />
+                <table class="table table-striped table-bordered table-condensed">
+                    <tr>
+                        <th>ID</th>
+                        <th>TIPO_EMPLEADO</th>
+                        <th>CUENTA</th>
+                        <th>TIPO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for arPagoConceptoCuentas in arPagoConceptoCuentas %}
+                        <tr>
+                            <td><input type="hidden" name="LblCodigo[]" value="{{ arPagoConceptoCuentas.codigoPagoConceptoCuentaPk }}">{{ arPagoConceptoCuentas.codigoPagoConceptoCuentaPk }} </td>
+                            <td>{{ arPagoConceptoCuentas.empleadoTipoRel.nombre |default('')  }}</td>
+                            <td>{{ arPagoConceptoCuentas.codigoCuentaFk  }}</td>
+                            <td>{{ arPagoConceptoCuentas.tipoCuenta  }}</td>
+                            <td style="text-align: center"><a href="{{ path('brs_rhu_base_pago_concepto_cuenta_nuevo',{'codigoPagoConcepto': arPagoConceptoCuentas.codigoPagoConceptoFk, 'codigoPagoConceptoCuenta': arPagoConceptoCuentas.codigoPagoConceptoCuentaPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                            <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagoConceptoCuentas.codigoPagoConceptoCuentaPk }}" /></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {{ knp_pagination_render(arPagoConceptoCuentas) }}       
+
+                <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                       
+                    </div>
+                </div>
+            </div>                  
+        </div>
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_pago_concepto_lista') }}" style="float:left">Volver</a>
+            </div>
+        </div>
+        <div class="btn-toolbar" style="float:right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_pago_concepto_cuenta_nuevo', {'codigoPagoConcepto': arPagoConcepto.codigoPagoConceptoPk, 'codigoPagoConceptoCuenta': 0}) }}">Nuevo</a>
+            </div>            
+            <div class="btn-group" style="float: right">               
+                {{ form_widget(form.BtnEliminarCuenta, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                
+            </div>            
+        </div>            
+        <br /><br />
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

@@ -20,15 +20,7 @@ class RhuEmpleadoTipo
     /**
      * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
      */    
-    private $nombre;          
-    
-    /**
-     * 1 - Administrativo
-     * 2 - Operativo
-     * 3 - Comercial
-     * @ORM\Column(name="tipo", type="integer", nullable=true)
-     */
-    private $tipo = 0;    
+    private $nombre;                      
     
     /**
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="empleadoTipoRel")
@@ -36,11 +28,22 @@ class RhuEmpleadoTipo
     protected $empleadosEmpleadoTipoRel;    
     
     /**
+     * @ORM\OneToMany(targetEntity="RhuPagoConceptoCuenta", mappedBy="empleadoTipoRel")
+     */
+    protected $pagosConceptosCuentasEmpleadoTipoRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuConfiguracionProvision", mappedBy="empleadoTipoRel")
+     */
+    protected $configuracionesProvisionesEmpleadoTipoRel; 
+    
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->empleadosEmpleadoTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pagosConceptosCuentasEmpleadoTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -112,26 +115,70 @@ class RhuEmpleadoTipo
     }
 
     /**
-     * Set tipo
+     * Add pagosConceptosCuentasEmpleadoTipoRel
      *
-     * @param integer $tipo
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasEmpleadoTipoRel
      *
      * @return RhuEmpleadoTipo
      */
-    public function setTipo($tipo)
+    public function addPagosConceptosCuentasEmpleadoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasEmpleadoTipoRel)
     {
-        $this->tipo = $tipo;
+        $this->pagosConceptosCuentasEmpleadoTipoRel[] = $pagosConceptosCuentasEmpleadoTipoRel;
 
         return $this;
     }
 
     /**
-     * Get tipo
+     * Remove pagosConceptosCuentasEmpleadoTipoRel
      *
-     * @return integer
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasEmpleadoTipoRel
      */
-    public function getTipo()
+    public function removePagosConceptosCuentasEmpleadoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasEmpleadoTipoRel)
     {
-        return $this->tipo;
+        $this->pagosConceptosCuentasEmpleadoTipoRel->removeElement($pagosConceptosCuentasEmpleadoTipoRel);
+    }
+
+    /**
+     * Get pagosConceptosCuentasEmpleadoTipoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosConceptosCuentasEmpleadoTipoRel()
+    {
+        return $this->pagosConceptosCuentasEmpleadoTipoRel;
+    }
+
+    /**
+     * Add configuracionesProvisionesEmpleadoTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision $configuracionesProvisionesEmpleadoTipoRel
+     *
+     * @return RhuEmpleadoTipo
+     */
+    public function addConfiguracionesProvisionesEmpleadoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision $configuracionesProvisionesEmpleadoTipoRel)
+    {
+        $this->configuracionesProvisionesEmpleadoTipoRel[] = $configuracionesProvisionesEmpleadoTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove configuracionesProvisionesEmpleadoTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision $configuracionesProvisionesEmpleadoTipoRel
+     */
+    public function removeConfiguracionesProvisionesEmpleadoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision $configuracionesProvisionesEmpleadoTipoRel)
+    {
+        $this->configuracionesProvisionesEmpleadoTipoRel->removeElement($configuracionesProvisionesEmpleadoTipoRel);
+    }
+
+    /**
+     * Get configuracionesProvisionesEmpleadoTipoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConfiguracionesProvisionesEmpleadoTipoRel()
+    {
+        return $this->configuracionesProvisionesEmpleadoTipoRel;
     }
 }
