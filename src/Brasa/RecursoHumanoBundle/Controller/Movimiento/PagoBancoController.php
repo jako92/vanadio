@@ -1354,13 +1354,16 @@ class PagoBancoController extends Controller
             ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for($col = 'A'; $col !== 'AZ'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'DESCRIPCIÓN')
-                    ->setCellValue('C1', 'CUENTA')
-                    ->setCellValue('D1', 'FECHA TRANSMISIÓN')
-                    ->setCellValue('E1', 'FECHA APLICACIÓN')
-                    ->setCellValue('F1', 'SECUENCIA');
+                    ->setCellValue('A1', 'IDENTIFICACION')
+                    ->setCellValue('B1', 'TIPO IDENTIFICACION')
+                    ->setCellValue('C1', 'PRODUCTO DESTINO')
+                    ->setCellValue('D1', 'TIPO PRODUCTO')
+                    ->setCellValue('E1', 'COD BANCO')
+                    ->setCellValue('F1', 'VALOR TRASLADO');
                     
         $i = 2;
         //$query = $em->createQuery($this->strSqlLista);
@@ -1371,12 +1374,12 @@ class PagoBancoController extends Controller
         foreach ($arPagoBancoDetalles as $arPagoBancoDetalles) {
             
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
-                    ->setCellValue('B' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
-                    ->setCellValue('C' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
-                    ->setCellValue('D' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
-                    ->setCellValue('E' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk())
-                    ->setCellValue('F' . $i, $arPagoBancoDetalles->getCodigoPagoBancoDetallePk());
+                    ->setCellValue('A' . $i, $arPagoBancoDetalles->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('B' . $i, '2')
+                    ->setCellValue('C' . $i, $arPagoBancoDetalles->getCuenta())
+                    ->setCellValue('D' . $i, "DP")
+                    ->setCellValue('E' . $i, "51")
+                    ->setCellValue('F' . $i, $arPagoBancoDetalles->getVrPago());
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('PagoBancoDetalles');
