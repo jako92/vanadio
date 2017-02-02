@@ -951,7 +951,9 @@ class ContratosController extends Controller
                     ->setCellValue('Y1', 'ULT.PAGO CESANTIAS')
                     ->setCellValue('Z1', 'ULT.PAGO VACACIONES')
                     ->setCellValue('AA1', 'TERMINADO')
-                    ->setCellValue('AB1', 'LHE');
+                    ->setCellValue('AB1', 'LHE')
+                    ->setCellValue('AC1', 'IBP_CESANTIAS INICIAL')
+                    ->setCellValue('AD1', 'IBP_PRIMAS INICIAL');
         $i = 2;
         
         $query = $em->createQuery($this->strSqlLista);
@@ -1013,7 +1015,9 @@ class ContratosController extends Controller
                     ->setCellValue('Y' . $i, $fechaUltimaPagoCesantias)
                     ->setCellValue('Z' . $i, $fechaUltimaPagoVacaciones)
                     ->setCellValue('AA' . $i, $objFunciones->devuelveBoolean($arContrato->getEstadoTerminado()))
-                    ->setCellValue('AB' . $i, $objFunciones->devuelveBoolean($arContrato->getLimitarHoraExtra()));
+                    ->setCellValue('AB' . $i, $objFunciones->devuelveBoolean($arContrato->getLimitarHoraExtra()))
+                    ->setCellValue('AC' . $i, $arContrato->getIbpCesantiasInicial())
+                    ->setCellValue('AD' . $i, $arContrato->getIbpPrimasInicial());
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('contratos');
