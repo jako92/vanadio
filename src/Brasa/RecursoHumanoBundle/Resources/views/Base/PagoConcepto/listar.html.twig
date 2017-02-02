@@ -36,12 +36,10 @@
                 <th>SAL</th>
                 <th>P.IND</th>
                 <th>P.VAC</th>
-                <th>C.ADM</th>
-                <th>C.OPE</th>
-                <th>C.COM</th>
                 <th>T.ADIC</th>
                 <th>COD.INT</th>
                 <th>FSP</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -63,13 +61,11 @@
                     <td>{% if arPagoConceptos.conceptoSalud == 1%} SI {% else %}NO{% endif%}</td>
                     <td>{% if arPagoConceptos.provisionIndemnizacion == 1%} SI {% else %}NO{% endif%}</td>
                     <td>{% if arPagoConceptos.provisionVacacion == 1%} SI {% else %}NO{% endif%}</td>
-                    <td>{{arPagoConceptos.codigoCuentaFK}}{% if arPagoConceptos.TipoCuenta == 1%}D{% else %}C{% endif%}</td>
-                    <td>{{arPagoConceptos.codigoCuentaOperacionFK}}{% if arPagoConceptos.TipoCuentaOperacion == 1%}D{% else %}C{% endif%}</td>
-                    <td>{{arPagoConceptos.codigoCuentaComercialFK}}{% if arPagoConceptos.TipoCuentaComercial == 1%}D{% else %}C{% endif%}</td>
                     <td>{{arPagoConceptos.TipoAdicional}}</td>
                     <td>{{arPagoConceptos.codigoInterface}}</td>
                     <td>{% if arPagoConceptos.conceptoFondoSolidaridadPensional == 1%} SI {% else %}NO{% endif%}</td>
-                    <td><a href="{{ path('brs_rhu_base_pago_concepto_nuevo',{'codigoPagoConcepto': arPagoConceptos.codigoPagoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_base_pago_concepto_nuevo',{'codigoPagoConcepto': arPagoConceptos.codigoPagoConceptoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_base_pago_concepto_detalle', { 'codigoPagoConcepto': arPagoConceptos.codigoPagoConceptoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalle del registro"></a></td>                                    
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPagoConceptos.codigoPagoConceptoPk }}" /></td>
                     {%endfor%}
             </tr>

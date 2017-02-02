@@ -223,6 +223,11 @@ class RhuPagoConcepto
      */    
     private $conceptoFondoSolidaridadPensional = false;
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPagoConceptoCuenta", mappedBy="pagoConceptoRel")
+     */
+    protected $pagosConceptosCuentasPagoConceptoRel;    
+    
 
     /**
      * Constructor
@@ -1355,5 +1360,39 @@ class RhuPagoConcepto
     public function getConceptoFondoSolidaridadPensional()
     {
         return $this->conceptoFondoSolidaridadPensional;
+    }
+
+    /**
+     * Add pagosConceptosCuentasPagoConceptoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasPagoConceptoRel
+     *
+     * @return RhuPagoConcepto
+     */
+    public function addPagosConceptosCuentasPagoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasPagoConceptoRel)
+    {
+        $this->pagosConceptosCuentasPagoConceptoRel[] = $pagosConceptosCuentasPagoConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosConceptosCuentasPagoConceptoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasPagoConceptoRel
+     */
+    public function removePagosConceptosCuentasPagoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta $pagosConceptosCuentasPagoConceptoRel)
+    {
+        $this->pagosConceptosCuentasPagoConceptoRel->removeElement($pagosConceptosCuentasPagoConceptoRel);
+    }
+
+    /**
+     * Get pagosConceptosCuentasPagoConceptoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosConceptosCuentasPagoConceptoRel()
+    {
+        return $this->pagosConceptosCuentasPagoConceptoRel;
     }
 }

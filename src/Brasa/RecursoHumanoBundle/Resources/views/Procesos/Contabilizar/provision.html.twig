@@ -20,7 +20,8 @@
     <table  class="table table-striped table-bordered table-condensed table-hover">
         <tr>
             <th>DOCUMENTO</th>                
-            <th>EMPLEADO</th>                
+            <th>EMPLEADO</th>
+            <th>TIPO</th>
             <th>DESDE</th>
             <th>HASTA</th>
             <th style="text-align: right">SALARIO</th>
@@ -42,7 +43,8 @@
         {% for arProvisiones in arProvisiones %}
             <tr>
                 <td>{{ arProvisiones.empleadoRel.numeroIdentificacion  }}</td>
-                <td>{{ arProvisiones.empleadoRel.nombreCorto  }}</td>                
+                <td>{{ arProvisiones.empleadoRel.nombreCorto  }}</td>
+                <td>{{ arProvisiones.empleadoRel.empleadoTipoRel.nombre |default('')  }}</td>                
                 <td>{{ arProvisiones.provisionPeriodoRel.fechaDesde |date("Y/m/d")  }}</td>
                 <td>{{ arProvisiones.provisionPeriodoRel.fechaHasta |date("Y/m/d")  }}</td>
                 <td style="text-align: right">{{ arProvisiones.vrSalario | number_format(0, '.', ',') }}</td>                

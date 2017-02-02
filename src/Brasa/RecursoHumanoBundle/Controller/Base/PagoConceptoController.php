@@ -6,13 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoConceptoType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoConceptoCuentaType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-/**
- * RhuPagoConcepto controller.
- *
- */
 class PagoConceptoController extends Controller
 {
     /**
@@ -212,7 +209,76 @@ class PagoConceptoController extends Controller
         return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:nuevo.html.twig', array(
             'form' => $form->createView(),
         ));
-    }
+    }    
+    
+    /**
+     * @Route("/rhu/base/pago/concepto/detalle/{codigoPagoConcepto}", name="brs_rhu_base_pago_concepto_detalle")
+     */
+    public function detalleAction(Request $request, $codigoPagoConcepto) {
+        $em = $this->getDoctrine()->getManager();        
+        $paginator  = $this->get('knp_paginator');
+        $form = $this->createFormBuilder()            
+            ->add('BtnEliminarCuenta', SubmitType::class, array('label'  => 'Eliminar',))
+            ->getForm();
+        $form->handleRequest($request);
+        $arPagoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
+        $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($codigoPagoConcepto);
+        if($form->isValid()) {            
+            if($form->get('BtnEliminarCuenta')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if(count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta;
+                        $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->find($codigo);
+                        $em->remove($arPagoConceptoCuenta);
+                    }
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_base_pago_concepto_detalle', array('codigoPagoConcepto' => $codigoPagoConcepto)));
+                }
+            }
+        } 
+        $arPagoConceptoCuentas = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();
+        $arPagoConceptoCuentas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->findBy(array('codigoPagoConceptoFk' => $codigoPagoConcepto));        
+        $arPagoConceptoCuentas = $paginator->paginate($arPagoConceptoCuentas, $request->query->getInt('page', 1)/*page number*/,10/*limit per page*/);                                               
+        return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:detalle.html.twig', array(
+                    'arPagoConcepto' => $arPagoConcepto,
+                    'arPagoConceptoCuentas' => $arPagoConceptoCuentas,
+                    'form' => $form->createView()
+                    ));
+    }    
+
+    /**
+     * @Route("/rhu/base/pago/concepto/cuenta/nuevo/{codigoPagoConcepto}/{codigoPagoConceptoCuenta}", name="brs_rhu_base_pago_concepto_cuenta_nuevo")
+     */
+    public function cuentaNuevoAction(Request $request, $codigoPagoConcepto, $codigoPagoConceptoCuenta) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arPagoConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
+        $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($codigoPagoConcepto);        
+        $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();
+        if ($codigoPagoConceptoCuenta != 0) {
+            $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->find($codigoPagoConceptoCuenta);
+        }
+        $form = $this->createForm(RhuPagoConceptoCuentaType::class, $arPagoConceptoCuenta);         
+        $form->handleRequest($request);
+        if ($form->isValid()) {            
+            $arPagoConceptoCuenta = $form->getData();
+            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoConceptoCuenta->getCodigoCuentaFk());
+            if ($arCuenta){
+                $arPagoConceptoCuenta->setPagoConceptoRel($arPagoConcepto);
+                $em->persist($arPagoConceptoCuenta);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_rhu_base_pago_concepto_detalle', array('codigoPagoConcepto' => $codigoPagoConcepto)));
+            } else {
+                $objMensaje->Mensaje("error", "No existe la cuenta en el plan de cuentas");
+            }
+            
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:nuevoCuenta.html.twig', array(
+            'codigoPagoConcepto' => $codigoPagoConcepto,
+            'form' => $form->createView(),
+        ));
+    }   
     
     private function generarExcel() {
         ob_clean();

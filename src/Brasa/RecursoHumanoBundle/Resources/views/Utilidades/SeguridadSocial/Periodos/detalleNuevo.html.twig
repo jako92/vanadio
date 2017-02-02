@@ -1,21 +1,14 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block title %}Periodo detalle nuevo - Soga App{% endblock %}
+{% block title %}Periodo detalle detalle nuevo - Soga App{% endblock %}
 {% block content %}
         <section class="content-header">
         <h1>
             Recurso humano
-            <small>Programaciones: lista</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
-        </ol>
+            <small>Seguridad social: periodo detalle nuevo</small>
+        </h1>        
     </section>    
     <section class="content"> 
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-    <h3>Nuevo periodo detalle</h3>
+    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}    
     <div class="panel panel-default">
         <div class="panel-heading">Información detalle nuevo</div>
         <div class="panel-body">   

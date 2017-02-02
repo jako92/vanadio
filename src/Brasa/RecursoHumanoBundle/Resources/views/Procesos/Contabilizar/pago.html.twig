@@ -23,7 +23,8 @@
             <th>NUMERO</th>
             <th>TIPO</th>                
             <th>IDENTIFICACION</th>                
-            <th>EMPLEADO</th>                
+            <th>EMPLEADO</th>
+            <th>TIPO</th>
             <th>C. COSTO</th>
             <th>P. DESDE</th>
             <th>DESDE</th>
@@ -32,7 +33,7 @@
             <th style="text-align: right">DEVENGADO</th>
             <th style="text-align: right">DEDUCCIONES</th>
             <th style="text-align: right">NETO</th>
-            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
         {% for arPagos in arPagos %}
             <tr>
@@ -41,6 +42,7 @@
                 <td>{{ arPagos.pagoTipoRel.nombre  }}</td>
                 <td>{{ arPagos.empleadoRel.numeroIdentificacion  }}</td>
                 <td>{{ arPagos.empleadoRel.nombreCorto  }}</td>
+                <td>{{ arPagos.empleadoRel.empleadoTipoRel.nombre |default('')  }}</td>
                 <td>{{ arPagos.centroCostoRel.nombre  }}</td>                
                 <td>{{ arPagos.fechaDesdePago |date("Y/m/d")  }}</td>
                 <td>{{ arPagos.fechaDesde |date("Y/m/d")  }}</td>
