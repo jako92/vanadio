@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TurFacturaDetalleType extends AbstractType
@@ -43,7 +44,8 @@ class TurFacturaDetalleType extends AbstractType
                     return $er->createQueryBuilder('ms')
                     ->orderBy('ms.nombre', 'DESC');},
                 'choice_label' => 'nombre',
-                'required' => true))                                                         
+                'required' => true))
+            ->add('porIva', NumberType::class)               
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
