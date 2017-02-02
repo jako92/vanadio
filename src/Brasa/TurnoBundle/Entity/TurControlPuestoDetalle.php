@@ -40,7 +40,17 @@ class TurControlPuestoDetalle
     /**
      * @ORM\Column(name="numero_comunicacion", type="string", length=30, nullable=true)
      */    
-    private $numeroComunicacion;    
+    private $numeroComunicacion;  
+    
+     /**
+     * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
+     */    
+    private $usuario;   
+    
+     /**
+     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     */    
+    private $fecha;  
     
     /**
      * @ORM\ManyToOne(targetEntity="TurPuesto", inversedBy="controlesPuestosDetallesPuestoRel")
@@ -53,6 +63,7 @@ class TurControlPuestoDetalle
      * @ORM\JoinColumn(name="codigo_control_puesto_fk", referencedColumnName="codigo_control_puesto_pk")
      */
     protected $controlPuestoRel;       
+
 
 
     /**
@@ -90,30 +101,6 @@ class TurControlPuestoDetalle
     }
 
     /**
-     * Set controlPuestoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurControlPuesto $controlPuestoRel
-     *
-     * @return TurControlPuestoDetalle
-     */
-    public function setControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuesto $controlPuestoRel = null)
-    {
-        $this->controlPuestoRel = $controlPuestoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get controlPuestoRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurControlPuesto
-     */
-    public function getControlPuestoRel()
-    {
-        return $this->controlPuestoRel;
-    }
-
-    /**
      * Set codigoPuestoFk
      *
      * @param integer $codigoPuestoFk
@@ -135,30 +122,6 @@ class TurControlPuestoDetalle
     public function getCodigoPuestoFk()
     {
         return $this->codigoPuestoFk;
-    }
-
-    /**
-     * Set puestoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurPuesto $puestoRel
-     *
-     * @return TurControlPuestoDetalle
-     */
-    public function setPuestoRel(\Brasa\TurnoBundle\Entity\TurPuesto $puestoRel = null)
-    {
-        $this->puestoRel = $puestoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get puestoRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurPuesto
-     */
-    public function getPuestoRel()
-    {
-        return $this->puestoRel;
     }
 
     /**
@@ -231,5 +194,101 @@ class TurControlPuestoDetalle
     public function getNumeroComunicacion()
     {
         return $this->numeroComunicacion;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set puestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuesto $puestoRel
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setPuestoRel(\Brasa\TurnoBundle\Entity\TurPuesto $puestoRel = null)
+    {
+        $this->puestoRel = $puestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get puestoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPuesto
+     */
+    public function getPuestoRel()
+    {
+        return $this->puestoRel;
+    }
+
+    /**
+     * Set controlPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuesto $controlPuestoRel
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setControlPuestoRel(\Brasa\TurnoBundle\Entity\TurControlPuesto $controlPuestoRel = null)
+    {
+        $this->controlPuestoRel = $controlPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get controlPuestoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurControlPuesto
+     */
+    public function getControlPuestoRel()
+    {
+        return $this->controlPuestoRel;
     }
 }

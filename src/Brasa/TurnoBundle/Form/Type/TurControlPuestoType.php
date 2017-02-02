@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -13,8 +14,8 @@ class TurControlPuestoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder  
-            ->add('fecha', DateType::class, array('format' => 'yyyyMMdd'))                            
+        $builder 
+            ->add('fecha', DateTimeType::class, array('required' => true, 'data' => new \DateTime('now')))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

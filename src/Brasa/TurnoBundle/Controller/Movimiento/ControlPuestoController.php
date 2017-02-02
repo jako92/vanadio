@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Brasa\TurnoBundle\Form\Type\TurControlPuestoType;
@@ -106,6 +106,8 @@ class ControlPuestoController extends Controller {
                     'form' => $form->createView()));
     }
 
+    
+    
     /**
      * @Route("/tur/movimiento/control/puesto/detalle/{codigoControlPuesto}", name="brs_tur_movimiento_control_puesto_detalle")
      */
@@ -121,7 +123,8 @@ class ControlPuestoController extends Controller {
             if ($request->request->get('OpCerrar')) {
                 $codigoControlPuestoDetalle = $request->request->get('OpCerrar');
                 $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-                $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+                $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);                        
+                $arControlPuestoDetalle->setFecha(new \DateTime('now'));  
                 $arControlPuestoDetalle->setEstadoCerrado(1);
                 $em->persist($arControlPuestoDetalle);
                 $em->flush();
