@@ -271,7 +271,7 @@ class ContratosController extends Controller
                                     $em->persist($arContrato);                                                                            
                                     //Insertar el recurso en recursos
                                     if($codigoContrato == 0) {
-                                        if($arEmpleado->getEmpleadoTipoRel()->getTipo() == 2) {
+                                        if($arEmpleado->getEmpleadoTipoRel()->getOperativo()) {
                                             $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
                                             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->findOneBy(array('codigoEmpleadoFk' => $arEmpleado->getCodigoEmpleadoPk()));
                                             if($arRecurso) {                                                

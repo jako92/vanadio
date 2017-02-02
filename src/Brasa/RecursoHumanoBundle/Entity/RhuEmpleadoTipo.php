@@ -23,6 +23,11 @@ class RhuEmpleadoTipo
     private $nombre;                      
     
     /**
+     * @ORM\Column(name="operativo", type="boolean")
+     */    
+    private $operativo = false;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="empleadoTipoRel")
      */
     protected $empleadosEmpleadoTipoRel;    
@@ -180,5 +185,29 @@ class RhuEmpleadoTipo
     public function getConfiguracionesProvisionesEmpleadoTipoRel()
     {
         return $this->configuracionesProvisionesEmpleadoTipoRel;
+    }
+
+    /**
+     * Set operativo
+     *
+     * @param boolean $operativo
+     *
+     * @return RhuEmpleadoTipo
+     */
+    public function setOperativo($operativo)
+    {
+        $this->operativo = $operativo;
+
+        return $this;
+    }
+
+    /**
+     * Get operativo
+     *
+     * @return boolean
+     */
+    public function getOperativo()
+    {
+        return $this->operativo;
     }
 }
