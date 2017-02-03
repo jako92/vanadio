@@ -276,6 +276,7 @@ class InvMovimientoRepository extends EntityRepository {
         $arMovimiento->setvrBruto($totalBruto);
         $arMovimiento->setVrNeto($totalNeto);
         $arMovimiento->setvrTotal($total);
+        $arMovimiento->setvrNetoPagar($total);
         $em->persist($arMovimiento);
         $em->flush();
         return true;

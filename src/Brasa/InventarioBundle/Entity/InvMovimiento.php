@@ -86,7 +86,7 @@ class InvMovimiento
     /**
      * @ORM\Column(name="vr_iva", type="float", nullable=true)
      */    
-    private $vrIva;
+    private $vrIva;       
     
     /**
      * @ORM\Column(name="vr_subtotal", type="float")
@@ -114,9 +114,9 @@ class InvMovimiento
     private $vrNeto = 0;    
     
     /**
-     * @ORM\Column(name="vr_total", type="float")
+     * @ORM\Column(name="vr_neto_pagar", type="float")
      */
-    private $vr_total = 0;
+    private $vrNetoPagar = 0;
 
     /**
      * @ORM\Column(name="vr_costo", type="float")
@@ -128,6 +128,11 @@ class InvMovimiento
      */
     private $vrRetencionFuente = 0;    
 
+    /**
+     * @ORM\Column(name="vr_retencion_iva", type="float")
+     */
+    private $vrRetencionIva = 0;     
+    
     /**
      * @ORM\Column(name="vr_retencion_cree", type="float")
      */
@@ -223,8 +228,6 @@ class InvMovimiento
     protected $movimientosDescuentosFinancierosMovimientoRel;     
     
    
-    
-    
     /**
      * Constructor
      */
@@ -365,6 +368,30 @@ class InvMovimiento
     }
 
     /**
+     * Set fechaVence
+     *
+     * @param \DateTime $fechaVence
+     *
+     * @return InvMovimiento
+     */
+    public function setFechaVence($fechaVence)
+    {
+        $this->fechaVence = $fechaVence;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVence
+     *
+     * @return \DateTime
+     */
+    public function getFechaVence()
+    {
+        return $this->fechaVence;
+    }
+
+    /**
      * Set fecha1
      *
      * @param \DateTime $fecha1
@@ -410,6 +437,30 @@ class InvMovimiento
     public function getFecha2()
     {
         return $this->fecha2;
+    }
+
+    /**
+     * Set plazoPago
+     *
+     * @param integer $plazoPago
+     *
+     * @return InvMovimiento
+     */
+    public function setPlazoPago($plazoPago)
+    {
+        $this->plazoPago = $plazoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get plazoPago
+     *
+     * @return integer
+     */
+    public function getPlazoPago()
+    {
+        return $this->plazoPago;
     }
 
     /**
@@ -653,27 +704,27 @@ class InvMovimiento
     }
 
     /**
-     * Set vrTotal
+     * Set vrNetoPagar
      *
-     * @param float $vrTotal
+     * @param float $vrNetoPagar
      *
      * @return InvMovimiento
      */
-    public function setVrTotal($vrTotal)
+    public function setVrNetoPagar($vrNetoPagar)
     {
-        $this->vr_total = $vrTotal;
+        $this->vrNetoPagar = $vrNetoPagar;
 
         return $this;
     }
 
     /**
-     * Get vrTotal
+     * Get vrNetoPagar
      *
      * @return float
      */
-    public function getVrTotal()
+    public function getVrNetoPagar()
     {
-        return $this->vr_total;
+        return $this->vrNetoPagar;
     }
 
     /**
@@ -1177,50 +1228,26 @@ class InvMovimiento
     }
 
     /**
-     * Set fechaVence
+     * Set vrRetencionIva
      *
-     * @param \DateTime $fechaVence
+     * @param float $vrRetencionIva
      *
      * @return InvMovimiento
      */
-    public function setFechaVence($fechaVence)
+    public function setVrRetencionIva($vrRetencionIva)
     {
-        $this->fechaVence = $fechaVence;
+        $this->vrRetencionIva = $vrRetencionIva;
 
         return $this;
     }
 
     /**
-     * Get fechaVence
+     * Get vrRetencionIva
      *
-     * @return \DateTime
+     * @return float
      */
-    public function getFechaVence()
+    public function getVrRetencionIva()
     {
-        return $this->fechaVence;
-    }
-
-    /**
-     * Set plazoPago
-     *
-     * @param integer $plazoPago
-     *
-     * @return InvMovimiento
-     */
-    public function setPlazoPago($plazoPago)
-    {
-        $this->plazoPago = $plazoPago;
-
-        return $this;
-    }
-
-    /**
-     * Get plazoPago
-     *
-     * @return integer
-     */
-    public function getPlazoPago()
-    {
-        return $this->plazoPago;
+        return $this->vrRetencionIva;
     }
 }

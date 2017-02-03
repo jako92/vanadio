@@ -43,6 +43,7 @@ class InvTerceroType extends AbstractType
             ->add('celular', TextType::class, array('required' => false))    
             ->add('fax', TextType::class, array('required' => false))        
             ->add('email', TextType::class, array('required' => false))            
+            ->add('plazoPagoCliente', NumberType::class, array('required' => true))                                
             ->add('guardar', SubmitType::class)            
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

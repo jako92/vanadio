@@ -46,8 +46,8 @@
                         <td align="right">{{ arMovimiento.vrSubtotal | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">FECHA:</td>
-                        <td class="td-in-well">{{ arMovimiento.fecha |date("Y/m/d") }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo" >DOCUMENTO:</td>
                         <td class="td-in-well">{{ arMovimiento.documentoRel.nombre | default('') }}</td>
                         <td class="titulo" >IVA:</td>
@@ -56,18 +56,34 @@
                     <tr>
                         <td class="titulo">TERCERO:</td>
                         <td class="td-in-well">{{ arMovimiento.terceroRel.nombreCorto | default('') }}</td></td>
-                        <td class="titulo" ></td>
-                        <td class="td-in-well"></td>
-                        <td class="titulo" >TOTAL BRUTO:</td>
-                        <td align="right">{{ arMovimiento.vrBruto | number_format(0, '.', ',')}}</td>                         
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arMovimiento.fecha |date("Y/m/d") }}</td>
+                        <td class="titulo" >RETENCION FUENTE:</td>
+                        <td align="right">{{ arMovimiento.vrRetencionFuente | number_format(0, '.', ',')}}</td>                         
                     </tr>
                     <tr>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td></td>
-                        <td class="titulo" ></td>
+                        <td class="titulo">VENCE:</td>
+                        <td class="td-in-well">{{ arMovimiento.fechaVence |date("Y/m/d") }}</td>
+                        <td class="titulo" >RETENCION IVA:</td>
+                        <td align="right">{{ arMovimiento.vrRetencionIva | number_format(0, '.', ',')}}</td>                         
+                    </tr>   
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td></td>
+                        <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo" >TOTAL NETO:</td>
-                        <td align="right">{{ arMovimiento.vrNeto | number_format(0, '.', ',')}}</td>                         
+                        <td align="right">{{ arMovimiento.vrNeto | number_format(0, '.', ',')}}</td>                          
+                    </tr>                    
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo" >TOTAL NETO PAGAR:</td>
+                        <td align="right">{{ arMovimiento.vrNetoPagar | number_format(0, '.', ',')}}</td>                         
                     </tr>                    
                     <tr>
                         <td class="titulo" >COMENTARIO: </td>

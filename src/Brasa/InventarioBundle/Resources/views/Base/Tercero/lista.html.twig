@@ -46,16 +46,18 @@
                 <th>NIT</th>
                 <th>DIGITO VERIFICACIÓN</th>
                 <th>{{ knp_pagination_sortable(arTerceros, 'NOMBRE', 'nombre') }}</th> 
+                <th>PLAZO</th>
                 <th></th>
                 <th></th>
             </tr>
 
             {%for arTerceros in arTerceros %}
                 <tr>
-                    <td>{{arTerceros.codigoTerceroPk}}</td>
-                    <td>{{arTerceros.nit}}</td>
-                    <td>{{arTerceros.digitoVerificacion}}</td>
-                    <td>{{arTerceros.nombreCorto}}</td>
+                    <td>{{ arTerceros.codigoTerceroPk}}</td>
+                    <td>{{ arTerceros.nit}}</td>
+                    <td>{{ arTerceros.digitoVerificacion}}</td>
+                    <td>{{ arTerceros.nombreCorto}}</td>
+                    <td>{{ arTerceros.plazoPagoCliente }}</td>
                     <td align="center"><a href="{{ path('brs_inv_base_tercero_nuevo',{'codigoTercero': arTerceros.codigoTerceroPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arTerceros.codigoTerceroPk }}" /></td>
                     {%endfor%}
