@@ -1304,7 +1304,8 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('K1', 'DEDUCCIONES')
                         ->setCellValue('L1', 'NETO')
                         ->setCellValue('M1', 'PUESTO')
-                        ->setCellValue('N1', 'CLIENTE');
+                        ->setCellValue('N1', 'CLIENTE')
+                        ->setCellValue('O1', 'CONTRATO');
             
             $i = 2;
 
@@ -1322,7 +1323,8 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('I' . $i, $arPago->getVrDevengado())
                         ->setCellValue('J' . $i, $arPago->getContratoRel()->getVrDevengadoPactado())
                         ->setCellValue('K' . $i, $arPago->getVrDeducciones())
-                        ->setCellValue('L' . $i, $arPago->getVrNeto());
+                        ->setCellValue('L' . $i, $arPago->getVrNeto())
+                        ->setCellValue('O' . $i, $arPago->getCodigoContratoFk());
                 if($arPago->getEmpleadoRel()->getCodigoBancoFk()) {
                     $objPHPExcel->setActiveSheetIndex(1)->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getBancoRel()->getNombre());
                 }
@@ -1344,7 +1346,8 @@ class ProgramacionesPagoController extends Controller
                     ->setCellValue('F1', 'HORAS')
                     ->setCellValue('G1', 'DEVENGADO')
                     ->setCellValue('H1', 'DEDUCCION')
-                    ->setCellValue('I1', 'INTERESES CESANTIAS');
+                    ->setCellValue('I1', 'INTERESES CESANTIAS')
+                    ->setCellValue('J1', 'N_CREDITO');
             
             $objPHPExcel->setActiveSheetIndex(2); 
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
@@ -1368,7 +1371,8 @@ class ProgramacionesPagoController extends Controller
                         ->setCellValue('D' . $i, $arPagoDetalle->getCodigoPagoConceptoFk())
                         ->setCellValue('E' . $i, $arPagoDetalle->getPagoConceptoRel()->getNombre())
                         ->setCellValue('F' . $i, $arPagoDetalle->getNumeroHoras())
-                        ->setCellValue('I' . $i, $arPagoDetalle->getProgramacionPagoDetalleRel()->getVrInteresCesantia());
+                        ->setCellValue('I' . $i, $arPagoDetalle->getProgramacionPagoDetalleRel()->getVrInteresCesantia())
+                        ->setCellValue('J' . $i, $arPagoDetalle->getCodigoCreditoFk());
                 if($arPagoDetalle->getOperacion() == 1) {
                     $objPHPExcel->setActiveSheetIndex(2)->setCellValue('G' . $i, $arPagoDetalle->getVrPago());
                 }
