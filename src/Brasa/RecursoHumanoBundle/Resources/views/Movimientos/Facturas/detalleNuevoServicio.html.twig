@@ -34,7 +34,7 @@
             <th style="text-align: right">ADMON</th>
             <th style="text-align: right">COSTO</th>
             <th style="text-align: right">TOTAL</th>
-            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
 
         {% for arServiciosCobrar in arServiciosCobrar %}

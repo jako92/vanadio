@@ -140,7 +140,7 @@
                             <th>C.DOTACION</th>
                             <th></th>
                             <th></th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPuesto[]');"/></th>
                         </tr>
                         {% for arPuestos in arPuestos %}
                             <tr>
@@ -182,7 +182,7 @@
                             <th>COD</th>                                
                             <th>NOMBRE</th>
                             <th></th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarProyecto[]');"/></th>
                         </tr>
                         {% for arProyectos in arProyectos %}
                             <tr>
@@ -214,7 +214,7 @@
                             <th>ABREVIATURA</th>
                             <th>CONCEPTO</th>
                             <th></th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarGrupoFacturacion[]');"/></th>
                         </tr>
                         {% for arGruposFacturacion in arGruposFacturacion %}
                             <tr>

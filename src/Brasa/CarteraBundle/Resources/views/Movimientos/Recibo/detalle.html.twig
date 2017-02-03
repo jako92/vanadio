@@ -124,7 +124,7 @@
                 <th>RTE FUENTE</th>
                 <th>VALOR</th>
                 <th>TOTAL</th>
-                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>
             {% for arReciboDetalle in arReciboDetalle %}
         {% if arReciboDetalle.estadoInconsistencia == 1 %}{% set class = 'danger' %}{% else %}{% set class = '' %}{% endif %}    

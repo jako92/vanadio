@@ -25,7 +25,7 @@
             <th>CUENTA</th>
             <th>BANCO</th>
             <th style="text-align: right">VR. PAGO</th>                
-            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
         {% for arPagosBanco in arPagosBanco %}
             <tr>

@@ -48,7 +48,7 @@
             <th>DIAS</th>
             <th>SALARIO</th>
             <th>GENERADO</th>
-            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
         {% for arTrasladoEmpleados in arTrasladoEmpleados %}
             <tr>

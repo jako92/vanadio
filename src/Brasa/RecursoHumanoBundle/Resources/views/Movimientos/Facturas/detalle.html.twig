@@ -128,7 +128,7 @@
                             <th style="text-align: right">CESANTIAS</th>
                             <th style="text-align: right">VACACIONES</th>
                             <th style="text-align: right">ADMON</th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarServicio[]');"/></th>
                         </tr>
 
                         {% for arFacturaDetalles in arFacturaDetalles %}
@@ -170,7 +170,7 @@
                             <th>IDENTIFICACION</th>
                             <th>NOMBRE</th>
                             <th>VALOR</th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarExamen[]');"/></th>
                         </tr>
 
                         {% for arExamenes in arExamenes %}
@@ -203,7 +203,7 @@
                             <th>IDENTIFICACION</th>
                             <th>NOMBRE</th>
                             <th>VALOR</th>
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarSeleccion[]');"/></th>
                         </tr>
 
                         {% for arSelecciones in arSelecciones %}

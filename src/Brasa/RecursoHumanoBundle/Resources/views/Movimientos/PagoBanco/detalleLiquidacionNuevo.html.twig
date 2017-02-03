@@ -17,7 +17,7 @@
                 <th>BANCO</th>
                 <th>CUENTA</th>
                 <th style="text-align: right">NETO</th>
-                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>        
             {%for arLiquidaciones in arLiquidaciones %}
                 <tr>

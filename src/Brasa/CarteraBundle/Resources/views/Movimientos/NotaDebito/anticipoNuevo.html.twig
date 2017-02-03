@@ -26,7 +26,7 @@
                 <th>CUENTA</th>
                 <th style="text-align: right">ANTICIPO</th>
                 <th style="text-align: right">TOTAL</th>
-                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>        
             {%for arAnticipos in arAnticipos %}
                 <tr>

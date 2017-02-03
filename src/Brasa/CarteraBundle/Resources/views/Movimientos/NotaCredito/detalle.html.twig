@@ -102,7 +102,7 @@
                 <th>NÚMERO</th>
                 <th>TIPO</th>
                 <th>VALOR</th>
-                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>
             {% for arNotaCreditoDetalle in arNotaCreditoDetalle %}
         {% if arNotaCreditoDetalle.estadoInconsistencia == 1 %}{% set class = 'danger' %}{% else %}{% set class = '' %}{% endif %}    

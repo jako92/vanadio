@@ -28,7 +28,7 @@
                 <th>VENCE</th>
                 <th style="text-align: right">VALOR</th>
                 <th style="text-align: right">SALDO</th>
-                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this);"/></th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>        
             {%for arCuentasCobrar in arCuentasCobrar %}
                 <tr>
