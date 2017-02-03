@@ -265,10 +265,15 @@ class InvMovimientoRepository extends EntityRepository {
             $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
         }*/
         if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
-            $porcentajeRetencion = $arMovimiento->getFacturaTipoRel()->getPorcentajeRetencionFuente();
-            $retencionFuente = ($subtotal * $porcentajeRetencion) / 100;            
-            if($iva > 0) {
-                $retencionIva = ($iva * 15) / 100;
+            
+            $porcentajeRetencion = $arMovimiento->getFacturaTipoRel()->getPorcentajeRetencionFuente();            
+            if($subtotal > $arMovimiento->getFacturaTipoRel()->getBaseRetencionFuente()) {
+                $retencionFuente = ($subtotal * $porcentajeRetencion) / 100;                
+            }            
+            if($arMovimiento->getTerceroRel()->getAutoretenedor()) {
+                if($iva > 0) {
+                    $retencionIva = ($iva * 15) / 100;
+                }                
             }
         }  
 

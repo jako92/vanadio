@@ -121,18 +121,17 @@ class InvTercero
     /**
      * @ORM\Column(name="retencion_fuente_ventas", type="boolean", nullable=true)
      */    
-    private $retencionFuenteVentas;    
+    private $retencionFuenteVentas = false;    
 
     /**
      * @ORM\Column(name="retencion_fuente_ventas_sin_base", type="boolean", nullable=true)
      */    
-    private $retencionFuenteVentasSinBase;    
-    
+    private $retencionFuenteVentasSinBase = false;        
     
     /**
      * @ORM\Column(name="autoretenedor", type="boolean", nullable=true)
      */    
-    private $autoretenedor ;    
+    private $autoretenedor = false;    
 
     /**
      * @ORM\Column(name="contacto_cliente", type="string", length=80, nullable=true)

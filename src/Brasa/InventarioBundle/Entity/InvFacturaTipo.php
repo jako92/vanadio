@@ -28,6 +28,11 @@ class InvFacturaTipo
      * @ORM\Column(name="porcentaje_retencion_fuente", type="float")
      */
     private $porcentajeRetencionFuente = 0;    
+
+    /**
+     * @ORM\Column(name="base_retencion_fuente", type="float")
+     */
+    private $baseRetencionFuente = 0;
     
     /**
      * @ORM\OneToMany(targetEntity="InvMovimiento", mappedBy="facturaTipoRel")
@@ -131,5 +136,29 @@ class InvFacturaTipo
     public function getPorcentajeRetencionFuente()
     {
         return $this->porcentajeRetencionFuente;
+    }
+
+    /**
+     * Set baseRetencionFuente
+     *
+     * @param float $baseRetencionFuente
+     *
+     * @return InvFacturaTipo
+     */
+    public function setBaseRetencionFuente($baseRetencionFuente)
+    {
+        $this->baseRetencionFuente = $baseRetencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get baseRetencionFuente
+     *
+     * @return float
+     */
+    public function getBaseRetencionFuente()
+    {
+        return $this->baseRetencionFuente;
     }
 }

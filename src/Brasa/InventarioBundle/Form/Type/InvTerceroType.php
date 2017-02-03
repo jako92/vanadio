@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class InvTerceroType extends AbstractType
 {
@@ -43,7 +44,8 @@ class InvTerceroType extends AbstractType
             ->add('celular', TextType::class, array('required' => false))    
             ->add('fax', TextType::class, array('required' => false))        
             ->add('email', TextType::class, array('required' => false))            
-            ->add('plazoPagoCliente', NumberType::class, array('required' => true))                                
+            ->add('plazoPagoCliente', NumberType::class, array('required' => true)) 
+            ->add('autoretenedor', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)            
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
