@@ -12,30 +12,21 @@ class DefaultController extends Controller
      * @Route("/", name="brasa_general_inicio")
      */
     public function indexAction() {
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();   
-        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();        
         $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         if($arConfiguracion->getInhabilitado() == 1) {           
             return $this->redirect($this->generateUrl('logout'));
         }
+        $fecha = new \DateTime('now');
+        $fechaVenceServicio = $arConfiguracion->getFechaHastaServicio();
+        $diff = $fecha->diff($fechaVenceServicio);
+        $dias = $diff->format('%r%a');
+        if($dias <= 5 ) {
+            $objMensaje->Mensaje("error", "El servicio de soporte, mantenimiento y actualizacion vence en " . $dias . " dias, si el contrato es de tipo arrendamiento se suspende totalmente el acceso");
+        }
         return $this->render('BrasaGeneralBundle:Default:index.html.twig');
-    }
-    
-    public function menuAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        //$arUsuario = new \Brasa\SeguridadBundle\Entity\User();
-        //$arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-        //$strUsuario = $arUsuario->getNombreCorto();
-        //$destinatario = $this->contenedor->getParameter('contact_email');
-        //$obj = new \Brasa\GeneralBundle\MisClases\CambiarBD();
-        //$obj->setUpAppConnection($this);
-        //\Brasa\GeneralBundle\MisClases\CambiarBD::setUpAppConnection();
-        $arModulo = new \Brasa\GeneralBundle\Entity\GenModulo();
-        $arModulo = $em->getRepository('BrasaGeneralBundle:GenModulo')->find(1);
-        return $this->render('BrasaGeneralBundle:plantillas:menu.html.twig', array(
-            'arModulo' => $arModulo
-        ));
-    }                  
+    }                     
     
 }

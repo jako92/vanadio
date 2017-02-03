@@ -159,6 +159,11 @@ class GenConfiguracion
     private $aplicarTopeRetencionFuenteNotasCredito = false;     
     
     /**
+     * @ORM\Column(name="fecha_hasta_servicio", type="date", nullable=true)
+     */    
+    private $fechaHastaServicio;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="GenCiudad", inversedBy="configuracionesRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -870,5 +875,29 @@ class GenConfiguracion
     public function getRutaImagenesVer()
     {
         return $this->rutaImagenesVer;
+    }
+
+    /**
+     * Set fechaHastaServicio
+     *
+     * @param \DateTime $fechaHastaServicio
+     *
+     * @return GenConfiguracion
+     */
+    public function setFechaHastaServicio($fechaHastaServicio)
+    {
+        $this->fechaHastaServicio = $fechaHastaServicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHastaServicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaHastaServicio()
+    {
+        return $this->fechaHastaServicio;
     }
 }
