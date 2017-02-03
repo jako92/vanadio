@@ -23,7 +23,7 @@ class DefaultController extends Controller
         $fechaVenceServicio = $arConfiguracion->getFechaHastaServicio();
         $diff = $fecha->diff($fechaVenceServicio);
         $dias = $diff->format('%r%a');
-        if($dias <= 5 ) {
+        if($dias <= 3 ) {
             $objMensaje->Mensaje("error", "El servicio de soporte, mantenimiento y actualizacion vence en " . $dias . " dias, si el contrato es de tipo arrendamiento se suspende totalmente el acceso");
         }
         return $this->render('BrasaGeneralBundle:Default:index.html.twig');
