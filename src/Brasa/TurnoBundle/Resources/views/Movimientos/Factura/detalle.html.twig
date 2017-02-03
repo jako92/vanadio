@@ -134,8 +134,9 @@
                             <th>MODALIDAD</th>
                             <th>CANT</th>
                             <th>PRECIO</th>
-                            <th>IVA</th>
+                            <th>%IVA</th>
                             <th>SUBTOTAL</th>
+                            <th>IVA</th>
                             <th>DETALLE</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Grupo facturacion">GF</p></th>                            
                             <th></th>                            
@@ -157,6 +158,7 @@
                                 {% endif %}
                                 <td style="text-align: right">{{ arFacturaDetalle.porIva | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalle.subtotal | number_format(0, '.', ',') }}</td>                                
+                                <td style="text-align: right">{{ arFacturaDetalle.iva | number_format(0, '.', ',') }}</td>                                
                                 {% if arFactura.estadoAutorizado == 0 %}                                    
                                     <td style="text-align: center"><input class="input-grid" type="text" name="TxtDetalle{{ arFacturaDetalle.codigoFacturaDetallePk }}" value="{{ arFacturaDetalle.detalle  }}" size="20" style="width:240px;" onclick="this.select()"/></td>
                                     {% else %}                                    
