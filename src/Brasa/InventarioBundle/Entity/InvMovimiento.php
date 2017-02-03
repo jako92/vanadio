@@ -34,6 +34,11 @@ class InvMovimiento
     private $codigoDocumentoClaseFk;      
     
     /**
+     * @ORM\Column(name="codigo_factura_tipo_fk", type="integer", nullable=true)
+     */
+    private $codigoFacturaTipoFk;     
+    
+    /**
      * @ORM\Column(name="numero", type="integer", nullable=true)
      */    
     private $numero = 0;
@@ -216,6 +221,12 @@ class InvMovimiento
      * @ORM\JoinColumn(name="codigo_forma_pago_fk", referencedColumnName="codigo_forma_pago_pk")
      */
     protected $formaPagoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="InvFacturaTipo", inversedBy="movimientosFacturaTipoRel")
+     * @ORM\JoinColumn(name="codigo_factura_tipo_fk", referencedColumnName="codigo_factura_tipo_pk")
+     */
+    protected $facturaTipoRel;    
     
     /**
      * @ORM\OneToMany(targetEntity="InvMovimientoDetalle", mappedBy="movimientoRel")
@@ -1249,5 +1260,53 @@ class InvMovimiento
     public function getVrRetencionIva()
     {
         return $this->vrRetencionIva;
+    }
+
+    /**
+     * Set codigoFacturaTipoFk
+     *
+     * @param integer $codigoFacturaTipoFk
+     *
+     * @return InvMovimiento
+     */
+    public function setCodigoFacturaTipoFk($codigoFacturaTipoFk)
+    {
+        $this->codigoFacturaTipoFk = $codigoFacturaTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFacturaTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoFacturaTipoFk()
+    {
+        return $this->codigoFacturaTipoFk;
+    }
+
+    /**
+     * Set facturaTipoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel
+     *
+     * @return InvMovimiento
+     */
+    public function setFacturaTipoRel(\Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel = null)
+    {
+        $this->facturaTipoRel = $facturaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get facturaTipoRel
+     *
+     * @return \Brasa\InventarioBundle\Entity\InvFacturaTipo
+     */
+    public function getFacturaTipoRel()
+    {
+        return $this->facturaTipoRel;
     }
 }

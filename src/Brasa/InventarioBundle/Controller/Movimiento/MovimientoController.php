@@ -3,6 +3,7 @@ namespace Brasa\InventarioBundle\Controller\Movimiento;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\InventarioBundle\Form\Type\InvMovimientoType;
+use Brasa\InventarioBundle\Form\Type\InvMovimientoFacturaType;
 use Brasa\InventarioBundle\Form\Type\InvMovimientoDetalleType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,7 +100,11 @@ class MovimientoController extends Controller
             $arMovimiento->setFecha(new \DateTime('now'));
             $arMovimiento->setFechaVence(new \DateTime('now'));
         }
-        $form = $this->createForm(InvMovimientoType::class, $arMovimiento);
+        if($arDocumento->getCodigoDocumentoClaseFk() == 3) {
+            $form = $this->createForm(InvMovimientoFacturaType::class, $arMovimiento);
+        } else {
+            $form = $this->createForm(InvMovimientoType::class, $arMovimiento);
+        }        
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arrControles = $request->request->All();
@@ -135,10 +140,18 @@ class MovimientoController extends Controller
                 $objMensaje->Mensaje("error", "El tercero no existe");
             }
         }
-        return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevo.html.twig', array(
-            'arMovimiento' => $arMovimiento,
-            'arDocumento' => $arDocumento,
-            'form' => $form->createView()));
+        
+        if($arDocumento->getCodigoDocumentoClaseFk() == 3) {
+            return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevoFactura.html.twig', array(
+                'arMovimiento' => $arMovimiento,
+                'arDocumento' => $arDocumento,
+                'form' => $form->createView()));            
+        } else {
+            return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevo.html.twig', array(
+                'arMovimiento' => $arMovimiento,
+                'arDocumento' => $arDocumento,
+                'form' => $form->createView()));
+        }
     }
 
     /**

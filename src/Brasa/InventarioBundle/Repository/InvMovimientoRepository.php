@@ -218,14 +218,14 @@ class InvMovimientoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();        
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         $subtotal = 0;
         $iva = 0;
         $baseIva = 0;
         $total = 0;
         $retencionFuente = 0;
-        
+        $retencionIva = 0;
         $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
         $arMovimientoDetalle = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->findBy(array('codigoMovimientoFk' => $codigoMovimiento));
         foreach ($arMovimientoDetalle as $arMovimientoDetalle) {
@@ -264,19 +264,28 @@ class InvMovimientoRepository extends EntityRepository {
         /*if($baseRetencionFuente >= $arConfiguracion->getBaseRetencionFuente()) {
             $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
         }*/
-        //$retencionFuente = $retencionFuente;
-        $totalBruto = $subtotal;
-        $totalNeto = $subtotal + $iva - $retencionFuente;        
-        $total = $subtotal + $iva - $retencionFuente;        
+        if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
+            $porcentajeRetencion = $arMovimiento->getFacturaTipoRel()->getPorcentajeRetencionFuente();
+            $retencionFuente = ($subtotal * $porcentajeRetencion) / 100;            
+            if($iva > 0) {
+                $retencionIva = ($iva * 15) / 100;
+            }
+        }  
+
+        $subtotal = round($subtotal);
+        $iva = round($iva);       
+        $retencionFuente = round($retencionFuente); 
+        $retencionIva = round($retencionIva);
+        $totalNeto = $subtotal + $iva;        
+        $totalNetoPagar = $subtotal + $iva - $retencionFuente - $retencionIva;        
         $arMovimiento->setVrSubtotal($subtotal);
-        $arMovimiento->setVrSubtotalOperado($subtotal * $arMovimiento->getOperacionInventario());
-        //$arFactura->setVrSubtotalOtros($floSubTotalConceptos);
-        //$arMovimiento->setVrRetencionFuente($retencionFuente);
+        $arMovimiento->setVrSubtotalOperado($subtotal * $arMovimiento->getOperacionInventario());       
+        $arMovimiento->setVrRetencionFuente($retencionFuente);
+        $arMovimiento->setVrRetencionIva($retencionIva);
         $arMovimiento->setVrIva($iva);
-        $arMovimiento->setvrBruto($totalBruto);
-        $arMovimiento->setVrNeto($totalNeto);
-        $arMovimiento->setvrTotal($total);
-        $arMovimiento->setvrNetoPagar($total);
+        $arMovimiento->setvrBruto($subtotal);
+        $arMovimiento->setVrNeto($totalNeto);        
+        $arMovimiento->setvrNetoPagar($totalNetoPagar);
         $em->persist($arMovimiento);
         $em->flush();
         return true;

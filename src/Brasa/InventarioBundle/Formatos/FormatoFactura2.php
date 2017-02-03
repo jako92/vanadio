@@ -163,11 +163,11 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(22, 6, number_format($arMovimiento->getVrIva(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(162,204);        
         $this->Cell(22, 6, 'TOTAL', 1, 0, 'L');
-        $this->Cell(22, 6, number_format($arMovimiento->getVrTotal(), 0, '.', ','), 1, 0, 'R');
+        $this->Cell(22, 6, number_format($arMovimiento->getVrNetoPagar(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(15,210);        
         $this->Cell(147, 6, substr(strtoupper(self::$strLetras), 0, 96), 1, 0, 'L',1);
         $this->Cell(22, 6, 'NETO', 1, 0, 'L',1);
-        $this->Cell(22, 6, number_format($arMovimiento->getVrTotal(), 0, '.', ','), 1, 0, 'R',1);
+        $this->Cell(22, 6, number_format($arMovimiento->getVrNetoPagar(), 0, '.', ','), 1, 0, 'R',1);
         $this->SetXY(15,216);        
         $this->Cell(64, 6, 'RECIBIDO POR', 1, 0, 'L');
         $this->Cell(64, 6, 'ACEPTADO POR', 1, 0, 'L');
