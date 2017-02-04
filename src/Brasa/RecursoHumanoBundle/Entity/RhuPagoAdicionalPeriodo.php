@@ -23,6 +23,11 @@ class RhuPagoAdicionalPeriodo
     private $fecha;  
     
     /**
+     * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
+     */    
+    private $nombre;     
+    
+    /**
      * @ORM\Column(name="estado_cerrado", type="boolean", nullable=true)
      */    
     private $estadoCerrado = false;  
@@ -84,5 +89,29 @@ class RhuPagoAdicionalPeriodo
     public function getEstadoCerrado()
     {
         return $this->estadoCerrado;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return RhuPagoAdicionalPeriodo
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
     }
 }
