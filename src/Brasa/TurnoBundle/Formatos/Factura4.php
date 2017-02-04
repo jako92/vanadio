@@ -168,18 +168,27 @@ class Factura4 extends \FPDF_FPDF {
         $pdf->SetFont('Arial', '', 7);
         foreach ($arFacturaDetalles as $arFacturaDetalle) {
             $pdf->SetFont('Arial', '', 6.5);
+            $strDetalle = "";
             if($arFacturaDetalle->getDetalle()) {
                 $strDetalle = $arFacturaDetalle->getDetalle();
-            } else {
-                $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " DESDE EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
-                        . " HASTA EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
-                $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y');//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                
+            } else { 
+                if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
+                    $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " DESDE EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
+                            . " HASTA EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
+                    $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y');//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                                    
+                } else {
+                    $strDetalle = $arFacturaDetalle->getConceptoServicioRel()->getNombre();
+                }
             }
             $pdf->SetFont('Arial', '', 7);
             $pdf->Cell(12, 7, $arFacturaDetalle->getCodigoFacturaDetallePk(), 0, 0, 'L');
             $pdf->Cell(141, 7, $strDetalle, 0, 0, 'L');
             //$pdf->MultiCell(125, 3.5, $strDetalle, 1, 'L');
-            $pdf->Cell(10, 7, $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getNumero(), 0, 0, 'L');
+            $numeroPedido = "";
+            if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
+                $numeroPedido = $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getNumero();
+            }
+            $pdf->Cell(10, 7, $numeroPedido, 0, 0, 'L');
             $pdf->Cell(10, 7, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(22, 7, number_format($arFacturaDetalle->getSubtotal(), 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
