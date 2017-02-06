@@ -1,0 +1,44 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Cierre de mes nuevo - Soga App{% endblock %} 
+{% block content %}
+        <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Cierre de mes: nuevo</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Procesos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cierre de mes</a></li>
+            <li class="active">Nuevo</li>
+        </ol>
+    </section>    
+    <section class="content"> 
+    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+    {{ form_errors(form) }}    
+    <div class="panel panel-default">
+        <div class="panel-heading">Información general</div>
+        <div class="panel-body">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">Año:</label>
+                <div class="col-sm-10">
+                    {{ form_widget(form.anio, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                </div>
+            </div>      
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">Mes:</label>
+                <div class="col-sm-10">
+                    {{ form_widget(form.mes, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>                 
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_proceso_cierre_mes') }}">Cancelar</a>
+        {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+    </div>
+    {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>      
+{% endblock %}
