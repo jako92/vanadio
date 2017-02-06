@@ -294,7 +294,7 @@ class TurFacturaRepository extends EntityRepository {
                 $intNumero = $em->getRepository('BrasaTurnoBundle:TurFacturaTipo')->consecutivo($arFactura->getCodigoFacturaTipoFk());
                 $arFactura->setNumero($intNumero);
                 $arFactura->setFecha(new \DateTime('now'));
-                $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getClienteRel()->getPlazoPago(), $arFactura->getFecha());
+                $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
                 $arFactura->setFechaVence($dateFechaVence);
                 $arClienteTurno = new \Brasa\TurnoBundle\Entity\TurCliente();
                 $arClienteTurno = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arFactura->getCodigoClienteFk());

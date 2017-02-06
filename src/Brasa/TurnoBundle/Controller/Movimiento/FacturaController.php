@@ -132,7 +132,7 @@ class FacturaController extends Controller
                     if($codigoFactura == 0) {
                         $arFactura->setImprimirAgrupada($arFactura->getClienteRel()->getFacturaAgrupada());
                         if($arFactura->getPlazoPago() <= 0) {
-                            $arFactura->setPlazoPago($arCliente->getPlazoPago());
+                            $arFactura->setPlazoPago($arFactura->getPlazoPago());
                         }
                     }
                     $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
