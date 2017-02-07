@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class MovimientoReciboController extends Controller
+class ReciboController extends Controller
 {
     var $strListaDql = "";
     

@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class MovimientoNotaDebitoController extends Controller
+class NotaDebitoController extends Controller
 {
     var $strListaDql = "";
     

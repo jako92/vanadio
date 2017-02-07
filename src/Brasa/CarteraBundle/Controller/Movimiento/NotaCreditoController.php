@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class MovimientoNotaCreditoController extends Controller
+class NotaCreditoController extends Controller
 {
     var $strListaDql = "";
     

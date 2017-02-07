@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 //use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarType;
 //use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarDetalleType;
 
-class MovimientoCuentaCobrarController extends Controller
+class CuentaCobrarController extends Controller
 {
     var $strListaDql = "";
     var $numero = "";
