@@ -34,7 +34,7 @@ class RhuExamenType extends AbstractType
                 'choice_label' => 'nombre',
             ))           
             ->add('fecha', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('codigoSexoFk', ChoiceType::class, array('action'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('identificacion', NumberType::class, array('required' => true))
             ->add('nombreCorto', TextType::class, array('required' => true))
