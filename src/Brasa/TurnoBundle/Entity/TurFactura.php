@@ -175,7 +175,17 @@ class TurFactura
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
      */    
-    private $plazoPago = 0;     
+    private $plazoPago = 0;
+    
+    /**
+     * @ORM\Column(name="fecha_suspension", type="date", nullable=true)
+     */    
+    private $fechaSuspension;
+
+    /**
+     * @ORM\Column(name="fecha_cancelacion", type="date", nullable=true)
+     */    
+    private $fechaCancelacion;     
     
     /**
      * @ORM\ManyToOne(targetEntity="TurFacturaTipo", inversedBy="facturasFacturaTipoRel")
@@ -1180,5 +1190,53 @@ class TurFactura
     public function getFacturasDetallesFacturaRel()
     {
         return $this->facturasDetallesFacturaRel;
+    }
+
+    /**
+     * Set fechaSuspension
+     *
+     * @param \DateTime $fechaSuspension
+     *
+     * @return TurFactura
+     */
+    public function setFechaSuspension($fechaSuspension)
+    {
+        $this->fechaSuspension = $fechaSuspension;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaSuspension
+     *
+     * @return \DateTime
+     */
+    public function getFechaSuspension()
+    {
+        return $this->fechaSuspension;
+    }
+
+    /**
+     * Set fechaCancelacion
+     *
+     * @param \DateTime $fechaCancelacion
+     *
+     * @return TurFactura
+     */
+    public function setFechaCancelacion($fechaCancelacion)
+    {
+        $this->fechaCancelacion = $fechaCancelacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCancelacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCancelacion()
+    {
+        return $this->fechaCancelacion;
     }
 }

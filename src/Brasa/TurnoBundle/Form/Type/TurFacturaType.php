@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,6 +42,8 @@ class TurFacturaType extends AbstractType
             ->add('detalleRelacion', TextType::class, array('required' => false)) 
             ->add('plazoPago', NumberType::class, array('required' => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('fechaSuspension', DateType::class, array('format' => 'yyyyMMdd'))
+            ->add('fechaCancelacion', DateType::class, array('format' => 'yyyyMMdd'))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

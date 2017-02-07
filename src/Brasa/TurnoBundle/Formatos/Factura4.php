@@ -91,13 +91,21 @@ class Factura4 extends \FPDF_FPDF {
             $this->Cell(10, 3, $col, 0, 0, 'L');
             $this->Ln();
         }
-        
+        $FechaSuspension = "" ;
+        $FechaCancelacion = "" ;      
+        if ($arFactura->getFacturaServicioRel()->getCodigoFacturaServicioPk() == 2) {
+                $FechaSuspension = $arFactura->getFechaSuspension()->format('Y-m-d');
+                $FechaCancelacion = $arFactura->getFechaCancelacion()->format('Y-m-d');
+            }
         $List1 = array('',
             $arFactura->getFecha()->format('Y-m-d'),
             $arFactura->getFechaVence()->format('Y-m-d'),
             $arFactura->getClienteRel()->getFormaPagoRel()->getNombre(),
             $arFactura->getPlazoPago(),
-            "", "");
+            $FechaSuspension,
+            $FechaCancelacion);
+            
+        
         $this->SetXY(175,20);
         $this->SetFont('Arial', '', 14);        
         $this->Cell(30, 3, $arFactura->getNumero(), 0, 0, 'R'); 
