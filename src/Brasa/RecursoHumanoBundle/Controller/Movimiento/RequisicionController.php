@@ -83,9 +83,9 @@ class RequisicionController extends Controller
             $em->persist($arRequisito);
             $em->flush();
             if($form->get('guardarnuevo')->isClicked()) {
-                return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_nuevo', array('codigoSeleccionRequisito' => 0)));
+                return $this->redirect($this->generateUrl('brs_rhu_requisicion_nuevo', array('codigoSeleccionRequisito' => 0)));
             } else {
-                return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_lista'));
+                return $this->redirect($this->generateUrl('brs_rhu_requisicion_lista'));
             }
 
         }
@@ -116,7 +116,7 @@ class RequisicionController extends Controller
             if($form->get('BtnEliminarDetalle')->isClicked()) {
                 if($arRequisicion->getEstadoCerrado() == 0) {
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisicionAspirante')->eliminarDetallesSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
+                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                 } else {
                     $objMensaje->Mensaje('error', 'No se puede eliminar, la requisicion esta cerrada');
                 }
