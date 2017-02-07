@@ -150,6 +150,15 @@ class ProgramacionesPagoController extends Controller {
                     }                    
                 }
             }
+            if ($request->request->get('OpCerrar')) {
+                $codigoProgramacionPago = $request->request->get('OpCerrar');
+                $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
+                if ($arProgramacionPago->getEstadoExportadoArdid() == 0) {
+                    $arProgramacionPago->setEstadoExportadoArdid(1);
+                    $em->persist($arProgramacionPago);
+                    $em->flush();
+                }                                                    
+            }            
             return $this->redirect($this->generateUrl('brs_rhu_utilidad_intercambio_ardid_programacion'));
         }
         $arProgramacionPago = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/* page number */, 50/* limit per page */);

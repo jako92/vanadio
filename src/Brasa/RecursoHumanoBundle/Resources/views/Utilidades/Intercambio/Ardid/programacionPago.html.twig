@@ -30,7 +30,8 @@
             <th>DIAS</th>
             <th>NETO</th>
             <th><p style="margin: 0" data-toggle="tooltip" data-placement="top" title="Numero de empleados y/o contratos a procesar">#</p></th>                
-            <th></th>                                
+            <th></th>
+            <th></th>
         </tr>
         {% for arProgramacionPago in arProgramacionPago %}
             {% if arProgramacionPago.inconsistencias %}
@@ -48,6 +49,7 @@
                 <td style="text-align: right">{{ arProgramacionPago.vrNeto | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arProgramacionPago.numeroEmpleados | number_format(0, '.', ',') }}</td>                                                                                                                  
                 <td><button class="btn btn-default btn-xs" type="submit" name="OpTransferir" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}">Transferir</button></td>                
+                <td><button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arProgramacionPago.codigoProgramacionPagoPk }}">Cerrar sin transferir</button></td>                
             </tr>
         {% endfor %}
     </table>
