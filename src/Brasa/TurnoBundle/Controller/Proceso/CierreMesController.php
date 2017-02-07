@@ -238,7 +238,7 @@ class CierreMesController extends Controller
                     $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                     $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arrRecurso['codigo_empleado_fk']);
                     if($arEmpleado) {
-                        if($arEmpleado->getEmpleadoTipoRel()->getTipo() == 2) {
+                        if($arEmpleado->getEmpleadoTipoRel()->getOperativo() == 1) {
                             $arrProgramaciones = $em->getRepository('BrasaTurnoBundle:TurRecurso')->programacionFechaRecurso($arCierreMes->getAnio(), $arCierreMes->getMes(), $arrRecurso['codigo_recurso_fk']);
                             if($arrProgramaciones) {
                                 $codigoPuesto = $arrProgramaciones[0]['codigo_puesto_fk'];
