@@ -657,12 +657,12 @@ class RequisicionController extends Controller
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('RequisitosSeleccion');
+        $objPHPExcel->getActiveSheet()->setTitle('RequisicionSeleccion');
         $objPHPExcel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="RequisitosSeleccion.xlsx"');
+        header('Content-Disposition: attachment;filename="RequisicionSeleccion.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
@@ -761,7 +761,7 @@ class RequisicionController extends Controller
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="RequisitoDetalle.xlsx"');
+        header('Content-Disposition: attachment;filename="RequisicionDetalle.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

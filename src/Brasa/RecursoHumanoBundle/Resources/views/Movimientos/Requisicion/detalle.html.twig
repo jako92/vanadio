@@ -238,7 +238,7 @@
                                 <td>{% if arRequisicionDetalle.estadoAprobado == 1 %}SI{% else %}NO{% endif %}</td>
                                 <td>{{ arRequisicionDetalle.comentarios }}</td>
                                 {% if arRequisicionDetalle.estadoAprobado == 0 %}
-                                    <td style="text-align: center"><a class="btn btn-default btn-sm" id="{{ path('brs_rhu_descartar_aspirante', { 'codigoSelReqAsp' : arRequisicionDetalle.codigoSeleccionRequisicionAspirantePk}) }}" style="float:center">Descartar</a></td>
+                                    <td style="text-align: center"><a class="btn btn-default btn-sm" id="{{ path('brs_rhu_requisicion_descartar_aspirante', { 'codigoSelReqAsp' : arRequisicionDetalle.codigoSeleccionRequisicionAspirantePk}) }}" style="float:center">Descartar</a></td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}

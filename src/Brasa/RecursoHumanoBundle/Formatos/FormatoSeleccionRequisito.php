@@ -15,7 +15,7 @@ class FormatoSeleccionRequisito extends \FPDF_FPDF {
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
 
-        $pdf->Output("SeleccionRequisito$codigoSeleccionRequisito.pdf", 'D');        
+        $pdf->Output("SeleccionRequisicion$codigoSeleccionRequisito.pdf", 'D');        
         
     } 
     
