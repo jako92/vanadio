@@ -17,6 +17,27 @@ class TurSoportePagoDetalleRepository extends EntityRepository {
         return $dql;
     }
     
+    public function listaConsultaDql($codigoSoportePago = "", $codigoRecurso = "", $estadoCerrado, $fechaHasta = '', $codigoTurno = "") {
+        $dql   = "SELECT spd FROM BrasaTurnoBundle:TurSoportePagoDetalle spd JOIN spd.soportePagoRel sp JOIN spd.turnoRel t WHERE spd.codigoSoportePagoDetallePk <> 0 ";                
+        if($codigoRecurso != '') {
+            $dql .= "AND sp.codigoRecursoFk = " . $codigoRecurso;  
+        }
+        if($estadoCerrado == 1 ) {
+            $dql .= " AND spd.estadoCerrado = 1";
+        }
+        if($estadoCerrado == "0") {
+            $dql .= " AND spd.estadoCerrado = 0";
+        } 
+        if($fechaHasta != "") {
+            $dql .= " AND sp.fechaHasta >= '" . $fechaHasta . "'";
+        }                
+        if($codigoTurno != '') {
+            $dql .= "AND spd.codigoTurnoFk = " . $codigoTurno;  
+        }        
+        $dql .= " ORDER BY sp.codigoRecursoFk, spd.codigoTurnoFk";
+        return $dql;
+    }     
+    
     public function liquidar($codigoCotizacion) {        
         $em = $this->getEntityManager();        
         $arCotizacion = new \Brasa\TurnoBundle\Entity\TurCotizacion();        
