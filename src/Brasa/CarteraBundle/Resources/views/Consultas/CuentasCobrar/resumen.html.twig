@@ -34,19 +34,19 @@
                         <td class="titulo">TIPO:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.cuentaCobrarTipoRel.nombre }}</td>
                         <td class="titulo">VALOR:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.valorOriginal }}</td>
+                        <td class="td-in-well" align="right">{{ arCuentaCobrar.valorOriginal }}</td>
                     </tr> 
                     <tr>
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.fecha | date('Y-m-d')}}</td>
                         <td class="titulo">ABONO:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.abono }}</td>
+                        <td class="td-in-well" align="right">{{ arCuentaCobrar.abono }}</td>
                     </tr>
                     <tr>
                         <td class="titulo">VENCE:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.fechaVence | date('Y-m-d')}}</td>
                         <td class="titulo">SALDO:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.saldo }}</td>
+                        <td class="td-in-well" align="right">{{ arCuentaCobrar.saldo }}</td>
                     </tr>
                 </table>
             </div>
