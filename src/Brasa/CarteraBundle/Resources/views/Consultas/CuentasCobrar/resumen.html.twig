@@ -1,0 +1,91 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Pedido detalle resumen - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Cartera
+            <small>Cuentas cobrar: lista</small>
+        </h1>
+    </section>    
+    <section class="content"> 
+        <div class="panel panel-default">
+            <div class="panel-heading">Información de la cuenta</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.codigoCuentaCobrarPk }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">NIT:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nit }}</td>
+                        <td class="titulo">NUMERO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.numeroDocumento }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">CLIENTE:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nombreCorto }}</td>
+                        <td class="titulo">PLAZO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.plazo }}</td>
+                    </tr> 
+                    <tr>
+                        <td class="titulo">TIPO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.cuentaCobrarTipoRel.nombre }}</td>
+                        <td class="titulo">VALOR:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.valorOriginal }}</td>
+                    </tr> 
+                    <tr>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.fecha | date('Y-m-d')}}</td>
+                        <td class="titulo">ABONO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.abono }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">VENCE:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.fechaVence | date('Y-m-d')}}</td>
+                        <td class="titulo">SALDO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.saldo }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>                
+        <h4>Recibo detalle</h4>
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th>ID</th>
+                <th>NUMERO</th>
+                <th>FECHA</th>
+                <th>NIT</th>
+                <th>CLIENTE</th>
+                <th>TIPO</th>
+                <th>DESCUENTO</th>
+                <th>AJUSTE PESO</th>
+                <th>RTE ICA</th>
+                <th>RTE IVA</th>
+                <th>RTE FUENTE</th>
+                <th>VALOR</th>
+                <th>VALOR PAGO</th>
+            </tr>
+            {% for arReciboDetalles in arReciboDetalles %}
+                <tr>
+                    <td>{{ arReciboDetalles.codigoReciboDetallePk  }}</td>
+                    <td>{{ arReciboDetalles.numeroFactura  }}</td>
+                    <td>{{ arReciboDetalles.reciboRel.fecha |date("Y/m/d")  }}</td>
+                    <td>{{ arReciboDetalles.reciboRel.clienteRel.nit |default('')  }}</td>
+                    <td>{{ arReciboDetalles.reciboRel.clienteRel.nombreCorto |default('')  }}</td>
+                    <td>{{ arReciboDetalles.cuentaCobrarTipoRel.nombre |default('')  }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrDescuento | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrAjustePeso | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrReteIca | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrReteIva | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrReteFuente | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.valor | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arReciboDetalles.vrPagoDetalle | number_format(2, '.', ',') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br/><br/>
+    </section>
+{% endblock %}

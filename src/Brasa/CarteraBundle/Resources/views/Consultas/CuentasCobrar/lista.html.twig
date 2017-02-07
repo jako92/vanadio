@@ -101,7 +101,7 @@
             </tr>
             {% for arCuentasCobrar in arCuentasCobrar %}
                 <tr>
-                    <td>{{ arCuentasCobrar.codigoCuentaCobrarPk  }}</td>
+                    <td><a href="javascript:abrirVentana3('{{ path('brs_car_consultas_cuentacobrar_resumen', {'codigoCuentaCobrar': arCuentasCobrar.codigoCuentaCobrarPk }) }}', 'cuentaCobrarResumen', 600, 900)">{{ arCuentasCobrar.codigoCuentaCobrarPk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arCuentasCobrar.codigoCuentaCobrarPk }}"></td>                       
                     <td>{{ arCuentasCobrar.numeroDocumento  }}</td>
                     <td>{{ arCuentasCobrar.tipoCuentaCobrar  }}</td>
                     <td>{{ arCuentasCobrar.fecha |date("Y/m/d")  }}</td>

@@ -58,6 +58,21 @@ class CuentaCobrarController extends Controller
             'arCuentasCobrar' => $resultados,
             'form' => $form->createView()));
     }
+    
+    /**
+     * @Route("/cartera/consulta/cuentacobrar/resumen/{codigoCuentaCobrar}", name="brs_car_consultas_cuentacobrar_resumen")
+     */    
+    public function resumenAction(Request $request, $codigoCuentaCobrar) {
+        $em = $this->getDoctrine()->getManager();
+        $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+        $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);
+        $arReciboDetalles = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
+        $arReciboDetalles = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoCuentaCobrarFk' => $codigoCuentaCobrar));
+        return $this->render('BrasaCarteraBundle:Consultas/CuentasCobrar:resumen.html.twig', array(
+                    'arReciboDetalles' => $arReciboDetalles,
+                    'arCuentaCobrar' => $arCuentaCobrar
+                    ));
+    }  
 
     private function devFiltro($form) {
         $em = $this->getDoctrine()->getManager();
