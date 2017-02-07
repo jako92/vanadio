@@ -267,7 +267,7 @@ class RequisicionController extends Controller
         $arSeleccionRequisicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk());
         $codigoAspirante = $arSeleccionRequisicionAspirante->getCodigoAspiranteFk();
         $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('brs_rhu_descartar_aspirante', array('codigoSelReqAsp' => $codigoSelReqAsp )))
+            ->setAction($this->generateUrl('brs_rhu_requisicion_descartar_aspirante', array('codigoSelReqAsp' => $codigoSelReqAsp )))
             ->add('comentarios', TextareaType::class, array('data' =>$arSeleccionRequisicionAspirante->getComentarios() ,'required' => true))                      
             ->add('fechaDescarte', DateType::class, array('label'  => 'Fecha', 'data' => new \DateTime('now')))
             ->add('motivoDescarteRequisicionAspiranteRel', EntityType::class, array(
