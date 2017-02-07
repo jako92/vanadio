@@ -500,7 +500,7 @@ class MovimientoReciboController extends Controller
                 $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
                 $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($intCodigo);
                 $floSaldo = $arReciboDetalle->getCuentaCobrarRel()->getSaldo();
-                $floSaldoAfectar = $arrControles['TxtValor'.$intCodigo] + ($arrControles['TxtVrReteIca'.$intCodigo] + $arrControles['TxtVrReteIva'.$intCodigo] + $arrControles['TxtVrReteFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo]);
+                $floSaldoAfectar = $arrControles['TxtValor'.$intCodigo] - ($arrControles['TxtVrReteIca'.$intCodigo] + $arrControles['TxtVrReteIva'.$intCodigo] + $arrControles['TxtVrReteFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo]);
                 if($floSaldo < $floSaldoAfectar) {
                     $arReciboDetalle->setEstadoInconsistencia(1);
                 }else {

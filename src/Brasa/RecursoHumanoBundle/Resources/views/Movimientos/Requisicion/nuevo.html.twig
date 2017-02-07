@@ -1,16 +1,16 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Selección requisición nuevo - Soga App{% endblock %}
+{% block title %}Requisición nuevo - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Selección requisición: nuevo</small>
+            <small>Requisición: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Selección requisición</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Requisición</a></li>
             <li class="active">Nuevo</li>
         </ol>
     </section>    
@@ -136,7 +136,7 @@
             </div>
         </div>               
         <div class="modal-footer">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_seleccionrequisito_lista') }}">Cancelar</a>
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_requisicion_lista') }}">Cancelar</a>
             {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
             {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
         </div>

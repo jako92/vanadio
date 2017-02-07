@@ -16,12 +16,13 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class SeleccionRequisitoController extends Controller
+class RequisicionController extends Controller
 {
-    var $strSqlLista = "";
+    var $strDqlLista = "";
+    var $strDqlListaAspirantes = "";
     
     /**
-     * @Route("/rhu/seleccionrequisito/lista", name="brs_rhu_seleccionrequisito_lista")
+     * @Route("/rhu/movimiento/requisicion/lista", name="brs_rhu_requisicion_lista")
      */
     public function listaAction(Request $request) {        
         $em = $this->getDoctrine()->getManager();
@@ -56,12 +57,12 @@ class SeleccionRequisitoController extends Controller
                 $this->generarExcelDetalle();
             }
         }                      
-        $arRequisitos = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 20);                
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/SeleccionRequisito:lista.html.twig', array('arRequisitos' => $arRequisitos, 'form' => $form->createView()));     
+        $arRequisitos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);                
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:lista.html.twig', array('arRequisitos' => $arRequisitos, 'form' => $form->createView()));     
     } 
     
     /**
-     * @Route("/rhu/seleccionrequisito/nuevo/{codigoSeleccionRequisito}", name="brs_rhu_seleccionrequisito_nuevo")
+     * @Route("/rhu/movimiento/requisicion/nuevo/{codigoSeleccionRequisito}", name="brs_rhu_requisicion_nuevo")
      */
     public function nuevoAction(Request $request, $codigoSeleccionRequisito) {        
         $em = $this->getDoctrine()->getManager();
@@ -89,19 +90,18 @@ class SeleccionRequisitoController extends Controller
 
         }
 
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/SeleccionRequisito:nuevo.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:nuevo.html.twig', array(
             'arRequisito' => $arRequisito,
             'form' => $form->createView()));
     }
     
     /**
-     * @Route("/rhu/seleccionrequisito/detalle/{codigoSeleccionRequisito}", name="brs_rhu_seleccionrequisito_detalle")
+     * @Route("/rhu/movimiento/requisicion/detalle/{codigoSeleccionRequisito}", name="brs_rhu_requisicion_detalle")
      */
     public function detalleAction(Request $request, $codigoSeleccionRequisito) {
-        $em = $this->getDoctrine()->getManager();
-            
+        $em = $this->getDoctrine()->getManager();            
         $objMensaje = $this->get('mensajes_brasa');
-        $arRequisicion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
+        $arRequisicion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();        
         $arRequisicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($codigoSeleccionRequisito);
         $arRequisicionDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisicionAspirante();
         $arRequisicionDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisicionAspirante')->findBy(array ('codigoSeleccionRequisitoFk' => $codigoSeleccionRequisito));
@@ -245,16 +245,16 @@ class SeleccionRequisitoController extends Controller
         $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuSeleccion c where c.codigoSeleccionRequisitoFk = $codigoSeleccionRequisito";
         $query = $em->createQuery($dql);        
         $arSeleccion = $query->getResult();        
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/SeleccionRequisito:detalle.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:detalle.html.twig', array(
                     'arSeleccion' => $arSeleccion,
-                    'arRequisito' => $arRequisicion,
+                    'arRequisicion' => $arRequisicion,
                     'arRequisicionDetalle' => $arRequisicionDetalle,
                     'form' => $form->createView()
                     ));
     }
     
     /**
-     * @Route("/rhu/seleccionrequisicion/descartaraspirante/{codigoSelReqAsp}", name="brs_rhu_descartar_aspirante")
+     * @Route("/rhu/movimiento/requisicion/descartar/aspirante/{codigoSelReqAsp}", name="brs_rhu_requisicion_descartar_aspirante")
      */
     public function descartarAction(Request $request, $codigoSelReqAsp) {
         
@@ -308,18 +308,65 @@ class SeleccionRequisitoController extends Controller
             
             
         }
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/SeleccionRequisito:descartarAspirante.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:descartarAspirante.html.twig', array(
             'arSeleccionRequisicion' => $arSeleccionRequisicion,
             'arSeleccionRequisicionAspirante' => $arSeleccionRequisicionAspirante,
             'form' => $form->createView()
         ));
     }
  
+    /**
+     * @Route("/rhu/movimiento/requisicion/buscar/aspirante/{codigoRequisicion}", name="brs_rhu_requisicion_buscar_aspirante")
+     */
+    public function buscarAspiranteAction(Request $request, $codigoRequisicion) {        
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes(); 
+        $paginator  = $this->get('knp_paginator');
+        $arRequisicion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisito();
+        $arRequisicion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->find($codigoRequisicion);
+        $form = $this->formularioBuscarAspirante();
+        $form->handleRequest($request);  
+        $this->listarAspirantes();
+        if ($form->isValid()) {            
+                if ($arSeleccionRequisicion->getEstadoCerrado() == 0){
+                    $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                    $arSeleccionRequisicionAspirante->setComentarios($form->get('comentarios')->getData());
+                    $arSeleccionRequisicionAspirante->setFechaDescarte($form->get('fechaDescarte')->getData());
+                    $arSeleccionRequisicionAspirante->setMotivoDescarteRequisicionAspiranteRel($form->get('motivoDescarteRequisicionAspiranteRel')->getData());
+                    $arSeleccionRequisicionAspirante->setEstadoAprobado(0);
+                    if ($form->get('bloqueado')->getData() == true){
+                        $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigoAspirante);
+                        $arAspirante->setBloqueado(1);
+                        $arAspirante->setComentarios($form->get('comentariosAspirante')->getData());
+                        $em->persist($arAspirante);
+                    }
+                    
+                    $em->persist($arSeleccionRequisicionAspirante);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                } else {
+                    $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso");
+                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                }    
+            
+                
+                //return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
+            
+            
+        }
+        $arAspirantes = $paginator->paginate($em->createQuery($this->strDqlListaAspirantes), $request->query->get('page', 1), 100);                 
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:buscarAspirante.html.twig', array(
+            'arRequisicion' => $arRequisicion,
+            'arAspirantes' => $arAspirantes,
+            'form' => $form->createView()
+        ));
+    }    
+    
     private function listar() {
         $em = $this->getDoctrine()->getManager();                
         $session = new Session;
         
-        $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->listaDQL(
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisito')->listaDQL(
                 $session->get('filtroNombreSeleccionRequisito'),
                 $session->get('filtroAbiertoSeleccionRequisito'),
                 $session->get('filtroCodigoCargo'),
@@ -327,6 +374,13 @@ class SeleccionRequisitoController extends Controller
                 $session->get('filtroHasta')
                 );  
     }
+    
+    private function listarAspirantes() {
+        $em = $this->getDoctrine()->getManager();                
+        $session = new Session;        
+        $this->strDqlListaAspirantes = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaDql(
+                );  
+    }    
     
     private function filtrar ($form, Request $request) {
         $session = new Session;                             
@@ -400,6 +454,32 @@ class SeleccionRequisitoController extends Controller
             ->getForm();        
         return $form;
     }    
+    
+    private function formularioBuscarAspirante() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;           
+        $arrayPropiedadesCiudad = array(
+                'class' => 'BrasaGeneralBundle:GenCiudad',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroGeneralCodigoCiudad')) {
+            $arrayPropiedadesCiudad['data'] = $em->getReference("BrasaGeneralBundle:GenCiudad", $session->get('filtroGeneralCodigoCiudad'));
+        }
+        $form = $this->createFormBuilder()
+            ->add('ciudadRel', EntityType::class, $arrayPropiedadesCiudad)                                                                   
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                        
+            ->add('fechaNacimiento', DateType::class, array('label'  => 'Fecha nacimiento','data' => $session->get('filtroAspiranteFechaNacimiento')))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->getForm();        
+        return $form;
+    }     
     
     private function generarExcel() {
         ob_clean();

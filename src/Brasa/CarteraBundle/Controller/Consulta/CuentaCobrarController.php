@@ -92,6 +92,10 @@ class CuentaCobrarController extends Controller
             $fecha = $fecha->format('Y-m-d');
             $strWhere .= " AND fecha <= " . $fecha;
         }
+        $numero = $form->get('TxtNumero')->getData();
+        if($numero != "") {                                  
+           $strWhere .= " AND numeroDocumento = " . $numero; 
+        }        
         return $strWhere;
     }
     
