@@ -125,7 +125,7 @@ class RequisicionController extends Controller
                 if($arRequisicion->getEstadoCerrado() == 0) {
                     $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisicionAspirante')->aprobarDetallesSeleccionados($arrSeleccionados);
                     if ($strRespuesta == ''){
-                        return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
+                        return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }else{
                         $objMensaje->Mensaje('error', $strRespuesta);
                     }
@@ -137,7 +137,7 @@ class RequisicionController extends Controller
                 if($arRequisicion->getEstadoCerrado() == 0) {
                     $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionRequisicionAspirante')->desaprobarDetallesSeleccionados($arrSeleccionados);
                     if ($strRespuesta == ''){
-                        return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
+                        return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }else{
                         $objMensaje->Mensaje('error', $strRespuesta);
                     }
@@ -153,7 +153,7 @@ class RequisicionController extends Controller
                         $arRequisicion->setEstadoCerrado(0);
                         $em->persist($arRequisicion);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
+                        return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $codigoSeleccionRequisito)));
                     }
                 }
             }
@@ -297,10 +297,10 @@ class RequisicionController extends Controller
                     
                     $em->persist($arSeleccionRequisicionAspirante);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 } else {
                     $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso");
-                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 }    
             
                 
@@ -343,10 +343,10 @@ class RequisicionController extends Controller
                     
                     $em->persist($arSeleccionRequisicionAspirante);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 } else {
                     $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso");
-                    return $this->redirect($this->generateUrl('brs_rhu_seleccionrequisito_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
+                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
                 }    
             
                 
