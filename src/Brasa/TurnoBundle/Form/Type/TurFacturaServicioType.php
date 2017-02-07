@@ -13,8 +13,14 @@ class TurFacturaServicioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                      
-            ->add('nombre', TextType::class, array('required' => true)) 
+            ->add('nombre', TextType::class, array('required' => true))             
             ->add('porcentajeIva', NumberType::class)                
+            ->add('codigoCuentaIngresoFk', TextType::class, array('required' => true))                 
+            ->add('codigoCuentaCarteraFk', TextType::class, array('required' => true))                 
+            ->add('codigoCuentaIvaFk', TextType::class, array('required' => true))                 
+            ->add('codigoCuentaRetencionFuenteFk', TextType::class, array('required' => true))                 
+            ->add('codigoCuentaIngresoDevolucionFk', TextType::class, array('required' => true))                 
+            ->add('codigoCuentaIvaDevolucionFk', TextType::class, array('required' => true))                                 
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

@@ -1,5 +1,5 @@
 <?php
-namespace Brasa\TurnoBundle\Controller\Proceso;
+namespace Brasa\TurnoBundle\Controller\Proceso\Contabilizar;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,7 +17,7 @@ use Brasa\TurnoBundle\Form\Type\TurFacturaDetalleType;
 use Brasa\TurnoBundle\Form\Type\TurFacturaDetalleNuevoType;
 
 
-class ContabilizarFacturaController extends Controller
+class FacturaController extends Controller
 {
     var $strListaDql = "";    
     var $boolMostrarTodo = "";
@@ -29,7 +29,8 @@ class ContabilizarFacturaController extends Controller
         $em = $this->getDoctrine()->getManager(); 
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 9)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }        
+        }   
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
@@ -39,7 +40,10 @@ class ContabilizarFacturaController extends Controller
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');                
-                $em->getRepository('BrasaTurnoBundle:TurFactura')->contabilizar($arrSeleccionados);
+                $respuesta = $em->getRepository('BrasaTurnoBundle:TurFactura')->contabilizar($arrSeleccionados);
+                if($respuesta != "") {
+                   $objMensaje->Mensaje("error", $respuesta); 
+                }
                 return $this->redirect($this->generateUrl('brs_tur_proceso_contabilizar_factura'));                                 
             }            
             if ($form->get('BtnFiltrar')->isClicked()) {

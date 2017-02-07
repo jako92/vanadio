@@ -46,6 +46,12 @@
                 <th>{{ knp_pagination_sortable(arFacturaServicios, 'CÓDIGO', 'p.codigoFacturaServicioPk') }}</th>
                 <th>NOMBRE</th>                
                 <th>IVA</th>
+                <th>C_ING</th>
+                <th>C_CAR</th>
+                <th>C_IVA</th>
+                <th>C_RTE_FTE</th>                
+                <th>C_DEV_ING</th>   
+                <th>C_DEV_IVA</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -53,7 +59,13 @@
                 <tr>
                     <td>{{ arFacturaServicios.codigoFacturaServicioPk  }}</td>
                     <td>{{ arFacturaServicios.nombre }}</td>                                
-                    <td>{{ arFacturaServicios.porcentajeIva }}</td>                                
+                    <td>{{ arFacturaServicios.porcentajeIva }}</td> 
+                    <td>{{ arFacturaServicios.codigoCuentaIngresoFk }}</td>
+                    <td>{{ arFacturaServicios.codigoCuentaCarteraFk }}</td> 
+                    <td>{{ arFacturaServicios.codigoCuentaIvaFk }}</td> 
+                    <td>{{ arFacturaServicios.codigoCuentaRetencionFuenteFk }}</td> 
+                    <td>{{ arFacturaServicios.codigoCuentaIngresoDevolucionFk }}</td> 
+                    <td>{{ arFacturaServicios.codigoCuentaIvaDevolucionFk }}</td>                 
                     <td style="text-align: center"><a href="{{ path('brs_tur_base_factura_servicio_nuevo', {'codigoFacturaServicio': arFacturaServicios.codigoFacturaServicioPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arFacturaServicios.codigoFacturaServicioPk }}" /></td>
                 </tr>
