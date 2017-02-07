@@ -17,24 +17,21 @@ class TurSoportePagoDetalleRepository extends EntityRepository {
         return $dql;
     }
     
-    public function listaConsultaDql($codigoSoportePago = "", $codigoRecurso = "", $estadoCerrado, $fechaHasta = '', $codigoTurno = "") {
+    public function listaConsultaDql($codigoSoportePago = "", $codigoRecurso = "", $fechaDesde='', $fechaHasta = '', $codigoTurno = "") {
         $dql   = "SELECT spd FROM BrasaTurnoBundle:TurSoportePagoDetalle spd JOIN spd.soportePagoRel sp JOIN spd.turnoRel t WHERE spd.codigoSoportePagoDetallePk <> 0 ";                
         if($codigoRecurso != '') {
-            $dql .= "AND sp.codigoRecursoFk = " . $codigoRecurso;  
+            $dql .= "AND spd.codigoRecursoFk = " . $codigoRecurso;  
         }
-        if($estadoCerrado == 1 ) {
-            $dql .= " AND spd.estadoCerrado = 1";
+          if($fechaDesde != "") {
+            $dql .= " AND spd.fecha >= '" . $fechaDesde . "'";
         }
-        if($estadoCerrado == "0") {
-            $dql .= " AND spd.estadoCerrado = 0";
-        } 
         if($fechaHasta != "") {
-            $dql .= " AND sp.fechaHasta >= '" . $fechaHasta . "'";
+            $dql .= " AND spd.fecha <= '" . $fechaHasta . "'";
         }                
         if($codigoTurno != '') {
-            $dql .= "AND spd.codigoTurnoFk = " . $codigoTurno;  
+            $dql .= "AND spd.codigoTurnoFk = '" . $codigoTurno . "'";  
         }        
-        $dql .= " ORDER BY sp.codigoRecursoFk, spd.codigoTurnoFk";
+        $dql .= " ORDER BY spd.fecha ";
         return $dql;
     }     
     

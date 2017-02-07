@@ -25,7 +25,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
-                   
+
                 <div class="form-group form-group-sm">
                     <label class="col-sm-2 control-label">Recurso:</label>
                     <div class="col-sm-10">
@@ -59,15 +59,29 @@
                     </div>
                 </div>                    
                 <div class="form-group form-group-sm">  
-                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
-                    <div class="col-sm-4">   
-                        {{ form_widget(form.fechaHasta) }}
+                    <div class="form-group form-group-sm">
+                        <label for="form_fecha" class="col-sm-2 control-label">Desde:</label>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.fechaDesde) }}
+                        </div>                 
                     </div>
-                    <label class="col-sm-2 control-label">Cerrado:</label>
+                    <div class="form-group form-group-sm">
+                        <label for="form_fecha" class="col-sm-2 control-label">Hasta:</label>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.fechaHasta) }}
+                        </div>         
+                    </div>
+                </div>  
+                <div class="form-group form-group-sm">  
+                    <label for="form_TxtNumero" class="col-sm-2 control-label">Filtrar por fecha:</label>
+                    <div class="col-sm-4"> 
+                        {{ form_widget(form.filtrarFecha) }}
+                    </div>
+                    <label for="form_estadoAnulado" class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.estadoCerrado, { 'attr': {'class': 'form-control'} }) }}
+
                     </div>                    
-                </div>                    
+                </div>   
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -76,58 +90,31 @@
             </div>
         </div>
         <table class="table table-striped table-bordered table-condensed">
-            <tr>
-                <td colspan="3"></td>                
-                <td colspan="2"></td>                
-                <td colspan="8" style="text-align: center">NOVEDADES</td>
-                <td colspan="6" style="text-align: center">NOMINA</td>                
-                <td colspan="7" style="text-align: center">ADICIONAL</td>
-            </tr>
             <tr>                
-                <th colspan="3">RECURSO</th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Dias">{{ knp_pagination_sortable(arSoportePagoDetalles, 'D', 'sp.dias') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Dias subsidio transporte">{{ knp_pagination_sortable(arSoportePagoDetalles, 'DT', 'sp.diasTransporte') }}</p></th>
-                <th>{{ knp_pagination_sortable(arSoportePagoDetalles, 'NOV', 'sp.novedad') }}</th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Induccion">{{ knp_pagination_sortable(arSoportePagoDetalles, 'ID', 'sp.induccion') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Ingreso">{{ knp_pagination_sortable(arSoportePagoDetalles, 'IN', 'sp.ingreso') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Retiro">{{ knp_pagination_sortable(arSoportePagoDetalles, 'RE', 'sp.retiro') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Incapacidad">{{ knp_pagination_sortable(arSoportePagoDetalles, 'IG', 'sp.incapacidad') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Licencia">{{ knp_pagination_sortable(arSoportePagoDetalles, 'LI', 'sp.licencia') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Licencia no remunerada">{{ knp_pagination_sortable(arSoportePagoDetalles, 'SL', 'sp.licenciaNoRemunerada') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Novedades de vacaciones">{{ knp_pagination_sortable(arSoportePagoDetalles, 'VA', 'sp.vacacion') }}</p></th>                
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas">{{ knp_pagination_sortable(arSoportePagoDetalles, 'H', 'sp.horas') }}</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas descanso">DS</p></th>                
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas diurnas">D</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas nocturnas">N</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas festivas diurnas">FD</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas festivas nocturnas">FN</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas extras diurnas">ED</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas extras nocturnas">EN</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas extras festivas diurnas">EFD</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Horas extras festivas nocturnas">EFN</p></th>                                
-                <th><p data-toggle="tooltip" data-placement="top" title="Recargo nocturno">RN</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Recargo festivo diurno">RFD</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Recargo festivo nocturno">RFN</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Turno fijo">{{ knp_pagination_sortable(arSoportePagoDetalles, 'TF', 'sp.turnoFijo') }}</p></th>                                
-                <th><p data-toggle="tooltip" data-placement="top" title="Secuencia de programacion alterna">{{ knp_pagination_sortable(arSoportePagoDetalles, 'S', 'sp.secuencia') }}</p></th>                                                                
+                <th>CODIGO</th>
+                <th>FECHA</th>
+                <th>TURNO</th>
+                <th>DIAS</th>
+                <th>DESCANSO</th>
+                <th>HDS</th>
+                <th>HD</th>
+                <th>HN</th>
+                <th>HFD</th>
+                <th>HFN</th>
+                <th>HEOD</th>
+                <th>HEON</th>
+                <th>HEFD</th>
+                <th>HEFN</th>
+                <th>H</th>
             </tr>
             {% set intCodigoCliente = '' %}
             {% for arSoportePagoDetalles in arSoportePagoDetalles %}                 
                 <tr>
-                    <td>{{ arSoportePagoDetalles.recursoRel.codigoEmpleadoFk  }}</td>
-                    <td>{{ arSoportePagoDetalles.recursoRel.numeroIdentificacion  }}</td>
-                    <td>{{ arSoportePagoDetalles.recursoRel.nombreCorto  }}</td>
+                    <td>{{ arSoportePagoDetalles.codigoSoportePagoFk}}</td>
+                    <td>{{ arSoportePagoDetalles.fecha | date('Y/m/d')}}</td>
+                    <td>{{ arSoportePagoDetalles.turnoRel.nombre}}</td>
                     <td style="text-align: right">{{ arSoportePagoDetalles.dias | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.soportePagoRel.diasTransporte | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right" {% if arSoportePagoDetalles.novedad > 0 %} class="danger" {% endif %}>{{ arSoportePagoDetalles.novedad | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.induccion | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.ingreso | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.retiro | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.incapacidad | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.licencia | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.licenciaNoRemunerada | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.vacacion | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horas | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arSoportePagoDetalles.descanso | number_format(0, '.', ',') }}</td>                
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasDescanso | number_format(2, '.', ',') }}</td>                
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasDiurnas | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasNocturnas | number_format(2, '.', ',') }}</td>
@@ -137,11 +124,7 @@
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasOrdinariasNocturnas | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasFestivasDiurnas | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasFestivasNocturnas | number_format(2, '.', ',') }}</td>                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasRecargoNocturno | number_format(2, '.', ',') }}</td>                                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasRecargoFestivoDiurno | number_format(2, '.', ',') }}</td>                                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasRecargoFestivoNocturno | number_format(2, '.', ',') }}</td>                                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.soportePagoRel.turnoFijo }}</td>                                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.soportePagoRel.secuencia }}</td>
+                    <td style="text-align: right">{{ arSoportePagoDetalles.horas | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
         </table>        
