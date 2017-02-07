@@ -92,6 +92,8 @@
         <table class="table table-striped table-bordered table-condensed">
             <tr>                
                 <th>CODIGO</th>
+                <th>NOMBRE</th>
+                <th>CEDULA</th>
                 <th>FECHA</th>
                 <th>TURNO</th>
                 <th>DIAS</th>
@@ -111,6 +113,8 @@
             {% for arSoportePagoDetalles in arSoportePagoDetalles %}                 
                 <tr>
                     <td>{{ arSoportePagoDetalles.codigoSoportePagoFk}}</td>
+                    <td>{{ arSoportePagoDetalles.recursoRel.nombreCorto }}</td>
+                    <td>{{ arSoportePagoDetalles.recursoRel.numeroIdentificacion }}</td>
                     <td>{{ arSoportePagoDetalles.fecha | date('Y/m/d')}}</td>
                     <td>{{ arSoportePagoDetalles.turnoRel.nombre}}</td>
                     <td style="text-align: right">{{ arSoportePagoDetalles.dias | number_format(0, '.', ',') }}</td>                
