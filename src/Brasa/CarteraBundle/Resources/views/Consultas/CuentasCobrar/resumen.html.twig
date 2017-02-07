@@ -15,38 +15,38 @@
                     <tr>
                         <td class="titulo">CODIGO:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.codigoCuentaCobrarPk }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
-                    </tr>
-                    <tr>
-                        <td class="titulo">NIT:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nit }}</td>
                         <td class="titulo">NUMERO:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.numeroDocumento }}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">CLIENTE:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nombreCorto }}</td>
+                        <td class="titulo">NIT:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nit }}</td>
                         <td class="titulo">PLAZO:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.plazo }}</td>
-                    </tr> 
+                    </tr>
                     <tr>
-                        <td class="titulo">TIPO:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.cuentaCobrarTipoRel.nombre }}</td>
+                        <td class="titulo">CLIENTE:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.clienteRel.nombreCorto }}</td>
                         <td class="titulo">VALOR:</td>
                         <td class="td-in-well" align="right">{{ arCuentaCobrar.valorOriginal }}</td>
                     </tr> 
                     <tr>
-                        <td class="titulo">FECHA:</td>
-                        <td class="td-in-well">{{ arCuentaCobrar.fecha | date('Y-m-d')}}</td>
+                        <td class="titulo">TIPO:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.cuentaCobrarTipoRel.nombre }}</td>
                         <td class="titulo">ABONO:</td>
                         <td class="td-in-well" align="right">{{ arCuentaCobrar.abono }}</td>
+                    </tr> 
+                    <tr>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arCuentaCobrar.fecha | date('Y-m-d')}}</td>
+                        <td class="titulo">SALDO:</td>
+                        <td class="td-in-well" align="right">{{ arCuentaCobrar.saldo }}</td>
                     </tr>
                     <tr>
                         <td class="titulo">VENCE:</td>
                         <td class="td-in-well">{{ arCuentaCobrar.fechaVence | date('Y-m-d')}}</td>
-                        <td class="titulo">SALDO:</td>
-                        <td class="td-in-well" align="right">{{ arCuentaCobrar.saldo }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                     </tr>
                 </table>
             </div>
