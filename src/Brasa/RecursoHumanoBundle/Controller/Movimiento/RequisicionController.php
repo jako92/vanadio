@@ -329,31 +329,24 @@ class RequisicionController extends Controller
         $form->handleRequest($request);  
         $this->listarAspirantes();
         if ($form->isValid()) {            
-                if ($arSeleccionRequisicion->getEstadoCerrado() == 0){
-                    $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-                    $arSeleccionRequisicionAspirante->setComentarios($form->get('comentarios')->getData());
-                    $arSeleccionRequisicionAspirante->setFechaDescarte($form->get('fechaDescarte')->getData());
-                    $arSeleccionRequisicionAspirante->setMotivoDescarteRequisicionAspiranteRel($form->get('motivoDescarteRequisicionAspiranteRel')->getData());
-                    $arSeleccionRequisicionAspirante->setEstadoAprobado(0);
-                    if ($form->get('bloqueado')->getData() == true){
-                        $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigoAspirante);
-                        $arAspirante->setBloqueado(1);
-                        $arAspirante->setComentarios($form->get('comentariosAspirante')->getData());
-                        $em->persist($arAspirante);
+            if ($form->get('BtnFiltrar')->isClicked()) {    
+                $this->filtrarBuscarAspirante($form, $request);
+                $this->listarAspirantes();
+            }       
+            if ($form->get('BtnAplicar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if(count($arrSeleccionados) > 0) {  
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arAspirante = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->find($codigo);
+                        $arRequisicionAspirante = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisicionAspirante();
+                        $arRequisicionAspirante->setSeleccionRequisitoRel($arRequisicion);
+                        $arRequisicionAspirante->setAspiranteRel($arAspirante);
+                        $em->persist($arRequisicionAspirante);
                     }
-                    
-                    $em->persist($arSeleccionRequisicionAspirante);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
-                } else {
-                    $objMensaje->Mensaje("error", "La requisicion esta cerrada, no puede realizar el proceso");
-                    return $this->redirect($this->generateUrl('brs_rhu_requisicion_detalle', array('codigoSeleccionRequisito' => $arSeleccionRequisicionAspirante->getCodigoSeleccionRequisitoFk())));
-                }    
-            
-                
-                //return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
-            
-            
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
+            }
         }
         $arAspirantes = $paginator->paginate($em->createQuery($this->strDqlListaAspirantes), $request->query->get('page', 1), 100);                 
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Requisicion:buscarAspirante.html.twig', array(
@@ -379,7 +372,10 @@ class RequisicionController extends Controller
     private function listarAspirantes() {
         $em = $this->getDoctrine()->getManager();                
         $session = new Session;        
-        $this->strDqlListaAspirantes = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaDql(
+        $this->strDqlListaAspirantes = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaBuscarDql(
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroAspiranteFechaNacimiento'),
+                $session->get('filtroGeneralCodigoCiudad')
                 );  
     }    
     
@@ -402,6 +398,22 @@ class RequisicionController extends Controller
             $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
         }
     }
+    
+    private function filtrarBuscarAspirante ($form, Request $request) {
+        $session = new Session;     
+        $codigoCiudad = '';
+        if($form->get('ciudadRel')->getData()) {
+            $codigoCiudad = $form->get('ciudadRel')->getData()->getCodigoCiudadPk();
+        }        
+        $session->set('filtroGeneralCodigoCiudad', $codigoCiudad);         
+        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
+        if($form->get('fechaNacimiento')->getData()) {
+            $fechaNacimiento = $form->get('fechaNacimiento')->getData();
+            $session->set('filtroAspiranteFechaNacimiento', $fechaNacimiento->format('Y-m-d'));
+        } else {
+            $session->set('filtroAspiranteFechaNacimiento', null);
+        }
+    }    
     
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();        
@@ -473,11 +485,16 @@ class RequisicionController extends Controller
         if($session->get('filtroGeneralCodigoCiudad')) {
             $arrayPropiedadesCiudad['data'] = $em->getReference("BrasaGeneralBundle:GenCiudad", $session->get('filtroGeneralCodigoCiudad'));
         }
+        $fechaNacimiento = null;
+        if($session->get('filtroAspiranteFechaNacimiento') != null) {
+            $fechaNacimiento = date_create($session->get('filtroAspiranteFechaNacimiento'));
+        }
         $form = $this->createFormBuilder()
             ->add('ciudadRel', EntityType::class, $arrayPropiedadesCiudad)                                                                   
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                        
-            ->add('fechaNacimiento', DateType::class, array('label'  => 'Fecha nacimiento','data' => $session->get('filtroAspiranteFechaNacimiento')))
+            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $fechaNacimiento, 'attr' => array('class' => 'date',)))                
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->add('BtnAplicar', SubmitType::class, array('label'  => 'Aplicar'))
             ->getForm();        
         return $form;
     }     

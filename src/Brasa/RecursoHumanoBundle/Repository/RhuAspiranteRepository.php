@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class RhuAspiranteRepository extends EntityRepository {
     
-    public function listaDQL($strNombre = "", $strIdentificacion = "", $boolBloqueado = "", $boolReintegro = "", $codigoZona = "") {
+    public function listaDql($strNombre = "", $strIdentificacion = "", $boolBloqueado = "", $boolReintegro = "", $codigoZona = "") {
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
         if($strNombre != "" ) {
             $dql .= " AND a.nombreCorto LIKE '%" . $strNombre . "%'";
@@ -32,6 +32,21 @@ class RhuAspiranteRepository extends EntityRepository {
         $dql .= " ORDER BY a.fecha";
         return $dql;
     }
+    
+    public function listaBuscarDql($strIdentificacion = "", $fechaNacimiento = "", $codigoCiudad = "") {
+        $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
+        if($strIdentificacion != "" ) {
+            $dql .= " AND a.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
+        }
+        if($fechaNacimiento != "") {
+            $dql .= " AND a.fechaNacimiento >= '" . $fechaNacimiento . "'";
+        }
+        if($codigoCiudad != "") {
+            $dql .= " AND a.codigoCiudadFk = " . $codigoCiudad;
+        }        
+        $dql .= " ORDER BY a.fecha";
+        return $dql;
+    }    
     
     public function aspirantesInconsistenciaDQL($strNombre = "", $strIdentificacion = "") {
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 and a.bloqueado = 1";

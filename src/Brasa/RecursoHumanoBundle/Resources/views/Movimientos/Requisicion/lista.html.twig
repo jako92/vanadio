@@ -14,17 +14,7 @@
             <li class="active">Lista</li>
         </ol>
     </section>    
-    <section class="content">        	
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
-        </script>        
+    <section class="content">        	       
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
