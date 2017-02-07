@@ -207,17 +207,18 @@ class RequisicionController extends Controller
                     } else {
                         $fechaDescarte = "No aplica";
                     }
-                    
+                    $motivo = "";
+                    if ($arRequisicionDetalle->getCodigoMotivoDescarteRequisicionAspiranteFk() != null){
+                        $motivo = $arRequisicionDetalle->getMotivoDescarteRequisicionAspiranteRel()->getNombre();
+                    }    
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arRequisicionDetalle->getCodigoAspiranteFk())
                             ->setCellValue('B' . $i, $arRequisicionDetalle->getAspiranteRel()->getNumeroIdentificacion())
                             ->setCellValue('C' . $i, $arRequisicionDetalle->getAspiranteRel()->getNombreCorto())
                             ->setCellValue('D' . $i, $aprobado)
+                            ->setCellValue('E' . $i, $motivo)
                             ->setCellValue('F' . $i, $fechaDescarte)
-                            ->setCellValue('G' . $i, $arRequisicionDetalle->getComentarios());
-                    if($arRequisicionDetalle->getCodigoMotivoDescarteRequisicionAspitanteFk()) {
-                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arRequisicionDetalle->getMotivoDescarteRequisicionAspiranteRel()->getNombre());                
-                    }        
+                            ->setCellValue('G' . $i, $arRequisicionDetalle->getComentarios());                                                                                                
                     $i++;
                 }
 
@@ -526,7 +527,7 @@ class RequisicionController extends Controller
                     
 
         $i = 2;
-        $query = $em->createQuery($this->strSqlLista);
+        $query = $em->createQuery($this->strDqlLista);
         $arSeleccionRequisitos = $query->getResult();
         foreach ($arSeleccionRequisitos as $arSeleccionRequisito) {
             $strNombreCentroCosto = "";
