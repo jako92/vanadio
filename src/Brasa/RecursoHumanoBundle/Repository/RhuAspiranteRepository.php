@@ -6,13 +6,19 @@ use Doctrine\ORM\EntityRepository;
 
 class RhuAspiranteRepository extends EntityRepository {
     
-    public function listaDql($strNombre = "", $strIdentificacion = "", $boolBloqueado = "", $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "") {                
+    public function listaDql($strNombre = '', $strIdentificacion = "", $fechaNacimiento = "", $boolBloqueado = '', $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "") {                        
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
         if($strNombre != "" ) {
             $dql .= " AND a.nombreCorto LIKE '%" . $strNombre . "%'";
         }
         if($strIdentificacion != "" ) {
             $dql .= " AND a.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
+        }
+        if($boolBloqueado == 1 ) {
+            $dql .= " AND a.bloqueado = 1";
+        } 
+        if($boolBloqueado == '0') {
+            $dql .= " AND a.bloqueado = 0";
         }
         if($fechaNacimiento != "") {
             $dql .= " AND a.fechaNacimiento >= '" . $fechaNacimiento . "'";
@@ -52,7 +58,8 @@ class RhuAspiranteRepository extends EntityRepository {
         }
         if($estaturaMaximo != "") {
             $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
-        }        
+        }
+        
         $dql .= " ORDER BY a.fecha";
         return $dql;
     }

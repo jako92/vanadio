@@ -324,6 +324,7 @@ class AspiranteController extends Controller
         $session->set('dqlAspiranteLista', $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaDQL(
                 $session->get('filtroNombre'),
                 $session->get('filtroIdentificacion'),
+                $session->get('filtroAspiranteFechaNacimiento'),
                 $session->get('filtroBloqueado'),                                                
                 $session->get('filtroCodigoCiudad'),
                 $session->get('filtroCodigoCargo'),
