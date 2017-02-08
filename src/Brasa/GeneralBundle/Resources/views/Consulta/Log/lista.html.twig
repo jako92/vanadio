@@ -1,28 +1,34 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block content %}    
-    <h3>Lista logs</h3>
-    <div class="panel panel-default">
-        <div class="panel-heading">Registro de acciones</div>
-        <div class="panel-body">
-            <div>                      
-                <table  class="table table-striped table-bordered table-condensed table-hover">
-                    <tr>
-                        <th>ID</th>
-                        <th>USUARIO</th>
-                        <th>ACCION</th>
-                        <th>FECHA</th>
-                    </tr>
-                    {% for arLogs in arLogs %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Logs
+            <small>lista</small>
+        </h1>
+    </section>    
+    <section class="content">        
+        <div class="panel panel-default">
+            <div class="panel-heading">Registro de acciones</div>
+            <div class="panel-body">
+                <div>                      
+                    <table  class="table table-striped table-bordered table-condensed table-hover">
                         <tr>
-                            <td><input type="hidden" name="LblCodigo[]" value="{{ arLogs.codigoLogPk }}">{{ arLogs.codigoLogPk }} </td>                        
-                            <td>{{ arLogs.usuarioRel.Username  }}</td>
-                            <td>{{ arLogs.logAccionRel.nombre }}</td>
-                            <td>{{ arLogs.fecha |date('Y-m-d H:i')  }}</td>
+                            <th>ID</th>
+                            <th>USUARIO</th>
+                            <th>ACCION</th>
+                            <th>FECHA</th>
                         </tr>
-                    {% endfor %}
-                </table>
-                {{ knp_pagination_render(arLogs) }}
-            </div>                                            
-        </div>
-    </div>                   
-{% endblock %}
+                        {% for arLogs in arLogs %}
+                            <tr>
+                                <td><input type="hidden" name="LblCodigo[]" value="{{ arLogs.codigoLogPk }}">{{ arLogs.codigoLogPk }} </td>                        
+                                <td>{{ arLogs.usuarioRel.Username  }}</td>
+                                <td>{{ arLogs.logAccionRel.nombre }}</td>
+                                <td>{{ arLogs.fecha |date('Y-m-d H:i')  }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {{ knp_pagination_render(arLogs) }}
+                </div>                                            
+            </div>
+        </div>                   
+    {% endblock %}
