@@ -181,14 +181,14 @@ class Factura4 extends \FPDF_FPDF {
                 $strDetalle = $arFacturaDetalle->getDetalle();
             } else { 
                 if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
-                    $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " DESDE EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
-                            . " HASTA EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
-                    $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y');//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                                    
+                    $strDetalle = "SERVICIO " . $arFacturaDetalle->getConceptoServicioRel()->getNombreFacturacion() . " DESDE EL " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaDesde()
+                            . " HASTA EL " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
+                    $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y') . " " .substr($arFacturaDetalle->getPuestoRel()->getNombre(), 0,50);//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                                    
                 } else {
                     $strDetalle = $arFacturaDetalle->getConceptoServicioRel()->getNombre() . " ". $arFacturaDetalle->getPuestoRel()->getNombre();
                 }
             }
-            $pdf->SetFont('Arial', '', 7);
+            $pdf->SetFont('Arial', '', 6.3);
             $pdf->Cell(12, 7, $arFacturaDetalle->getCodigoFacturaDetallePk(), 0, 0, 'L');
             $pdf->Cell(141, 7, $strDetalle, 0, 0, 'L');
             //$pdf->MultiCell(125, 3.5, $strDetalle, 1, 'L');
