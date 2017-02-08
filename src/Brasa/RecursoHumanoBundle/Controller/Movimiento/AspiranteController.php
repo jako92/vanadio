@@ -410,7 +410,7 @@ class AspiranteController extends Controller
             ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)       
             ->add('estadoCivilRel', EntityType::class, $arrayPropiedadesEstadoCivil)        
             ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'MASCULINO' => 'M', 'FEMENINO' => 'F')))
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                        
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion'))                                        
             ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $fechaNacimiento, 'attr' => array('class' => 'date',)))                
             ->add('codigoTipoLibreta', ChoiceType::class, array('choices' => array('TODOS' => '3', '1° CLASE' => '1', '2° CLASE' => '2')))                
             ->add('reintegro', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))
