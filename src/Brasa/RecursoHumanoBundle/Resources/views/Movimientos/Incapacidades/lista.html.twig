@@ -83,6 +83,7 @@
                 <th>EPS</th>
                 <th>DOCUMENTO</th>
                 <th>EMPLEADO</th>
+                <th>FECHA</th>
                 <th>DESDE</th>
                 <th>HASTA</th>
                 <th style="text-align: right">DÍAS</th>
@@ -103,6 +104,7 @@
                     <td>{{ arIncapacidades.entidadSaludRel.nombre |default('') }}</td>
                     <td>{{ arIncapacidades.empleadoRel.numeroIdentificacion }}</td>
                     <td>{{ arIncapacidades.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arIncapacidades.fecha |date("Y/m/d")  }}</td>
                     <td>{{ arIncapacidades.fechaDesde |date("Y/m/d")  }}</td>
                     <td>{{ arIncapacidades.fechaHasta |date("Y/m/d")  }}</td>
                     <td style="text-align: right">{{ arIncapacidades.cantidad | number_format(0, '.', ',') }}</td>

@@ -185,7 +185,7 @@ class Factura4 extends \FPDF_FPDF {
                             . " HASTA EL DIA " . $arFacturaDetalle->getPedidoDetalleRel()->getDiaHasta() . " DE " .
                     $this->devuelveMes($arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('n')) . " " . $arFacturaDetalle->getPedidoDetalleRel()->getPedidoRel()->getFechaProgramacion()->format('Y');//. " - " . $arFacturaDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre();                                    
                 } else {
-                    $strDetalle = $arFacturaDetalle->getConceptoServicioRel()->getNombre() . "  ". $arFacturaDetalle->getPuestoRel()->getNombre();
+                    $strDetalle = $arFacturaDetalle->getConceptoServicioRel()->getNombre() . " ". $arFacturaDetalle->getPuestoRel()->getNombre();
                 }
             }
             $pdf->SetFont('Arial', '', 7);
