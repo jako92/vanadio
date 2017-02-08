@@ -78,7 +78,7 @@ class RhuAspiranteRepository extends EntityRepository {
             $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
         }
         $dql .= " ORDER BY a.fecha";
-        return $dql;
+        return $dql;  
     }    
     
     public function aspirantesInconsistenciaDQL($strNombre = "", $strIdentificacion = "") {
