@@ -78,7 +78,12 @@ class RhuAspiranteType extends AbstractType
             ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
             ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('TIEMPO COMPLETO' => '1', 'MEDIO TIEMPO' => '2', 'POR HORAS' => '3','DESDE CASA' => '4', 'PRACTICAS' => '5')))                            
             ->add('comentarios', TextareaType::class, array('required' => false))
-            ->add('cargoAspira', TextType::class, array('required' => false))                
+            ->add('cargoAspira', TextType::class, array('required' => false))
+            ->add('cargoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
+                'choice_label' => 'nombre',
+                'required' => true
+            ))                
             ->add('recomendado', TextType::class, array('required' => false))                
             ->add('operacion', TextType::class, array('required' => false))
             ->add('reintegro', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                

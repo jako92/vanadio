@@ -33,7 +33,7 @@ class RhuAspiranteRepository extends EntityRepository {
         return $dql;
     }
     
-    public function listaBuscarDql($strIdentificacion = "", $fechaNacimiento = "", $codigoCiudad = "") {
+    public function listaBuscarDql($strIdentificacion = "", $fechaNacimiento = "", $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "") {
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
         if($strIdentificacion != "" ) {
             $dql .= " AND a.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
@@ -43,7 +43,40 @@ class RhuAspiranteRepository extends EntityRepository {
         }
         if($codigoCiudad != "") {
             $dql .= " AND a.codigoCiudadFk = " . $codigoCiudad;
-        }        
+        }
+        if($codigoCargo != "") {
+            $dql .= " AND a.codigoCargoFk = " . $codigoCargo;
+        }
+        if($codigoDisponibilidad > 0) {
+            $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
+        }
+        if($codigoReintegro < 2) {
+            $dql .= " AND a.reintegro = " . $codigoReintegro;
+        }
+        if($codigoSexo != 2) {
+            $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
+        }
+        if($codigoEstadoCivil != "") {
+            $dql .= " AND a.codigoEstadoCivilFk = '" . $codigoEstadoCivil . "'";
+        }
+        if($codigoLibretaMilitar < 3) {
+            $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
+        }
+        if($codigoZona != "") {
+            $dql .= " AND a.codigoZonaFk = " . $codigoZona;
+        }
+        if($pesoMinimo != "") {
+            $dql .= " AND a.peso >= '" . $pesoMinimo . "'";
+        }
+        if($pesoMaximo != "") {
+            $dql .= " AND a.peso <= '" . $pesoMaximo . "'";
+        }
+        if($estaturaMinimo != "") {
+            $dql .= " AND a.estatura >= '" . $estaturaMinimo . "'";
+        }
+        if($estaturaMaximo != "") {
+            $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
+        }
         $dql .= " ORDER BY a.fecha";
         return $dql;
     }    

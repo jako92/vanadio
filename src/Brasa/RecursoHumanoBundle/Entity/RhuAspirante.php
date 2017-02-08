@@ -182,6 +182,11 @@ class RhuAspirante
     private $cargoAspira;
     
     /**
+     * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCargoFk;
+    
+    /**
      * @ORM\Column(name="recomendado", type="string", length=80, nullable=true)
      */
     private $recomendado;
@@ -241,7 +246,13 @@ class RhuAspirante
      * @ORM\ManyToOne(targetEntity="RhuZona", inversedBy="aspirantesZonaRel")
      * @ORM\JoinColumn(name="codigo_zona_fk", referencedColumnName="codigo_zona_pk")
      */
-    protected $zonaRel;     
+    protected $zonaRel; 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCargo", inversedBy="aspirantesCargoRel")
+     * @ORM\JoinColumn(name="codigo_cargo_fk", referencedColumnName="codigo_cargo_pk")
+     */
+    protected $cargoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccionRequisicionAspirante", mappedBy="aspiranteRel")
@@ -1038,6 +1049,30 @@ class RhuAspirante
     }
 
     /**
+     * Set codigoCargoFk
+     *
+     * @param integer $codigoCargoFk
+     *
+     * @return RhuAspirante
+     */
+    public function setCodigoCargoFk($codigoCargoFk)
+    {
+        $this->codigoCargoFk = $codigoCargoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCargoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCargoFk()
+    {
+        return $this->codigoCargoFk;
+    }
+
+    /**
      * Set recomendado
      *
      * @param string $recomendado
@@ -1299,6 +1334,30 @@ class RhuAspirante
     public function getZonaRel()
     {
         return $this->zonaRel;
+    }
+
+    /**
+     * Set cargoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel
+     *
+     * @return RhuAspirante
+     */
+    public function setCargoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel = null)
+    {
+        $this->cargoRel = $cargoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cargoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCargo
+     */
+    public function getCargoRel()
+    {
+        return $this->cargoRel;
     }
 
     /**
