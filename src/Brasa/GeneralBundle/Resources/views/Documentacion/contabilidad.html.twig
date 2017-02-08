@@ -1,0 +1,31 @@
+{% extends '::baseContabilidad.html.twig' %}
+{% block content %}
+    <!-- Content Header (Page header) -->
+       <section class="content-header">
+        <h1>
+            Documentacion
+            <small>Contabilidad</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Documentacion</a></li>
+            <li class="active">Contabilidad</li>
+        </ol>
+    </section>     
+                <br/><br/><br/><br/>
+
+    <section class="content"> 
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+       
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
+{# empty Twig template #}
