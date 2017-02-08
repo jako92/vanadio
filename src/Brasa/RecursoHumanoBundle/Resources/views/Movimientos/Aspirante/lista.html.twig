@@ -24,43 +24,92 @@
         {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
-            <div class="panel-body">
-
-                <div class="form-group form-group-sm">
-                    <label for="form_TxtNombre" class="col-sm-2 control-label">Nombre:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.TxtNombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
-                    <div class="col-sm-10">
+            <div class="panel-body">                
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-3 control-label">Identificación:</label>
+                    <div class="col-sm-3">                  
                         {{ form_widget(form.TxtIdentificacion, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
+                    </div>                                        
+                    <label class="col-sm-3 control-label">Nombre:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.TxtNombre, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
                 </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_zonaRel" class="col-sm-2 control-label">Zona:</label>
-                    <div class="col-sm-10">
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-3 control-label">Bloqueado:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.bloqueado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                                        
+                    <label class="col-sm-3 control-label">Ciudad:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.ciudadRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>                     
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-3 control-label">Fecha nacimiento (Desde):</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.fechaNacimiento) }}
+                    </div>                                        
+                    <label class="col-sm-3 control-label">Cargo</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.cargoRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-3 control-label">Sexo:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.codigoSexoFk, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                                        
+                    <label class="col-sm-3 control-label">Estado civil</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.estadoCivilRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-3 control-label">Tipo libreta militar:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.codigoTipoLibreta, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                                        
+                    <label class="col-sm-3 control-label">Reintegro</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.reintegro, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>
+                <div class="form-group form-group-sm">                                                             
+                    <label class="col-sm-3 control-label">Disponibilidad:</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.codigoDisponibilidadFk, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-3 control-label">Zona:</label>
+                    <div class="col-sm-3">                  
                         {{ form_widget(form.zonaRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_reintegro" class="col-sm-2 control-label">Reintegro:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.reintegro, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group form-group-sm">                                                             
+                    <label class="col-sm-3 control-label">Peso (Min):</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.pesoMinimo, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-3 control-label">Peso (Max):</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.pesoMaximo, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_bloqueado" class="col-sm-2 control-label">Bloqueado:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.bloqueado, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group form-group-sm">                                                             
+                    <label class="col-sm-3 control-label">Estatura (Min):</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.estaturaMinima, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-3 control-label">Estatura (Max):</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.estaturaMaxima, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>    
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                     </div>
-                </div>
+                </div>                    
             </div>
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">

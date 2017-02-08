@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class RhuAspiranteRepository extends EntityRepository {
     
-    public function listaDql($strNombre = "", $strIdentificacion = "", $boolBloqueado = "", $boolReintegro = "", $codigoZona = "") {
+    public function listaDql($strNombre = "", $strIdentificacion = "", $boolBloqueado = "", $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "") {                
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
         if($strNombre != "" ) {
             $dql .= " AND a.nombreCorto LIKE '%" . $strNombre . "%'";
@@ -14,21 +14,45 @@ class RhuAspiranteRepository extends EntityRepository {
         if($strIdentificacion != "" ) {
             $dql .= " AND a.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
-        if($boolBloqueado == 1 ) {
-            $dql .= " AND a.bloqueado = 1";
-        } 
-        if($boolBloqueado == '0') {
-            $dql .= " AND a.bloqueado = 0";
+        if($fechaNacimiento != "") {
+            $dql .= " AND a.fechaNacimiento >= '" . $fechaNacimiento . "'";
         }
-        if($boolReintegro == 1 ) {
-            $dql .= " AND a.reintegro = 1";
-        } 
-        if($boolReintegro == '0') {
-            $dql .= " AND a.reintegro = 0";
+        if($codigoCiudad != "") {
+            $dql .= " AND a.codigoCiudadFk = " . $codigoCiudad;
         }
-        if($codigoZona != "" ) {
+        if($codigoCargo != "") {
+            $dql .= " AND a.codigoCargoFk = " . $codigoCargo;
+        }
+        if($codigoDisponibilidad > 0) {
+            $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
+        }
+        if($codigoReintegro != 2 ) {
+            $dql .= " AND a.reintegro = " . $codigoReintegro;
+        }
+        if($codigoSexo != 2) {
+            $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
+        }
+        if($codigoEstadoCivil != "") {
+            $dql .= " AND a.codigoEstadoCivilFk = '" . $codigoEstadoCivil . "'";
+        }
+        if($codigoLibretaMilitar != 3 ) {
+            $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
+        }
+        if($codigoZona != "") {
             $dql .= " AND a.codigoZonaFk = " . $codigoZona;
         }
+        if($pesoMinimo != "") {
+            $dql .= " AND a.peso >= '" . $pesoMinimo . "'";
+        }
+        if($pesoMaximo != "") {
+            $dql .= " AND a.peso <= '" . $pesoMaximo . "'";
+        }
+        if($estaturaMinimo != "") {
+            $dql .= " AND a.estatura >= '" . $estaturaMinimo . "'";
+        }
+        if($estaturaMaximo != "") {
+            $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
+        }        
         $dql .= " ORDER BY a.fecha";
         return $dql;
     }

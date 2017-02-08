@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAspiranteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -321,22 +322,78 @@ class AspiranteController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $session->set('dqlAspiranteLista', $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaDQL(
-                $session->get('filtroNombreAspirante'),
-                $session->get('filtroIdentificacionAspirante'),
-                $session->get('filtroBloqueado'),
+                $session->get('filtroNombre'),
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroBloqueado'),                                                
+                $session->get('filtroCodigoCiudad'),
+                $session->get('filtroCodigoCargo'),
+                $session->get('filtroDisponibilidad'),
                 $session->get('filtroReintegro'),
-                $session->get('filtroCodigoZona')
+                $session->get('filtroSexo'),
+                $session->get('filtroCodigoEstadoCivil'),
+                $session->get('filtroLibretaMilitar'),
+                $session->get('filtroCodigoZona'),
+                $session->get('filtroPesoMinimo'),
+                $session->get('filtroPesoMaximo'),
+                $session->get('filtroEstaturaMinima'),
+                $session->get('filtroEstaturaMaxima')
                 ));
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
-        $arrayPropiedades = array(
+        $arrayPropiedadesCiudad = array(
+                'class' => 'BrasaGeneralBundle:GenCiudad',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroGeneralCodigoCiudad')) {
+            $arrayPropiedadesCiudad['data'] = $em->getReference("BrasaGeneralBundle:GenCiudad", $session->get('filtroGeneralCodigoCiudad'));
+        }
+        $fechaNacimiento = null;
+        if($session->get('filtroAspiranteFechaNacimiento') != null) {
+            $fechaNacimiento = date_create($session->get('filtroAspiranteFechaNacimiento'));
+        }
+        $arrayPropiedadesCargo = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroRecursoHumanoCodigoCargo')) {
+            $arrayPropiedadesCargo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCargo", $session->get('filtroRecursoHumanoCodigoCargo'));
+        }
+        $arrayPropiedadesEstadoCivil = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroRecursoHumanoCodigoEstadoCivil')) {
+            $arrayPropiedadesEstadoCivil['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEstadoCivil", $session->get('filtroRecursoHumanoCodigoEstadoCivil'));
+        }
+        $arrayPropiedadesZona = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuZona',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('z')
-                    ->orderBy('z.nombre', 'ASC');},
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => false,
                 'empty_data' => "",
@@ -344,11 +401,24 @@ class AspiranteController extends Controller
                 'data' => ""
             );
         if($session->get('filtroCodigoZona')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
+            $arrayPropiedadesZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
         }            
         $form = $this->createFormBuilder()
-            ->add('zonaRel', EntityType::class, $arrayPropiedades)
-            ->add('reintegro', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroReintegro')))
+            ->add('ciudadRel', EntityType::class, $arrayPropiedadesCiudad)                                                                   
+            ->add('cargoRel', EntityType::class, $arrayPropiedadesCargo)   
+            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)       
+            ->add('estadoCivilRel', EntityType::class, $arrayPropiedadesEstadoCivil)        
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'MASCULINO' => 'M', 'FEMENINO' => 'F')))
+            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))                                        
+            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $fechaNacimiento, 'attr' => array('class' => 'date',)))                
+            ->add('codigoTipoLibreta', ChoiceType::class, array('choices' => array('TODOS' => '3', '1° CLASE' => '1', '2° CLASE' => '2')))                
+            ->add('reintegro', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))
+            ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('TODOS' => '0', 'TIEMPO COMPLETO' => '1', 'MEDIO TIEMPO' => '2', 'POR HORAS' => '3','DESDE CASA' => '4', 'PRACTICAS' => '5')))                            
+            ->add('pesoMinimo', TextType::class, array('required' => false))                
+            ->add('pesoMaximo', TextType::class, array('required' => false))                    
+            ->add('estaturaMinima', TextType::class, array('required' => false))
+            ->add('estaturaMaxima', TextType::class, array('required' => false))
+                                        
             ->add('bloqueado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroBloqueado')))    
             ->add('TxtNombre', TextType::class, array('label'  => 'Nombre', 'data' => $session->get('filtroNombreAspirante')))
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacionAspirante')))
@@ -372,12 +442,42 @@ class AspiranteController extends Controller
         $codigoZona = '';
         if($form->get('zonaRel')->getData()) {
             $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
-        }         
-        $session->set('filtroNombreAspirante', $form->get('TxtNombre')->getData());
-        $session->set('filtroIdentificacionAspirante', $form->get('TxtIdentificacion')->getData());
+        }
+        $session->set('filtroCodigoZona', $codigoZona);
+        $session->set('filtroNombre', $form->get('TxtNombre')->getData());
+        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroBloqueado', $form->get('bloqueado')->getData());
         $session->set('filtroReintegro', $form->get('reintegro')->getData());
-        $session->set('filtroCodigoZona', $codigoZona);
+
+        $codigoCiudad = '';
+        if($form->get('ciudadRel')->getData()) {
+            $codigoCiudad = $form->get('ciudadRel')->getData()->getCodigoCiudadPk();
+        }        
+        $session->set('filtroCodigoCiudad', $codigoCiudad);
+        $codigoCargo = '';
+        if($form->get('cargoRel')->getData()) {
+            $codigoCargo = $form->get('cargoRel')->getData()->getCodigoCargoPk();
+        }        
+        $session->set('filtroCodigoCargo', $codigoCargo);
+        $session->set('filtroCodigoCiudad', $codigoCiudad);
+        $codigoEstadoCivil = '';
+        if($form->get('estadoCivilRel')->getData()) {
+            $codigoEstadoCivil = $form->get('estadoCivilRel')->getData()->getCodigoEstadoCivilPk();
+        }        
+        $session->set('filtroCodigoEstadoCivil', $codigoEstadoCivil);        
+        $session->set('filtroDisponibilidad', $form->get('codigoDisponibilidadFk')->getData());        
+        $session->set('filtroSexo', $form->get('codigoSexoFk')->getData());
+        $session->set('filtroLibretaMilitar', $form->get('codigoTipoLibreta')->getData());
+        $session->set('filtroPesoMinimo', $form->get('pesoMinimo')->getData());
+        $session->set('filtroPesoMaximo', $form->get('pesoMaximo')->getData());
+        $session->set('filtroEstaturaMinima', $form->get('estaturaMinima')->getData());
+        $session->set('filtroEstaturaMaxima', $form->get('estaturaMaxima')->getData());        
+        if($form->get('fechaNacimiento')->getData()) {
+            $fechaNacimiento = $form->get('fechaNacimiento')->getData();
+            $session->set('filtroAspiranteFechaNacimiento', $fechaNacimiento->format('Y-m-d'));
+        } else {
+            $session->set('filtroAspiranteFechaNacimiento', null);
+        }
     }
 
     private function generarExcel() {
