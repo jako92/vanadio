@@ -243,7 +243,7 @@ class ExamenController extends Controller
                     $arrControles = $request->request->All();
                     $intIndice = 0;
                     foreach ($arrControles['LblCodigo'] as $intCodigo) {
-                        if($arrControles['TxtPrecio'.$intCodigo] != "" && $arrControles['TxtPrecio'.$intCodigo] != 0) {
+                        if($arrControles['TxtPrecio'.$intCodigo] != "" && $arrControles['TxtPrecio'.$intCodigo] != NULL) {
                             $arExamenDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
                             $arExamenDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenDetalle')->find($intCodigo);
                             $floPrecio = $arrControles['TxtPrecio'.$intCodigo];
