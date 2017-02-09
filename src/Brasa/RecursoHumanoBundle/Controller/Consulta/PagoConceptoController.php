@@ -315,28 +315,30 @@ class PagoConceptoController extends Controller
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }          
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        $objPHPExcel->setActiveSheetIndex(0)                    
-                    ->setCellValue('A1', 'IDENTIFICACIÓN')
-                    ->setCellValue('B1', 'EMPLEADO')
-                    ->setCellValue('C1', 'CODIGO')
-                    ->setCellValue('D1', 'CONCEPTO')                    
-                    ->setCellValue('E1', 'BONIFICACION')
-                    ->setCellValue('F1', 'DEDUCCION');
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'ORIGEN')
+                    ->setCellValue('B1', 'IDENTIFICACIÓN')
+                    ->setCellValue('C1', 'EMPLEADO')
+                    ->setCellValue('D1', 'CODIGO')
+                    ->setCellValue('E1', 'CONCEPTO')                    
+                    ->setCellValue('F1', 'BONIFICACION')
+                    ->setCellValue('G1', 'DEDUCCION');
 
         $i = 2;
-        $dql   = "SELECT cpc.codigoPagoConceptoFk as CodigoConcepto,cpc.numeroIdentificacion as Documento,cpc.nombreCorto as Nombre,cpc.nombreConcepto as Concepto,SUM(cpc.vrBonificacion) as Bonificacion,SUM(cpc.vrDeduccion) as Deduccion FROM BrasaRecursoHumanoBundle:RhuConsultaPagoConcepto cpc GROUP BY cpc.numeroIdentificacion, cpc.nombreCorto, cpc.codigoPagoConceptoFk,cpc.nombreConcepto";        
+        $dql   = "SELECT cpc.origen, cpc.codigoPagoConceptoFk as CodigoConcepto,cpc.numeroIdentificacion as Documento,cpc.nombreCorto as Nombre,cpc.nombreConcepto as Concepto,SUM(cpc.vrBonificacion) as Bonificacion,SUM(cpc.vrDeduccion) as Deduccion FROM BrasaRecursoHumanoBundle:RhuConsultaPagoConcepto cpc GROUP BY cpc.origen, cpc.numeroIdentificacion, cpc.nombreCorto, cpc.codigoPagoConceptoFk,cpc.nombreConcepto";        
         $query = $em->createQuery($dql);
         $arConsultaPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuConsultaPagoConcepto();
         $arConsultaPagoConceptos = $query->getResult();
         
         foreach ($arConsultaPagoConceptos as $arConsultaPagoConcepto) {            
-            $objPHPExcel->setActiveSheetIndex(0)                    
-                    ->setCellValue('A' . $i, $arConsultaPagoConcepto['Documento'])
-                    ->setCellValue('B' . $i, $arConsultaPagoConcepto['Nombre'])
-                    ->setCellValue('C' . $i, $arConsultaPagoConcepto['CodigoConcepto'])
-                    ->setCellValue('D' . $i, $arConsultaPagoConcepto['Concepto'])
-                    ->setCellValue('E' . $i, $arConsultaPagoConcepto['Deduccion'])
-                    ->setCellValue('F' . $i, $arConsultaPagoConcepto['Bonificacion'])
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arConsultaPagoConcepto['origen'])                    
+                    ->setCellValue('B' . $i, $arConsultaPagoConcepto['Documento'])
+                    ->setCellValue('C' . $i, $arConsultaPagoConcepto['Nombre'])
+                    ->setCellValue('D' . $i, $arConsultaPagoConcepto['CodigoConcepto'])
+                    ->setCellValue('E' . $i, $arConsultaPagoConcepto['Concepto'])
+                    ->setCellValue('F' . $i, $arConsultaPagoConcepto['Deduccion'])
+                    ->setCellValue('G' . $i, $arConsultaPagoConcepto['Bonificacion'])
                     
                     ;
             $i++;
