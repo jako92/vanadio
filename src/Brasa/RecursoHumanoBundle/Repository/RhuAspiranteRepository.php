@@ -32,10 +32,10 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoDisponibilidad > 0) {
             $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
         }
-        if($codigoReintegro != '2' ) {
-            $dql .= " AND a.reintegro = " . $codigoReintegro;
-        }
-        if($codigoSexo != '2') {
+        //if($codigoReintegro != '2' ) {
+        //    $dql .= " AND a.reintegro = " . $codigoReintegro;
+        //}
+        /*if($codigoSexo != '2') {
             $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
         }
         if($codigoEstadoCivil != "") {
@@ -43,7 +43,7 @@ class RhuAspiranteRepository extends EntityRepository {
         }
         if($codigoLibretaMilitar != "3" ) {
             $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
-        }
+        }*/
         if($codigoZona != "") {
             $dql .= " AND a.codigoZonaFk = " . $codigoZona;
         }
@@ -81,7 +81,7 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoDisponibilidad > 0) {
             $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
         }
-        if($codigoReintegro != "2" ) {
+        /*if($codigoReintegro != "2" ) {
             $dql .= " AND a.reintegro = " . $codigoReintegro;
         }
         if($codigoSexo != "2") {
@@ -92,7 +92,7 @@ class RhuAspiranteRepository extends EntityRepository {
         }
         if($codigoLibretaMilitar != "3" ) {
             $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
-        }
+        }*/
         if($codigoZona != "") {
             $dql .= " AND a.codigoZonaFk = " . $codigoZona;
         }
