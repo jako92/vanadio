@@ -18,7 +18,11 @@ class RhuContratoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder      
+        $builder
+            ->add('clienteRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
+                'choice_label' => 'nombreCorto',
+            ))    
             ->add('contratoTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
                 'choice_label' => 'nombre',
