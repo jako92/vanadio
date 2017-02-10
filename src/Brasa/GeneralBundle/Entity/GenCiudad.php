@@ -42,7 +42,12 @@ class GenCiudad
     /**
      * @ORM\Column(name="codigo_dane", type="string", length=3)
      */
-    private $codigoDane;     
+    private $codigoDane;
+    
+    /**
+     * @ORM\Column(name="porcentaje_retencion_ica", type="float")
+     */
+    private $porcentaje_retencion_ica;     
     
     /**
      * @ORM\ManyToOne(targetEntity="GenDepartamento", inversedBy="ciudadesRel")
@@ -1600,5 +1605,30 @@ class GenCiudad
     public function getTurFacturasDetallesCiudadRel()
     {
         return $this->turFacturasDetallesCiudadRel;
+    }
+
+
+    /**
+     * Set porcentajeRetencionIca
+     *
+     * @param float $porcentajeRetencionIca
+     *
+     * @return GenCiudad
+     */
+    public function setPorcentajeRetencionIca($porcentajeRetencionIca)
+    {
+        $this->porcentaje_retencion_ica = $porcentajeRetencionIca;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeRetencionIca
+     *
+     * @return float
+     */
+    public function getPorcentajeRetencionIca()
+    {
+        return $this->porcentaje_retencion_ica;
     }
 }

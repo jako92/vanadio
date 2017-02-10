@@ -103,6 +103,7 @@
                 <th>C_COSTO</th>
                 <th>FECHA</th>                
                 <th>CIUDAD</th>
+                <th>% ICA</th>
                 <th>SUBTOTAL</th>
                 <th>IVA</th>
                 <th>TOTAL</th>
@@ -115,7 +116,8 @@
                     <td>{{ arFacturaDetalle.facturaRel.clienteRel.nombreCorto | default('')  }}</td>
                     <td>{{ arFacturaDetalle.puestoRel.codigoCentroCostoContabilidadFk | default('')  }}</td>                
                     <td>{{ arFacturaDetalle.facturaRel.fecha|date('Y/m/d')  }}</td>
-                    <td>{{ arFacturaDetalle.ciudadRel.nombre | default('')  }}</td>                
+                    <td>{{ arFacturaDetalle.ciudadRel.nombre | default('')  }}</td>
+                    <td>{{ arFacturaDetalle.ciudadRel.porcentajeRetencionIca | default('')  }}</td>
                     <td style="text-align: right">{{ arFacturaDetalle.subtotal | number_format(0, '.', ',') }}</td>                                                
                     <td style="text-align: right">{{ arFacturaDetalle.iva | number_format(0, '.', ',') }}</td>                                                                
                     <td style="text-align: right">{{ arFacturaDetalle.total | number_format(0, '.', ',') }}</td>                                                                
