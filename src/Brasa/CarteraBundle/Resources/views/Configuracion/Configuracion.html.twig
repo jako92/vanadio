@@ -4,14 +4,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Programacion turnos
-            <small>Programaciones: lista</small>
+            Configuracion
+            <small>Cartera</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Configuracion</a></li>
+            <li class="active">Cartera</li>
         </ol>
     </section>   
     <section class="content"> 
@@ -23,7 +23,6 @@
         </script>        
         {{ form_start(formConfiguracion, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(formConfiguracion) }}
-        <h3>Configuración</h3>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#configuracion" data-toggle="tab">Configuración</a></li>
             <li><a href="#consecutivo" data-toggle="tab">Consecutivo</a></li>

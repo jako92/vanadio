@@ -3,14 +3,14 @@
 {% block content %}
     <section class="content-header">
         <h1>
-            Recurso humano
-            <small>Programaciones: lista</small>
+            Configuracion
+            <small>Nomina</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i>General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Configuracion</a></li>
+            <li class="active">Nomina</li>
         </ol>
     </section>    
     <section class="content">        	
@@ -22,7 +22,6 @@
         </script>
         {{ form_start(formConfiguracion, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(formConfiguracion) }}
-        <h3>Configuración</h3>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#configuracion" data-toggle="tab">Configuración</a></li>
             <li><a href="#consecutivo" data-toggle="tab">Consecutivo</a></li>
@@ -278,11 +277,11 @@
                                         <input type="hidden" name="LblCodigo[]" value="{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}">
                                         <span class="badge">{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}</span>
                                     </td>
-                                    <td>{{ arConfiguracionProvision.nombre }}</td>
-                                    <td style="text-align: center"><input class="input-grid" type="text" name="TxtCuenta{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.codigoCuentaFk }}" size="5" style="text-align: right; width:80px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
-                                    <td style="text-align: center"><input class="input-grid" type="text" name="TxtTipoCuenta{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.tipoCuenta }}" size="5" style="text-align: right; width:80px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
-                                    <td style="text-align: center"><input class="input-grid" type="text" name="TxtCuentaOperacion{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.codigoCuentaOperacionFk }}" size="5" style="text-align: right; width:80px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
-                                    <td style="text-align: center"><input class="input-grid" type="text" name="TxtCuentaComercial{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.codigoCuentaComercialFk }}" size="5" style="text-align: right; width:80px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             {% endfor %}
                         </table>
