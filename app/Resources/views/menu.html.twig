@@ -1504,8 +1504,21 @@
                         </span>
                     </a>                        
                     <ul class="treeview-menu">
-                        <li><a href="{{ path('brs_gen_movimiento_tarea') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
-                        
+                        <li><a href="{{ path('brs_gen_movimiento_tarea') }}"><i class="fa fa-circle-o"></i> Lista</a></li>1                       
+                    </ul>                                                                           
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-circle-o"></i> Configuracion
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>                        
+                    <ul class="treeview-menu">
+                        <li><a href="{{ path('brs_gen_configuracion_general',{'codigoConfiguracionPk': 1}) }}"><i class="fa fa-circle-o"></i> General</a></li>
+                        <li><a href="{{ path('brs_car_configuracion',{'codigoConfiguracionPk': 1}) }}"><i class="fa fa-circle-o"></i> Cartera</a></li>
+                        <li><a href="{{ path('brs_rhu_configuracion_nomina',{'codigoConfiguracionPk': 1}) }}"><i class="fa fa-circle-o"></i> Nomina</a></li>
+                        <li><a href="{{ path('brs_rhu_configuracion_nomina_parametros_prestaciones') }}"><i class="fa fa-circle-o"></i> Parametros prestacion</a></li>
+                        <li><a href="{{ path('brs_tur_configuracion',{'codigoConfiguracionPk': 1}) }}"><i class="fa fa-circle-o"></i> Turno</a></li>
                     </ul>                                                                           
                 </li>
             </ul>                   
