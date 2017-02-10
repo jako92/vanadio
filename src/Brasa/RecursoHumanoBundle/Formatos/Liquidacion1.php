@@ -256,9 +256,17 @@ class Liquidacion1 extends \FPDF_FPDF {
         $this->SetXY($intX + 103, 87);
         $this->Cell(25, 5, $arLiquidacion->getFechaUltimoPagoCesantias()->format('Y-m-d'), 1, 0, 'C', 1);
         $this->SetXY($intX + 103, 93);
-        $this->Cell(25, 5, $arLiquidacion->getFechaUltimoPagoCesantiasAnterior()->format('Y-m-d'), 1, 0, 'C', 1);
+        $fechaUltimoPagoCesantiasAnterior = '';
+        if ($arLiquidacion->getFechaUltimoPagoCesantiasAnterior() != NULL) {
+           $fechaUltimoPagoCesantiasAnterior = $arLiquidacion->getFechaUltimoPagoCesantiasAnterior()->format('Y-m-d');
+        }
+        $this->Cell(25, 5, $fechaUltimoPagoCesantiasAnterior, 1, 0, 'C', 1);
         $this->SetXY($intX + 103, 99);
-        $this->Cell(25, 5, $arLiquidacion->getFechaUltimoPagoCesantiasAnterior()->format('Y-m-d'), 1, 0, 'C', 1);        
+        $fechaUltimoPagoCesantiasAnterior = '';
+        if ($arLiquidacion->getFechaUltimoPagoCesantiasAnterior() != NULL){
+            $fechaUltimoPagoCesantiasAnterior = $arLiquidacion->getFechaUltimoPagoCesantiasAnterior()->format('Y-m-d');
+        }
+        $this->Cell(25, 5, $fechaUltimoPagoCesantiasAnterior, 1, 0, 'C', 1);        
         $this->SetXY($intX + 103, 105);
         $this->Cell(25, 5, $arLiquidacion->getFechaUltimoPagoPrimas()->format('Y-m-d'), 1, 0, 'C', 1);
         $this->SetXY($intX + 103, 111);
