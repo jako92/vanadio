@@ -137,7 +137,12 @@ class RhuCliente
     /**
      * @ORM\OneToMany(targetEntity="RhuCentroCosto", mappedBy="clienteRel")
      */
-    protected $centrosCostosClienteRel;     
+    protected $centrosCostosClienteRel; 
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="clienteRel")
+     */
+    protected $contratosClienteRel;
     
 
     
@@ -743,5 +748,39 @@ class RhuCliente
     public function getCentrosCostosClienteRel()
     {
         return $this->centrosCostosClienteRel;
+    }
+
+    /**
+     * Add contratosClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel)
+    {
+        $this->contratosClienteRel[] = $contratosClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratosClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel
+     */
+    public function removeContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel)
+    {
+        $this->contratosClienteRel->removeElement($contratosClienteRel);
+    }
+
+    /**
+     * Get contratosClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratosClienteRel()
+    {
+        return $this->contratosClienteRel;
     }
 }

@@ -276,7 +276,18 @@ class RhuContrato
     /**
      * @ORM\Column(name="secuencia", type="integer", nullable=true)
      */    
-    private $secuencia;            
+    private $secuencia;
+    
+    /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoclienteFk;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="contratosClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="contratosEmpleadoRel")
@@ -2941,5 +2952,53 @@ class RhuContrato
     public function getContratosAdicionalesContratoRel()
     {
         return $this->contratosAdicionalesContratoRel;
+    }
+
+    /**
+     * Set codigoclienteFk
+     *
+     * @param integer $codigoclienteFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoclienteFk($codigoclienteFk)
+    {
+        $this->codigoclienteFk = $codigoclienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoclienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoclienteFk()
+    {
+        return $this->codigoclienteFk;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuContrato
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 }
