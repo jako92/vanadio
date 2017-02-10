@@ -28,7 +28,7 @@ class RhuCliente
     private $digitoVerificacion;             
     
     /**
-     * @ORM\Column(name="nombre_corto", type="string", length=50)
+     * @ORM\Column(name="nombre_corto", type="string", length=150)
      */
     private $nombreCorto;                             
     
@@ -139,6 +139,15 @@ class RhuCliente
      */
     protected $centrosCostosClienteRel;     
     
+
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoClientePk
@@ -700,13 +709,6 @@ class RhuCliente
     public function getCiudadRel()
     {
         return $this->ciudadRel;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
