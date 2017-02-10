@@ -59,7 +59,7 @@ class Factura4 extends \FPDF_FPDF {
             $this->Ln(4);
         }
 
-        $Datos = array($arFactura->getClienteRel()->getNombreCorto(),
+        $Datos = array($arFactura->getClienteRel()->getNombreCompleto(),
             $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(),
             $arFactura->getClienteRel()->getTelefono(),
             $arFactura->getClienteRel()->getDireccion(),
