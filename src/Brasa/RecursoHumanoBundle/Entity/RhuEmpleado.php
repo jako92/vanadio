@@ -578,6 +578,11 @@ class RhuEmpleado
     protected $liquidacionesEmpleadoRel;    
 
     /**
+     * @ORM\OneToMany(targetEntity="RhuPrestacion", mappedBy="empleadoRel")
+     */
+    protected $prestacionesEmpleadoRel;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuDisciplinario", mappedBy="empleadoRel")
      */
     protected $disciplinariosEmpleadoRel;
@@ -4489,5 +4494,39 @@ class RhuEmpleado
     public function getVisitasEmpleadoRel()
     {
         return $this->visitasEmpleadoRel;
+    }
+
+    /**
+     * Add prestacionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addPrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    {
+        $this->prestacionesEmpleadoRel[] = $prestacionesEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     */
+    public function removePrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    {
+        $this->prestacionesEmpleadoRel->removeElement($prestacionesEmpleadoRel);
+    }
+
+    /**
+     * Get prestacionesEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesEmpleadoRel()
+    {
+        return $this->prestacionesEmpleadoRel;
     }
 }

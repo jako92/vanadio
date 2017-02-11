@@ -28,7 +28,10 @@ class CierreMesController extends Controller
         $form->handleRequest($request);                       
         $this->listar();
         if($form->isValid()) {
-
+            if($request->request->get('OpGenerar')) {
+                $codigoCierreMes = $request->request->get('OpGenerar');
+                $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar();
+            }
         }
         $arCierresMes = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreMes:lista.html.twig', array(
@@ -57,83 +60,7 @@ class CierreMesController extends Controller
 
         return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreMes:nuevo.html.twig', array(
             'form' => $form->createView()));
-    }     
-    
-    /**
-     * @Route("/rhu/proceso/cierre/mes/cerrar/{codigoCierreMes}", name="brs_rhu_proceso_cierre_mes_cerrar")
-     */
-    public function cerrarAction(Request $request, $codigoCierreMes) {        
-        $em = $this->getDoctrine()->getManager();
-        
-        $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('brs_rhu_proceso_cierre_mes_cerrar', array('codigoCierreMes' => $codigoCierreMes)))
-            ->add('salarioMinimo', NumberType::class)
-            ->add('auxilioTransporte', NumberType::class)            
-            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
-            ->getForm();
-        $form->handleRequest($request);
-        $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
-        $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);                
-        
-        if ($form->isValid()) {  
-            set_time_limit(0);
-            ini_set("memory_limit", -1); 
-            $floSalarioMinimo = $form->get('salarioMinimo')->getData();
-            $floAuxilioTransporte = $form->get('auxilioTransporte')->getData();            
-            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-            $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-            $floSalarioMinimoAnterior = $arConfiguracion->getVrSalario();
-                        
-            $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
-            $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
-            $arCierreMes->setEstadoCerrado(1);
-            $arCierreMes->setFechaAplicacion(new \DateTime('now'));
-            $em->persist($arCierreMes);
-            
-            $strFechaCambio = $arConfiguracion->getMesActual()."/12/30";
-            $arContratoMinimos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-            $strDql = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c WHERE c.estadoActivo = 1 AND c.VrSalario <= " . $arConfiguracion->getVrSalario();
-            $query = $em->createQuery($strDql);
-            $arContratoMinimos = $query->getResult();                        
-            foreach ($arContratoMinimos as $arContratoMinimo){
-                $arCambioSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
-                $arCambioSalario->setContratoRel($arContratoMinimo);
-                $arCambioSalario->setEmpleadoRel($arContratoMinimo->getEmpleadoRel());
-                $arCambioSalario->setFecha(date_create($strFechaCambio));
-                $arCambioSalario->setVrSalarioAnterior($floSalarioMinimoAnterior);
-                $arCambioSalario->setVrSalarioNuevo($floSalarioMinimo);
-                $arCambioSalario->setDetalle('ACTUALIZACION SALARIO MINIMO');
-                $em->persist($arCambioSalario);
-                $arContratoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                $arContratoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arContratoMinimo->getCodigoContratoPk());
-                $arContratoActualizar->setVrSalario($floSalarioMinimo);
-                $arContratoActualizar->setVrSalarioPago($floSalarioMinimo);
-                if ($arContratoActualizar->getCodigoTipoTiempoFk() == 2){
-                    $arContratoActualizar->setVrSalarioPago($floSalarioMinimo / 2);
-                }
-                $em->persist($arContratoActualizar);
-                $arEmpleadoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                $arEmpleadoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arContratoMinimo->getCodigoEmpleadoFk());
-                $arEmpleadoActualizar->setVrSalario($floSalarioMinimo);
-                $em->persist($arEmpleadoActualizar);
-            }
-            $arConfiguracion->setMesActual($arConfiguracion->getMesActual() + 1);
-            $arConfiguracion->setVrSalario($floSalarioMinimo);
-            $arConfiguracion->setVrAuxilioTransporte($floAuxilioTransporte);
-            $em->persist($arConfiguracion);
-            //nuevo año periodo
-            $mesNuevoPeriodo = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes;
-            $mesNuevoPeriodo->setMes($arConfiguracion->getMesActual());
-            $mesNuevoPeriodo->setEstadoCerrado(0);
-            $em->persist($mesNuevoPeriodo);
-            $em->flush();                                     
-            return $this->redirect($this->generateUrl('brs_rhu_proceso_cierre_mes'));
-        }
-        return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreMes:cerrar.html.twig', array(
-            'arCierreMes' => $arCierreMes,
-            'form' => $form->createView()
-        ));
-    }
+    }         
 
     private function formularioLista() {
         $form = $this->createFormBuilder()

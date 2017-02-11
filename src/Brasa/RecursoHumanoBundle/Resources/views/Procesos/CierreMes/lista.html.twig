@@ -23,17 +23,15 @@
             <th>AÑO</th>
             <th>MES</th>
             <th></th>
+            <th></th>
         </tr>
         {% for arCierresMes in arCierresMes %}
             <tr>
                 <td><input type="hidden" name="LblCodigo[]" value="{{ arCierresMes.codigoCierreMesPk }}">{{ arCierresMes.codigoCierreMesPk }} </td>
                 <td>{{ arCierresMes.anio  }}</td>
                 <td>{{ arCierresMes.mes  }}</td>
-                {% if arCierresMes.estadoCerrado == 0 %}
-                    <td style="text-align: center"><a class="btn btn-default btn-xs" id="{{ path('brs_rhu_proceso_cierre_anio_cerrar', { 'codigoCierreAnio': arCierresMes.codigoCierreMesPk}) }}" style="float:left">Cerrar</a></td>                                                                                                
-                {% else %}
-                    <td style="text-align: center"></td>
-                {% endif %}    
+                <td>{% if arCierresMes.estadoGenerado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arCierresMes.codigoCierreMesPk }}">Generar</button>{% endif %}</td>
+                <td>{% if arCierresMes.estadoGenerado == 1 and arCierresMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierresMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>  
             </tr>
         {% endfor %}
     </table>

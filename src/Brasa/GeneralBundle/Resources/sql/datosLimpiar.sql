@@ -105,6 +105,7 @@ DELETE FROM rhu_traslado_pension;
 DELETE FROM rhu_disciplinario_descargo;
 DELETE FROM rhu_disciplinario;
 DELETE FROM rhu_cambio_tipo_contrato;
+DELETE FROM rhu_contrato_adicion;
 DELETE FROM rhu_contrato;
 DELETE FROM rhu_credito;
 DELETE FROM rhu_dotacion_detalle;

@@ -415,6 +415,11 @@ class RhuContrato
     protected $liquidacionesContratoRel; 
 
     /**
+     * @ORM\OneToMany(targetEntity="RhuPrestacion", mappedBy="contratoRel")
+     */
+    protected $prestacionesContratoRel;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuProgramacionPagoDetalle", mappedBy="contratoRel")
      */
     protected $programacionesPagosDetallesContratoRel;    
@@ -3000,5 +3005,39 @@ class RhuContrato
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Add prestacionesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addPrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
+    {
+        $this->prestacionesContratoRel[] = $prestacionesContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
+     */
+    public function removePrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
+    {
+        $this->prestacionesContratoRel->removeElement($prestacionesContratoRel);
+    }
+
+    /**
+     * Get prestacionesContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesContratoRel()
+    {
+        return $this->prestacionesContratoRel;
     }
 }

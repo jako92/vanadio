@@ -271,6 +271,11 @@ class RhuCentroCosto
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="centroCostoRel")
      */
     protected $liquidacionesCentroCostoRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPrestacion", mappedBy="centroCostoRel")
+     */
+    protected $prestacionesCentroCostoRel;  
     
     /**
      * @ORM\OneToMany(targetEntity="RhuVacacion", mappedBy="centroCostoRel")
@@ -2008,5 +2013,39 @@ class RhuCentroCosto
     public function getTurSoportesPagosPeriodosCentroCostoRel()
     {
         return $this->turSoportesPagosPeriodosCentroCostoRel;
+    }
+
+    /**
+     * Add prestacionesCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addPrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
+    {
+        $this->prestacionesCentroCostoRel[] = $prestacionesCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
+     */
+    public function removePrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
+    {
+        $this->prestacionesCentroCostoRel->removeElement($prestacionesCentroCostoRel);
+    }
+
+    /**
+     * Get prestacionesCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesCentroCostoRel()
+    {
+        return $this->prestacionesCentroCostoRel;
     }
 }
