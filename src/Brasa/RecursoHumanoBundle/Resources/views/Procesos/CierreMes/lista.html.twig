@@ -24,6 +24,7 @@
             <th>MES</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
         {% for arCierresMes in arCierresMes %}
             <tr>
@@ -32,6 +33,7 @@
                 <td>{{ arCierresMes.mes  }}</td>
                 <td>{% if arCierresMes.estadoGenerado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arCierresMes.codigoCierreMesPk }}">Generar</button>{% endif %}</td>
                 <td>{% if arCierresMes.estadoGenerado == 1 and arCierresMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierresMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>  
+                <td>{% if arCierresMes.estadoGenerado == 1 and arCierresMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierresMes.codigoCierreMesPk }}">Cerrar</button>{% endif %}</td>                  
             </tr>
         {% endfor %}
     </table>

@@ -75,17 +75,7 @@ class RhuPrestacion
     /**
      * @ORM\Column(name="vr_intereses_cesantias", type="float")
      */
-    private $VrInteresesCesantias = 0;        
-
-    /**
-     * @ORM\Column(name="vr_cesantias_anterior", type="float")
-     */
-    private $VrCesantiasAnterior = 0;    
-
-    /**
-     * @ORM\Column(name="vr_intereses_cesantias_anterior", type="float")
-     */
-    private $VrInteresesCesantiasAnterior = 0;    
+    private $VrInteresesCesantias = 0;           
     
     /**
      * @ORM\Column(name="vr_prima", type="float")
@@ -121,16 +111,6 @@ class RhuPrestacion
      * @ORM\Column(name="dias_cesantias_ausentismo", type="integer")
      */    
     private $diasCesantiasAusentismo = 0;
-
-    /**
-     * @ORM\Column(name="dias_cesantias_anterior", type="integer")
-     */    
-    private $diasCesantiasAnterior = 0;     
-
-    /**
-     * @ORM\Column(name="dias_cesantias_ausentismo_anterior", type="integer")
-     */    
-    private $diasCesantiasAusentismo_anterior = 0;
     
     /**
      * @ORM\Column(name="dias_vacaciones", type="integer")
@@ -216,11 +196,7 @@ class RhuPrestacion
      * @ORM\Column(name="vr_salario_promedio_cesantias", type="float")
      */
     private $VrSalarioPromedioCesantias = 0;    
-
-    /**
-     * @ORM\Column(name="vr_salario_promedio_cesantias_anterior", type="float")
-     */
-    private $VrSalarioPromedioCesantiasAnterior = 0;     
+    
     
     /**
      * @ORM\Column(name="vr_salario_promedio_primas", type="float")
@@ -265,12 +241,7 @@ class RhuPrestacion
     /**
      * @ORM\Column(name="fecha_ultimo_pago_cesantias", type="date", nullable=true)
      */    
-    private $fechaUltimoPagoCesantias;    
-    
-    /**
-     * @ORM\Column(name="fecha_ultimo_pago_cesantias_anterior", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoCesantiasAnterior;     
+    private $fechaUltimoPagoCesantias;            
     
     /**
      * @ORM\Column(name="vr_deducciones", type="float")
@@ -360,22 +331,17 @@ class RhuPrestacion
     /**
      * @ORM\Column(name="dias_ausentismo_propuesto", type="integer")
      */    
-    private $diasAusentismoPropuesto = 0;     
+    private $diasAusentismoPropuesto = 0;                
     
     /**
-     * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer", nullable=true)
+     * @ORM\Column(name="anio", type="integer")
      */    
-    private $codigoProgramacionPagoDetalleFk;    
+    private $anio = 0;
 
     /**
-     * @ORM\Column(name="codigo_pago_fk", type="integer", nullable=true)
+     * @ORM\Column(name="mes", type="integer")
      */    
-    private $codigoPagoFk;
-    
-    /**     
-     * @ORM\Column(name="omitir_cesantias_anterior", type="boolean")
-     */    
-    private $omitirCesantiasAnterior = false;     
+    private $mes = 0;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="prestacionesEmpleadoRel")
@@ -396,6 +362,9 @@ class RhuPrestacion
     protected $contratoRel;                  
 
 
+
+
+
     /**
      * Get codigoPrestacionPk
      *
@@ -404,6 +373,54 @@ class RhuPrestacion
     public function getCodigoPrestacionPk()
     {
         return $this->codigoPrestacionPk;
+    }
+
+    /**
+     * Set codigoCierreAnioFk
+     *
+     * @param integer $codigoCierreAnioFk
+     *
+     * @return RhuPrestacion
+     */
+    public function setCodigoCierreAnioFk($codigoCierreAnioFk)
+    {
+        $this->codigoCierreAnioFk = $codigoCierreAnioFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCierreAnioFk
+     *
+     * @return integer
+     */
+    public function getCodigoCierreAnioFk()
+    {
+        return $this->codigoCierreAnioFk;
+    }
+
+    /**
+     * Set codigoCierreMesFk
+     *
+     * @param integer $codigoCierreMesFk
+     *
+     * @return RhuPrestacion
+     */
+    public function setCodigoCierreMesFk($codigoCierreMesFk)
+    {
+        $this->codigoCierreMesFk = $codigoCierreMesFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCierreMesFk
+     *
+     * @return integer
+     */
+    public function getCodigoCierreMesFk()
+    {
+        return $this->codigoCierreMesFk;
     }
 
     /**
@@ -647,54 +664,6 @@ class RhuPrestacion
     }
 
     /**
-     * Set vrCesantiasAnterior
-     *
-     * @param float $vrCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setVrCesantiasAnterior($vrCesantiasAnterior)
-    {
-        $this->VrCesantiasAnterior = $vrCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrCesantiasAnterior()
-    {
-        return $this->VrCesantiasAnterior;
-    }
-
-    /**
-     * Set vrInteresesCesantiasAnterior
-     *
-     * @param float $vrInteresesCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior)
-    {
-        $this->VrInteresesCesantiasAnterior = $vrInteresesCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrInteresesCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrInteresesCesantiasAnterior()
-    {
-        return $this->VrInteresesCesantiasAnterior;
-    }
-
-    /**
      * Set vrPrima
      *
      * @param float $vrPrima
@@ -860,54 +829,6 @@ class RhuPrestacion
     public function getDiasCesantiasAusentismo()
     {
         return $this->diasCesantiasAusentismo;
-    }
-
-    /**
-     * Set diasCesantiasAnterior
-     *
-     * @param integer $diasCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setDiasCesantiasAnterior($diasCesantiasAnterior)
-    {
-        $this->diasCesantiasAnterior = $diasCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get diasCesantiasAnterior
-     *
-     * @return integer
-     */
-    public function getDiasCesantiasAnterior()
-    {
-        return $this->diasCesantiasAnterior;
-    }
-
-    /**
-     * Set diasCesantiasAusentismoAnterior
-     *
-     * @param integer $diasCesantiasAusentismoAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior)
-    {
-        $this->diasCesantiasAusentismo_anterior = $diasCesantiasAusentismoAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get diasCesantiasAusentismoAnterior
-     *
-     * @return integer
-     */
-    public function getDiasCesantiasAusentismoAnterior()
-    {
-        return $this->diasCesantiasAusentismo_anterior;
     }
 
     /**
@@ -1319,30 +1240,6 @@ class RhuPrestacion
     }
 
     /**
-     * Set vrSalarioPromedioCesantiasAnterior
-     *
-     * @param float $vrSalarioPromedioCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior)
-    {
-        $this->VrSalarioPromedioCesantiasAnterior = $vrSalarioPromedioCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioPromedioCesantiasAnterior
-     *
-     * @return float
-     */
-    public function getVrSalarioPromedioCesantiasAnterior()
-    {
-        return $this->VrSalarioPromedioCesantiasAnterior;
-    }
-
-    /**
      * Set vrSalarioPromedioPrimas
      *
      * @param float $vrSalarioPromedioPrimas
@@ -1556,30 +1453,6 @@ class RhuPrestacion
     public function getFechaUltimoPagoCesantias()
     {
         return $this->fechaUltimoPagoCesantias;
-    }
-
-    /**
-     * Set fechaUltimoPagoCesantiasAnterior
-     *
-     * @param \DateTime $fechaUltimoPagoCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior)
-    {
-        $this->fechaUltimoPagoCesantiasAnterior = $fechaUltimoPagoCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaUltimoPagoCesantiasAnterior
-     *
-     * @return \DateTime
-     */
-    public function getFechaUltimoPagoCesantiasAnterior()
-    {
-        return $this->fechaUltimoPagoCesantiasAnterior;
     }
 
     /**
@@ -2015,75 +1888,51 @@ class RhuPrestacion
     }
 
     /**
-     * Set codigoProgramacionPagoDetalleFk
+     * Set anio
      *
-     * @param integer $codigoProgramacionPagoDetalleFk
+     * @param integer $anio
      *
      * @return RhuPrestacion
      */
-    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk)
+    public function setAnio($anio)
     {
-        $this->codigoProgramacionPagoDetalleFk = $codigoProgramacionPagoDetalleFk;
+        $this->anio = $anio;
 
         return $this;
     }
 
     /**
-     * Get codigoProgramacionPagoDetalleFk
+     * Get anio
      *
      * @return integer
      */
-    public function getCodigoProgramacionPagoDetalleFk()
+    public function getAnio()
     {
-        return $this->codigoProgramacionPagoDetalleFk;
+        return $this->anio;
     }
 
     /**
-     * Set codigoPagoFk
+     * Set mes
      *
-     * @param integer $codigoPagoFk
+     * @param integer $mes
      *
      * @return RhuPrestacion
      */
-    public function setCodigoPagoFk($codigoPagoFk)
+    public function setMes($mes)
     {
-        $this->codigoPagoFk = $codigoPagoFk;
+        $this->mes = $mes;
 
         return $this;
     }
 
     /**
-     * Get codigoPagoFk
+     * Get mes
      *
      * @return integer
      */
-    public function getCodigoPagoFk()
+    public function getMes()
     {
-        return $this->codigoPagoFk;
-    }
-
-    /**
-     * Set omitirCesantiasAnterior
-     *
-     * @param boolean $omitirCesantiasAnterior
-     *
-     * @return RhuPrestacion
-     */
-    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior)
-    {
-        $this->omitirCesantiasAnterior = $omitirCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get omitirCesantiasAnterior
-     *
-     * @return boolean
-     */
-    public function getOmitirCesantiasAnterior()
-    {
-        return $this->omitirCesantiasAnterior;
+        return $this->mes;
     }
 
     /**
@@ -2156,53 +2005,5 @@ class RhuPrestacion
     public function getContratoRel()
     {
         return $this->contratoRel;
-    }
-
-    /**
-     * Set codigoCierreAnioFk
-     *
-     * @param integer $codigoCierreAnioFk
-     *
-     * @return RhuPrestacion
-     */
-    public function setCodigoCierreAnioFk($codigoCierreAnioFk)
-    {
-        $this->codigoCierreAnioFk = $codigoCierreAnioFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCierreAnioFk
-     *
-     * @return integer
-     */
-    public function getCodigoCierreAnioFk()
-    {
-        return $this->codigoCierreAnioFk;
-    }
-
-    /**
-     * Set codigoCierreMesFk
-     *
-     * @param integer $codigoCierreMesFk
-     *
-     * @return RhuPrestacion
-     */
-    public function setCodigoCierreMesFk($codigoCierreMesFk)
-    {
-        $this->codigoCierreMesFk = $codigoCierreMesFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCierreMesFk
-     *
-     * @return integer
-     */
-    public function getCodigoCierreMesFk()
-    {
-        return $this->codigoCierreMesFk;
     }
 }

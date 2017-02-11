@@ -30,8 +30,37 @@ class CierreMesController extends Controller
         if($form->isValid()) {
             if($request->request->get('OpGenerar')) {
                 $codigoCierreMes = $request->request->get('OpGenerar');
-                $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar();
+                $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
+                $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
+                if($arCierreMes->getEstadoGenerado() == 0) {                
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar($codigoCierreMes);
+                    $arCierreMes->setEstadoGenerado(1);
+                    $em->persist($arCierreMes);
+                    $em->flush();
+                }
             }
+            if($request->request->get('OpDeshacer')) {
+                $codigoCierreMes = $request->request->get('OpDeshacer');
+                $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
+                $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
+                if($arCierreMes->getEstadoGenerado() == 1) {
+                    $strSql = "DELETE FROM rhu_prestacion WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
+                    $em->getConnection()->executeQuery($strSql);
+                    $arCierreMes->setEstadoGenerado(0);
+                    $em->persist($arCierreMes);
+                    $em->flush();                    
+                }
+            }            
+            if($request->request->get('OpCerrar')) {
+                $codigoCierreMes = $request->request->get('OpCerrar');
+                $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
+                $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
+                if($arCierreMes->getEstadoGenerado() == 1) {
+                    $arCierreMes->setEstadoCerrado(1);
+                    $em->persist($arCierreMes);
+                    $em->flush();                    
+                }
+            }             
         }
         $arCierresMes = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/CierreMes:lista.html.twig', array(

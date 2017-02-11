@@ -10,9 +10,27 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RhuPrestacionRepository extends EntityRepository {    
-    public function generar() {
+    
+    public function listaDql($anio = "", $mes = "", $numeroIdentificacion = "") {        
+        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuPrestacion p JOIN p.empleadoRel e WHERE p.codigoPrestacionPk <> 0";
+        if($anio != "" ) {
+            $dql .= " AND p.anio = " . $anio;
+        }
+        if($mes != "" ) {
+            $dql .= " AND p.mes = " . $mes;
+        }                
+        if($numeroIdentificacion != "" ) {
+            $dql .= " AND e.numeroIdentificacion = '" . $numeroIdentificacion . "'";
+        }        
+        $dql .= " ORDER BY p.anio, p.mes DESC";
+        return $dql;
+    }      
+    
+    public function generar($codigoCierreMes) {
         $em = $this->getEntityManager();
         $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+        $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
+        $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);        
         $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
             . "WHERE c.estadoActivo = 1";           
         $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
@@ -24,15 +42,20 @@ class RhuPrestacionRepository extends EntityRepository {
             $arPrestacion->setEmpleadoRel($arContrato->getEmpleadoRel());
             $arPrestacion->setContratoRel($arContrato);
             $arPrestacion->setCentroCostoRel($arContrato->getCentroCostoRel());
+            $arPrestacion->setCodigoCierreMesFk($codigoCierreMes);
+            $arPrestacion->setAnio($arCierreMes->getAnio());
+            $arPrestacion->setMes($arCierreMes->getMes());
             //Vacaciones
             $arrVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->liquidarVacacion($fechaHasta, $arContrato);                        
             $arPrestacion->setDiasVacaciones($arrVacacion['dias']);
             $arPrestacion->setVrSalarioVacaciones($arrVacacion['salarioPromedio']);
             $arPrestacion->setVrVacaciones($arrVacacion['totalVacacion']);
-            
-            $em->persist($arPrestacion);
-            //$arrCesantia = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->liquidarCesantia($fechaHasta, $arContrato, $arConfiguracion);                                    
-            
+            $arPrestacion->setFechaUltimoPagoVacaciones($arrVacacion['fechaDesde']);
+
+            //Cesantias
+            $arrCesantia = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->liquidarCesantia($fechaHasta, $arContrato, $arConfiguracion);                                    
+            $arPrestacion->setFechaUltimoPagoCesantias($arrCesantia['fechaDesde']);            
+            $em->persist($arPrestacion);            
         }
         $em->flush();        
     }
@@ -63,7 +86,9 @@ class RhuPrestacionRepository extends EntityRepository {
         }       
 
         $totalVacacion = $salarioPromedio / 30 * $diasVacacion;
+        $totalVacacion = round($totalVacacion);
         $arrVacacion = array('dias' => $diasVacacion,
+                             'fechaDesde' => $fechaDesdePeriodo,
                              'salarioPromedio' => $salarioPromedio,
                              'totalVacacion' => $totalVacacion);
         return $arrVacacion;
@@ -81,6 +106,7 @@ class RhuPrestacionRepository extends EntityRepository {
         $salarioPromedioCesantias = 0;
         $totalCesantia = 0;
         $douInteresesCesantias = 0;
+        $dateFechaDesde = new \DateTime('now');
         if($arContrato->getSalarioIntegral() == 0) {        
             $dateFechaDesde = $arContrato->getFechaUltimoPagoCesantias();
             $dateFechaHasta = $fechaHasta;
@@ -159,13 +185,14 @@ class RhuPrestacionRepository extends EntityRepository {
             $porcentajeIntereses = (($dias * 12) / 360)/100;            
             $douInteresesCesantias = $totalCesantia * $porcentajeIntereses;
             $douInteresesCesantias = round($douInteresesCesantias);
-            $totalCesantia = round($totalCesantia);           
+            $totalCesantia = round($totalCesantia);              
         }
         $arrCesantia = array('dias' => $intDiasCesantiaLiquidar,
                              'diasAusentismo' => $diasAusentismo,
                              'salarioPromedio' => $salarioPromedioCesantias,
                              'totalCesantia' => $totalCesantia,
-                             'totalIntereses' => $douInteresesCesantias);
+                             'totalIntereses' => $douInteresesCesantias,
+                             'fechaDesde' => $dateFechaDesde);
         return $arrCesantia;
     }    
 }

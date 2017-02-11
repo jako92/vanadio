@@ -1,0 +1,123 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Prestacion consulta - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Consulta: prestacion</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Consultas</a></li>            
+            <li class="active">prestacion</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
+            });
+        </script>        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">        
+                <div class="form-group form-group-sm">
+                    <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Empleado:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.txtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }} 
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">                                      
+                                    {{ form_widget(form.txtNombreCorto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Anio:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.anio, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Mes:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.mes, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>                      
+            </div>
+        </div> 
+        <table  class="table table-striped table-bordered table-condensed table-hover">
+            <tr>
+                <td colspan="5"></td>                                
+                <td colspan="4" style="text-align: center">VACACIONES</td>
+                <td colspan="5" style="text-align: center">CESANTIAS</td>
+            </tr>            
+            <tr>
+                <th>ID</th>
+                <th>ANIO</th>
+                <th>MES</th>
+                <th>IDENTIFICACION</th>                
+                <th>NOMBRE</th> 
+                <th>DESDE</th>
+                <th>DIAS</th>
+                <th>SALARIO</th> 
+                <th>TOTAL</th> 
+                <th>DESDE</th>
+                <th>DIAS</th>
+                <th>SALARIO</th> 
+                <th>TOTAL</th>                 
+                <th>INTERESES</th>                 
+            </tr>
+            {% for arPrestaciones in arPrestaciones %}
+                <tr>
+                    <td>{{ arPrestaciones.codigoPrestacionPk }} </td>
+                    <td>{{ arPrestaciones.anio }} </td>
+                    <td>{{ arPrestaciones.mes }} </td>
+                    <td>{{ arPrestaciones.empleadoRel.numeroIdentificacion }} </td>
+                    <td>{{ arPrestaciones.empleadoRel.nombreCorto }} </td>
+                    <td>{{ arPrestaciones.fechaUltimoPagoVacaciones | date('Y-m-d') }} </td>
+                    <td style="text-align: right">{{ arPrestaciones.diasVacaciones | number_format(0, '.', ',') }}</td>                            
+                    <td style="text-align: right">{{ arPrestaciones.vrSalarioVacaciones | number_format(0, '.', ',') }}</td>                            
+                    <td style="text-align: right">{{ arPrestaciones.vrVacaciones | number_format(0, '.', ',') }}</td>                            
+                    <td>{{ arPrestaciones.fechaUltimoPagoCesantias | date('Y-m-d') }} </td>
+                    <td style="text-align: right">{{ arPrestaciones.diasCesantias | number_format(0, '.', ',') }}</td>                            
+                    <td style="text-align: right">{{ arPrestaciones.vrSalarioPromedioCesantias | number_format(0, '.', ',') }}</td>                            
+                    <td style="text-align: right">{{ arPrestaciones.vrCesantias | number_format(0, '.', ',') }}</td>                                                
+                    <td style="text-align: right">{{ arPrestaciones.vrInteresesCesantias | number_format(0, '.', ',') }}</td>                                                                    
+                </tr>
+            {% endfor %}
+        </table>
+        <div class="btn-toolbar" style="float: left">
+            <div class="btn-group" style="float: left">
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPrestaciones.getTotalItemCount }}</span></div>                        
+            </div>
+            <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+                {{ knp_pagination_render(arPrestaciones) }}       
+            </div>
+        </div>                
+        <div class="btn-toolbar" style="float: right">                 
+            <div class="btn-group">
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
