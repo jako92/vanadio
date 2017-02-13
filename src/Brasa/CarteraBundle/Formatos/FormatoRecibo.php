@@ -59,11 +59,11 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("NÚMERO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arRecibo->getNumero(), 1, 0, 'L', 1);
+        $this->Cell(62, 5, $arRecibo->getNumero(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(52, 5, "", 1, 0, 'L', 1);
+        $this->Cell(42, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("TOTAL DCTO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -72,12 +72,12 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetXY(10, $intY+5);
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("CLIENTE:") , 1, 0, 'L', 1);
-        $this->SetFont('Arial','',6.5);
-        $this->Cell(52, 5, $arRecibo->getClienteRel()->getNombreCorto(), 1, 0, 'L', 1);
+        $this->SetFont('Arial','',6);
+        $this->Cell(62, 5, $arRecibo->getClienteRel()->getNombreCorto(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("NIT:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arRecibo->getClienteRel()->getNit(), 1, 0, 'L', 1);
+        $this->Cell(42, 5, $arRecibo->getClienteRel()->getNit(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("AJ. PESO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -87,11 +87,11 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("CUENTA BANCO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(52, 5, $arRecibo->getCuentaRel()->getNombre(), 1, 0, 'L', 1);
+        $this->Cell(62, 5, $arRecibo->getCuentaRel()->getNombre(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("TIPO RECIBO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(52, 5, $arRecibo->getReciboTipoRel()->getNombre(), 1, 0, 'L', 1);
+        $this->Cell(42, 5, $arRecibo->getReciboTipoRel()->getNombre(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE ICA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -101,11 +101,11 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("FECHA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, $arRecibo->getFecha()->format('Y-m-d'), 1, 0, 'L', 1);
+        $this->Cell(62, 5, $arRecibo->getFecha()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(52, 5, "", 1, 0, 'L', 1);
+        $this->Cell(42, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE IVA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -116,11 +116,11 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->Cell(26, 5, utf8_decode("FECHA PAGO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         
-        $this->Cell(52, 5, $arRecibo->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
+        $this->Cell(62, 5, $arRecibo->getFechaPago()->format('Y-m-d'), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(52, 5, '', 1, 0, 'L', 1);
+        $this->Cell(42, 5, '', 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RET FUENTE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -131,12 +131,12 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->Cell(26, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         
-        $this->Cell(52, 5, "", 1, 0, 'L', 1);
+        $this->Cell(62, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         
-        $this->Cell(52, 5, "", 1, 0, 'L', 1);
+        $this->Cell(42, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("VALOR:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -144,9 +144,9 @@ class FormatoRecibo extends \FPDF_FPDF {
         //linea 7
         $this->SetXY(10, $intY+30);
         $this->Cell(26, 5, "" , 1, 0, 'L', 1);
-        $this->Cell(52, 5, "" , 1, 0, 'L', 1);
+        $this->Cell(62, 5, "" , 1, 0, 'L', 1);
         $this->Cell(21, 5, "" , 1, 0, 'L', 1);
-        $this->Cell(52, 5, "" , 1, 0, 'L', 1);
+        $this->Cell(42, 5, "" , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, "TOTAL PAGO:" , 1, 0, 'L', 1);
         $this->Cell(20, 5, number_format($arRecibo->getVrTotalPago(), 2, '.', ','), 1, 0, 'R', 1);
