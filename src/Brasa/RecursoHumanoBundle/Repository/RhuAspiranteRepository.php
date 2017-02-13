@@ -41,9 +41,9 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoEstadoCivil != "") {
             $dql .= " AND a.codigoEstadoCivilFk = '" . $codigoEstadoCivil . "'";
         }
-        //if($codigoLibretaMilitar != "3" ) {
-          //  $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
-        //}*/
+        if($codigoLibretaMilitar > 0 &&  $codigoLibretaMilitar < 3) {
+            $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
+        }
         if($codigoZona != "") {
             $dql .= " AND a.codigoZonaFk = " . $codigoZona;
         }
