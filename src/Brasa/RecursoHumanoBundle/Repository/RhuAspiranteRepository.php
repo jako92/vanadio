@@ -35,9 +35,12 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoReintegro > 0 &&  $codigoReintegro < 2) {
             $dql .= " AND a.reintegro = " . $codigoReintegro;
         }
-        /*if($codigoSexo != '2') {
+        if($codigoSexo == 'M') {
             $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
-        }*/
+        }
+        if($codigoSexo == 'F') {
+            $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
+        }
         if($codigoEstadoCivil != "") {
             $dql .= " AND a.codigoEstadoCivilFk = '" . $codigoEstadoCivil . "'";
         }
@@ -81,18 +84,21 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoDisponibilidad > 0) {
             $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
         }
-        /*if($codigoReintegro != "2" ) {
+        if($codigoReintegro > 0 &&  $codigoReintegro < 2) {
             $dql .= " AND a.reintegro = " . $codigoReintegro;
         }
-        if($codigoSexo != "2") {
+        if($codigoSexo == 'M') {
+            $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
+        }
+        if($codigoSexo == 'F') {
             $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
         }
         if($codigoEstadoCivil != "") {
             $dql .= " AND a.codigoEstadoCivilFk = '" . $codigoEstadoCivil . "'";
         }
-        if($codigoLibretaMilitar != "3" ) {
+        if($codigoLibretaMilitar > 0 &&  $codigoLibretaMilitar < 3) {
             $dql .= " AND a.codigoTipoLibreta = '" . $codigoLibretaMilitar . "'";
-        }*/
+        }
         if($codigoZona != "") {
             $dql .= " AND a.codigoZonaFk = " . $codigoZona;
         }
