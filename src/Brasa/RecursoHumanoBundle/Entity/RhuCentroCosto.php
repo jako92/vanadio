@@ -191,7 +191,32 @@ class RhuCentroCosto
     /**     
      * @ORM\Column(name="pagar_dia_31", type="boolean")
      */    
-    private $pagarDia31 = false;    
+    private $pagarDia31 = false;
+
+    /**
+     * @ORM\Column(name="porcentaje_cesantias", type="float")
+     */
+    private $porcentajeCesantias = 0;
+
+    /**
+     * @ORM\Column(name="porcentaje_intereses_cesantias", type="float")
+     */
+    private $porcentajeInteresesCesantias = 0;
+    
+    /**
+     * @ORM\Column(name="porcentaje_vacaciones", type="float")
+     */
+    private $porcentajeVacaciones = 0;
+    
+    /**
+     * @ORM\Column(name="porcentaje_primas", type="float")
+     */
+    private $porcentajePrimas = 0;
+    
+    /**
+     * @ORM\Column(name="porcentaje_caja", type="float")
+     */
+    private $porcentajeCaja = 0; 
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="centrosCostosClienteRel")
@@ -2047,5 +2072,125 @@ class RhuCentroCosto
     public function getPrestacionesCentroCostoRel()
     {
         return $this->prestacionesCentroCostoRel;
+    }
+
+    /**
+     * Set porcentajeCesantias
+     *
+     * @param float $porcentajeCesantias
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeCesantias($porcentajeCesantias)
+    {
+        $this->porcentajeCesantias = $porcentajeCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeCesantias()
+    {
+        return $this->porcentajeCesantias;
+    }
+
+    /**
+     * Set porcentajeInteresesCesantias
+     *
+     * @param float $porcentajeInteresesCesantias
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeInteresesCesantias($porcentajeInteresesCesantias)
+    {
+        $this->porcentajeInteresesCesantias = $porcentajeInteresesCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeInteresesCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeInteresesCesantias()
+    {
+        return $this->porcentajeInteresesCesantias;
+    }
+
+    /**
+     * Set porcentajeVacaciones
+     *
+     * @param float $porcentajeVacaciones
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeVacaciones($porcentajeVacaciones)
+    {
+        $this->porcentajeVacaciones = $porcentajeVacaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeVacaciones
+     *
+     * @return float
+     */
+    public function getPorcentajeVacaciones()
+    {
+        return $this->porcentajeVacaciones;
+    }
+
+    /**
+     * Set porcentajePrimas
+     *
+     * @param float $porcentajePrimas
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajePrimas($porcentajePrimas)
+    {
+        $this->porcentajePrimas = $porcentajePrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajePrimas
+     *
+     * @return float
+     */
+    public function getPorcentajePrimas()
+    {
+        return $this->porcentajePrimas;
+    }
+
+    /**
+     * Set porcentajeCaja
+     *
+     * @param float $porcentajeCaja
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeCaja($porcentajeCaja)
+    {
+        $this->porcentajeCaja = $porcentajeCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCaja
+     *
+     * @return float
+     */
+    public function getPorcentajeCaja()
+    {
+        return $this->porcentajeCaja;
     }
 }

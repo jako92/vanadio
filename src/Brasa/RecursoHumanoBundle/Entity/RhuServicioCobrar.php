@@ -123,7 +123,17 @@ class RhuServicioCobrar
     /**
      * @ORM\Column(name="vr_cesantias", type="float")
      */
-    private $vrCesantias = 0;    
+    private $vrCesantias = 0;
+    
+    /**
+     * @ORM\Column(name="vr_primas", type="float")
+     */
+    private $vrPrimas = 0;
+
+    /**
+     * @ORM\Column(name="vr_cesantias_intereses", type="float")
+     */
+    private $vrCesantiasIntereses = 0;
     
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
@@ -159,6 +169,11 @@ class RhuServicioCobrar
      * @ORM\Column(name="vr_ingreso_base_cotizacion", type="float")
      */
     private $vrIngresoBaseCotizacion = 0;    
+    
+    /**
+     * @ORM\Column(name="vr_ingreso_base_prestacion", type="float")
+     */
+    private $vrIngresoBasePrestacion = 0;
     
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
@@ -205,6 +220,7 @@ class RhuServicioCobrar
     protected $facturasDetallesServicioCobrarRel;
     
 
+    
     /**
      * Constructor
      */
@@ -728,6 +744,30 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set vrCesantiasIntereses
+     *
+     * @param float $vrCesantiasIntereses
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrCesantiasIntereses($vrCesantiasIntereses)
+    {
+        $this->vrCesantiasIntereses = $vrCesantiasIntereses;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCesantiasIntereses
+     *
+     * @return float
+     */
+    public function getVrCesantiasIntereses()
+    {
+        return $this->vrCesantiasIntereses;
+    }
+
+    /**
      * Set vrVacaciones
      *
      * @param float $vrVacaciones
@@ -893,6 +933,30 @@ class RhuServicioCobrar
     public function getVrIngresoBaseCotizacion()
     {
         return $this->vrIngresoBaseCotizacion;
+    }
+
+    /**
+     * Set vrIngresoBasePrestacion
+     *
+     * @param float $vrIngresoBasePrestacion
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrIngresoBasePrestacion($vrIngresoBasePrestacion)
+    {
+        $this->vrIngresoBasePrestacion = $vrIngresoBasePrestacion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIngresoBasePrestacion
+     *
+     * @return float
+     */
+    public function getVrIngresoBasePrestacion()
+    {
+        return $this->vrIngresoBasePrestacion;
     }
 
     /**
@@ -1095,5 +1159,29 @@ class RhuServicioCobrar
     public function getFacturasDetallesServicioCobrarRel()
     {
         return $this->facturasDetallesServicioCobrarRel;
+    }
+
+    /**
+     * Set vrPrimas
+     *
+     * @param float $vrPrimas
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrPrimas($vrPrimas)
+    {
+        $this->vrPrimas = $vrPrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrimas
+     *
+     * @return float
+     */
+    public function getVrPrimas()
+    {
+        return $this->vrPrimas;
     }
 }

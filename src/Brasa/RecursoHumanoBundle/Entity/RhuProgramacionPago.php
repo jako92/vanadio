@@ -181,7 +181,12 @@ class RhuProgramacionPago
     /**
      * @ORM\Column(name="aplicar_transporte", type="boolean")
      */    
-    private $aplicarTransporte = false;    
+    private $aplicarTransporte = false;
+
+    /**
+     * @ORM\Column(name="servicio_generado", type="boolean")
+     */    
+    private $servicioGenerado= false;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuPagoTipo", inversedBy="programacionesPagosPagoTipoRel")
@@ -1290,5 +1295,29 @@ class RhuProgramacionPago
     public function getEstadoExportadoArdid()
     {
         return $this->estadoExportadoArdid;
+    }
+
+    /**
+     * Set servicioGenerado
+     *
+     * @param boolean $servicioGenerado
+     *
+     * @return RhuProgramacionPago
+     */
+    public function setServicioGenerado($servicioGenerado)
+    {
+        $this->servicioGenerado = $servicioGenerado;
+
+        return $this;
+    }
+
+    /**
+     * Get servicioGenerado
+     *
+     * @return boolean
+     */
+    public function getServicioGenerado()
+    {
+        return $this->servicioGenerado;
     }
 }
