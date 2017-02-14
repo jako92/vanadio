@@ -14,12 +14,7 @@
             <li class="active">Centro costo (mes)</li>
         </ol>
     </section>    
-    <section class="content">        	
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
-        </script>        
+    <section class="content">        	      
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
@@ -50,7 +45,8 @@
                 <th>MES</th>
                 <th>CODIGO</th>                
                 <th>CENTRO COSTO</th>
-                <th>PUESTO</th>                                               
+                <th>PUESTO</th>
+                <th>%PART</th>
             </tr>
             {% for arEmpleadoCentroCosto in arEmpleadoCentroCosto %}
                 <tr>
@@ -58,7 +54,8 @@
                     <td>{{ arEmpleadoCentroCosto.mes }} </td>                
                     <td>{{ arEmpleadoCentroCosto.codigoEmpleadoFk  }}</td>
                     <td>{{ arEmpleadoCentroCosto.codigoCentroCostoFk  }}</td>
-                    <td>{{ arEmpleadoCentroCosto.codigoPuestoFk  }}</td>  
+                    <td>{{ arEmpleadoCentroCosto.codigoPuestoFk  }}</td> 
+                    <td style="text-align: right">{{ arEmpleadoCentroCosto.participacion | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
         </table>

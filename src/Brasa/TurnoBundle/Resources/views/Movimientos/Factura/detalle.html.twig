@@ -15,12 +15,6 @@
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">

@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class RhuEmpleadoType extends AbstractType
 {
@@ -28,9 +29,13 @@ class RhuEmpleadoType extends AbstractType
                 'class' => 'BrasaContabilidadBundle:CtbCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => true))                
+                    ->orderBy('cc.codigoCentroCostoPk', 'ASC');},
+                'choice_label' => function ($centroCosto) {
+                    return $centroCosto->getCodigoCentroCostoPk() . '-' . $centroCosto->getNombre();
+                },
+                'required' => true))  
+                            
+                            
             ->add('tipoIdentificacionRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
                 'query_builder' => function (EntityRepository $er) {
@@ -131,6 +136,7 @@ class RhuEmpleadoType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa',
                 'choice_label' => 'nombre',
             ))            
+            ->add('centroCostoFijo', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

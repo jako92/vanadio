@@ -382,6 +382,11 @@ class TurPedidoDetalle
     protected $pedidosDevolucionesDetallesPedidoDetalleRel;    
 
     /**
+     * @ORM\OneToMany(targetEntity="TurCostoDetalle", mappedBy="pedidoDetalleRel")
+     */
+    protected $costosDetallesPedidoDetalleRel;     
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -2188,5 +2193,39 @@ class TurPedidoDetalle
     public function getFechaHastaServicio()
     {
         return $this->fechaHastaServicio;
+    }
+
+    /**
+     * Add costosDetallesPedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPedidoDetalleRel
+     *
+     * @return TurPedidoDetalle
+     */
+    public function addCostosDetallesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPedidoDetalleRel)
+    {
+        $this->costosDetallesPedidoDetalleRel[] = $costosDetallesPedidoDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove costosDetallesPedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPedidoDetalleRel
+     */
+    public function removeCostosDetallesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPedidoDetalleRel)
+    {
+        $this->costosDetallesPedidoDetalleRel->removeElement($costosDetallesPedidoDetalleRel);
+    }
+
+    /**
+     * Get costosDetallesPedidoDetalleRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostosDetallesPedidoDetalleRel()
+    {
+        return $this->costosDetallesPedidoDetalleRel;
     }
 }

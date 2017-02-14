@@ -14,13 +14,12 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CostosController extends Controller
 {
-    var $strSqlLista = "";
+    var $strDqlLista = "";
     /**
      * @Route("/rhu/consulta/costo", name="brs_rhu_consulta_costo")
      */    
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        
+        $em = $this->getDoctrine()->getManager();        
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 13)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }         
@@ -47,32 +46,17 @@ class CostosController extends Controller
             }
 
         }
-        $arPagos = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 40);
-        return $this->render('BrasaRecursoHumanoBundle:Consultas/Costos:lista.html.twig', array(
-            'arPagos' => $arPagos,
+        $arCostos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
+        return $this->render('BrasaRecursoHumanoBundle:Consultas/Costo:lista.html.twig', array(
+            'arCostos' => $arCostos,
             'form' => $form->createView()
-            ));
-    }   
-
-    /**
-     * @Route("/rhu/consulta/costo/detalle/{codigoPago}", name="brs_rhu_consulta_costo_detalle")
-     */    
-    public function verDetalleAction($codigoPago) {
-        $em = $this->getDoctrine()->getManager();                
-        $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($codigoPago);
-        return $this->render('BrasaRecursoHumanoBundle:Consultas/Costos:detalle.html.twig', array(
-            'arPago' => $arPago,
             ));
     }       
     
     private function listarCostosGeneral() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaDqlCostos(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCosto')->listaDql(
                     );
     }  
 
@@ -142,55 +126,38 @@ class CostosController extends Controller
             ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
             ->setKeywords("office 2007 openxml php")
             ->setCategory("Test result file");
-
+        for($col = 'A'; $col !== 'J'; $col++) {
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
+                }
+        for($col = 'F'; $col !== 'J'; $col++) {            
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        } 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'DESDE')
-                    ->setCellValue('C1', 'HASTA')
+                    ->setCellValue('A1', 'ID')
+                    ->setCellValue('B1', 'ANIO')
+                    ->setCellValue('C1', 'MES')
                     ->setCellValue('D1', 'IDENTIFICACION')
-                    ->setCellValue('E1', 'NOMBRE')
-                    ->setCellValue('F1', 'CENTRO COSTOS')
-                    ->setCellValue('G1', 'BASICO')
-                    ->setCellValue('H1', 'TIEMPO EXTRA')
-                    ->setCellValue('I1', 'VALORES ADICIONALES')
-                    ->setCellValue('J1', 'AUX. TRANSPORTE')
-                    ->setCellValue('K1', 'ADMON')
-                    ->setCellValue('L1', 'COSTO')
-                    ->setCellValue('M1', 'TOTAL')
-                    ->setCellValue('N1', 'NETO')
-                    ->setCellValue('O1', 'IBC')
-                    ->setCellValue('P1', 'IBP')
-                    ->setCellValue('Q1', 'AUX. TRANSPORTE COTIZACION')
-                    ->setCellValue('R1', 'DIAS PERIODO')
-                    ->setCellValue('S1', 'SALARIO PERIODO')
-                    ->setCellValue('T1', 'SALARIO EMPLEADO');
+                    ->setCellValue('E1', 'NOMBRE')                    
+                    ->setCellValue('F1', 'NOMINA')
+                    ->setCellValue('G1', 'S_SOCIAL')
+                    ->setCellValue('H1', 'PRESTACIONES')
+                    ->setCellValue('I1', 'TOTAL');
 
         $i = 2;
-        $query = $em->createQuery($this->strSqlLista);
-        $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-        $arPagos = $query->getResult();
-        foreach ($arPagos as $arPago) {
+        $query = $em->createQuery($this->strDqlLista);
+        $arCostos = new \Brasa\RecursoHumanoBundle\Entity\RhuCosto();
+        $arCostos = $query->getResult();
+        foreach ($arCostos as $arCosto) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arPago->getCodigoPagoPk())
-                    ->setCellValue('B' . $i, $arPago->getFechaDesde()->Format('Y-m-d'))
-                    ->setCellValue('C' . $i, $arPago->getFechaHasta()->Format('Y-m-d'))
-                    ->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('F' . $i, $arPago->getCentroCostoRel()->getNombre())
-                    ->setCellValue('G' . $i, $arPago->getVrSalario())
-                    ->setCellValue('H' . $i, $arPago->getVrAdicionalTiempo())
-                    ->setCellValue('I' . $i, $arPago->getVrAdicionalValor())
-                    ->setCellValue('J' . $i, $arPago->getVrAuxilioTransporte())
-                    ->setCellValue('K' . $i, 0)
-                    ->setCellValue('L' . $i, $arPago->getVrCosto())
-                    ->setCellValue('M' . $i, 0)
-                    ->setCellValue('N' . $i, $arPago->getVrNeto())
-                    ->setCellValue('O' . $i, $arPago->getVrIngresoBaseCotizacion())
-                    ->setCellValue('P' . $i, $arPago->getVrIngresoBasePrestacion())
-                    ->setCellValue('Q' . $i, $arPago->getVrAuxilioTransporteCotizacion())
-                    ->setCellValue('R' . $i, $arPago->getDiasPeriodo())
-                    ->setCellValue('S' . $i, $arPago->getVrSalarioPeriodo())
-                    ->setCellValue('T' . $i, $arPago->getVrSalarioEmpleado());
+                    ->setCellValue('A' . $i, $arCosto->getCodigoCostoPk())
+                    ->setCellValue('B' . $i, $arCosto->getAnio())
+                    ->setCellValue('C' . $i, $arCosto->getMes())
+                    ->setCellValue('D' . $i, $arCosto->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('E' . $i, $arCosto->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('F' . $i, $arCosto->getVrNomina())
+                    ->setCellValue('G' . $i, $arCosto->getVrSeguridadSocial())
+                    ->setCellValue('H' . $i, $arCosto->getVrPrestacion())
+                    ->setCellValue('I' . $i, $arCosto->getVrTotal());
             $i++;
         }
 

@@ -26,7 +26,7 @@ class RhuEmpleadoCentroCosto
      * @ORM\Column(name="mes", type="integer")
      */    
     private $mes = 0; 
-
+    
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
      */    
@@ -42,6 +42,10 @@ class RhuEmpleadoCentroCosto
      */    
     private $codigoPuestoFk;    
 
+    /**
+     * @ORM\Column(name="participacion", type="float")
+     */    
+    private $participacion = 0;     
 
     /**
      * Get codigoEmpleadoCentroCostoPk
@@ -171,5 +175,29 @@ class RhuEmpleadoCentroCosto
     public function getCodigoPuestoFk()
     {
         return $this->codigoPuestoFk;
+    }
+
+    /**
+     * Set participacion
+     *
+     * @param float $participacion
+     *
+     * @return RhuEmpleadoCentroCosto
+     */
+    public function setParticipacion($participacion)
+    {
+        $this->participacion = $participacion;
+
+        return $this;
+    }
+
+    /**
+     * Get participacion
+     *
+     * @return float
+     */
+    public function getParticipacion()
+    {
+        return $this->participacion;
     }
 }

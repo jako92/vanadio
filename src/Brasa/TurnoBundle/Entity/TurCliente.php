@@ -370,6 +370,11 @@ class TurCliente
     protected $programacionesAlternasClienteRel;    
 
     /**
+     * @ORM\OneToMany(targetEntity="TurCostoDetalle", mappedBy="clienteRel")
+     */
+    protected $costosDetallesClienteRel;     
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -2190,5 +2195,39 @@ class TurCliente
     public function getRegimenSimplificado()
     {
         return $this->regimenSimplificado;
+    }
+
+    /**
+     * Add costosDetallesClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesClienteRel
+     *
+     * @return TurCliente
+     */
+    public function addCostosDetallesClienteRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesClienteRel)
+    {
+        $this->costosDetallesClienteRel[] = $costosDetallesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove costosDetallesClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesClienteRel
+     */
+    public function removeCostosDetallesClienteRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesClienteRel)
+    {
+        $this->costosDetallesClienteRel->removeElement($costosDetallesClienteRel);
+    }
+
+    /**
+     * Get costosDetallesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostosDetallesClienteRel()
+    {
+        return $this->costosDetallesClienteRel;
     }
 }

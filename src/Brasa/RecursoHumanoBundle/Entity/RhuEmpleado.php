@@ -379,6 +379,11 @@ class RhuEmpleado
      */    
     private $codigoPuestoFk;    
     
+    /**     
+     * @ORM\Column(name="centro_costo_fijo", type="boolean")
+     */    
+    private $centroCostoFijo = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuClasificacionRiesgo", inversedBy="empleadosClasificacionRiesgoRel")
      * @ORM\JoinColumn(name="codigo_clasificacion_riesgo_fk", referencedColumnName="codigo_clasificacion_riesgo_pk")
@@ -581,6 +586,11 @@ class RhuEmpleado
      * @ORM\OneToMany(targetEntity="RhuPrestacion", mappedBy="empleadoRel")
      */
     protected $prestacionesEmpleadoRel;     
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCosto", mappedBy="empleadoRel")
+     */
+    protected $costosEmpleadoRel; 
     
     /**
      * @ORM\OneToMany(targetEntity="RhuDisciplinario", mappedBy="empleadoRel")
@@ -740,16 +750,24 @@ class RhuEmpleado
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoBancoDetalle", mappedBy="empleadoRel")
      */
-    protected $pagosBancosDetallesEmpleadoRel;    
-    
+    protected $pagosBancosDetallesEmpleadoRel;        
     
     /**
      * @ORM\OneToMany(targetEntity="RhuVisita", mappedBy="empleadoRel")
      */
-    protected $visitasEmpleadoRel;
-        
+    protected $visitasEmpleadoRel;        
     
-        
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCosto", mappedBy="empleadoRel")
+     */
+    protected $turCostosEmpleadoRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCostoDetalle", mappedBy="empleadoRel")
+     */
+    protected $turCostosDetallesEmpleadoRel; 
+    
+
     /**
      * Constructor
      */
@@ -767,6 +785,8 @@ class RhuEmpleado
         $this->contratosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->programacionesPagosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->liquidacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prestacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->costosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosDescargosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosFamiliasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -792,11 +812,12 @@ class RhuEmpleado
         $this->cartasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->capacitacionesDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cambiosTiposContratosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reclamosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosBancosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->visitasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turCostosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turCostosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    
 
     /**
      * Get codigoEmpleadoPk
@@ -2489,6 +2510,30 @@ class RhuEmpleado
     }
 
     /**
+     * Set centroCostoFijo
+     *
+     * @param boolean $centroCostoFijo
+     *
+     * @return RhuEmpleado
+     */
+    public function setCentroCostoFijo($centroCostoFijo)
+    {
+        $this->centroCostoFijo = $centroCostoFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get centroCostoFijo
+     *
+     * @return boolean
+     */
+    public function getCentroCostoFijo()
+    {
+        return $this->centroCostoFijo;
+    }
+
+    /**
      * Set clasificacionRiesgoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuClasificacionRiesgo $clasificacionRiesgoRel
@@ -3446,6 +3491,74 @@ class RhuEmpleado
     public function getLiquidacionesEmpleadoRel()
     {
         return $this->liquidacionesEmpleadoRel;
+    }
+
+    /**
+     * Add prestacionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addPrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    {
+        $this->prestacionesEmpleadoRel[] = $prestacionesEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     */
+    public function removePrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    {
+        $this->prestacionesEmpleadoRel->removeElement($prestacionesEmpleadoRel);
+    }
+
+    /**
+     * Get prestacionesEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesEmpleadoRel()
+    {
+        return $this->prestacionesEmpleadoRel;
+    }
+
+    /**
+     * Add costosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCosto $costosEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addCostosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCosto $costosEmpleadoRel)
+    {
+        $this->costosEmpleadoRel[] = $costosEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove costosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCosto $costosEmpleadoRel
+     */
+    public function removeCostosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCosto $costosEmpleadoRel)
+    {
+        $this->costosEmpleadoRel->removeElement($costosEmpleadoRel);
+    }
+
+    /**
+     * Get costosEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostosEmpleadoRel()
+    {
+        return $this->costosEmpleadoRel;
     }
 
     /**
@@ -4497,36 +4610,70 @@ class RhuEmpleado
     }
 
     /**
-     * Add prestacionesEmpleadoRel
+     * Add turCostosEmpleadoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     * @param \Brasa\TurnoBundle\Entity\TurCosto $turCostosEmpleadoRel
      *
      * @return RhuEmpleado
      */
-    public function addPrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    public function addTurCostosEmpleadoRel(\Brasa\TurnoBundle\Entity\TurCosto $turCostosEmpleadoRel)
     {
-        $this->prestacionesEmpleadoRel[] = $prestacionesEmpleadoRel;
+        $this->turCostosEmpleadoRel[] = $turCostosEmpleadoRel;
 
         return $this;
     }
 
     /**
-     * Remove prestacionesEmpleadoRel
+     * Remove turCostosEmpleadoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel
+     * @param \Brasa\TurnoBundle\Entity\TurCosto $turCostosEmpleadoRel
      */
-    public function removePrestacionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesEmpleadoRel)
+    public function removeTurCostosEmpleadoRel(\Brasa\TurnoBundle\Entity\TurCosto $turCostosEmpleadoRel)
     {
-        $this->prestacionesEmpleadoRel->removeElement($prestacionesEmpleadoRel);
+        $this->turCostosEmpleadoRel->removeElement($turCostosEmpleadoRel);
     }
 
     /**
-     * Get prestacionesEmpleadoRel
+     * Get turCostosEmpleadoRel
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPrestacionesEmpleadoRel()
+    public function getTurCostosEmpleadoRel()
     {
-        return $this->prestacionesEmpleadoRel;
+        return $this->turCostosEmpleadoRel;
+    }
+
+    /**
+     * Add turCostosDetallesEmpleadoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $turCostosDetallesEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addTurCostosDetallesEmpleadoRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $turCostosDetallesEmpleadoRel)
+    {
+        $this->turCostosDetallesEmpleadoRel[] = $turCostosDetallesEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove turCostosDetallesEmpleadoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $turCostosDetallesEmpleadoRel
+     */
+    public function removeTurCostosDetallesEmpleadoRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $turCostosDetallesEmpleadoRel)
+    {
+        $this->turCostosDetallesEmpleadoRel->removeElement($turCostosDetallesEmpleadoRel);
+    }
+
+    /**
+     * Get turCostosDetallesEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTurCostosDetallesEmpleadoRel()
+    {
+        return $this->turCostosDetallesEmpleadoRel;
     }
 }

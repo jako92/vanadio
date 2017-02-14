@@ -208,6 +208,10 @@ class TurPuesto
      */
     protected $conrtolesPuestosDetallesPuestoRel; 
     
+    /**
+     * @ORM\OneToMany(targetEntity="TurCostoDetalle", mappedBy="puestoRel")
+     */
+    protected $costosDetallesPuestoRel;     
     
     /**
      * Constructor
@@ -1253,5 +1257,39 @@ class TurPuesto
     public function getControlPuesto()
     {
         return $this->controlPuesto;
+    }
+
+    /**
+     * Add costosDetallesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPuestoRel
+     *
+     * @return TurPuesto
+     */
+    public function addCostosDetallesPuestoRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPuestoRel)
+    {
+        $this->costosDetallesPuestoRel[] = $costosDetallesPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove costosDetallesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPuestoRel
+     */
+    public function removeCostosDetallesPuestoRel(\Brasa\TurnoBundle\Entity\TurCostoDetalle $costosDetallesPuestoRel)
+    {
+        $this->costosDetallesPuestoRel->removeElement($costosDetallesPuestoRel);
+    }
+
+    /**
+     * Get costosDetallesPuestoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostosDetallesPuestoRel()
+    {
+        return $this->costosDetallesPuestoRel;
     }
 }

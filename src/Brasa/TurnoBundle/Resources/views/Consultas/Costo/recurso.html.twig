@@ -44,7 +44,17 @@
                             </div>
                         </div>
                     </div>
-                </div>                                         
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Año:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtAnio, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Mes:</label>
+                    <div class="col-sm-4">    
+                        {{ form_widget(form.TxtMes, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
+                </div>                                     
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -67,30 +77,30 @@
                 <th>TOTAL</th>
                 <th></th>
             </tr>            
-            {% for arCostoRecurso in arCostoRecurso %}
+            {% for arCostos in arCostos %}
                 <tr>
-                    <td>{{ arCostoRecurso.codigoCostoRecursoPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arCostoRecurso.codigoCostoRecursoPk }}"></td>                                        
-                    <td>{{ arCostoRecurso.anio }}</td>
-                    <td>{{ arCostoRecurso.mes }}</td>
-                    <td>{{ arCostoRecurso.codigoRecursoFk }}</td>
-                    <td>{{ arCostoRecurso.recursoRel.numeroIdentificacion }}</td>
-                    <td>{{ arCostoRecurso.recursoRel.nombreCorto }}</td>
-                    <td>{{ arCostoRecurso.recursoRel.empleadoRel.codigoCentroCostoContabilidadFk }}</td>
-                    <td style="text-align: right">{{ arCostoRecurso.vrNomina | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arCostoRecurso.vrPrestaciones | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arCostoRecurso.vrAportesSociales | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: right">{{ arCostoRecurso.vrCostoTotal | number_format(0, '.', ',') }}</td> 
-                    <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_tur_consulta_costo_recurso_ver_detalle', {'codigoCostoRecurso': arCostoRecurso.codigoCostoRecursoPk }) }}', 'VerCostoRecursoDetalle', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_090_table.png') }}" width=20 height=20 title="Ver"></a></td>
+                    <td>{{ arCostos.codigoCostoPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arCostos.codigoCostoPk }}"></td>                                        
+                    <td>{{ arCostos.anio }}</td>
+                    <td>{{ arCostos.mes }}</td>
+                    <td>{{ arCostos.codigoEmpleadoFk }}</td>
+                    <td>{{ arCostos.empleadoRel.numeroIdentificacion }}</td>
+                    <td>{{ arCostos.empleadoRel.nombreCorto }}</td>
+                    <td>{{ arCostos.codigoCentroCostoFk }}</td>
+                    <td style="text-align: right">{{ arCostos.vrNomina | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: right">{{ arCostos.vrPrestaciones | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: right">{{ arCostos.vrAportesSociales | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: right">{{ arCostos.vrCostoTotal | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_tur_consulta_costo_recurso_ver_detalle', {'codigoCosto': arCostos.codigoCostoPk }) }}', 'VerCostoDetalle', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_090_table.png') }}" width=20 height=20 title="Ver"></a></td>
                 </tr>
             {% endfor %}
         </table>
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arCostoRecurso.getTotalItemCount }}</span></div>                        
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arCostos.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-            {{ knp_pagination_render(arCostoRecurso) }}       
+            {{ knp_pagination_render(arCostos) }}       
         </div>
         <div class="btn-toolbar" style="float: right">
             <div class="btn-group">                                

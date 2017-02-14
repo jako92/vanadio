@@ -46,7 +46,13 @@ class TurCierreMes
      * @ORM\OneToMany(targetEntity="TurCostoRecurso", mappedBy="cierreMesRel", cascade={"persist", "remove"})
      */
     protected $costosRecursosCierreMesRel;
-       
+
+    /**
+     * @ORM\OneToMany(targetEntity="TurCosto", mappedBy="cierreMesRel", cascade={"persist", "remove"})
+     */
+    protected $costosCierreMesRel;    
+    
+
     /**
      * Constructor
      */
@@ -54,6 +60,7 @@ class TurCierreMes
     {
         $this->costosServiciosCierreMesRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosRecursosCierreMesRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->costosCierreMesRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -228,5 +235,39 @@ class TurCierreMes
     public function getCostosRecursosCierreMesRel()
     {
         return $this->costosRecursosCierreMesRel;
+    }
+
+    /**
+     * Add costosCierreMesRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCosto $costosCierreMesRel
+     *
+     * @return TurCierreMes
+     */
+    public function addCostosCierreMesRel(\Brasa\TurnoBundle\Entity\TurCosto $costosCierreMesRel)
+    {
+        $this->costosCierreMesRel[] = $costosCierreMesRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove costosCierreMesRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCosto $costosCierreMesRel
+     */
+    public function removeCostosCierreMesRel(\Brasa\TurnoBundle\Entity\TurCosto $costosCierreMesRel)
+    {
+        $this->costosCierreMesRel->removeElement($costosCierreMesRel);
+    }
+
+    /**
+     * Get costosCierreMesRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostosCierreMesRel()
+    {
+        return $this->costosCierreMesRel;
     }
 }

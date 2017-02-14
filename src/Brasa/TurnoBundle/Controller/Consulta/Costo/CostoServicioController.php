@@ -1,5 +1,5 @@
 <?php
-namespace Brasa\TurnoBundle\Controller\Consulta;
+namespace Brasa\TurnoBundle\Controller\Consulta\Costo;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -59,22 +59,24 @@ class CostoServicioController extends Controller
         if ($form->isValid()) {                             
 
         }
-        $dql = $em->getRepository('BrasaTurnoBundle:TurCostoRecursoDetalle')->listaDql("", $arCostoServicio->getAnio(), $arCostoServicio->getMes(), $arCostoServicio->getCodigoPedidoDetalleFk());
-        $arCostoRecursoDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 200);
+        $dql = $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaDql("", $arCostoServicio->getAnio(), $arCostoServicio->getMes(), $arCostoServicio->getCodigoPedidoDetalleFk());
+        $arCostoDetalles = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 200);
         return $this->render('BrasaTurnoBundle:Consultas/Costo:verDetalleServicio.html.twig', array(
-            'arCostoRecursoDetalle' => $arCostoRecursoDetalle,                        
+            'arCostoDetalle' => $arCostoDetalles,                        
             'form' => $form->createView()));
     }    
     
-    private function lista() {
+    private function lista() {        
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurCostoServicio')->listaDql(
                 $session->get('filtroCodigoCliente'), 
+                $session->get('filtroTurAnio'),
                 $session->get('filtroTurMes') 
                 );
-        $this->strListaDetalleDql =  $em->getRepository('BrasaTurnoBundle:TurCostoRecursoDetalle')->listaConsultaDql(
+        $this->strListaDetalleDql =  $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaConsultaDql(
                 $session->get('filtroCodigoCliente'), 
+                $session->get('filtroTurAnio'),
                 $session->get('filtroTurMes') 
                 );        
     }
@@ -83,7 +85,7 @@ class CostoServicioController extends Controller
         $session = new session;
         $session->set('filtroNit', $form->get('TxtNit')->getData());
         $session->set('filtroTurMes', $form->get('TxtMes')->getData());
-        //$session->set('filtroCodigoRecurso', $form->get('TxtCodigoRecurso')->getData());
+        $session->set('filtroTurAnio', $form->get('TxtAnio')->getData());        
     }
 
     private function formularioFiltro() {
@@ -102,20 +104,10 @@ class CostoServicioController extends Controller
         } else {
             $session->set('filtroCodigoCliente', null);
         }
-        /*$strNombreRecurso = "";
-        if($session->get('filtroCodigoRecurso')) {
-            $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($session->get('filtroCodigoRecurso'));
-            if($arRecurso) {
-                $strNombreRecurso = $arRecurso->getNombreCorto();
-            }  else {
-                $session->set('filtroCodigoRecurso', null);
-            }
-        }*/
-
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            //->add('TxtCodigoRecurso', 'text', array('label'  => 'Nit','data' => $session->get('filtroCodigoRecurso')))
+            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))            
+            ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroTurAnio')))
             ->add('TxtMes', TextType::class, array('data' => $session->get('filtroTurMes')))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
@@ -267,9 +259,9 @@ class CostoServicioController extends Controller
                     ->setCellValue('G' . $i, $arCostoRecursoDetalle->getPuestoRel()->getNombre())
                     ->setCellValue('H' . $i, $arCostoRecursoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('I' . $i, $arCostoRecursoDetalle->getPedidoDetalleRel()->getModalidadServicioRel()->getNombre())
-                    ->setCellValue('J' . $i, $arCostoRecursoDetalle->getRecursoRel()->getNumeroIdentificacion())
-                    ->setCellValue('K' . $i, $arCostoRecursoDetalle->getRecursoRel()->getNombreCorto())
-                    ->setCellValue('L' . $i, $arCostoRecursoDetalle->getRecursoRel()->getEmpleadoRel()->getCodigoCentroCostoContabilidadFk())                    
+                    ->setCellValue('J' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('K' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('L' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getCodigoCentroCostoContabilidadFk())                    
                     ->setCellValue('M' . $i, $arCostoRecursoDetalle->getHorasDescanso())
                     ->setCellValue('N' . $i, $arCostoRecursoDetalle->getHorasDiurnas())
                     ->setCellValue('O' . $i, $arCostoRecursoDetalle->getHorasNocturnas())

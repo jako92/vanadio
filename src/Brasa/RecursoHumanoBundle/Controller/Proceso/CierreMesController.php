@@ -32,8 +32,9 @@ class CierreMesController extends Controller
                 $codigoCierreMes = $request->request->get('OpGenerar');
                 $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
                 $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
-                if($arCierreMes->getEstadoGenerado() == 0) {                
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar($codigoCierreMes);
+                if($arCierreMes->getEstadoGenerado() == 0) {   
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCosto')->generar($codigoCierreMes);
+                    //$em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar($codigoCierreMes);
                     $arCierreMes->setEstadoGenerado(1);
                     $em->persist($arCierreMes);
                     $em->flush();
@@ -45,6 +46,7 @@ class CierreMesController extends Controller
                 $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
                 if($arCierreMes->getEstadoGenerado() == 1) {
                     $strSql = "DELETE FROM rhu_prestacion WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
+                    $strSql = "DELETE FROM rhu_costo WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
                     $em->getConnection()->executeQuery($strSql);
                     $arCierreMes->setEstadoGenerado(0);
                     $em->persist($arCierreMes);
