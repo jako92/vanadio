@@ -53,18 +53,18 @@ class Factura4 extends \FPDF_FPDF {
         $this->Ln();
         $this->Ln(1);
         $this->SetFont('Arial', 'B', 9);
-        $List1 = array('RAZON SOCIAL: ', 'NIT: ', 'TELEFONO:', 'DIRECCION:', 'SECTOR:', 'ESTRATO:');
+        $List1 = array('NOMBRE: ','RAZON SOCIAL: ', 'NIT: ', 'TELEFONO:', 'DIRECCION:', 'SECTOR:');
         foreach ($List1 as $col) {
             $this->Cell(50, 4, $col, 0, 0, 'L');
             $this->Ln(4);
         }
 
-        $Datos = array($arFactura->getClienteRel()->getNombreCompleto(),
+        $Datos = array($arFactura->getClienteRel()->getNombreCorto(),
+            $arFactura->getClienteRel()->getNombreCompleto(),
             $arFactura->getClienteRel()->getNit() . "-" . $arFactura->getClienteRel()->getDigitoVerificacion(),
             $arFactura->getClienteRel()->getTelefono(),
             $arFactura->getClienteRel()->getDireccion(),
-            $arFactura->getClienteRel()->getSectorRel()->getNombre(),
-            $arFactura->getClienteRel()->getEstrato());
+            $arFactura->getClienteRel()->getSectorRel()->getNombre());
         $this->SetFont('Arial', '', 8);
         $this->SetY(50);
 
