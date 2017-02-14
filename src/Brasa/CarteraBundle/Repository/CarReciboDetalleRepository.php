@@ -105,8 +105,8 @@ class CarReciboDetalleRepository extends EntityRepository {
     
     public function vrPago($codigoCuentaCobrar) {
         $em = $this->getEntityManager();
-        $dql = "SELECT SUM(rd.valor as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
-                . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuentaCobrar . " ";
+        $dql = "SELECT SUM(rd.valor as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
+                . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuentaCobrar . " AND r.estadoAutorizado = 1";
         $query = $em->createQuery($dql);
         $vrTotalPago = $query->getSingleScalarResult();
         if (!$vrTotalPago) {
