@@ -58,6 +58,7 @@ class CarReciboDetalleRepository extends EntityRepository {
         $intCantidad = 0;
         $floValor = 0;
         $floValorPago = 0;
+        $totalAfectar = 0;
         $floDescuento = 0;
         $floAjustePeso = 0;
         $floReteIca = 0;
@@ -74,6 +75,7 @@ class CarReciboDetalleRepository extends EntityRepository {
             $floReteFuente += $arReciboDetalle->getVrReteFuente();
             $floValor += $arReciboDetalle->getValor();
             $floValorPago += $arReciboDetalle->getVrPagoDetalle();
+            $totalAfectar += $arReciboDetalle->getVrTotalAfectar();
         }                 
         $arRecibo->setVrTotal($floValor);
         $arRecibo->setVrTotalPago($floValorPago);
@@ -105,7 +107,7 @@ class CarReciboDetalleRepository extends EntityRepository {
     
     public function vrPago($codigoCuentaCobrar) {
         $em = $this->getEntityManager();
-        $dql = "SELECT SUM(rd.valor as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
+        $dql = "SELECT SUM(rd.vr_total_afectar as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
                 . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuentaCobrar . " AND r.estadoAutorizado = 1";
         $query = $em->createQuery($dql);
         $vrTotalPago = $query->getSingleScalarResult();

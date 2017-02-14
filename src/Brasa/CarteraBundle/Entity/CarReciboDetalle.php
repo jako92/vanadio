@@ -74,6 +74,11 @@ class CarReciboDetalle
     private $vrPagoDetalle = 0;   
     
     /**
+     * @ORM\Column(name="vr_total_afectar", type="float")
+     */    
+    private $vrTotalAfectar = 0;    
+    
+    /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
      */    
     private $usuario;
@@ -96,6 +101,7 @@ class CarReciboDetalle
      */
     protected $cuentaCobrarTipoRel;
    
+
 
     /**
      * Get codigoReciboDetallePk
@@ -369,6 +375,30 @@ class CarReciboDetalle
     public function getVrPagoDetalle()
     {
         return $this->vrPagoDetalle;
+    }
+
+    /**
+     * Set vrTotalAfectar
+     *
+     * @param float $vrTotalAfectar
+     *
+     * @return CarReciboDetalle
+     */
+    public function setVrTotalAfectar($vrTotalAfectar)
+    {
+        $this->vrTotalAfectar = $vrTotalAfectar;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalAfectar
+     *
+     * @return float
+     */
+    public function getVrTotalAfectar()
+    {
+        return $this->vrTotalAfectar;
     }
 
     /**
