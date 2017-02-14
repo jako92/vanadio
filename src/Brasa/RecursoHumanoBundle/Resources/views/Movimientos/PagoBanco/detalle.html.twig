@@ -140,6 +140,9 @@
             {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 5 %}
                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK, 'codigoPagoTipo':2}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo primas</a>
             {% endif %}
+            {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 6 %}
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_nuevo', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK, 'codigoPagoTipo':3}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Nuevo cesantias</a>
+            {% endif %}
             {%if arPagoBanco.pagoBancoTipoRel.codigoPagoBancoTipoPk == 7 %}
                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_pago_banco_detalle_importar', {'codigoPagoBanco': arPagoBanco.codigoPagoBancoPK}) }}', 'AgregarPagoBancoDetalle', 600, 1200)">Importar</a>
             {% endif %}                    
