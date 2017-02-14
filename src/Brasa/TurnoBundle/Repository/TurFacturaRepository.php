@@ -140,6 +140,9 @@ class TurFacturaRepository extends EntityRepository {
             $baseIva += $baseIvaDetalle;
             $total += $totalDetalle;
         }
+        $subtotal = round($subtotal);
+        $iva = round($iva);
+        $total = round($total);
         $topeRetencionFuente = 0;
         if($arFactura->getFacturaServicioRel()->getTipoRetencionFuente() == 1) {
             $topeRetencionFuente = $arConfiguracion->getBaseRetencionFuente();
@@ -159,6 +162,7 @@ class TurFacturaRepository extends EntityRepository {
         if($baseRetencionFuente >= $topeRetencionFuente) {
             if($arFactura->getClienteRel()->getRegimenSimplificado() == 0) {
                 $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
+                $retencionFuente = round($retencionFuente);
             }            
         }
         $totalNeto = $subtotal + $iva - $retencionFuente;
