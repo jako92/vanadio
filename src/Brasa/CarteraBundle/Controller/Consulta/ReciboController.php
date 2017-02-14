@@ -285,9 +285,9 @@ class ReciboController extends Controller
                     ->setCellValue('H' . $i, $arRecibo->getFechaPago()->format('Y-m-d'))
                     ->setCellValue('I' . $i, $arRecibo->getVrTotalDescuento())
                     ->setCellValue('J' . $i, $arRecibo->getVrTotalAjustePeso())
-                    ->setCellValue('K' . $i, $arRecibo->getVrTotalReteIca())
-                    ->setCellValue('L' . $i, $arRecibo->getVrTotalReteIva())
-                    ->setCellValue('M' . $i, $arRecibo->getVrTotalReteFuente())
+                    ->setCellValue('K' . $i, $arRecibo->getVrTotalRetencionIca())
+                    ->setCellValue('L' . $i, $arRecibo->getVrTotalRetencionIva())
+                    ->setCellValue('M' . $i, $arRecibo->getVrTotalRetencionFuente())
                     ->setCellValue('N' . $i, $arRecibo->getVrTotal())
                     ->setCellValue('O' . $i, $arRecibo->getVrTotalPago())
                     ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAnulado()))
@@ -384,11 +384,11 @@ class ReciboController extends Controller
                     ->setCellValue('F' . $i, $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre())
                     ->setCellValue('G' . $i, $arReciboDetalle->getVrDescuento())
                     ->setCellValue('H' . $i, $arReciboDetalle->getVrAjustePeso())
-                    ->setCellValue('I' . $i, $arReciboDetalle->getVrReteIca())
-                    ->setCellValue('J' . $i, $arReciboDetalle->getVrReteIva())
-                    ->setCellValue('K' . $i, $arReciboDetalle->getVrReteFuente())
+                    ->setCellValue('I' . $i, $arReciboDetalle->getVrRetencionIca())
+                    ->setCellValue('J' . $i, $arReciboDetalle->getVrRetencionIva())
+                    ->setCellValue('K' . $i, $arReciboDetalle->getVrRetencionFuente())
                     ->setCellValue('L' . $i, $arReciboDetalle->getValor())
-                    ->setCellValue('M' . $i, $arReciboDetalle->getVrPagoDetalle());   
+                    ->setCellValue('M' . $i, $arReciboDetalle->getVrPago());   
             $i++;
         }
 

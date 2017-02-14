@@ -54,29 +54,29 @@ class CarReciboDetalle
     private $vrAjustePeso = 0;
     
     /**
-     * @ORM\Column(name="vr_rete_ica", type="float")
+     * @ORM\Column(name="vr_retencion_ica", type="float")
      */    
-    private $vrReteIca = 0;
+    private $vrRetencionIca = 0;
     
      /**
-     * @ORM\Column(name="vr_rete_iva", type="float")
+     * @ORM\Column(name="vr_retencion_iva", type="float")
      */    
-    private $vrReteIva = 0;
+    private $vrRetencionIva = 0;
     
     /**
-     * @ORM\Column(name="vr_rete_fuente", type="float")
+     * @ORM\Column(name="vr_retencion_fuente", type="float")
      */    
-    private $vrReteFuente = 0;
+    private $vrRetencionFuente = 0;
     
     /**
-     * @ORM\Column(name="vr_pago_detalle", type="float")
+     * @ORM\Column(name="vr_pago", type="float")
      */    
-    private $vrPagoDetalle = 0;   
+    private $vrPago = 0;   
     
     /**
-     * @ORM\Column(name="vr_total_afectar", type="float")
+     * @ORM\Column(name="vr_pago_afectar", type="float")
      */    
-    private $vrTotalAfectar = 0;    
+    private $vrPagoAfectar = 0;    
     
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
@@ -101,7 +101,6 @@ class CarReciboDetalle
      */
     protected $cuentaCobrarTipoRel;
    
-
 
     /**
      * Get codigoReciboDetallePk
@@ -282,123 +281,123 @@ class CarReciboDetalle
     }
 
     /**
-     * Set vrReteIca
+     * Set vrRetencionIca
      *
-     * @param float $vrReteIca
+     * @param float $vrRetencionIca
      *
      * @return CarReciboDetalle
      */
-    public function setVrReteIca($vrReteIca)
+    public function setVrRetencionIca($vrRetencionIca)
     {
-        $this->vrReteIca = $vrReteIca;
+        $this->vrRetencionIca = $vrRetencionIca;
 
         return $this;
     }
 
     /**
-     * Get vrReteIca
+     * Get vrRetencionIca
      *
      * @return float
      */
-    public function getVrReteIca()
+    public function getVrRetencionIca()
     {
-        return $this->vrReteIca;
+        return $this->vrRetencionIca;
     }
 
     /**
-     * Set vrReteIva
+     * Set vrRetencionIva
      *
-     * @param float $vrReteIva
+     * @param float $vrRetencionIva
      *
      * @return CarReciboDetalle
      */
-    public function setVrReteIva($vrReteIva)
+    public function setVrRetencionIva($vrRetencionIva)
     {
-        $this->vrReteIva = $vrReteIva;
+        $this->vrRetencionIva = $vrRetencionIva;
 
         return $this;
     }
 
     /**
-     * Get vrReteIva
+     * Get vrRetencionIva
      *
      * @return float
      */
-    public function getVrReteIva()
+    public function getVrRetencionIva()
     {
-        return $this->vrReteIva;
+        return $this->vrRetencionIva;
     }
 
     /**
-     * Set vrReteFuente
+     * Set vrRetencionFuente
      *
-     * @param float $vrReteFuente
+     * @param float $vrRetencionFuente
      *
      * @return CarReciboDetalle
      */
-    public function setVrReteFuente($vrReteFuente)
+    public function setVrRetencionFuente($vrRetencionFuente)
     {
-        $this->vrReteFuente = $vrReteFuente;
+        $this->vrRetencionFuente = $vrRetencionFuente;
 
         return $this;
     }
 
     /**
-     * Get vrReteFuente
+     * Get vrRetencionFuente
      *
      * @return float
      */
-    public function getVrReteFuente()
+    public function getVrRetencionFuente()
     {
-        return $this->vrReteFuente;
+        return $this->vrRetencionFuente;
     }
 
     /**
-     * Set vrPagoDetalle
+     * Set vrPago
      *
-     * @param float $vrPagoDetalle
+     * @param float $vrPago
      *
      * @return CarReciboDetalle
      */
-    public function setVrPagoDetalle($vrPagoDetalle)
+    public function setVrPago($vrPago)
     {
-        $this->vrPagoDetalle = $vrPagoDetalle;
+        $this->vrPago = $vrPago;
 
         return $this;
     }
 
     /**
-     * Get vrPagoDetalle
+     * Get vrPago
      *
      * @return float
      */
-    public function getVrPagoDetalle()
+    public function getVrPago()
     {
-        return $this->vrPagoDetalle;
+        return $this->vrPago;
     }
 
     /**
-     * Set vrTotalAfectar
+     * Set vrPagoAfectar
      *
-     * @param float $vrTotalAfectar
+     * @param float $vrPagoAfectar
      *
      * @return CarReciboDetalle
      */
-    public function setVrTotalAfectar($vrTotalAfectar)
+    public function setVrPagoAfectar($vrPagoAfectar)
     {
-        $this->vrTotalAfectar = $vrTotalAfectar;
+        $this->vrPagoAfectar = $vrPagoAfectar;
 
         return $this;
     }
 
     /**
-     * Get vrTotalAfectar
+     * Get vrPagoAfectar
      *
      * @return float
      */
-    public function getVrTotalAfectar()
+    public function getVrPagoAfectar()
     {
-        return $this->vrTotalAfectar;
+        return $this->vrPagoAfectar;
     }
 
     /**

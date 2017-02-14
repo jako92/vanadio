@@ -95,7 +95,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE ICA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteIca(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalRetencionIca(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 4
         $this->SetXY(10, $intY+15);
         $this->SetFont('Arial','B',8);
@@ -109,7 +109,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE IVA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteIva(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalRetencionIva(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 5
         $this->SetXY(10, $intY+20);
         $this->SetFont('Arial','B',8);
@@ -123,7 +123,7 @@ class FormatoAnticipo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RET FUENTE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalReteFuente(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arAnticipo->getVrTotalRetencionFuente(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 6
         $this->SetXY(10, $intY+25);
         $this->SetFont('Arial','B',8);
@@ -204,9 +204,9 @@ class FormatoAnticipo extends \FPDF_FPDF {
             $pdf->Cell(14, 4, $arAnticipoDetalle->getNumeroFactura(), 1, 0, 'L');            
             $pdf->Cell(19, 4, number_format($arAnticipoDetalle->getVrDescuento(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arAnticipoDetalle->getVrAjustePeso(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(18, 4, number_format($arAnticipoDetalle->getVrReteIca(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(18, 4, number_format($arAnticipoDetalle->getVrReteIva(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(20, 4, number_format($arAnticipoDetalle->getVrReteFuente(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(18, 4, number_format($arAnticipoDetalle->getVrRetencionIca(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(18, 4, number_format($arAnticipoDetalle->getVrRetencionIva(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arAnticipoDetalle->getVrRetencionFuente(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arAnticipoDetalle->getValor(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arAnticipoDetalle->getCuentaCobrarRel()->getSaldo(), 2, '.', ','), 1, 0, 'R');                                             
             $pdf->Ln();

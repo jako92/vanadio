@@ -130,9 +130,9 @@
                     <td>{{ arRecibos.clienteRel.nombreCorto |default('')  }}</td>                                                
                     <td style="text-align: right">{{ arRecibos.vrTotalDescuento | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotalAjustePeso | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotalReteIca | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotalReteIva | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotalReteFuente | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrTotalRetencionIca | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrTotalRetencionIva | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrTotalRetencionFuente | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotal | number_format(2, '.', ',') }}</td>
                     <td>{% if arRecibos.estadoAnulado == 1%}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoAutorizado == 1%}SI{% else %}NO{% endif %}</td>

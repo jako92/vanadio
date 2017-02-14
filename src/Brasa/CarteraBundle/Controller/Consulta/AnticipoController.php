@@ -279,9 +279,9 @@ class AnticipoController extends Controller
                     ->setCellValue('G' . $i, $arAnticipo->getFechaPago()->format('Y-m-d'))
                     ->setCellValue('H' . $i, $arAnticipo->getVrTotalDescuento())
                     ->setCellValue('I' . $i, $arAnticipo->getVrTotalAjustePeso())
-                    ->setCellValue('J' . $i, $arAnticipo->getVrTotalReteIca())
-                    ->setCellValue('K' . $i, $arAnticipo->getVrTotalReteIva())
-                    ->setCellValue('L' . $i, $arAnticipo->getVrTotalReteFuente())
+                    ->setCellValue('J' . $i, $arAnticipo->getVrTotalRetencionIca())
+                    ->setCellValue('K' . $i, $arAnticipo->getVrTotalRetencionIva())
+                    ->setCellValue('L' . $i, $arAnticipo->getVrTotalRetencionFuente())
                     ->setCellValue('M' . $i, $arAnticipo->getVrTotal())
                     ->setCellValue('N' . $i, $objFunciones->devuelveBoolean($arAnticipo->getEstadoAnulado()))
                     ->setCellValue('O' . $i, $objFunciones->devuelveBoolean($arAnticipo->getEstadoAutorizado()))
@@ -374,9 +374,9 @@ class AnticipoController extends Controller
                     ->setCellValue('F' . $i, $arAnticipoDetalle->getCuentaCobrarTipoRel()->getNombre())
                     ->setCellValue('G' . $i, $arAnticipoDetalle->getVrDescuento())
                     ->setCellValue('H' . $i, $arAnticipoDetalle->getVrAjustePeso())
-                    ->setCellValue('I' . $i, $arAnticipoDetalle->getVrReteIca())
-                    ->setCellValue('J' . $i, $arAnticipoDetalle->getVrReteIva())
-                    ->setCellValue('K' . $i, $arAnticipoDetalle->getVrReteFuente())
+                    ->setCellValue('I' . $i, $arAnticipoDetalle->getVrRetencionIca())
+                    ->setCellValue('J' . $i, $arAnticipoDetalle->getVrRetencionIva())
+                    ->setCellValue('K' . $i, $arAnticipoDetalle->getVrRetencionFuente())
                     ->setCellValue('L' . $i, $arAnticipoDetalle->getValor());   
             $i++;
         }

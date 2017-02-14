@@ -107,11 +107,11 @@
                     <td>{{ arRecibosDetalles.cuentaCobrarTipoRel.nombre |default('')  }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.vrDescuento | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.vrAjustePeso | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibosDetalles.vrReteIca | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibosDetalles.vrReteIva | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibosDetalles.vrReteFuente | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosDetalles.vrRetencionIca | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosDetalles.vrRetencionIva | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosDetalles.vrRetencionFuente | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.valor | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibosDetalles.vrPagoDetalle | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosDetalles.vrPago | number_format(2, '.', ',') }}</td>
                 </tr>
 
             {% endfor %}

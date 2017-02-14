@@ -56,22 +56,22 @@ class CarAnticipoDetalle
     /**
      * @ORM\Column(name="vr_rete_ica", type="float")
      */    
-    private $vrReteIca = 0;
+    private $vrRetencionIca = 0;
     
      /**
      * @ORM\Column(name="vr_rete_iva", type="float")
      */    
-    private $vrReteIva = 0;
+    private $vrRetencionIva = 0;
     
     /**
      * @ORM\Column(name="vr_rete_fuente", type="float")
      */    
-    private $vrReteFuente = 0;
+    private $vrRetencionFuente = 0;
     
     /**
      * @ORM\Column(name="vr_pago_detalle", type="float")
      */    
-    private $vrPagoDetalle = 0;
+    private $vrPago = 0;
     
     /**     
      * @ORM\Column(name="estado_inconsistencia", type="boolean")
@@ -284,99 +284,99 @@ class CarAnticipoDetalle
     }
 
     /**
-     * Set vrReteIca
+     * Set vrRetencionIca
      *
-     * @param float $vrReteIca
+     * @param float $vrRetencionIca
      *
      * @return CarAnticipoDetalle
      */
-    public function setVrReteIca($vrReteIca)
+    public function setVrRetencionIca($vrRetencionIca)
     {
-        $this->vrReteIca = $vrReteIca;
+        $this->vrRetencionIca = $vrRetencionIca;
 
         return $this;
     }
 
     /**
-     * Get vrReteIca
+     * Get vrRetencionIca
      *
      * @return float
      */
-    public function getVrReteIca()
+    public function getVrRetencionIca()
     {
-        return $this->vrReteIca;
+        return $this->vrRetencionIca;
     }
 
     /**
-     * Set vrReteIva
+     * Set vrRetencionIva
      *
-     * @param float $vrReteIva
+     * @param float $vrRetencionIva
      *
      * @return CarAnticipoDetalle
      */
-    public function setVrReteIva($vrReteIva)
+    public function setVrRetencionIva($vrRetencionIva)
     {
-        $this->vrReteIva = $vrReteIva;
+        $this->vrRetencionIva = $vrRetencionIva;
 
         return $this;
     }
 
     /**
-     * Get vrReteIva
+     * Get vrRetencionIva
      *
      * @return float
      */
-    public function getVrReteIva()
+    public function getVrRetencionIva()
     {
-        return $this->vrReteIva;
+        return $this->vrRetencionIva;
     }
 
     /**
-     * Set vrReteFuente
+     * Set vrRetencionFuente
      *
-     * @param float $vrReteFuente
+     * @param float $vrRetencionFuente
      *
      * @return CarAnticipoDetalle
      */
-    public function setVrReteFuente($vrReteFuente)
+    public function setVrRetencionFuente($vrRetencionFuente)
     {
-        $this->vrReteFuente = $vrReteFuente;
+        $this->vrRetencionFuente = $vrRetencionFuente;
 
         return $this;
     }
 
     /**
-     * Get vrReteFuente
+     * Get vrRetencionFuente
      *
      * @return float
      */
-    public function getVrReteFuente()
+    public function getVrRetencionFuente()
     {
-        return $this->vrReteFuente;
+        return $this->vrRetencionFuente;
     }
 
     /**
-     * Set vrPagoDetalle
+     * Set vrPago
      *
-     * @param float $vrPagoDetalle
+     * @param float $vrPago
      *
      * @return CarAnticipoDetalle
      */
-    public function setVrPagoDetalle($vrPagoDetalle)
+    public function setVrPago($vrPago)
     {
-        $this->vrPagoDetalle = $vrPagoDetalle;
+        $this->vrPago = $vrPago;
 
         return $this;
     }
 
     /**
-     * Get vrPagoDetalle
+     * Get vrPago
      *
      * @return float
      */
-    public function getVrPagoDetalle()
+    public function getVrPago()
     {
-        return $this->vrPagoDetalle;
+        return $this->vrPago;
     }
 
     /**

@@ -175,9 +175,9 @@ class ReciboResumen1 extends \FPDF_FPDF {
             $pdf->Cell(45, 4, substr($arRecibo->getClienteRel()->getNombreCorto(),0,33), 1, 0, 'L');                        
             $pdf->Cell(8, 4, number_format($arRecibo->getVrTotalDescuento(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalAjustePeso(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalReteIca(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalReteIva(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalReteFuente(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionIca(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionIva(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionFuente(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(13, 4, number_format($arRecibo->getVrTotal(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);

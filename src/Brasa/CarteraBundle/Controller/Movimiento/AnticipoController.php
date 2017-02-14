@@ -170,8 +170,8 @@ class AnticipoController extends Controller
                                 foreach ($arDetallesAnticipo AS $arDetalleAnticipo) {
                                     $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                                     $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleAnticipo->getCodigoCuentaCobrarFk()); 
-                                    $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleAnticipo->getVrPagoDetalle());
-                                    $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleAnticipo->getVrPagoDetalle());
+                                    $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleAnticipo->getVrPago());
+                                    $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleAnticipo->getVrPago());
                                     $em->persist($arCuentaCobrar);
                                 }
                                 $em->persist($arAnticipo);
@@ -199,8 +199,8 @@ class AnticipoController extends Controller
                     foreach ($arDetallesAnticipo AS $arDetalleAnticipo) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                         $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleAnticipo->getCodigoCuentaCobrarFk());
-                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleAnticipo->getVrPagoDetalle());
-                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleAnticipo->getVrPagoDetalle());
+                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleAnticipo->getVrPago());
+                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleAnticipo->getVrPago());
                         $em->persist($arCuentaCobrar);
                     }
                     $em->persist($arAnticipo);
@@ -218,23 +218,23 @@ class AnticipoController extends Controller
                     $arAnticipo->setEstadoAnulado(1);
                     $arAnticipo->setVrTotalAjustePeso(0);
                     $arAnticipo->setVrTotalDescuento(0);
-                    $arAnticipo->setVrTotalReteIca(0);
-                    $arAnticipo->setVrTotalReteIva(0);
-                    $arAnticipo->setVrTotalReteFuente(0);
+                    $arAnticipo->setVrTotalRetencionIca(0);
+                    $arAnticipo->setVrTotalRetencionIva(0);
+                    $arAnticipo->setVrTotalRetencionFuente(0);
                     $arAnticipo->setVrTotal(0);
                     $arDetallesAnticipo = $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->findBy(array('codigoAnticipoFk' => $codigoAnticipo));
                     foreach ($arDetallesAnticipo AS $arDetalleAnticipo) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                         $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleAnticipo->getCodigoCuentaCobrarFk());
-                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleAnticipo->getVrPagoDetalle());
-                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleAnticipo->getVrPagoDetalle());
+                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleAnticipo->getVrPago());
+                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleAnticipo->getVrPago());
                         $arDetalleAnticipoAnulado = new \Brasa\CarteraBundle\Entity\CarAnticipoDetalle();
                         $arDetalleAnticipoAnulado = $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->find($arDetalleAnticipo->getCodigoAnticipoDetallePk());
                         $arDetalleAnticipoAnulado->setVrDescuento(0);
                         $arDetalleAnticipoAnulado->setVrAjustePeso(0);
-                        $arDetalleAnticipoAnulado->setVrReteIca(0);
-                        $arDetalleAnticipoAnulado->setVrReteIva(0);
-                        $arDetalleAnticipoAnulado->setVrReteFuente(0);
+                        $arDetalleAnticipoAnulado->setVrRetencionIca(0);
+                        $arDetalleAnticipoAnulado->setVrRetencionIva(0);
+                        $arDetalleAnticipoAnulado->setVrRetencionFuente(0);
                         $arDetalleAnticipoAnulado->setValor(0);
                         $em->persist($arCuentaCobrar);
                         $em->persist($arDetalleAnticipoAnulado);
@@ -574,7 +574,7 @@ class AnticipoController extends Controller
                 $arAnticipoDetalle = new \Brasa\CarteraBundle\Entity\CarAnticipoDetalle();
                 $arAnticipoDetalle = $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->find($intCodigo);
                 $floSaldo = $arAnticipoDetalle->getCuentaCobrarRel()->getSaldo();
-                $floSaldoAfectar = $arrControles['TxtValor'.$intCodigo] + ($arrControles['TxtVrReteIca'.$intCodigo] + $arrControles['TxtVrReteIva'.$intCodigo] + $arrControles['TxtVrReteFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo]);
+                $floSaldoAfectar = $arrControles['TxtValor'.$intCodigo] + ($arrControles['TxtVrRetencionIca'.$intCodigo] + $arrControles['TxtVrRetencionIva'.$intCodigo] + $arrControles['TxtVrRetencionFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo]);
                 if($floSaldo < $floSaldoAfectar) {
                     $arAnticipoDetalle->setEstadoInconsistencia(1);
                 }else {
@@ -582,11 +582,11 @@ class AnticipoController extends Controller
                 }
                 $arAnticipoDetalle->setVrDescuento($arrControles['TxtVrDescuento'.$intCodigo]);
                 $arAnticipoDetalle->setVrAjustePeso($arrControles['TxtVrAjustePeso'.$intCodigo]);
-                $arAnticipoDetalle->setVrReteIca($arrControles['TxtVrReteIca'.$intCodigo]);
-                $arAnticipoDetalle->setVrReteIva($arrControles['TxtVrReteIva'.$intCodigo]);
-                $arAnticipoDetalle->setVrReteFuente($arrControles['TxtVrReteFuente'.$intCodigo]);
+                $arAnticipoDetalle->setVrRetencionIca($arrControles['TxtVrRetencionIca'.$intCodigo]);
+                $arAnticipoDetalle->setVrRetencionIva($arrControles['TxtVrRetencionIva'.$intCodigo]);
+                $arAnticipoDetalle->setVrRetencionFuente($arrControles['TxtVrRetencionFuente'.$intCodigo]);
                 $arAnticipoDetalle->setValor($arrControles['TxtValor'.$intCodigo]);
-                $arAnticipoDetalle->setVrPagoDetalle($floSaldoAfectar);
+                $arAnticipoDetalle->setVrPago($floSaldoAfectar);
                 $em->persist($arAnticipoDetalle);
                 $totalAnticipoDetalle = $totalAnticipoDetalle + $arrControles['TxtValor'.$intCodigo];
             }

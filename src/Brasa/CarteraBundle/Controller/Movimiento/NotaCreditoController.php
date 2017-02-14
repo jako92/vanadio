@@ -158,8 +158,8 @@ class NotaCreditoController extends Controller
                                 foreach ($arDetallesNotaCredito AS $arDetalleNotaCredito) {
                                     $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                                     $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaCredito->getCodigoCuentaCobrarFk());
-                                    $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleNotaCredito->getVrPagoDetalle());
-                                    $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleNotaCredito->getVrPagoDetalle());
+                                    $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleNotaCredito->getVrPago());
+                                    $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleNotaCredito->getVrPago());
                                     $em->persist($arCuentaCobrar);
                                 }
                                 $em->persist($arNotaCredito);
@@ -186,8 +186,8 @@ class NotaCreditoController extends Controller
                     foreach ($arDetallesNotaCredito AS $arDetalleNotaCredito) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                         $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaCredito->getCodigoCuentaCobrarFk());
-                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleNotaCredito->getVrPagoDetalle());
-                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleNotaCredito->getVrPagoDetalle());
+                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleNotaCredito->getVrPago());
+                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleNotaCredito->getVrPago());
                         $em->persist($arCuentaCobrar);
                     }
                     $em->persist($arNotaCredito);
@@ -208,8 +208,8 @@ class NotaCreditoController extends Controller
                     foreach ($arDetallesNotaCredito AS $arDetalleNotaCredito) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                         $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaCredito->getCodigoCuentaCobrarFk());
-                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleNotaCredito->getVrPagoDetalle());
-                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleNotaCredito->getVrPagoDetalle());
+                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleNotaCredito->getVrPago());
+                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleNotaCredito->getVrPago());
                         $arDetalleNotaCreditoAnulado = new \Brasa\CarteraBundle\Entity\CarNotaCreditoDetalle();
                         $arDetalleNotaCreditoAnulado = $em->getRepository('BrasaCarteraBundle:CarNotaCreditoDetalle')->find($arDetalleNotaCredito->getCodigoNotaCreditoDetallePk());
                         $arDetalleNotaCreditoAnulado->setValor(0);
@@ -492,7 +492,7 @@ class NotaCreditoController extends Controller
                     $arNotaCreditoDetalle->setEstadoInconsistencia(0);
                 }
                 $arNotaCreditoDetalle->setValor($arrControles['TxtValor'.$intCodigo]);
-                $arNotaCreditoDetalle->setVrPagoDetalle($floSaldoAfectar);
+                $arNotaCreditoDetalle->setVrPago($floSaldoAfectar);
                 $em->persist($arNotaCreditoDetalle);
             }
             $em->flush();

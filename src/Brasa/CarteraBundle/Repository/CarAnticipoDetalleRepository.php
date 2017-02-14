@@ -60,28 +60,28 @@ class CarAnticipoDetalleRepository extends EntityRepository {
         $floValorPago = 0;
         $floDescuento = 0;
         $floAjustePeso = 0;
-        $floReteIca = 0;
-        $floReteIva = 0;
-        $floReteFuente = 0;
+        $floRetencionIca = 0;
+        $floRetencionIva = 0;
+        $floRetencionFuente = 0;
         $arAnticipo = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->find($codigoAnticipo);         
         $arAnticiposDetalle = new \Brasa\CarteraBundle\Entity\CarAnticipoDetalle();        
         $arAnticiposDetalle = $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->findBy(array('codigoAnticipoFk' => $codigoAnticipo));         
         foreach ($arAnticiposDetalle as $arAnticiposDetalle) {         
             $floDescuento += $arAnticiposDetalle->getVrDescuento();
             $floAjustePeso += $arAnticiposDetalle->getVrAjustePeso();
-            $floReteIca += $arAnticiposDetalle->getVrReteIca();
-            $floReteIva += $arAnticiposDetalle->getVrReteIva();
-            $floReteFuente += $arAnticiposDetalle->getVrReteFuente();
+            $floRetencionIca += $arAnticiposDetalle->getVrRetencionIca();
+            $floRetencionIva += $arAnticiposDetalle->getVrRetencionIva();
+            $floRetencionFuente += $arAnticiposDetalle->getVrRetencionFuente();
             $floValor += $arAnticiposDetalle->getValor();
-            $floValorPago += $arAnticiposDetalle->getVrPagoDetalle();
+            $floValorPago += $arAnticiposDetalle->getVrPago();
         }                 
         $arAnticipo->setVrTotal($floValor);
         $arAnticipo->setVrTotalPago($floValorPago);
         $arAnticipo->setVrTotalDescuento($floDescuento);
         $arAnticipo->setVrTotalAjustePeso($floAjustePeso);
-        $arAnticipo->setVrTotalReteIca($floReteIca);
-        $arAnticipo->setVrTotalReteIva($floReteIva);
-        $arAnticipo->setVrTotalReteFuente($floReteFuente);
+        $arAnticipo->setVrTotalRetencionIca($floRetencionIca);
+        $arAnticipo->setVrTotalRetencionIva($floRetencionIva);
+        $arAnticipo->setVrTotalRetencionFuente($floRetencionFuente);
         $em->persist($arAnticipo);
         $em->flush();
         return true;

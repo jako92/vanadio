@@ -124,9 +124,9 @@
                     <td>{{ arAnticipos.clienteRel.nombreCorto |default('')  }}</td>                                                
                     <td style="text-align: right">{{ arAnticipos.vrTotalDescuento | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arAnticipos.vrTotalAjustePeso | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arAnticipos.vrTotalReteIca | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arAnticipos.vrTotalReteIva | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arAnticipos.vrTotalReteFuente | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arAnticipos.vrTotalRetencionIca | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arAnticipos.vrTotalRetencionIva | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arAnticipos.vrTotalRetencionFuente | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arAnticipos.vrTotal | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arAnticipos.vrTotalPago | number_format(2, '.', ',') }}</td>
                     <td>{% if arAnticipos.estadoAnulado == 1%}SI{% else %}NO{% endif %}</td>

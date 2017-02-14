@@ -62,17 +62,17 @@ class CarAnticipo
     /**
      * @ORM\Column(name="vr_total_rete_ica", type="float")
      */    
-    private $vrTotalReteIca = 0;
+    private $vrTotalRetencionIca = 0;
     
     /**
      * @ORM\Column(name="vr_total_rete_iva", type="float")
      */    
-    private $vrTotalReteIva = 0;
+    private $vrTotalRetencionIva = 0;
     
     /**
      * @ORM\Column(name="vr_total_rete_fuente", type="float")
      */    
-    private $vrTotalReteFuente = 0;
+    private $vrTotalRetencionFuente = 0;
     
     /**
      * @ORM\Column(name="vr_anticipo", type="float")
@@ -361,75 +361,75 @@ class CarAnticipo
     }
 
     /**
-     * Set vrTotalReteIca
+     * Set vrTotalRetencionIca
      *
-     * @param float $vrTotalReteIca
+     * @param float $vrTotalRetencionIca
      *
      * @return CarAnticipo
      */
-    public function setVrTotalReteIca($vrTotalReteIca)
+    public function setVrTotalRetencionIca($vrTotalRetencionIca)
     {
-        $this->vrTotalReteIca = $vrTotalReteIca;
+        $this->vrTotalRetencionIca = $vrTotalRetencionIca;
 
         return $this;
     }
 
     /**
-     * Get vrTotalReteIca
+     * Get vrTotalRetencionIca
      *
      * @return float
      */
-    public function getVrTotalReteIca()
+    public function getVrTotalRetencionIca()
     {
-        return $this->vrTotalReteIca;
+        return $this->vrTotalRetencionIca;
     }
 
     /**
-     * Set vrTotalReteIva
+     * Set vrTotalRetencionIva
      *
-     * @param float $vrTotalReteIva
+     * @param float $vrTotalRetencionIva
      *
      * @return CarAnticipo
      */
-    public function setVrTotalReteIva($vrTotalReteIva)
+    public function setVrTotalRetencionIva($vrTotalRetencionIva)
     {
-        $this->vrTotalReteIva = $vrTotalReteIva;
+        $this->vrTotalRetencionIva = $vrTotalRetencionIva;
 
         return $this;
     }
 
     /**
-     * Get vrTotalReteIva
+     * Get vrTotalRetencionIva
      *
      * @return float
      */
-    public function getVrTotalReteIva()
+    public function getVrTotalRetencionIva()
     {
-        return $this->vrTotalReteIva;
+        return $this->vrTotalRetencionIva;
     }
 
     /**
-     * Set vrTotalReteFuente
+     * Set vrTotalRetencionFuente
      *
-     * @param float $vrTotalReteFuente
+     * @param float $vrTotalRetencionFuente
      *
      * @return CarAnticipo
      */
-    public function setVrTotalReteFuente($vrTotalReteFuente)
+    public function setVrTotalRetencionFuente($vrTotalRetencionFuente)
     {
-        $this->vrTotalReteFuente = $vrTotalReteFuente;
+        $this->vrTotalRetencionFuente = $vrTotalRetencionFuente;
 
         return $this;
     }
 
     /**
-     * Get vrTotalReteFuente
+     * Get vrTotalRetencionFuente
      *
      * @return float
      */
-    public function getVrTotalReteFuente()
+    public function getVrTotalRetencionFuente()
     {
-        return $this->vrTotalReteFuente;
+        return $this->vrTotalRetencionFuente;
     }
 
     /**

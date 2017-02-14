@@ -87,7 +87,7 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE ICA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arRecibo->getVrTotalReteIca(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrTotalRetencionIca(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 4
         $this->SetXY(10, $intY+15);
         $this->SetFont('Arial','B',8);
@@ -101,7 +101,7 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RETE IVA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arRecibo->getVrTotalReteIva(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrTotalRetencionIva(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 5
         $this->SetXY(10, $intY+20);
         $this->SetFont('Arial','B',8);
@@ -116,7 +116,7 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("RET FUENTE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arRecibo->getVrTotalReteFuente(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrTotalRetencionFuente(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 6
         $this->SetXY(10, $intY+25);
         $this->SetFont('Arial','B',8);
@@ -188,9 +188,9 @@ class FormatoRecibo extends \FPDF_FPDF {
             $pdf->Cell(20, 4, $arReciboDetalle->getNumeroFactura(), 1, 0, 'L');            
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrDescuento(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrAjustePeso(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrReteIca(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrReteIva(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrReteFuente(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionIca(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionIva(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionFuente(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getValor(), 2, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);

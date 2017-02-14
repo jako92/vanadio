@@ -167,9 +167,9 @@ class AnticipoResumen1 extends \FPDF_FPDF {
             $pdf->Cell(45, 4, substr($arAnticipo->getClienteRel()->getNombreCorto(),0,32), 1, 0, 'L');                                                
             $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalDescuento(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalAjustePeso(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalReteIca(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalReteIva(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalReteFuente(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalRetencionIca(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalRetencionIva(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(12, 4, number_format($arAnticipo->getVrTotalRetencionFuente(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(13, 4, number_format($arAnticipo->getVrTotal(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(13, 4, number_format($arAnticipo->getVrTotalPago(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();

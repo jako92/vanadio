@@ -66,7 +66,7 @@
                         <td class="titulo" >TIPO RECBO:</td>
                         <td class="td-in-well">{{ arRecibo.reciboTipoRel.nombre }}</td>
                         <td class="titulo">TOTAL RETE ICA:</td>
-                        <td align="right">{{ arRecibo.vrTotalReteIca | number_format(0, '.', ',')}}</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionIca | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo">FECHA:</td>
@@ -74,7 +74,7 @@
                         <td class="titulo" >FECHA PAGO:</td>
                         <td class="td-in-well">{{ arRecibo.fechaPago |date("Y/m/d") }}</td>
                         <td class="titulo">TOTAL RETE IVA:</td>
-                        <td align="right">{{ arRecibo.vrTotalReteIva | number_format(0, '.', ',')}}</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionIva | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">ANULADO:</td>
@@ -82,7 +82,7 @@
                         <td class="titulo">IMPRESO:</td>
                         <td class="td-in-well">{% if arRecibo.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
                         <td class="titulo">TOTAL RETE FUENTE:</td>
-                        <td align="right">{{ arRecibo.vrTotalReteFuente | number_format(0, '.', ',')}}</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionFuente | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">EXPORTADO:</td>
@@ -125,16 +125,16 @@
                     {% if arRecibo.estadoAutorizado == 0 %}                        
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrDescuento{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrDescuento  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrAjustePeso{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrAjustePeso  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteIca{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrReteIca  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteIva{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrReteIva  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteFuente{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrReteFuente  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionIca{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrRetencionIca  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionIva{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrRetencionIva  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionFuente{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrRetencionFuente  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtValor{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.valor  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                         {% else %}                        
                         <td style="text-align: right">{{ arReciboDetalle.vrDescuento | number_format(0, '.', ',') }}</td> 
                         <td style="text-align: right">{{ arReciboDetalle.vrAjustePeso | number_format(0, '.', ',') }}</td> 
-                        <td style="text-align: right">{{ arReciboDetalle.vrReteIca | number_format(0, '.', ',') }}</td> 
-                        <td style="text-align: right">{{ arReciboDetalle.vrReteIva | number_format(0, '.', ',') }}</td> 
-                        <td style="text-align: right">{{ arReciboDetalle.vrReteFuente | number_format(0, '.', ',') }}</td> 
+                        <td style="text-align: right">{{ arReciboDetalle.vrRetencionIca | number_format(0, '.', ',') }}</td> 
+                        <td style="text-align: right">{{ arReciboDetalle.vrRetencionIva | number_format(0, '.', ',') }}</td> 
+                        <td style="text-align: right">{{ arReciboDetalle.vrRetencionFuente | number_format(0, '.', ',') }}</td> 
                         <td style="text-align: right">{{ arReciboDetalle.valor | number_format(0, '.', ',') }}</td> 
                     {% endif %}
                     <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arReciboDetalle.codigoReciboDetallePk }}" /></td>

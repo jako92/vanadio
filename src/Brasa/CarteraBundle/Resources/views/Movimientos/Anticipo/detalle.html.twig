@@ -70,7 +70,7 @@
                         <td class="titulo" ></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">TOTAL RETE ICA:</td>
-                        <td align="right">{{ arAnticipo.vrTotalReteIca | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ arAnticipo.vrTotalRetencionIca | number_format(2, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo">FECHA:</td>
@@ -78,7 +78,7 @@
                         <td class="titulo" >FECHA PAGO:</td>
                         <td class="td-in-well">{{ arAnticipo.fechaPago |date("Y/m/d") }}</td>
                         <td class="titulo">TOTAL RETE IVA:</td>
-                        <td align="right">{{ arAnticipo.vrTotalReteIva | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ arAnticipo.vrTotalRetencionIva | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo"></td>
@@ -86,7 +86,7 @@
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">TOTAL RETE FUENTE:</td>
-                        <td align="right">{{ arAnticipo.vrTotalReteFuente | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ arAnticipo.vrTotalRetencionFuente | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo"></td>
@@ -147,19 +147,19 @@
                     <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrDescuento{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrDescuento  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()" readonly="readonly"/></td>                        
                     {% endif %}                        
                 <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrAjustePeso{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrAjustePeso  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteIca{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrReteIca  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteIva{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrReteIva  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrReteFuente{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrReteFuente  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionIca{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrRetencionIca  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionIva{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrRetencionIva  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
+                <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionFuente{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.vrRetencionFuente  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                 <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtValor{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" value="{{ arAnticipoDetalle.valor  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                <td style="text-align: right">{{ arAnticipoDetalle.vrPagoDetalle | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arAnticipoDetalle.vrPago | number_format(0, '.', ',') }}</td> 
             {% else %}                        
                 <td style="text-align: right">{{ arAnticipoDetalle.vrDescuento | number_format(0, '.', ',') }}</td> 
                 <td style="text-align: right">{{ arAnticipoDetalle.vrAjustePeso | number_format(0, '.', ',') }}</td> 
-                <td style="text-align: right">{{ arAnticipoDetalle.vrReteIca | number_format(0, '.', ',') }}</td> 
-                <td style="text-align: right">{{ arAnticipoDetalle.vrReteIva | number_format(0, '.', ',') }}</td> 
-                <td style="text-align: right">{{ arAnticipoDetalle.vrReteFuente | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arAnticipoDetalle.vrRetencionIca | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arAnticipoDetalle.vrRetencionIva | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arAnticipoDetalle.vrRetencionFuente | number_format(0, '.', ',') }}</td> 
                 <td style="text-align: right">{{ arAnticipoDetalle.valor | number_format(0, '.', ',') }}</td> 
-                <td style="text-align: right">{{ arAnticipoDetalle.vrPagoDetalle | number_format(0, '.', ',') }}</td> 
+                <td style="text-align: right">{{ arAnticipoDetalle.vrPago | number_format(0, '.', ',') }}</td> 
             {% endif %}
             {% if arAnticipo.estadoAutorizado == 0 %} 
                 <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arAnticipoDetalle.codigoAnticipoDetallePk }}" /></td>
