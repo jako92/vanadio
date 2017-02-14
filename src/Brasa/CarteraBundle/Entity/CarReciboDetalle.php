@@ -71,12 +71,7 @@ class CarReciboDetalle
     /**
      * @ORM\Column(name="vr_pago_detalle", type="float")
      */    
-    private $vrPagoDetalle = 0;
-    
-    /**     
-     * @ORM\Column(name="estado_inconsistencia", type="boolean")
-     */    
-    private $estadoInconsistencia = 0;
+    private $vrPagoDetalle = 0;   
     
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
@@ -101,8 +96,6 @@ class CarReciboDetalle
      */
     protected $cuentaCobrarTipoRel;
    
-
-
 
     /**
      * Get codigoReciboDetallePk
@@ -376,30 +369,6 @@ class CarReciboDetalle
     public function getVrPagoDetalle()
     {
         return $this->vrPagoDetalle;
-    }
-
-    /**
-     * Set estadoInconsistencia
-     *
-     * @param boolean $estadoInconsistencia
-     *
-     * @return CarReciboDetalle
-     */
-    public function setEstadoInconsistencia($estadoInconsistencia)
-    {
-        $this->estadoInconsistencia = $estadoInconsistencia;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoInconsistencia
-     *
-     * @return boolean
-     */
-    public function getEstadoInconsistencia()
-    {
-        return $this->estadoInconsistencia;
     }
 
     /**
