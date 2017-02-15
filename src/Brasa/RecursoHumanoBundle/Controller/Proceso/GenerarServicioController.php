@@ -42,7 +42,8 @@ class GenerarServicioController extends Controller
                         $porcentajeCesantias = $arCentroCosto->getPorcentajeCesantias();        
                         $porcentajeInteresesCesantias = $arCentroCosto->getPorcentajeInteresesCesantias();
                         $porcentajeVacaciones = $arCentroCosto->getPorcentajeVacaciones();
-                        $porcentajePrimas = $arCentroCosto->getPorcentajePrimas();            
+                        $porcentajePrimas = $arCentroCosto->getPorcentajePrimas();
+                        $porcentajeCaja = $arCentroCosto->getPorcentajeCaja();
                         //$porcentajeIndemnizacion = $arConfiguracion->getPrestacionesPorcentajeIndemnizacion();                 
                         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();            
                         $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPago->getCodigoProgramacionPagoPk())); 
@@ -73,7 +74,11 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrVacaciones($vacaciones);
                             $primas = ($arPago->getVrIngresoBasePrestacion() * $porcentajePrimas) / 100;
                             $arServicio->setvrPrimas($primas);
+                            $caja = ($arPago->getVrIngresoBasePrestacion() * $porcentajeCaja) / 100;
+                            $arServicio->setVrCaja($caja);
                             $arServicio->setVrAdministracion($arCentroCosto->getValorAdministracion());
+                            $arp = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100;
+                            $arServicio->setVrArp($arp);
                             $administracion = $arServicio->getVrAdministracion();
                             $neto = $cesantias + $interesesCesantias + $vacaciones + $primas;
                             $bruto = $cesantias + $interesesCesantias + $vacaciones + $primas; 
@@ -83,8 +88,6 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrBruto($bruto);
                             $arServicio->setVrTotalCobrar($totalCobrar);
                             $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());
-                            $arp = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100;
-                            $arServicio->setVrArp($arp);
                             
                             $em->persist($arServicio);                            
                         }  
