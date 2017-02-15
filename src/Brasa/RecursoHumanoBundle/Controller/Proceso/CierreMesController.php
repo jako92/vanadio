@@ -29,6 +29,8 @@ class CierreMesController extends Controller
         $this->listar();
         if($form->isValid()) {
             if($request->request->get('OpGenerar')) {
+                set_time_limit(0);
+                ini_set("memory_limit", -1);                
                 $codigoCierreMes = $request->request->get('OpGenerar');
                 $arCierreMes = new \Brasa\RecursoHumanoBundle\Entity\RhuCierreMes();
                 $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);

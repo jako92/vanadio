@@ -54,9 +54,9 @@ class CierreMesController extends Controller
                     $arCosto->setVrNomina($devengado); 
                     $arCosto->setVrPrestaciones($prestaciones);
                     $arCosto->setVrAportesSociales($seguridadSocial);                    
-                    $arCosto->setVrCostoTotal($costoRecurso);
-                    $em->persist($arCosto);   
+                    $arCosto->setVrCostoTotal($costoRecurso);                       
                     
+                    $arCentroCostoParticipacion = NULL;
                     $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
                     $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arCostoRecursoHumano->getCodigoEmpleadoFk());                    
                     if($arRecurso) {                        
@@ -95,6 +95,7 @@ class CierreMesController extends Controller
                             $peso = $detalle['pDS'] + $detalle['pD'] + $detalle['pN'] + $detalle['pFD'] + $detalle['pFN'] + $detalle['pEOD'] + $detalle['pEON'] + $detalle['pEFD'] + $detalle['pEFN'] + $detalle['pRN'] + $detalle['pRFD'] + $detalle['pRFN']; 
                             $pesoTotal += $peso;
                         }
+                        $participacionMayor = 0;
                         foreach ($arrayResultados as $detalle) {
                             $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
                             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($detalle['codigoPedidoDetalleFk']);
@@ -212,8 +213,8 @@ class CierreMesController extends Controller
                             }
                             $costo = $participacion * $costoDetalle;
                             $arCostoDetalle->setHorasRecargoFestivoNocturnoCosto($costo);                                                
-
-                            $arCostoDetalle->setParticipacion($participacionRecurso * 100);
+                            $participacionRecurso = $participacionRecurso * 100;
+                            $arCostoDetalle->setParticipacion($participacionRecurso);
                             $arCostoDetalle->setPeso($peso);
                             $arCostoDetalle->setCosto($costoDetalle);
                             $arCostoDetalle->setCostoNomina($costoDetalleNomina);
@@ -221,8 +222,21 @@ class CierreMesController extends Controller
                             $arCostoDetalle->setCostoPrestaciones($costoDetallePrestaciones);
                             $arCostoDetalle->setCentroCostoRel($arPedidoDetalle->getPuestoRel()->getCentroCostoContabilidadRel());
                             $em->persist($arCostoDetalle);
+                            if($participacionMayor < $participacionRecurso) {
+                                $participacionMayor = $participacionRecurso;
+                                $arCentroCostoParticipacion = $arPedidoDetalle->getPuestoRel()->getCentroCostoContabilidadRel();
+                            }
                         }                    
-                    }                                        
+                    }  
+                    
+                    if($arCostoRecursoHumano->getEmpleadoRel()->getEmpleadoTipoRel()->getOperativo() == 0 || $arCostoRecursoHumano->getEmpleadoRel()->getCentroCostoFijo() == 1) {
+                        $arCosto->setCentroCostoRel($arCostoRecursoHumano->getEmpleadoRel()->getCentroCostoContabilidadRel());
+                    } else {
+                        if($arCentroCostoParticipacion) {
+                            $arCosto->setCentroCostoRel($arCentroCostoParticipacion);
+                        }
+                    }
+                    $em->persist($arCosto);                    
                 }                
                 $em->flush();
                 

@@ -151,7 +151,7 @@ class CostoRecursoController extends Controller
         
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
-        $arCostos = new \Brasa\TurnoBundle\Entity\TurCostoRecurso();
+        $arCostos = new \Brasa\TurnoBundle\Entity\TurCosto();
         $arCostos = $query->getResult();
         foreach ($arCostos as $arCosto) {            
             $objPHPExcel->setActiveSheetIndex(0)
