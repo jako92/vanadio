@@ -291,7 +291,7 @@ class TurFacturaRepository extends EntityRepository {
 
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
         if($arFactura->getEstadoAutorizado() == 1) {
             if($arFactura->getNumero() == 0) {
@@ -320,25 +320,27 @@ class TurFacturaRepository extends EntityRepository {
                     $arClienteCartera->setEmail($arClienteTurno->getEmail());
                     $arClienteCartera->setUsuario($arFactura->getUsuario());
                     $em->persist($arClienteCartera);
-                }
-                    $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-                    $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find(2);
-                    $arCuentaCobrar->setClienteRel($arClienteCartera);
-                    $arCuentaCobrar->setAsesorRel($arClienteTurno->getAsesorRel());
-                    $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
-                    $arCuentaCobrar->setFecha($arFactura->getFecha());
-                    $arCuentaCobrar->setFechaVence($arFactura->getFechaVence());
-                    $arCuentaCobrar->setCodigoFactura($arFactura->getCodigoFacturaPk());
-                    $arCuentaCobrar->setSoporte($arFactura->getSoporte());
-                    $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
-                    $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
-                    $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
-                    $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
-                    $arCuentaCobrar->setAbono(0);
-                    if($arFactura->getProyectoRel()) {
-                        $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
+                }                    
+                    $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find($arFactura->getFacturaTipoRel()->getCodigoDocumentoCartera());
+                    if($arCuentaCobrarTipo) {
+                        $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+                        $arCuentaCobrar->setClienteRel($arClienteCartera);
+                        $arCuentaCobrar->setAsesorRel($arClienteTurno->getAsesorRel());
+                        $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
+                        $arCuentaCobrar->setFecha($arFactura->getFecha());
+                        $arCuentaCobrar->setFechaVence($arFactura->getFechaVence());
+                        $arCuentaCobrar->setCodigoFactura($arFactura->getCodigoFacturaPk());
+                        $arCuentaCobrar->setSoporte($arFactura->getSoporte());
+                        $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
+                        $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
+                        $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
+                        $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
+                        $arCuentaCobrar->setAbono(0);
+                        if($arFactura->getProyectoRel()) {
+                            $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
+                        }
+                        $em->persist($arCuentaCobrar);                        
                     }
-                    $em->persist($arCuentaCobrar);
             }
             $em->persist($arFactura);
             $em->flush();

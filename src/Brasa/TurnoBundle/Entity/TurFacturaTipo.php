@@ -83,6 +83,12 @@ class TurFacturaTipo
     protected $facturasFacturaTipoRel; 
     
     /**
+     * @ORM\Column(name="codigo_documento_cartera", type="integer", nullable=true)
+     */    
+    private $codigoDocumentoCartera;     
+    
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -293,40 +299,6 @@ class TurFacturaTipo
     }
 
     /**
-     * Add facturasFacturaTipoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel
-     *
-     * @return TurFacturaTipo
-     */
-    public function addFacturasFacturaTipoRel(\Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel)
-    {
-        $this->facturasFacturaTipoRel[] = $facturasFacturaTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasFacturaTipoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel
-     */
-    public function removeFacturasFacturaTipoRel(\Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel)
-    {
-        $this->facturasFacturaTipoRel->removeElement($facturasFacturaTipoRel);
-    }
-
-    /**
-     * Get facturasFacturaTipoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasFacturaTipoRel()
-    {
-        return $this->facturasFacturaTipoRel;
-    }
-
-    /**
      * Set tipoCuentaCartera
      *
      * @param integer $tipoCuentaCartera
@@ -420,5 +392,63 @@ class TurFacturaTipo
     public function getTipoCuentaIngreso()
     {
         return $this->tipoCuentaIngreso;
+    }
+
+    /**
+     * Set codigoDocumentoCartera
+     *
+     * @param integer $codigoDocumentoCartera
+     *
+     * @return TurFacturaTipo
+     */
+    public function setCodigoDocumentoCartera($codigoDocumentoCartera)
+    {
+        $this->codigoDocumentoCartera = $codigoDocumentoCartera;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoDocumentoCartera
+     *
+     * @return integer
+     */
+    public function getCodigoDocumentoCartera()
+    {
+        return $this->codigoDocumentoCartera;
+    }
+
+    /**
+     * Add facturasFacturaTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel
+     *
+     * @return TurFacturaTipo
+     */
+    public function addFacturasFacturaTipoRel(\Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel)
+    {
+        $this->facturasFacturaTipoRel[] = $facturasFacturaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove facturasFacturaTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel
+     */
+    public function removeFacturasFacturaTipoRel(\Brasa\TurnoBundle\Entity\TurFactura $facturasFacturaTipoRel)
+    {
+        $this->facturasFacturaTipoRel->removeElement($facturasFacturaTipoRel);
+    }
+
+    /**
+     * Get facturasFacturaTipoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFacturasFacturaTipoRel()
+    {
+        return $this->facturasFacturaTipoRel;
     }
 }
