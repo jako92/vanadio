@@ -333,9 +333,11 @@ class TurFacturaRepository extends EntityRepository {
                         $arCuentaCobrar->setSoporte($arFactura->getSoporte());
                         $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
                         $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
-                        $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
+                        $saldo = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
+                        $arCuentaCobrar->setSaldo($saldo);
                         $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
                         $arCuentaCobrar->setAbono(0);
+                        $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
                         if($arFactura->getProyectoRel()) {
                             $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
                         }

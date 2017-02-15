@@ -24,6 +24,11 @@ class CarCuentaCobrarTipo
     private $nombre;    
     
     /**
+     * @ORM\Column(name="operacion", type="integer")
+     */    
+    private $operacion = 0;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="CarCuentaCobrar", mappedBy="cuentaCobrarTipoRel")
      */
     protected $cuentasCobrarTiposCuentaCobrarRel;
@@ -264,5 +269,29 @@ class CarCuentaCobrarTipo
     public function getCuentasCobrarTiposNotaCreditoDetalleRel()
     {
         return $this->cuentasCobrarTiposNotaCreditoDetalleRel;
+    }
+
+    /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
     }
 }

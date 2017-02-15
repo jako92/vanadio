@@ -94,6 +94,11 @@ class CarCuentaCobrar
     private $afiliacion = false;
     
     /**
+     * @ORM\Column(name="operacion", type="integer")
+     */    
+    private $operacion = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="CarCliente", inversedBy="cuentaCobrarClientesRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -721,5 +726,29 @@ class CarCuentaCobrar
     public function getAnticiposDetallesCuentaCobrarRel()
     {
         return $this->anticiposDetallesCuentaCobrarRel;
+    }
+
+    /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
     }
 }
