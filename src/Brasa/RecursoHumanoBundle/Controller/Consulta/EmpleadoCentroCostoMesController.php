@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -62,8 +61,8 @@ class EmpleadoCentroCostoMesController extends Controller
         $session = $this->get('session');
         $form = $this->createFormBuilder()
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('TxtAnio', TextType::class)
-            ->add('TxtMes', TextType::class)
+            ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroRhuAnio')))
+            ->add('TxtMes', TextType::class, array('data' => $session->get('filtroRhuMes')))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->getForm();
         return $form;

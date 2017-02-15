@@ -385,6 +385,11 @@ class RhuEmpleado
     private $centroCostoFijo = false;    
     
     /**
+     * @ORM\Column(name="codigo_cliente_turno_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteTurnoFk;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuClasificacionRiesgo", inversedBy="empleadosClasificacionRiesgoRel")
      * @ORM\JoinColumn(name="codigo_clasificacion_riesgo_fk", referencedColumnName="codigo_clasificacion_riesgo_pk")
      */
@@ -4675,5 +4680,29 @@ class RhuEmpleado
     public function getTurCostosDetallesEmpleadoRel()
     {
         return $this->turCostosDetallesEmpleadoRel;
+    }
+
+    /**
+     * Set codigoClienteTurnoFk
+     *
+     * @param integer $codigoClienteTurnoFk
+     *
+     * @return RhuEmpleado
+     */
+    public function setCodigoClienteTurnoFk($codigoClienteTurnoFk)
+    {
+        $this->codigoClienteTurnoFk = $codigoClienteTurnoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteTurnoFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteTurnoFk()
+    {
+        return $this->codigoClienteTurnoFk;
     }
 }
