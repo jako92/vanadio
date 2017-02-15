@@ -16,7 +16,8 @@ class TurCostoServicioRepository extends EntityRepository {
         }        
         if($mes != "") {
             $dql .= " AND cs.mes = " . $mes;  
-        }        
+        }     
+        $dql .= " ORDER BY cs.anio, cs.mes DESC";
         return $dql;
     }
     

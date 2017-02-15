@@ -69,6 +69,7 @@
                 <th>AÑO</th>                
                 <th>MES</th>
                 <th>CLIENTE</th>
+                <th>COD</th>
                 <th>PUESTO</th>
                 <th>C.COSTO</th>
                 <th>CONCEPTO</th>
@@ -90,6 +91,7 @@
                     <td>{{ arCostoServicio.anio }}</td>
                     <td>{{ arCostoServicio.mes }}</td>
                     <td>{{ arCostoServicio.clienteRel.nombreCorto |default('') }}</td>
+                    <td>{{ arCostoServicio.codigoPuestoFk }}</td>
                     <td>{{ arCostoServicio.puestoRel.nombre |default('') }}</td>
                     <td>{{ arCostoServicio.puestoRel.codigoCentroCostoContabilidadFk }}</td>
                     <td>{{ arCostoServicio.conceptoServicioRel.nombre |default('') }}</td>

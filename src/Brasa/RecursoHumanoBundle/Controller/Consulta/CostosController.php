@@ -57,6 +57,8 @@ class CostosController extends Controller
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCosto')->listaDql(
+                                $session->get('filtroRhuAnio'),
+                $session->get('filtroRhuMes')
                     );
     }  
 
@@ -80,8 +82,8 @@ class CostosController extends Controller
         $form = $this->createFormBuilder()
             ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
             ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroRhuAnio')))
+            ->add('TxtMes', TextType::class, array('data' => $session->get('filtroRhuMes')))
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnPDF', SubmitType::class, array('label'  => 'PDF',))
@@ -97,18 +99,8 @@ class CostosController extends Controller
         }        
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        
-        $dateFechaDesde = $form->get('fechaDesde')->getData();
-        $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }
+        $session->set('filtroRhuMes', $form->get('TxtMes')->getData());
+        $session->set('filtroRhuAnio', $form->get('TxtAnio')->getData());
     }
 
     private function generarExcel() {
