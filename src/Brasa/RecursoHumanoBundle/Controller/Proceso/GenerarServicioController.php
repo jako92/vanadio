@@ -83,6 +83,9 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrBruto($bruto);
                             $arServicio->setVrTotalCobrar($totalCobrar);
                             $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());
+                            $arp = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100;
+                            $arServicio->setVrArp($arp);
+                            
                             $em->persist($arServicio);                            
                         }  
                         

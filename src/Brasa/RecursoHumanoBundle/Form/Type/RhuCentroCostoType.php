@@ -75,6 +75,7 @@ class RhuCentroCostoType extends AbstractType
             ->add('porcentajeInteresesCesantias', NumberType::class, array('required' => false))
             ->add('porcentajeVacaciones', NumberType::class, array('required' => false))
             ->add('porcentajePrimas', NumberType::class, array('required' => false))                
+            ->add('porcentajeCaja', NumberType::class, array('required' => false))                                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
