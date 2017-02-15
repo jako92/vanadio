@@ -19,9 +19,9 @@ class GenerarServicioController extends Controller
      */     
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 66)) {
+        /*if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 66)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }
+        }*/
         $paginator  = $this->get('knp_paginator');        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioLista();
