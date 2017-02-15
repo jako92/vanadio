@@ -68,4 +68,254 @@ class TurCostoRecurso
     private $vrHora = 0;    
     
 
+
+    /**
+     * Get codigoCostoRecursoPk
+     *
+     * @return integer
+     */
+    public function getCodigoCostoRecursoPk()
+    {
+        return $this->codigoCostoRecursoPk;
+    }
+
+    /**
+     * Set codigoCierreMesFk
+     *
+     * @param integer $codigoCierreMesFk
+     *
+     * @return TurCostoRecurso
+     */
+    public function setCodigoCierreMesFk($codigoCierreMesFk)
+    {
+        $this->codigoCierreMesFk = $codigoCierreMesFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCierreMesFk
+     *
+     * @return integer
+     */
+    public function getCodigoCierreMesFk()
+    {
+        return $this->codigoCierreMesFk;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param integer $anio
+     *
+     * @return TurCostoRecurso
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return integer
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
+     * Set mes
+     *
+     * @param integer $mes
+     *
+     * @return TurCostoRecurso
+     */
+    public function setMes($mes)
+    {
+        $this->mes = $mes;
+
+        return $this;
+    }
+
+    /**
+     * Get mes
+     *
+     * @return integer
+     */
+    public function getMes()
+    {
+        return $this->mes;
+    }
+
+    /**
+     * Set codigoRecursoFk
+     *
+     * @param integer $codigoRecursoFk
+     *
+     * @return TurCostoRecurso
+     */
+    public function setCodigoRecursoFk($codigoRecursoFk)
+    {
+        $this->codigoRecursoFk = $codigoRecursoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRecursoFk
+     *
+     * @return integer
+     */
+    public function getCodigoRecursoFk()
+    {
+        return $this->codigoRecursoFk;
+    }
+
+    /**
+     * Set vrNomina
+     *
+     * @param float $vrNomina
+     *
+     * @return TurCostoRecurso
+     */
+    public function setVrNomina($vrNomina)
+    {
+        $this->vrNomina = $vrNomina;
+
+        return $this;
+    }
+
+    /**
+     * Get vrNomina
+     *
+     * @return float
+     */
+    public function getVrNomina()
+    {
+        return $this->vrNomina;
+    }
+
+    /**
+     * Set vrPrestaciones
+     *
+     * @param float $vrPrestaciones
+     *
+     * @return TurCostoRecurso
+     */
+    public function setVrPrestaciones($vrPrestaciones)
+    {
+        $this->vrPrestaciones = $vrPrestaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrestaciones
+     *
+     * @return float
+     */
+    public function getVrPrestaciones()
+    {
+        return $this->vrPrestaciones;
+    }
+
+    /**
+     * Set vrAportesSociales
+     *
+     * @param float $vrAportesSociales
+     *
+     * @return TurCostoRecurso
+     */
+    public function setVrAportesSociales($vrAportesSociales)
+    {
+        $this->vrAportesSociales = $vrAportesSociales;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAportesSociales
+     *
+     * @return float
+     */
+    public function getVrAportesSociales()
+    {
+        return $this->vrAportesSociales;
+    }
+
+    /**
+     * Set vrCostoTotal
+     *
+     * @param float $vrCostoTotal
+     *
+     * @return TurCostoRecurso
+     */
+    public function setVrCostoTotal($vrCostoTotal)
+    {
+        $this->vrCostoTotal = $vrCostoTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCostoTotal
+     *
+     * @return float
+     */
+    public function getVrCostoTotal()
+    {
+        return $this->vrCostoTotal;
+    }
+
+    /**
+     * Set horas
+     *
+     * @param integer $horas
+     *
+     * @return TurCostoRecurso
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+
+        return $this;
+    }
+
+    /**
+     * Get horas
+     *
+     * @return integer
+     */
+    public function getHoras()
+    {
+        return $this->horas;
+    }
+
+    /**
+     * Set vrHora
+     *
+     * @param float $vrHora
+     *
+     * @return TurCostoRecurso
+     */
+    public function setVrHora($vrHora)
+    {
+        $this->vrHora = $vrHora;
+
+        return $this;
+    }
+
+    /**
+     * Get vrHora
+     *
+     * @return float
+     */
+    public function getVrHora()
+    {
+        return $this->vrHora;
+    }
 }

@@ -198,4 +198,973 @@ class TurRecurso
     protected $programacionesAlternasRecursoRel;     
     
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->programacionesDetallesRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->soportesPagosRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->soportesPagosDetallesRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidosDetallesRecursosRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->serviciosDetallesRecursosRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->novedadesRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->novedadesRecursoReemplazoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->simulacionesDetallesRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->programacionesAlternasRecursoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoRecursoPk
+     *
+     * @param integer $codigoRecursoPk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoRecursoPk($codigoRecursoPk)
+    {
+        $this->codigoRecursoPk = $codigoRecursoPk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRecursoPk
+     *
+     * @return integer
+     */
+    public function getCodigoRecursoPk()
+    {
+        return $this->codigoRecursoPk;
+    }
+
+    /**
+     * Set codigoRecursoTipoFk
+     *
+     * @param integer $codigoRecursoTipoFk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoRecursoTipoFk($codigoRecursoTipoFk)
+    {
+        $this->codigoRecursoTipoFk = $codigoRecursoTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRecursoTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoRecursoTipoFk()
+    {
+        return $this->codigoRecursoTipoFk;
+    }
+
+    /**
+     * Set codigoRecursoGrupoFk
+     *
+     * @param integer $codigoRecursoGrupoFk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoRecursoGrupoFk($codigoRecursoGrupoFk)
+    {
+        $this->codigoRecursoGrupoFk = $codigoRecursoGrupoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRecursoGrupoFk
+     *
+     * @return integer
+     */
+    public function getCodigoRecursoGrupoFk()
+    {
+        return $this->codigoRecursoGrupoFk;
+    }
+
+    /**
+     * Set codigoEmpleadoFk
+     *
+     * @param integer $codigoEmpleadoFk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
+    {
+        $this->codigoEmpleadoFk = $codigoEmpleadoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEmpleadoFk
+     *
+     * @return integer
+     */
+    public function getCodigoEmpleadoFk()
+    {
+        return $this->codigoEmpleadoFk;
+    }
+
+    /**
+     * Set numeroIdentificacion
+     *
+     * @param string $numeroIdentificacion
+     *
+     * @return TurRecurso
+     */
+    public function setNumeroIdentificacion($numeroIdentificacion)
+    {
+        $this->numeroIdentificacion = $numeroIdentificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroIdentificacion
+     *
+     * @return string
+     */
+    public function getNumeroIdentificacion()
+    {
+        return $this->numeroIdentificacion;
+    }
+
+    /**
+     * Set nombreCorto
+     *
+     * @param string $nombreCorto
+     *
+     * @return TurRecurso
+     */
+    public function setNombreCorto($nombreCorto)
+    {
+        $this->nombreCorto = $nombreCorto;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreCorto
+     *
+     * @return string
+     */
+    public function getNombreCorto()
+    {
+        return $this->nombreCorto;
+    }
+
+    /**
+     * Set telefono
+     *
+     * @param string $telefono
+     *
+     * @return TurRecurso
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     *
+     * @return TurRecurso
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     *
+     * @return TurRecurso
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set correo
+     *
+     * @param string $correo
+     *
+     * @return TurRecurso
+     */
+    public function setCorreo($correo)
+    {
+        $this->correo = $correo;
+
+        return $this;
+    }
+
+    /**
+     * Get correo
+     *
+     * @return string
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * Set fechaNacimiento
+     *
+     * @param \DateTime $fechaNacimiento
+     *
+     * @return TurRecurso
+     */
+    public function setFechaNacimiento($fechaNacimiento)
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaNacimiento
+     *
+     * @return \DateTime
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fechaNacimiento;
+    }
+
+    /**
+     * Set rutaFoto
+     *
+     * @param string $rutaFoto
+     *
+     * @return TurRecurso
+     */
+    public function setRutaFoto($rutaFoto)
+    {
+        $this->rutaFoto = $rutaFoto;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaFoto
+     *
+     * @return string
+     */
+    public function getRutaFoto()
+    {
+        return $this->rutaFoto;
+    }
+
+    /**
+     * Set pagoPromedio
+     *
+     * @param boolean $pagoPromedio
+     *
+     * @return TurRecurso
+     */
+    public function setPagoPromedio($pagoPromedio)
+    {
+        $this->pagoPromedio = $pagoPromedio;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoPromedio
+     *
+     * @return boolean
+     */
+    public function getPagoPromedio()
+    {
+        return $this->pagoPromedio;
+    }
+
+    /**
+     * Set pagoVariable
+     *
+     * @param boolean $pagoVariable
+     *
+     * @return TurRecurso
+     */
+    public function setPagoVariable($pagoVariable)
+    {
+        $this->pagoVariable = $pagoVariable;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoVariable
+     *
+     * @return boolean
+     */
+    public function getPagoVariable()
+    {
+        return $this->pagoVariable;
+    }
+
+    /**
+     * Set apodo
+     *
+     * @param string $apodo
+     *
+     * @return TurRecurso
+     */
+    public function setApodo($apodo)
+    {
+        $this->apodo = $apodo;
+
+        return $this;
+    }
+
+    /**
+     * Get apodo
+     *
+     * @return string
+     */
+    public function getApodo()
+    {
+        return $this->apodo;
+    }
+
+    /**
+     * Set estadoActivo
+     *
+     * @param boolean $estadoActivo
+     *
+     * @return TurRecurso
+     */
+    public function setEstadoActivo($estadoActivo)
+    {
+        $this->estadoActivo = $estadoActivo;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoActivo
+     *
+     * @return boolean
+     */
+    public function getEstadoActivo()
+    {
+        return $this->estadoActivo;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return TurRecurso
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set comentarios
+     *
+     * @param string $comentarios
+     *
+     * @return TurRecurso
+     */
+    public function setComentarios($comentarios)
+    {
+        $this->comentarios = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return string
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Set codigoInterface
+     *
+     * @param string $codigoInterface
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoInterface($codigoInterface)
+    {
+        $this->codigoInterface = $codigoInterface;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoInterface
+     *
+     * @return string
+     */
+    public function getCodigoInterface()
+    {
+        return $this->codigoInterface;
+    }
+
+    /**
+     * Set fechaRetiro
+     *
+     * @param \DateTime $fechaRetiro
+     *
+     * @return TurRecurso
+     */
+    public function setFechaRetiro($fechaRetiro)
+    {
+        $this->fechaRetiro = $fechaRetiro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRetiro
+     *
+     * @return \DateTime
+     */
+    public function getFechaRetiro()
+    {
+        return $this->fechaRetiro;
+    }
+
+    /**
+     * Set estadoRetiro
+     *
+     * @param boolean $estadoRetiro
+     *
+     * @return TurRecurso
+     */
+    public function setEstadoRetiro($estadoRetiro)
+    {
+        $this->estadoRetiro = $estadoRetiro;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoRetiro
+     *
+     * @return boolean
+     */
+    public function getEstadoRetiro()
+    {
+        return $this->estadoRetiro;
+    }
+
+    /**
+     * Set codigoTurnoFijoNominaFk
+     *
+     * @param string $codigoTurnoFijoNominaFk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoTurnoFijoNominaFk($codigoTurnoFijoNominaFk)
+    {
+        $this->codigoTurnoFijoNominaFk = $codigoTurnoFijoNominaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTurnoFijoNominaFk
+     *
+     * @return string
+     */
+    public function getCodigoTurnoFijoNominaFk()
+    {
+        return $this->codigoTurnoFijoNominaFk;
+    }
+
+    /**
+     * Set codigoTurnoFijoDescansoFk
+     *
+     * @param string $codigoTurnoFijoDescansoFk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoTurnoFijoDescansoFk($codigoTurnoFijoDescansoFk)
+    {
+        $this->codigoTurnoFijoDescansoFk = $codigoTurnoFijoDescansoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTurnoFijoDescansoFk
+     *
+     * @return string
+     */
+    public function getCodigoTurnoFijoDescansoFk()
+    {
+        return $this->codigoTurnoFijoDescansoFk;
+    }
+
+    /**
+     * Set codigoTurnoFijo31Fk
+     *
+     * @param string $codigoTurnoFijo31Fk
+     *
+     * @return TurRecurso
+     */
+    public function setCodigoTurnoFijo31Fk($codigoTurnoFijo31Fk)
+    {
+        $this->codigoTurnoFijo31Fk = $codigoTurnoFijo31Fk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTurnoFijo31Fk
+     *
+     * @return string
+     */
+    public function getCodigoTurnoFijo31Fk()
+    {
+        return $this->codigoTurnoFijo31Fk;
+    }
+
+    /**
+     * Set empleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
+     *
+     * @return TurRecurso
+     */
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
+    {
+        $this->empleadoRel = $empleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get empleadoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
+     */
+    public function getEmpleadoRel()
+    {
+        return $this->empleadoRel;
+    }
+
+    /**
+     * Set recursoTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurRecursoTipo $recursoTipoRel
+     *
+     * @return TurRecurso
+     */
+    public function setRecursoTipoRel(\Brasa\TurnoBundle\Entity\TurRecursoTipo $recursoTipoRel = null)
+    {
+        $this->recursoTipoRel = $recursoTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get recursoTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurRecursoTipo
+     */
+    public function getRecursoTipoRel()
+    {
+        return $this->recursoTipoRel;
+    }
+
+    /**
+     * Set recursoGrupoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurRecursoGrupo $recursoGrupoRel
+     *
+     * @return TurRecurso
+     */
+    public function setRecursoGrupoRel(\Brasa\TurnoBundle\Entity\TurRecursoGrupo $recursoGrupoRel = null)
+    {
+        $this->recursoGrupoRel = $recursoGrupoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get recursoGrupoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurRecursoGrupo
+     */
+    public function getRecursoGrupoRel()
+    {
+        return $this->recursoGrupoRel;
+    }
+
+    /**
+     * Add programacionesDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionDetalle $programacionesDetallesRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addProgramacionesDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionDetalle $programacionesDetallesRecursoRel)
+    {
+        $this->programacionesDetallesRecursoRel[] = $programacionesDetallesRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionDetalle $programacionesDetallesRecursoRel
+     */
+    public function removeProgramacionesDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionDetalle $programacionesDetallesRecursoRel)
+    {
+        $this->programacionesDetallesRecursoRel->removeElement($programacionesDetallesRecursoRel);
+    }
+
+    /**
+     * Get programacionesDetallesRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesDetallesRecursoRel()
+    {
+        return $this->programacionesDetallesRecursoRel;
+    }
+
+    /**
+     * Add soportesPagosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSoportePago $soportesPagosRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addSoportesPagosRecursoRel(\Brasa\TurnoBundle\Entity\TurSoportePago $soportesPagosRecursoRel)
+    {
+        $this->soportesPagosRecursoRel[] = $soportesPagosRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove soportesPagosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSoportePago $soportesPagosRecursoRel
+     */
+    public function removeSoportesPagosRecursoRel(\Brasa\TurnoBundle\Entity\TurSoportePago $soportesPagosRecursoRel)
+    {
+        $this->soportesPagosRecursoRel->removeElement($soportesPagosRecursoRel);
+    }
+
+    /**
+     * Get soportesPagosRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSoportesPagosRecursoRel()
+    {
+        return $this->soportesPagosRecursoRel;
+    }
+
+    /**
+     * Add soportesPagosDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSoportePagoDetalle $soportesPagosDetallesRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addSoportesPagosDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurSoportePagoDetalle $soportesPagosDetallesRecursoRel)
+    {
+        $this->soportesPagosDetallesRecursoRel[] = $soportesPagosDetallesRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove soportesPagosDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSoportePagoDetalle $soportesPagosDetallesRecursoRel
+     */
+    public function removeSoportesPagosDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurSoportePagoDetalle $soportesPagosDetallesRecursoRel)
+    {
+        $this->soportesPagosDetallesRecursoRel->removeElement($soportesPagosDetallesRecursoRel);
+    }
+
+    /**
+     * Get soportesPagosDetallesRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSoportesPagosDetallesRecursoRel()
+    {
+        return $this->soportesPagosDetallesRecursoRel;
+    }
+
+    /**
+     * Add pedidosDetallesRecursosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso $pedidosDetallesRecursosRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addPedidosDetallesRecursosRecursoRel(\Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso $pedidosDetallesRecursosRecursoRel)
+    {
+        $this->pedidosDetallesRecursosRecursoRel[] = $pedidosDetallesRecursosRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pedidosDetallesRecursosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso $pedidosDetallesRecursosRecursoRel
+     */
+    public function removePedidosDetallesRecursosRecursoRel(\Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso $pedidosDetallesRecursosRecursoRel)
+    {
+        $this->pedidosDetallesRecursosRecursoRel->removeElement($pedidosDetallesRecursosRecursoRel);
+    }
+
+    /**
+     * Get pedidosDetallesRecursosRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPedidosDetallesRecursosRecursoRel()
+    {
+        return $this->pedidosDetallesRecursosRecursoRel;
+    }
+
+    /**
+     * Add serviciosDetallesRecursosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso $serviciosDetallesRecursosRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addServiciosDetallesRecursosRecursoRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso $serviciosDetallesRecursosRecursoRel)
+    {
+        $this->serviciosDetallesRecursosRecursoRel[] = $serviciosDetallesRecursosRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove serviciosDetallesRecursosRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso $serviciosDetallesRecursosRecursoRel
+     */
+    public function removeServiciosDetallesRecursosRecursoRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso $serviciosDetallesRecursosRecursoRel)
+    {
+        $this->serviciosDetallesRecursosRecursoRel->removeElement($serviciosDetallesRecursosRecursoRel);
+    }
+
+    /**
+     * Get serviciosDetallesRecursosRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosDetallesRecursosRecursoRel()
+    {
+        return $this->serviciosDetallesRecursosRecursoRel;
+    }
+
+    /**
+     * Add novedadesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addNovedadesRecursoRel(\Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoRel)
+    {
+        $this->novedadesRecursoRel[] = $novedadesRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove novedadesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoRel
+     */
+    public function removeNovedadesRecursoRel(\Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoRel)
+    {
+        $this->novedadesRecursoRel->removeElement($novedadesRecursoRel);
+    }
+
+    /**
+     * Get novedadesRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNovedadesRecursoRel()
+    {
+        return $this->novedadesRecursoRel;
+    }
+
+    /**
+     * Add novedadesRecursoReemplazoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoReemplazoRel
+     *
+     * @return TurRecurso
+     */
+    public function addNovedadesRecursoReemplazoRel(\Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoReemplazoRel)
+    {
+        $this->novedadesRecursoReemplazoRel[] = $novedadesRecursoReemplazoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove novedadesRecursoReemplazoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoReemplazoRel
+     */
+    public function removeNovedadesRecursoReemplazoRel(\Brasa\TurnoBundle\Entity\TurNovedad $novedadesRecursoReemplazoRel)
+    {
+        $this->novedadesRecursoReemplazoRel->removeElement($novedadesRecursoReemplazoRel);
+    }
+
+    /**
+     * Get novedadesRecursoReemplazoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNovedadesRecursoReemplazoRel()
+    {
+        return $this->novedadesRecursoReemplazoRel;
+    }
+
+    /**
+     * Add simulacionesDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSimulacionDetalle $simulacionesDetallesRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addSimulacionesDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurSimulacionDetalle $simulacionesDetallesRecursoRel)
+    {
+        $this->simulacionesDetallesRecursoRel[] = $simulacionesDetallesRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove simulacionesDetallesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSimulacionDetalle $simulacionesDetallesRecursoRel
+     */
+    public function removeSimulacionesDetallesRecursoRel(\Brasa\TurnoBundle\Entity\TurSimulacionDetalle $simulacionesDetallesRecursoRel)
+    {
+        $this->simulacionesDetallesRecursoRel->removeElement($simulacionesDetallesRecursoRel);
+    }
+
+    /**
+     * Get simulacionesDetallesRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSimulacionesDetallesRecursoRel()
+    {
+        return $this->simulacionesDetallesRecursoRel;
+    }
+
+    /**
+     * Add programacionesAlternasRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addProgramacionesAlternasRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasRecursoRel)
+    {
+        $this->programacionesAlternasRecursoRel[] = $programacionesAlternasRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesAlternasRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasRecursoRel
+     */
+    public function removeProgramacionesAlternasRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionAlterna $programacionesAlternasRecursoRel)
+    {
+        $this->programacionesAlternasRecursoRel->removeElement($programacionesAlternasRecursoRel);
+    }
+
+    /**
+     * Get programacionesAlternasRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesAlternasRecursoRel()
+    {
+        return $this->programacionesAlternasRecursoRel;
+    }
 }
