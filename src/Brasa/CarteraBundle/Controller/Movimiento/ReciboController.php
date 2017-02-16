@@ -321,7 +321,19 @@ class ReciboController extends Controller
                     $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
                 }
                 return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                        
-            }                        
+            }
+            if($form->get('BtnVistaPrevia')->isClicked()) {
+                /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 116, 10)) {
+                    return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+                }*/
+                
+                    //$strResultado = $em->getRepository('BrasaCarteraBundle:CarRecibo')->imprimir($codigoRecibo);
+                    
+                    $objRecibo = new \Brasa\CarteraBundle\Formatos\FormatoRecibo();
+                        $objRecibo->Generar($em, $codigoRecibo);
+                 
+                return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                        
+            }
         }
         $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
         $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array ('codigoReciboFk' => $codigoRecibo));
@@ -462,6 +474,7 @@ class ReciboController extends Controller
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);        
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
         $arrBotonAnular = array('label' => 'Anular', 'disabled' => false);
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
@@ -486,6 +499,7 @@ class ReciboController extends Controller
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                 
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
                     ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
                     ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
