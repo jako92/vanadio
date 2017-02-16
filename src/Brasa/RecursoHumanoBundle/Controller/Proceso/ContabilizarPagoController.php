@@ -137,10 +137,10 @@ class ContabilizarPagoController extends Controller
             }                                           
         }
         if($respuesta == '') {
-            //Nomina por pagar
+            //Nomina por pagar                       
             if($arPago->getVrNeto() > 0) {
-                if($arConfiguracionNomina->getCuentaNominaPagar() != '') {           
-                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arConfiguracionNomina->getCuentaNominaPagar()); //estaba 250501                           
+                if($arPago->getPagoTipoRel()->getCodigoCuentaFk()) {           
+                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPago->getPagoTipoRel()->getCodigoCuentaFk()); //estaba 250501                           
                     if($arCuenta) {
                         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
                         $arRegistro->setComprobanteRel($arComprobanteContable);
