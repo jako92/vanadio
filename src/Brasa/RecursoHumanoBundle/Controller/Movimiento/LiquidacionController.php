@@ -104,7 +104,7 @@ class LiquidacionController extends Controller
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
+        $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();        
         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigoLiquidacion);
         $form = $this->formularioDetalle($arLiquidacion);
         $form->handleRequest($request);
@@ -126,22 +126,25 @@ class LiquidacionController extends Controller
             }
             if($form->get('BtnAutorizar')->isClicked()) {
                 if ($arLiquidacion->getEstadoAutorizado() == 0){
-                    $arDotacionPendiente = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->dotacionDevolucion($arLiquidacion->getCodigoEmpleadoFk());
-                    $registrosDotacionesPendientes = count($arDotacionPendiente);
-                    if ($registrosDotacionesPendientes > 0){
-                        $objMensaje->Mensaje("error", "El empleado tiene dotaciones pendientes por entregar, no se puede autorizar la liquidación");
-                    }else{
-                        if ($arLiquidacion->getEstadoGenerado() == 0){
-                            $objMensaje->Mensaje("error", "La liquidacion debe ser liquidada antes de autorizar");
-                        } else {
-                            $arLiquidacion->setEstadoAutorizado(1);
-                            $em->persist($arLiquidacion);
-                            $em->flush();
-                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
-                        }
+                    if ($arLiquidacion->getVrTotal() >= 0){
+                        $arDotacionPendiente = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->dotacionDevolucion($arLiquidacion->getCodigoEmpleadoFk());
+                        $registrosDotacionesPendientes = count($arDotacionPendiente);
+                        if ($registrosDotacionesPendientes > 0){
+                            $objMensaje->Mensaje("error", "El empleado tiene dotaciones pendientes por entregar, no se puede autorizar la liquidación");
+                        }else{
+                            if ($arLiquidacion->getEstadoGenerado() == 0){
+                                $objMensaje->Mensaje("error", "La liquidacion debe ser liquidada antes de autorizar");
+                            } else {
+                                $arLiquidacion->setEstadoAutorizado(1);
+                                $em->persist($arLiquidacion);
+                                $em->flush();
+                                return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
+                            }
+                        }                        
+                    } else {
+                        $objMensaje->Mensaje('error', "El total de la liquidacion no puede ser negativo");
                     }                    
-                }
-                    
+                }                    
             }
             if($form->get('BtnDesAutorizar')->isClicked()) {
                 if ($arLiquidacion->getEstadoAutorizado() == 1){
@@ -191,6 +194,7 @@ class LiquidacionController extends Controller
                         $em->flush();                        
                     }
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($codigoLiquidacion);
+                    $em->flush();                        
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                 }    
             }
