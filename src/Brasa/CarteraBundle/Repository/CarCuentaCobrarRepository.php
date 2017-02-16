@@ -30,7 +30,7 @@ class CarCuentaCobrarRepository extends EntityRepository
     
     public function cuentasCobrar($codigCliente = "") {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT cc FROM BrasaCarteraBundle:CarCuentaCobrar cc where cc.codigoCuentaCobrarPk <> 0 and cc.saldo > 0 AND cc.operacion = -1 AND cc.codigoClienteFk = " . $codigCliente . "";        
+        $dql   = "SELECT cc FROM BrasaCarteraBundle:CarCuentaCobrar cc where cc.saldo > 0 AND cc.operacion = 1 AND cc.codigoClienteFk = " . $codigCliente . "";        
         $query = $em->createQuery($dql);        
         $arCuentasCobro = $query->getResult();        
         
