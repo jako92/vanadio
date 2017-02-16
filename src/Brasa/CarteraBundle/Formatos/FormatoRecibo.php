@@ -130,9 +130,9 @@ class FormatoRecibo extends \FPDF_FPDF {
         
         $this->Cell(42, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, "" , 1, 0, 'L', 1);
+        $this->Cell(23, 5, utf8_decode("VALOR:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, '', 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrTotal(), 2, '.', ','), 1, 0, 'R', 1);
         //linea 7
         $this->SetXY(10, $intY+30);
         $this->Cell(26, 5, "" , 1, 0, 'L', 1);

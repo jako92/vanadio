@@ -172,11 +172,6 @@ class RhuConfiguracion
     private $aportesPorcentajeVacaciones = 0;
     
     /**
-     * @ORM\Column(name="cuenta_nomina_pagar", type="string", length=20, nullable=true)
-     */
-    private $cuentaNominaPagar;
-    
-    /**
      * @ORM\Column(name="cuenta_pago", type="string", length=20, nullable=true)
      */
     private $cuentaPago;
@@ -387,6 +382,8 @@ class RhuConfiguracion
      */
     private $pagarLicenciaSalarioPactado = false;    
     
+
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -1156,30 +1153,6 @@ class RhuConfiguracion
     }
 
     /**
-     * Set cuentaNominaPagar
-     *
-     * @param string $cuentaNominaPagar
-     *
-     * @return RhuConfiguracion
-     */
-    public function setCuentaNominaPagar($cuentaNominaPagar)
-    {
-        $this->cuentaNominaPagar = $cuentaNominaPagar;
-
-        return $this;
-    }
-
-    /**
-     * Get cuentaNominaPagar
-     *
-     * @return string
-     */
-    public function getCuentaNominaPagar()
-    {
-        return $this->cuentaNominaPagar;
-    }
-
-    /**
      * Set cuentaPago
      *
      * @param string $cuentaPago
@@ -1804,6 +1777,54 @@ class RhuConfiguracion
     }
 
     /**
+     * Set codigoCesantia
+     *
+     * @param integer $codigoCesantia
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoCesantia($codigoCesantia)
+    {
+        $this->codigoCesantia = $codigoCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCesantia
+     *
+     * @return integer
+     */
+    public function getCodigoCesantia()
+    {
+        return $this->codigoCesantia;
+    }
+
+    /**
+     * Set codigoInteresCesantia
+     *
+     * @param integer $codigoInteresCesantia
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoInteresCesantia($codigoInteresCesantia)
+    {
+        $this->codigoInteresCesantia = $codigoInteresCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoInteresCesantia
+     *
+     * @return integer
+     */
+    public function getCodigoInteresCesantia()
+    {
+        return $this->codigoInteresCesantia;
+    }
+
+    /**
      * Set prestacionesAplicaPorcentajeSalario
      *
      * @param boolean $prestacionesAplicaPorcentajeSalario
@@ -1873,30 +1894,6 @@ class RhuConfiguracion
     public function getNitIcbf()
     {
         return $this->nitIcbf;
-    }
-
-    /**
-     * Set entidadRiesgoProfesionalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel
-     *
-     * @return RhuConfiguracion
-     */
-    public function setEntidadRiesgoProfesionalRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel = null)
-    {
-        $this->entidadRiesgoProfesionalRel = $entidadRiesgoProfesionalRel;
-
-        return $this;
-    }
-
-    /**
-     * Get entidadRiesgoProfesionalRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional
-     */
-    public function getEntidadRiesgoProfesionalRel()
-    {
-        return $this->entidadRiesgoProfesionalRel;
     }
 
     /**
@@ -1996,30 +1993,6 @@ class RhuConfiguracion
     }
 
     /**
-     * Set codigoCesantia
-     *
-     * @param integer $codigoCesantia
-     *
-     * @return RhuConfiguracion
-     */
-    public function setCodigoCesantia($codigoCesantia)
-    {
-        $this->codigoCesantia = $codigoCesantia;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCesantia
-     *
-     * @return integer
-     */
-    public function getCodigoCesantia()
-    {
-        return $this->codigoCesantia;
-    }
-
-    /**
      * Set omitirDescuentoEmbargoCesantias
      *
      * @param boolean $omitirDescuentoEmbargoCesantias
@@ -2041,30 +2014,6 @@ class RhuConfiguracion
     public function getOmitirDescuentoEmbargoCesantias()
     {
         return $this->omitirDescuentoEmbargoCesantias;
-    }
-
-    /**
-     * Set codigoInteresCesantia
-     *
-     * @param integer $codigoInteresCesantia
-     *
-     * @return RhuConfiguracion
-     */
-    public function setCodigoInteresCesantia($codigoInteresCesantia)
-    {
-        $this->codigoInteresCesantia = $codigoInteresCesantia;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoInteresCesantia
-     *
-     * @return integer
-     */
-    public function getCodigoInteresCesantia()
-    {
-        return $this->codigoInteresCesantia;
     }
 
     /**
@@ -2137,5 +2086,29 @@ class RhuConfiguracion
     public function getPagarLicenciaSalarioPactado()
     {
         return $this->pagarLicenciaSalarioPactado;
+    }
+
+    /**
+     * Set entidadRiesgoProfesionalRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel
+     *
+     * @return RhuConfiguracion
+     */
+    public function setEntidadRiesgoProfesionalRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel = null)
+    {
+        $this->entidadRiesgoProfesionalRel = $entidadRiesgoProfesionalRel;
+
+        return $this;
+    }
+
+    /**
+     * Get entidadRiesgoProfesionalRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional
+     */
+    public function getEntidadRiesgoProfesionalRel()
+    {
+        return $this->entidadRiesgoProfesionalRel;
     }
 }
