@@ -63,7 +63,7 @@ class RhuCostoRepository extends EntityRepository {
                     . "AND p.anio =  " . $arCierreMes->getAnio() . " "
                     . "AND p.mes = " . $arCierreMes->getMes() . " GROUP BY p.codigoEmpleadoFk";
             $query = $em->createQuery($dql);
-            $arrProvision = $query->getSingleResult();
+            $arrProvision = $query->getResult();
             if($arrProvision) {
                 $seguridadSocial = $arrProvision['seguridadSocial'];
                 $prestaciones = $arrProvision['prestaciones'];                
