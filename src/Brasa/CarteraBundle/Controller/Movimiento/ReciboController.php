@@ -159,10 +159,41 @@ class ReciboController extends Controller
                             foreach ($arReciboDetalles AS $arReciboDetalle) {
                                 $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
                                 $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarFk()); 
-                                if($arCuentaCobrar->getSaldo() >= $arReciboDetalle->getVrPagoAfectar()) {                                    
-                                    $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arReciboDetalle->getVrPagoAfectar());
-                                    $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arReciboDetalle->getVrPagoAfectar());
-                                    $em->persist($arCuentaCobrar);                                    
+                                $valorAfectar = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectar($arReciboDetalle->getCodigoCuentaCobrarFk(), $codigoRecibo);
+                                if($arCuentaCobrar->getSaldo() >= $valorAfectar) {
+                                    if($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk()) {
+                                        $arCuentaCobrarAplicacion = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
+                                        $arCuentaCobrarAplicacion = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk());                                     
+                                        $valorAfectarAplicacion = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectarAplicacion($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk(), $codigoRecibo);                                        
+                                        if($arCuentaCobrarAplicacion->getSaldo() >= $valorAfectarAplicacion) {
+                                            //Cuenta por cobrar aplicacion
+                                            $saldo = $arCuentaCobrarAplicacion->getSaldo() - $arReciboDetalle->getVrPagoAfectar();
+                                            $saldoOperado = $saldo * $arCuentaCobrarAplicacion->getOperacion();                                            
+                                            $arCuentaCobrarAplicacion->setSaldo($saldo);
+                                            $arCuentaCobrarAplicacion->setSaldoOperado($saldoOperado);
+                                            $arCuentaCobrarAplicacion->setAbono($arCuentaCobrarAplicacion->getAbono() + $arReciboDetalle->getVrPagoAfectar());                                                                                                                                
+                                            $em->persist($arCuentaCobrarAplicacion);
+                                            //Cuenta por cobrar
+                                            $saldo = $arCuentaCobrar->getSaldo() - $arReciboDetalle->getVrPagoAfectar();
+                                            $saldoOperado = $saldo * $arCuentaCobrar->getOperacion();
+                                            $arCuentaCobrar->setSaldo($saldo);
+                                            $arCuentaCobrar->setSaldoOperado($saldoOperado);
+                                            $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arReciboDetalle->getVrPagoAfectar());                                                                                    
+                                            $em->persist($arCuentaCobrar);                                            
+                                        } else {
+                                            $objMensaje->Mensaje('error', 'El valor a afectar del documento aplicacion ' . $arCuentaCobrarAplicacion->getNumeroDocumento() . " supera el saldo desponible: " . $arCuentaCobrarAplicacion->getSaldo()); 
+                                            $error = true;
+                                            break;                                            
+                                        }
+                                    } else {
+                                            $saldo = $arCuentaCobrar->getSaldo() - $arReciboDetalle->getVrPagoAfectar();
+                                            $saldoOperado = $saldo * $arCuentaCobrar->getOperacion();
+                                            $arCuentaCobrar->setSaldo($saldo);
+                                            $arCuentaCobrar->setSaldoOperado($saldoOperado);
+                                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arReciboDetalle->getVrPagoAfectar());                                        
+                                        $em->persist($arCuentaCobrar);
+                                    }
+                                                                        
                                 } else {
                                     $objMensaje->Mensaje('error', 'El pago de la factura ' . $arCuentaCobrar->getNumeroDocumento() . " supera el saldo desponible para afectar"); 
                                     $error = true;
@@ -189,13 +220,26 @@ class ReciboController extends Controller
                     return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
                 }
                 if($arRecibo->getEstadoAutorizado() == 1 && $arRecibo->getEstadoImpreso() == 0) {                    
-                    $arDetallesRecibo = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoReciboFk' => $codigoRecibo));
-                    foreach ($arDetallesRecibo AS $arDetalleRecibo) {
+                    $arReciboDetalles = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoReciboFk' => $codigoRecibo));
+                    foreach ($arReciboDetalles AS $arReciboDetalle) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-                        $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleRecibo->getCodigoCuentaCobrarFk());
-                        $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleRecibo->getVrPagoAfectar());
-                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleRecibo->getVrPagoAfectar());
+                        $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarFk());
+                        $saldo = $arCuentaCobrar->getSaldo() + $arReciboDetalle->getVrPagoAfectar();
+                        $saldoOperado = $saldo * $arCuentaCobrar->getOperacion();                                                                    
+                        $arCuentaCobrar->setSaldo($saldo);
+                        $arCuentaCobrar->setSaldoOperado($saldoOperado);
+                        $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arReciboDetalle->getVrPagoAfectar());
                         $em->persist($arCuentaCobrar);
+                        if($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk()) {                            
+                            $arCuentaCobrarAplicacion = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+                            $arCuentaCobrarAplicacion = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk());
+                            $saldo = $arCuentaCobrarAplicacion->getSaldo() + $arReciboDetalle->getVrPagoAfectar();
+                            $saldoOperado = $saldo * $arCuentaCobrarAplicacion->getOperacion();                                                                        
+                            $arCuentaCobrarAplicacion->setSaldo($saldo);
+                            $arCuentaCobrarAplicacion->setSaldoOperado($saldoOperado);
+                            $arCuentaCobrarAplicacion->setAbono($arCuentaCobrarAplicacion->getAbono() - $arReciboDetalle->getVrPagoAfectar());
+                            $em->persist($arCuentaCobrarAplicacion);                            
+                        }
                     }
                     $arRecibo->setEstadoAutorizado(0);
                     $em->persist($arRecibo);
@@ -310,17 +354,15 @@ class ReciboController extends Controller
                 $intIndice = 0;
                 if(count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigoCuentaCobrar) {
-                        if($em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarCuenta($codigoCuentaCobrar,$codigoRecibo)) {
-                            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);
-                            $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
-                            $arReciboDetalle->setReciboRel($arRecibo);
-                            $arReciboDetalle->setCuentaCobrarRel($arCuentaCobrar);
-                            $arReciboDetalle->setValor($arrControles['TxtSaldo'.$codigoCuentaCobrar]);
-                            $arReciboDetalle->setUsuario($arUsuario->getUserName());
-                            $arReciboDetalle->setNumeroFactura($arCuentaCobrar->getNumeroDocumento());
-                            $arReciboDetalle->setCuentaCobrarTipoRel($arCuentaCobrar->getCuentaCobrarTipoRel());
-                            $em->persist($arReciboDetalle);                            
-                        } 
+                        $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);
+                        $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
+                        $arReciboDetalle->setReciboRel($arRecibo);
+                        $arReciboDetalle->setCuentaCobrarRel($arCuentaCobrar);
+                        $arReciboDetalle->setValor($arrControles['TxtSaldo'.$codigoCuentaCobrar]);
+                        $arReciboDetalle->setUsuario($arUsuario->getUserName());
+                        $arReciboDetalle->setNumeroFactura($arCuentaCobrar->getNumeroDocumento());
+                        $arReciboDetalle->setCuentaCobrarTipoRel($arCuentaCobrar->getCuentaCobrarTipoRel());
+                        $em->persist($arReciboDetalle);                            
                     }
                     $em->flush();
                 } 
@@ -336,6 +378,40 @@ class ReciboController extends Controller
             'arRecibo' => $arRecibo,
             'form' => $form->createView()));
     } 
+
+    /**
+     * @Route("/cartera/movimiento/recibo/detalle/aplicar/{codigoReciboDetalle}", name="brs_cartera_movimiento_recibo_detalle_aplicar")
+     */
+    public function detalleAplicarAction(Request $request, $codigoReciboDetalle) {        
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $paginator  = $this->get('knp_paginator');
+        $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
+        $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($codigoReciboDetalle);
+        $form = $this->createFormBuilder()            
+            ->getForm();
+        $form->handleRequest($request); 
+        if ($form->isValid()) {            
+            if($request->request->get('OpAplicar')) {
+                set_time_limit(0);
+                ini_set("memory_limit", -1);                
+                $codigoCuentaCobrar = $request->request->get('OpAplicar');
+                $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                
+                $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);                                
+                $arReciboDetalle->setCuentaCobrarAplicacionRel($arCuentaCobrar);
+                $arReciboDetalle->setNumeroDocumentoAplicacion($arCuentaCobrar->getNumeroDocumento());
+                $em->persist($arReciboDetalle);
+                $em->flush();
+            }           
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+        }
+        $arCuentasCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+        $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->cuentasCobrarAplicar($arReciboDetalle->getReciboRel()->getCodigoClienteFk());
+        $arCuentasCobrar = $paginator->paginate($arCuentasCobrar, $request->query->get('page', 1), 50);        
+        return $this->render('BrasaCarteraBundle:Movimientos/Recibo:detalleAplicar.html.twig', array(
+            'arCuentasCobrar' => $arCuentasCobrar,        
+            'form' => $form->createView()));
+    }
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();

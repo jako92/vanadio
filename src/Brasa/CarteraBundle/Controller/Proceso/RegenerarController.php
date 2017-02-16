@@ -21,6 +21,7 @@ class RegenerarController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();      
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioFiltro();
         $form->handleRequest($request);                
         if ($form->isValid()) {               
@@ -29,13 +30,18 @@ class RegenerarController extends Controller
                 foreach ($arCuentasCobrar as $arCuentaCobrar) {
                     $arCuentaCobrarAct = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                    
                     $arCuentaCobrarAct = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arCuentaCobrar->getCodigoCuentaCobrarPk());
-                    $vrTotalPago = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->vrPago($arCuentaCobrar->getCodigoCuentaCobrarPk());                    
+                    $vrPago = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->vrPago($arCuentaCobrar->getCodigoCuentaCobrarPk());                    
+                    $vrPagoAplicacion = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->vrPagoAplicacion($arCuentaCobrar->getCodigoCuentaCobrarPk());                    
+                    $vrTotalPago = $vrPago + $vrPagoAplicacion;
                     $saldo = $arCuentaCobrar->getValorOriginal() - $vrTotalPago;
-                    $arCuentaCobrarAct->setSaldo($saldo);                    
+                    $saldoOperado = $saldo * $arCuentaCobrarAct->getOperacion();
+                    $arCuentaCobrarAct->setSaldo($saldo);
+                    $arCuentaCobrarAct->setSaldoOperado($saldoOperado);                    
                     $arCuentaCobrarAct->setAbono($vrTotalPago);
                     $em->persist($arCuentaCobrarAct);                                        
-                }
+                }                
                 $em->flush();
+                $objMensaje->Mensaje('informacion', "El proceso se ejecuto con exito");
                 return $this->redirect($this->generateUrl('brs_cartera_proceso_regenerar'));                
             }
         }

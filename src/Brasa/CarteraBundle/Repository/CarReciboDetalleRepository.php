@@ -89,26 +89,48 @@ class CarReciboDetalleRepository extends EntityRepository {
         return true;
     }
     
-    public function validarCuenta($codigoCuenta, $codigoRecibo) {        
+    public function validarValorAfectar($codigoCuenta, $codigoRecibo) {        
         $em = $this->getEntityManager();
-        $boolValidar = TRUE;        
-        $dql   = "SELECT COUNT(rd.codigoReciboDetallePk) as numeroRegistros FROM BrasaCarteraBundle:CarReciboDetalle rd "
+        $valorAfectar = 0;
+        $dql   = "SELECT SUM(rd.vrPagoAfectar) as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
                 . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuenta . " AND rd.codigoReciboFk = " . $codigoRecibo;
         $query = $em->createQuery($dql);
         $arrReciboDetalles = $query->getSingleResult(); 
         if($arrReciboDetalles) {
-            $intNumeroRegistros = $arrReciboDetalles['numeroRegistros'];
-            if($intNumeroRegistros > 0) {
-                $boolValidar = FALSE;
-            }
+            $valorAfectar = $arrReciboDetalles['valor'];
         }
-        return $boolValidar;
+        return $valorAfectar;
     } 
+
+    public function validarValorAfectarAplicacion($codigoCuenta, $codigoRecibo) {        
+        $em = $this->getEntityManager();
+        $valorAfectar = 0;
+        $dql   = "SELECT SUM(rd.vrPagoAfectar) as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
+                . "WHERE rd.codigoCuentaCobrarAplicacionFk = " . $codigoCuenta . " AND rd.codigoReciboFk = " . $codigoRecibo;
+        $query = $em->createQuery($dql);
+        $arrReciboDetalles = $query->getSingleResult(); 
+        if($arrReciboDetalles) {
+            $valorAfectar = $arrReciboDetalles['valor'];
+        }
+        return $valorAfectar;
+    }
     
     public function vrPago($codigoCuentaCobrar) {
         $em = $this->getEntityManager();
-        $dql = "SELECT SUM(rd.vr_total_afectar as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
+        $dql = "SELECT SUM(rd.vrPagoAfectar as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
                 . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuentaCobrar . " AND r.estadoAutorizado = 1";
+        $query = $em->createQuery($dql);
+        $vrTotalPago = $query->getSingleScalarResult();
+        if (!$vrTotalPago) {
+            $vrTotalPago = 0;
+        }
+        return $vrTotalPago;
+    } 
+    
+    public function vrPagoAplicacion($codigoCuentaCobrar) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT SUM(rd.vrPagoAfectar as valor FROM BrasaCarteraBundle:CarReciboDetalle rd JOIN rd.reciboRel r "
+                . "WHERE rd.codigoCuentaCobrarAplicacionFk = " . $codigoCuentaCobrar . " AND r.estadoAutorizado = 1";
         $query = $em->createQuery($dql);
         $vrTotalPago = $query->getSingleScalarResult();
         if (!$vrTotalPago) {

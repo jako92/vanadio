@@ -77,6 +77,11 @@ class CarCuentaCobrar
      * @ORM\Column(name="saldo", type="float")
      */    
     private $saldo = 0;                     
+
+    /**
+     * @ORM\Column(name="saldo_operado", type="float")
+     */    
+    private $saldoOperado = 0;
     
     /**
      * @ORM\Column(name="grupo", type="string", length=120, nullable=true)
@@ -130,6 +135,11 @@ class CarCuentaCobrar
      * @ORM\OneToMany(targetEntity="CarReciboDetalle", mappedBy="cuentaCobrarRel")
      */
     protected $recibosDetallesCuentaCobrarRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CarReciboDetalle", mappedBy="cuentaCobrarAplicacionRel")
+     */
+    protected $recibosDetallesCuentaCobrarAplicacionRel;
     
     /**
      * @ORM\OneToMany(targetEntity="CarAnticipoDetalle", mappedBy="cuentaCobrarRel")
@@ -750,5 +760,63 @@ class CarCuentaCobrar
     public function getOperacion()
     {
         return $this->operacion;
+    }
+
+    /**
+     * Set saldoOperado
+     *
+     * @param float $saldoOperado
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setSaldoOperado($saldoOperado)
+    {
+        $this->saldoOperado = $saldoOperado;
+
+        return $this;
+    }
+
+    /**
+     * Get saldoOperado
+     *
+     * @return float
+     */
+    public function getSaldoOperado()
+    {
+        return $this->saldoOperado;
+    }
+
+    /**
+     * Add recibosDetallesCuentaCobrarAplicacionRel
+     *
+     * @param \Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesCuentaCobrarAplicacionRel
+     *
+     * @return CarCuentaCobrar
+     */
+    public function addRecibosDetallesCuentaCobrarAplicacionRel(\Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesCuentaCobrarAplicacionRel)
+    {
+        $this->recibosDetallesCuentaCobrarAplicacionRel[] = $recibosDetallesCuentaCobrarAplicacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove recibosDetallesCuentaCobrarAplicacionRel
+     *
+     * @param \Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesCuentaCobrarAplicacionRel
+     */
+    public function removeRecibosDetallesCuentaCobrarAplicacionRel(\Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesCuentaCobrarAplicacionRel)
+    {
+        $this->recibosDetallesCuentaCobrarAplicacionRel->removeElement($recibosDetallesCuentaCobrarAplicacionRel);
+    }
+
+    /**
+     * Get recibosDetallesCuentaCobrarAplicacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecibosDetallesCuentaCobrarAplicacionRel()
+    {
+        return $this->recibosDetallesCuentaCobrarAplicacionRel;
     }
 }

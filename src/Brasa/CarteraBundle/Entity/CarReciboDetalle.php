@@ -27,6 +27,11 @@ class CarReciboDetalle
      * @ORM\Column(name="codigo_cuenta_cobrar_fk", type="integer", nullable=true)
      */     
     private $codigoCuentaCobrarFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_cobrar_aplicacion_fk", type="integer", nullable=true)
+     */     
+    private $codigoCuentaCobrarAplicacionFk;
     
     /**
      * @ORM\Column(name="codigo_cuenta_cobrar_tipo_fk", type="integer", nullable=true)
@@ -37,6 +42,11 @@ class CarReciboDetalle
      * @ORM\Column(name="numero_factura", type="integer", nullable=true)
      */     
     private $numeroFactura;
+
+    /**
+     * @ORM\Column(name="numero_documento_aplicacion", type="integer", nullable=true)
+     */     
+    private $numeroDocumentoAplicacion;
     
     /**
      * @ORM\Column(name="valor", type="float")
@@ -95,6 +105,12 @@ class CarReciboDetalle
      */
     protected $cuentaCobrarRel;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="CarCuentaCobrar", inversedBy="recibosDetallesCuentaCobrarAplicacionRel")
+     * @ORM\JoinColumn(name="codigo_cuenta_cobrar_aplicacion_fk", referencedColumnName="codigo_cuenta_cobrar_pk")
+     */
+    protected $cuentaCobrarAplicacionRel;
+    
     /**
      * @ORM\ManyToOne(targetEntity="CarCuentaCobrarTipo", inversedBy="cuentasCobrarTiposReciboDetalleRel")
      * @ORM\JoinColumn(name="codigo_cuenta_cobrar_tipo_fk", referencedColumnName="codigo_cuenta_cobrar_tipo_pk")
@@ -494,5 +510,77 @@ class CarReciboDetalle
     public function getCuentaCobrarTipoRel()
     {
         return $this->cuentaCobrarTipoRel;
+    }
+
+    /**
+     * Set codigoCuentaCobrarAplicacionFk
+     *
+     * @param integer $codigoCuentaCobrarAplicacionFk
+     *
+     * @return CarReciboDetalle
+     */
+    public function setCodigoCuentaCobrarAplicacionFk($codigoCuentaCobrarAplicacionFk)
+    {
+        $this->codigoCuentaCobrarAplicacionFk = $codigoCuentaCobrarAplicacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaCobrarAplicacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoCuentaCobrarAplicacionFk()
+    {
+        return $this->codigoCuentaCobrarAplicacionFk;
+    }
+
+    /**
+     * Set cuentaCobrarAplicacionRel
+     *
+     * @param \Brasa\CarteraBundle\Entity\CarCuentaCobrar $cuentaCobrarAplicacionRel
+     *
+     * @return CarReciboDetalle
+     */
+    public function setCuentaCobrarAplicacionRel(\Brasa\CarteraBundle\Entity\CarCuentaCobrar $cuentaCobrarAplicacionRel = null)
+    {
+        $this->cuentaCobrarAplicacionRel = $cuentaCobrarAplicacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaCobrarAplicacionRel
+     *
+     * @return \Brasa\CarteraBundle\Entity\CarCuentaCobrar
+     */
+    public function getCuentaCobrarAplicacionRel()
+    {
+        return $this->cuentaCobrarAplicacionRel;
+    }
+
+    /**
+     * Set numeroDocumentoAplicacion
+     *
+     * @param integer $numeroDocumentoAplicacion
+     *
+     * @return CarReciboDetalle
+     */
+    public function setNumeroDocumentoAplicacion($numeroDocumentoAplicacion)
+    {
+        $this->numeroDocumentoAplicacion = $numeroDocumentoAplicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroDocumentoAplicacion
+     *
+     * @return integer
+     */
+    public function getNumeroDocumentoAplicacion()
+    {
+        return $this->numeroDocumentoAplicacion;
     }
 }
