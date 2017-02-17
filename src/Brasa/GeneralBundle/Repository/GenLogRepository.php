@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class GenLogRepository extends EntityRepository {
 
     public function listaDql($codigoUsuario, $codigoDocumento, $id) {
-        $dql = "SELECT l FROM BrasaGeneralBundle:GenLog l WHERE l.codigoUsuarioFk =" . $codigoUsuario . " AND l.codigoDocumentoFk = " . $codigoDocumento . " AND l.id = " . $id;
+        $dql = "SELECT l FROM BrasaGeneralBundle:GenLog l WHERE l.codigoDocumentoFk = " . $codigoDocumento . " AND l.id = " . $id;
         return $dql;
     }
 
