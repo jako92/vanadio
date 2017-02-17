@@ -117,16 +117,20 @@ class RhuVacacionRepository extends EntityRepository {
         } else {
             $basePrestaciones = ($floTotalVacacionBrutoDisfrute * 70) / 100;
         }
-        $douSalud = ($basePrestaciones * 4) / 100;
+        $porcentajeSalud = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();                    
+        $douSalud = ($basePrestaciones * $porcentajeSalud) / 100;
         $douSalud = round($douSalud);
         $arVacacion->setVrSalud($douSalud);
+        
+        $porcentajePension = $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();                    
         if ($basePrestaciones >= ($arConfiguracion->getVrSalario() * 4)){
             $douPension = ($basePrestaciones * 5) / 100;
         } else {
-            $douPension = ($basePrestaciones * 4) / 100;
+            $douPension = ($basePrestaciones * $porcentajePension) / 100;
         }
         $douPension = round($douPension);
-        $arVacacion->setVrPension($douPension);                                   
+        $arVacacion->setVrPension($douPension); 
+        
         $floDeducciones = 0;
         $floBonificaciones = 0;        
         $arVacacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionAdicional();
