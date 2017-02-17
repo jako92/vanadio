@@ -372,6 +372,7 @@ class ReciboController extends Controller
                         $arReciboDetalle->setUsuario($arUsuario->getUserName());
                         $arReciboDetalle->setNumeroFactura($arCuentaCobrar->getNumeroDocumento());
                         $arReciboDetalle->setCuentaCobrarTipoRel($arCuentaCobrar->getCuentaCobrarTipoRel());
+                        $arReciboDetalle->setOperacion(1);
                         $em->persist($arReciboDetalle);                            
                     }
                     $em->flush();
@@ -410,8 +411,10 @@ class ReciboController extends Controller
                 $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);                                
                 $arReciboDetalle->setCuentaCobrarAplicacionRel($arCuentaCobrar);
                 $arReciboDetalle->setNumeroDocumentoAplicacion($arCuentaCobrar->getNumeroDocumento());
+                $arReciboDetalle->setOperacion(0);
                 $em->persist($arReciboDetalle);
                 $em->flush();
+                $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->liquidar($arReciboDetalle->getCodigoReciboFk());                
             }           
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
         }
@@ -599,7 +602,7 @@ class ReciboController extends Controller
                 $arReciboDetalle->setVrRetencionIca($arrControles['TxtVrRetencionIca'.$intCodigo]);
                 $arReciboDetalle->setVrRetencionIva($arrControles['TxtVrRetencionIva'.$intCodigo]);
                 $arReciboDetalle->setVrRetencionFuente($arrControles['TxtVrRetencionFuente'.$intCodigo]);                
-                $arReciboDetalle->setVrPago($arrControles['TxtValorPago'.$intCodigo]);                                                
+                $arReciboDetalle->setVrPago($arrControles['TxtValorPago'.$intCodigo]);                                                                
                 $arReciboDetalle->setVrPagoAfectar($valorPagoAfectar);
                 $em->persist($arReciboDetalle);
             }

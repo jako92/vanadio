@@ -89,6 +89,11 @@ class CarReciboDetalle
     private $usuario;
     
     /**
+     * @ORM\Column(name="operacion", type="integer")
+     */    
+    private $operacion = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="CarRecibo", inversedBy="recibosDetallesRecibosRel")
      * @ORM\JoinColumn(name="codigo_recibo_fk", referencedColumnName="codigo_recibo_pk")
      */
@@ -553,5 +558,53 @@ class CarReciboDetalle
     public function getCuentaCobrarTipoRel()
     {
         return $this->cuentaCobrarTipoRel;
+    }
+
+    /**
+     * Set vrPagoOperado
+     *
+     * @param float $vrPagoOperado
+     *
+     * @return CarReciboDetalle
+     */
+    public function setVrPagoOperado($vrPagoOperado)
+    {
+        $this->vrPagoOperado = $vrPagoOperado;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPagoOperado
+     *
+     * @return float
+     */
+    public function getVrPagoOperado()
+    {
+        return $this->vrPagoOperado;
+    }
+
+    /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return CarReciboDetalle
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
     }
 }

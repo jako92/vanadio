@@ -72,8 +72,8 @@ class CarReciboDetalleRepository extends EntityRepository {
             $floRetencionIca += $arReciboDetalle->getVrRetencionIca();
             $floRetencionIva += $arReciboDetalle->getVrRetencionIva();
             $floRetencionFuente += $arReciboDetalle->getVrRetencionFuente();
-            $pago += $arReciboDetalle->getVrPago();       
-            $pagoTotal += $arReciboDetalle->getVrPagoAfectar();
+            $pago += $arReciboDetalle->getVrPago() * $arReciboDetalle->getOperacion();       
+            $pagoTotal += $arReciboDetalle->getVrPagoAfectar() * $arReciboDetalle->getOperacion();
         }                 
         $arRecibo->setVrPago($pago);
         $arRecibo->setVrPagoTotal($pagoTotal);
