@@ -92,7 +92,7 @@
                     <td>{{ arRecibos.clienteRel.nit |default('')  }}</td>
                     <td>{{ arRecibos.clienteRel.nombreCorto |default('')  }}</td>                
                     <td>{{ arRecibos.cuentaRel.nombre |default('')  }}</td>                
-                    <td style="text-align: right">{{ arRecibos.vrTotal | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrPago | number_format(0, '.', ',') }}</td>
                     <td>{% if arRecibos.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
