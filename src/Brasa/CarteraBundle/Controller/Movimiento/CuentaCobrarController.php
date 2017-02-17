@@ -67,20 +67,23 @@ class CuentaCobrarController extends Controller
         $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);  
         $form = $this->createForm(CarCuentaCobrarType::class, $arCuentasCobrar);   
         $form->handleRequest($request);
-        if ($form->isValid()) {      
+        if ($form->isValid()) {                  
             $arCuentasCobrar = $form->getData();
-            if($arCuentasCobrar->getValorOriginal() > $arCuentasCobrar->getAbono()){
-                $saldo = $arCuentasCobrar->getValorOriginal() - $arCuentasCobrar->getAbono();
-                $saldoOperado = $saldo * $arCuentasCobrar->getOperacion();
-                $arCuentasCobrar->setSaldoOperado($saldoOperado);
-                $arCuentasCobrar->setSaldo($saldo);
-                $em->persist($arCuentasCobrar);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_cartera_movimiento_cuentacobrar_listar'));
-            } else {
-                $objMensaje->Mensaje('error', 'El valor del saldo inicial no puede ser menor al valor del abono');
-            }
- 
+            if($arCuentasCobrar->getCuentaCobrarTipoRel()->getsaldoInicial() ==1){
+                if($arCuentasCobrar->getValorOriginal() > $arCuentasCobrar->getAbono()){
+                    $saldo = $arCuentasCobrar->getValorOriginal() - $arCuentasCobrar->getAbono();
+                    $saldoOperado = $saldo * $arCuentasCobrar->getOperacion();
+                    $arCuentasCobrar->setSaldoOperado($saldoOperado);
+                    $arCuentasCobrar->setSaldo($saldo);
+                    $em->persist($arCuentasCobrar);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_cuentacobrar_listar'));
+                } else {
+                    $objMensaje->Mensaje('error', 'El valor del saldo inicial no puede ser menor al valor del abono');
+                }                
+            }else{
+                $objMensaje->Mensaje('error', 'Solo se pueden editar los saldos iniciales');
+            }               
         }
 
         return $this->render('BrasaCarteraBundle:Movimientos/CuentaCobrar:nuevo.html.twig', array(

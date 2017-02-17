@@ -26,7 +26,12 @@ class CarCuentaCobrarTipo
     /**
      * @ORM\Column(name="operacion", type="integer")
      */    
-    private $operacion = 0;     
+    private $operacion = 0;
+    
+    /**
+     * @ORM\Column(name="saldo_inicial", type="boolean")
+     */    
+    private $saldoInicial = false;     
     
     /**
      * @ORM\OneToMany(targetEntity="CarCuentaCobrar", mappedBy="cuentaCobrarTipoRel")
@@ -55,6 +60,7 @@ class CarCuentaCobrarTipo
     
     
     
+
     /**
      * Constructor
      */
@@ -99,6 +105,54 @@ class CarCuentaCobrarTipo
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
+    }
+
+    /**
+     * Set saldoInicial
+     *
+     * @param boolean $saldoInicial
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setSaldoInicial($saldoInicial)
+    {
+        $this->saldoInicial = $saldoInicial;
+
+        return $this;
+    }
+
+    /**
+     * Get saldoInicial
+     *
+     * @return boolean
+     */
+    public function getSaldoInicial()
+    {
+        return $this->saldoInicial;
     }
 
     /**
@@ -269,29 +323,5 @@ class CarCuentaCobrarTipo
     public function getCuentasCobrarTiposNotaCreditoDetalleRel()
     {
         return $this->cuentasCobrarTiposNotaCreditoDetalleRel;
-    }
-
-    /**
-     * Set operacion
-     *
-     * @param integer $operacion
-     *
-     * @return CarCuentaCobrarTipo
-     */
-    public function setOperacion($operacion)
-    {
-        $this->operacion = $operacion;
-
-        return $this;
-    }
-
-    /**
-     * Get operacion
-     *
-     * @return integer
-     */
-    public function getOperacion()
-    {
-        return $this->operacion;
     }
 }
