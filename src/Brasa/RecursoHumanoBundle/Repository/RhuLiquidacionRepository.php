@@ -265,7 +265,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                     $salarioPromedioPrimas = round($salarioPromedioPrimas);
                     $douPrima = ($salarioPromedioPrimas * $diasPrimaLiquidarFinal) / 360;                
                     $douPrima = round($douPrima);
-                    $arLiquidacion->setDiasPrimas($intDiasPrimaLiquidar);                    
+                    $arLiquidacion->setDiasPrimas($diasPrimaLiquidarFinal);                    
                     $arLiquidacion->setDiasPrimasAusentismo($diasAusentismo);                   
                     $arLiquidacion->setVrPrima($douPrima);    
                     $arLiquidacion->setVrIngresoBasePrestacionPrimas($ibpPrimas);

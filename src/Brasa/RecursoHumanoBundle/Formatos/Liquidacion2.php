@@ -203,7 +203,7 @@ class Liquidacion2 extends \FPDF_FPDF {
         $this->SetXY($intX + $intXlinea, 99);
         $this->Cell(15, 5, number_format($arLiquidacion->getDiasCesantiasAnterior(), 0, '.', ','), 1, 0, 'R', 1);        
         $this->SetXY($intX + $intXlinea, 105);
-        $this->Cell(15, 5, number_format(($arLiquidacion->getDiasPrimas()- $arLiquidacion->getDiasPrimasAusentismo() - $arLiquidacion->getDiasAusentismoAdicional()), 0, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(15, 5, number_format(($arLiquidacion->getDiasPrimas()), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + $intXlinea, 111);
         $this->Cell(15, 5, number_format($arLiquidacion->getDiasVacaciones(), 0, '.', ','), 1, 0, 'R', 1);
         $this->SetXY($intX + $intXlinea, 117);
