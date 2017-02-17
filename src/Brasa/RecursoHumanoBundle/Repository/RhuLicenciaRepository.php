@@ -23,7 +23,7 @@ class RhuLicenciaRepository extends EntityRepository {
         if($strLicenciaTipo != "") {
             $dql .= " AND l.codigoLicenciaTipoFk = " . $strLicenciaTipo;
         }
-        //$dql .= " ORDER BY e.nombreCorto";
+        $dql .= " ORDER BY l.fechaDesde DESC";
         return $dql;
     }                    
     
