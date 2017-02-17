@@ -159,13 +159,13 @@ class ReciboController extends Controller
                             foreach ($arReciboDetalles AS $arReciboDetalle) {
                                 $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
                                 $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarFk()); 
-                                $valorAfectar = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectar($arReciboDetalle->getCodigoCuentaCobrarFk(), $codigoRecibo);
-                                if($arCuentaCobrar->getSaldo() >= $valorAfectar) {
+                                //$valorAfectar = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectar($arReciboDetalle->getCodigoCuentaCobrarFk(), $codigoRecibo);
+                                if($arCuentaCobrar->getSaldo() >= $arReciboDetalle->getValor()) {
                                     if($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk()) {
                                         $arCuentaCobrarAplicacion = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
                                         $arCuentaCobrarAplicacion = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk());                                     
-                                        $valorAfectarAplicacion = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectarAplicacion($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk(), $codigoRecibo);                                        
-                                        if($arCuentaCobrarAplicacion->getSaldo() >= $valorAfectarAplicacion) {
+                                        //$valorAfectarAplicacion = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectarAplicacion($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk(), $codigoRecibo);                                        
+                                        if($arCuentaCobrarAplicacion->getSaldo() >= $arReciboDetalle->getValor()) {
                                             //Cuenta por cobrar aplicacion
                                             $saldo = $arCuentaCobrarAplicacion->getSaldo() - $arReciboDetalle->getVrPagoAfectar();
                                             $saldoOperado = $saldo * $arCuentaCobrarAplicacion->getOperacion();                                            
