@@ -368,7 +368,7 @@ class ReciboController extends Controller
                         $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
                         $arReciboDetalle->setReciboRel($arRecibo);
                         $arReciboDetalle->setCuentaCobrarRel($arCuentaCobrar);
-                        $arReciboDetalle->setValor($arrControles['TxtSaldo'.$codigoCuentaCobrar]);
+                        $arReciboDetalle->setVrPago($arrControles['TxtSaldo'.$codigoCuentaCobrar]);
                         $arReciboDetalle->setUsuario($arUsuario->getUserName());
                         $arReciboDetalle->setNumeroFactura($arCuentaCobrar->getNumeroDocumento());
                         $arReciboDetalle->setCuentaCobrarTipoRel($arCuentaCobrar->getCuentaCobrarTipoRel());
