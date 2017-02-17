@@ -1,0 +1,38 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Cuenta por cobrar - Soga App{% endblock %} 
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Cartera
+            <small>Cuenta cobrar: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Cartera</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cuenta cobrar</a></li>
+            <li class="active">Editar</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+    {{ form_errors(form) }}
+    <div class="panel panel-default">
+        <div class="panel-heading">Información general</div>
+        <div class="panel-body">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">Saldo inicial:</label>
+                <div class="col-sm-10">
+                    {{ form_widget(form.valorOriginal, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_cuentacobrar_listar') }}">Cancelar</a>
+        {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+    </div>
+    {{ form_end(form) }}
+    <br/><br/><br/><br/>
+    </section>
+{% endblock %}

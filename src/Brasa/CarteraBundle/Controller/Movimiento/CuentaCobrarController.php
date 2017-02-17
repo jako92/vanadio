@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-//use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarType;
+use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarType;
 //use Brasa\CarteraBundle\Form\Type\CarCuentaCobrarDetalleType;
 
 class CuentaCobrarController extends Controller
@@ -55,6 +55,37 @@ class CuentaCobrarController extends Controller
         return $this->render('BrasaCarteraBundle:Movimientos/CuentaCobrar:lista.html.twig', array(
             'arCuentasCobrar' => $arCuentasCobrar,            
             'form' => $form->createView()));
+    }
+        
+    /**
+     * @Route("/cartera/movimiento/cuentacobrar/nuevo/{codigoCuentaCobrar}", name="brs_cartera_movimiento_cuentacobrar_nuevo")
+     */
+    public function nuevoAction(Request $request, $codigoCuentaCobrar) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arCuentasCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+        $arCuentasCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);  
+        $form = $this->createForm(CarCuentaCobrarType::class, $arCuentasCobrar);   
+        $form->handleRequest($request);
+        if ($form->isValid()) {      
+            $arCuentasCobrar = $form->getData();
+            if($arCuentasCobrar->getValorOriginal() > $arCuentasCobrar->getAbono()){
+                $saldo = $arCuentasCobrar->getValorOriginal() - $arCuentasCobrar->getAbono();
+                $saldoOperado = $saldo * $arCuentasCobrar->getOperacion();
+                $arCuentasCobrar->setSaldoOperado($saldoOperado);
+                $arCuentasCobrar->setSaldo($saldo);
+                $em->persist($arCuentasCobrar);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_cartera_movimiento_cuentacobrar_listar'));
+            } else {
+                $objMensaje->Mensaje('error', 'El valor del saldo inicial no puede ser menor al valor del abono');
+            }
+ 
+        }
+
+        return $this->render('BrasaCarteraBundle:Movimientos/CuentaCobrar:nuevo.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
     
     private function lista() {

@@ -79,6 +79,7 @@
                 <th>ABONO</th>
                 <th>SALDO</th>
                 <th></th>
+                <th></th>
             </tr>
             {% for arCuentasCobrar in arCuentasCobrar %}
                 <tr>
@@ -94,6 +95,7 @@
                     <td style="text-align: right">{{ arCuentasCobrar.valorOriginal | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCuentasCobrar.abono | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCuentasCobrar.saldo | number_format(0, '.', ',') }}</td>
+                    <td><a href="{{ path('brs_cartera_movimiento_cuentacobrar_nuevo',{'codigoCuentaCobrar': arCuentasCobrar.codigoCuentaCobrarPK})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCuentasCobrar.codigoCuentaCobrarPk }}" /></td>
                 </tr>
 
