@@ -79,14 +79,14 @@ class CarRecibo
     private $vrTotalRetencionFuente = 0;
     
     /**
-     * @ORM\Column(name="vr_total", type="float")
+     * @ORM\Column(name="vr_pago", type="float")
      */    
-    private $vrTotal = 0;      
+    private $vrPago = 0;        
 
     /**
-     * @ORM\Column(name="vr_total_pago", type="float")
+     * @ORM\Column(name="vr_pago_total", type="float")
      */    
-    private $vrTotalPago = 0;    
+    private $vrPagoTotal = 0; 
     
     /**     
      * @ORM\Column(name="estado_impreso", type="boolean")
@@ -147,7 +147,7 @@ class CarRecibo
      */
     protected $recibosDetallesRecibosRel;
     
-    
+   
     /**
      * Constructor
      */
@@ -260,6 +260,30 @@ class CarRecibo
     public function getCodigoReciboTipoFk()
     {
         return $this->codigoReciboTipoFk;
+    }
+
+    /**
+     * Set codigoAsesorFk
+     *
+     * @param integer $codigoAsesorFk
+     *
+     * @return CarRecibo
+     */
+    public function setCodigoAsesorFk($codigoAsesorFk)
+    {
+        $this->codigoAsesorFk = $codigoAsesorFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAsesorFk
+     *
+     * @return integer
+     */
+    public function getCodigoAsesorFk()
+    {
+        return $this->codigoAsesorFk;
     }
 
     /**
@@ -431,27 +455,27 @@ class CarRecibo
     }
 
     /**
-     * Set vrTotal
+     * Set vrPago
      *
-     * @param float $vrTotal
+     * @param float $vrPago
      *
      * @return CarRecibo
      */
-    public function setVrTotal($vrTotal)
+    public function setVrPago($vrPago)
     {
-        $this->vrTotal = $vrTotal;
+        $this->vrPago = $vrPago;
 
         return $this;
     }
 
     /**
-     * Get vrTotal
+     * Get vrPago
      *
      * @return float
      */
-    public function getVrTotal()
+    public function getVrPago()
     {
-        return $this->vrTotal;
+        return $this->vrPago;
     }
 
     /**
@@ -671,6 +695,30 @@ class CarRecibo
     }
 
     /**
+     * Set asesorRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenAsesor $asesorRel
+     *
+     * @return CarRecibo
+     */
+    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
+    {
+        $this->asesorRel = $asesorRel;
+
+        return $this;
+    }
+
+    /**
+     * Get asesorRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenAsesor
+     */
+    public function getAsesorRel()
+    {
+        return $this->asesorRel;
+    }
+
+    /**
      * Add recibosDetallesRecibosRel
      *
      * @param \Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesRecibosRel
@@ -705,74 +753,26 @@ class CarRecibo
     }
 
     /**
-     * Set vrTotalPago
+     * Set vrPagoTotal
      *
-     * @param float $vrTotalPago
+     * @param float $vrPagoTotal
      *
      * @return CarRecibo
      */
-    public function setVrTotalPago($vrTotalPago)
+    public function setVrPagoTotal($vrPagoTotal)
     {
-        $this->vrTotalPago = $vrTotalPago;
+        $this->vrPagoTotal = $vrPagoTotal;
 
         return $this;
     }
 
     /**
-     * Get vrTotalPago
+     * Get vrPagoTotal
      *
      * @return float
      */
-    public function getVrTotalPago()
+    public function getVrPagoTotal()
     {
-        return $this->vrTotalPago;
-    }
-
-    /**
-     * Set codigoAsesorFk
-     *
-     * @param integer $codigoAsesorFk
-     *
-     * @return CarRecibo
-     */
-    public function setCodigoAsesorFk($codigoAsesorFk)
-    {
-        $this->codigoAsesorFk = $codigoAsesorFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoAsesorFk
-     *
-     * @return integer
-     */
-    public function getCodigoAsesorFk()
-    {
-        return $this->codigoAsesorFk;
-    }
-
-    /**
-     * Set asesorRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenAsesor $asesorRel
-     *
-     * @return CarRecibo
-     */
-    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
-    {
-        $this->asesorRel = $asesorRel;
-
-        return $this;
-    }
-
-    /**
-     * Get asesorRel
-     *
-     * @return \Brasa\GeneralBundle\Entity\GenAsesor
-     */
-    public function getAsesorRel()
-    {
-        return $this->asesorRel;
+        return $this->vrPagoTotal;
     }
 }

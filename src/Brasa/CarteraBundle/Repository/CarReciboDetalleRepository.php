@@ -55,10 +55,9 @@ class CarReciboDetalleRepository extends EntityRepository {
         $em = $this->getEntityManager();        
         $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();        
         $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigoRecibo); 
-        $intCantidad = 0;
-        $floValor = 0;
-        $floValorPago = 0;
-        $PagoAfectar = 0;
+        $intCantidad = 0;        
+        $pago = 0;
+        $pagoTotal = 0;
         $floDescuento = 0;
         $floAjustePeso = 0;
         $floRetencionIca = 0;
@@ -73,12 +72,11 @@ class CarReciboDetalleRepository extends EntityRepository {
             $floRetencionIca += $arReciboDetalle->getVrRetencionIca();
             $floRetencionIva += $arReciboDetalle->getVrRetencionIva();
             $floRetencionFuente += $arReciboDetalle->getVrRetencionFuente();
-            $floValor += $arReciboDetalle->getVrPago();
-            $floValorPago += $arReciboDetalle->getValor();
-            $PagoAfectar += $arReciboDetalle->getVrPagoAfectar();
+            $pago += $arReciboDetalle->getVrPago();       
+            $pagoTotal += $arReciboDetalle->getVrPagoAfectar();
         }                 
-        $arRecibo->setVrTotal($floValor);
-        $arRecibo->setVrTotalPago($floValorPago);
+        $arRecibo->setVrPago($pago);
+        $arRecibo->setVrPagoTotal($pagoTotal);
         $arRecibo->setVrTotalDescuento($floDescuento);
         $arRecibo->setVrTotalAjustePeso($floAjustePeso);
         $arRecibo->setVrTotalRetencionIca($floRetencionIca);
@@ -87,33 +85,7 @@ class CarReciboDetalleRepository extends EntityRepository {
         $em->persist($arRecibo);
         $em->flush();
         return true;
-    }
-    
-    public function validarValorAfectar($codigoCuenta, $codigoRecibo) {        
-        $em = $this->getEntityManager();
-        $valorAfectar = 0;
-        $dql   = "SELECT SUM(rd.vrPagoAfectar) as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
-                . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuenta . " AND rd.codigoReciboFk = " . $codigoRecibo;
-        $query = $em->createQuery($dql);
-        $arrReciboDetalles = $query->getSingleResult(); 
-        if($arrReciboDetalles) {
-            $valorAfectar = $arrReciboDetalles['valor'];
-        }
-        return $valorAfectar;
-    } 
-
-    public function validarValorAfectarAplicacion($codigoCuenta, $codigoRecibo) {        
-        $em = $this->getEntityManager();
-        $valorAfectar = 0;
-        $dql   = "SELECT SUM(rd.vrPagoAfectar) as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
-                . "WHERE rd.codigoCuentaCobrarAplicacionFk = " . $codigoCuenta . " AND rd.codigoReciboFk = " . $codigoRecibo;
-        $query = $em->createQuery($dql);
-        $arrReciboDetalles = $query->getSingleResult(); 
-        if($arrReciboDetalles) {
-            $valorAfectar = $arrReciboDetalles['valor'];
-        }
-        return $valorAfectar;
-    }
+    }    
     
     public function vrPago($codigoCuentaCobrar) {
         $em = $this->getEntityManager();

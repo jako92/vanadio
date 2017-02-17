@@ -158,14 +158,12 @@ class ReciboController extends Controller
                             $arReciboDetalles = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoReciboFk' => $codigoRecibo));
                             foreach ($arReciboDetalles AS $arReciboDetalle) {
                                 $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
-                                $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarFk()); 
-                                //$valorAfectar = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectar($arReciboDetalle->getCodigoCuentaCobrarFk(), $codigoRecibo);
-                                if($arCuentaCobrar->getSaldo() >= $arReciboDetalle->getValor()) {
+                                $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarFk());                                 
+                                if($arCuentaCobrar->getSaldo() >= $arReciboDetalle->getVrPagoAfectar()) {
                                     if($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk()) {
                                         $arCuentaCobrarAplicacion = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                                                                
-                                        $arCuentaCobrarAplicacion = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk());                                     
-                                        //$valorAfectarAplicacion = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->validarValorAfectarAplicacion($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk(), $codigoRecibo);                                        
-                                        if($arCuentaCobrarAplicacion->getSaldo() >= $arReciboDetalle->getValor()) {
+                                        $arCuentaCobrarAplicacion = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arReciboDetalle->getCodigoCuentaCobrarAplicacionFk());                                                                             
+                                        if($arCuentaCobrarAplicacion->getSaldo() >= $arReciboDetalle->getVrPagoAfectar()) {
                                             //Cuenta por cobrar aplicacion
                                             $saldo = $arCuentaCobrarAplicacion->getSaldo() - $arReciboDetalle->getVrPagoAfectar();
                                             $saldoOperado = $saldo * $arCuentaCobrarAplicacion->getOperacion();                                            
@@ -195,7 +193,7 @@ class ReciboController extends Controller
                                     }
                                                                         
                                 } else {
-                                    $objMensaje->Mensaje('error', 'El pago de la factura ' . $arCuentaCobrar->getNumeroDocumento() . " supera el saldo desponible para afectar"); 
+                                    $objMensaje->Mensaje('error', 'El pago de la factura ' . $arCuentaCobrar->getNumeroDocumento() . " por " . $arReciboDetalle->getVrPagoAfectar() . " supera el saldo desponible para afectar " . $arCuentaCobrar->getSaldo()); 
                                     $error = true;
                                     break;
                                 }
@@ -267,9 +265,9 @@ class ReciboController extends Controller
                         $arReciboDetalleAnulado->setVrAjustePeso(0);
                         $arReciboDetalleAnulado->setVrRetencionIca(0);
                         $arReciboDetalleAnulado->setVrRetencionIva(0);
-                        $arReciboDetalleAnulado->setVrRetencionFuente(0);
-                        $arReciboDetalleAnulado->setValor(0); 
+                        $arReciboDetalleAnulado->setVrRetencionFuente(0);                        
                         $arReciboDetalleAnulado->setVrPago(0);
+                        $arReciboDetalleAnulado->setVrPagoTotal(0); 
                         $arReciboDetalleAnulado->setVrPagoAfectar(0);
                         $em->persist($arReciboDetalleAnulado);
                     }
@@ -279,8 +277,8 @@ class ReciboController extends Controller
                     $arRecibo->setVrTotalRetencionIca(0);
                     $arRecibo->setVrTotalRetencionIva(0);
                     $arRecibo->setVrTotalRetencionFuente(0);
-                    $arRecibo->setVrTotal(0);
-                    $arRecibo->setVrTotalPago(0);                    
+                    $arRecibo->setVrPago(0);
+                    $arRecibo->setVrPagoTotal(0);                    
                     $em->persist($arRecibo);
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));                
@@ -593,17 +591,16 @@ class ReciboController extends Controller
         if(isset($arrControles['LblCodigo'])) {
             foreach ($arrControles['LblCodigo'] as $intCodigo) {
                 $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
-                $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($intCodigo);                
-                $pago = $arrControles['TxtValor'.$intCodigo] - ($arrControles['TxtVrRetencionIca'.$intCodigo] + $arrControles['TxtVrRetencionIva'.$intCodigo] + $arrControles['TxtVrRetencionFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo]);
-                $PagoAfectar = $arrControles['TxtValor'.$intCodigo] - ($arrControles['TxtVrRetencionIca'.$intCodigo] + $arrControles['TxtVrRetencionIva'.$intCodigo] + $arrControles['TxtVrRetencionFuente'.$intCodigo] - $arrControles['TxtVrDescuento'.$intCodigo]);
+                $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($intCodigo);                                
+                //Valor que debia pagar                                
+                $valorPagoAfectar = $arrControles['TxtValorPago'.$intCodigo] - $arrControles['TxtVrAjustePeso'.$intCodigo] + $arrControles['TxtVrDescuento'.$intCodigo];                
                 $arReciboDetalle->setVrDescuento($arrControles['TxtVrDescuento'.$intCodigo]);
                 $arReciboDetalle->setVrAjustePeso($arrControles['TxtVrAjustePeso'.$intCodigo]);
                 $arReciboDetalle->setVrRetencionIca($arrControles['TxtVrRetencionIca'.$intCodigo]);
                 $arReciboDetalle->setVrRetencionIva($arrControles['TxtVrRetencionIva'.$intCodigo]);
-                $arReciboDetalle->setVrRetencionFuente($arrControles['TxtVrRetencionFuente'.$intCodigo]);
-                $arReciboDetalle->setValor($arrControles['TxtValor'.$intCodigo]);
-                $arReciboDetalle->setVrPago($pago);
-                $arReciboDetalle->setVrPagoAfectar($PagoAfectar);
+                $arReciboDetalle->setVrRetencionFuente($arrControles['TxtVrRetencionFuente'.$intCodigo]);                
+                $arReciboDetalle->setVrPago($arrControles['TxtValorPago'.$intCodigo]);                                                
+                $arReciboDetalle->setVrPagoAfectar($valorPagoAfectar);
                 $em->persist($arReciboDetalle);
             }
             $em->flush();

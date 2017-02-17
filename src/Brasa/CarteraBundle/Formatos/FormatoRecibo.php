@@ -130,9 +130,10 @@ class FormatoRecibo extends \FPDF_FPDF {
         
         $this->Cell(42, 5, "", 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, utf8_decode("PAGADO:") , 1, 0, 'L', 1);
+        $this->Cell(23, 5, utf8_decode("PAGO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(20, 5, number_format($arRecibo->getVrTotalPago(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrPago(), 2, '.', ','), 1, 0, 'R', 1);      
+        
         //linea 7
         $this->SetXY(10, $intY+30);
         $this->Cell(26, 5, "" , 1, 0, 'L', 1);
@@ -140,8 +141,9 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->Cell(21, 5, "" , 1, 0, 'L', 1);
         $this->Cell(42, 5, "" , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(23, 5, "TOTAL NETO:" , 1, 0, 'L', 1);
-        $this->Cell(20, 5, number_format($arRecibo->getVrTotal(), 2, '.', ','), 1, 0, 'R', 1);
+        $this->Cell(23, 5, "TOTAL:" , 1, 0, 'L', 1);
+        $this->Cell(20, 5, number_format($arRecibo->getVrPagoTotal(), 2, '.', ','), 1, 0, 'R', 1);
+        
         //linea 8
         $this->SetXY(10, $intY+35);
         $this->SetFont('Arial','B',8);
@@ -191,7 +193,7 @@ class FormatoRecibo extends \FPDF_FPDF {
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionIca(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionIva(), 2, '.', ','), 1, 0, 'R');
             $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrRetencionFuente(), 2, '.', ','), 1, 0, 'R');
-            $pdf->Cell(20, 4, number_format($arReciboDetalle->getValor(), 2, '.', ','), 1, 0, 'R');
+            $pdf->Cell(20, 4, number_format($arReciboDetalle->getVrPago(), 2, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }
