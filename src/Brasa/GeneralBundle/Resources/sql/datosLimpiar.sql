@@ -120,6 +120,7 @@ DELETE FROM rhu_examen_restriccion_medica;
 DELETE FROM rhu_examen_detalle;
 DELETE FROM rhu_examen;
 DELETE FROM rhu_sede;
+DELETE FROM rhu_costo;
 /*DELETE FROM rhu_centro_costo;*/
 DELETE FROM ctb_registro;
 DELETE FROM ctb_registro_exportar;
