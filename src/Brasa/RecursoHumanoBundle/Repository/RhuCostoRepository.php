@@ -65,8 +65,8 @@ class RhuCostoRepository extends EntityRepository {
             $query = $em->createQuery($dql);
             $arrProvision = $query->getResult();
             if($arrProvision) {
-                $seguridadSocial = $arrProvision['seguridadSocial'];
-                $prestaciones = $arrProvision['prestaciones'];                
+                $seguridadSocial = $arrProvision[0]['seguridadSocial'];
+                $prestaciones = $arrProvision[0]['prestaciones'];                
             }
             $arCosto->setVrSeguridadSocial($seguridadSocial);
             $arCosto->setVrPrestacion($prestaciones);
