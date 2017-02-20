@@ -36,7 +36,7 @@ class CierreMesController extends Controller
                 $arCierreMes = $em->getRepository('BrasaRecursoHumanoBundle:RhuCierreMes')->find($codigoCierreMes);
                 if($arCierreMes->getEstadoGenerado() == 0) {   
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuCosto')->generar($codigoCierreMes);
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar($codigoCierreMes);
+                    //$em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->generar($codigoCierreMes);
                     $arCierreMes->setEstadoGenerado(1);
                     $em->persist($arCierreMes);
                     $em->flush();
