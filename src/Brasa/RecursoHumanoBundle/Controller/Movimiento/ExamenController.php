@@ -352,7 +352,7 @@ class ExamenController extends Controller
         $em = $this->getDoctrine()->getManager();
         $arExamenDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
         $arExamenDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenDetalle')->find($codigoExamenDetalle);
-        $form = $this->createForm(new RhuExamenDetalleType, $arExamenDetalle);
+        $form = $this->createForm(RhuExamenDetalleType::class, $arExamenDetalle);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arExamenDetalle = $form->getData();
