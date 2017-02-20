@@ -56,7 +56,7 @@ class FormatoHojaVida extends \FPDF_FPDF {
             $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
             $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
             //$strRuta = $arConfiguracion->getRutaAlmacenamiento() . "imagenes/empleados/" . $arEmpleado->getRutaFoto(); 
-            $strRuta = $arConfiguracion->getRutaImagenes() . $arEmpleado->getRutaFoto();
+            //$strRuta = $arConfiguracion->getRutaImagenes() . $arEmpleado->getRutaFoto();
             if(file_exists($strRuta)){
                 $this->Image($strRuta, 167, 40, 30, 35);            
             }            
