@@ -40,8 +40,8 @@ class RecursosDisponiblesController extends Controller
                 $strDia = $dateFecha->format('j');
                 $connection = $em->getConnection();                
                 $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-                $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-                $strRutaImagen = $arConfiguracion->getRutaImagenes() . "empleados/";                
+                $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);                
+                $strRutaImagen = $arConfiguracion->getRutaImagenesVer();
                 $arRecursos = new \Brasa\TurnoBundle\Entity\TurRecurso();
                 $arRecursos = $em->getRepository('BrasaTurnoBundle:TurRecurso')->findBy(array('estadoActivo' => 1));
                 foreach ($arRecursos as $arRecurso) {
