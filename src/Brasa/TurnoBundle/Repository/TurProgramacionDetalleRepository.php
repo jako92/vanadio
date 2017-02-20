@@ -52,7 +52,7 @@ class TurProgramacionDetalleRepository extends EntityRepository {
         if($boolEstadoAutorizado == "0") {
             $dql .= " AND p.estadoAutorizado = 0";
         }
-        $dql .= " ORDER BY p.codigoClienteFk, p.codigoPuestoFk";
+        $dql .= " ORDER BY p.codigoClienteFk, pd.codigoPuestoFk";
         return $dql;
     }
 
