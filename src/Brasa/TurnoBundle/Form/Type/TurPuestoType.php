@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TurPuestoType extends AbstractType
@@ -47,7 +48,12 @@ class TurPuestoType extends AbstractType
                     return $er->createQueryBuilder('o')
                     ->orderBy('o.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                             
+                'required' => true))
+            ->add('estadoCivilRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
+                'choice_label' => 'nombre',
+                'required' => false
+            ))                
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('direccion', TextType::class, array('required'  => false))
             ->add('telefono', TextType::class, array('required'  => false))
@@ -55,6 +61,16 @@ class TurPuestoType extends AbstractType
             ->add('contacto', TextType::class, array('required'  => false))
             ->add('telefonoContacto', TextType::class, array('required'  => false))
             ->add('celularContacto', TextType::class, array('required'  => false))
+            ->add('edadMinima', TextType::class, array('required'  => false))
+            ->add('edadMaxima', TextType::class, array('required'  => false))
+            ->add('estaturaMinima', TextType::class, array('required'  => false))
+            ->add('estaturaMaxima', TextType::class, array('required'  => false))
+            ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('INDIFERENTE' => '0', 'MASCULINO' => 'M', 'FEMENINO' => 'F')))                
+            ->add('pesoMinimo', TextType::class, array('required'  => false))
+            ->add('pesoMaximo', TextType::class, array('required'  => false))
+            ->add('codigoTipoLibretaMilitar', ChoiceType::class, array('choices' => array('INDIFERENTE' => '0', '1° CLASE' => '1', '2° CLASE' => '2')))                                
+            ->add('moto', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                                
+            ->add('carro', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                                                
             ->add('guardar', SubmitType::class);
     }
 

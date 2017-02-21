@@ -50,9 +50,49 @@
                     <tr>
                         <td class="titulo">CONTACTO:</td>
                         <td class="td-in-well">{{ arPuesto.contacto }}</td>
+                        <td class="titulo"></td>
+                        <td align="right"></td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">EDAD MINIMA:</td>
+                        <td class="td-in-well">{{ arPuesto.edadMinima }}</td>
+                        <td class="titulo">ESTATURA MINIMA:</td>
+                        <td class="td-in-well">{{ arPuesto.estaturaMinima }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">EDAD MAXIMA:</td>
+                        <td class="td-in-well">{{ arPuesto.edadMaxima }}</td>
+                        <td class="titulo">ESTATURA MAXIMA:</td>
+                        <td class="td-in-well">{{ arPuesto.estaturaMaxima }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">PESO MINIMO:</td>
+                        <td class="td-in-well">{{ arPuesto.pesoMinimo }}</td>
+                        <td class="titulo">TIPO LIBRETA MILITAR:</td>
+                        {% if arPuesto.codigoTipoLibretaMilitar == 0 %}<td class="td-in-well">INDIFERENTE</td>{% endif %}
+                        {% if arPuesto.codigoTipoLibretaMilitar == 1 %}<td class="td-in-well">1° CLASE</td>{% endif %}
+                        {% if arPuesto.codigoTipoLibretaMilitar == 2 %}<td class="td-in-well">2° CLASE</td>{% endif %}
+                    </tr>
+                    <tr>
+                        <td class="titulo">PESO MAXIMO:</td>
+                        <td class="td-in-well">{{ arPuesto.pesoMaximo }}</td>
+                        <td class="titulo">SEXO:</td>
+                        {% if arPuesto.codigoSexoFk == '0' %}<td class="td-in-well">INDIFERENTE</td>{% endif %}
+                        {% if arPuesto.codigoSexoFk == 'M' %}<td class="td-in-well">MASCULINO</td>{% endif %}
+                        {% if arPuesto.codigoSexoFk == 'F' %}<td class="td-in-well">FEMENINO</td>{% endif %}
+                    </tr>
+                    <tr>
+                        <td class="titulo">MOTO:</td>
+                        <td class="td-in-well">{% if arPuesto.moto == 1 %}SI{% else %}NO{% endif %}</td>
+                        <td class="titulo">CARRO:</td>
+                        <td class="td-in-well">{% if arPuesto.carro == 1 %}SI{% else %}NO{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">ESTADO CIVIL:</td>
+                        <td class="td-in-well">{{ arPuesto.estadoCivilRel.nombre | default('') }}</td>
                         <td class="titulo">COSTO DOTACION:</td>
                         <td align="right">{{ arPuesto.costoDotacion | number_format(0, '.', ',')}}</td>
-                    </tr>                        
+                    </tr>
                 </table>
             </div>
         </div>

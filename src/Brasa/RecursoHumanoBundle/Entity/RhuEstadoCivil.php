@@ -43,8 +43,14 @@ class RhuEstadoCivil
      */
     protected $aspirantesEstadoCivilRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurPuesto", mappedBy="estadoCivilRel")
+     */
+    protected $turPuestosEstadoCivilRel;
+    
         
     
+        
     /**
      * Constructor
      */
@@ -54,6 +60,7 @@ class RhuEstadoCivil
         $this->seleccionesEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seleccionesRequisitosEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aspirantesEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turPuestosEstadoCivilRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -224,5 +231,39 @@ class RhuEstadoCivil
     public function getAspirantesEstadoCivilRel()
     {
         return $this->aspirantesEstadoCivilRel;
+    }
+
+    /**
+     * Add turPuestosEstadoCivilRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuesto $turPuestosEstadoCivilRel
+     *
+     * @return RhuEstadoCivil
+     */
+    public function addTurPuestosEstadoCivilRel(\Brasa\TurnoBundle\Entity\TurPuesto $turPuestosEstadoCivilRel)
+    {
+        $this->turPuestosEstadoCivilRel[] = $turPuestosEstadoCivilRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove turPuestosEstadoCivilRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuesto $turPuestosEstadoCivilRel
+     */
+    public function removeTurPuestosEstadoCivilRel(\Brasa\TurnoBundle\Entity\TurPuesto $turPuestosEstadoCivilRel)
+    {
+        $this->turPuestosEstadoCivilRel->removeElement($turPuestosEstadoCivilRel);
+    }
+
+    /**
+     * Get turPuestosEstadoCivilRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTurPuestosEstadoCivilRel()
+    {
+        return $this->turPuestosEstadoCivilRel;
     }
 }

@@ -105,7 +105,69 @@ class TurPuesto
     /**     
      * @ORM\Column(name="control_puesto", type="boolean")
      */    
-    private $controlPuesto = false;    
+    private $controlPuesto = false;
+
+    /**
+     * @ORM\Column(name="edad_minima", type="integer", nullable=true)
+     */
+    private $edad_minima;
+    
+    /**
+     * @ORM\Column(name="edad_maxima", type="integer", nullable=true)
+     */
+    private $edad_maxima;
+    
+    /**
+     * @ORM\Column(name="estatura_minima", type="integer", length=20, nullable=true)
+     */
+    private $estaturaMinima;
+    
+    /**
+     * @ORM\Column(name="estatura_maxima", type="integer", length=20, nullable=true)
+     */
+    private $estaturaMaxima;
+    
+    /**
+     * @ORM\Column(name="peso_minimo", type="integer", nullable=true)
+     */
+    private $peso_minimo;
+    
+    /**
+     * @ORM\Column(name="peso_maximo", type="integer", nullable=true)
+     */
+    private $peso_maximo;
+    
+    /**
+     * @ORM\Column(name="codigo_sexo_fk", type="string", length=1, nullable=true)
+     */
+    private $codigoSexoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_tipo_libreta_militar", type="integer", nullable=true)
+     */    
+    private $codigoTipoLibretaMilitar;
+    
+    /**
+     * @ORM\Column(name="codigo_estado_civil_fk", type="string", length=1, nullable=true)
+     */
+    private $codigoEstadoCivilFk;
+    
+    /**
+     * @ORM\Column(name="moto", type="boolean", nullable=true)
+     */    
+    private $moto;
+    
+    /**
+     * @ORM\Column(name="carro", type="boolean", nullable=true)
+     */    
+    private $carro;
+    
+    /**
+     /**
+     * @ORM\ManyToOne(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil", inversedBy="turPuestosEstadoCivilRel")
+     * @ORM\JoinColumn(name="codigo_estado_civil_fk", referencedColumnName="codigo_estado_civil_pk")
+     */
+    protected $estadoCivilRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="puestosClienteRel")
@@ -209,6 +271,8 @@ class TurPuesto
     protected $costosDetallesPuestoRel;     
     
 
+            
+    
     /**
      * Constructor
      */
@@ -669,6 +733,294 @@ class TurPuesto
     public function getControlPuesto()
     {
         return $this->controlPuesto;
+    }
+
+    /**
+     * Set edadMinima
+     *
+     * @param integer $edadMinima
+     *
+     * @return TurPuesto
+     */
+    public function setEdadMinima($edadMinima)
+    {
+        $this->edad_minima = $edadMinima;
+
+        return $this;
+    }
+
+    /**
+     * Get edadMinima
+     *
+     * @return integer
+     */
+    public function getEdadMinima()
+    {
+        return $this->edad_minima;
+    }
+
+    /**
+     * Set edadMaxima
+     *
+     * @param integer $edadMaxima
+     *
+     * @return TurPuesto
+     */
+    public function setEdadMaxima($edadMaxima)
+    {
+        $this->edad_maxima = $edadMaxima;
+
+        return $this;
+    }
+
+    /**
+     * Get edadMaxima
+     *
+     * @return integer
+     */
+    public function getEdadMaxima()
+    {
+        return $this->edad_maxima;
+    }
+
+    /**
+     * Set estaturaMinima
+     *
+     * @param integer $estaturaMinima
+     *
+     * @return TurPuesto
+     */
+    public function setEstaturaMinima($estaturaMinima)
+    {
+        $this->estaturaMinima = $estaturaMinima;
+
+        return $this;
+    }
+
+    /**
+     * Get estaturaMinima
+     *
+     * @return integer
+     */
+    public function getEstaturaMinima()
+    {
+        return $this->estaturaMinima;
+    }
+
+    /**
+     * Set estaturaMaxima
+     *
+     * @param integer $estaturaMaxima
+     *
+     * @return TurPuesto
+     */
+    public function setEstaturaMaxima($estaturaMaxima)
+    {
+        $this->estaturaMaxima = $estaturaMaxima;
+
+        return $this;
+    }
+
+    /**
+     * Get estaturaMaxima
+     *
+     * @return integer
+     */
+    public function getEstaturaMaxima()
+    {
+        return $this->estaturaMaxima;
+    }
+
+    /**
+     * Set pesoMinimo
+     *
+     * @param integer $pesoMinimo
+     *
+     * @return TurPuesto
+     */
+    public function setPesoMinimo($pesoMinimo)
+    {
+        $this->peso_minimo = $pesoMinimo;
+
+        return $this;
+    }
+
+    /**
+     * Get pesoMinimo
+     *
+     * @return integer
+     */
+    public function getPesoMinimo()
+    {
+        return $this->peso_minimo;
+    }
+
+    /**
+     * Set pesoMaximo
+     *
+     * @param integer $pesoMaximo
+     *
+     * @return TurPuesto
+     */
+    public function setPesoMaximo($pesoMaximo)
+    {
+        $this->peso_maximo = $pesoMaximo;
+
+        return $this;
+    }
+
+    /**
+     * Get pesoMaximo
+     *
+     * @return integer
+     */
+    public function getPesoMaximo()
+    {
+        return $this->peso_maximo;
+    }
+
+    /**
+     * Set codigoSexoFk
+     *
+     * @param string $codigoSexoFk
+     *
+     * @return TurPuesto
+     */
+    public function setCodigoSexoFk($codigoSexoFk)
+    {
+        $this->codigoSexoFk = $codigoSexoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSexoFk
+     *
+     * @return string
+     */
+    public function getCodigoSexoFk()
+    {
+        return $this->codigoSexoFk;
+    }
+
+    /**
+     * Set codigoTipoLibretaMilitar
+     *
+     * @param integer $codigoTipoLibretaMilitar
+     *
+     * @return TurPuesto
+     */
+    public function setCodigoTipoLibretaMilitar($codigoTipoLibretaMilitar)
+    {
+        $this->codigoTipoLibretaMilitar = $codigoTipoLibretaMilitar;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTipoLibretaMilitar
+     *
+     * @return integer
+     */
+    public function getCodigoTipoLibretaMilitar()
+    {
+        return $this->codigoTipoLibretaMilitar;
+    }
+
+    /**
+     * Set codigoEstadoCivilFk
+     *
+     * @param string $codigoEstadoCivilFk
+     *
+     * @return TurPuesto
+     */
+    public function setCodigoEstadoCivilFk($codigoEstadoCivilFk)
+    {
+        $this->codigoEstadoCivilFk = $codigoEstadoCivilFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEstadoCivilFk
+     *
+     * @return string
+     */
+    public function getCodigoEstadoCivilFk()
+    {
+        return $this->codigoEstadoCivilFk;
+    }
+
+    /**
+     * Set moto
+     *
+     * @param boolean $moto
+     *
+     * @return TurPuesto
+     */
+    public function setMoto($moto)
+    {
+        $this->moto = $moto;
+
+        return $this;
+    }
+
+    /**
+     * Get moto
+     *
+     * @return boolean
+     */
+    public function getMoto()
+    {
+        return $this->moto;
+    }
+
+    /**
+     * Set carro
+     *
+     * @param boolean $carro
+     *
+     * @return TurPuesto
+     */
+    public function setCarro($carro)
+    {
+        $this->carro = $carro;
+
+        return $this;
+    }
+
+    /**
+     * Get carro
+     *
+     * @return boolean
+     */
+    public function getCarro()
+    {
+        return $this->carro;
+    }
+
+    /**
+     * Set estadoCivilRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil $estadoCivilRel
+     *
+     * @return TurPuesto
+     */
+    public function setEstadoCivilRel(\Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil $estadoCivilRel = null)
+    {
+        $this->estadoCivilRel = $estadoCivilRel;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCivilRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil
+     */
+    public function getEstadoCivilRel()
+    {
+        return $this->estadoCivilRel;
     }
 
     /**
