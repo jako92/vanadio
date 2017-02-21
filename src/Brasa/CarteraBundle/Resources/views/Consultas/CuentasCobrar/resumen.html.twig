@@ -58,8 +58,7 @@
                 <th>NUMERO</th>
                 <th>FECHA</th>
                 <th>NIT</th>
-                <th>CLIENTE</th>
-                <th>TIPO</th>
+                <th>CLIENTE</th>                
                 <th>DESCUENTO</th>
                 <th>AJUSTE PESO</th>
                 <th>RTE ICA</th>
@@ -71,11 +70,10 @@
             {% for arReciboDetalles in arReciboDetalles %}
                 <tr>
                     <td>{{ arReciboDetalles.codigoReciboDetallePk  }}</td>
-                    <td>{{ arReciboDetalles.numeroFactura  }}</td>
+                    <td>{{ arReciboDetalles.reciboRel.numero  }}</td>
                     <td>{{ arReciboDetalles.reciboRel.fecha |date("Y/m/d")  }}</td>
                     <td>{{ arReciboDetalles.reciboRel.clienteRel.nit |default('')  }}</td>
-                    <td>{{ arReciboDetalles.reciboRel.clienteRel.nombreCorto |default('')  }}</td>
-                    <td>{{ arReciboDetalles.cuentaCobrarTipoRel.nombre |default('')  }}</td>
+                    <td>{{ arReciboDetalles.reciboRel.clienteRel.nombreCorto |default('')  }}</td>                    
                     <td style="text-align: right">{{ arReciboDetalles.vrDescuento | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arReciboDetalles.vrAjustePeso | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arReciboDetalles.vrRetencionIca | number_format(2, '.', ',') }}</td>
