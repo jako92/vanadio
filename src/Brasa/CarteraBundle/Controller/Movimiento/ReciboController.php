@@ -267,7 +267,6 @@ class ReciboController extends Controller
                         $arReciboDetalleAnulado->setVrRetencionIva(0);
                         $arReciboDetalleAnulado->setVrRetencionFuente(0);                        
                         $arReciboDetalleAnulado->setVrPago(0);
-                        $arReciboDetalleAnulado->setVrPagoTotal(0); 
                         $arReciboDetalleAnulado->setVrPagoAfectar(0);
                         $em->persist($arReciboDetalleAnulado);
                     }
