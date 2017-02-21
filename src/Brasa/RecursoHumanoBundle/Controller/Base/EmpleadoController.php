@@ -55,6 +55,11 @@ class EmpleadoController extends Controller {
                 $this->listar();
                 $this->generarExcelInterfaz();
             }
+            if ($form->get('BtnInterfaz2')->isClicked()) {
+                $this->filtrarLista($form);
+                $this->listar();
+                $this->generarInterfaz2();
+            }
             if ($form->get('BtnInactivar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
@@ -340,10 +345,10 @@ class EmpleadoController extends Controller {
                             $em->persist($arEmpleado);
                             $em->flush();
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
-                        }                        
+                        }
                     } else {
                         $objMensaje->Mensaje('error', "Solo se permiten extensiones .jpg");
-                    }                    
+                    }
                 } else {
                     $objMensaje->Mensaje('error', "No se permite cargar archivo sin extension");
                 }
@@ -399,6 +404,7 @@ class EmpleadoController extends Controller {
                 ->add('TxtCodigo', TextType::class, array('data' => $session->get('filtroCodigoEmpleado')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnInterfaz', SubmitType::class, array('label' => 'Interfaz',))
+                ->add('BtnInterfaz2', SubmitType::class, array('label' => 'Interfaz2',))
                 ->add('BtnPdf', SubmitType::class, array('label' => 'PDF',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnInactivar', SubmitType::class, array('label' => 'Activar / Inactivar',))
@@ -721,7 +727,7 @@ class EmpleadoController extends Controller {
         set_time_limit(60);
     }
 
-    private function generarExcelInterfaz() {
+    private function generarInterfaz() {
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
@@ -816,6 +822,46 @@ class EmpleadoController extends Controller {
         header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
+        exit;
+    }
+
+    private function generarInterfaz2() {
+        $em = $this->getDoctrine()->getManager();
+        $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $query = $em->createQuery($this->strSqlLista);
+        $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+        $arEmpleados = $query->getResult();
+        $strNombreArchivo = "interfaz2" . date('YmdHis') . ".txt";
+        $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
+        //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $ar = fopen($strArchivo, "a") or die("Problemas en la creacion del archivo plano");
+        //$arEmpleados = new Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();                   
+        //Inicio cuerpo
+        $strSecuencia = 1;
+        foreach ($arEmpleados AS $arEmpleados) {
+            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(), "!", $arEmpleados->getDireccion(), "!", $arEmpleados->getTelefono());
+            foreach ($array as $fields) {
+                fputs($ar, $fields);
+            }
+            fputs($ar, "\n");
+            $strSecuencia ++;
+        }
+        //fputs($ar, "03" . $this->RellenarNr(($strSecuencia-1), "0", 9) . $strValorTotal . "\n");
+        fclose($ar);
+        $em->flush();
+        //Fin cuerpo                        
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv; charset=ISO-8859-15');
+        header('Content-Disposition: attachment; filename=' . basename($strArchivo));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($strArchivo));
+        readfile($strArchivo);
         exit;
     }
 
