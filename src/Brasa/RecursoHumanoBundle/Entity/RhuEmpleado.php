@@ -612,6 +612,11 @@ class RhuEmpleado
      */
     protected $disciplinariosDescargosEmpleadoRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCertificadoIngresoAcumulado", mappedBy="empleadoRel")
+     */
+    protected $certificadosIngresosAcumuladosEmpleadoRel;
+    
     
      /**
      * @ORM\ManyToOne(targetEntity="RhuRh", inversedBy="empleadosRhRel")
@@ -4743,5 +4748,39 @@ class RhuEmpleado
     public function getProgramacionesPagosHorasExtrasEmpleadoRel()
     {
         return $this->programacionesPagosHorasExtrasEmpleadoRel;
+    }
+
+    /**
+     * Add certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
+    {
+        $this->certificadosIngresosAcumuladosEmpleadoRel[] = $certificadosIngresosAcumuladosEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
+     */
+    public function removeCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
+    {
+        $this->certificadosIngresosAcumuladosEmpleadoRel->removeElement($certificadosIngresosAcumuladosEmpleadoRel);
+    }
+
+    /**
+     * Get certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCertificadosIngresosAcumuladosEmpleadoRel()
+    {
+        return $this->certificadosIngresosAcumuladosEmpleadoRel;
     }
 }

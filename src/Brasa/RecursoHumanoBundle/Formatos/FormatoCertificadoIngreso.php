@@ -76,7 +76,21 @@ class FormatoCertificadoIngreso extends \FPDF_FPDF {
         $arCiudad = new \Brasa\GeneralBundle\Entity\GenCiudad();
         $arCiudad = self::$em->getRepository('BrasaGeneralBundle:GenCiudad')->find(self::$strLugarExpedicion);        
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);        
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arAcumulado = new \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado();
+        $arAcumulado = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => self::$codigoEmpleado));
+        $ibp = 0;
+        $salud = 0;
+        $pension = 0;
+        if($arAcumulado){
+            if($arAcumulado->getPeriodo() == self::$strFechaCertificado){
+                $ibp = $arAcumulado->getAcumuladoIbp();
+                $salud = $arAcumulado->getAcumuladoSalud();
+                $pension = $arAcumulado->getAcumuladoSalud();
+            }    
+        }
+            
+        
         $this->SetFillColor(255, 255, 255);
         $this->SetDrawColor(00, 99, 00);
         $this->SetFont('Arial','B',12);
@@ -148,16 +162,9 @@ class FormatoCertificadoIngreso extends \FPDF_FPDF {
         $this->Cell(115, 6, utf8_decode("Apellidos y Nombres") , 1, 0, 'L', 1);
         $this->SetXY(12, 60);
         $this->SetFont('Arial','',7);
-        if ($arEmpleado->getTipoIdentificacionRel()->getCodigoTipoIdentificacionPk() == "C"){
-            $this->Cell(31, 12, "CC", 1, 0, 'C', 1);
-        }
-        else {
-            if ($arEmpleado->getTipoIdentificacionRel()->getCodigoTipoIdentificacionPk() == "E"){
-                $this->Cell(31, 12, "CE", 1, 0, 'C', 1);
-            }
-            else {
-                $this->Cell(31, 12, "TI", 1, 0, 'C', 1);
-            }
+        $arTipoIdentificacion = self::$em->getRepository('BrasaGeneralBundle:GenTipoIdentificacion')->find($arEmpleado->getCodigoTipoIdentificacionFk()); 
+        if ($arEmpleado->getTipoIdentificacionRel()->getCodigoTipoIdentificacionPk() == 13){
+            $this->Cell(31, 12, $arTipoIdentificacion->getCodigoInterface(), 1, 0, 'C', 1);
         }
         
         $this->Cell(47, 12, $arEmpleado->getNumeroIdentificacion() , 1, 0, 'C', 1);
@@ -202,7 +209,7 @@ class FormatoCertificadoIngreso extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(158, 6, utf8_decode("Pagos al empleado (No incluye valores de las casillas 38 a 41)") , 1, 0, 'L', 1);
         $this->Cell(8, 6, utf8_decode("37.") , 1, 0, 'C', 1);
-        $this->Cell(34, 6, round(self::$totalPrestacional) , 1, 0, 'R', 1);
+        $this->Cell(34, 6, round(self::$totalPrestacional + $ibp) , 1, 0, 'R', 1);
         $this->SetXY(5, 102);
         $this->Cell(158, 6, utf8_decode("Cesantías e intereses de cesantías efectivamente pagadas en el periodo") , 1, 0, 'L', 1);
         $this->Cell(8, 6, utf8_decode("38.") , 1, 0, 'C', 1);
@@ -223,7 +230,7 @@ class FormatoCertificadoIngreso extends \FPDF_FPDF {
         $this->SetFont('Arial','b',8);
         $this->Cell(158, 6, utf8_decode("Total de ingresos brutos (Suma casillas 37 a 41)") , 1, 0, 'L', 1);
         $this->Cell(8, 6, utf8_decode("42.") , 1, 0, 'C', 1);
-        $this->Cell(34, 6, round(self::$duoTotalIngresos) , 1, 0, 'R', 1);
+        $this->Cell(34, 6, round(self::$duoTotalIngresos + $ibp) , 1, 0, 'R', 1);
         //Concepto a los aportes
         $this->SetXY(5, 132);
         $this->Cell(158, 5, utf8_decode("Concepto de los aportes") , 1, 0, 'C', 1);
@@ -232,12 +239,12 @@ class FormatoCertificadoIngreso extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(158, 5, utf8_decode("Aportes obligatorios por salud") , 1, 0, 'L', 1);
         $this->Cell(8, 5, utf8_decode("43.") , 1, 0, 'C', 1);
-        $this->Cell(34, 5, round(self::$floSalud) , 1, 0, 'R', 1);
+        $this->Cell(34, 5, round(self::$floSalud + $salud) , 1, 0, 'R', 1);
         $this->SetXY(5, 142);
         $this->SetFont('Arial','',8);
         $this->Cell(158, 5, utf8_decode("Aportes obligatorios a fondos de pensiones y solidaridad pensional") , 1, 0, 'L', 1);
         $this->Cell(8, 5, utf8_decode("44.") , 1, 0, 'C', 1);
-        $this->Cell(34, 5, round(self::$floPension) , 1, 0, 'R', 1);
+        $this->Cell(34, 5, round(self::$floPension + $pension) , 1, 0, 'R', 1);
         $this->SetXY(5, 147);
         $this->SetFont('Arial','',8);
         $this->Cell(158, 5, utf8_decode("Aportes obligatorios a fondos de pensiones y cuentas AFC") , 1, 0, 'L', 1);
