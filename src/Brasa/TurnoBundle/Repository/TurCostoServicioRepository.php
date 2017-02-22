@@ -6,11 +6,14 @@ use Doctrine\ORM\EntityRepository;
 
 class TurCostoServicioRepository extends EntityRepository {
 
-    public function listaDql($codigoCliente = "", $anio = "", $mes = "") {
+    public function listaDql($codigoCliente = "", $anio = "", $mes = "", $codigoPuesto = "") {
         $dql   = "SELECT cs FROM BrasaTurnoBundle:TurCostoServicio cs WHERE cs.codigoCostoServicioPk <> 0 ";
         if($codigoCliente != "") {
             $dql .= " AND cs.codigoClienteFk = " . $codigoCliente;  
         }
+        if($codigoPuesto != "") {
+            $dql .= " AND cs.codigoPuestoFk = " . $codigoPuesto;  
+        }        
         if($anio != "") {
             $dql .= " AND cs.anio = " . $anio;  
         }        

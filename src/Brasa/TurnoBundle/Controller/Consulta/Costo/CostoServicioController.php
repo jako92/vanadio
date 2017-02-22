@@ -72,18 +72,21 @@ class CostoServicioController extends Controller
         $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurCostoServicio')->listaDql(
                 $session->get('filtroCodigoCliente'), 
                 $session->get('filtroTurAnio'),
-                $session->get('filtroTurMes') 
+                $session->get('filtroTurMes'),
+                $session->get('filtroCodigoPuesto')
                 );
         $this->strListaDetalleDql =  $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaConsultaDql(
                 $session->get('filtroCodigoCliente'), 
                 $session->get('filtroTurAnio'),
-                $session->get('filtroTurMes') 
+                $session->get('filtroTurMes'),
+                $session->get('filtroCodigoPuesto')
                 );        
     }
 
     private function filtrar ($form) {
         $session = new session;
         $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());
         $session->set('filtroTurMes', $form->get('TxtMes')->getData());
         $session->set('filtroTurAnio', $form->get('TxtAnio')->getData());        
     }
@@ -104,9 +107,20 @@ class CostoServicioController extends Controller
         } else {
             $session->set('filtroCodigoCliente', null);
         }
+        $strNombrePuesto = "";
+        if($session->get('filtroCodigoPuesto')) {
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($session->get('filtroCodigoPuesto'));
+            if($arPuesto) {                
+                $strNombrePuesto = $arPuesto->getNombre();
+            }  else {
+                $session->set('filtroCodigoPuesto', null);
+            }          
+        }        
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))            
+            ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
+            ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))                                                
             ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroTurAnio')))
             ->add('TxtMes', TextType::class, array('data' => $session->get('filtroTurMes')))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))

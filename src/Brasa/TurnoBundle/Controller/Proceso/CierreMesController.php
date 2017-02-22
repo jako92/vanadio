@@ -270,7 +270,7 @@ class CierreMesController extends Controller
                     $arCostoServicio->setHorasDiurnas($arPedidoDetalle->getHorasDiurnas());
                     $arCostoServicio->setHorasNocturnas($arPedidoDetalle->getHorasNocturnas());
                     $arCostoServicio->setCantidad($arPedidoDetalle->getCantidad());
-                    $arCostoServicio->setVrTotal($arPedidoDetalle->getVrTotalDetalle());
+                    $arCostoServicio->setVrTotal($arPedidoDetalle->getVrSubtotal());
                     $arCostoServicio->setVrCostoRecurso($costo);
                     $em->persist($arCostoServicio);                         
                 }

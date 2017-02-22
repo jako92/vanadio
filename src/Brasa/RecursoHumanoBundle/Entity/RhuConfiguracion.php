@@ -292,13 +292,7 @@ class RhuConfiguracion
      * Si esta activado muestra el mensaje en la colilla de pago
      * @ORM\Column(name="imprimir_mensaje_pago", type="boolean")
      */
-    private $imprimirMensajePago = false;   
-    
-    /**
-     * Tipo de planilla pago seguridad social s-sucursal u-unica
-     * @ORM\Column(name="tipo_planilla_sso", type="string", length=1, nullable=true)
-     */
-    private $tipoPlanillaSso;
+    private $imprimirMensajePago = false;       
     
     /**
      * @ORM\Column(name="codigo_prima", type="integer")
@@ -359,13 +353,7 @@ class RhuConfiguracion
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="omitir_descuento_embargo_cesantias", type="boolean")
      */
-    private $omitirDescuentoEmbargoCesantias = false;    
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuEntidadRiesgoProfesional", inversedBy="configuracionEntidadRiesgoProfesionalRel")
-     * @ORM\JoinColumn(name="codigo_entidad_riesgo_fk", referencedColumnName="codigo_entidad_riesgo_pk")
-     */
-    protected $entidadRiesgoProfesionalRel;  
+    private $omitirDescuentoEmbargoCesantias = false;         
         
     /**
      * @ORM\Column(name="direccion_servidor_ardid", type="string", length=800, nullable=true)
@@ -382,7 +370,6 @@ class RhuConfiguracion
      */
     private $pagarLicenciaSalarioPactado = false;    
     
-
 
     /**
      * Set codigoConfiguracionPk
@@ -1729,30 +1716,6 @@ class RhuConfiguracion
     }
 
     /**
-     * Set tipoPlanillaSso
-     *
-     * @param string $tipoPlanillaSso
-     *
-     * @return RhuConfiguracion
-     */
-    public function setTipoPlanillaSso($tipoPlanillaSso)
-    {
-        $this->tipoPlanillaSso = $tipoPlanillaSso;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoPlanillaSso
-     *
-     * @return string
-     */
-    public function getTipoPlanillaSso()
-    {
-        return $this->tipoPlanillaSso;
-    }
-
-    /**
      * Set codigoPrima
      *
      * @param integer $codigoPrima
@@ -2086,29 +2049,5 @@ class RhuConfiguracion
     public function getPagarLicenciaSalarioPactado()
     {
         return $this->pagarLicenciaSalarioPactado;
-    }
-
-    /**
-     * Set entidadRiesgoProfesionalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel
-     *
-     * @return RhuConfiguracion
-     */
-    public function setEntidadRiesgoProfesionalRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional $entidadRiesgoProfesionalRel = null)
-    {
-        $this->entidadRiesgoProfesionalRel = $entidadRiesgoProfesionalRel;
-
-        return $this;
-    }
-
-    /**
-     * Get entidadRiesgoProfesionalRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional
-     */
-    public function getEntidadRiesgoProfesionalRel()
-    {
-        return $this->entidadRiesgoProfesionalRel;
     }
 }

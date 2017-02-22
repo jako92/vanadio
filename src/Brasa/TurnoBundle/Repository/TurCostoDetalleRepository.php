@@ -23,11 +23,14 @@ class TurCostoDetalleRepository extends EntityRepository {
         return $dql;
     }    
 
-    public function listaConsultaDql($codigoCliente = "", $anio = "", $mes = "") {
+    public function listaConsultaDql($codigoCliente = "", $anio = "", $mes = "", $codigoPuesto = "") {
         $dql   = "SELECT cd FROM BrasaTurnoBundle:TurCostoDetalle cd WHERE cd.codigoCostoDetallePk <> 0 ";
         if($codigoCliente != "") {
             $dql .= " AND cd.codigoClienteFk = " . $codigoCliente;  
         }
+        if($codigoPuesto != "") {
+            $dql .= " AND cd.codigoPuestoFk = " . $codigoPuesto;  
+        }        
         if($anio != "") {
             $dql .= " AND cd.anio = " . $anio;  
         }                
