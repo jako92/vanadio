@@ -99,7 +99,7 @@ class FormatoPagoBanco extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(12);
-        $header = array(utf8_decode('CÓDIGO'),'TIPO PAGO', utf8_decode('IDENTIFICACIÓN'), 'NOMBRE', 'VR PAGO');
+        $header = array(utf8_decode('ID'),'NUMERO', utf8_decode('IDENTIFICACIÓN'), 'NOMBRE', 'VR PAGO');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -130,7 +130,16 @@ class FormatoPagoBanco extends \FPDF_FPDF {
         $var = 0;
         foreach ($arPagoBancoDetalles as $arPagoBancoDetalle) {            
             $pdf->Cell(20, 4, $arPagoBancoDetalle->getCodigoPagoBancoDetallePk(), 1, 0, 'L');
-            $pdf->Cell(25, 4, $arPagoBancoDetalle->getPagoBancoRel()->getPagoBancoTipoRel()->getNombre(), 1, 0, 'L');
+            if($arPagoBancoDetalle->getCodigoPagoFk()) {
+                $pdf->Cell(25, 4, $arPagoBancoDetalle->getPagoRel()->getNumero(), 1, 0, 'L');    
+            } elseif($arPagoBancoDetalle->getCodigoLiquidacionFk()) {
+                $pdf->Cell(25, 4,$arPagoBancoDetalle->getCodigoLiquidacionFk(), 1, 0, 'L');    
+            } elseif ($arPagoBancoDetalle->getCodigoVacacionFk()) {
+                $pdf->Cell(25, 4,$arPagoBancoDetalle->getCodigoVacacionFk(), 1, 0, 'L');
+            } else {
+                $pdf->Cell(25, 4, "", 1, 0, 'L');    
+            }
+            
             $pdf->Cell(25, 4, $arPagoBancoDetalle->getEmpleadoRel()->getNumeroIdentificacion(), 1, 0, 'L');
             $pdf->Cell(105, 4, utf8_decode($arPagoBancoDetalle->getEmpleadoRel()->getNombreCorto()), 1, 0, 'L');
             $pdf->Cell(15, 4, number_format($arPagoBancoDetalle->getVrPago(), 0, '.', ','), 1, 0, 'R');
