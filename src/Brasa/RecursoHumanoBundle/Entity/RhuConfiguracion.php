@@ -17,11 +17,6 @@ class RhuConfiguracion
     private $codigoConfiguracionPk;
 
     /**
-     * @ORM\Column(name="codigo_entidad_riesgo_fk", type="integer")
-     */
-    private $codigoEntidadRiesgoFk;
-
-    /**
      * @ORM\Column(name="vr_salario", type="float")
      */
     private $vrSalario;
@@ -371,6 +366,7 @@ class RhuConfiguracion
     private $pagarLicenciaSalarioPactado = false;    
     
 
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -393,30 +389,6 @@ class RhuConfiguracion
     public function getCodigoConfiguracionPk()
     {
         return $this->codigoConfiguracionPk;
-    }
-
-    /**
-     * Set codigoEntidadRiesgoFk
-     *
-     * @param integer $codigoEntidadRiesgoFk
-     *
-     * @return RhuConfiguracion
-     */
-    public function setCodigoEntidadRiesgoFk($codigoEntidadRiesgoFk)
-    {
-        $this->codigoEntidadRiesgoFk = $codigoEntidadRiesgoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoEntidadRiesgoFk
-     *
-     * @return integer
-     */
-    public function getCodigoEntidadRiesgoFk()
-    {
-        return $this->codigoEntidadRiesgoFk;
     }
 
     /**
