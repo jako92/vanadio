@@ -14,7 +14,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         self::$codigoMovimiento = $codigoMovimiento;
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
-        $valor = round($arMovimiento->getVrNeto());
+        $valor = round($arMovimiento->getVrNetoPagar());
         $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
         self::$strLetras = $strLetras;
         ob_clean();
