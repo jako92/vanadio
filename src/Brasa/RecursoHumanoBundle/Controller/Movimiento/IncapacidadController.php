@@ -325,12 +325,14 @@ class IncapacidadController extends Controller
                     ->setCellValue('E1', 'DOCUMENTO')
                     ->setCellValue('F1', 'NOMBRE')
                     ->setCellValue('G1', 'CENTRO COSTO')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'HASTA')
-                    ->setCellValue('J1', 'DÍAS')
-                    ->setCellValue('K1', 'LEG')
-                    ->setCellValue('L1', 'COD')
-                    ->setCellValue('M1', 'DIAGNOSTICO');
+                    ->setCellValue('H1', 'ZONA')
+                    ->setCellValue('I1', 'SUB ZONA')
+                    ->setCellValue('J1', 'DESDE')
+                    ->setCellValue('K1', 'HASTA')
+                    ->setCellValue('L1', 'DÍAS')
+                    ->setCellValue('M1', 'LEG')
+                    ->setCellValue('N1', 'COD')
+                    ->setCellValue('O1', 'DIAGNOSTICO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);        
@@ -355,13 +357,15 @@ class IncapacidadController extends Controller
                     ->setCellValue('E' . $i, $arIncapacidad->getEmpleadoRel()->getnumeroIdentificacion())
                     ->setCellValue('F' . $i, $arIncapacidad->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('G' . $i, $centroCosto)
-                    ->setCellValue('H' . $i, $arIncapacidad->getFechaDesde()->format('Y-m-d'))
-                    ->setCellValue('I' . $i, $arIncapacidad->getFechaHasta()->format('Y-m-d'))
-                    ->setCellValue('J' . $i, $arIncapacidad->getCantidad())
-                    ->setCellValue('K' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoLegalizado()))
-                    ->setCellValue('L' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getCodigo());
+                    ->setCellValue('H' . $i, $arIncapacidad->getEmpleadoRel()->getZonaRel()->getNombre())
+                    ->setCellValue('I' . $i,$arIncapacidad->getEmpleadoRel()->getSubzonaRel()->getNombre())
+                    ->setCellValue('J' . $i, $arIncapacidad->getFechaDesde()->format('Y-m-d'))
+                    ->setCellValue('K' . $i, $arIncapacidad->getFechaHasta()->format('Y-m-d'))
+                    ->setCellValue('L' . $i, $arIncapacidad->getCantidad())
+                    ->setCellValue('M' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoLegalizado()))
+                    ->setCellValue('N' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getCodigo());
             if($arIncapacidad->getCodigoIncapacidadDiagnosticoFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getNombre());
             }
             
             $i++;
