@@ -30,6 +30,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ path('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}" target="_blank">Agregar tiempo suplementario (Masivo)</a></li>
+                        <li><a href="{{ path('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle_temporal', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}" target="_blank">Agregar tiempo suplementario (Temporal) (Masivo)</a></li>
                     </ul>                
                 </div>   
                 <a {% if  arProgramacionPago.inconsistencias == 0 %} class="btn btn-default btn-sm" {% else %} class="btn btn-default btn-sm btn-danger" {% endif %}  href="javascript:abrirVentana3('{{ path('brs_rhu_programaciones_pago_inconsistencias', { 'codigoProgramacionPago': arProgramacionPago.codigoProgramacionPagoPk }) }}', 'VerInconsistencias', 500, 700)" >Inconsistencias</a>                                    

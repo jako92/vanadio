@@ -422,7 +422,12 @@ class RhuContrato
     /**
      * @ORM\OneToMany(targetEntity="RhuProgramacionPagoDetalle", mappedBy="contratoRel")
      */
-    protected $programacionesPagosDetallesContratoRel;    
+    protected $programacionesPagosDetallesContratoRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuProgramacionPagoHoraExtra", mappedBy="contratoRel")
+     */
+    protected $programacionesPagosHorasExtrasContratoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="contratoRel")
@@ -3039,5 +3044,39 @@ class RhuContrato
     public function getPrestacionesContratoRel()
     {
         return $this->prestacionesContratoRel;
+    }
+
+    /**
+     * Add programacionesPagosHorasExtrasContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
+    {
+        $this->programacionesPagosHorasExtrasContratoRel[] = $programacionesPagosHorasExtrasContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesPagosHorasExtrasContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
+     */
+    public function removeProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
+    {
+        $this->programacionesPagosHorasExtrasContratoRel->removeElement($programacionesPagosHorasExtrasContratoRel);
+    }
+
+    /**
+     * Get programacionesPagosHorasExtrasContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesPagosHorasExtrasContratoRel()
+    {
+        return $this->programacionesPagosHorasExtrasContratoRel;
     }
 }

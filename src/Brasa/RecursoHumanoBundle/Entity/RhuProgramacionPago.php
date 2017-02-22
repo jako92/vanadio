@@ -203,7 +203,12 @@ class RhuProgramacionPago
     /**
      * @ORM\OneToMany(targetEntity="RhuProgramacionPagoDetalle", mappedBy="programacionPagoRel")
      */
-    protected $programacionesPagosDetallesProgramacionPagoRel;     
+    protected $programacionesPagosDetallesProgramacionPagoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuProgramacionPagoHoraExtra", mappedBy="programacionPagoRel")
+     */
+    protected $programacionesPagosHorasExtrasProgramacionPagoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="programacionPagoRel")
@@ -1319,5 +1324,39 @@ class RhuProgramacionPago
     public function getServicioGenerado()
     {
         return $this->servicioGenerado;
+    }
+
+    /**
+     * Add programacionesPagosHorasExtrasProgramacionPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasProgramacionPagoRel
+     *
+     * @return RhuProgramacionPago
+     */
+    public function addProgramacionesPagosHorasExtrasProgramacionPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasProgramacionPagoRel)
+    {
+        $this->programacionesPagosHorasExtrasProgramacionPagoRel[] = $programacionesPagosHorasExtrasProgramacionPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesPagosHorasExtrasProgramacionPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasProgramacionPagoRel
+     */
+    public function removeProgramacionesPagosHorasExtrasProgramacionPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasProgramacionPagoRel)
+    {
+        $this->programacionesPagosHorasExtrasProgramacionPagoRel->removeElement($programacionesPagosHorasExtrasProgramacionPagoRel);
+    }
+
+    /**
+     * Get programacionesPagosHorasExtrasProgramacionPagoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesPagosHorasExtrasProgramacionPagoRel()
+    {
+        return $this->programacionesPagosHorasExtrasProgramacionPagoRel;
     }
 }

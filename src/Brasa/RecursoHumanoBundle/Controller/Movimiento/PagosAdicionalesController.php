@@ -525,6 +525,131 @@ class PagosAdicionalesController extends Controller
             ));
     }    
     
+    /**
+     * @Route("/rhu/pagos/adicionales/generarmasivo/suplementario/temporal/detalle/{codigoProgramacionPago}", name="brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle_temporal")
+     */
+    public function generarMasivoSuplementarioTemporalDetalleAction(Request $request, $codigoProgramacionPago) {
+        $em = $this->getDoctrine()->getManager();        
+        $session = new Session;
+        $paginator  = $this->get('knp_paginator');
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
+        $arProgramacionPagoHoraExtra = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra();
+        $arProgramacionPagoHoraExtra = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoHoraExtra')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));        
+        $arrayPropiedadesDepartamentoEmpresa = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoDepartamentoEmpresa')) {
+            $arrayPropiedadesDepartamentoEmpresa['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuDepartamentoEmpresa", $session->get('filtroCodigoDepartamentoEmpresa'));
+        }
+        $form = $this->createFormBuilder()
+            ->add('departamentoEmpresaRel', EntityType::class, $arrayPropiedadesDepartamentoEmpresa)
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))    
+            ->add('BtnEliminarExtra', SubmitType::class, array('label'  => 'Eliminar extra'))                                
+            ->getForm();
+        $form->handleRequest($request);
+        $this->listarTiempoSuplementarioTemporalMasivo($arProgramacionPago);
+        if($form->isValid()) {
+            $arrControles = $request->request->All();
+            /*if($form->get('BtnEliminarExtra')->isClicked()) {
+                if ($arProgramacionPago->getEstadoPagado() == 0 && $arProgramacionPago->getEstadoGenerado() == 0){
+                    $strSql = "UPDATE rhu_programacion_pago_detalle SET horas_extras_ordinarias_diurnas = 0, horas_extras_ordinarias_nocturnas = 0, horas_extras_festivas_diurnas = 0, horas_extras_festivas_nocturnas = 0, horas_recargo_nocturno = 0, horas_recargo_festivo_diurno = 0, horas_recargo_festivo_nocturno = 0 WHERE codigo_programacion_pago_fk = " . $codigoProgramacionPago;           
+                    $em->getConnection()->executeQuery($strSql);  
+                    return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_generarmasivo_suplementario_temporal_detalle', array('codigoProgramacionPago' => $codigoProgramacionPago)));                                                
+                }
+            }*/            
+            if($form->get('BtnGuardar')->isClicked()) {
+                if ($arProgramacionPago->getEstadoPagado() == 0){
+                    $intIndice = 0;
+                    foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                        $arProgramacionPagoHoraExtra = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra();
+                        $arProgramacionPagoHoraExtra = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoHoraExtra')->find($intCodigo);
+                        if(count($arProgramacionPagoHoraExtra) > 0) {
+                            if($arrControles['TxtHN'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHN'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasNocturnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHFD'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHFD'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasFestivasDiurnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHFN'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHFN'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasFestivasNocturnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHEOD'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHEOD'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasExtrasOrdinariasDiurnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHEON'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHEON'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasExtrasOrdinariasNocturnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHEFD'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHEFD'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasExtrasFestivasDiurnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHEFN'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHEFN'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasExtrasFestivasNocturnas($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHRN'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHRN'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasRecargoNocturno($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHRFD'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHRFD'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasRecargoFestivoDiurno($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                            if($arrControles['TxtHRFN'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHRFN'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasRecargoFestivoNocturno($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                        }
+                        $intIndice++;
+                    }
+                } else {
+                    $objMensaje->Mensaje("error", "La programacion esta pagada, no se puede modificar el tiempo suplementario!");
+                }    
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_pagos_adicionales_generarmasivo_suplementario_detalle_temporal', array('codigoProgramacionPago' => $codigoProgramacionPago)));                                                
+                    //echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }
+            if($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarListaTiempoSuplementirioTemporalMasivo($form, $request);
+                $this->listarTiempoSuplementarioTemporalMasivo($arProgramacionPago);
+            }
+        }
+        
+        $arProgramacionPagoHoraExtra = $paginator->paginate($arProgramacionPagoHoraExtra, $request->query->get('page', 1), 30);                               
+        //$arEmpleados = $paginator->paginate($em->createQuery($this->strDqlListaTiempoSuplementarioMasivo), $request->query->get('page', 1), 50);                               
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/PagosAdicionales:generarMasivoSuplementarioDetalleTemporal.html.twig', array(
+            'arProgramacionPagoHoraExtra' => $arProgramacionPagoHoraExtra,
+            'arProgramacionPago' => $arProgramacionPago,
+            'form' => $form->createView()
+            ));
+    }    
+    
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
@@ -651,7 +776,28 @@ class PagosAdicionalesController extends Controller
                     );  
     }         
     
+    private function listarTiempoSuplementarioTemporalMasivo($ar) {
+        $em = $this->getDoctrine()->getManager();                
+        $session = new Session;
+        $this->strDqlListaTiempoSuplementarioMasivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->ListaTiempoSuplementarioMasivoDql(
+                    '',
+                    $ar->getCodigoCentroCostoFk(),
+                    1,
+                    $session->get('filtroCodigoDepartamentoEmpresa')
+                    );  
+    }         
+    
     private function filtrarListaTiempoSuplementirioMasivo($form, Request $request) {
+        $session = new Session;        
+        $codigoDepartamentoEmpresa = '';
+        if($form->get('departamentoEmpresaRel')->getData()) {
+            $codigoDepartamentoEmpresa = $form->get('departamentoEmpresaRel')->getData()->getCodigoDepartamentoEmpresaPk();
+        }
+        $session->set('filtroCodigoDepartamentoEmpresa', $codigoDepartamentoEmpresa);
+        //$session->set('filtroCodigoDepartamentoEmpresa', $form->get('departamentoEmpresaRel')->getData());
+    }    
+    
+    private function filtrarListaTiempoSuplementirioTemporalMasivo($form, Request $request) {
         $session = new Session;        
         $codigoDepartamentoEmpresa = '';
         if($form->get('departamentoEmpresaRel')->getData()) {
