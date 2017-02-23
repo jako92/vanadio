@@ -74,7 +74,7 @@ class ConfiguracionController extends Controller
             'required' => false);
         $arrayPropiedadesConceptoHoraDiurnaTrabajada['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoConcepto", $arConfiguracion->getCodigoHoraDiurnaTrabajada());
 
-        $arrayPropiedadesConceptoRiesgoProfesional = array(
+        /*$arrayPropiedadesConceptoRiesgoProfesional = array(
             'class' => 'BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('rp')
@@ -82,7 +82,7 @@ class ConfiguracionController extends Controller
             'choice_label' => 'nombre',
             'required' => false);
         $arrayPropiedadesConceptoRiesgoProfesional['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional", $arConfiguracion->getCodigoEntidadRiesgoFk());
-
+*/
         $arrayPropiedadesConceptoIncapacidad = array(
             'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
             'query_builder' => function (EntityRepository $er) {
@@ -148,7 +148,7 @@ class ConfiguracionController extends Controller
             ->add('conceptoCredito', EntityType::class, $arrayPropiedadesConceptoCredito, array('required' => true))
             ->add('conceptoSeguro', EntityType::class, $arrayPropiedadesConceptoSeguro, array('required' => true))
             ->add('conceptoHoraDiurnaTrabajada', EntityType::class, $arrayPropiedadesConceptoHoraDiurnaTrabajada, array('required' => true))
-            ->add('conceptoRiesgoProfesional', EntityType::class, $arrayPropiedadesConceptoRiesgoProfesional, array('required' => true))
+            //->add('conceptoRiesgoProfesional', EntityType::class, $arrayPropiedadesConceptoRiesgoProfesional, array('required' => true))
             ->add('porcentajePensionExtra', NumberType::class, array('data' => $arConfiguracion->getPorcentajePensionExtra(), 'required' => true))
             ->add('conceptoIncapacidad', EntityType::class, $arrayPropiedadesConceptoIncapacidad, array('required' => true))
             ->add('porcentajeIva', NumberType::class, array('data' => $arConfiguracion->getPorcentajeIva(), 'required' => true))
@@ -166,8 +166,8 @@ class ConfiguracionController extends Controller
             ->add('aportesPorcentajeCaja', NumberType::class, array('data' => $arConfiguracion->getAportesPorcentajeCaja(), 'required' => true))
             ->add('aportesPorcentajeVacaciones', NumberType::class, array('data' => $arConfiguracion->getAportesPorcentajeVacaciones(), 'required' => true))
             ->add('tipoBasePagoVacaciones', ChoiceType::class, array('choices' => array('SALARIO' => '1', 'SALARIO PRESTACIONAL' => '1', 'SALARIO+RECAROS NOCTURNOS' => '2', 'SIN ASIGNAR' => '0'), 'data' => $arConfiguracion->getTipoBasePagoVacaciones()))
-            ->add('tipoPlanillaSso', ChoiceType::class, array('choices' => array('SUCURSAL' => 'S', 'UNICA' => 'U'), 'data' => $arConfiguracion->getTipoPlanillaSso()))
-            ->add('cuentaNominaPagar', NumberType::class, array('data' => $arConfiguracion->getCuentaNominaPagar(), 'required' => true))
+            //->add('tipoPlanillaSso', ChoiceType::class, array('choices' => array('SUCURSAL' => 'S', 'UNICA' => 'U'), 'data' => $arConfiguracion->getTipoPlanillaSso()))
+            //->add('cuentaNominaPagar', NumberType::class, array('data' => $arConfiguracion->getCuentaNominaPagar(), 'required' => true))
             ->add('cuentaPago', NumberType::class, array('data' => $arConfiguracion->getCuentaPago(), 'required' => true))
             ->add('conceptoVacacion', EntityType::class, $arrayPropiedadesConceptoVacacion, array('required' => true))
             ->add('afectaVacacionesParafiscales', CheckboxType::class, array('data' => $arConfiguracion->getAfectaVacacionesParafiscales(), 'required' => false))
@@ -187,7 +187,7 @@ class ConfiguracionController extends Controller
             $codigoConceptoIncapacidad = $controles['conceptoIncapacidad'];
             $codigoConceptoSeguro = $controles['conceptoSeguro'];
             $codigoConceptoHoraDiurnaTrabajada = $controles['conceptoHoraDiurnaTrabajada'];
-            $codigoConceptoRiesgoProfesional = $controles['conceptoRiesgoProfesional'];
+            //$codigoConceptoRiesgoProfesional = $controles['conceptoRiesgoProfesional'];
             $codigoConceptoRetencionFuente = $controles['conceptoRetencionFuente'];
             $porcentajeIva = $controles['porcentajeIva'];
             $porcentajeBonificacionNoPrestacional = $controles['porcentajeBonificacionNoPrestacional'];
@@ -216,7 +216,7 @@ class ConfiguracionController extends Controller
             $arConfiguracion->setCodigoIncapacidad($codigoConceptoIncapacidad);
             $arConfiguracion->setCodigoSeguro($codigoConceptoSeguro);
             $arConfiguracion->setCodigoHoraDiurnaTrabajada($codigoConceptoHoraDiurnaTrabajada);
-            $arConfiguracion->setCodigoEntidadRiesgoFk($codigoConceptoRiesgoProfesional);
+            //$arConfiguracion->setCodigoEntidadRiesgoFk($codigoConceptoRiesgoProfesional);
             $arConfiguracion->setCodigoRetencionFuente($codigoConceptoRetencionFuente);
             $arConfiguracion->setPorcentajeBonificacionNoPrestacional($porcentajeBonificacionNoPrestacional);
             $arConfiguracion->setEdadMinimaEmpleado($edadMinimaEmpleado);

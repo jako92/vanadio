@@ -27,7 +27,7 @@ class PeriodoController extends Controller {
     var $strCodigoPeriodoDetalleCopias = "";
 
     /**
-     * @Route("/rhu/utilidad/seguridad/social", name="brs_rhu_utilidad_seguridad_social")
+     * @Route("/rhu/utilidad/seguridad/social/", name="brs_rhu_utilidad_seguridad_social")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
