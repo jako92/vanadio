@@ -11,5 +11,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuEmpleadoFamiliaRepository extends EntityRepository {
     
-    
+    public function listaDqlGrupoFamiliar($strNombre = "", $strIdentificacion = "") {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT p, e FROM BrasaRecursoHumanoBundle:RhuEmpleadoFamilia p JOIN p.empleadoRel e WHERE p.codigoEmpleadoFk <> 0";
+        if($strNombre != "") {
+            $dql .= " AND e.nombreCorto = " . $strNombre;
+        }   
+        if($strIdentificacion != "" ) {
+            $dql .= " AND e.numeroIdentificacion = '" . $strIdentificacion . "'";
+        }
+       
+        return $dql;
+    }
 }
