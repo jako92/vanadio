@@ -66,7 +66,7 @@ class RhuConfiguracionAporte
     private $tipoIdentificacionEmpresa;     
 
     /**
-     * @ORM\Column(name="identificacion_empresa", type="string", length=2, nullable=true)
+     * @ORM\Column(name="identificacion_empresa", type="string", length=16, nullable=true)
      */
     private $identificacionEmpresa;
 
@@ -76,10 +76,13 @@ class RhuConfiguracionAporte
     private $digitoVerificacionEmpresa;
 
     /**
-     * @ORM\Column(name="codigo_entidad_riesgos_profesionales", type="string", length=1, nullable=true)
+     * @ORM\Column(name="codigo_entidad_riesgos_profesionales", type="string", length=6, nullable=true)
      */
     private $codigoEntidadRiesgosProfesionales;
     
+
+
+
     /**
      * Set codigoConfiguracionAportePk
      *

@@ -460,8 +460,12 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
         $intNumeroEmpleados = 0;
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);                
+        $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();                
+        $arConfiguracionAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);                
         $arEntidadRiesgos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
-        $arEntidadRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->find($arConfiguracionNomina->getCodigoEntidadRiesgoFk());        
+        if($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()) {
+            $arEntidadRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findOneBy(array('codigoInterface' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
+        }
         $arPeriodoEmpleadoValidar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
         $arPeriodoEmpleadoValidar = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->findOneBy(array('codigoPeriodoDetalleFk' => $codigoPeriodoDetalle));        
         if ($arPeriodoEmpleadoValidar == null){

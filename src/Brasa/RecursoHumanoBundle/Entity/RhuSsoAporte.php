@@ -514,6 +514,96 @@ class RhuSsoAporte
     private $codigoEntidadCajaFk;    
     
     /**
+     * @ORM\Column(name="indicador_tarifa_especial_pensiones", type="string", length=1, nullable=true)
+     */    
+    private $indicadorTarifaEspecialPensiones;    
+    
+    /**
+     * @ORM\Column(name="fecha_ingreso", type="string", length=10, nullable=true)
+     */    
+    private $fechaIngreso;    
+    
+    /**
+     * @ORM\Column(name="fecha_retiro", type="string", length=10, nullable=true)
+     */    
+    private $fechaRetiro;
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_vsp", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioVsp;     
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_sln", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioSln;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_sln", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinSln; 
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_ige", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioIge;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_ige", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinIge;    
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_lma", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioLma;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_lma", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinLma;     
+
+    /**
+     * @ORM\Column(name="fecha_inicio_vac_lr", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioVacLr;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_vac_lr", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinVacLr;     
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_vct", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioVct;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_vct", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinVct;     
+    
+    /**
+     * @ORM\Column(name="fecha_inicio_irl", type="string", length=10, nullable=true)
+     */    
+    private $fechaInicioIrl;     
+
+    /**
+     * @ORM\Column(name="fecha_fin_irl", type="string", length=10, nullable=true)
+     */    
+    private $fechaFinIrl;     
+    
+    /**
+     * @ORM\Column(name="ibc_otros_parafiscales_diferentes_ccf", type="float")
+     */
+    private $ibcOtrosParafiscalesDiferentesCcf = 0;    
+    
+    /**
+     * @ORM\Column(name="numero_horas_laboradas", type="float")
+     */
+    private $numeroHorasLaboradas = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuSsoPeriodo", inversedBy="ssoAportesSsoPeriodoRel")
      * @ORM\JoinColumn(name="codigo_periodo_fk", referencedColumnName="codigo_periodo_pk")
      */
@@ -573,6 +663,7 @@ class RhuSsoAporte
      */
     protected $entidadCajaRel;    
     
+
 
     /**
      * Get codigoAportePk
@@ -2961,6 +3052,414 @@ class RhuSsoAporte
     }
 
     /**
+     * Set fechaIngreso
+     *
+     * @param string $fechaIngreso
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaIngreso($fechaIngreso)
+    {
+        $this->fechaIngreso = $fechaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaIngreso
+     *
+     * @return string
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
+    }
+
+    /**
+     * Set fechaRetiro
+     *
+     * @param string $fechaRetiro
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaRetiro($fechaRetiro)
+    {
+        $this->fechaRetiro = $fechaRetiro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRetiro
+     *
+     * @return string
+     */
+    public function getFechaRetiro()
+    {
+        return $this->fechaRetiro;
+    }
+
+    /**
+     * Set fechaInicioVsp
+     *
+     * @param string $fechaInicioVsp
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioVsp($fechaInicioVsp)
+    {
+        $this->fechaInicioVsp = $fechaInicioVsp;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioVsp
+     *
+     * @return string
+     */
+    public function getFechaInicioVsp()
+    {
+        return $this->fechaInicioVsp;
+    }
+
+    /**
+     * Set fechaInicioSln
+     *
+     * @param string $fechaInicioSln
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioSln($fechaInicioSln)
+    {
+        $this->fechaInicioSln = $fechaInicioSln;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioSln
+     *
+     * @return string
+     */
+    public function getFechaInicioSln()
+    {
+        return $this->fechaInicioSln;
+    }
+
+    /**
+     * Set fechaFinSln
+     *
+     * @param string $fechaFinSln
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinSln($fechaFinSln)
+    {
+        $this->fechaFinSln = $fechaFinSln;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinSln
+     *
+     * @return string
+     */
+    public function getFechaFinSln()
+    {
+        return $this->fechaFinSln;
+    }
+
+    /**
+     * Set fechaInicioIge
+     *
+     * @param string $fechaInicioIge
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioIge($fechaInicioIge)
+    {
+        $this->fechaInicioIge = $fechaInicioIge;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioIge
+     *
+     * @return string
+     */
+    public function getFechaInicioIge()
+    {
+        return $this->fechaInicioIge;
+    }
+
+    /**
+     * Set fechaFinIge
+     *
+     * @param string $fechaFinIge
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinIge($fechaFinIge)
+    {
+        $this->fechaFinIge = $fechaFinIge;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinIge
+     *
+     * @return string
+     */
+    public function getFechaFinIge()
+    {
+        return $this->fechaFinIge;
+    }
+
+    /**
+     * Set fechaInicioLma
+     *
+     * @param string $fechaInicioLma
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioLma($fechaInicioLma)
+    {
+        $this->fechaInicioLma = $fechaInicioLma;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioLma
+     *
+     * @return string
+     */
+    public function getFechaInicioLma()
+    {
+        return $this->fechaInicioLma;
+    }
+
+    /**
+     * Set fechaFinLma
+     *
+     * @param string $fechaFinLma
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinLma($fechaFinLma)
+    {
+        $this->fechaFinLma = $fechaFinLma;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinLma
+     *
+     * @return string
+     */
+    public function getFechaFinLma()
+    {
+        return $this->fechaFinLma;
+    }
+
+    /**
+     * Set fechaInicioVacLr
+     *
+     * @param string $fechaInicioVacLr
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioVacLr($fechaInicioVacLr)
+    {
+        $this->fechaInicioVacLr = $fechaInicioVacLr;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioVacLr
+     *
+     * @return string
+     */
+    public function getFechaInicioVacLr()
+    {
+        return $this->fechaInicioVacLr;
+    }
+
+    /**
+     * Set fechaFinVacLr
+     *
+     * @param string $fechaFinVacLr
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinVacLr($fechaFinVacLr)
+    {
+        $this->fechaFinVacLr = $fechaFinVacLr;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinVacLr
+     *
+     * @return string
+     */
+    public function getFechaFinVacLr()
+    {
+        return $this->fechaFinVacLr;
+    }
+
+    /**
+     * Set fechaInicioVct
+     *
+     * @param string $fechaInicioVct
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioVct($fechaInicioVct)
+    {
+        $this->fechaInicioVct = $fechaInicioVct;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioVct
+     *
+     * @return string
+     */
+    public function getFechaInicioVct()
+    {
+        return $this->fechaInicioVct;
+    }
+
+    /**
+     * Set fechaFinVct
+     *
+     * @param string $fechaFinVct
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinVct($fechaFinVct)
+    {
+        $this->fechaFinVct = $fechaFinVct;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinVct
+     *
+     * @return string
+     */
+    public function getFechaFinVct()
+    {
+        return $this->fechaFinVct;
+    }
+
+    /**
+     * Set fechaInicioIrl
+     *
+     * @param string $fechaInicioIrl
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaInicioIrl($fechaInicioIrl)
+    {
+        $this->fechaInicioIrl = $fechaInicioIrl;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioIrl
+     *
+     * @return string
+     */
+    public function getFechaInicioIrl()
+    {
+        return $this->fechaInicioIrl;
+    }
+
+    /**
+     * Set fechaFinIrl
+     *
+     * @param string $fechaFinIrl
+     *
+     * @return RhuSsoAporte
+     */
+    public function setFechaFinIrl($fechaFinIrl)
+    {
+        $this->fechaFinIrl = $fechaFinIrl;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinIrl
+     *
+     * @return string
+     */
+    public function getFechaFinIrl()
+    {
+        return $this->fechaFinIrl;
+    }
+
+    /**
+     * Set ibcOtrosParafiscalesDiferentesCcf
+     *
+     * @param float $ibcOtrosParafiscalesDiferentesCcf
+     *
+     * @return RhuSsoAporte
+     */
+    public function setIbcOtrosParafiscalesDiferentesCcf($ibcOtrosParafiscalesDiferentesCcf)
+    {
+        $this->ibcOtrosParafiscalesDiferentesCcf = $ibcOtrosParafiscalesDiferentesCcf;
+
+        return $this;
+    }
+
+    /**
+     * Get ibcOtrosParafiscalesDiferentesCcf
+     *
+     * @return float
+     */
+    public function getIbcOtrosParafiscalesDiferentesCcf()
+    {
+        return $this->ibcOtrosParafiscalesDiferentesCcf;
+    }
+
+    /**
+     * Set numeroHorasLaboradas
+     *
+     * @param float $numeroHorasLaboradas
+     *
+     * @return RhuSsoAporte
+     */
+    public function setNumeroHorasLaboradas($numeroHorasLaboradas)
+    {
+        $this->numeroHorasLaboradas = $numeroHorasLaboradas;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroHorasLaboradas
+     *
+     * @return float
+     */
+    public function getNumeroHorasLaboradas()
+    {
+        return $this->numeroHorasLaboradas;
+    }
+
+    /**
      * Set ssoPeriodoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodo $ssoPeriodoRel
@@ -3198,5 +3697,29 @@ class RhuSsoAporte
     public function getEntidadCajaRel()
     {
         return $this->entidadCajaRel;
+    }
+
+    /**
+     * Set indicadorTarifaEspecialPensiones
+     *
+     * @param string $indicadorTarifaEspecialPensiones
+     *
+     * @return RhuSsoAporte
+     */
+    public function setIndicadorTarifaEspecialPensiones($indicadorTarifaEspecialPensiones)
+    {
+        $this->indicadorTarifaEspecialPensiones = $indicadorTarifaEspecialPensiones;
+
+        return $this;
+    }
+
+    /**
+     * Get indicadorTarifaEspecialPensiones
+     *
+     * @return string
+     */
+    public function getIndicadorTarifaEspecialPensiones()
+    {
+        return $this->indicadorTarifaEspecialPensiones;
     }
 }

@@ -4,7 +4,7 @@
         <section class="content-header">
         <h1>
             Recurso humano
-            <small>Seguridad social: empleado sucursal</small>
+            <small>Seguridad social: empleado</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -45,7 +45,7 @@
             <th>IBC</th>
             <th>VR_VACACION</th>
             <th>VST</th>
-            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos(this, 'ChkSeleccionar[]');"/></th>
+            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
         {% for arPeriodoEmpleados in arPeriodoEmpleados %}
             <tr>
@@ -73,7 +73,7 @@
     <!-- Botones Menu Items -->
     <div class="btn-toolbar" style="float:left">
         <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_ss_periodo_detalle', { 'codigoPeriodo': arPeriodoDetalle.codigoPeriodoFk }) }}" style="float:left">Volver</a>
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_utilidad_seguridad_social_detalle', { 'codigoPeriodo': arPeriodoDetalle.codigoPeriodoFk }) }}" style="float:left">Volver</a>
         </div>
     </div>
     <div class="btn-toolbar" style="float: right">
