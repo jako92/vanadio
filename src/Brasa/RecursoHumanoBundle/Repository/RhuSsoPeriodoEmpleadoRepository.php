@@ -156,14 +156,14 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             } else {
                $intDiasLaborados = $intDiasCotizar - $intDiasLicencia; 
             }
-            
-            $ibc = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibc($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                        
+            $arrIbc = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibc($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                        
+            $ibc = $arrIbc['ibc'];
             $ibc = round($ibc);
             $ibcMinimo = ($salarioMinimo / 30) * $intDiasLaborados;            
             if($ibc < $ibcMinimo) {
                 $ibc = $ibcMinimo;
             }
-            
+            $arPeriodoEmpleadoActualizar->setHoras($arrIbc['horas']);
             $ibcSalario = round(($floSalario / 30) * $intDiasLaborados);
             if($ibcSalario != $ibc) {
                 $arPeriodoEmpleadoActualizar->setVariacionTransitoriaSalario('X');

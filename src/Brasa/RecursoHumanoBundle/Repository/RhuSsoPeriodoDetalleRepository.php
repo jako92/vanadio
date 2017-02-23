@@ -715,6 +715,8 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                 $totalCotizacion = $floTotalCotizacionFondos + $floCotizacionSalud + $floCotizacionRiesgos + $floCotizacionCaja + $floCotizacionIcbf+$floCotizacionSena+$floCotizacionFSPSolidaridad+$floCotizacionFSPSubsistencia;
                 $totalCotizacionGeneral += $totalCotizacion;
                 $arAporte->setTotalCotizacion($totalCotizacion);
+                $arAporte->setNumeroHorasLaboradas($arPeriodoEmpleado->getHoras());
+                
                 $sinLineaInicial = true;
                 if($intDiasCotizarPension > 0 || $intDiasCotizarSalud > 0 || $intDiasCotizarRiesgos > 0) {
                     $sinLineaInicial = false;

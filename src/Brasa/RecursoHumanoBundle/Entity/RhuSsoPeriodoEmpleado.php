@@ -48,6 +48,11 @@ class RhuSsoPeriodoEmpleado
     private $dias = 0;
     
     /**
+     * @ORM\Column(name="horas", type="integer")
+     */    
+    private $horas = 0;    
+    
+    /**
      * @ORM\Column(name="vr_salario", type="float")
      */    
     private $vrSalario = 0;
@@ -874,5 +879,29 @@ class RhuSsoPeriodoEmpleado
     public function getVariacionTransitoriaSalario()
     {
         return $this->variacionTransitoriaSalario;
+    }
+
+    /**
+     * Set horas
+     *
+     * @param integer $horas
+     *
+     * @return RhuSsoPeriodoEmpleado
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+
+        return $this;
+    }
+
+    /**
+     * Get horas
+     *
+     * @return integer
+     */
+    public function getHoras()
+    {
+        return $this->horas;
     }
 }

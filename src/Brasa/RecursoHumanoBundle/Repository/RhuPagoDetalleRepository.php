@@ -298,16 +298,18 @@ class RhuPagoDetalleRepository extends EntityRepository {
     
     public function ibc($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacion) as ibc FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+        $arrIbc = array('ibc' => 0, 'horas' => 0);
+        $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
                 . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
-        $ibc = $arrayResultado[0]['ibc'];
-        if($ibc == null) {
-            $ibc = 0;
+        if($arrayResultado) {
+            $arrIbc['ibc'] = $arrayResultado[0]['ibc'];
+            $arrIbc['horas'] = $arrayResultado[0]['horas'];
         }
-        return $ibc;
+        
+        return $arrIbc;
     }         
     
     public function ibcVacaciones($fechaDesde, $fechaHasta, $codigoContrato) {
