@@ -75,7 +75,7 @@
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arProcesosDisciplinarios.codigoDisciplinarioPk }}">{{ arProcesosDisciplinarios.codigoDisciplinarioPk }} </td>
                     <td>{{ arProcesosDisciplinarios.fecha |date("Y/m/d")  }}</td>
                     <td>{{ arProcesosDisciplinarios.disciplinarioTipoRel.nombre  }}</td>
-                    <td>{{ arProcesosDisciplinarios.disciplinarioMotivoRel.nombre  }}</td>
+                    <td>{{ arProcesosDisciplinarios.disciplinarioMotivoRel.nombre  |default('')}}</td>
                     <td>{{ arProcesosDisciplinarios.empleadoRel.numeroIdentificacion  }}</td>
                     <td>{{ arProcesosDisciplinarios.empleadoRel.nombreCorto  }}</td>
                     <td>{{ arProcesosDisciplinarios.centroCostoRel.nombre  }}</td>

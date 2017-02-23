@@ -112,7 +112,7 @@ class disponibleController extends Controller
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arLotes->getItemRel()->getNombre())
                     ->setCellValue('B' . $i, $arLotes->getLoteFk())
-                    ->setCellValue('C' . $i, $arLotes->getExistencia())
+                    ->setCellValue('C' . $i, $arLotes->getCantidadExistencia())
                     ->setCellValue('D' . $i, $arLotes->getCantidadRemisionada())
                     ->setCellValue('E' . $i, $arLotes->getCantidadDisponible())
                     ->setCellValue('F' . $i, $arLotes->getFechaVencimiento()->format('Y/m/d'));                         
