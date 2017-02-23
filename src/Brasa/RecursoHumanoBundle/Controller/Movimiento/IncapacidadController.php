@@ -339,6 +339,8 @@ class IncapacidadController extends Controller
         $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidades = $query->getResult();
         foreach ($arIncapacidades as $arIncapacidad) {
+        $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+        $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arIncapacidad->getCodigoEmpleadoFk());
         $centroCosto = "";
         if ($arIncapacidad->getCodigoCentroCostoFk() != null){
             $centroCosto = $arIncapacidad->getCentroCostoRel()->getNombre();
@@ -347,7 +349,14 @@ class IncapacidadController extends Controller
         $salud = "";
         if ($arIncapacidad->getCodigoEntidadSaludFk() != null){
             $salud = $arIncapacidad->getEntidadSaludRel()->getNombre();
-
+        }
+        $zona = "";
+        if($arEmpleado->getCodigoZonaFk() != NULL){
+            $zona = $arIncapacidad->getEmpleadoRel()->getZonaRel()->getNombre();
+        }
+        $subzona = "";
+        if($arEmpleado->getCodigoZonaFk() != NULL){
+            $subzona = $arIncapacidad->getEmpleadoRel()->getSubzonaRel()->getNombre();
         }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arIncapacidad->getCodigoIncapacidadPk())
@@ -357,8 +366,8 @@ class IncapacidadController extends Controller
                     ->setCellValue('E' . $i, $arIncapacidad->getEmpleadoRel()->getnumeroIdentificacion())
                     ->setCellValue('F' . $i, $arIncapacidad->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('G' . $i, $centroCosto)
-                    ->setCellValue('H' . $i, $arIncapacidad->getEmpleadoRel()->getZonaRel()->getNombre())
-                    ->setCellValue('I' . $i,$arIncapacidad->getEmpleadoRel()->getSubzonaRel()->getNombre())
+                    ->setCellValue('H' . $i, $zona)
+                    ->setCellValue('I' . $i, $subzona)
                     ->setCellValue('J' . $i, $arIncapacidad->getFechaDesde()->format('Y-m-d'))
                     ->setCellValue('K' . $i, $arIncapacidad->getFechaHasta()->format('Y-m-d'))
                     ->setCellValue('L' . $i, $arIncapacidad->getCantidad())
