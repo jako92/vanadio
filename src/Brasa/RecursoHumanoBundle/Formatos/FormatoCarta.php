@@ -190,7 +190,12 @@ class FormatoCarta extends \FPDF_FPDF {
         $sustitucion14 = $arContrato->getEntidadSaludRel()->getNombre();
         $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();        
         //$sustitucion16 = $arConfiguracionNomina->getEntidadRiesgoProfesionalRel()->getNombre();
-        $sustitucion16 = '';
+        $arEntidadRiesgoProfesional = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->find();
+        $entidadRiesgoProfesional = '';
+        if ($arEntidadRiesgoProfesional){
+            $entidadRiesgoProfesional = $arEntidadRiesgoProfesional->getNombre();
+        }
+        $sustitucion16 = $entidadRiesgoProfesional;
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();         
         $sustitucion18 = self::$arUsuario;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();

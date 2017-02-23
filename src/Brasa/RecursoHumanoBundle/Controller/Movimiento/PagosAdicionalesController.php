@@ -430,7 +430,7 @@ class PagosAdicionalesController extends Controller
             ->add('departamentoEmpresaRel', EntityType::class, $arrayPropiedadesDepartamentoEmpresa)
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                                
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))    
-            ->add('BtnEliminarExtra', SubmitType::class, array('label'  => 'Eliminar extra'))                                
+            ->add('BtnEliminarExtra', SubmitType::class, array('label'  => 'Eliminar'))                                
             ->getForm();
         $form->handleRequest($request);
         $this->listarTiempoSuplementarioMasivo($arProgramacionPago);
