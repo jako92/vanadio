@@ -56,7 +56,7 @@ class ConfiguracionAporteController extends Controller
             $arConfiguracionAporte->setcodigoEntidadRiesgosProfesionales($codigoEntidadRiesgoProfesional);              
         $em->persist($arConfiguracionAporte);
         $em->flush();
-        return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_configuracion_aporte', array('codigoConfiguracionAportePk' => 1)));
+        return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridadsocial_configuracion_aporte', array('codigoConfiguracionAportePk' => 1)));
 
         }
         return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:configuracionAporte.html.twig', array(
