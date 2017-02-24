@@ -31,13 +31,7 @@ class ConfiguracionAporteController extends Controller
         $arConfiguracionAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);
 
         $formConfiguracionAporte = $this->createFormBuilder() 
-            ->add('formaPresentacion', TextType::class, array('data' => $arConfiguracionAporte->getFormaPresentacion(),'required' => true))
-            ->add('claseAportante', TextType::class, array('data' => $arConfiguracionAporte->getClaseAportante(),'required' => true))
-            ->add('naturalezaJuridica', TextType::class, array('data' => $arConfiguracionAporte->getNaturalezaJuridica(),'required' => true))
-            ->add('tipoPersona', TextType::class, array('data' => $arConfiguracionAporte->getTipoPersona(),'required' => true))
-            ->add('direccionCorrespondencia', TextType::class, array('data' => $arConfiguracionAporte->getDireccionCorrespondencia(),'required' => true))
-            ->add('codigoCiudad', TextType::class, array('data' => $arConfiguracionAporte->getCodigoCiudad(),'required' => true))
-            ->add('codigoDepartamento', TextType::class, array('data' => $arConfiguracionAporte->getCodigoDepartamento(),'required' => true))
+            ->add('formaPresentacion', TextType::class, array('data' => $arConfiguracionAporte->getFormaPresentacion(),'required' => true))    
             ->add('nombreEmpresa', TextType::class, array('data' => $arConfiguracionAporte->getNombreEmpresa(),'required' => true))
             ->add('tipoIdentificacionEmpresa', TextType::class, array('data' => $arConfiguracionAporte->getTipoIdentificacionEmpresa(),'required' => true))
             ->add('identificacionEmpresa', TextType::class, array('data' => $arConfiguracionAporte->getIdentificacionEmpresa(),'required' => true))
@@ -49,12 +43,6 @@ class ConfiguracionAporteController extends Controller
         if ($formConfiguracionAporte->isValid()) {
             $controles = $request->request->get('form');
             $formaPresentacion = $controles['formaPresentacion'];
-            $claseAportante = $controles['claseAportante'];
-            $naturalezaJuridica = $controles['naturalezaJuridica'];
-            $tipoPersona = $controles['tipoPersona'];
-            $direccionCorrespondencia = $controles['direccionCorrespondencia'];
-            $codigoCiudad = $controles['codigoCiudad'];
-            $codigoDepartamento = $controles['codigoDepartamento'];
             $nombreEmpresa = $controles['nombreEmpresa'];
             $tipoIdentificacionEmpresa = $controles['tipoIdentificacionEmpresa'];
             $identificacionEmpresa = $controles['identificacionEmpresa'];
@@ -62,12 +50,6 @@ class ConfiguracionAporteController extends Controller
             $codigoEntidadRiesgoProfesional = $controles['codigoEntidadRiesgosProfesionales'];
             
             $arConfiguracionAporte->setformaPresentacion($formaPresentacion);
-            $arConfiguracionAporte->setclaseAportante($claseAportante);
-            $arConfiguracionAporte->setnaturalezaJuridica($naturalezaJuridica);
-            $arConfiguracionAporte->settipoPersona($tipoPersona);
-            $arConfiguracionAporte->setdireccionCorrespondencia($direccionCorrespondencia);
-            $arConfiguracionAporte->setcodigoCiudad($codigoCiudad);
-            $arConfiguracionAporte->setcodigoDepartamento($codigoDepartamento);
             $arConfiguracionAporte->setnombreEmpresa($nombreEmpresa);
             $arConfiguracionAporte->settipoIdentificacionEmpresa($tipoIdentificacionEmpresa);
             $arConfiguracionAporte->setdigitoverificacionEmpresa($digitoverificacionEmpresa);
