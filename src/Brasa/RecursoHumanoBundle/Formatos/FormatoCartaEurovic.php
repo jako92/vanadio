@@ -56,7 +56,7 @@ class FormatoCartaEurovic extends \FPDF_FPDF {
             $this->Line(10, 10, 60, 10);
             $this->Line(10, 10, 10, 50);
             $this->Line(10, 50, 60, 50);
-            $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg' , 15 ,20, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
+            $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg' , 15 ,20, 40 , 30,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
             $this->SetXY(60, 10);
             $this->Cell(90, 10, utf8_decode("PROCESO GESTIÓN HUMANA"), 1, 0, 'C', 1); //cuadro mitad arriba
             $this->SetXY(60, 20);
@@ -74,8 +74,9 @@ class FormatoCartaEurovic extends \FPDF_FPDF {
             $this->SetXY(150, 45);
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
         } else {            
-            $this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
-                    
+            $this->Image('imagenes/membrete1.jpg' , 16 ,5, 180 , 35,'JPG');
+            $this->Image('imagenes/membrete2.jpg' , 2 ,60, 5 , 150,'JPG');   
+            $this->Image('imagenes/membrete3.jpg' , 32 ,250, 150 , 35,'JPG'); 
         }
         
         $this->EncabezadoDetalles();        
@@ -275,7 +276,6 @@ class FormatoCartaEurovic extends \FPDF_FPDF {
 
     public function Footer() {
         //$this->Cell(0,10,'Página '.$this->PageNo(),0,0,'C');
-        $this->Image('imagenes/logos/piedepagina.jpg' , 10 ,260, 190 , 40,'JPG'); //x,y,largo,ancho
     }  
     
     public static function MesesEspañol($mes) {
