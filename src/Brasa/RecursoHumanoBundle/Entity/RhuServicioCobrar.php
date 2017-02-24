@@ -138,7 +138,12 @@ class RhuServicioCobrar
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
      */
-    private $vrVacaciones = 0;    
+    private $vrVacaciones = 0;
+
+    /**
+     * @ORM\Column(name="vr_aporte_parafiscales", type="float")
+     */
+    private $vrAporteParafiscales = 0;
     
     /**
      * @ORM\Column(name="vr_administracion", type="float")
@@ -1183,5 +1188,29 @@ class RhuServicioCobrar
     public function getVrPrimas()
     {
         return $this->vrPrimas;
+    }
+
+    /**
+     * Set vrAporteParafiscales
+     *
+     * @param float $vrAporteParafiscales
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrAporteParafiscales($vrAporteParafiscales)
+    {
+        $this->vrAporteParafiscales = $vrAporteParafiscales;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAporteParafiscales
+     *
+     * @return float
+     */
+    public function getVrAporteParafiscales()
+    {
+        return $this->vrAporteParafiscales;
     }
 }

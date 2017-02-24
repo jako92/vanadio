@@ -216,7 +216,12 @@ class RhuCentroCosto
     /**
      * @ORM\Column(name="porcentaje_caja", type="float")
      */
-    private $porcentajeCaja = 0; 
+    private $porcentajeCaja = 0;
+    
+    /**     
+     * @ORM\Column(name="aplica_porcentaje_administracion", type="boolean")
+     */    
+    private $aplicaPorcentajeAdministracion = false;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="centrosCostosClienteRel")
@@ -2192,5 +2197,29 @@ class RhuCentroCosto
     public function getPorcentajeCaja()
     {
         return $this->porcentajeCaja;
+    }
+
+    /**
+     * Set aplicaPorcentajeAdministracion
+     *
+     * @param boolean $aplicaPorcentajeAdministracion
+     *
+     * @return RhuCentroCosto
+     */
+    public function setAplicaPorcentajeAdministracion($aplicaPorcentajeAdministracion)
+    {
+        $this->aplicaPorcentajeAdministracion = $aplicaPorcentajeAdministracion;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicaPorcentajeAdministracion
+     *
+     * @return boolean
+     */
+    public function getAplicaPorcentajeAdministracion()
+    {
+        return $this->aplicaPorcentajeAdministracion;
     }
 }
