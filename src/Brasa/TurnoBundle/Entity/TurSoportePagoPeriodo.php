@@ -50,7 +50,12 @@ class TurSoportePagoPeriodo
     /**
      * @ORM\Column(name="dias_adicionales", type="integer")
      */    
-    private $diasAdicionales = 0;    
+    private $diasAdicionales = 0;
+
+    /**
+     * @ORM\Column(name="dias_adicionales_febrero", type="integer")
+     */    
+    private $diasAdicionalesFebrero = 0;    
 
     /**
      * @ORM\Column(name="dias_periodo", type="integer")
@@ -198,6 +203,7 @@ class TurSoportePagoPeriodo
         $this->soportesPagosSoportePagoPeriodoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->soportesPagosInconsistenciasSoportePagoPeriodoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->soportesPagosDetallesSoportePagoPeriodoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->programacionesAlternasSoportePagoPeriodoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -376,6 +382,30 @@ class TurSoportePagoPeriodo
     public function getDiasAdicionales()
     {
         return $this->diasAdicionales;
+    }
+
+    /**
+     * Set diasAdicionalesFebrero
+     *
+     * @param integer $diasAdicionalesFebrero
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setDiasAdicionalesFebrero($diasAdicionalesFebrero)
+    {
+        $this->diasAdicionalesFebrero = $diasAdicionalesFebrero;
+
+        return $this;
+    }
+
+    /**
+     * Get diasAdicionalesFebrero
+     *
+     * @return integer
+     */
+    public function getDiasAdicionalesFebrero()
+    {
+        return $this->diasAdicionalesFebrero;
     }
 
     /**
@@ -619,6 +649,54 @@ class TurSoportePagoPeriodo
     }
 
     /**
+     * Set estadoBloqueoNomina
+     *
+     * @param boolean $estadoBloqueoNomina
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setEstadoBloqueoNomina($estadoBloqueoNomina)
+    {
+        $this->estadoBloqueoNomina = $estadoBloqueoNomina;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoBloqueoNomina
+     *
+     * @return boolean
+     */
+    public function getEstadoBloqueoNomina()
+    {
+        return $this->estadoBloqueoNomina;
+    }
+
+    /**
+     * Set estadoAprobadoPagoNomina
+     *
+     * @param boolean $estadoAprobadoPagoNomina
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setEstadoAprobadoPagoNomina($estadoAprobadoPagoNomina)
+    {
+        $this->estadoAprobadoPagoNomina = $estadoAprobadoPagoNomina;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAprobadoPagoNomina
+     *
+     * @return boolean
+     */
+    public function getEstadoAprobadoPagoNomina()
+    {
+        return $this->estadoAprobadoPagoNomina;
+    }
+
+    /**
      * Set diaFestivoReal
      *
      * @param integer $diaFestivoReal
@@ -691,6 +769,54 @@ class TurSoportePagoPeriodo
     }
 
     /**
+     * Set diaDescansoCompensacion
+     *
+     * @param integer $diaDescansoCompensacion
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setDiaDescansoCompensacion($diaDescansoCompensacion)
+    {
+        $this->diaDescansoCompensacion = $diaDescansoCompensacion;
+
+        return $this;
+    }
+
+    /**
+     * Get diaDescansoCompensacion
+     *
+     * @return integer
+     */
+    public function getDiaDescansoCompensacion()
+    {
+        return $this->diaDescansoCompensacion;
+    }
+
+    /**
+     * Set pagarDia31
+     *
+     * @param boolean $pagarDia31
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setPagarDia31($pagarDia31)
+    {
+        $this->pagarDia31 = $pagarDia31;
+
+        return $this;
+    }
+
+    /**
+     * Get pagarDia31
+     *
+     * @return boolean
+     */
+    public function getPagarDia31()
+    {
+        return $this->pagarDia31;
+    }
+
+    /**
      * Set inconsistencias
      *
      * @param boolean $inconsistencias
@@ -760,6 +886,30 @@ class TurSoportePagoPeriodo
     public function getMes()
     {
         return $this->mes;
+    }
+
+    /**
+     * Set ajusteDevengado
+     *
+     * @param boolean $ajusteDevengado
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setAjusteDevengado($ajusteDevengado)
+    {
+        $this->ajusteDevengado = $ajusteDevengado;
+
+        return $this;
+    }
+
+    /**
+     * Get ajusteDevengado
+     *
+     * @return boolean
+     */
+    public function getAjusteDevengado()
+    {
+        return $this->ajusteDevengado;
     }
 
     /**
@@ -944,125 +1094,5 @@ class TurSoportePagoPeriodo
     public function getProgramacionesAlternasSoportePagoPeriodoRel()
     {
         return $this->programacionesAlternasSoportePagoPeriodoRel;
-    }
-
-    /**
-     * Set ajusteDevengado
-     *
-     * @param boolean $ajusteDevengado
-     *
-     * @return TurSoportePagoPeriodo
-     */
-    public function setAjusteDevengado($ajusteDevengado)
-    {
-        $this->ajusteDevengado = $ajusteDevengado;
-
-        return $this;
-    }
-
-    /**
-     * Get ajusteDevengado
-     *
-     * @return boolean
-     */
-    public function getAjusteDevengado()
-    {
-        return $this->ajusteDevengado;
-    }
-
-    /**
-     * Set diaDescansoCompensacion
-     *
-     * @param integer $diaDescansoCompensacion
-     *
-     * @return TurSoportePagoPeriodo
-     */
-    public function setDiaDescansoCompensacion($diaDescansoCompensacion)
-    {
-        $this->diaDescansoCompensacion = $diaDescansoCompensacion;
-
-        return $this;
-    }
-
-    /**
-     * Get diaDescansoCompensacion
-     *
-     * @return integer
-     */
-    public function getDiaDescansoCompensacion()
-    {
-        return $this->diaDescansoCompensacion;
-    }
-
-    /**
-     * Set pagarDia31
-     *
-     * @param boolean $pagarDia31
-     *
-     * @return TurSoportePagoPeriodo
-     */
-    public function setPagarDia31($pagarDia31)
-    {
-        $this->pagarDia31 = $pagarDia31;
-
-        return $this;
-    }
-
-    /**
-     * Get pagarDia31
-     *
-     * @return boolean
-     */
-    public function getPagarDia31()
-    {
-        return $this->pagarDia31;
-    }
-
-    /**
-     * Set estadoBloqueoNomina
-     *
-     * @param boolean $estadoBloqueoNomina
-     *
-     * @return TurSoportePagoPeriodo
-     */
-    public function setEstadoBloqueoNomina($estadoBloqueoNomina)
-    {
-        $this->estadoBloqueoNomina = $estadoBloqueoNomina;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoBloqueoNomina
-     *
-     * @return boolean
-     */
-    public function getEstadoBloqueoNomina()
-    {
-        return $this->estadoBloqueoNomina;
-    }
-
-    /**
-     * Set estadoAprobadoPagoNomina
-     *
-     * @param boolean $estadoAprobadoPagoNomina
-     *
-     * @return TurSoportePagoPeriodo
-     */
-    public function setEstadoAprobadoPagoNomina($estadoAprobadoPagoNomina)
-    {
-        $this->estadoAprobadoPagoNomina = $estadoAprobadoPagoNomina;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAprobadoPagoNomina
-     *
-     * @return boolean
-     */
-    public function getEstadoAprobadoPagoNomina()
-    {
-        return $this->estadoAprobadoPagoNomina;
     }
 }
