@@ -74,9 +74,9 @@ class FormatoCartaEurovic extends \FPDF_FPDF {
             $this->SetXY(150, 45);
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
         } else {            
-            $this->Image('imagenes/membrete1.jpg' , 16 ,5, 180 , 35,'JPG');
-            $this->Image('imagenes/membrete2.jpg' , 2 ,60, 5 , 150,'JPG');   
-            $this->Image('imagenes/membrete3.jpg' , 32 ,250, 150 , 35,'JPG'); 
+            $this->Image('imagenes/logos/membrete1.jpg' , 16 ,5, 180 , 35,'JPG');
+            $this->Image('imagenes/logos/membrete2.jpg' , 2 ,60, 5 , 150,'JPG');   
+            $this->Image('imagenes/logos/membrete3.jpg' , 32 ,250, 150 , 35,'JPG'); 
         }
         
         $this->EncabezadoDetalles();        
