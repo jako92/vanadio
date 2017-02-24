@@ -435,6 +435,8 @@ class PeriodoController extends Controller {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigoPeriodoDetalleEmpleadoPk) {
+                        $strSql = "DELETE FROM rhu_sso_periodo_empleado_detalle WHERE codigo_periodo_empleado_fk = " . $codigoPeriodoDetalleEmpleadoPk;
+                        $em->getConnection()->executeQuery($strSql);                        
                         $arPeriodoDetalleEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
                         $arPeriodoDetalleEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->find($codigoPeriodoDetalleEmpleadoPk);
                         $em->remove($arPeriodoDetalleEmpleado);

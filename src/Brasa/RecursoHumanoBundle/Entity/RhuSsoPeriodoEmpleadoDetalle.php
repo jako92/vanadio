@@ -35,12 +35,7 @@ class RhuSsoPeriodoEmpleadoDetalle
     /**
      * @ORM\Column(name="vr_salario", type="float")
      */    
-    private $vrSalario = 0;
-
-    /**
-     * @ORM\Column(name="vr_suplementario", type="float")
-     */    
-    private $vrSuplementario = 0;    
+    private $vrSalario = 0;   
     
     /**
      * @ORM\Column(name="ibc", type="float")
@@ -48,7 +43,7 @@ class RhuSsoPeriodoEmpleadoDetalle
     private $Ibc = 0;    
     
     /**
-     * @ORM\Column(name="vrVacaciones", type="float")
+     * @ORM\Column(name="vr_vacaciones", type="float")
      */    
     private $vrVacaciones = 0;    
     
@@ -128,7 +123,6 @@ class RhuSsoPeriodoEmpleadoDetalle
      */
     protected $ssoPeriodoEmpleadoRel;    
        
-
 
 
     /**
@@ -235,30 +229,6 @@ class RhuSsoPeriodoEmpleadoDetalle
     public function getVrSalario()
     {
         return $this->vrSalario;
-    }
-
-    /**
-     * Set vrSuplementario
-     *
-     * @param float $vrSuplementario
-     *
-     * @return RhuSsoPeriodoEmpleadoDetalle
-     */
-    public function setVrSuplementario($vrSuplementario)
-    {
-        $this->vrSuplementario = $vrSuplementario;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSuplementario
-     *
-     * @return float
-     */
-    public function getVrSuplementario()
-    {
-        return $this->vrSuplementario;
     }
 
     /**

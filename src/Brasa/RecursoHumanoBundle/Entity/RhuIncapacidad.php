@@ -179,6 +179,11 @@ class RhuIncapacidad
     protected $incapacidadesIncapacidadPagoRel;
       
     /**
+     * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="incapacidadRel")
+     */
+    protected $pagosDetallesIncapacidadRel;     
+    
+    /**
      * Constructor
      */
     public function __construct()

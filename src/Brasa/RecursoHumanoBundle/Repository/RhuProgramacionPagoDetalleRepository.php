@@ -105,7 +105,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $arPagoDetalle->setNumeroHoras($intHoras);
                 $arPagoDetalle->setVrIngresoBasePrestacion($ibcVacaciones);
                 $arPagoDetalle->setVrIngresoBaseCotizacion($ibcVacaciones);
-                $arPagoDetalle->setCodigoVacacionFk($arVacacion->getCodigoVacacionPk());
+                $arPagoDetalle->setVacacionRel($arVacacion);
                 $em->persist($arPagoDetalle);                                                                                                                                                                                                                                     
             }              
             
@@ -181,7 +181,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     $arPagoDetalle->setVrIngresoBasePrestacion($douIngresoBasePrestacionIncapacidad);                                                                            
                     $arPagoDetalle->setVrIngresoBaseCotizacion($douIngresoBaseCotizacionIncapacidad); 
                     $arPagoDetalle->setVrIngresoBaseCotizacionIncapacidad($douIngresoBaseCotizacionIncapacidadControl);
-                    $arPagoDetalle->setCodigoIncapacidadFk($arIncapacidad->getCodigoIncapacidadPk());
+                    $arPagoDetalle->setIncapacidadRel($arIncapacidad);
                     $em->persist($arPagoDetalle);                                                                                                                                                                                                                      
                 }                
             }
@@ -238,7 +238,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $arPagoDetalle->setNumeroHoras($intHorasProcesarLicencia);
                 $arPagoDetalle->setNumeroDias($intDias);
                 $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);  
-                $arPagoDetalle->setCodigoLicenciaFk($arLicencia->getCodigoLicenciaPk());
+                $arPagoDetalle->setLicenciaRel($arLicencia);
                 $em->persist($arPagoDetalle);
                 if($arLicencia->getAfectaTransporte() == 1){
                     $intDiasLicenciaProcesar = intval($intHorasProcesarLicencia / $intFactorDia);

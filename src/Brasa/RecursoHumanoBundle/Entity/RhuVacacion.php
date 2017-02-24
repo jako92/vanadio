@@ -225,7 +225,10 @@ class RhuVacacion
      */
     protected $pagosBancosDetallesVacacionRel;    
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="vacacionRel")
+     */
+    protected $pagosDetallesVacacionRel; 
 
     /**
      * Constructor
@@ -1248,5 +1251,39 @@ class RhuVacacion
     public function getFechaInicioLabor()
     {
         return $this->fechaInicioLabor;
+    }
+
+    /**
+     * Add pagosDetallesVacacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesVacacionRel
+     *
+     * @return RhuVacacion
+     */
+    public function addPagosDetallesVacacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesVacacionRel)
+    {
+        $this->pagosDetallesVacacionRel[] = $pagosDetallesVacacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosDetallesVacacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesVacacionRel
+     */
+    public function removePagosDetallesVacacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesVacacionRel)
+    {
+        $this->pagosDetallesVacacionRel->removeElement($pagosDetallesVacacionRel);
+    }
+
+    /**
+     * Get pagosDetallesVacacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosDetallesVacacionRel()
+    {
+        return $this->pagosDetallesVacacionRel;
     }
 }

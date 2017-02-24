@@ -101,7 +101,10 @@ class RhuLicencia
      */
     protected $contratoRel;    
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="licenciaRel")
+     */
+    protected $pagosDetallesLicenciaRel; 
 
     /**
      * Get codigoLicenciaPk
@@ -495,5 +498,46 @@ class RhuLicencia
     public function getContratoRel()
     {
         return $this->contratoRel;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pagosDetallesLicenciaRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add pagosDetallesLicenciaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesLicenciaRel
+     *
+     * @return RhuLicencia
+     */
+    public function addPagosDetallesLicenciaRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesLicenciaRel)
+    {
+        $this->pagosDetallesLicenciaRel[] = $pagosDetallesLicenciaRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosDetallesLicenciaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesLicenciaRel
+     */
+    public function removePagosDetallesLicenciaRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesLicenciaRel)
+    {
+        $this->pagosDetallesLicenciaRel->removeElement($pagosDetallesLicenciaRel);
+    }
+
+    /**
+     * Get pagosDetallesLicenciaRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosDetallesLicenciaRel()
+    {
+        return $this->pagosDetallesLicenciaRel;
     }
 }

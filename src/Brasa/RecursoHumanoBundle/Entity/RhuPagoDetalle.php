@@ -187,6 +187,24 @@ class RhuPagoDetalle
      */
     protected $creditoRel;
     
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuLicencia", inversedBy="pagosDetallesLicenciaRel")
+     * @ORM\JoinColumn(name="codigo_licencia_fk", referencedColumnName="codigo_licencia_pk")
+     */
+    protected $licenciaRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuIncapacidad", inversedBy="pagosDetallesIncapacidadRel")
+     * @ORM\JoinColumn(name="codigo_incapacidad_fk", referencedColumnName="codigo_incapacidad_pk")
+     */
+    protected $incapacidadRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuVacacion", inversedBy="pagosDetallesVacacionRel")
+     * @ORM\JoinColumn(name="codigo_vacacion_fk", referencedColumnName="codigo_vacacion_pk")
+     */
+    protected $vacacionRel;    
+
 
 
 
@@ -395,7 +413,7 @@ class RhuPagoDetalle
     /**
      * Set numeroDias
      *
-     * @param float $numeroDias
+     * @param integer $numeroDias
      *
      * @return RhuPagoDetalle
      */
@@ -409,7 +427,7 @@ class RhuPagoDetalle
     /**
      * Get numeroDias
      *
-     * @return float
+     * @return integer
      */
     public function getNumeroDias()
     {
@@ -561,6 +579,102 @@ class RhuPagoDetalle
     }
 
     /**
+     * Set vrIngresoBaseCotizacionSalario
+     *
+     * @param float $vrIngresoBaseCotizacionSalario
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrIngresoBaseCotizacionSalario($vrIngresoBaseCotizacionSalario)
+    {
+        $this->vrIngresoBaseCotizacionSalario = $vrIngresoBaseCotizacionSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIngresoBaseCotizacionSalario
+     *
+     * @return float
+     */
+    public function getVrIngresoBaseCotizacionSalario()
+    {
+        return $this->vrIngresoBaseCotizacionSalario;
+    }
+
+    /**
+     * Set vrIngresoBaseCotizacionAdicional
+     *
+     * @param float $vrIngresoBaseCotizacionAdicional
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrIngresoBaseCotizacionAdicional($vrIngresoBaseCotizacionAdicional)
+    {
+        $this->vrIngresoBaseCotizacionAdicional = $vrIngresoBaseCotizacionAdicional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIngresoBaseCotizacionAdicional
+     *
+     * @return float
+     */
+    public function getVrIngresoBaseCotizacionAdicional()
+    {
+        return $this->vrIngresoBaseCotizacionAdicional;
+    }
+
+    /**
+     * Set vrIngresoBaseCotizacionIncapacidad
+     *
+     * @param float $vrIngresoBaseCotizacionIncapacidad
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrIngresoBaseCotizacionIncapacidad($vrIngresoBaseCotizacionIncapacidad)
+    {
+        $this->vrIngresoBaseCotizacionIncapacidad = $vrIngresoBaseCotizacionIncapacidad;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIngresoBaseCotizacionIncapacidad
+     *
+     * @return float
+     */
+    public function getVrIngresoBaseCotizacionIncapacidad()
+    {
+        return $this->vrIngresoBaseCotizacionIncapacidad;
+    }
+
+    /**
+     * Set vrExtra
+     *
+     * @param float $vrExtra
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrExtra($vrExtra)
+    {
+        $this->vrExtra = $vrExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get vrExtra
+     *
+     * @return float
+     */
+    public function getVrExtra()
+    {
+        return $this->vrExtra;
+    }
+
+    /**
      * Set codigoProgramacionPagoDetalleFk
      *
      * @param integer $codigoProgramacionPagoDetalleFk
@@ -582,102 +696,6 @@ class RhuPagoDetalle
     public function getCodigoProgramacionPagoDetalleFk()
     {
         return $this->codigoProgramacionPagoDetalleFk;
-    }
-
-    /**
-     * Set pagoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel = null)
-    {
-        $this->pagoRel = $pagoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get pagoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPago
-     */
-    public function getPagoRel()
-    {
-        return $this->pagoRel;
-    }
-
-    /**
-     * Set pagoConceptoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setPagoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel = null)
-    {
-        $this->pagoConceptoRel = $pagoConceptoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get pagoConceptoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto
-     */
-    public function getPagoConceptoRel()
-    {
-        return $this->pagoConceptoRel;
-    }
-
-    /**
-     * Set programacionPagoDetalleRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionPagoDetalleRel
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setProgramacionPagoDetalleRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionPagoDetalleRel = null)
-    {
-        $this->programacionPagoDetalleRel = $programacionPagoDetalleRel;
-
-        return $this;
-    }
-
-    /**
-     * Get programacionPagoDetalleRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle
-     */
-    public function getProgramacionPagoDetalleRel()
-    {
-        return $this->programacionPagoDetalleRel;
-    }
-
-    /**
-     * Set creditoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCredito $creditoRel
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setCreditoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCredito $creditoRel = null)
-    {
-        $this->creditoRel = $creditoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get creditoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCredito
-     */
-    public function getCreditoRel()
-    {
-        return $this->creditoRel;
     }
 
     /**
@@ -774,102 +792,6 @@ class RhuPagoDetalle
     public function getCotizacion()
     {
         return $this->cotizacion;
-    }
-
-    /**
-     * Set vrIngresoBaseCotizacionAdicional
-     *
-     * @param float $vrIngresoBaseCotizacionAdicional
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setVrIngresoBaseCotizacionAdicional($vrIngresoBaseCotizacionAdicional)
-    {
-        $this->vrIngresoBaseCotizacionAdicional = $vrIngresoBaseCotizacionAdicional;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIngresoBaseCotizacionAdicional
-     *
-     * @return float
-     */
-    public function getVrIngresoBaseCotizacionAdicional()
-    {
-        return $this->vrIngresoBaseCotizacionAdicional;
-    }
-
-    /**
-     * Set vrIngresoBaseCotizacionSalario
-     *
-     * @param float $vrIngresoBaseCotizacionSalario
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setVrIngresoBaseCotizacionSalario($vrIngresoBaseCotizacionSalario)
-    {
-        $this->vrIngresoBaseCotizacionSalario = $vrIngresoBaseCotizacionSalario;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIngresoBaseCotizacionSalario
-     *
-     * @return float
-     */
-    public function getVrIngresoBaseCotizacionSalario()
-    {
-        return $this->vrIngresoBaseCotizacionSalario;
-    }
-
-    /**
-     * Set vrExtra
-     *
-     * @param float $vrExtra
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setVrExtra($vrExtra)
-    {
-        $this->vrExtra = $vrExtra;
-
-        return $this;
-    }
-
-    /**
-     * Get vrExtra
-     *
-     * @return float
-     */
-    public function getVrExtra()
-    {
-        return $this->vrExtra;
-    }
-
-    /**
-     * Set vrIngresoBaseCotizacionIncapacidad
-     *
-     * @param float $vrIngresoBaseCotizacionIncapacidad
-     *
-     * @return RhuPagoDetalle
-     */
-    public function setVrIngresoBaseCotizacionIncapacidad($vrIngresoBaseCotizacionIncapacidad)
-    {
-        $this->vrIngresoBaseCotizacionIncapacidad = $vrIngresoBaseCotizacionIncapacidad;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIngresoBaseCotizacionIncapacidad
-     *
-     * @return float
-     */
-    public function getVrIngresoBaseCotizacionIncapacidad()
-    {
-        return $this->vrIngresoBaseCotizacionIncapacidad;
     }
 
     /**
@@ -990,5 +912,173 @@ class RhuPagoDetalle
     public function getCodigoVacacionFk()
     {
         return $this->codigoVacacionFk;
+    }
+
+    /**
+     * Set pagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel = null)
+    {
+        $this->pagoRel = $pagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPago
+     */
+    public function getPagoRel()
+    {
+        return $this->pagoRel;
+    }
+
+    /**
+     * Set pagoConceptoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setPagoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel = null)
+    {
+        $this->pagoConceptoRel = $pagoConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoConceptoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto
+     */
+    public function getPagoConceptoRel()
+    {
+        return $this->pagoConceptoRel;
+    }
+
+    /**
+     * Set programacionPagoDetalleRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionPagoDetalleRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setProgramacionPagoDetalleRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionPagoDetalleRel = null)
+    {
+        $this->programacionPagoDetalleRel = $programacionPagoDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Get programacionPagoDetalleRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle
+     */
+    public function getProgramacionPagoDetalleRel()
+    {
+        return $this->programacionPagoDetalleRel;
+    }
+
+    /**
+     * Set creditoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCredito $creditoRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setCreditoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCredito $creditoRel = null)
+    {
+        $this->creditoRel = $creditoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get creditoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCredito
+     */
+    public function getCreditoRel()
+    {
+        return $this->creditoRel;
+    }
+
+    /**
+     * Set licenciaRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciaRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setLicenciaRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciaRel = null)
+    {
+        $this->licenciaRel = $licenciaRel;
+
+        return $this;
+    }
+
+    /**
+     * Get licenciaRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuLicencia
+     */
+    public function getLicenciaRel()
+    {
+        return $this->licenciaRel;
+    }
+
+    /**
+     * Set incapacidadRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setIncapacidadRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadRel = null)
+    {
+        $this->incapacidadRel = $incapacidadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad
+     */
+    public function getIncapacidadRel()
+    {
+        return $this->incapacidadRel;
+    }
+
+    /**
+     * Set vacacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionRel
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVacacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionRel = null)
+    {
+        $this->vacacionRel = $vacacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get vacacionRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuVacacion
+     */
+    public function getVacacionRel()
+    {
+        return $this->vacacionRel;
     }
 }
