@@ -52,6 +52,7 @@ class ConfiguracionAporteController extends Controller
             $arConfiguracionAporte->setformaPresentacion($formaPresentacion);
             $arConfiguracionAporte->setnombreEmpresa($nombreEmpresa);
             $arConfiguracionAporte->settipoIdentificacionEmpresa($tipoIdentificacionEmpresa);
+            $arConfiguracionAporte->setidentificacionEmpresa($identificacionEmpresa);
             $arConfiguracionAporte->setdigitoverificacionEmpresa($digitoverificacionEmpresa);
             $arConfiguracionAporte->setcodigoEntidadRiesgosProfesionales($codigoEntidadRiesgoProfesional);              
         $em->persist($arConfiguracionAporte);
