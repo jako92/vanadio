@@ -329,8 +329,8 @@ class RhuVacacionRepository extends EntityRepository {
         $objQuery = $em->createQuery($dql);  
         $arVacaciones = $objQuery->getResult();         
         return $arVacaciones;
-    }       
-
+    }           
+    
     public function pendientesContabilizarDql() {        
         $dql   = "SELECT v FROM BrasaRecursoHumanoBundle:RhuVacacion v WHERE v.estadoContabilizado = 0 AND v.estadoPagoGenerado = 1 AND v.vrVacacion > 0 ";       
         $dql .= " ORDER BY v.codigoVacacionPk DESC";

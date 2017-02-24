@@ -450,7 +450,7 @@ class PeriodoController extends Controller {
             if ($form->get('BtnActualizarEmpleadoAporte')->isClicked()) {
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
-                $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->actualizar($codigoPeriodoDetalle);
+                $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->actualizar2($codigoPeriodoDetalle);
             }
             if ($form->get('BtnActualizarEmpleados')->isClicked()) {
                 $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();

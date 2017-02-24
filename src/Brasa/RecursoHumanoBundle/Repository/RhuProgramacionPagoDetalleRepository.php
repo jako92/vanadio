@@ -61,7 +61,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $salud = 0;
             $pension = 0;
             //Procesar vacaciones
-            $intDiasVacaciones = $arProgramacionPagoDetalle->getDiasVacaciones();            
+            /*$intDiasVacaciones = $arProgramacionPagoDetalle->getDiasVacaciones();            
             $ibcVacaciones = $arProgramacionPagoDetalle->getIbcVacaciones();
             $ibcVacaciones = round($ibcVacaciones);
             if($intDiasVacaciones > 0) {                                
@@ -75,8 +75,40 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $arPagoDetalle->setVrIngresoBasePrestacion($ibcVacaciones);
                 $arPagoDetalle->setVrIngresoBaseCotizacion($ibcVacaciones);
                 $em->persist($arPagoDetalle);                                         
-            }                        
+            }*/                        
 
+            //Procesar vacaciones
+            $arVacaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
+            $arVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->periodo($arProgramacionPagoDetalle->getFechaDesdePago(), $arProgramacionPagoDetalle->getFechaHasta(), $arProgramacionPagoDetalle->getCodigoEmpleadoFk());                                                                        
+            foreach ($arVacaciones as $arVacacion) {   
+                $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($arConfiguracion->getCodigoVacacion());                
+                $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                $arPagoDetalle->setPagoRel($arPago);
+                $arPagoDetalle->setPagoConceptoRel($arPagoConcepto);
+                $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
+                
+                $fechaDesde = $arProgramacionPagoDetalle->getFechaDesdePago();
+                $fechaHasta = $arProgramacionPagoDetalle->getFechaHasta();
+                if($arVacacion->getFechaDesdeDisfrute() >  $fechaDesde) {
+                    $fechaDesde = $arVacacion->getFechaDesdeDisfrute();
+                }             
+                if($arVacacion->getFechaHastaDisfrute() < $fechaHasta) {
+                    $fechaHasta = $arVacacion->getFechaHastaDisfrute();                
+                }
+                $intDias = $fechaDesde->diff($fechaHasta);
+                $intDias = $intDias->format('%a');   
+                $intDias += 1;
+                $intHoras = $intDias * $intFactorDia; 
+                $ibcVacaciones = $intDias * $arVacacion->getVrIbcPromedio();
+                $arPagoDetalle->setOperacion($arPagoConcepto->getOperacion());                
+                $arPagoDetalle->setNumeroDias($intDias);
+                $arPagoDetalle->setNumeroHoras($intHoras);
+                $arPagoDetalle->setVrIngresoBasePrestacion($ibcVacaciones);
+                $arPagoDetalle->setVrIngresoBaseCotizacion($ibcVacaciones);
+                $arPagoDetalle->setCodigoVacacionFk($arVacacion->getCodigoVacacionPk());
+                $em->persist($arPagoDetalle);                                                                                                                                                                                                                                     
+            }              
+            
             //Procesar Incapacidades
             if($arProgramacionPagoDetalle->getEmpleadoRel()->getPagadoEntidadSalud() == 0) {
                 $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
@@ -149,6 +181,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     $arPagoDetalle->setVrIngresoBasePrestacion($douIngresoBasePrestacionIncapacidad);                                                                            
                     $arPagoDetalle->setVrIngresoBaseCotizacion($douIngresoBaseCotizacionIncapacidad); 
                     $arPagoDetalle->setVrIngresoBaseCotizacionIncapacidad($douIngresoBaseCotizacionIncapacidadControl);
+                    $arPagoDetalle->setCodigoIncapacidadFk($arIncapacidad->getCodigoIncapacidadPk());
                     $em->persist($arPagoDetalle);                                                                                                                                                                                                                      
                 }                
             }
@@ -204,7 +237,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $arPagoDetalle->setVrPagoOperado($douPagoDetalle * $arLicencia->getLicenciaTipoRel()->getPagoConceptoRel()->getOperacion());                               
                 $arPagoDetalle->setNumeroHoras($intHorasProcesarLicencia);
                 $arPagoDetalle->setNumeroDias($intDias);
-                $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);                                    
+                $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);  
+                $arPagoDetalle->setCodigoLicenciaFk($arLicencia->getCodigoLicenciaPk());
                 $em->persist($arPagoDetalle);
                 if($arLicencia->getAfectaTransporte() == 1){
                     $intDiasLicenciaProcesar = intval($intHorasProcesarLicencia / $intFactorDia);

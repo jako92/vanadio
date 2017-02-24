@@ -172,7 +172,10 @@ class RhuSsoPeriodoEmpleado
      */
     protected $contratoRel;     
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="RhuSsoPeriodoEmpleadoDetalle", mappedBy="ssoPeriodoEmpleadoRel")
+     */
+    protected $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel; 
 
 
     /**
@@ -903,5 +906,46 @@ class RhuSsoPeriodoEmpleado
     public function getHoras()
     {
         return $this->horas;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel
+     *
+     * @return RhuSsoPeriodoEmpleado
+     */
+    public function addSsoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel)
+    {
+        $this->ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel[] = $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel
+     */
+    public function removeSsoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle $ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel)
+    {
+        $this->ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel->removeElement($ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel);
+    }
+
+    /**
+     * Get ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSsoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel()
+    {
+        return $this->ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel;
     }
 }

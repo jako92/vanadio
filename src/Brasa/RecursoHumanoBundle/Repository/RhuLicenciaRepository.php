@@ -114,6 +114,51 @@ class RhuLicenciaRepository extends EntityRepository {
     }                
     
     /*
+     * Licencias en 1 mes
+     */    
+    public function licenciaSeguridadSocial($fechaDesde, $fechaHasta, $codigoEmpleado, $tipo) {
+        $em = $this->getEntityManager();
+        $strFechaDesde = $fechaDesde->format('Y-m-d');
+        $strFechaHasta = $fechaHasta->format('Y-m-d');
+        $dql = "SELECT licencia FROM BrasaRecursoHumanoBundle:RhuLicencia licencia JOIN licencia.licenciaTipoRel licenciaTipo "
+                . "WHERE (((licencia.fechaDesde BETWEEN '$strFechaDesde' AND '$strFechaHasta') OR (licencia.fechaHasta BETWEEN '$strFechaDesde' AND '$strFechaHasta')) "
+                . "OR (licencia.fechaDesde >= '$strFechaDesde' AND licencia.fechaDesde <= '$strFechaHasta') "
+                . "OR (licencia.fechaHasta >= '$strFechaHasta' AND licencia.fechaDesde <= '$strFechaDesde')) "
+                . "AND licencia.codigoEmpleadoFk = '" . $codigoEmpleado . "' ";
+
+        if($tipo == 1) {
+            $dql = $dql . "AND licenciaTipo.maternidad = 1";       
+        } else {
+            $dql = $dql . "AND licenciaTipo.maternidad = 0";       
+        }
+        $objQuery = $em->createQuery($dql);  
+        $arLicencias = $objQuery->getResult();         
+        $intDiasLicencia = 0;
+        foreach ($arLicencias as $arLicencia) {
+            $intDiaInicio = 1;            
+            $intDiaFin = 30;
+            if($arLicencia->getFechaDesde() <  $fechaDesde) {
+                $intDiaInicio = $fechaDesde->format('j');                
+            } else {
+                $intDiaInicio = $arLicencia->getFechaDesde()->format('j');
+            }
+            if($arLicencia->getFechaHasta() > $fechaHasta) {
+                $intDiaFin = $fechaHasta->format('j');               
+            } else {
+                $intDiaFin = $arLicencia->getFechaHasta()->format('j');                
+            }            
+            if($intDiaFin == 31) {
+                $intDiaFin = 30;
+            }            
+            $intDiasLicencia += (($intDiaFin - $intDiaInicio)+1);
+        }
+        if($intDiasLicencia > 30) {
+            $intDiasLicencia = 30;
+        }
+        return $intDiasLicencia;
+    }     
+    
+    /*
      * Este calculo de dias de incapacidad es solo para periodos de nomina por lo tanto
      * aplica solo en 1 mes
      */    

@@ -148,6 +148,21 @@ class RhuPagoDetalle
     private $pension = false;    
     
     /**
+     * @ORM\Column(name="codigo_licencia_fk", type="integer", nullable=true)
+     */    
+    private $codigoLicenciaFk;    
+    
+    /**
+     * @ORM\Column(name="codigo_incapacidad_fk", type="integer", nullable=true)
+     */    
+    private $codigoIncapacidadFk;    
+    
+    /**
+     * @ORM\Column(name="codigo_vacacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoVacacionFk;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuPago", inversedBy="pagosDetallesPagoRel")
      * @ORM\JoinColumn(name="codigo_pago_fk", referencedColumnName="codigo_pago_pk")
      */
@@ -903,5 +918,77 @@ class RhuPagoDetalle
     public function getPension()
     {
         return $this->pension;
+    }
+
+    /**
+     * Set codigoLicenciaFk
+     *
+     * @param integer $codigoLicenciaFk
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setCodigoLicenciaFk($codigoLicenciaFk)
+    {
+        $this->codigoLicenciaFk = $codigoLicenciaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoLicenciaFk
+     *
+     * @return integer
+     */
+    public function getCodigoLicenciaFk()
+    {
+        return $this->codigoLicenciaFk;
+    }
+
+    /**
+     * Set codigoIncapacidadFk
+     *
+     * @param integer $codigoIncapacidadFk
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setCodigoIncapacidadFk($codigoIncapacidadFk)
+    {
+        $this->codigoIncapacidadFk = $codigoIncapacidadFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoIncapacidadFk
+     *
+     * @return integer
+     */
+    public function getCodigoIncapacidadFk()
+    {
+        return $this->codigoIncapacidadFk;
+    }
+
+    /**
+     * Set codigoVacacionFk
+     *
+     * @param integer $codigoVacacionFk
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setCodigoVacacionFk($codigoVacacionFk)
+    {
+        $this->codigoVacacionFk = $codigoVacacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoVacacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoVacacionFk()
+    {
+        return $this->codigoVacacionFk;
     }
 }
