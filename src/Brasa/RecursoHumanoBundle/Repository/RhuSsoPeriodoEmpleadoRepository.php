@@ -254,6 +254,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $strNovedadRetiro = "X";                    
             }
             $floSalario = $arContrato->getVrSalario();
+            $diaSalario = $floSalario / 30;
             if($arContrato->getSalarioIntegral() == 1) {
                 $arPeriodoEmpleadoActualizar->setSalarioIntegral('X');
             }
@@ -266,19 +267,29 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $diasLicenciaMaternidad = 0;
             $arrLicencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->licencia($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                    
             foreach ($arrLicencias as $arrLicencia) {
-                $arLicencia = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();
+                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                $arLicencia = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();                
                 $arLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->find($arrLicencia['codigoLicenciaFk']);
                 if($arLicencia->getLicenciaTipoRel()->getMaternidad() == 1) {
                     $diasLicenciaMaternidad += $arrLicencia['dias'];
+                    $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
                 } else {
                     $diasLicencia += $arrLicencia['dias'];
+                    $arPeriodoEmpleadoDetalle->setLicencia(1);
                 }
-                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
                 $arPeriodoEmpleadoDetalle->setDias($arrLicencia['dias']);
                 $arPeriodoEmpleadoDetalle->setHoras($arrLicencia['horas']);
                 $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
-                $arPeriodoEmpleadoDetalle->setIbc($arrLicencia['ibc']);
+                $ibcLicencia = $diaSalario * $arrLicencia['dias'];
+                $arPeriodoEmpleadoDetalle->setIbc(round($ibcLicencia));
+                $arPeriodoEmpleadoDetalle->setTarifaPension(12);
+                $arPeriodoEmpleadoDetalle->setTarifaSalud(0);
+                $arPeriodoEmpleadoDetalle->setTarifaRiesgos(0);
+                $arPeriodoEmpleadoDetalle->setTarifaCaja(0);
+                $arPeriodoEmpleadoDetalle->setFechaDesde($arLicencia->getFechaDesde());
+                $arPeriodoEmpleadoDetalle->setFechaHasta($arLicencia->getFechaHasta());
                 $em->persist($arPeriodoEmpleadoDetalle);
             }
             
@@ -287,23 +298,38 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $diasIncapacidadLaboral = 0;
             $arrIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->incapacidad($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                    
             foreach ($arrIncapacidades as $arrIncapacidad) {
+                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
                 $arIncapacidad = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad;                
                 $arIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($arrIncapacidad['codigoIncapacidadFk']);                
                 if($arIncapacidad->getIncapacidadTipoRel()->getTipo() == 1) {                    
                     $diasIncapacidad += $arrIncapacidad['dias'];
+                    $arPeriodoEmpleadoDetalle->setIncapacidadGeneral(1);
                 } else {
                     $diasIncapacidadLaboral += $arrIncapacidad['dias'];
+                    $arPeriodoEmpleadoDetalle->setIncapacidadLaboral(1);
                 }
-                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
                 $arPeriodoEmpleadoDetalle->setDias($arrIncapacidad['dias']);
                 $arPeriodoEmpleadoDetalle->setHoras($arrIncapacidad['horas']);
                 $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
-                $arPeriodoEmpleadoDetalle->setIbc($arrIncapacidad['ibc']);
+                $ibcIncapacidad = round($arrIncapacidad['ibc']);
+                $arPeriodoEmpleadoDetalle->setIbc($ibcIncapacidad);   
+                $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
+                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
+                $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
+                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                 
+                $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());                
+                $arPeriodoEmpleadoDetalle->setFechaDesde($arIncapacidad->getFechaDesde());
+                $arPeriodoEmpleadoDetalle->setFechaHasta($arIncapacidad->getFechaHasta());  
+                $diaSalarioLicencia = $ibcIncapacidad / $arrIncapacidad['dias'];
+                if($diaSalarioLicencia != $diaSalario) {
+                    $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
+                }
                 $em->persist($arPeriodoEmpleadoDetalle);
             }   
             
-            //Incapacidades
+            //Vacaciones
             $diasVacaciones = 0;  
             $ibcVacaciones = 0;
             $arrVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->vacacion($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                    
@@ -317,7 +343,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $arPeriodoEmpleadoDetalle->setDias($arrVacacion['dias']);
                 $arPeriodoEmpleadoDetalle->setHoras($arrVacacion['horas']);
                 $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
-                $arPeriodoEmpleadoDetalle->setIbc($arrVacacion['ibc']);
+                $arPeriodoEmpleadoDetalle->setIbc(round($arrVacacion['ibc']));
+                $arPeriodoEmpleadoDetalle->setVacaciones(1);
                 $em->persist($arPeriodoEmpleadoDetalle);
             }            
             
@@ -327,7 +354,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $ibc = round($ibc);
             $ibcMinimo = ($salarioMinimo / 30) * $diasOrdinarios;            
             if($ibc < $ibcMinimo) {
-                $ibc = $ibcMinimo;
+                $ibc = round($ibcMinimo);
             }            
             $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
             $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
@@ -336,6 +363,16 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
             $arPeriodoEmpleadoDetalle->setIbc($ibc);
             $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
+            $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
+            $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
+            $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
+            $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);            
+            $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
+            $arPeriodoEmpleadoDetalle->setTarifaCaja(4);
+            $diaSalarioOrdinario = $ibc / $diasOrdinarios;
+            if($diaSalarioOrdinario != $diaSalario) {
+                $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
+            }            
             $em->persist($arPeriodoEmpleadoDetalle);            
             
             //$arrLicencias
@@ -364,8 +401,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
 //            }            
 //            $arPeriodoEmpleadoActualizar->setDiasVacaciones($arrVacaciones['dias']);            
 //            $arPeriodoEmpleadoActualizar->setVrVacaciones($arrVacaciones['aporte']);
-//            $arPeriodoEmpleadoActualizar->setTarifaPension($arContrato->getTipoPensionRel()->getPorcentajeEmpleador());
-//            $arPeriodoEmpleadoActualizar->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
+//            $arPeriodoEmpleadoActualizar->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());                        
             $arPeriodoEmpleadoActualizar->setCodigoEntidadPensionPertenece($arContrato->getEntidadPensionRel()->getCodigoInterface());
             $arPeriodoEmpleadoActualizar->setCodigoEntidadSaludPertenece($arContrato->getEntidadSaludRel()->getCodigoInterface());
             $arPeriodoEmpleadoActualizar->setCodigoEntidadCajaPertenece($arContrato->getEntidadCajaRel()->getCodigoInterface());

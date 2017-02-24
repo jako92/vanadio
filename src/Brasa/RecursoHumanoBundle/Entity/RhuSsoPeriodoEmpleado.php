@@ -123,9 +123,19 @@ class RhuSsoPeriodoEmpleado
     private $tarifaPension = 0;    
     
     /**
+     * @ORM\Column(name="tarifa_salud", type="float")
+     */    
+    private $tarifaSalud = 0;    
+    
+    /**
      * @ORM\Column(name="tarifa_riesgos", type="float")
      */    
     private $tarifaRiesgos = 0;    
+    
+    /**
+     * @ORM\Column(name="tarifa_caja", type="float")
+     */    
+    private $tarifaCaja = 0;     
     
     /**
      * @ORM\Column(name="codigo_entidad_pension_pertenece", type="string", length=6, nullable=true)
@@ -947,5 +957,53 @@ class RhuSsoPeriodoEmpleado
     public function getSsoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel()
     {
         return $this->ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel;
+    }
+
+    /**
+     * Set tarifaSalud
+     *
+     * @param float $tarifaSalud
+     *
+     * @return RhuSsoPeriodoEmpleado
+     */
+    public function setTarifaSalud($tarifaSalud)
+    {
+        $this->tarifaSalud = $tarifaSalud;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifaSalud
+     *
+     * @return float
+     */
+    public function getTarifaSalud()
+    {
+        return $this->tarifaSalud;
+    }
+
+    /**
+     * Set tarifaCaja
+     *
+     * @param float $tarifaCaja
+     *
+     * @return RhuSsoPeriodoEmpleado
+     */
+    public function setTarifaCaja($tarifaCaja)
+    {
+        $this->tarifaCaja = $tarifaCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifaCaja
+     *
+     * @return float
+     */
+    public function getTarifaCaja()
+    {
+        return $this->tarifaCaja;
     }
 }

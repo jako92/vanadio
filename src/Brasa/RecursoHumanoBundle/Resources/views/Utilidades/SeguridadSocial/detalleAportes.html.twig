@@ -52,6 +52,7 @@
             <th>INT</th>
             <th style="text-align: right">SALARIO</th>
             <th style="text-align: right">IBC</th>
+            <th>H</th>
             <th>S.I</th>
             <th>D.P</th>
             <th>D.S</th>
@@ -96,6 +97,7 @@
                 <td>{{ arSsoAportes.salarioIntegral }}</td>
                 <td style="text-align: right">{{ arSsoAportes.salarioBasico | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arSsoAportes.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
+                <td>{{ arSsoAportes.numeroHorasLaboradas }}</td>
                 <td>{% if arSsoAportes.salarioIntegral == 'X' %}{{ arSsoAportes.salarioIntegral }} {% endif %}</td>
                 <td>{{ arSsoAportes.diasCotizadosPension  }}</td>
                 <td>{{ arSsoAportes.diasCotizadosSalud  }}</td>

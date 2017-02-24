@@ -41,11 +41,9 @@
             <th>GRUPO PAGO</th>
             <th>CONTRATO</th>
             <th>DÍAS</th>
-            <th>HORAS</th>
             <th>SALARIO</th>                
             <th>IBC</th>
             <th>VR_VACACION</th>
-            <th>VST</th>
             <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
         {% for arPeriodoEmpleados in arPeriodoEmpleados %}
@@ -56,11 +54,9 @@
                 <td>{{ arPeriodoEmpleados.empleadoRel.centroCostoRel.nombre |default('') }}</td>
                 <td>{{ arPeriodoEmpleados.codigoContratoFk  }}</td>
                 <td style="text-align: right">{{ arPeriodoEmpleados.dias | number_format(0, '.', ',') }}</td>    
-                <td style="text-align: right">{{ arPeriodoEmpleados.horas | number_format(0, '.', ',') }}</td>    
                 <td style="text-align: right">{{ arPeriodoEmpleados.vrSalario | number_format(0, '.', ',') }}</td>                
                 <td style="text-align: right">{{ arPeriodoEmpleados.ibc | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arPeriodoEmpleados.vrVacaciones | number_format(0, '.', ',') }}</td>
-                <td>{{ arPeriodoEmpleados.variacionTransitoriaSalario  }}</td>                
+                <td style="text-align: right">{{ arPeriodoEmpleados.vrVacaciones | number_format(0, '.', ',') }}</td>              
                 <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPeriodoEmpleados.codigoPeriodoEmpleadoPk }}" /></td>
             </tr>
         {% endfor %}                        

@@ -60,12 +60,7 @@ class RhuSsoPeriodoEmpleadoDetalle
     /**
      * @ORM\Column(name="salario_integral", type="string", length=1)
      */
-    private $salarioIntegral = ' ';    
-    
-    /**
-     * @ORM\Column(name="variacion_transitoria_salario", type="string", length=1)
-     */
-    private $variacionTransitoriaSalario = ' ';    
+    private $salarioIntegral = ' ';           
     
     /**
      * @ORM\Column(name="dias_licencia", type="integer")
@@ -98,9 +93,19 @@ class RhuSsoPeriodoEmpleadoDetalle
     private $tarifaPension = 0;    
     
     /**
+     * @ORM\Column(name="tarifa_salud", type="float")
+     */    
+    private $tarifaSalud = 0;     
+    
+    /**
      * @ORM\Column(name="tarifa_riesgos", type="float")
      */    
     private $tarifaRiesgos = 0;    
+    
+    /**
+     * @ORM\Column(name="tarifa_caja", type="float")
+     */    
+    private $tarifaCaja = 0;    
     
     /**
      * @ORM\Column(name="codigo_entidad_pension_pertenece", type="string", length=6, nullable=true)
@@ -116,6 +121,46 @@ class RhuSsoPeriodoEmpleadoDetalle
      * @ORM\Column(name="codigo_entidad_caja_pertenece", type="string", length=6, nullable=true)
      */
     private $codigoEntidadCajaPertenece;    
+    
+    /**
+     * @ORM\Column(name="incapacidad_general", type="boolean")
+     */
+    private $incapacidadGeneral = false;    
+
+    /**
+     * @ORM\Column(name="incapacidad_laboral", type="boolean")
+     */
+    private $incapacidadLaboral = false;    
+
+    /**
+     * @ORM\Column(name="licencia", type="boolean")
+     */
+    private $licencia = false;    
+
+    /**
+     * @ORM\Column(name="licencia_maternidad", type="boolean")
+     */
+    private $licenciaMaternidad = false;    
+
+    /**
+     * @ORM\Column(name="vacaciones", type="boolean")
+     */
+    private $vacaciones = false;  
+    
+    /**
+     * @ORM\Column(name="fecha_desde", type="date", nullable=true)
+     */         
+    private $fechaDesde;    
+
+    /**
+     * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
+     */         
+    private $fechaHasta;    
+    
+    /**
+     * @ORM\Column(name="variacion_transitoria_salario", type="string", length=1)
+     */
+    private $variacionTransitoriaSalario = ' ';   
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuSsoPeriodoEmpleado", inversedBy="ssoPeriodosEmpleadosDetallesSsoPeriodoEmpleadoRel")
@@ -352,30 +397,6 @@ class RhuSsoPeriodoEmpleadoDetalle
     }
 
     /**
-     * Set variacionTransitoriaSalario
-     *
-     * @param string $variacionTransitoriaSalario
-     *
-     * @return RhuSsoPeriodoEmpleadoDetalle
-     */
-    public function setVariacionTransitoriaSalario($variacionTransitoriaSalario)
-    {
-        $this->variacionTransitoriaSalario = $variacionTransitoriaSalario;
-
-        return $this;
-    }
-
-    /**
-     * Get variacionTransitoriaSalario
-     *
-     * @return string
-     */
-    public function getVariacionTransitoriaSalario()
-    {
-        return $this->variacionTransitoriaSalario;
-    }
-
-    /**
      * Set diasLicencia
      *
      * @param integer $diasLicencia
@@ -520,6 +541,30 @@ class RhuSsoPeriodoEmpleadoDetalle
     }
 
     /**
+     * Set tarifaSalud
+     *
+     * @param float $tarifaSalud
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setTarifaSalud($tarifaSalud)
+    {
+        $this->tarifaSalud = $tarifaSalud;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifaSalud
+     *
+     * @return float
+     */
+    public function getTarifaSalud()
+    {
+        return $this->tarifaSalud;
+    }
+
+    /**
      * Set tarifaRiesgos
      *
      * @param float $tarifaRiesgos
@@ -541,6 +586,30 @@ class RhuSsoPeriodoEmpleadoDetalle
     public function getTarifaRiesgos()
     {
         return $this->tarifaRiesgos;
+    }
+
+    /**
+     * Set tarifaCaja
+     *
+     * @param float $tarifaCaja
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setTarifaCaja($tarifaCaja)
+    {
+        $this->tarifaCaja = $tarifaCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifaCaja
+     *
+     * @return float
+     */
+    public function getTarifaCaja()
+    {
+        return $this->tarifaCaja;
     }
 
     /**
@@ -613,6 +682,198 @@ class RhuSsoPeriodoEmpleadoDetalle
     public function getCodigoEntidadCajaPertenece()
     {
         return $this->codigoEntidadCajaPertenece;
+    }
+
+    /**
+     * Set incapacidadGeneral
+     *
+     * @param boolean $incapacidadGeneral
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setIncapacidadGeneral($incapacidadGeneral)
+    {
+        $this->incapacidadGeneral = $incapacidadGeneral;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadGeneral
+     *
+     * @return boolean
+     */
+    public function getIncapacidadGeneral()
+    {
+        return $this->incapacidadGeneral;
+    }
+
+    /**
+     * Set incapacidadLaboral
+     *
+     * @param boolean $incapacidadLaboral
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setIncapacidadLaboral($incapacidadLaboral)
+    {
+        $this->incapacidadLaboral = $incapacidadLaboral;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadLaboral
+     *
+     * @return boolean
+     */
+    public function getIncapacidadLaboral()
+    {
+        return $this->incapacidadLaboral;
+    }
+
+    /**
+     * Set licencia
+     *
+     * @param boolean $licencia
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setLicencia($licencia)
+    {
+        $this->licencia = $licencia;
+
+        return $this;
+    }
+
+    /**
+     * Get licencia
+     *
+     * @return boolean
+     */
+    public function getLicencia()
+    {
+        return $this->licencia;
+    }
+
+    /**
+     * Set licenciaMaternidad
+     *
+     * @param boolean $licenciaMaternidad
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setLicenciaMaternidad($licenciaMaternidad)
+    {
+        $this->licenciaMaternidad = $licenciaMaternidad;
+
+        return $this;
+    }
+
+    /**
+     * Get licenciaMaternidad
+     *
+     * @return boolean
+     */
+    public function getLicenciaMaternidad()
+    {
+        return $this->licenciaMaternidad;
+    }
+
+    /**
+     * Set vacaciones
+     *
+     * @param boolean $vacaciones
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setVacaciones($vacaciones)
+    {
+        $this->vacaciones = $vacaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get vacaciones
+     *
+     * @return boolean
+     */
+    public function getVacaciones()
+    {
+        return $this->vacaciones;
+    }
+
+    /**
+     * Set fechaDesde
+     *
+     * @param \DateTime $fechaDesde
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setFechaDesde($fechaDesde)
+    {
+        $this->fechaDesde = $fechaDesde;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesde
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesde()
+    {
+        return $this->fechaDesde;
+    }
+
+    /**
+     * Set fechaHasta
+     *
+     * @param \DateTime $fechaHasta
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setFechaHasta($fechaHasta)
+    {
+        $this->fechaHasta = $fechaHasta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHasta
+     *
+     * @return \DateTime
+     */
+    public function getFechaHasta()
+    {
+        return $this->fechaHasta;
+    }
+
+    /**
+     * Set variacionTransitoriaSalario
+     *
+     * @param string $variacionTransitoriaSalario
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setVariacionTransitoriaSalario($variacionTransitoriaSalario)
+    {
+        $this->variacionTransitoriaSalario = $variacionTransitoriaSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get variacionTransitoriaSalario
+     *
+     * @return string
+     */
+    public function getVariacionTransitoriaSalario()
+    {
+        return $this->variacionTransitoriaSalario;
     }
 
     /**
