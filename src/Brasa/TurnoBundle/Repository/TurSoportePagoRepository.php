@@ -71,9 +71,9 @@ class TurSoportePagoRepository extends EntityRepository {
                 if($diasTransporte > $arSoportePagoPeriodoActualizar->getDiasPeriodo()) {
                     $diasTransporte = $arSoportePagoPeriodoActualizar->getDiasPeriodo();
                 }
-                if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                /*if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
                     $diasTransporte += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
-                } 
+                }*/ 
                 $arSoportePagoAct->setDias($arrayResultado[$i]['dias']);
                 $arSoportePagoAct->setDiasTransporte($diasTransporte);
                 $arSoportePagoAct->setDescanso($arrayResultado[$i]['descanso']);
@@ -184,11 +184,12 @@ class TurSoportePagoRepository extends EntityRepository {
             if($arrayResultado[$i]['dias'] > $arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo()) {
                 $arrayResultado[$i]['dias'] = $arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo();
             }
-            if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == ($arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'])){
+            $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
+            /*if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == ($arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'])){
                 $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'] + $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
             } else {
                 $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
-            }
+            }*/
             $arSoportePago->setDias($arrayResultado[$i]['dias']);
             $arSoportePago->setDiasTransporte($diasTransporte);
             $arSoportePago->setDescanso($arrayResultado[$i]['descanso']);
