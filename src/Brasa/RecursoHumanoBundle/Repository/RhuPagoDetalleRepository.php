@@ -358,7 +358,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     
     public function licencia($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd.codigoLicenciaFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+        $dql   = "SELECT pd.codigoLicenciaFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MIN(pd.fechaHastaNovedad) as fechaHastaNovedad FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
                 . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoLicenciaFk IS NOT NULL GROUP BY pd.codigoLicenciaFk";
         $query = $em->createQuery($dql);
@@ -367,7 +367,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     }    
     public function incapacidad($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd.codigoIncapacidadFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+        $dql   = "SELECT pd.codigoIncapacidadFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MIN(pd.fechaHastaNovedad) as fechaHastaNovedad FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
                 . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoIncapacidadFk IS NOT NULL GROUP BY pd.codigoIncapacidadFk";
         $query = $em->createQuery($dql);
@@ -376,7 +376,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     } 
     public function vacacion($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd.codigoVacacionFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+        $dql   = "SELECT pd.codigoVacacionFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MIN(pd.fechaHastaNovedad) as fechaHastaNovedad FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
                 . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoVacacionFk IS NOT NULL GROUP BY pd.codigoVacacionFk";
         $query = $em->createQuery($dql);

@@ -219,7 +219,12 @@ class PagoDetalleController extends Controller
                     ->setCellValue('U1', 'SUBZONA')
                     ->setCellValue('V1', 'TIPO EMPLEADO')
                     ->setCellValue('W1', 'C_COSTO')
-                    ->setCellValue('X1', 'VR_EXTRA');
+                    ->setCellValue('X1', 'VR_EXTRA')
+                    ->setCellValue('Y1', 'C_INC')
+                    ->setCellValue('Z1', 'C_LIC')
+                    ->setCellValue('AA1', 'C_VAC')
+                    ->setCellValue('AB1', 'F_DESDE_NOV')
+                    ->setCellValue('AC1', 'F_HASTA_NOV');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
@@ -255,7 +260,10 @@ class PagoDetalleController extends Controller
                     ->setCellValue('Q' . $i, $arPagoDetalle->getCodigoCreditoFk())
                     ->setCellValue('R' . $i, $objFunciones->devuelveBoolean($arPagoDetalle->getPension()))
                     ->setCellValue('S' . $i, $objFunciones->devuelveBoolean($arPagoDetalle->getSalud()))
-                    ->setCellValue('X' . $i, $arPagoDetalle->getVrExtra());
+                    ->setCellValue('X' . $i, $arPagoDetalle->getVrExtra())
+                    ->setCellValue('Y' . $i, $arPagoDetalle->getCodigoIncapacidadFk())
+                    ->setCellValue('Z' . $i, $arPagoDetalle->getCodigoLicenciaFk())
+                    ->setCellValue('AA' . $i, $arPagoDetalle->getCodigoVacacionFk());
             if($arPagoDetalle->getPagoRel()->getEmpleadoRel()->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getZonaRel()->getNombre());
             }
@@ -267,6 +275,12 @@ class PagoDetalleController extends Controller
             }            
             if($arPagoDetalle->getPagoRel()->getEmpleadoRel()->getCodigoCentroCostoContabilidadFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getCentroCostoContabilidadRel()->getNombre());
+            }    
+            if($arPagoDetalle->getFechaDesdeNovedad()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AB' . $i, $arPagoDetalle->getFechaDesdeNovedad()->format('Y-m-d'));
+            }
+            if($arPagoDetalle->getFechaHastaNovedad()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AC' . $i, $arPagoDetalle->getFechaHastaNovedad()->format('Y-m-d'));
             }            
             $i++;
         }

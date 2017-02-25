@@ -170,7 +170,7 @@ class PeriodoController extends Controller {
                             $em->remove($arPeriodoDetalleEliminar);
                             $em->flush();
                         }
-                        return $this->redirect($this->generateUrl('brs_rhu_ss_periodo_detalle', array('codigoPeriodo' => $codigoPeriodo)));
+                        return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle', array('codigoPeriodo' => $codigoPeriodo)));
                     }
                 }
             }
@@ -190,7 +190,7 @@ class PeriodoController extends Controller {
                     $em->persist($arPeriodoDetalle);
                     $em->flush();
                 }
-                return $this->redirect($this->generateUrl('brs_rhu_ss_periodo_detalle', array('codigoPeriodo' => $codigoPeriodo)));
+                return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle', array('codigoPeriodo' => $codigoPeriodo)));
             }
             if ($request->request->get('OpGenerarArchivo')) {
                 $codigoPeriodoDetalle = $request->request->get('OpGenerarArchivo');
@@ -395,7 +395,7 @@ class PeriodoController extends Controller {
     }
 
     /**
-     * @Route("/rhu/seguridadsocial/periodo/detalle/nuevo/{codigoPeriodo}/{codigoPeriodoDetallePk}", name="brs_rhu_ss_periodo_detalle_nuevo")
+     * @Route("/rhu/seguridadsocial/periodo/detalle/nuevo/{codigoPeriodo}/{codigoPeriodoDetallePk}", name="brs_rhu_utilidad_seguridad_social_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoPeriodo, $codigoPeriodoDetallePk) {
         $em = $this->getDoctrine()->getManager();
@@ -532,7 +532,7 @@ class PeriodoController extends Controller {
               $em->remove($arPeriodoDetalleAporte);
               $em->flush();
               }
-              return $this->redirect($this->generateUrl('brs_rhu_ss_periodo_detalle_aportes', array('codigoPeriodoDetalle' => $codigoPeriodoDetalle)));
+              return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle_aportes', array('codigoPeriodoDetalle' => $codigoPeriodoDetalle)));
               }
               } */
             if ($form->get('BtnFiltrar')->isClicked()) {
@@ -577,7 +577,7 @@ class PeriodoController extends Controller {
     }
 
     /**
-     * @Route("/rhu/seguridadsocial/periodo/detalle/empleados/trasladar/{codigoPeriodoDetalle}", name="brs_rhu_ss_periodo_detalle_empleados_trasladar")
+     * @Route("/rhu/seguridadsocial/periodo/detalle/empleados/trasladar/{codigoPeriodoDetalle}", name="brs_rhu_utilidad_seguridad_social_detalle_empleados_trasladar")
      */
     public function trasladarEmpleadosAction(Request $request, $codigoPeriodoDetalle) {
         $em = $this->getDoctrine()->getManager();
@@ -617,7 +617,7 @@ class PeriodoController extends Controller {
     }
 
     /**
-     * @Route("/rhu/seguridadsocial/periodo/detalle/empleados/copiar/{codigoPeriodoDetalle}", name="brs_rhu_ss_periodo_detalle_empleados_copiar")
+     * @Route("/rhu/seguridadsocial/periodo/detalle/empleados/copiar/{codigoPeriodoDetalle}", name="brs_rhu_utilidad_seguridad_social_detalle_empleados_copiar")
      */
     public function copiarEmpleadosAction(Request $request, $codigoPeriodoDetalle) {
         $em = $this->getDoctrine()->getManager();

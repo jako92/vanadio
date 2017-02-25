@@ -201,12 +201,12 @@ class SeguridadSocialPeriodosController extends Controller
                 $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
                 $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
                 $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                
-                $arEntidadRiesgos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
-                $arEntidadRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->find($arConfiguracionNomina->getCodigoEntidadRiesgoFk());
-                $condigoInterfaceRiesgos = $arEntidadRiesgos->getCodigoInterface();
+                $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();                                
+                $arConfiguracionAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);                
+
+                $condigoInterfaceRiesgos = $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales();
                 $strRutaArchivo = $arConfiguracion->getRutaTemporal();
-                $tipoSucursal = $arConfiguracionNomina->getTipoPlanillaSso();
+                $tipoSucursal = $arConfiguracionAporte->getFormaPresentacion();
                 if ($tipoSucursal == null){
                     $tipoSucursal = 'S';
                 } 

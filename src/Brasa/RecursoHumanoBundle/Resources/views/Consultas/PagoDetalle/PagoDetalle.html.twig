@@ -14,12 +14,7 @@
             <li class="active">detalle</li>
         </ol>
     </section>    
-    <section class="content">        	
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
-        </script>        
+    <section class="content">        	      
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
@@ -76,6 +71,7 @@
         </div> 
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
+                <th>ID</th>
                 <th>NUMERO</th>
                 <th>CODIGO</th>
                 <th>IDENTIFICACION</th>                
@@ -95,6 +91,7 @@
             </tr>
             {% for arPagosDetalle in arPagosDetalle %}
                 <tr>
+                    <td>{{ arPagosDetalle.codigoPagoDetallePk }} </td>
                     <td>{{ arPagosDetalle.pagoRel.numero }} </td>
                     <td>{{ arPagosDetalle.pagoRel.empleadoRel.codigoEmpleadoPk }} </td>
                     <td>{{ arPagosDetalle.pagoRel.empleadoRel.numeroIdentificacion  }}</td>

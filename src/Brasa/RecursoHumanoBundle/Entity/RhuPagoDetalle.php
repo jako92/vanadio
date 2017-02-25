@@ -163,6 +163,16 @@ class RhuPagoDetalle
     private $codigoVacacionFk;     
     
     /**
+     * @ORM\Column(name="fecha_desde_novedad", type="date", nullable=true)
+     */    
+    private $fechaDesdeNovedad;    
+
+    /**
+     * @ORM\Column(name="fecha_hasta_novedad", type="date", nullable=true)
+     */    
+    private $fechaHastaNovedad;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuPago", inversedBy="pagosDetallesPagoRel")
      * @ORM\JoinColumn(name="codigo_pago_fk", referencedColumnName="codigo_pago_pk")
      */
@@ -1080,5 +1090,53 @@ class RhuPagoDetalle
     public function getVacacionRel()
     {
         return $this->vacacionRel;
+    }
+
+    /**
+     * Set fechaDesdeNovedad
+     *
+     * @param \DateTime $fechaDesdeNovedad
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setFechaDesdeNovedad($fechaDesdeNovedad)
+    {
+        $this->fechaDesdeNovedad = $fechaDesdeNovedad;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesdeNovedad
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesdeNovedad()
+    {
+        return $this->fechaDesdeNovedad;
+    }
+
+    /**
+     * Set fechaHastaNovedad
+     *
+     * @param \DateTime $fechaHastaNovedad
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setFechaHastaNovedad($fechaHastaNovedad)
+    {
+        $this->fechaHastaNovedad = $fechaHastaNovedad;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHastaNovedad
+     *
+     * @return \DateTime
+     */
+    public function getFechaHastaNovedad()
+    {
+        return $this->fechaHastaNovedad;
     }
 }

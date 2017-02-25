@@ -26,7 +26,7 @@ class AppKernel extends Kernel
             new Brasa\InventarioBundle\BrasaInventarioBundle(),
             new Brasa\TesoreriaBundle\BrasaTesoreriaBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Ob\HighchartsBundle\ObHighchartsBundle(),
+            //new Ob\HighchartsBundle\ObHighchartsBundle(),
             
             // These are the other bundles the SonataAdminBundle relies on
             new Sonata\CoreBundle\SonataCoreBundle(),
