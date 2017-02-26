@@ -352,11 +352,11 @@ class IncapacidadController extends Controller
         }
         $zona = "";
         if($arEmpleado->getCodigoZonaFk() != NULL){
-            $zona = $arIncapacidad->getEmpleadoRel()->getZonaRel()->getNombre();
+            $zona = $arEmpleado->getZonaRel()->getNombre();
         }
         $subzona = "";
-        if($arEmpleado->getCodigoZonaFk() != NULL){
-            $subzona = $arIncapacidad->getEmpleadoRel()->getSubzonaRel()->getNombre();
+        if($arEmpleado->getCodigoSubzonaFk() != NULL){
+            $subzona = $arEmpleado->getSubzonaRel()->getNombre();
         }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arIncapacidad->getCodigoIncapacidadPk())
