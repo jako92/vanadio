@@ -242,7 +242,7 @@ class PagoDetalleController extends Controller
                 $deduccion = $arPagoDetalle->getVrPago();
             }            
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arPagoDetalle->getPagoRel()->getNumero())
+                    ->setCellValue('A' . $i, $arPagoDetalle->getCodigoPagoDetallePk())
                     ->setCellValue('B' . $i, $arPagoDetalle->getPagoRel()->getNumero())
                     ->setCellValue('C' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getCodigoEmpleadoPk())
                     ->setCellValue('D' . $i, $arPagoDetalle->getPagoRel()->getEmpleadoRel()->getNumeroIdentificacion())
