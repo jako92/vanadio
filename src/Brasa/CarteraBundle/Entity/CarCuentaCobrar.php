@@ -104,6 +104,31 @@ class CarCuentaCobrar
     private $operacion = 0;    
     
     /**
+     * @ORM\Column(name="subtotal", type="float")
+     */    
+    private $subtotal = 0;     
+    
+    /**
+     * @ORM\Column(name="retencion_fuente", type="float")
+     */    
+    private $retencion_fuente = 0;     
+    
+    /**
+     * @ORM\Column(name="retencion_iva", type="float")
+     */    
+    private $retencion_iva = 0;     
+    
+    /**
+     * @ORM\Column(name="retencion_ica", type="float")
+     */    
+    private $retencion_ica = 0;     
+    
+    /**
+     * @ORM\Column(name="total_neto", type="float")
+     */    
+    private $total_neto = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="CarCliente", inversedBy="cuentaCobrarClientesRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -818,5 +843,125 @@ class CarCuentaCobrar
     public function getRecibosDetallesCuentaCobrarAplicacionRel()
     {
         return $this->recibosDetallesCuentaCobrarAplicacionRel;
+    }
+
+    /**
+     * Set subtotal
+     *
+     * @param float $subtotal
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setSubtotal($subtotal)
+    {
+        $this->subtotal = $subtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get subtotal
+     *
+     * @return float
+     */
+    public function getSubtotal()
+    {
+        return $this->subtotal;
+    }
+
+    /**
+     * Set retencionFuente
+     *
+     * @param float $retencionFuente
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionFuente($retencionFuente)
+    {
+        $this->retencion_fuente = $retencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionFuente
+     *
+     * @return float
+     */
+    public function getRetencionFuente()
+    {
+        return $this->retencion_fuente;
+    }
+
+    /**
+     * Set retencionIva
+     *
+     * @param float $retencionIva
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionIva($retencionIva)
+    {
+        $this->retencion_iva = $retencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIva
+     *
+     * @return float
+     */
+    public function getRetencionIva()
+    {
+        return $this->retencion_iva;
+    }
+
+    /**
+     * Set retencionIca
+     *
+     * @param float $retencionIca
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionIca($retencionIca)
+    {
+        $this->retencion_ica = $retencionIca;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIca
+     *
+     * @return float
+     */
+    public function getRetencionIca()
+    {
+        return $this->retencion_ica;
+    }
+
+    /**
+     * Set totalNeto
+     *
+     * @param float $totalNeto
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setTotalNeto($totalNeto)
+    {
+        $this->total_neto = $totalNeto;
+
+        return $this;
+    }
+
+    /**
+     * Get totalNeto
+     *
+     * @return float
+     */
+    public function getTotalNeto()
+    {
+        return $this->total_neto;
     }
 }
