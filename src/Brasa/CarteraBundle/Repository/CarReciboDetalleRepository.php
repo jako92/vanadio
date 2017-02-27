@@ -111,4 +111,16 @@ class CarReciboDetalleRepository extends EntityRepository {
         return $vrTotalPago;
     }    
 
+    public function vrPagoRecibo($codigoCuentaCobrar, $codigoRecibo) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT SUM(rd.vrPagoAfectar as valor FROM BrasaCarteraBundle:CarReciboDetalle rd "
+                . "WHERE rd.codigoCuentaCobrarFk = " . $codigoCuentaCobrar . " AND rd.codigoReciboFk = " . $codigoRecibo;
+        $query = $em->createQuery($dql);
+        $vrTotalPago = $query->getSingleScalarResult();
+        if (!$vrTotalPago) {
+            $vrTotalPago = 0;
+        }
+        return $vrTotalPago;
+    }    
+    
 }

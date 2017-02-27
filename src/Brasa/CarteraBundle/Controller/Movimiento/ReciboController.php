@@ -364,10 +364,12 @@ class ReciboController extends Controller
                 if(count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigoCuentaCobrar) {
                         $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);
+                        $vrPago = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->vrPagoRecibo($codigoCuentaCobrar, $codigoRecibo);
+                        $saldo = $arrControles['TxtSaldo'.$codigoCuentaCobrar] - $vrPago;
                         $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
                         $arReciboDetalle->setReciboRel($arRecibo);
                         $arReciboDetalle->setCuentaCobrarRel($arCuentaCobrar);
-                        $arReciboDetalle->setVrPago($arrControles['TxtSaldo'.$codigoCuentaCobrar]);
+                        $arReciboDetalle->setVrPago($saldo);
                         $arReciboDetalle->setUsuario($arUsuario->getUserName());
                         $arReciboDetalle->setNumeroFactura($arCuentaCobrar->getNumeroDocumento());
                         $arReciboDetalle->setCuentaCobrarTipoRel($arCuentaCobrar->getCuentaCobrarTipoRel());
@@ -396,7 +398,7 @@ class ReciboController extends Controller
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator  = $this->get('knp_paginator');
-        $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
+        $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();        
         $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($codigoReciboDetalle);
         $form = $this->createFormBuilder()            
             ->getForm();
@@ -406,11 +408,13 @@ class ReciboController extends Controller
                 set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $codigoCuentaCobrar = $request->request->get('OpAplicar');
-                $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                
+                $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();                  
                 $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($codigoCuentaCobrar);                                
                 $arReciboDetalle->setCuentaCobrarAplicacionRel($arCuentaCobrar);
                 $arReciboDetalle->setNumeroDocumentoAplicacion($arCuentaCobrar->getNumeroDocumento());
                 $arReciboDetalle->setOperacion(0);
+                $arReciboDetalle->setVrPago($arCuentaCobrar->getSaldo());
+                $arReciboDetalle->setVrPagoAfectar($arCuentaCobrar->getSaldo());
                 $em->persist($arReciboDetalle);
                 $em->flush();
                 $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->liquidar($arReciboDetalle->getCodigoReciboFk());                
