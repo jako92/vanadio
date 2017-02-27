@@ -60,24 +60,28 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodoActualizar->getFestivos() * 8;
                     $arrayResultado[$i]['descanso'] += $arSoportePagoPeriodoActualizar->getFestivos();
                 }
-                /*if($codigoRecurso == 450) {
-                    echo "hola";
-                }*/
-                $intHoras = $arrayResultado[$i]['horasDescanso'] + $arrayResultado[$i]['horasNovedad'] + $arrayResultado[$i]['horasDiurnas'] + $arrayResultado[$i]['horasNocturnas'] + $arrayResultado[$i]['horasFestivasDiurnas'] + $arrayResultado[$i]['horasFestivasNocturnas'];
                 if($arrayResultado[$i]['dias'] > $arSoportePagoPeriodoActualizar->getDiasPeriodo()) {
                     $arrayResultado[$i]['dias'] = $arSoportePagoPeriodoActualizar->getDiasPeriodo();
                 }
                 $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
                 if($diasTransporte > $arSoportePagoPeriodoActualizar->getDiasPeriodo()) {
                     $diasTransporte = $arSoportePagoPeriodoActualizar->getDiasPeriodo();
-                }
-                if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
-                    $diasTransporte += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero();
                 } 
-                //Horas adicionales dia 28
-                if($arSoportePago->getTurnoFijo() && $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
-                    $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero() * 8;
-                }                
+                //Adiciones mes de febrero
+                if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
+                    //Ajustar las horas de los turnos fijos
+                    if($arSoportePago->getTurnoFijo()) {
+                        if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                            $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero() * 8;
+                        }                        
+                    }
+                    //Ajustar los dias de transporte
+                    if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                        $diasTransporte += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero();
+                    }                    
+                }
+                                
+                $intHoras = $arrayResultado[$i]['horasDescanso'] + $arrayResultado[$i]['horasNovedad'] + $arrayResultado[$i]['horasDiurnas'] + $arrayResultado[$i]['horasNocturnas'] + $arrayResultado[$i]['horasFestivasDiurnas'] + $arrayResultado[$i]['horasFestivasNocturnas'];                
                 $arSoportePagoAct->setDias($arrayResultado[$i]['dias']);
                 $arSoportePagoAct->setDiasTransporte($diasTransporte);
                 $arSoportePagoAct->setDescanso($arrayResultado[$i]['descanso']);
@@ -188,16 +192,22 @@ class TurSoportePagoRepository extends EntityRepository {
             if($arrayResultado[$i]['dias'] > $arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo()) {
                 $arrayResultado[$i]['dias'] = $arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo();
             }
-            //$diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
-            if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == ($arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'])){
-                $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'] + $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
-            } else {
-                $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
-            }
-            //Horas adicionales dia 28
-            if($arSoportePago->getTurnoFijo() && $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
-                $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() * 8;
-            }
+            $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
+
+            //Adiciones mes de febrero
+            if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
+                //Ajustar las horas de los turnos fijos
+                if($arSoportePago->getTurnoFijo()) {
+                    if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                        $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() * 8;
+                    }                        
+                }
+                //Ajustar los dias de transporte
+                if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                    $diasTransporte += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
+                }                    
+            }            
+            
             $arSoportePago->setDias($arrayResultado[$i]['dias']);
             $arSoportePago->setDiasTransporte($diasTransporte);
             $arSoportePago->setDescanso($arrayResultado[$i]['descanso']);
