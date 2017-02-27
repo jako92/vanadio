@@ -299,7 +299,7 @@ class TurFacturaRepository extends EntityRepository {
 
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();            
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
         if($arFactura->getEstadoAutorizado() == 1) {
             if($arFactura->getNumero() == 0) {
@@ -344,6 +344,11 @@ class TurFacturaRepository extends EntityRepository {
                         $saldoOperado = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
                         $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
                         $arCuentaCobrar->setSaldoOperado($saldoOperado);                        
+                        $arCuentaCobrar->setSubtotal($arFactura->getVrSubtotal());                                                
+                        $arCuentaCobrar->setRetencionFuente($arFactura->getVrRetencionFuente());
+                        $arCuentaCobrar->setRetencionIva($arFactura->getVrRetencionIva());
+                        $arCuentaCobrar->setRetencionIca(0);
+                        $arCuentaCobrar->setTotalNeto($arFactura->getVrTotalNeto());
                         $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
                         $arCuentaCobrar->setAbono(0);
                         $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
