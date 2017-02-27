@@ -72,8 +72,12 @@ class TurSoportePagoRepository extends EntityRepository {
                     $diasTransporte = $arSoportePagoPeriodoActualizar->getDiasPeriodo();
                 }
                 if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
-                    $diasTransporte += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
+                    $diasTransporte += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero();
                 } 
+                //Horas adicionales dia 28
+                if($arSoportePago->getTurnoFijo() && $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
+                    $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero() * 8;
+                }                
                 $arSoportePagoAct->setDias($arrayResultado[$i]['dias']);
                 $arSoportePagoAct->setDiasTransporte($diasTransporte);
                 $arSoportePagoAct->setDescanso($arrayResultado[$i]['descanso']);
@@ -121,7 +125,7 @@ class TurSoportePagoRepository extends EntityRepository {
 
     public function resumenSoportePago($dateFechaDesde, $dateFechaHasta, $codigoSoportePago) {
         $em = $this->getEntityManager();
-        $arSoportePago = new \Brasa\TurnoBundle\Entity\TurSoportePago();
+        $arSoportePago = new \Brasa\TurnoBundle\Entity\TurSoportePago();        
         $arSoportePago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($codigoSoportePago);
         $dql   = "SELECT spd.codigoRecursoFk, "
                 . "SUM(spd.descanso) as descanso, "
@@ -189,6 +193,10 @@ class TurSoportePagoRepository extends EntityRepository {
                 $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'] + $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
             } else {
                 $diasTransporte = $arrayResultado[$i]['dias']+$arrayResultado[$i]['induccion'];
+            }
+            //Horas adicionales dia 28
+            if($arSoportePago->getTurnoFijo() && $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
+                $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() * 8;
             }
             $arSoportePago->setDias($arrayResultado[$i]['dias']);
             $arSoportePago->setDiasTransporte($diasTransporte);
