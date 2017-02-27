@@ -843,7 +843,11 @@ class EmpleadoController extends Controller {
         //Inicio cuerpo
         $strSecuencia = 1;
         foreach ($arEmpleados AS $arEmpleados) {
-            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(), "!", $arEmpleados->getDireccion(), "!", $arEmpleados->getTelefono());
+            //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
+            $ciudad = $arEmpleados->getCiudadRel()->getNombre();
+            $ciudad = explode("-", $ciudad);
+            $ciudad = $ciudad[0];
+            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(), "!", $arEmpleados->getDireccion(), "!", $ciudad , "!", $arEmpleados->getTelefono(),"", "!","","!", $arEmpleados->getCorreo(),"!","","!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getPaisRel()->getPais(),"!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!", $arEmpleados->getCiudadRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getNombre(),"!"," ","!"," ","!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
