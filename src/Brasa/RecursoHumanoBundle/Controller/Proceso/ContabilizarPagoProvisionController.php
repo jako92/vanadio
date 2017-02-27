@@ -33,6 +33,8 @@ class ContabilizarPagoProvisionController extends Controller
                 if(count($arrSeleccionados) > 0) {
                     $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                    $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();
+                    $arConfiguracionAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);                    
                     $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
                     $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteProvision());                    
                     $errorDatos = false;
@@ -308,8 +310,11 @@ class ContabilizarPagoProvisionController extends Controller
 
                             //Riesgos
                             if($arProvision->getVrRiesgos() > 0) {
+
                                 $arEntidadRiesgos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
-                                $arEntidadRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->find($arConfiguracion->getCodigoEntidadRiesgoFk());
+                                if($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()) {
+                                    $arEntidadRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findOneBy(array('codigoInterface' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
+                                }                                
                                 $arTerceroRiesgos = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arEntidadRiesgos->getNit()));
                                 if($arTerceroRiesgos) {
                                     $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->findOneBy(array('tipo' => 11, 'codigoEmpleadoTipoFk' => $tipoEmpleado));
