@@ -29,29 +29,28 @@ class BalancePruebaController extends Controller
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
-        $this->listar();
+        //$this->listar();
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $this->listar();
-                $this->generarExcel();
+                //$this->filtrar($form);
+                //$this->listar();
+                //$this->generarExcel();
             }
             if($form->get('BtnPdf')->isClicked()) {
-                $this->filtrarLista($form, $request);
-                $this->listar();
-                $objFormatoBalancePrueba = new \Brasa\ContabilidadBundle\Formatos\FormatoBalancePrueba();
-                $objFormatoBalancePrueba->Generar($this, $this->strDqlLista);
+                //$this->filtrarLista($form, $request);
+                //$this->listar();
+                //$objFormatoBalancePrueba = new \Brasa\ContabilidadBundle\Formatos\FormatoBalancePrueba();
+                //$objFormatoBalancePrueba->Generar($this, $this->strDqlLista);
             }
             if($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-                $this->listar();
+                //$this->filtrar($form);
+                //$this->listar();
             }
 
         }
-        $arBalancePrueba = $this->strDqlLista;
-        return $this->render('BrasaContabilidadBundle:Consultas/BalancePrueba:balance.html.twig', array(
-            'arBalancePrueba' => $arBalancePrueba,
+        //$arBalancePrueba = $this->strDqlLista;
+        return $this->render('BrasaContabilidadBundle:Consulta/BalancePrueba:balance.html.twig', array(            
             'form' => $form->createView()
             ));
     }    
