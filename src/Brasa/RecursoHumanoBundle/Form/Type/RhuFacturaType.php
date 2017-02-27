@@ -13,11 +13,11 @@ class RhuFacturaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                          
-            ->add('terceroRel', EntityType::class, array(
-                'class' => 'BrasaGeneralBundle:GenTercero',
+            ->add('clienteRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.nombreCorto', 'ASC');},
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombreCorto', 'ASC');},
                 'choice_label' => 'nombreCorto',
                 'required' => true))
             ->add('centroCostoRel', EntityType::class, array(

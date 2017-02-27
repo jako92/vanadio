@@ -98,15 +98,31 @@ class RhuFactura
     private $codigoCentroCostoFk;
 
     /**
-     * @ORM\Column(name="codigo_tercero_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
-    private $codigoTerceroFk;    
+    private $codigoClienteFk;
+
+    /**
+     * @ORM\Column(name="estado_anulado", type="boolean")
+     */    
+    private $estadoAnulado = 0;
+    
+    /**
+     * @ORM\Column(name="estado_autorizado", type="boolean")
+     */    
+    private $estadoAutorizado = 0;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="facturasCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
-    protected $centroCostoRel;      
+    protected $centroCostoRel; 
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="facturasClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="facturaRel")
@@ -122,6 +138,8 @@ class RhuFactura
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="facturaRel")
      */
     protected $seleccionesFacturaRel;     
+    
+    
     
     /**
      * Constructor
@@ -528,27 +546,27 @@ class RhuFactura
     }
 
     /**
-     * Set codigoTerceroFk
+     * Set codigoClienteFk
      *
-     * @param integer $codigoTerceroFk
+     * @param integer $codigoClienteFk
      *
      * @return RhuFactura
      */
-    public function setCodigoTerceroFk($codigoTerceroFk)
+    public function setCodigoClienteFk($codigoClienteFk)
     {
-        $this->codigoTerceroFk = $codigoTerceroFk;
+        $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
     }
 
     /**
-     * Get codigoTerceroFk
+     * Get codigoClienteFk
      *
      * @return integer
      */
-    public function getCodigoTerceroFk()
+    public function getCodigoClienteFk()
     {
-        return $this->codigoTerceroFk;
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -573,6 +591,30 @@ class RhuFactura
     public function getCentroCostoRel()
     {
         return $this->centroCostoRel;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuFactura
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 
     /**
@@ -675,5 +717,53 @@ class RhuFactura
     public function getSeleccionesFacturaRel()
     {
         return $this->seleccionesFacturaRel;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuFactura
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
+    }
+
+    /**
+     * Set estadoAutorizado
+     *
+     * @param boolean $estadoAutorizado
+     *
+     * @return RhuFactura
+     */
+    public function setEstadoAutorizado($estadoAutorizado)
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAutorizado
+     *
+     * @return boolean
+     */
+    public function getEstadoAutorizado()
+    {
+        return $this->estadoAutorizado;
     }
 }

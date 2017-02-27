@@ -21,9 +21,9 @@
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">                
                 <div class="form-group form-group-sm">  
-                    <label for="form_terceroRel" class="col-sm-2 control-label">Terceros:</label>
+                    <label for="form_clienteRel" class="col-sm-2 control-label">Clientes:</label>
                     <div class="col-sm-10">                  
-                        {{ form_widget(form.terceroRel, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.clienteRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">  
@@ -77,7 +77,7 @@
                     <td>{{ arFacturas.numero  }}</td>
                     <td>{{ arFacturas.fecha | date("Y/m/d")  }}</td>
                     <td>{{ arFacturas.fechaVence | date("Y/m/d")  }}</td>
-                    <td>{{ arFacturas.terceroRel.nombreCorto  }}</td>
+                    <td>{{ arFacturas.clienteRel.nombreCorto  }}</td>
                     <td>{{ arFacturas.centroCostoRel.nombre  }}</td>
                     <td style="text-align: right">{{ arFacturas.VrBruto | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arFacturas.VrNeto | number_format(2, '.', ',') }}</td>

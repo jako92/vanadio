@@ -78,7 +78,17 @@ class RhuServicioCobrar
     /**
      * @ORM\Column(name="vr_adicional_valor", type="float")
      */
-    private $vrAdicionalValor = 0;    
+    private $vrAdicionalValor = 0;
+
+    /**
+     * @ORM\Column(name="vr_adicional_prestacional", type="float")
+     */
+    private $vrAdicionalPrestacional = 0;
+    
+    /**
+     * @ORM\Column(name="vr_adicional_no_prestacional", type="float")
+     */
+    private $vrAdicionalNoPrestacional = 0;
     
     /**
      * @ORM\Column(name="vr_auxilio_transporte", type="float")
@@ -225,6 +235,7 @@ class RhuServicioCobrar
     protected $facturasDetallesServicioCobrarRel;
     
 
+    
     
     /**
      * Constructor
@@ -533,6 +544,54 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set vrAdicionalPrestacional
+     *
+     * @param float $vrAdicionalPrestacional
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
+    {
+        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalPrestacional()
+    {
+        return $this->vrAdicionalPrestacional;
+    }
+
+    /**
+     * Set vrAdicionalNoPrestacional
+     *
+     * @param float $vrAdicionalNoPrestacional
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
+    {
+        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalNoPrestacional()
+    {
+        return $this->vrAdicionalNoPrestacional;
+    }
+
+    /**
      * Set vrAuxilioTransporte
      *
      * @param float $vrAuxilioTransporte
@@ -749,6 +808,30 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set vrPrimas
+     *
+     * @param float $vrPrimas
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrPrimas($vrPrimas)
+    {
+        $this->vrPrimas = $vrPrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrimas
+     *
+     * @return float
+     */
+    public function getVrPrimas()
+    {
+        return $this->vrPrimas;
+    }
+
+    /**
      * Set vrCesantiasIntereses
      *
      * @param float $vrCesantiasIntereses
@@ -794,6 +877,30 @@ class RhuServicioCobrar
     public function getVrVacaciones()
     {
         return $this->vrVacaciones;
+    }
+
+    /**
+     * Set vrAporteParafiscales
+     *
+     * @param float $vrAporteParafiscales
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrAporteParafiscales($vrAporteParafiscales)
+    {
+        $this->vrAporteParafiscales = $vrAporteParafiscales;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAporteParafiscales
+     *
+     * @return float
+     */
+    public function getVrAporteParafiscales()
+    {
+        return $this->vrAporteParafiscales;
     }
 
     /**
@@ -1164,53 +1271,5 @@ class RhuServicioCobrar
     public function getFacturasDetallesServicioCobrarRel()
     {
         return $this->facturasDetallesServicioCobrarRel;
-    }
-
-    /**
-     * Set vrPrimas
-     *
-     * @param float $vrPrimas
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrPrimas($vrPrimas)
-    {
-        $this->vrPrimas = $vrPrimas;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPrimas
-     *
-     * @return float
-     */
-    public function getVrPrimas()
-    {
-        return $this->vrPrimas;
-    }
-
-    /**
-     * Set vrAporteParafiscales
-     *
-     * @param float $vrAporteParafiscales
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrAporteParafiscales($vrAporteParafiscales)
-    {
-        $this->vrAporteParafiscales = $vrAporteParafiscales;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAporteParafiscales
-     *
-     * @return float
-     */
-    public function getVrAporteParafiscales()
-    {
-        return $this->vrAporteParafiscales;
     }
 }

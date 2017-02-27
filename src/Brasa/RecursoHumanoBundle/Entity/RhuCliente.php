@@ -144,7 +144,11 @@ class RhuCliente
      */
     protected $contratosClienteRel;
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="clienteRel")
+     */
+    protected $facturasClienteRel;
+    
     
     /**
      * Constructor
@@ -152,6 +156,8 @@ class RhuCliente
     public function __construct()
     {
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->facturasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -782,5 +788,39 @@ class RhuCliente
     public function getContratosClienteRel()
     {
         return $this->contratosClienteRel;
+    }
+
+    /**
+     * Add facturasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel)
+    {
+        $this->facturasClienteRel[] = $facturasClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove facturasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel
+     */
+    public function removeFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel)
+    {
+        $this->facturasClienteRel->removeElement($facturasClienteRel);
+    }
+
+    /**
+     * Get facturasClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFacturasClienteRel()
+    {
+        return $this->facturasClienteRel;
     }
 }

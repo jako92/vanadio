@@ -127,7 +127,32 @@ class RhuFacturaDetalle
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
      */
-    private $vrVacaciones = 0;    
+    private $vrVacaciones = 0;
+    
+    /**
+     * @ORM\Column(name="vr_primas", type="float")
+     */
+    private $vrPrimas = 0;
+
+    /**
+     * @ORM\Column(name="vr_cesantias_intereses", type="float")
+     */
+    private $vrCesantiasIntereses = 0;
+    
+    /**
+     * @ORM\Column(name="vr_aporte_parafiscales", type="float")
+     */
+    private $vrAporteParafiscales = 0;
+
+    /**
+     * @ORM\Column(name="vr_adicional_prestacional", type="float")
+     */
+    private $vrAdicionalPrestacional = 0;
+    
+    /**
+     * @ORM\Column(name="vr_adicional_no_prestacional", type="float")
+     */
+    private $vrAdicionalNoPrestacional = 0;
     
     /**
      * @ORM\Column(name="vr_administracion", type="float")
@@ -219,6 +244,8 @@ class RhuFacturaDetalle
      * @ORM\JoinColumn(name="codigo_programacion_pago_fk", referencedColumnName="codigo_programacion_pago_pk")
      */
     protected $programacionPagoRel;    
+
+    
 
     
 
@@ -761,6 +788,78 @@ class RhuFacturaDetalle
     }
 
     /**
+     * Set vrAporteParafiscales
+     *
+     * @param float $vrAporteParafiscales
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setVrAporteParafiscales($vrAporteParafiscales)
+    {
+        $this->vrAporteParafiscales = $vrAporteParafiscales;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAporteParafiscales
+     *
+     * @return float
+     */
+    public function getVrAporteParafiscales()
+    {
+        return $this->vrAporteParafiscales;
+    }
+
+    /**
+     * Set vrAdicionalPrestacional
+     *
+     * @param float $vrAdicionalPrestacional
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
+    {
+        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalPrestacional()
+    {
+        return $this->vrAdicionalPrestacional;
+    }
+
+    /**
+     * Set vrAdicionalNoPrestacional
+     *
+     * @param float $vrAdicionalNoPrestacional
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
+    {
+        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalNoPrestacional()
+    {
+        return $this->vrAdicionalNoPrestacional;
+    }
+
+    /**
      * Set vrAdministracion
      *
      * @param float $vrAdministracion
@@ -1166,5 +1265,53 @@ class RhuFacturaDetalle
     public function getProgramacionPagoRel()
     {
         return $this->programacionPagoRel;
+    }
+
+    /**
+     * Set vrPrimas
+     *
+     * @param float $vrPrimas
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setVrPrimas($vrPrimas)
+    {
+        $this->vrPrimas = $vrPrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrimas
+     *
+     * @return float
+     */
+    public function getVrPrimas()
+    {
+        return $this->vrPrimas;
+    }
+
+    /**
+     * Set vrCesantiasIntereses
+     *
+     * @param float $vrCesantiasIntereses
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setVrCesantiasIntereses($vrCesantiasIntereses)
+    {
+        $this->vrCesantiasIntereses = $vrCesantiasIntereses;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCesantiasIntereses
+     *
+     * @return float
+     */
+    public function getVrCesantiasIntereses()
+    {
+        return $this->vrCesantiasIntereses;
     }
 }

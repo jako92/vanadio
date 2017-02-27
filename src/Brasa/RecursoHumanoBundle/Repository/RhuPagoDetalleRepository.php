@@ -149,6 +149,31 @@ class RhuPagoDetalleRepository extends EntityRepository {
         return $arrayResultado;
     }
     
+    public function adicionalPrestacional($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as Pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.adicional = 1 AND pd.prestacional = 1";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $adicionalPrestacional = $arrayResultado[0]['Pago'];
+        if($adicionalPrestacional == null) {
+            $adicionalPrestacional = 0;
+        }
+        return $adicionalPrestacional;
+    }
+    public function adicionalNoPrestacional($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as Pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.adicional = 1 AND pd.prestacional = 0";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $adicionalNoPrestacional = $arrayResultado[0]['Pago'];
+        if($adicionalNoPrestacional == null) {
+            $adicionalNoPrestacional = 0;
+        }
+        return $adicionalNoPrestacional;
+    }
+    
     public function listaDqlPagosDetallePeriodoAportes($strDesde = "", $strHasta = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT p, e, pd FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN p.empleadoRel e WHERE p.codigoPagoTipoFk = 1 AND p.estadoPagado = 1";

@@ -11,11 +11,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuFacturaRepository extends EntityRepository {
     
-    public function listaDql($strCodigoTercero = "", $strCodigoCentroCosto = "", $strNumero = "", $strDesde = "", $strHasta = "") {        
+    public function listaDql($strCodigoCliente = "", $strCodigoCentroCosto = "", $strNumero = "", $strDesde = "", $strHasta = "") {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT f, t FROM BrasaRecursoHumanoBundle:RhuFactura f JOIN f.terceroRel t WHERE f.codigoFacturaPk <> 0";
-        if($strCodigoTercero != "") {
-            $dql .= " AND f.codigoTerceroFk = " . $strCodigoTercero;
+        $dql   = "SELECT f, t FROM BrasaRecursoHumanoBundle:RhuFactura f JOIN f.clienteRel t WHERE f.codigoFacturaPk <> 0";
+        if($strCodigoCliente != "") {
+            $dql .= " AND f.codigoClienteFk = " . $strCodigoCliente;
         }
         if($strCodigoCentroCosto != "") {
             $dql .= " AND f.codigoCentroCostoFk = " . $strCodigoCentroCosto;
@@ -68,11 +68,11 @@ class RhuFacturaRepository extends EntityRepository {
         $douRetencionCREE = ($douBaseAIU * $arConfiguraciones->getPorcentajeRetencionCREE()) / 100;
         $douIva = ($douBaseAIU * $arConfiguracionNomina->getPorcentajeIva()) / 100;
         $douRetencionIva = ($douIva * $arConfiguraciones->getPorcentajeRetencionIvaVentas()) / 100;        
-        if($arFactura->getTerceroRel()->getRetencionFuenteVentas() == 1) {
+        /*if($arFactura->getTerceroRel()->getRetencionFuenteVentas() == 1) {
             if ($douBaseAIU >= $arConfiguraciones->getBaseRetencionFuente()) {
                 $douRetencionFuente = ($douBaseAIU * $arConfiguraciones->getPorcentajeRetencionFuente()) / 100;
             }            
-        }
+        }*/
         $arFactura->setVrBaseAIU($douBaseAIU);
         $arFactura->setVrIngresoMision($douIngresoMision);
         $arFactura->setVrTotalAdministracion($douAdministracion);
@@ -88,5 +88,217 @@ class RhuFacturaRepository extends EntityRepository {
         $em->persist($arFactura);
         $em->flush();
         return true;
-    }        
+    }
+    
+    public function autorizar($codigoFactura) {
+        $em = $this->getEntityManager();
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
+        $strResultado = "";
+        if($arFactura->getEstadoAutorizado() == 0) {
+
+            //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
+
+                // Validar valor pendiente
+                /*$dql   = "SELECT fd.codigoPedidoDetalleFk, SUM(fd.subtotalOperado) as vrPrecio FROM BrasaTurnoBundle:TurFacturaDetalle fd "
+                        . "WHERE fd.codigoFacturaFk = " . $codigoFactura . " "
+                        . "GROUP BY fd.codigoPedidoDetalleFk";
+                $query = $em->createQuery($dql);
+                $arrFacturaDetalles = $query->getResult();*/
+                /*foreach ($arrFacturaDetalles as $arrFacturaDetalle) {
+                    if($arrFacturaDetalle['codigoPedidoDetalleFk']) {
+                        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+                        $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arrFacturaDetalle['codigoPedidoDetalleFk']);
+                        $floPrecio = $arrFacturaDetalle['vrPrecio'];
+                        if(round($arPedidoDetalle->getVrTotalDetallePendiente()) < round($floPrecio)) {
+                            $strResultado .= "Para el detalle de pedido " . $arrFacturaDetalle['codigoPedidoDetalleFk'] . " no puede facturar mas de lo pendiente valor a facturar = " . $floPrecio . " valor pendiente = " . $arPedidoDetalle->getVrTotalDetallePendiente();
+                        }
+                    }
+                }*/
+            //}
+
+            /*if($strResultado == "") {                                
+                $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+                $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+                foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                    if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
+
+                            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
+                            $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() - $arFacturaDetalle->getSubtotalOperado();
+                            $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);                            
+                            $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() + $arFacturaDetalle->getSubtotalOperado();
+                            $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
+                            if($floValorTotalPendiente <= 0) {
+                                $arPedidoDetalle->setEstadoFacturado(1);
+                            }
+                            $em->persist($arPedidoDetalle);                            
+                    }                                                
+                }                                
+                $arFactura->setEstadoAutorizado(1);
+                $em->persist($arFactura);
+                $em->flush();
+            }*/
+                $arFactura->setEstadoAutorizado(1);
+                $em->persist($arFactura);
+                $em->flush();
+        } else {
+            $strResultado = "Ya esta autorizado";
+        }
+        return $strResultado;
+    }
+
+    public function desAutorizar($codigoFactura) {
+        $em = $this->getEntityManager();
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
+        $strResultado = "";
+        if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() == 0) {            
+            /*$arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+            $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+            foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {                    
+                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());                        
+                    $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() + $arFacturaDetalle->getSubtotalOperado();
+                    $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);
+                    $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() - $arFacturaDetalle->getSubtotalOperado();
+                    $arPedidoDetalle->setVrTotalDetalleAfectado($floValorTotalAfectado);
+                    $arPedidoDetalle->setEstadoFacturado(0);
+                    $em->persist($arPedidoDetalle);                        
+                }
+            }*/           
+            $arFactura->setEstadoAutorizado(0);
+            $em->persist($arFactura);
+            $em->flush();
+        } else {
+            $strResultado = "La factura debe estas autorizada y no puede estar anulada o impresa";
+        }
+        return $strResultado;
+    }
+
+    public function imprimir($codigoFactura) {
+        $em = $this->getEntityManager();
+
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        $strResultado = "";
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
+        $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
+        if($arFactura->getEstadoAutorizado() == 1) {
+            if($arFactura->getNumero() == 0) {
+                $intNumero = $em->getRepository('BrasaTurnoBundle:TurFacturaTipo')->consecutivo($arFactura->getCodigoFacturaTipoFk());
+                $arFactura->setNumero($intNumero);
+                $arFactura->setFecha(new \DateTime('now'));
+                $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
+                $arFactura->setFechaVence($dateFechaVence);
+                $arClienteTurno = new \Brasa\TurnoBundle\Entity\TurCliente();
+                $arClienteTurno = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arFactura->getCodigoClienteFk());
+                $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
+                $arClienteCartera = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $arClienteTurno->getNit()));
+                if ($arClienteCartera == null){
+                    $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
+                    $arClienteCartera->setAsesorRel($arClienteTurno->getAsesorRel());
+                    $arClienteCartera->setFormaPagoRel($arClienteTurno->getFormaPagoRel());
+                    $arClienteCartera->setCiudadRel($arClienteTurno->getCiudadRel());
+                    $arClienteCartera->setNit($arClienteTurno->getNit());
+                    $arClienteCartera->setDigitoVerificacion($arClienteTurno->getDigitoVerificacion());
+                    $arClienteCartera->setNombreCorto($arClienteTurno->getNombreCorto());
+                    $arClienteCartera->setPlazoPago($arClienteTurno->getPlazoPago());
+                    $arClienteCartera->setDireccion($arClienteTurno->getDireccion());
+                    $arClienteCartera->setTelefono($arClienteTurno->getTelefono());
+                    $arClienteCartera->setCelular($arClienteTurno->getCelular());
+                    $arClienteCartera->setFax($arClienteTurno->getFax());
+                    $arClienteCartera->setEmail($arClienteTurno->getEmail());
+                    $arClienteCartera->setUsuario($arFactura->getUsuario());
+                    $em->persist($arClienteCartera);
+                }                    
+                    $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find($arFactura->getFacturaTipoRel()->getCodigoDocumentoCartera());
+                    if($arCuentaCobrarTipo) {
+                        $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+                        $arCuentaCobrar->setClienteRel($arClienteCartera);
+                        $arCuentaCobrar->setAsesorRel($arClienteTurno->getAsesorRel());
+                        $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
+                        $arCuentaCobrar->setFecha($arFactura->getFecha());
+                        $arCuentaCobrar->setFechaVence($arFactura->getFechaVence());
+                        $arCuentaCobrar->setCodigoFactura($arFactura->getCodigoFacturaPk());
+                        $arCuentaCobrar->setSoporte($arFactura->getSoporte());
+                        $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
+                        $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
+                        $saldo = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
+                        $arCuentaCobrar->setSaldo($saldo);
+                        $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
+                        $arCuentaCobrar->setAbono(0);
+                        $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
+                        if($arFactura->getProyectoRel()) {
+                            $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
+                        }
+                        $em->persist($arCuentaCobrar);                        
+                    }
+            }
+            $em->persist($arFactura);
+            $em->flush();
+        } else {
+            $strResultado = "Debe autorizar la factura para imprimirla";
+        }
+        return $strResultado;
+    }
+
+    public function anular($codigoFactura) {
+        $em = $this->getEntityManager();
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
+        $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
+        
+        $strResultado = "";
+        if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() != 0 && $arFactura->getEstadoContabilizado() == 0) {
+            $boolAnular = TRUE;
+            $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+            $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+            //Devolver saldo a los pedidos
+            foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
+                    $arPedidoDetalleAct = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+                    $arPedidoDetalleAct = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
+                    $floValorTotalPendiente = $arPedidoDetalleAct->getVrTotalDetallePendiente() + $arFacturaDetalle->getVrPrecio();
+                    $arPedidoDetalleAct->setVrTotalDetallePendiente($floValorTotalPendiente);
+                    $arPedidoDetalleAct->setEstadoFacturado(0);
+                    $em->persist($arPedidoDetalleAct);                    
+                }
+            }
+            //Actualizar los detalles de la factura a cero
+            foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                $arFacturaDetalleAct = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
+                $arFacturaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());
+                $arFacturaDetalle->setVrPrecio(0);
+                $arFacturaDetalle->setCantidad(0);
+                $arFacturaDetalle->setSubtotal(0);
+                $arFacturaDetalle->setSubtotalOperado(0);
+                $arFacturaDetalle->setBaseIva(0);
+                $arFacturaDetalle->setIva(0);
+                $arFacturaDetalle->setTotal(0);
+                $em->persist($arFacturaDetalle);
+            }
+            $arFactura->setVrSubtotal(0);
+            $arFactura->setVrRetencionFuente(0);
+            $arFactura->setVrBaseAIU(0);
+            $arFactura->setVrIva(0);
+            $arFactura->setVrTotal(0);
+            $arFactura->setVrTotalNeto(0);
+            $arFactura->setEstadoAnulado(1);
+            $em->persist($arFactura);
+
+            //Anular cuenta por cobrar
+            /*$arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => 2, 'numeroDocumento' => $arFactura->getNumero()));
+            if($arCuentaCobrar) {
+                if($arCuentaCobrar->getValorOriginal() == $arCuentaCobrar->getSaldo()) {
+                    $arCuentaCobrar->setSaldo(0);
+                    $arCuentaCobrar->setValorOriginal(0);
+                    $arCuentaCobrar->setAbono(0);
+                    $em->persist($arCuentaCobrar);
+                }
+            }*/
+            $em->flush();
+
+        } else {
+            $strResultado = "La factura debe estar autorizada e impresa, no puede estar previamente anulada ni contabilizada";
+        }
+        return $strResultado;
+    }
 }

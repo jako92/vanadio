@@ -78,13 +78,13 @@ class FacturasController extends Controller
         else {
            $arFactura->setFecha(new \DateTime('now'));           
         }
-        $form = $this->createForm(new RhuFacturaType(), $arFactura);       
+        $form = $this->createForm(RhuFacturaType::class, $arFactura);       
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arFactura = $form->getData(); 
-            $arTercero = new \Brasa\GeneralBundle\Entity\GenTercero();
-            $arTercero = $em->getRepository('BrasaGeneralBundle:GenTercero')->find($form->get('terceroRel')->getData());
-            $diasPlazo = $arTercero->getPlazoPagoCliente() - 1;
+            $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
+            $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($form->get('clienteRel')->getData());
+            $diasPlazo = $arCliente->getPlazoPago() - 1;
             $fechaVence = date('Y-m-d', strtotime('+'.$diasPlazo.' day')) ;  
             $arFactura->setFechaVence(new \DateTime($fechaVence));
             $em->persist($arFactura);
@@ -107,18 +107,29 @@ class FacturasController extends Controller
      */
     public function detalleAction(Request $request, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
-                         
-        $form = $this->createFormBuilder()                        
-            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))            
-            ->add('BtnEliminarDetalleServicio', SubmitType::class, array('label'  => 'Eliminar',))            
-            ->add('BtnEliminarDetalleExamen', SubmitType::class, array('label'  => 'Eliminar',))            
-            ->add('BtnEliminarDetalleSeleccion', SubmitType::class, array('label'  => 'Eliminar',))            
-            ->getForm();
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
+        $form = $this->formularioDetalle($arFactura);                               
         $form->handleRequest($request);        
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         if($form->isValid()) {
             $arrControles = $request->request->All();
+            if($form->get('BtnAutorizar')->isClicked()) {                      
+                //$this->actualizarDetalle($arrControles, $codigoFactura);
+                $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->autorizar($codigoFactura);
+                if($strResultado != "") {
+                    $objMensaje->Mensaje("error", $strResultado);
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                
+            }    
+            if($form->get('BtnDesAutorizar')->isClicked()) {                            
+                $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->desAutorizar($codigoFactura);
+                if($strResultado != "") {
+                    $objMensaje->Mensaje("error", $strResultado);
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                
+            }
             if($form->get('BtnEliminarDetalleServicio')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionarServicio');
                 if(count($arrSeleccionados) > 0) {
@@ -165,9 +176,33 @@ class FacturasController extends Controller
                 }
             }             
             if($form->get('BtnImprimir')->isClicked()) {
-                $objFormatoFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
-                $objFormatoFactura->Generar($this, $codigoFactura);
-            }       
+                $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->imprimir($codigoFactura);
+                if($strResultado != "") {
+                    $objMensaje->Mensaje("error", $strResultado);
+                } else {
+                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                    //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
+                        if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
+                            $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\Factura1();
+                            $objFactura->Generar($em, $codigoFactura);                            
+                        }                        
+                    //}                                         
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
+            }
+            
+            if($form->get('BtnVistaPrevia')->isClicked()) {          
+                $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+                $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
+                    if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
+                        $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\Factura1();
+                        $objFactura->Generar($em, $codigoFactura);                            
+                    }                    
+                //}                                 
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
+            }                   
         }
         $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
         $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));        
@@ -238,7 +273,12 @@ class FacturasController extends Controller
                             $arFacturaDetalle->setVrSena($arServicioCobrar->getVrSena());
                             $arFacturaDetalle->setVrIcbf($arServicioCobrar->getVrIcbf());
                             $arFacturaDetalle->setVrCesantias($arServicioCobrar->getVrCesantias());
+                            $arFacturaDetalle->setVrCesantiasIntereses($arServicioCobrar->getVrCesantiasIntereses());
+                            $arFacturaDetalle->setVrPrimas($arServicioCobrar->getVrPrimas());
                             $arFacturaDetalle->setVrVacaciones($arServicioCobrar->getVrVacaciones());
+                            $arFacturaDetalle->setVrAporteParafiscales($arServicioCobrar->getVrAporteParafiscales());
+                            $arFacturaDetalle->setVrAdicionalPrestacional($arServicioCobrar->getVrAdicionalPrestacional());
+                            $arFacturaDetalle->setVrAdicionalNoPrestacional($arServicioCobrar->getVrAdicionalNoPrestacional());
                             $arFacturaDetalle->setVrAdministracion($arServicioCobrar->getVrAdministracion());
                             $arFacturaDetalle->setVrNeto($arServicioCobrar->getVrNeto());
                             $arFacturaDetalle->setVrBruto($arServicioCobrar->getVrBruto());
@@ -361,11 +401,11 @@ class FacturasController extends Controller
     
     private function filtrar($form) {
         $session = new session;                
-        $codigoTerceros = '';
-        if($form->get('terceroRel')->getData()) {
-            $codigoTerceros = $form->get('terceroRel')->getData()->getCodigoTerceroPk();
+        $codigoCliente = '';
+        if($form->get('clienteRel')->getData()) {
+            $codigoCliente = $form->get('clienteRel')->getData()->getCodigoClientePk();
         }        
-        $session->set('filtroCodigoTerceros', $codigoTerceros);
+        $session->set('filtroCodigoCliente', $codigoCliente);
         $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
@@ -402,23 +442,23 @@ class FacturasController extends Controller
             $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         
-        $arrayPropiedadesTerceros = array(
-                'class' => 'BrasaGeneralBundle:GenTercero',
+        $arrayPropiedadesClientes = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.nombreCorto', 'ASC');},
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombreCorto', 'ASC');},
                 'choice_label' => 'nombreCorto',
                 'required' => false,
                 'empty_data' => "",
                 'placeholder' => "TODOS",
                 'data' => ""
             );
-        if($session->get('filtroCodigoTerceros')) {
-            $arrayPropiedadesTerceros['data'] = $em->getReference("BrasaGeneralBundle:GenTercero", $session->get('filtroCodigoTerceros'));
+        if($session->get('filtroCodigoCliente')) {
+            $arrayPropiedadesClientes['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCliente", $session->get('filtroCodigoCliente'));
         }
         
         $form = $this->createFormBuilder()
-            ->add('terceroRel', EntityType::class, $arrayPropiedadesTerceros)
+            ->add('clienteRel', EntityType::class, $arrayPropiedadesClientes)
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroNumero')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
@@ -427,6 +467,43 @@ class FacturasController extends Controller
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
             ->getForm();
+        return $form;
+    }
+    
+    private function formularioDetalle($ar) {        
+        $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);      
+        $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);        
+        $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
+        $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
+        $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonDetalleEliminarDetalleExamen = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonDetalleEliminarDetalleSeleccion = array('label' => 'Eliminar', 'disabled' => false);
+        if($ar->getEstadoAutorizado() == 1) {            
+            $arrBotonAutorizar['disabled'] = true;                        
+            $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;            
+            $arrBotonDetalleEliminarDetalleExamen['disabled'] = true;
+            $arrBotonDetalleEliminarDetalleSeleccion['disabled'] = true;
+            $arrBotonAnular['disabled'] = false; 
+            if($ar->getEstadoAnulado() == 1) {
+                $arrBotonDesAutorizar['disabled'] = true;
+                $arrBotonAnular['disabled'] = true;
+            }            
+        } else {
+            $arrBotonDesAutorizar['disabled'] = true;            
+            $arrBotonImprimir['disabled'] = true;
+        }
+ 
+        $form = $this->createFormBuilder()
+                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
+                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                                     
+                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                    
+                    ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                    
+                    ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)            
+                    ->add('BtnEliminarDetalleExamen', SubmitType::class, $arrBotonDetalleEliminarDetalleExamen)            
+                    ->add('BtnEliminarDetalleSeleccion', SubmitType::class, $arrBotonDetalleEliminarDetalleSeleccion)                    
+                    ->getForm();                                 
         return $form;
     }
     

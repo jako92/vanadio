@@ -23,8 +23,23 @@
         </script>        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
-        <div class="btn-group">                        
-            {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                            
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_facturas_nuevo', {'codigoFactura': 0 }) }}">Nuevo</a>
+                {% if arFactura.estadoAutorizado == 0 %}
+                    <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_facturas_nuevo', {'codigoFactura': arFactura.codigoFacturaPk }) }}">Editar</a>
+                {% endif %}
+                {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnVistaPrevia, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnAnular, { 'attr': {'class': 'btn btn-default btn-sm', 'onclick': 'return confirm("Esta seguro de anular la factura?")'} }) }}
+            </div>
+        </div>
+        <div style="float:right">
+            {% if arFactura.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}
+            {% if arFactura.numero != 0 %}<span class="label label-success">Impreso</span>{% endif %}            
+            {% if arFactura.estadoAnulado == 1 %}<span class="label label-danger">Anulado</span>{% endif %}
         </div>
         <br /><br />
         <!-- Encabezado Movimiento -->
@@ -49,8 +64,8 @@
                         <td class="td-in-well-numerico" align="right">$ {{ arFactura.vrRetencionFuente | number_format(0, '.', ',') }}</td>                   
                     </tr>
                     <tr>
-                        <td class="titulo">TERCERO:</td>
-                        <td class="td-in-well">{{ arFactura.terceroRel.nombreCorto }}</td>
+                        <td class="titulo">CLIENTE:</td>
+                        <td class="td-in-well">{{ arFactura.clienteRel.nombreCorto }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">RETENCION CREE:</td>
@@ -117,17 +132,26 @@
                         <tr>
                             <th>CÓDIGO</th>
                             <th>PAGO</th>
-                            <th style="text-align: right">IBC</th>
-                            <th style="text-align: right">T. A</th>
-                            <th style="text-align: right">V. A</th>
+                            <th>DOCUMENTO</th>
+                            <th>EMPLEADO</th>
+                            <th style="text-align: right">BASICO</th>                            
+                            <th style="text-align: right">VR. A. P.</th>
+                            <th style="text-align: right">VR. A. NP.</th>
                             <th style="text-align: right">AUX. TRANS</th>
                             <th style="text-align: right">ARP</th>
                             <th style="text-align: right">EPS</th>
                             <th style="text-align: right">PENSION</th>
                             <th style="text-align: right">CAJA</th>
+                            <th style="text-align: right">SENA</th>
+                            <th style="text-align: right">ICBF</th>
                             <th style="text-align: right">CESANTIAS</th>
+                            <th style="text-align: right">CESANTIAS INT.</th>
+                            <th style="text-align: right">PRIMAS</th>
                             <th style="text-align: right">VACACIONES</th>
+                            <th style="text-align: right">A. PARAFISCAL</th>
                             <th style="text-align: right">ADMON</th>
+                            <th style="text-align: right">VR. COSTO</th>
+                            <th style="text-align: right">VR. TOTAL</th>
                             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarServicio[]');"/></th>
                         </tr>
 
@@ -135,17 +159,26 @@
                             <tr> 
                                 <td><input type="hidden" name="LblCodigo[]" value="{{ arFacturaDetalles.codigoFacturaDetallePk }}">{{ arFacturaDetalles.codigoFacturaDetallePk }}</td>                                  
                                 <td style="text-align: right">{{ arFacturaDetalles.codigoPagoFk }}</td>
-                                <td style="text-align: right">{{ arFacturaDetalles.VrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arFacturaDetalles.VrAdicionalTiempo | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arFacturaDetalles.VrAdicionalValor | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.empleadoRel.numeroIdentificacion }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.empleadoRel.nombreCorto }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrSalario | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrAdicionalPrestacional | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrAdicionalNoPrestacional | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrArp | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrEps | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrPension | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrCaja | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrSena | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrIcbf | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrCesantias | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrCesantiasIntereses | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrPrimas | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrVacaciones | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrAporteParafiscales | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrAdministracion | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrCosto | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arFacturaDetalles.VrTotalCobrar | number_format(0, '.', ',') }}</td>
                                 <td><input type="checkbox" name="ChkSeleccionarServicio[]" value="{{ arFacturaDetalles.codigoFacturaDetallePk }}" /></td>
                             </tr>
                         {% endfor %} 
@@ -153,7 +186,9 @@
                     <!-- Fin Botones Menu Items -->
                     <div class="btn-toolbar" style="float:right">
                         <div class="btn-group">
-                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_servicio', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo</a>
+                            {% if arFactura.estadoAutorizado == 0 %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_servicio', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo</a>
+                            {% endif %}    
                         </div>
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarDetalleServicio, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
@@ -186,7 +221,9 @@
                     </table>                
                     <div class="btn-toolbar" style="float:right">                    
                         <div class="btn-group">
-                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_examen', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
+                            {% if arFactura.estadoAutorizado == 0 %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_examen', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
+                            {% endif %}    
                         </div>
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarDetalleExamen, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
@@ -219,7 +256,9 @@
                     </table>                
                     <div class="btn-toolbar" style="float:right">                    
                         <div class="btn-group">
-                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_seleccion', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
+                            {% if arFactura.estadoAutorizado == 0 %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_seleccion', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
+                            {% endif %}    
                         </div>
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarDetalleSeleccion, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
