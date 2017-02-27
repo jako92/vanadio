@@ -94,8 +94,8 @@
                 <th>RTE ICA</th>
                 <th>RTE IVA</th>
                 <th>RTE FUENTE</th>
-                <th>VALOR</th>
-                <th>VALOR PAGO</th>
+                <th>PAGO</th>
+                <th>TOTAL</th>
             </tr>
             {% for arRecibosDetalles in arRecibosDetalles %}
                 <tr>
@@ -110,8 +110,8 @@
                     <td style="text-align: right">{{ arRecibosDetalles.vrRetencionIca | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.vrRetencionIva | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.vrRetencionFuente | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibosDetalles.valor | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibosDetalles.vrPago | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosDetalles.vrPagoAfectar | number_format(2, '.', ',') }}</td>
                 </tr>
 
             {% endfor %}

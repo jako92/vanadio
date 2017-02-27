@@ -459,7 +459,7 @@ class ReciboController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroCotizacionNumero')))
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroReciboNumero')))
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
             ->add('estadoImpreso', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'IMPRESO' => '1', 'SIN IMPRIMIR' => '0'), 'data' => $session->get('filtroReciboEstadoImpreso')))                
@@ -537,10 +537,11 @@ class ReciboController extends Controller
                     ->setCellValue('E1', 'CUENTA')
                     ->setCellValue('F1', 'TIPO RECIBO')
                     ->setCellValue('G1', 'FECHA PAGO')
-                    ->setCellValue('H1', 'TOTAL')
-                    ->setCellValue('I1', 'ANULADO')
-                    ->setCellValue('J1', 'AUTORIZADO')
-                    ->setCellValue('K1', 'IMPRESO');
+                    ->setCellValue('H1', 'PAGO')
+                    ->setCellValue('I1', 'TOTAL')
+                    ->setCellValue('J1', 'ANU')
+                    ->setCellValue('K1', 'AUT')
+                    ->setCellValue('L1', 'IMP');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -554,10 +555,11 @@ class ReciboController extends Controller
                     ->setCellValue('E' . $i, $arRecibo->getCuentaRel()->getNombre())
                     ->setCellValue('F' . $i, $arRecibo->getReciboTipoRel()->getNombre())
                     ->setCellValue('G' . $i, $arRecibo->getFechaPago()->format('Y-m-d'))
-                    ->setCellValue('H' . $i, $arRecibo->getVrTotal())
-                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAnulado()))
-                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAutorizado()))
-                    ->setCellValue('K' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoImpreso()));
+                    ->setCellValue('H' . $i, $arRecibo->getVrPago())
+                    ->setCellValue('I' . $i, $arRecibo->getVrPagoTotal())
+                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAnulado()))
+                    ->setCellValue('K' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAutorizado()))
+                    ->setCellValue('L' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoImpreso()));
             if($arRecibo->getClienteRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('C' . $i, $arRecibo->getClienteRel()->getNit());

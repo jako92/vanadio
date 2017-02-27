@@ -113,7 +113,7 @@ class ReciboResumen extends \FPDF_FPDF {
             car_recibo_tipo.nombre AS tipo, 
             gen_cuenta.nombre AS cuenta, 
             COUNT(car_recibo.codigo_recibo_pk) AS numeroRecibos, 
-            SUM(car_recibo.vr_total) AS vrTotalPago
+            SUM(car_recibo.vr_pago) AS vrPago
             FROM car_recibo  
             LEFT JOIN car_recibo_tipo ON car_recibo.codigo_recibo_tipo_fk = car_recibo_tipo.codigo_recibo_tipo_pk 
             LEFT JOIN gen_cuenta ON car_recibo.codigo_cuenta_fk = gen_cuenta.codigo_cuenta_pk 
@@ -131,7 +131,7 @@ class ReciboResumen extends \FPDF_FPDF {
             $pdf->Cell(50, 4, $registro['cuenta'], 1, 0, 'L');
             $pdf->Cell(20, 4, $registro['numeroRecibos'], 1, 0, 'L');
             $pdf->Cell(30, 4, number_format($registro['vrTotalPago'], 2, '.', ','), 1, 0, 'R');
-            $total += $registro['vrTotalPago'];
+            $total += $registro['vrPago'];
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }

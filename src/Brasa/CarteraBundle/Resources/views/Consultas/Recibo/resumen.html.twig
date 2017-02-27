@@ -86,14 +86,14 @@
                 <th>TIPO</th>
                 <th>CUENTA</th>
                 <th>NUM</th>
-                <th>TOTAL</th>
+                <th>PAGO</th>
             </tr>
             {% for arRecibosResumen in arRecibosResumen %}
                 <tr>
                     <td>{{ arRecibosResumen.tipo  }}</td>
                     <td>{{ arRecibosResumen.cuenta  }}</td>
                     <td>{{ arRecibosResumen.numeroRecibos  }}</td>
-                    <td style="text-align: right">{{ arRecibosResumen.vrTotalPago | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibosResumen.vrPago | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
         </table>  
@@ -113,7 +113,7 @@
                 <th>RTE ICA</th>
                 <th>RTE IVA</th>
                 <th>RTE FTE</th>
-                <th>TOTAL</th>
+                <th>PAGO</th>
                 <th>ANU</th>
                 <th>AUT</th>
                 <th>IMP</th>
@@ -133,7 +133,7 @@
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionIca | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionIva | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionFuente | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotal | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrPago | number_format(2, '.', ',') }}</td>
                     <td>{% if arRecibos.estadoAnulado == 1%}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoAutorizado == 1%}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoImpreso == 1%}SI{% else %}NO{% endif %}</td>

@@ -88,7 +88,7 @@ class ReciboController extends Controller
         $strFechaDesde = "";
         $strFechaHasta = "";
         $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarRecibo')->listaConsultaDql(
-                $session->get('filtroNumero'), 
+                $session->get('filtroReciboNumero'), 
                 $session->get('filtroCodigoCliente'), 
                 $session->get('filtroReciboTipo'),
                 $session->get('filtroDesde'),
@@ -101,7 +101,7 @@ class ReciboController extends Controller
         $strFechaDesde = "";
         $strFechaHasta = "";
         $this->strDetalleDql =  $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->detalleConsultaDql(
-                $session->get('filtroNumero'), 
+                $session->get('filtroReciboNumero'), 
                 $session->get('filtroCodigoCliente'), 
                 $session->get('filtroCuentaCobrarTipo'),
                 $session->get('filtroDesde'),
@@ -118,7 +118,7 @@ class ReciboController extends Controller
         }
         $fechaDesde =  $form->get('fechaDesde')->getData();
         $fechaHasta =  $form->get('fechaHasta')->getData();        
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());           
+        $session->set('filtroReciboNumero', $form->get('TxtNumero')->getData());           
         $session->set('filtroReciboTipo', $codigo);
         $session->set('filtroNit', $form->get('TxtNit')->getData());                         
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
@@ -136,7 +136,7 @@ class ReciboController extends Controller
         }
         $fechaDesde =  $form->get('fechaDesde')->getData();
         $fechaHasta =  $form->get('fechaHasta')->getData();          
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());           
+        $session->set('filtroReciboNumero', $form->get('TxtNumero')->getData());           
         $session->set('filtroCuentaCobrarTipo', $codigo);
         $session->set('filtroNit', $form->get('TxtNit')->getData());                         
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
@@ -177,7 +177,7 @@ class ReciboController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroReciboNumero')))            
             ->add('reciboTipoRel', EntityType::class, $arrayPropiedades)
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
@@ -220,7 +220,7 @@ class ReciboController extends Controller
         $form = $this->createFormBuilder()
             ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
             ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
+            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroReciboNumero')))            
             ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
@@ -288,8 +288,8 @@ class ReciboController extends Controller
                     ->setCellValue('K' . $i, $arRecibo->getVrTotalRetencionIca())
                     ->setCellValue('L' . $i, $arRecibo->getVrTotalRetencionIva())
                     ->setCellValue('M' . $i, $arRecibo->getVrTotalRetencionFuente())
-                    ->setCellValue('N' . $i, $arRecibo->getVrTotal())
-                    ->setCellValue('O' . $i, $arRecibo->getVrTotalPago())
+                    ->setCellValue('N' . $i, $arRecibo->getVrPago())
+                    ->setCellValue('O' . $i, $arRecibo->getVrPagoTotal())
                     ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAnulado()))
                     ->setCellValue('Q' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoAutorizado()))
                     ->setCellValue('R' . $i, $objFunciones->devuelveBoolean($arRecibo->getEstadoImpreso()));
@@ -366,8 +366,8 @@ class ReciboController extends Controller
                     ->setCellValue('I1', 'RTE ICA')
                     ->setCellValue('J1', 'RTE IVA')
                     ->setCellValue('K1', 'RTE FUENTE')
-                    ->setCellValue('L1', 'VALOR')
-                    ->setCellValue('M1', 'VALOR PAGO');
+                    ->setCellValue('L1', 'PAGO')
+                    ->setCellValue('M1', 'TOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strDetalleDql);
@@ -387,8 +387,8 @@ class ReciboController extends Controller
                     ->setCellValue('I' . $i, $arReciboDetalle->getVrRetencionIca())
                     ->setCellValue('J' . $i, $arReciboDetalle->getVrRetencionIva())
                     ->setCellValue('K' . $i, $arReciboDetalle->getVrRetencionFuente())
-                    ->setCellValue('L' . $i, $arReciboDetalle->getValor())
-                    ->setCellValue('M' . $i, $arReciboDetalle->getVrPago());   
+                    ->setCellValue('L' . $i, $arReciboDetalle->getVrPago())
+                    ->setCellValue('M' . $i, $arReciboDetalle->getVrPagoAfectar());   
             $i++;
         }
 

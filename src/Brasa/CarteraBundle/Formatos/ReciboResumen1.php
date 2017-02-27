@@ -87,7 +87,7 @@ class ReciboResumen1 extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(14);
-        $header = array('TIPO', 'CUENTA', 'NUMERO', 'TOTAL');
+        $header = array('TIPO', 'CUENTA', 'NUMERO', 'PAGO');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -114,7 +114,7 @@ class ReciboResumen1 extends \FPDF_FPDF {
             car_recibo_tipo.nombre AS tipo, 
             gen_cuenta.nombre AS cuenta, 
             COUNT(car_recibo.codigo_recibo_pk) AS numeroRecibos, 
-            SUM(car_recibo.vr_total) AS vrTotalPago
+            SUM(car_recibo.vr_pago) AS vrPago
             FROM car_recibo  
             LEFT JOIN car_recibo_tipo ON car_recibo.codigo_recibo_tipo_fk = car_recibo_tipo.codigo_recibo_tipo_pk 
             LEFT JOIN gen_cuenta ON car_recibo.codigo_cuenta_fk = gen_cuenta.codigo_cuenta_pk 
@@ -131,8 +131,8 @@ class ReciboResumen1 extends \FPDF_FPDF {
             $pdf->Cell(50, 4, $registro['tipo'], 1, 0, 'L');
             $pdf->Cell(50, 4, $registro['cuenta'], 1, 0, 'L');
             $pdf->Cell(20, 4, $registro['numeroRecibos'], 1, 0, 'L');
-            $pdf->Cell(30, 4, number_format($registro['vrTotalPago'], 2, '.', ','), 1, 0, 'R');
-            $total += $registro['vrTotalPago'];
+            $pdf->Cell(30, 4, number_format($registro['vrPago'], 2, '.', ','), 1, 0, 'R');
+            $total += $registro['vrPago'];
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }
@@ -143,7 +143,7 @@ class ReciboResumen1 extends \FPDF_FPDF {
         $pdf->Ln();
         $pdf->Ln();
 
-        $header = array('COD','TIPO', 'NRO', 'FECHA', 'CUENTA', 'CLIENTE', 'DCTO', 'AJUSTE', 'RTEICA', 'RTEIVA', 'RTEFTE', 'TOTAL');
+        $header = array('COD','TIPO', 'NRO', 'FECHA', 'CUENTA', 'CLIENTE', 'DCTO', 'AJUSTE', 'RTEICA', 'RTEIVA', 'RTEFTE', 'PAGO');
         $pdf->SetFillColor(236, 236, 236);
         $pdf->SetTextColor(0);
         $pdf->SetDrawColor(0, 0, 0);
@@ -178,7 +178,7 @@ class ReciboResumen1 extends \FPDF_FPDF {
             $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionIca(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionIva(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(11, 4, number_format($arRecibo->getVrTotalRetencionFuente(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(13, 4, number_format($arRecibo->getVrTotal(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(13, 4, number_format($arRecibo->getVrPago(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
         }        

@@ -96,8 +96,8 @@
                 <th>T. RTE ICA</th>
                 <th>T. RTE IVA</th>
                 <th>T. RTE FUENTE</th>
-                <th>TOTAL</th>
-                <th>T. PAGO</th>
+                <th>PAGO</th>
+                <th>T_PAGO</th>
                 <th>ANU</th>
                 <th>AUT</th>
                 <th>IMP</th>
@@ -117,8 +117,8 @@
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionIca | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionIva | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arRecibos.vrTotalRetencionFuente | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotal | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arRecibos.vrTotalPago | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrPago | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arRecibos.vrPagoTotal | number_format(2, '.', ',') }}</td>
                     <td>{% if arRecibos.estadoAnulado == 1%}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoAutorizado == 1%}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoImpreso == 1%}SI{% else %}NO{% endif %}</td>
