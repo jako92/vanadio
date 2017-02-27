@@ -124,9 +124,14 @@ class PagoBancoDetalleController extends Controller {
         for ($col = 'A'; $col !== 'X'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
+          for($col = 'L'; $col !== 'M'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
+        }  
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('A1', 'ID')
                 ->setCellValue('B1', 'NUMERO')
                 ->setCellValue('C1', 'PAG')
                 ->setCellValue('D1', 'VAC')
@@ -157,7 +162,7 @@ class PagoBancoDetalleController extends Controller {
                     ->setCellValue('D' . $i, $arPagoBancoDetalle->getCodigoVacacionFk())
                     ->setCellValue('E' . $i, $arPagoBancoDetalle->getCodigoLiquidacionFk())
                     ->setCellValue('F' . $i, $arPagoBancoDetalle->getCodigoPeriodoDetalleFk())
-                    ->setCellValue('G' . $i, $arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion())
+                    ->setCellValue('G' . $i, $arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion()->format('Y-m-d'))
                     ->setCellValue('H' . $i, $arPagoBancoDetalle->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('I' . $i, $arPagoBancoDetalle->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('J' . $i, $banco)
