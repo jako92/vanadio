@@ -154,7 +154,7 @@ class TurFacturaRepository extends EntityRepository {
             if($arConfiguracion->getAplicarTopeRetencionFuenteNotasCredito() == 0) {
                 $topeRetencionFuente = 0;
             }         
-        }
+        }        
         $porRetencionFuente = $arFactura->getFacturaServicioRel()->getPorRetencionFuente();
         $porBaseRetencionFuente = $arFactura->getFacturaServicioRel()->getPorBaseRetencionFuente();
         $baseRetencionFuente = ($subtotal * $porBaseRetencionFuente) / 100;
@@ -165,13 +165,21 @@ class TurFacturaRepository extends EntityRepository {
                 $retencionFuente = round($retencionFuente);
             }            
         }
-        $totalNeto = $subtotal + $iva - $retencionFuente;
+        $retencionIva = 0;
+        if($arFactura->getClienteRel()->getAutorretenedor()) {
+            if($iva > 0) {
+                $retencionIva = ($iva * 15) / 100;
+                $retencionIva = round($retencionIva);
+            }                
+        }     
+        
+        $totalNeto = $subtotal + $iva - $retencionFuente - $retencionIva;
         $arFactura->setVrBaseAIU($baseIva);
-        $arFactura->setVrBaseRetencionFuente($baseRetencionFuente);
+        $arFactura->setVrBaseRetencionFuente($baseRetencionFuente);        
         $arFactura->setVrSubtotal($subtotal);
-        $arFactura->setVrSubtotalOperado($subtotal * $arFactura->getOperacion());
-        //$arFactura->setVrSubtotalOtros($floSubTotalConceptos);
+        $arFactura->setVrSubtotalOperado($subtotal * $arFactura->getOperacion());        
         $arFactura->setVrRetencionFuente($retencionFuente);
+        $arFactura->setVrRetencionIva($retencionIva);
         $arFactura->setVrIva($iva);
         $arFactura->setvrTotal($total);
         $arFactura->setVrTotalNeto($totalNeto);

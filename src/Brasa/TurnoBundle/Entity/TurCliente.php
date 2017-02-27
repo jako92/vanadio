@@ -217,6 +217,11 @@ class TurCliente
      */    
     private $regimenSimplificado = false;      
     
+    /**     
+     * @ORM\Column(name="autorretenedor", type="boolean")
+     */    
+    private $autorretenedor = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
@@ -2193,5 +2198,29 @@ class TurCliente
     public function getCostosDetallesClienteRel()
     {
         return $this->costosDetallesClienteRel;
+    }
+
+    /**
+     * Set autorretenedor
+     *
+     * @param boolean $autorretenedor
+     *
+     * @return TurCliente
+     */
+    public function setAutorretenedor($autorretenedor)
+    {
+        $this->autorretenedor = $autorretenedor;
+
+        return $this;
+    }
+
+    /**
+     * Get autorretenedor
+     *
+     * @return boolean
+     */
+    public function getAutorretenedor()
+    {
+        return $this->autorretenedor;
     }
 }
