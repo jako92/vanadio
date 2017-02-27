@@ -48,9 +48,10 @@ class TurControlPuesto
     private $novedad;   
     
     /**
-     * @ORM\OneToMany(targetEntity="TurControlPuestoDetalle", mappedBy="controlPuestoRel", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="TurControlPuestoDetalle", mappedBy="controlPuestoRel")
      */
     protected $controlesPuestosDetallesControlPuestoRel;     
+
     /**
      * Constructor
      */

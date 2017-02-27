@@ -445,7 +445,8 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
             $query = $em->createQuery($dql);
             $arContratos = $query->getResult();
-            foreach ($arContratos as $arContrato) {                
+            foreach ($arContratos as $arContrato) { 
+                $intDiasPeriodoReales = 0;
                 $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
                 $arProgramacionPagoDetalle->setProgramacionPagoRel($arProgramacionPago);
                 $arProgramacionPagoDetalle->setEmpleadoRel($arContrato->getEmpleadoRel());
@@ -498,6 +499,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     $intDias = $dateFechaDesde->diff($dateFechaHasta);
                     $intDias = $intDias->format('%a');
                     $intDiasDevolver = $intDias + 1;
+                    $intDiasPeriodoReales = $intDias+1;
                     //Mes de febrero para periodos NO continuos
                     $intDiasInhabilesFebrero = 0;
                     if($arProgramacionPago->getCentroCostoRel()->getPeriodoPagoRel()->getContinuo() == 0) {
@@ -558,12 +560,15 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 }     
                 
                 $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
-                $dias = $intDiasDevolver - $diasNovedad;
-                $arProgramacionPagoDetalle->setDias($dias);
-                $arProgramacionPagoDetalle->setDiasReales($intDiasDevolver);                
-                
+                $dias = $intDiasDevolver - $diasNovedad;                                
                 $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * 8;
                 $horasDiurnas = ($intDiasDevolver * $arContrato->getFactorHorasDia()) - $horasNovedad;
+                if($intDiasPeriodoReales == $diasNovedad) {
+                    $dias = 0;
+                    $horasDiurnas = 0; 
+                }                
+                $arProgramacionPagoDetalle->setDias($dias);
+                $arProgramacionPagoDetalle->setDiasReales($intDiasDevolver);                
                 $arProgramacionPagoDetalle->setHorasPeriodo($horasDiurnas);
                 $arProgramacionPagoDetalle->setHorasDiurnas($horasDiurnas);
                 $arProgramacionPagoDetalle->setHorasPeriodoReales($horasDiurnas);
@@ -987,6 +992,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $dateFechaDesde =  "";
             $dateFechaHasta =  "";
             $intDiasDevolver = 0;
+            $intDiasPeriodoReales = 0;
             $fechaFinalizaContrato = $arContrato->getFechaHasta();
             if($arContrato->getIndefinido() == 1) {
                 $fecha = date_create(date('Y-m-d'));
@@ -1021,6 +1027,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $intDias = $dateFechaDesde->diff($dateFechaHasta);
                 $intDias = $intDias->format('%a');
                 $intDiasDevolver = $intDias + 1;
+                $intDiasPeriodoReales = $intDias+1;
                 //Mes de febrero para periodos NO continuos
                 $intDiasInhabilesFebrero = 0;
                 if($arProgramacionPago->getCentroCostoRel()->getPeriodoPagoRel()->getContinuo() == 0) {
@@ -1076,11 +1083,14 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             }  
             $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
             $dias = $intDiasDevolver - $diasNovedad;
-            $arProgramacionPagoDetalle->setDias($dias);
-            $arProgramacionPagoDetalle->setDiasReales($intDiasDevolver);
-
             $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * 8;
             $horasDiurnas = ($intDiasDevolver * $arContrato->getFactorHorasDia()) - $horasNovedad;
+            if($intDiasPeriodoReales == $diasNovedad) {
+                $dias = 0;
+                $horasDiurnas = 0; 
+            }
+            $arProgramacionPagoDetalle->setDias($dias);
+            $arProgramacionPagoDetalle->setDiasReales($intDiasDevolver);            
             $arProgramacionPagoDetalle->setHorasPeriodo($horasDiurnas);
             $arProgramacionPagoDetalle->setHorasDiurnas($horasDiurnas);
             $arProgramacionPagoDetalle->setHorasPeriodoReales($horasDiurnas);
