@@ -13,34 +13,34 @@ class RhuEmpleadoRepository extends EntityRepository {
 
     public function ListaDql($strNombre = "", $strCodigoCentroCosto = "", $boolMostrarActivos = 2, $strIdentificacion = "", $boolMostrarPagadosEntidadSalud = "", $boolMostrarContratados = 2, $codigo = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-        if($codigo != "") {
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+        if ($codigo != "") {
             $dql .= " AND e.codigoEmpleadoPk = " . $codigo;
-        }        
-        if($strNombre != "" ) {
+        }
+        if ($strNombre != "") {
             $dql .= " AND e.nombreCorto LIKE '%" . $strNombre . "%'";
         }
-        if($strCodigoCentroCosto != "") {
+        if ($strCodigoCentroCosto != "") {
             $dql .= " AND e.codigoCentroCostoFk = " . $strCodigoCentroCosto;
         }
-        if($boolMostrarActivos == 1 ) {
+        if ($boolMostrarActivos == 1) {
             $dql .= " AND e.estadoActivo = 1";
         }
-        if($boolMostrarActivos == "0") {
+        if ($boolMostrarActivos == "0") {
             $dql .= " AND e.estadoActivo = 0";
         }
-        if($boolMostrarContratados == 1 ) {
+        if ($boolMostrarContratados == 1) {
             $dql .= " AND e.estadoContratoActivo = 1";
         }
-        if($boolMostrarContratados == "0") {
+        if ($boolMostrarContratados == "0") {
             $dql .= " AND e.estadoContratoActivo = 0";
         }
-        /*if($boolMostrarPagadosEntidadSalud == 1 ) {
-            $dql .= " AND e.pagadoEntidadSalud = 1";
-        } elseif ($boolMostrarPagadosEntidadSalud == 0) {
-            $dql .= " AND e.pagadoEntidadSalud = 0";
-        }*/
-        if($strIdentificacion != "" ) {
+        /* if($boolMostrarPagadosEntidadSalud == 1 ) {
+          $dql .= " AND e.pagadoEntidadSalud = 1";
+          } elseif ($boolMostrarPagadosEntidadSalud == 0) {
+          $dql .= " AND e.pagadoEntidadSalud = 0";
+          } */
+        if ($strIdentificacion != "") {
             $dql .= " AND e.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
         $dql .= " ORDER BY e.nombreCorto";
@@ -49,90 +49,90 @@ class RhuEmpleadoRepository extends EntityRepository {
 
     public function buscarDql($strNombre = "", $strCodigoCentroCosto = "", $boolMostrarActivos = 2, $strIdentificacion = "", $codigoEmpleado = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-        if($strNombre != "" ) {
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+        if ($strNombre != "") {
             $dql .= " AND e.nombreCorto LIKE '%" . $strNombre . "%'";
         }
-        if($strCodigoCentroCosto != "") {
+        if ($strCodigoCentroCosto != "") {
             $dql .= " AND e.codigoCentroCostoFk = " . $strCodigoCentroCosto;
         }
-        if($boolMostrarActivos == 1 ) {
+        if ($boolMostrarActivos == 1) {
             $dql .= " AND e.estadoActivo = 1";
         }
-        if($boolMostrarActivos == "0") {
+        if ($boolMostrarActivos == "0") {
             $dql .= " AND e.estadoActivo = 0";
         }
-        if($codigoEmpleado != "") {
+        if ($codigoEmpleado != "") {
             $dql .= " AND e.codigoEmpleadoPk = " . $codigoEmpleado;
         }
 
-        if($strIdentificacion != "" ) {
+        if ($strIdentificacion != "") {
             $dql .= " AND e.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
         $dql .= " ORDER BY e.nombreCorto";
         return $dql;
-    }    
-    
+    }
+
     public function ListaEmpleadoDQL($strCodigoCentroCosto = "", $strNombre = "", $strIdentificacion = "", $strCodigoEntidadSalud = "", $strCodigoEntidadPension = "", $strCodigoEntidadCaja = "", $strDesde = "", $strHasta = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-        if($strCodigoCentroCosto != "") {
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+        if ($strCodigoCentroCosto != "") {
             $dql .= " AND e.codigoCentroCostoFk = " . $strCodigoCentroCosto;
         }
-        if($strNombre != "" ) {
+        if ($strNombre != "") {
             $dql .= " AND e.nombreCorto LIKE '%" . $strNombre . "%'";
         }
-        if($strIdentificacion != "" ) {
+        if ($strIdentificacion != "") {
             $dql .= " AND e.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
-        if($strCodigoEntidadSalud != "") {
+        if ($strCodigoEntidadSalud != "") {
             $dql .= " AND e.codigoEntidadSaludFk = " . $strCodigoEntidadSalud;
         }
-        if($strCodigoEntidadPension != "") {
+        if ($strCodigoEntidadPension != "") {
             $dql .= " AND e.codigoEntidadPensionFk = " . $strCodigoEntidadPension;
         }
-        if($strCodigoEntidadCaja != "") {
+        if ($strCodigoEntidadCaja != "") {
             $dql .= " AND e.codigoEntidadCajaFk = " . $strCodigoEntidadCaja;
         }
-        if ($strDesde != ""){
-            $dql .= " AND e.fechaContrato >='" . date_format($strDesde, ('Y-m-d')). "'";
+        if ($strDesde != "") {
+            $dql .= " AND e.fechaContrato >='" . date_format($strDesde, ('Y-m-d')) . "'";
         }
-        if($strHasta != "") {
+        if ($strHasta != "") {
             $dql .= " AND e.fechaContrato <='" . date_format($strHasta, ('Y-m-d')) . "'";
         }
         $dql .= " ORDER BY e.nombreCorto";
         return $dql;
     }
-    
+
     public function ListaRecursoDql($strNombre = "", $strCodigoCentroCosto = "", $boolMostrarActivos = 2, $strIdentificacion = "", $boolMostrarPagadosEntidadSalud = "", $boolMostrarContratados = 2) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-        if($strNombre != "" ) {
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+        if ($strNombre != "") {
             $dql .= " AND e.nombreCorto LIKE '%" . $strNombre . "%'";
         }
-        if($strCodigoCentroCosto != "") {
+        if ($strCodigoCentroCosto != "") {
             $dql .= " AND e.codigoCentroCostoFk = " . $strCodigoCentroCosto;
         }
-        if($boolMostrarActivos == 1 ) {
+        if ($boolMostrarActivos == 1) {
             $dql .= " AND e.estadoActivo = 1";
         }
-        if($boolMostrarActivos == "0") {
+        if ($boolMostrarActivos == "0") {
             $dql .= " AND e.estadoActivo = 0";
         }
-        if($boolMostrarContratados == 1 ) {
+        if ($boolMostrarContratados == 1) {
             $dql .= " AND e.estadoContratoActivo = 1";
         }
-        if($boolMostrarContratados == "0") {
+        if ($boolMostrarContratados == "0") {
             $dql .= " AND e.estadoContratoActivo = 0";
         }
-        if($strIdentificacion != "" ) {
+        if ($strIdentificacion != "") {
             $dql .= " AND e.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
         $dql .= " ORDER BY e.nombreCorto";
         return $dql;
-    }    
-    
-    public function buscarNombre($strNombre) {        
+    }
+
+    public function buscarNombre($strNombre) {
         $em = $this->getEntityManager();
         $query = $em->createQueryBuilder()
                 ->select('e')
@@ -145,27 +145,40 @@ class RhuEmpleadoRepository extends EntityRepository {
         $query->getSQL();
         return $arResultado;
     }
-    
-    public function ListaTiempoSuplementarioMasivoDql($strNombre = "", $strCodigoCentroCosto = "", $boolMostrarActivos = 2, $strCodigoDepartamentoEmpresa = "" ) {
+
+    public function ListaTiempoSuplementarioMasivoDql($strNombre = "", $strCodigoCentroCosto = "", $boolMostrarActivos = 2, $strCodigoDepartamentoEmpresa = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-        if($strNombre != "" ) {
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+        if ($strNombre != "") {
             $dql .= " AND e.nombreCorto LIKE '%" . $strNombre . "%'";
         }
-        if($strCodigoCentroCosto != "") {
+        if ($strCodigoCentroCosto != "") {
             $dql .= " AND e.codigoCentroCostoFk = " . $strCodigoCentroCosto;
         }
-        if($boolMostrarActivos == 1 ) {
+        if ($boolMostrarActivos == 1) {
             $dql .= " AND e.estadoActivo = 1";
         }
-        if($boolMostrarActivos == "0") {
+        if ($boolMostrarActivos == "0") {
             $dql .= " AND e.estadoActivo = 0";
         }
-        if($strCodigoDepartamentoEmpresa != "") {
+        if ($strCodigoDepartamentoEmpresa != "") {
             $dql .= " AND e.codigoDepartamentoEmpresaFk = " . $strCodigoDepartamentoEmpresa;
         }
         $dql .= " ORDER BY e.nombreCorto";
         return $dql;
     }
-    
+
+    public function listaCumpleanosDql($strDesde = "", $strHasta = "") {
+        $em = $this->getEntityManager();
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
+       if($strDesde != "") {
+            $dql .= " AND e.fechaNacimiento >= '" . $strDesde . "'";
+        }
+        if($strHasta != "") {
+            $dql .= " AND e.fechaNacimiento <= '" . $strHasta . "'";
+        } 
+        $dql .= " ORDER BY e.nombreCorto";
+        return $dql;
+    }
+
 }
