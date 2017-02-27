@@ -362,7 +362,7 @@ class AcreditacionController extends Controller
                     ->setCellValue('B' . $i, $arAcreditacion->getEmpleadoRel()->getnumeroIdentificacion())
                     ->setCellValue('C' . $i, $arAcreditacion->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('D' . $i, $arAcreditacion->getAcreditacionTipoRel()->getNombre())
-                    ->setCellValue('E' . $i, $arAcreditacion->getFechaVenceCurso()->format('Y/m/d'))
+                    ->setCellValue('E' . $i, $arAcreditacion->getFechaVenceCurso())
                     ->setCellValue('F' . $i, $arAcreditacion->getAcreditacionTipoRel()->getCargo())
                     ->setCellValue('G' . $i, $arAcreditacion->getNumeroRegistro())
                     ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoRechazado()))
