@@ -30,8 +30,8 @@ class EmpleadoCumpleanosController extends Controller {
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
-        $this->filtrarLista($form);
-        $this->listar();
+        //$this->filtrarLista($form);
+        //$this->listar();
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnExcel')->isClicked()) {
@@ -39,15 +39,10 @@ class EmpleadoCumpleanosController extends Controller {
                 $this->listar();
                 $this->generarExcel();
             }
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrarLista($form);
-                $this->listar();
-            }
         }
-        $arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
+        //$arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
        
-        return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(
-                    'arEmpleadosCumpleanos' => $arEmpleadosCumpleanos,
+        return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(                    
                     'form' => $form->createView()
         ));
     }
@@ -55,22 +50,14 @@ class EmpleadoCumpleanosController extends Controller {
     private function listar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaCumpleanosDql(
-                $Mes = $session->get('filtroMes')
-        );
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaCumpleanosDql();
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        $Mes = "";
-        if ($session->get('filtroMes') != "") {
-            $Mes = $session->get('filtroMes');
-        }
-        $dateMes = date_create($Mes);
         $form = $this->createFormBuilder()
-                ->add('Mes', TextType::class, array('label' => 'Mes'))
-                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('Mes', TextType::class, array('label' => 'Mes'))                
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
         return $form;
@@ -79,10 +66,11 @@ class EmpleadoCumpleanosController extends Controller {
     private function filtrarLista($form) {
         $session = new Session;
         $dateMes= $form->get('Mes')->getData();
-        //$session->get('filtroMes');
+        $session->set('filtroMes', $dateMes );
     }
 
     private function generarExcel() {
+        $session = new Session;
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         set_time_limit(0);
@@ -117,61 +105,27 @@ class EmpleadoCumpleanosController extends Controller {
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
-        $arEmpleadoGrupoFamiliar = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoFamilia();
-        $arEmpleadoGrupoFamiliar = $query->getResult();
+        $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+        $arEmpleados = $query->getResult();
 
-        foreach ($arEmpleadoGrupoFamiliar as $arEmpleadoGrupoFamiliar) {
-
-            $salud = "";
-            if ($arEmpleadoGrupoFamiliar->getCodigoEntidadSaludFk() != null) {
-                $salud = $arEmpleadoGrupoFamiliar->getEntidadSaludRel()->getNombre();
+        foreach ($arEmpleados as $arEmpleado) {  
+            if($arEmpleado->getFechaNacimiento()->format('n') == $session->get('filtroMes')) {
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
+                        ->setCellValue('B' . $i, "")
+                        ->setCellValue('C' . $i, "")
+                        ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("m"))
+                        ->setCellValue('E' . $i, "");                
+                $i++;
             }
-
-            $caja = "";
-            if ($arEmpleadoGrupoFamiliar->getCodigoEntidadCajaFk() != null) {
-                $caja = $arEmpleadoGrupoFamiliar->getEntidadCajaRel()->getNombre();
-            }
-
-            $fecha = "";
-            if ($arEmpleadoGrupoFamiliar->getFechaNacimiento() != null) {
-                $fecha = $arEmpleadoGrupoFamiliar->getFechaNacimiento();
-            }
-
-            $ocupacion = "";
-            if ($arEmpleadoGrupoFamiliar->getOcupacion() != null) {
-                $ocupacion = $arEmpleadoGrupoFamiliar->getOcupacion();
-            }
-
-            $telefono = "";
-            if ($arEmpleadoGrupoFamiliar->getTelefono() != null) {
-                $telefono = $arEmpleadoGrupoFamiliar->getTelefono();
-            }
-
-
-
-
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arEmpleadoGrupoFamiliar->getCodigoEmpleadoFamiliaPk())
-                    ->setCellValue('B' . $i, $arEmpleadoGrupoFamiliar->getEmpleadoRel()->getCodigoEmpleadoPk())
-                    ->setCellValue('C' . $i, $arEmpleadoGrupoFamiliar->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('D' . $i, $arEmpleadoGrupoFamiliar->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('E' . $i, $arEmpleadoGrupoFamiliar->getEmpleadoFamiliaParentescoRel()->getNombre())
-                    ->setCellValue('F' . $i, $arEmpleadoGrupoFamiliar->getNombres())
-                    ->setCellValue('G' . $i, $salud)
-                    ->setCellValue('H' . $i, $caja)
-                    ->setCellValue('I' . $i, $fecha)
-                    ->setCellValue('J' . $i, $ocupacion)
-                    ->setCellValue('K' . $i, $telefono);
-
-            $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('Estudios');
+        $objPHPExcel->getActiveSheet()->setTitle('EmpleadoCumpleaños');
         $objPHPExcel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Estudios.xlsx"');
+        header('Content-Disposition: attachment;filename="EmpleadoCumpleanos.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

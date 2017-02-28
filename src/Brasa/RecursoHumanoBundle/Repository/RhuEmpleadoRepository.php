@@ -170,11 +170,7 @@ class RhuEmpleadoRepository extends EntityRepository {
 
     public function listaCumpleanosDql($Mes = "") {
         $em = $this->getEntityManager();
-        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-       if($Mes != 'enero') {
-            $dql .= " AND e.MONTH(fecha_nacimiento) = MONTH(NOW())";
-        }
-        $dql .= " ORDER BY e.nombreCorto";
+        $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.estadoActivo = 1 ORDER BY e.nombreCorto";                    
         return $dql;
     }
 
