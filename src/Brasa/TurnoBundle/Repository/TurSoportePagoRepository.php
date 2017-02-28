@@ -78,9 +78,10 @@ class TurSoportePagoRepository extends EntityRepository {
                     //Ajustar los dias de transporte
                     if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
                         $diasTransporte += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero();
+                        $arrayResultado[$i]['dias'] += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero();
                     }                    
                 }
-                                
+                                                
                 $intHoras = $arrayResultado[$i]['horasDescanso'] + $arrayResultado[$i]['horasNovedad'] + $arrayResultado[$i]['horasDiurnas'] + $arrayResultado[$i]['horasNocturnas'] + $arrayResultado[$i]['horasFestivasDiurnas'] + $arrayResultado[$i]['horasFestivasNocturnas'];                
                 $arSoportePagoAct->setDias($arrayResultado[$i]['dias']);
                 $arSoportePagoAct->setDiasTransporte($diasTransporte);
@@ -205,7 +206,8 @@ class TurSoportePagoRepository extends EntityRepository {
                 //Ajustar los dias de transporte
                 if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
                     $diasTransporte += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
-                }                    
+                    $arrayResultado[$i]['dias'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero();
+                }
             }            
             
             $arSoportePago->setDias($arrayResultado[$i]['dias']);
