@@ -32,18 +32,20 @@ class SoportePagoDetalleController extends Controller {
         $form->handleRequest($request);
         $this->lista();
         $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-        if ($form->isValid()) {
-            $arrControles = $request->request->All();
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-            }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-                $this->generarExcel();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrControles = $request->request->All();
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                    $this->generarExcel();
+                }
             }
         }
         $arSoportePagoDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
@@ -58,7 +60,7 @@ class SoportePagoDetalleController extends Controller {
         $strFechaDesde = "";
         $strFechaHasta = "";
         $filtrarFecha = $session->get('filtroSoportePagoDetalleFiltrarFecha');
-        if($filtrarFecha) {
+        if ($filtrarFecha) {
             $strFechaDesde = $session->get('filtroSoportePagoDetalleFechaDesde');
             $strFechaHasta = $session->get('filtroSoportePagoDetalleFechaHasta');
         }
@@ -75,7 +77,7 @@ class SoportePagoDetalleController extends Controller {
         $session->set('filtroSoportePagoDetalleFechaDesde', $dateFechaDesde->format('Y/m/d'));
         $session->set('filtroSoportePagoDetalleFechaHasta', $dateFechaHasta->format('Y/m/d'));
         $session->set('filtroSoportePagoDetalleFiltrarFecha', $form->get('filtrarFecha')->getData());
-        $session->set('filtroCodigoTurno', $form->get('TxtCodigoTurno')->getData());                     
+        $session->set('filtroCodigoTurno', $form->get('TxtCodigoTurno')->getData());
     }
 
     private function formularioFiltro() {
@@ -89,7 +91,7 @@ class SoportePagoDetalleController extends Controller {
             } else {
                 $session->set('filtroCodigoRecurso', null);
             }
-        }        
+        }
         $dateFecha = new \DateTime('now');
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
         $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;

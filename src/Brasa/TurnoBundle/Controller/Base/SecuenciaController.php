@@ -19,70 +19,73 @@ class SecuenciaController extends Controller {
 
     /**
      * @Route("/tur/base/secuencia/lista", name="brs_tur_base_secuencia_lista")
-     */     
+     */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 82, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }        
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 82, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if ($form->get('BtnEliminar')->isClicked()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->eliminar($arrSeleccionados);
-                return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
+                if ($form->get('BtnEliminar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->eliminar($arrSeleccionados);
+                    return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
+                }
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    //$this->filtrar($form);
+                }
+                if ($form->get('BtnDetalleNuevo')->isClicked()) {
+                    $arSecuenciaDetalleNuevo = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
+                    $em->persist($arSecuenciaDetalleNuevo);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
+                }
             }
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                //$this->filtrar($form);
-            }
-            if ($form->get('BtnDetalleNuevo')->isClicked()) {
-                $arSecuenciaDetalleNuevo = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();                
-                $em->persist($arSecuenciaDetalleNuevo);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
-            }            
         }
-
         $arSecuenciaDetalles = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Base/Secuencia:lista.html.twig', array(
                     'arSecuenciaDetalles' => $arSecuenciaDetalles,
                     'form' => $form->createView()));
     }
-    
+
     /**
      * @Route("/tur/base/secuencia/detalle/editar/{codigoSecuenciaDetalle}", name="brs_tur_base_secuencia_detalle_editar")
-     */     
+     */
     public function detalleEditarAction(Request $request, $codigoSecuenciaDetalle) {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $arSecuenciaDetalleAct = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
-        $arSecuenciaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->find($codigoSecuenciaDetalle);        
+        $arSecuenciaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->find($codigoSecuenciaDetalle);
         $arSecuenciaDetalle = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
         $arSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->findBy(array('codigoSecuenciaDetallePk' => $codigoSecuenciaDetalle));
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);       
+        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
         $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('brs_tur_base_secuencia_detalle_editar', array('codigoSecuenciaDetalle' => $codigoSecuenciaDetalle)))
-                ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)                
-            ->getForm();
+                ->setAction($this->generateUrl('brs_tur_base_secuencia_detalle_editar', array('codigoSecuenciaDetalle' => $codigoSecuenciaDetalle)))
+                ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
+                ->getForm();
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            $arrControles = $request->request->All();
-            if ($form->get('BtnDetalleActualizar')->isClicked()) {
-                $this->actualizarDetalle($arrControles);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $arrControles = $request->request->All();
+                if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                    $this->actualizarDetalle($arrControles);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Secuencia:detalleEditar.html.twig', array(
                     'arSecuenciaDetalle' => $arSecuenciaDetalle,
                     'form' => $form->createView()
         ));
-    }    
-    
+    }
+
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->listaDQL();
@@ -98,8 +101,8 @@ class SecuenciaController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $this->strNombre))
                 ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $this->strCodigo))
-                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))                
-                ->add('BtnDetalleNuevo', SubmitType::class, array('label' => 'Nuevo',))                
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnDetalleNuevo', SubmitType::class, array('label' => 'Nuevo',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();
         return $form;
@@ -108,20 +111,20 @@ class SecuenciaController extends Controller {
     private function actualizarDetalle($arrControles) {
         $em = $this->getDoctrine()->getManager();
         $intIndice = 0;
-        if(isset($arrControles['LblCodigo'])) {
+        if (isset($arrControles['LblCodigo'])) {
             foreach ($arrControles['LblCodigo'] as $intCodigo) {
                 $arSecuenciaDetalle = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
                 $arSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->find($intCodigo);
-                if ($arrControles['TxtDias' . $intCodigo] != '') {                    
+                if ($arrControles['TxtDias' . $intCodigo] != '') {
                     $arSecuenciaDetalle->setDias($arrControles['TxtDias' . $intCodigo]);
                 } else {
                     $arSecuenciaDetalle->setDias(1);
                 }
-                if ($arrControles['TxtNombre' . $intCodigo] != '') {                    
+                if ($arrControles['TxtNombre' . $intCodigo] != '') {
                     $arSecuenciaDetalle->setNombre($arrControles['TxtNombre' . $intCodigo]);
                 } else {
                     $arSecuenciaDetalle->setNombre(null);
-                }                
+                }
                 if ($arrControles['TxtDia1' . $intCodigo] != '') {
                     $strTurno = $this->validarTurno($arrControles['TxtDia1' . $intCodigo]);
                     $arSecuenciaDetalle->setDia1($strTurno);
@@ -309,23 +312,24 @@ class SecuenciaController extends Controller {
                     $arSecuenciaDetalle->setDia31(null);
                 }
                 $em->persist($arSecuenciaDetalle);
-            }            
+            }
         }
 
         $em->flush();
-    }    
-    
+    }
+
     private function validarTurno($strTurno) {
         $em = $this->getDoctrine()->getManager();
         $strTurnoDevolver = NUll;
-        if($strTurno != "") {
+        if ($strTurno != "") {
             $arTurno = new \Brasa\TurnoBundle\Entity\TurTurno();
             $arTurno = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($strTurno);
-            if($arTurno) {
+            if ($arTurno) {
                 $strTurnoDevolver = $strTurno;
             }
         }
 
         return $strTurnoDevolver;
-    }    
+    }
+
 }

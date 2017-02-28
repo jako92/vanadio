@@ -1,4 +1,5 @@
 <?php
+
 namespace Brasa\TurnoBundle\Controller\Consulta\Costo;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,98 +10,96 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class CostoServicioController extends Controller
-{
+class CostoServicioController extends Controller {
+
     var $strListaDql = "";
     var $strListaDetalleDql = "";
+
     /**
      * @Route("/tur/consulta/costo/servicio", name="brs_tur_consulta_costo_servicio")
      */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 49)) {
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 49)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $this->filtrarFecha = TRUE;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-            }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-                $this->generarExcel();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                    $this->generarExcel();
+                }
             }
         }
-
         $arCostoServicio = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 200);
         return $this->render('BrasaTurnoBundle:Consultas/Costo:servicio.html.twig', array(
-            'arCostoServicio' => $arCostoServicio,
-            'form' => $form->createView()));
+                    'arCostoServicio' => $arCostoServicio,
+                    'form' => $form->createView()));
     }
 
     /**
      * @Route("/tur/consulta/costo/servicio/ver/detalle/{codigoCostoServicio}", name="brs_tur_consulta_costo_servicio_ver_detalle")
-     */    
+     */
     public function verDetalleAction(Request $request, $codigoCostoServicio) {
-        $em = $this->getDoctrine()->getManager();        
-        $paginator  = $this->get('knp_paginator');
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioVerDetalle();
         $form->handleRequest($request);
         $arCostoServicio = new \Brasa\TurnoBundle\Entity\TurCostoServicio();
         $arCostoServicio = $em->getRepository('BrasaTurnoBundle:TurCostoServicio')->find($codigoCostoServicio);
-        if ($form->isValid()) {                             
-
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                
+            }
         }
         $dql = $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaDql("", $arCostoServicio->getAnio(), $arCostoServicio->getMes(), $arCostoServicio->getCodigoPedidoDetalleFk());
         $arCostoDetalles = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 200);
         return $this->render('BrasaTurnoBundle:Consultas/Costo:verDetalleServicio.html.twig', array(
-            'arCostoDetalle' => $arCostoDetalles,                        
-            'form' => $form->createView()));
-    }    
-    
-    private function lista() {        
-        $session = new session;
-        $em = $this->getDoctrine()->getManager();
-        $this->strListaDql =  $em->getRepository('BrasaTurnoBundle:TurCostoServicio')->listaDql(
-                $session->get('filtroCodigoCliente'), 
-                $session->get('filtroTurAnio'),
-                $session->get('filtroTurMes'),
-                $session->get('filtroCodigoPuesto')
-                );
-        $this->strListaDetalleDql =  $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaConsultaDql(
-                $session->get('filtroCodigoCliente'), 
-                $session->get('filtroTurAnio'),
-                $session->get('filtroTurMes'),
-                $session->get('filtroCodigoPuesto')
-                );        
+                    'arCostoDetalle' => $arCostoDetalles,
+                    'form' => $form->createView()));
     }
 
-    private function filtrar ($form) {
+    private function lista() {
+        $session = new session;
+        $em = $this->getDoctrine()->getManager();
+        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurCostoServicio')->listaDql(
+                $session->get('filtroCodigoCliente'), $session->get('filtroTurAnio'), $session->get('filtroTurMes'), $session->get('filtroCodigoPuesto')
+        );
+        $this->strListaDetalleDql = $em->getRepository('BrasaTurnoBundle:TurCostoDetalle')->listaConsultaDql(
+                $session->get('filtroCodigoCliente'), $session->get('filtroTurAnio'), $session->get('filtroTurMes'), $session->get('filtroCodigoPuesto')
+        );
+    }
+
+    private function filtrar($form) {
         $session = new session;
         $session->set('filtroNit', $form->get('TxtNit')->getData());
         $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());
         $session->set('filtroTurMes', $form->get('TxtMes')->getData());
-        $session->set('filtroTurAnio', $form->get('TxtAnio')->getData());        
+        $session->set('filtroTurAnio', $form->get('TxtAnio')->getData());
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if($session->get('filtroNit')) {
+        if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
-            if($arCliente) {
+            if ($arCliente) {
                 $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroCodigoCliente', null);
                 $session->set('filtroNit', null);
             }
@@ -108,77 +107,77 @@ class CostoServicioController extends Controller
             $session->set('filtroCodigoCliente', null);
         }
         $strNombrePuesto = "";
-        if($session->get('filtroCodigoPuesto')) {
+        if ($session->get('filtroCodigoPuesto')) {
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($session->get('filtroCodigoPuesto'));
-            if($arPuesto) {                
+            if ($arPuesto) {
                 $strNombrePuesto = $arPuesto->getNombre();
-            }  else {
+            } else {
                 $session->set('filtroCodigoPuesto', null);
-            }          
-        }        
+            }
+        }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))            
-            ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
-            ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))                                                
-            ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroTurAnio')))
-            ->add('TxtMes', TextType::class, array('data' => $session->get('filtroTurMes')))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
+                ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
+                ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))
+                ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroTurAnio')))
+                ->add('TxtMes', TextType::class, array('data' => $session->get('filtroTurMes')))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
     }
 
     private function formularioVerDetalle() {
         $em = $this->getDoctrine()->getManager();
-        $session = new session;    
+        $session = new session;
         $form = $this->createFormBuilder()
-            ->getForm();
+                ->getForm();
         return $form;
-    }     
-    
+    }
+
     private function generarExcel() {
         ob_clean();
         set_time_limit(0);
-        ini_set("memory_limit", -1);        
+        ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AZ'; $col++) {
+        for ($col = 'A'; $col !== 'AZ'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'J'; $col !== 'AZ'; $col++) {
+        for ($col = 'J'; $col !== 'AZ'; $col++) {
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
         }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'AÑO')
-                    ->setCellValue('B1', 'MES')
-                    ->setCellValue('C1', 'PED_DET')
-                    ->setCellValue('D1', 'NIT')
-                    ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'PUESTO')
-                    ->setCellValue('G1', 'CONCEPTO')
-                    ->setCellValue('H1', 'MODALIDAD')
-                    ->setCellValue('I1', 'PERIODO')
-                    ->setCellValue('J1', 'DES')
-                    ->setCellValue('K1', 'HAS')
-                    ->setCellValue('L1', 'DIAS')
-                    ->setCellValue('M1', 'H')
-                    ->setCellValue('N1', 'H.P')
-                    ->setCellValue('O1', 'CANT')
-                    ->setCellValue('P1', 'COSTO')
-                    ->setCellValue('Q1', 'PRECIO');
+                ->setCellValue('A1', 'AÑO')
+                ->setCellValue('B1', 'MES')
+                ->setCellValue('C1', 'PED_DET')
+                ->setCellValue('D1', 'NIT')
+                ->setCellValue('E1', 'CLIENTE')
+                ->setCellValue('F1', 'PUESTO')
+                ->setCellValue('G1', 'CONCEPTO')
+                ->setCellValue('H1', 'MODALIDAD')
+                ->setCellValue('I1', 'PERIODO')
+                ->setCellValue('J1', 'DES')
+                ->setCellValue('K1', 'HAS')
+                ->setCellValue('L1', 'DIAS')
+                ->setCellValue('M1', 'H')
+                ->setCellValue('N1', 'H.P')
+                ->setCellValue('O1', 'CANT')
+                ->setCellValue('P1', 'COSTO')
+                ->setCellValue('Q1', 'PRECIO');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -204,10 +203,10 @@ class CostoServicioController extends Controller
                     ->setCellValue('P' . $i, $arCostoServicio->getVrCostoRecurso())
                     ->setCellValue('Q' . $i, $arCostoServicio->getVrTotal());
             $i++;
-        }        
+        }
 
         $objPHPExcel->getActiveSheet()->setTitle('CostoServicio');
-        
+
         $objPHPExcel->createSheet(1)->setTitle('CostoServicioDetalle')
                 ->setCellValue('A1', 'AÑO')
                 ->setCellValue('B1', 'MES')
@@ -220,7 +219,7 @@ class CostoServicioController extends Controller
                 ->setCellValue('I1', 'MODALIDAD')
                 ->setCellValue('J1', 'IDENTIFICACION')
                 ->setCellValue('K1', 'NOMBRE')
-                ->setCellValue('L1', 'C.COSTO')                
+                ->setCellValue('L1', 'C.COSTO')
                 ->setCellValue('M1', 'DS')
                 ->setCellValue('N1', 'D')
                 ->setCellValue('O1', 'N')
@@ -244,25 +243,25 @@ class CostoServicioController extends Controller
                 ->setCellValue('AG1', 'C.EFN')
                 ->setCellValue('AH1', 'C.RN')
                 ->setCellValue('AI1', 'C.RFD')
-                ->setCellValue('AJ1', 'C.RFN')                
+                ->setCellValue('AJ1', 'C.RFN')
                 ->setCellValue('AK1', 'NOM')
                 ->setCellValue('AL1', 'SSO')
                 ->setCellValue('AM1', 'PRE')
                 ->setCellValue('AN1', 'COSTO');
 
-        $objPHPExcel->setActiveSheetIndex(1); 
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9); 
-        $objPHPExcel->getActiveSheet(1)->getStyle('1')->getFont()->setBold(true);     
-        for($col = 'A'; $col !== 'AO'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                  
-        }            
-        for($col = 'J'; $col !== 'AO'; $col++) { 
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');                 
+        $objPHPExcel->setActiveSheetIndex(1);
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
+        $objPHPExcel->getActiveSheet(1)->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'AO'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'J'; $col !== 'AO'; $col++) {
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }             
+        }
 
         $i = 2;
-            
+
         $query = $em->createQuery($this->strListaDetalleDql);
         $arCostoRecursoDetalles = new \Brasa\TurnoBundle\Entity\TurCostoDetalle();
         $arCostoRecursoDetalles = $query->getResult();
@@ -272,14 +271,14 @@ class CostoServicioController extends Controller
                     ->setCellValue('B' . $i, $arCostoRecursoDetalle->getMes())
                     ->setCellValue('C' . $i, $arCostoRecursoDetalle->getCodigoClienteFk())
                     ->setCellValue('D' . $i, $arCostoRecursoDetalle->getClienteRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arCostoRecursoDetalle->getPedidoDetalleRel()->getConceptoServicioRel()->getNombre())                    
+                    ->setCellValue('E' . $i, $arCostoRecursoDetalle->getPedidoDetalleRel()->getConceptoServicioRel()->getNombre())
                     ->setCellValue('F' . $i, $arCostoRecursoDetalle->getCodigoPuestoFk())
                     ->setCellValue('G' . $i, $arCostoRecursoDetalle->getPuestoRel()->getNombre())
                     ->setCellValue('H' . $i, $arCostoRecursoDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('I' . $i, $arCostoRecursoDetalle->getPedidoDetalleRel()->getModalidadServicioRel()->getNombre())
                     ->setCellValue('J' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('K' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('L' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getCodigoCentroCostoContabilidadFk())                    
+                    ->setCellValue('L' . $i, $arCostoRecursoDetalle->getEmpleadoRel()->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('M' . $i, $arCostoRecursoDetalle->getHorasDescanso())
                     ->setCellValue('N' . $i, $arCostoRecursoDetalle->getHorasDiurnas())
                     ->setCellValue('O' . $i, $arCostoRecursoDetalle->getHorasNocturnas())
@@ -309,9 +308,9 @@ class CostoServicioController extends Controller
                     ->setCellValue('AM' . $i, $arCostoRecursoDetalle->getCostoPrestaciones())
                     ->setCellValue('AN' . $i, $arCostoRecursoDetalle->getCosto());
             $i++;
-        }           
-        
-        
+        }
+
+
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -320,14 +319,13 @@ class CostoServicioController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-
 
 }

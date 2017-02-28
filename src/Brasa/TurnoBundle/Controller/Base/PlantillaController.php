@@ -18,32 +18,33 @@ class PlantillaController extends Controller {
 
     /**
      * @Route("/tur/base/plantilla/lista", name="brs_tur_base_plantilla_lista")
-     */     
+     */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 82, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }        
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 82, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if ($form->get('BtnEliminar')->isClicked()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurPlantilla')->eliminar($arrSeleccionados);
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_lista'));
-            }
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-            }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $this->generarExcel();
+                if ($form->get('BtnEliminar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $em->getRepository('BrasaTurnoBundle:TurPlantilla')->eliminar($arrSeleccionados);
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_lista'));
+                }
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrar($form);
+                    $this->generarExcel();
+                }
             }
         }
-
         $arPlantillas = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Base/Plantilla:lista.html.twig', array(
                     'arPlantillas' => $arPlantillas,
@@ -52,8 +53,8 @@ class PlantillaController extends Controller {
 
     /**
      * @Route("/tur/base/plantilla/nuevo/{codigoPlantilla}", name="brs_tur_base_plantilla_nuevo")
-     */     
-    public function nuevoAction(Request $request, $codigoPlantilla = 0) {        
+     */
+    public function nuevoAction(Request $request, $codigoPlantilla = 0) {
         $em = $this->getDoctrine()->getManager();
         $arPlantilla = new \Brasa\TurnoBundle\Entity\TurPlantilla();
         if ($codigoPlantilla != 0) {
@@ -61,17 +62,19 @@ class PlantillaController extends Controller {
         }
         $form = $this->createForm(TurPlantillaType::class, $arPlantilla);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arPlantilla = $form->getData();
-            $arUsuario = $this->getUser();
-            $arPlantilla->setUsuario($arUsuario->getUserName());
-            $em->persist($arPlantilla);
-            $em->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arPlantilla = $form->getData();
+                $arUsuario = $this->getUser();
+                $arPlantilla->setUsuario($arUsuario->getUserName());
+                $em->persist($arPlantilla);
+                $em->flush();
 
-            if ($form->get('guardarnuevo')->isClicked()) {
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_nuevo', array('codigoPlantilla' => 0)));
-            } else {
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $arPlantilla->getCodigoPlantillaPk())));
+                if ($form->get('guardarnuevo')->isClicked()) {
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_nuevo', array('codigoPlantilla' => 0)));
+                } else {
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $arPlantilla->getCodigoPlantillaPk())));
+                }
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Plantilla:nuevo.html.twig', array(
@@ -81,64 +84,65 @@ class PlantillaController extends Controller {
 
     /**
      * @Route("/tur/base/plantilla/detalle/{codigoPlantilla}", name="brs_tur_base_plantilla_detalle")
-     */     
+     */
     public function detalleAction(Request $request, $codigoPlantilla) {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $objMensaje = $this->get('mensajes_brasa');
         $arPlantilla = new \Brasa\TurnoBundle\Entity\TurPlantilla();
         $arPlantilla = $em->getRepository('BrasaTurnoBundle:TurPlantilla')->find($codigoPlantilla);
         $form = $this->formularioDetalle($arPlantilla);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            $arrControles = $request->request->All();
-            if ($form->get('BtnAutorizar')->isClicked()) {
-                if ($arPlantilla->getEstadoAutorizado() == 0) {
-                    if ($em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->numeroRegistros($codigoPlantilla) > 0) {
-                        $arPlantilla->setEstadoAutorizado(1);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $arrControles = $request->request->All();
+                if ($form->get('BtnAutorizar')->isClicked()) {
+                    if ($arPlantilla->getEstadoAutorizado() == 0) {
+                        if ($em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->numeroRegistros($codigoPlantilla) > 0) {
+                            $arPlantilla->setEstadoAutorizado(1);
+                            $em->persist($arPlantilla);
+                            $em->flush();
+                            return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
+                        } else {
+                            $objMensaje->Mensaje('error', 'Debe adicionar detalles al examen', $this);
+                        }
+                    }
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
+                }
+                if ($form->get('BtnDesAutorizar')->isClicked()) {
+                    if ($arPlantilla->getEstadoAutorizado() == 1) {
+                        $arPlantilla->setEstadoAutorizado(0);
                         $em->persist($arPlantilla);
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
-                    } else {
-                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al examen', $this);
                     }
                 }
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
-            }
-            if ($form->get('BtnDesAutorizar')->isClicked()) {
-                if ($arPlantilla->getEstadoAutorizado() == 1) {
-                    $arPlantilla->setEstadoAutorizado(0);
-                    $em->persist($arPlantilla);
+                if ($form->get('BtnImprimir')->isClicked()) {
+                    if ($arPlantilla->getEstadoAutorizado() == 1) {
+                        $objExamen = new \Brasa\TurnoBundle\Formatos\FormatoExamen();
+                        $objExamen->Generar($this, $codigoPlantilla);
+                    } else {
+                        $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada");
+                    }
+                }
+                if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                    $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->eliminarDetalles($arrSeleccionados);
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
+                }
+                if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                    $this->actualizarDetalle($arrControles);
+                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
+                }
+                if ($form->get('BtnDetalleNuevo')->isClicked()) {
+                    //$this->actualizarDetalle($arrControles);
+                    $arPlantillaDetalleNuevo = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
+                    $arPlantillaDetalleNuevo->setPlantillaRel($arPlantilla);
+                    $em->persist($arPlantillaDetalleNuevo);
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
                 }
             }
-            if ($form->get('BtnImprimir')->isClicked()) {
-                if ($arPlantilla->getEstadoAutorizado() == 1) {
-                    $objExamen = new \Brasa\TurnoBundle\Formatos\FormatoExamen();
-                    $objExamen->Generar($this, $codigoPlantilla);
-                } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir una orden de examen sin estar autorizada");
-                }
-            }
-            if ($form->get('BtnDetalleEliminar')->isClicked()) {
-                $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->eliminarDetalles($arrSeleccionados);
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
-            }
-            if ($form->get('BtnDetalleActualizar')->isClicked()) {
-                $this->actualizarDetalle($arrControles);
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
-            }
-            if ($form->get('BtnDetalleNuevo')->isClicked()) {
-                //$this->actualizarDetalle($arrControles);
-                $arPlantillaDetalleNuevo = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
-                $arPlantillaDetalleNuevo->setPlantillaRel($arPlantilla);
-                $em->persist($arPlantillaDetalleNuevo);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
-            }
         }
-
         $arPlantillaDetalle = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
         $arPlantillaDetalle = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->findBy(array('codigoPlantillaFk' => $codigoPlantilla));
         return $this->render('BrasaTurnoBundle:Base/Plantilla:detalle.html.twig', array(
@@ -150,40 +154,42 @@ class PlantillaController extends Controller {
 
     /**
      * @Route("/tur/base/plantilla/detalle/editar/{codigoPlantillaDetalle}", name="brs_tur_base_plantilla_detalle_editar")
-     */     
+     */
     public function detalleEditarAction(Request $request, $codigoPlantillaDetalle) {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $arPlantillaDetalleAct = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
-        $arPlantillaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->find($codigoPlantillaDetalle);        
+        $arPlantillaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->find($codigoPlantillaDetalle);
         $arPlantillaDetalle = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
-        $arPlantillaDetalle = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->findBy(array('codigoPlantillaDetallePk'=>$codigoPlantillaDetalle));
+        $arPlantillaDetalle = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->findBy(array('codigoPlantillaDetallePk' => $codigoPlantillaDetalle));
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);       
+        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
         $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('brs_tur_base_plantilla_detalle_editar', array('codigoPlantillaDetalle' => $codigoPlantillaDetalle)))
+                ->setAction($this->generateUrl('brs_tur_base_plantilla_detalle_editar', array('codigoPlantillaDetalle' => $codigoPlantillaDetalle)))
                 ->add('BtnDetalleActualizar', 'submit', $arrBotonDetalleActualizar)
                 ->add('BtnDetalleEliminar', 'submit', $arrBotonDetalleEliminar)
-            ->getForm();
+                ->getForm();
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            $arrControles = $request->request->All();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $arrControles = $request->request->All();
 
-            if ($form->get('BtnDetalleEliminar')->isClicked()) {
-                $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->eliminarDetalles($arrSeleccionados);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
-            }
-            if ($form->get('BtnDetalleActualizar')->isClicked()) {
-                $this->actualizarDetalle($arrControles);
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                    $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->eliminarDetalles($arrSeleccionados);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
+                if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                    $this->actualizarDetalle($arrControles);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Plantilla:detalleEditar.html.twig', array(
                     'arPlantillaDetalle' => $arPlantillaDetalle,
                     'form' => $form->createView()
         ));
-    }    
-    
+    }
+
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurPlantilla')->listaDQL(
@@ -290,7 +296,7 @@ class PlantillaController extends Controller {
     private function actualizarDetalle($arrControles) {
         $em = $this->getDoctrine()->getManager();
         $intIndice = 0;
-        if(isset($arrControles['LblCodigo'])) {
+        if (isset($arrControles['LblCodigo'])) {
             foreach ($arrControles['LblCodigo'] as $intCodigo) {
                 $arPlantillaDetalle = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
                 $arPlantillaDetalle = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->find($intCodigo);
@@ -532,7 +538,7 @@ class PlantillaController extends Controller {
                     $arPlantillaDetalle->setDomingoFestivo($strTurno);
                 } else {
                     $arPlantillaDetalle->setDomingoFestivo(null);
-                }                
+                }
                 if ($arrControles['TxtFestivo' . $intCodigo] != '') {
                     $strTurno = $this->validarTurno($arrControles['TxtFestivo' . $intCodigo]);
                     $arPlantillaDetalle->setFestivo($strTurno);
@@ -540,23 +546,24 @@ class PlantillaController extends Controller {
                     $arPlantillaDetalle->setFestivo(null);
                 }
                 $em->persist($arPlantillaDetalle);
-            }            
+            }
         }
 
         $em->flush();
     }
-    
+
     private function validarTurno($strTurno) {
         $em = $this->getDoctrine()->getManager();
         $strTurnoDevolver = NUll;
-        if($strTurno != "") {
+        if ($strTurno != "") {
             $arTurno = new \Brasa\TurnoBundle\Entity\TurTurno();
             $arTurno = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($strTurno);
-            if($arTurno) {
+            if ($arTurno) {
                 $strTurnoDevolver = $strTurno;
             }
         }
 
         return $strTurnoDevolver;
-    }    
+    }
+
 }
