@@ -379,12 +379,22 @@ class ClienteController extends Controller {
                     ->setCellValue('Q' . $i, $arCliente->getCelularGerente())
                     ->setCellValue('R' . $i, $arCliente->getFacturaAgrupada())
                     ->setCellValue('S' . $i, $arCliente->getCodigoInterface())
-                    ->setCellValue('T' . $i, $arCliente->getCoberturaRel())
-                    ->setCellValue('U' . $i, $arCliente->getDimensionRel())
-                    ->setCellValue('V' . $i, $arCliente->getOrigenCapitalRel())
-                    ->setCellValue('W' . $i, $arCliente->getOrigenJudicialRel())
-                    ->setCellValue('X' . $i, $arCliente->getSectorEconomicoRel())
                     ->setCellValue('Y' . $i, $arCliente->getRegimenSimplificado());
+            if($arCliente->getCodigoCoberturaFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T' . $i, $arCliente->getCoberturaRel()->getNombre());                
+            }
+            if($arCliente->getCodigoDimensionFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U' . $i, $arCliente->getDimensionRel()->getNombre());                
+            }
+            if($arCliente->getCodigoOrigenCapitalFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V' . $i, $arCliente->getOrigenCapitalRel()->getNombre());                
+            }
+            if($arCliente->getCodigoOrigenJudicialFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W' . $i, $arCliente->getOrigenJudicialRel()->getNombre());                
+            }
+            if($arCliente->getCodigoSectorEconomicoFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X' . $i, $arCliente->getSectorEconomicoRel()->getNombre());                
+            }            
             $i++;
         }
 
