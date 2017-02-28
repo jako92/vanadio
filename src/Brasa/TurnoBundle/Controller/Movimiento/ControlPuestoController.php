@@ -40,36 +40,38 @@ class ControlPuestoController extends Controller {
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {
-            if ($request->request->get('OpGenerar')) {
-                set_time_limit(0);
-                ini_set("memory_limit", -1);
-                $codigoControlPuesto = $request->request->get('OpGenerar');
-                $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
-                $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();
-                $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->findBy(array('controlPuesto' => 1));
-                foreach ($arPuestos as $arPuesto) {
-                    $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-                    $arControlPuestoDetalle->setControlPuestoRel($arControlPuesto);
-                    $arControlPuestoDetalle->setPuestoRel($arPuesto);
-                    $arControlPuestoDetalle->setNumeroComunicacion($arPuesto->getNumeroComunicacion());
-                    $em->persist($arControlPuestoDetalle);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($request->request->get('OpGenerar')) {
+                    set_time_limit(0);
+                    ini_set("memory_limit", -1);
+                    $codigoControlPuesto = $request->request->get('OpGenerar');
+                    $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
+                    $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();
+                    $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->findBy(array('controlPuesto' => 1));
+                    foreach ($arPuestos as $arPuesto) {
+                        $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+                        $arControlPuestoDetalle->setControlPuestoRel($arControlPuesto);
+                        $arControlPuestoDetalle->setPuestoRel($arPuesto);
+                        $arControlPuestoDetalle->setNumeroComunicacion($arPuesto->getNumeroComunicacion());
+                        $em->persist($arControlPuestoDetalle);
+                    }
+                    $arControlPuesto->setEstadoGenerado(1);
+                    $em->persist($arControlPuesto);
+                    $em->flush();
                 }
-                $arControlPuesto->setEstadoGenerado(1);
-                $em->persist($arControlPuesto);
-                $em->flush();
-            }
 
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-            }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-                $this->generarExcel();
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                    $this->generarExcel();
+                }
             }
         }
         $arControlPuestos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 50);
@@ -93,21 +95,21 @@ class ControlPuestoController extends Controller {
         }
         $form = $this->createForm(TurControlPuestoType::class, $arControlPuesto);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arControlPuesto = $form->getData();
-            $arUsuario = $this->getUser();
-            $arControlPuesto->setUsuario($arUsuario->getUserName());
-            $em->persist($arControlPuesto);
-            $em->flush();
-            return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto'));
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arControlPuesto = $form->getData();
+                $arUsuario = $this->getUser();
+                $arControlPuesto->setUsuario($arUsuario->getUserName());
+                $em->persist($arControlPuesto);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto'));
+            }
         }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:nuevo.html.twig', array(
                     'arControlPuesto' => $arControlPuesto,
                     'form' => $form->createView()));
     }
 
-    
-    
     /**
      * @Route("/tur/movimiento/control/puesto/detalle/{codigoControlPuesto}", name="brs_tur_movimiento_control_puesto_detalle")
      */
@@ -119,31 +121,32 @@ class ControlPuestoController extends Controller {
         $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
         $form = $this->formularioDetalle($arControlPuesto);
         $form->handleRequest($request);
+        if($form->isSubmitted()){
         if ($form->isValid()) {
             if ($request->request->get('OpCerrar')) {
                 $codigoControlPuestoDetalle = $request->request->get('OpCerrar');
                 $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-                $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);                        
-                $arControlPuestoDetalle->setFecha(new \DateTime('now'));  
+                $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+                $arControlPuestoDetalle->setFecha(new \DateTime('now'));
                 $arControlPuestoDetalle->setEstadoCerrado(1);
                 $em->persist($arControlPuestoDetalle);
                 $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle'=>$codigoControlPuestoDetalle)));
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)));
             }
-            
-             if ($form->get('BtnImprimir')->isClicked()) {
+
+            if ($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoControlPuesto = new \Brasa\TurnoBundle\Formatos\ControlPuesto();
                 $objFormatoControlPuesto->Generar($em, $codigoControlPuesto);
             }
-            
-            
+
+
             if ($form->get('BtnDetalleEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);                
+                $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
-            }            
+            }
         }
-
+    }
         $dql = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->listaDql($codigoControlPuesto);
         $arControlPuestoDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:detalle.html.twig', array(
@@ -159,7 +162,7 @@ class ControlPuestoController extends Controller {
     public function detalleNovedadAction(Request $request, $codigoControlPuestoDetalle) {
         $em = $this->getDoctrine()->getManager();
         $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-        $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);                        
+        $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
         $form = $this->createFormBuilder()
                 ->setAction($this->generateUrl('brs_tur_movimiento_control_puesto_detalle_novedad', array('codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)))
                 ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
@@ -167,6 +170,7 @@ class ControlPuestoController extends Controller {
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $form->handleRequest($request);
+        if($form->isSubmitted()){
         if ($form->isValid()) {
             if ($form->get('BtnGuardar')->isClicked()) {
                 $novedad = $form->get('novedad')->getData();
@@ -178,7 +182,7 @@ class ControlPuestoController extends Controller {
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
             }
         }
-       
+    }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:novedad.html.twig', array(
                     'form' => $form->createView()
         ));
@@ -209,7 +213,7 @@ class ControlPuestoController extends Controller {
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $form = $this->createFormBuilder()
-                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir) 
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->getForm();
         return $form;
