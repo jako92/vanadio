@@ -27,24 +27,26 @@ class CostosController extends Controller
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listarCostosGeneral();
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcel')->isClicked()) {
-                $this->filtrarLista($form);
-                $this->listarCostosGeneral();
-                $this->generarExcel();
-            }
-            if($form->get('BtnPDF')->isClicked()) {                
-                $this->filtrarLista($form);
-                $this->listarCostosGeneral();                
-                $objReporteCostos = new \Brasa\RecursoHumanoBundle\Reportes\ReporteCostos();
-                $objReporteCostos->Generar($this, $em, $this->strSqlLista);
-            }
-            if($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrarLista($form);
-                $this->listarCostosGeneral();
-            }
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrarLista($form);
+                    $this->listarCostosGeneral();
+                    $this->generarExcel();
+                }
+                if($form->get('BtnPDF')->isClicked()) {                
+                    $this->filtrarLista($form);
+                    $this->listarCostosGeneral();                
+                    $objReporteCostos = new \Brasa\RecursoHumanoBundle\Reportes\ReporteCostos();
+                    $objReporteCostos->Generar($this, $em, $this->strSqlLista);
+                }
+                if($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrarLista($form);
+                    $this->listarCostosGeneral();
+                }
 
+            }            
         }
         $arCostos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Costo:lista.html.twig', array(
