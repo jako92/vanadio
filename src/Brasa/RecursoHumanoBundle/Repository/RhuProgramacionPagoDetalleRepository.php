@@ -127,9 +127,9 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     }             
                     if($arIncapacidad->getFechaHasta() < $fechaHasta) {
                         $fechaHasta = $arIncapacidad->getFechaHasta();                
-                    }
-                    $vrHoraIncapacidad = 0;
+                    }                    
                     $vrHoraIncapacidad = $douVrHora;
+                    $vrSalarioIncapacidad = $arProgramacionPagoDetalle->getVrSalario();
                     $intDias = $fechaDesde->diff($fechaHasta);
                     $intDias = $intDias->format('%a');   
                     $intDias += 1;
@@ -140,34 +140,32 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     $douIngresoBasePrestacionIncapacidad = 0;
                     $douIngresoBaseCotizacionIncapacidadControl = 0;
                     $intDiasTransporte = $intDiasTransporte - ($intHorasProcesarIncapacidad / $intFactorDia);
-
+                    if($arConfiguracion->getPagarIncapacidadSalarioPactado()){                    
+                        if($arContrato->getVrDevengadoPactado() > 0) {
+                            $vrHoraIncapacidad = $arContrato->getVrDevengadoPactado() / 30 / 8;
+                            $vrSalarioIncapacidad = $arContrato->getVrDevengadoPactado();
+                        } 
+                    } 
                     if($arIncapacidad->getIncapacidadTipoRel()->getTipo() == 1) {
-                        if($arProgramacionPagoDetalle->getVrSalario() <= $douVrSalarioMinimo) {
-                            $douPagoDetalle = $intHorasProcesarIncapacidad * $douVrHora;
-                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $douVrHora;
+                        if($vrSalarioIncapacidad <= $douVrSalarioMinimo) {
+                            $douPagoDetalle = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
+                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                         }
-                        if($arProgramacionPagoDetalle->getVrSalario() > $douVrSalarioMinimo && $arProgramacionPagoDetalle->getVrSalario() <= $douVrSalarioMinimo * 1.5) {
+                        if($vrSalarioIncapacidad > $douVrSalarioMinimo && $vrSalarioIncapacidad <= $douVrSalarioMinimo * 1.5) {
                             $douPagoDetalle = $intHorasProcesarIncapacidad * $douVrHoraSalarioMinimo;
-                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $douVrHora;
+                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                         }
-                        if($arProgramacionPagoDetalle->getVrSalario() > ($douVrSalarioMinimo * 1.5)) {
-                            $douPagoDetalle = $intHorasProcesarIncapacidad * $douVrHora;
+                        if($vrSalarioIncapacidad > ($douVrSalarioMinimo * 1.5)) {
+                            $douPagoDetalle = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                             $douPagoDetalle = ($douPagoDetalle * $arIncapacidad->getPorcentajePago())/100;
-                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $douVrHora;
+                            $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                         }                            
                     } else {
-                        $douPagoDetalle = $intHorasProcesarIncapacidad * $douVrHora;
+                        $douPagoDetalle = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                         $douPagoDetalle = ($douPagoDetalle * $arIncapacidad->getPorcentajePago())/100;
-                        $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $douVrHora;
+                        $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $vrHoraIncapacidad;
                     }
-                    if($arConfiguracion->getPagarIncapacidadSalarioPactado()){                    
-                        $devengadoPactado = $arContrato->getVrDevengadoPactado();
-                        if($devengadoPactado > 0) {
-                            $vrHoraDevengadoPactado = $devengadoPactado / 30 / 8;
-                            $vrHoraIncapacidad = $vrHoraDevengadoPactado;
-                            $douPagoDetalle = $intHorasProcesarIncapacidad * $vrHoraDevengadoPactado;
-                        } 
-                    }                    
+                   
                     
                     $douIngresoBaseCotizacionIncapacidadControl = $douPagoDetalle;
                     if($arIncapacidad->getIncapacidadTipoRel()->getGeneraIbc() == 1) {
