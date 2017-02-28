@@ -53,31 +53,42 @@ class ContratosController extends Controller
                 if($em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 33, 4)) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionarContrato');
                     if(count($arrSeleccionados) > 0) {
+                        $error = FALSE;
                         foreach ($arrSeleccionados AS $codigo) {
-                            $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                            $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigo);                                                
-                            if($arContrato->getEstadoActivo() == 1 && $arContrato->getEstadoTerminado() == 0) {
-                                $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                                $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arContrato->getCodigoEmpleadoFk());
-                                $arEmpleado->setCodigoCentroCostoFk(NULL);
-                                $arEmpleado->setCodigoTipoTiempoFk(NULL);
-                                $arEmpleado->setVrSalario(0);
-                                $arEmpleado->setCodigoClasificacionRiesgoFk(NULL);
-                                $arEmpleado->setCodigoCargoFk(NULL);
-                                $arEmpleado->setCargoDescripcion(NULL);
-                                $arEmpleado->setCodigoTipoPensionFk(NULL);
-                                $arEmpleado->setCodigoTipoCotizanteFk(NULL);
-                                $arEmpleado->setCodigoSubtipoCotizanteFk(NULL);
-                                $arEmpleado->setCodigoEntidadSaludFk(NULL);
-                                $arEmpleado->setCodigoEntidadPensionFk(NULL);
-                                $arEmpleado->setCodigoEntidadCajaFk(NULL);
-                                $arEmpleado->setEstadoContratoActivo(0);
-                                $arEmpleado->setCodigoContratoActivoFk(NULL);                        
-                                $em->remove($arContrato);
-                                $em->persist($arEmpleado);                            
+                            $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+                            $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findOneBy(array('codigoContratoFk' => $codigo));
+                            if($arPagos == null) {
+                                $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+                                $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigo);                                                
+                                if($arContrato->getEstadoActivo() == 1 && $arContrato->getEstadoTerminado() == 0) {
+                                    $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                                    $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arContrato->getCodigoEmpleadoFk());
+                                    $arEmpleado->setCodigoCentroCostoFk(NULL);
+                                    $arEmpleado->setCodigoTipoTiempoFk(NULL);
+                                    $arEmpleado->setVrSalario(0);
+                                    $arEmpleado->setCodigoClasificacionRiesgoFk(NULL);
+                                    $arEmpleado->setCodigoCargoFk(NULL);
+                                    $arEmpleado->setCargoDescripcion(NULL);
+                                    $arEmpleado->setCodigoTipoPensionFk(NULL);
+                                    $arEmpleado->setCodigoTipoCotizanteFk(NULL);
+                                    $arEmpleado->setCodigoSubtipoCotizanteFk(NULL);
+                                    $arEmpleado->setCodigoEntidadSaludFk(NULL);
+                                    $arEmpleado->setCodigoEntidadPensionFk(NULL);
+                                    $arEmpleado->setCodigoEntidadCajaFk(NULL);
+                                    $arEmpleado->setEstadoContratoActivo(0);
+                                    $arEmpleado->setCodigoContratoActivoFk(NULL);                        
+                                    $em->remove($arContrato);
+                                    $em->persist($arEmpleado);                            
+                                }                                
+                            } else {
+                                $objMensaje->Mensaje('error', "El contrato " . $codigo . " tiene pagos relacionados", $this);
+                                $error = TRUE;
+                                break;
                             }
                         }
-                        $em->flush();
+                        if($error == FALSE) {
+                            $em->flush();
+                        }                        
                         return $this->redirect($this->generateUrl('brs_rhu_base_contratos_lista'));
                     }
                 } else {
