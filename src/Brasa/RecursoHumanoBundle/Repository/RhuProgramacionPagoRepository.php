@@ -298,7 +298,8 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     if($arProgramacionPagoProcesar->getCodigoPagoTipoFk() == 3) {                       
                         $arContrato->setFechaUltimoPagoCesantias($arProgramacionPagoProcesar->getFechaHasta());
                     }   
-                    $em->persist($arContrato);                            
+                    $em->persist($arContrato); 
+                    
                 }                        
             }
             
@@ -321,9 +322,14 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 if($arProgramacionPagoProcesar->getNoGeneraPeriodo() == 0) {
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->generarProgramacionPago($arProgramacionPagoProcesar->getCodigoCentroCostoFk(), 1);
                 }                   
-            }         
+            } 
+            $em->flush();
+            //Inactivar adicionales al pago                                                                                
+            //$dql = "UPDATE BrasaRecursoHumanoBundle:RhuPagoAdicional pa SET pa.estadoInactivo = 1 WHERE pa.codigoEmpleadoFk = " . $arContrato->getCodigoEmpleadoFk() . " AND pa.permanente = 1 ";
+            //$query = $em->createQuery($dql);        
+            //$query->getResult();              
         }            
-        $em->flush();   
+           
         
     }    
     

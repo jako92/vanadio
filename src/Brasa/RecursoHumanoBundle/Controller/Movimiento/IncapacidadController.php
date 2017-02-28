@@ -158,7 +158,7 @@ class IncapacidadController extends Controller
                                                 $arIncapacidad->setVrSaldo($floVrIncapacidad);
                                                 $arIncapacidad->setCentroCostoRel($arEmpleado->getCentroCostoRel());
                                                 if($codigoIncapacidad == 0) {
-                                                    $arIncapacidad->setCodigoUsuario($arUsuario->getUserName());
+                                                    $arIncapacidad->setCodigoUsuario($arUsuario->getUserName());                                                    
                                                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                                                     if($arEmpleado->getCodigoContratoActivoFk() != '') {
                                                         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arEmpleado->getCodigoContratoActivoFk());
@@ -169,7 +169,11 @@ class IncapacidadController extends Controller
                                                 }
                                                 $em->persist($arIncapacidad);
                                                 $em->flush();
-
+                                                if($codigoIncapacidad == 0) {
+                                                    $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 12, 1, $arIncapacidad->getCodigoIncapacidadPk());
+                                                } else {
+                                                    $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 12, 2, $arIncapacidad->getCodigoIncapacidadPk());
+                                                }
                                                 if($form->get('guardarnuevo')->isClicked()) {                                                        
                                                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_incapacidad_nuevo', array('codigoIncapacidad' => 0)));                                        
                                                 } else {
@@ -205,6 +209,27 @@ class IncapacidadController extends Controller
             'form' => $form->createView()));
     }
 
+    /**
+     * @Route("/rhu/movimiento/incapacidad/detalle/{codigoIncapacidad}", name="brs_rhu_movimiento_incapacidad_detalle")
+     */    
+    public function detalleAction(Request $request, $codigoIncapacidad) {
+        $em = $this->getDoctrine()->getManager();                
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arIncapacidad = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();        
+        $arIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($codigoIncapacidad);
+        $form = $this->formularioDetalle($arIncapacidad);
+        $form->handleRequest($request);
+
+        if($form->isValid()) {
+
+        }
+
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Incapacidades:detalle.html.twig', array(
+                    'arIncapacidad' => $arIncapacidad,                    
+                    'form' => $form->createView()
+                    ));
+    }     
+    
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;    
@@ -265,6 +290,12 @@ class IncapacidadController extends Controller
             ->getForm();        
         return $form;
     }      
+    
+    private function formularioDetalle($ar) {        
+        $form = $this->createFormBuilder()    
+                    ->getForm();  
+        return $form;
+    }     
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();                

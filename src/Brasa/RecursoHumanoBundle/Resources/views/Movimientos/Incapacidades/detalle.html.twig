@@ -1,0 +1,63 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Incapacidad detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Incapacidad: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Incapacidad</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+       
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_gen_consulta_log', { 'codigoUsuario': app.user.id, 'codigoDocumento': 12, 'id': arIncapacidad.codigoIncapacidadPk }) }}', 'Archivos', 500, 700)" >Log</a>                                    
+        </div>
+        <br /> <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">Información incapacidad</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CÓDIGO:</td>
+                        <td class="td-in-well">{{ arIncapacidad.codigoIncapacidadPk }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td align="right">{{ arIncapacidad.fecha|date("Y/m/d") }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">IDENTIFICACION:</td>
+                        <td class="td-in-well">{{ arIncapacidad.empleadoRel.numeroIdentificacion }}</td>
+                        <td class="titulo">DESDE:</td>
+                        <td align="right">{{ arIncapacidad.fechaDesde|date("Y/m/d") }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">NOMBRE:</td>
+                        <td class="td-in-well">{{ arIncapacidad.empleadoRel.nombreCorto }}</td>
+                        <td class="titulo">HASTA:</td>
+                        <td align="right">{{ arIncapacidad.fechaHasta|date("Y/m/d") }}</td>                                               
+                    </tr>                    
+                    
+                </table>
+            </div>
+        </div>
+        <br />
+        <!-- Botones Menu Items -->
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_incapacidad') }}" style="float:left">Volver</a>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
