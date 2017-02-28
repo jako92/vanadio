@@ -128,6 +128,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     if($arIncapacidad->getFechaHasta() < $fechaHasta) {
                         $fechaHasta = $arIncapacidad->getFechaHasta();                
                     }
+                    $vrHoraIncapacidad = 0;
+                    $vrHoraIncapacidad = $douVrHora;
                     $intDias = $fechaDesde->diff($fechaHasta);
                     $intDias = $intDias->format('%a');   
                     $intDias += 1;
@@ -158,6 +160,15 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $douPagoDetalle = ($douPagoDetalle * $arIncapacidad->getPorcentajePago())/100;
                         $douIngresoBasePrestacionIncapacidad = $intHorasProcesarIncapacidad * $douVrHora;
                     }
+                    if($arConfiguracion->getPagarIncapacidadSalarioPactado()){                    
+                        $devengadoPactado = $arContrato->getVrDevengadoPactado();
+                        if($devengadoPactado > 0) {
+                            $vrHoraDevengadoPactado = $devengadoPactado / 30 / 8;
+                            $vrHoraIncapacidad = $vrHoraDevengadoPactado;
+                            $douPagoDetalle = $intHorasProcesarIncapacidad * $vrHoraDevengadoPactado;
+                        } 
+                    }                    
+                    
                     $douIngresoBaseCotizacionIncapacidadControl = $douPagoDetalle;
                     if($arIncapacidad->getIncapacidadTipoRel()->getGeneraIbc() == 1) {
                         $douIngresoBaseCotizacionIncapacidad = $douPagoDetalle;
@@ -171,7 +182,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     $devengadoPrestacional += $douPagoDetalle;
                     $arPagoDetalle->setNumeroHoras($intHorasProcesarIncapacidad);
                     $arPagoDetalle->setNumeroDias($intDias);
-                    $arPagoDetalle->setVrHora($douVrHora);
+                    $arPagoDetalle->setVrHora($vrHoraIncapacidad);
                     $arPagoDetalle->setDetalle($arIncapacidad->getIncapacidadDiagnosticoRel()->getNombre());
                     $arPagoDetalle->setVrDia($douVrDia);
                     $arPagoDetalle->setVrPago($douPagoDetalle);

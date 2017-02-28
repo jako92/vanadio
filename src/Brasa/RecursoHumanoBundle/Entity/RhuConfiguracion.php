@@ -365,6 +365,10 @@ class RhuConfiguracion
      */
     private $pagarLicenciaSalarioPactado = false;    
     
+    /**
+     * @ORM\Column(name="pagar_incapacidad_salario_pactado", type="boolean")
+     */
+    private $pagarIncapacidadSalarioPactado = false;      
 
 
     /**
@@ -2021,5 +2025,29 @@ class RhuConfiguracion
     public function getPagarLicenciaSalarioPactado()
     {
         return $this->pagarLicenciaSalarioPactado;
+    }
+
+    /**
+     * Set pagarIncapacidadSalarioPactado
+     *
+     * @param boolean $pagarIncapacidadSalarioPactado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setPagarIncapacidadSalarioPactado($pagarIncapacidadSalarioPactado)
+    {
+        $this->pagarIncapacidadSalarioPactado = $pagarIncapacidadSalarioPactado;
+
+        return $this;
+    }
+
+    /**
+     * Get pagarIncapacidadSalarioPactado
+     *
+     * @return boolean
+     */
+    public function getPagarIncapacidadSalarioPactado()
+    {
+        return $this->pagarIncapacidadSalarioPactado;
     }
 }
