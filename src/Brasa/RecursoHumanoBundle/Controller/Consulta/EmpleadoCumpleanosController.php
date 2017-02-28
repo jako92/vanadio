@@ -45,7 +45,7 @@ class EmpleadoCumpleanosController extends Controller {
             }
         }
         $arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
-        var_dump("strDqlLista");
+       
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(
                     'arEmpleadosCumpleanos' => $arEmpleadosCumpleanos,
                     'form' => $form->createView()
@@ -56,28 +56,20 @@ class EmpleadoCumpleanosController extends Controller {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaCumpleanosDql(
-                $strFechaDesde = $session->get('filtroDesde'), $strFechaHasta = $session->get('filtroHasta')
+                $Mes = $session->get('filtroMes')
         );
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        $dateFecha = new \DateTime('now');
-        $strFechaDesde = $dateFecha->format('Y-m-') . "01";
-        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
-        $strFechaHasta = $dateFecha->format('Y-m-') . $intUltimoDia;
-        if ($session->get('filtroDesde') != "") {
-            $strFechaDesde = $session->get('filtroDesde');
+        $Mes = "";
+        if ($session->get('filtroMes') != "") {
+            $Mes = $session->get('filtroMes');
         }
-        if ($session->get('filtroHasta') != "") {
-            $strFechaHasta = $session->get('filtroHasta');
-        }
-        $dateFechaDesde = date_create($strFechaDesde);
-        $dateFechaHasta = date_create($strFechaHasta);
+        $dateMes = date_create($Mes);
         $form = $this->createFormBuilder()
-                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
-                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('Mes', TextType::class, array('label' => 'Mes'))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
@@ -86,10 +78,8 @@ class EmpleadoCumpleanosController extends Controller {
 
     private function filtrarLista($form) {
         $session = new Session;
-        $dateFechaDesde = $form->get('fechaDesde')->getData();
-        $dateFechaHasta = $form->get('fechaHasta')->getData();
-        $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-        $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
+        $dateMes= $form->get('Mes')->getData();
+        //$session->get('filtroMes');
     }
 
     private function generarExcel() {

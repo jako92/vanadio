@@ -168,15 +168,12 @@ class RhuEmpleadoRepository extends EntityRepository {
         return $dql;
     }
 
-    public function listaCumpleanosDql($strDesde = "", $strHasta = "") {
+    public function listaCumpleanosDql($Mes = "") {
         $em = $this->getEntityManager();
         $dql = "SELECT e FROM BrasaRecursoHumanoBundle:RhuEmpleado e WHERE e.codigoEmpleadoPk <> 0";
-       if($strDesde != "") {
-            $dql .= " AND e.fechaNacimiento >= '" . $strDesde . "'";
+       if($Mes != 'enero') {
+            $dql .= " AND e.MONTH(fecha_nacimiento) = MONTH(NOW())";
         }
-        if($strHasta != "") {
-            $dql .= " AND e.fechaNacimiento <= '" . $strHasta . "'";
-        } 
         $dql .= " ORDER BY e.nombreCorto";
         return $dql;
     }
