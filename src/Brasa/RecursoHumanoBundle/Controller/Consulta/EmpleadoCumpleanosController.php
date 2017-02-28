@@ -35,14 +35,16 @@ class EmpleadoCumpleanosController extends Controller {
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnExcel')->isClicked()) {
+               
                 $this->filtrarLista($form);
                 $this->listar();
                 $this->generarExcel();
+                
             }
         }
         //$arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
-       
-        return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(                    
+
+        return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(
                     'form' => $form->createView()
         ));
     }
@@ -57,7 +59,7 @@ class EmpleadoCumpleanosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $form = $this->createFormBuilder()
-                ->add('Mes', TextType::class, array('label' => 'Mes'))                
+                ->add('Mes', TextType::class, array('label' => 'Mes','attr' => array('require' => 'true')))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
         return $form;
@@ -65,8 +67,8 @@ class EmpleadoCumpleanosController extends Controller {
 
     private function filtrarLista($form) {
         $session = new Session;
-        $dateMes= $form->get('Mes')->getData();
-        $session->set('filtroMes', $dateMes );
+        $dateMes = $form->get('Mes')->getData();
+        $session->set('filtroMes', $dateMes);
     }
 
     private function generarExcel() {
@@ -92,30 +94,23 @@ class EmpleadoCumpleanosController extends Controller {
         }
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'CÓDIGO')
-                ->setCellValue('B1', 'CODIGO EMPLEADO')
-                ->setCellValue('C1', 'NOMBRE')
-                ->setCellValue('D1', 'CEDULA')
-                ->setCellValue('E1', 'PARENTESCO')
-                ->setCellValue('F1', 'NOMBRES Y APELLIDOS')
-                ->setCellValue('G1', 'EPS')
-                ->setCellValue('H1', 'CAJA COMPENSACION')
-                ->setCellValue('I1', 'FECHA NACIMIENTO')
-                ->setCellValue('J1', 'OCUPACION')
-                ->setCellValue('K1', 'TELEFONO');
+                ->setCellValue('B1', 'CEDULA')
+                ->setCellValue('C1', 'NOMBRE EMPLEADO')
+                ->setCellValue('D1', 'FECHA NACIMIENTO');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
         $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $arEmpleados = $query->getResult();
 
-        foreach ($arEmpleados as $arEmpleado) {  
-            if($arEmpleado->getFechaNacimiento()->format('n') == $session->get('filtroMes')) {
+        foreach ($arEmpleados as $arEmpleado) {
+            if ($arEmpleado->getFechaNacimiento()->format('n') == $session->get('filtroMes')) {
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
-                        ->setCellValue('B' . $i, "")
-                        ->setCellValue('C' . $i, "")
-                        ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("m"))
-                        ->setCellValue('E' . $i, "");                
+                        ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
+                        ->setCellValue('C' . $i, $arEmpleado->getNombreCorto())
+                        ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("Y/m/d"));
+                  
                 $i++;
             }
         }
