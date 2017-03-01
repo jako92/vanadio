@@ -31,20 +31,21 @@ class RetencionIcaController extends Controller {
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-            }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrar($form);
-                $form = $this->formularioFiltro();
-                $this->lista();
-                $this->generarExcel();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
+                    $this->generarExcel();
+                }
             }
         }
-
         $arFacturaDetalle = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 200);
         return $this->render('BrasaTurnoBundle:Reportes/Factura:retencionIca.html.twig', array(
                     'arFacturaDetalle' => $arFacturaDetalle,
