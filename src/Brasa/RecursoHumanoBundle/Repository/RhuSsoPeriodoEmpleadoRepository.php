@@ -279,9 +279,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                     $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                     $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
                     $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                    $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);            
-                    $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
-                    $arPeriodoEmpleadoDetalle->setTarifaCaja(4);                   
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                               
                 } else {
                     $ibcLicencia = $diaSalario * $arrLicencia['dias'];
                     $diasLicencia += $arrLicencia['dias'];
@@ -289,8 +287,6 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                     $arPeriodoEmpleadoDetalle->setIbc(ceil($ibcLicencia));
                     $arPeriodoEmpleadoDetalle->setTarifaPension(12);
                     $arPeriodoEmpleadoDetalle->setTarifaSalud(0);
-                    $arPeriodoEmpleadoDetalle->setTarifaRiesgos(0);
-                    $arPeriodoEmpleadoDetalle->setTarifaCaja(0);                    
                 }
                 
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
@@ -328,9 +324,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                 $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
                 $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                 
-                $arPeriodoEmpleadoDetalle->setTarifaRiesgos(0);
-                $arPeriodoEmpleadoDetalle->setTarifaCaja(0);                
+                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                                 
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrIncapacidad['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrIncapacidad['fechaHastaNovedad'])); 
                 $diaSalarioLicencia = $ibcIncapacidad / $arrIncapacidad['dias'];
@@ -360,8 +354,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                 $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
                 $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);            
-                $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
+                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                            
                 $arPeriodoEmpleadoDetalle->setTarifaCaja(4);                
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrVacacion['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrVacacion['fechaHastaNovedad']));                  
