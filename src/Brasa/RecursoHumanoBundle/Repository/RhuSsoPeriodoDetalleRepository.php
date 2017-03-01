@@ -521,8 +521,8 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $arAporte->setSegundoNombre($arEmpleado->getNombre2());
                     $arAporte->setPrimerApellido($arEmpleado->getApellido1());
                     $arAporte->setSegundoApellido($arEmpleado->getApellido2());
-                    $arAporte->setIngreso($arPeriodoEmpleado->getIngreso());
-                    $arAporte->setRetiro($arPeriodoEmpleado->getRetiro());
+                    $arAporte->setIngreso($arPeriodoEmpleadoDetalle->getIngreso());
+                    $arAporte->setRetiro($arPeriodoEmpleadoDetalle->getRetiro());
                     $arAporte->setCargoRel($arContrato->getCargoRel());
 
                     //Parametros generales
@@ -569,6 +569,12 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                         $arAporte->setFechaInicioVacLr($arPeriodoEmpleadoDetalle->getFechaDesde()->format('Y-m-d'));
                         $arAporte->setFechaFinVacLr($arPeriodoEmpleadoDetalle->getFechaHasta()->format('Y-m-d'));                         
                     }
+                    if($arPeriodoEmpleadoDetalle->getRetiro() == "X") {
+                        $arAporte->setFechaRetiro($arPeriodoEmpleadoDetalle->getFechaRetiro()->format('Y-m-d'));
+                    }
+                    if($arPeriodoEmpleadoDetalle->getIngreso() == "X") {
+                        $arAporte->setFechaIngreso($arPeriodoEmpleadoDetalle->getFechaIngreso()->format('Y-m-d'));
+                    }
                     $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());
                     
                     $arAporte->setSalarioBasico($salario);
@@ -580,12 +586,15 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $arAporte->setEntidadCajaRel($arContrato->getEntidadCajaRel());
                     $arAporte->setEntidadRiesgoProfesionalRel($arEntidadRiesgos);
 
+                    $diasPension = $dias;
+                    
+                    //Despues del 6 marzo
                     $ibc = $this->redondearIbc($dias, $ibc);
                     $ibcPension = $ibc;
                     $ibcSalud = $ibc;
                     $ibcRiesgos = $ibc;
                     $ibcCaja = $this->redondearIbc($dias, $ibc+$vacaciones);
-
+                    
                     $tarifaPension = $arPeriodoEmpleadoDetalle->getTarifaPension();
                     if($arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 19 || $arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 12) {
                         $tarifaPension = 12.5;
@@ -601,12 +610,34 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                         $tarifaSena = 2;
                     }
 
-                    $cotizacionPension = round($ibcPension * $tarifaPension / 100, -2);
+                    $cotizacionPension = $ibcPension * $tarifaPension / 100;
+                    $cotizacionSalud = $ibcSalud * $tarifaSalud / 100;
+                    $cotizacionRiesgos = $ibcRiesgos * $tarifaRiesgos / 100;
+                    $cotizacionCaja = $ibcCaja * $tarifaCaja / 100;
+                    $cotizacionSena = $ibcPension * $tarifaSena / 100;
+                    $cotizacionIcbf = $ibcPension * $tarifaIcbf / 100;                    
+                    
+                    //Redondeo forma 1                    
+                    $cotizacionPension = $this->redondearAporte2($cotizacionPension, $dias, $tarifaPension);
+                    $cotizacionSalud = $this->redondearAporte2($cotizacionSalud, $dias, $tarifaSalud);                    
+                    $cotizacionRiesgos = $this->redondearAporte2($cotizacionRiesgos, $dias, $tarifaRiesgos);
+                    $cotizacionCaja = $this->redondearAporte2($cotizacionCaja, $dias, $tarifaCaja);
+                    $cotizacionSena = $this->redondearAporte2($cotizacionSena, $dias, $tarifaSena);
+                    $cotizacionIcbf = $this->redondearAporte2($cotizacionIcbf, $dias, $tarifaIcbf);                                        
+                    
+                    //$cotizacionPension = $this->redondearAporte($ibcPension, $ibcPension, $tarifaPension, $dias);
+                    //$cotizacionSalud = $this->redondearAporte($ibcSalud, $ibcSalud, $tarifaSalud, $dias);                    
+                    //$cotizacionRiesgos = $this->redondearAporte($ibcRiesgos, $ibcRiesgos, $tarifaRiesgos, $dias);
+                    //$cotizacionCaja = $this->redondearAporte($ibcCaja, $ibcCaja, $tarifaCaja, $dias);
+                    //$cotizacionSena = $this->redondearAporte($ibcPension, $ibcPension, $tarifaSena, $dias);
+                    //$cotizacionIcbf = $this->redondearAporte($ibcPension, $ibcPension, $tarifaIcbf, $dias);                                                            
+                    
+                    /*$cotizacionPension = round($ibcPension * $tarifaPension / 100, -2);
                     $cotizacionSalud = round($ibcSalud * $tarifaSalud / 100, -2);
                     $cotizacionRiesgos = round($ibcRiesgos * $tarifaRiesgos / 100, -2);
                     $cotizacionCaja = round($ibcCaja * $tarifaCaja / 100, -2);
                     $cotizacionSena = round($ibcPension * $tarifaSena / 100, -2);
-                    $cotizacionIcbf = round($ibcPension * $tarifaIcbf / 100, -2);
+                    $cotizacionIcbf = round($ibcPension * $tarifaIcbf / 100, -2);*/
 
                     if($arAporte->getTipoCotizante() == '19' || $arAporte->getTipoCotizante() == '12' || $arAporte->getTipoCotizante() == '23') {
                         $cotizacionPension = 0;
@@ -618,7 +649,13 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     if($arAporte->getTipoCotizante() == '23') {
                         $cotizacionSalud = 0;
                     }
+                    //1 Dependiente pensionado por vejez activo (SI no es pensionado es = a 00)
                     if($arPeriodoEmpleado->getContratoRel()->getCodigoSubtipoCotizanteFk() == 1) {
+                        $arAporte->setEntidadPensionRel(NULL);
+                        $arAporte->setCodigoEntidadPensionPertenece(NULL);
+                        $diasPension = 0;
+                        $ibcPension = 0;
+                        $tarifaPension = 0;
                         $cotizacionPension = 0;
                     }
                     if($arPeriodoEmpleadoDetalle->getLicenciaMaternidad()) {
@@ -626,7 +663,7 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                         $cotizacionRiesgos = 0;
                     }                    
                     $ibcCajaTotal += $ibcCaja;
-                    $arAporte->setDiasCotizadosPension($dias);
+                    $arAporte->setDiasCotizadosPension($diasPension);
                     $arAporte->setDiasCotizadosSalud($dias);
                     $arAporte->setDiasCotizadosRiesgosProfesionales($dias);
                     $arAporte->setDiasCotizadosCajaCompensacion($dias);
@@ -867,4 +904,31 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
         }
         return $douCotizacion;
     }
+    
+    public function redondearAporte2($cotizacion, $dias, $tarifa) {        
+        $cotizacionRetornar = 0;
+        $cotizacionSalarioMinimo = ((737717 / 30) * $dias) * ($tarifa / 100);        
+        $cotizacionSalarioMinimo = round($cotizacionSalarioMinimo, -1, PHP_ROUND_HALF_DOWN);
+        $residuo = fmod($cotizacion, 100);
+        if($residuo > 50) {
+            $cotizacionRetornar = intval($cotizacion/100) * 100 + 100;
+        } else {
+            $cotizacionSinResiduo = ceil($cotizacion-$residuo);
+            if($cotizacionSinResiduo <= $cotizacionSalarioMinimo) {
+                $cotizacionRetornar = ceil($cotizacion);
+            } else {
+                $cotizacionRetornar = $cotizacionSinResiduo;
+            }
+        }
+        if($cotizacionSalarioMinimo > $cotizacionRetornar) {
+            $cotizacionRetornar = $cotizacionSalarioMinimo;
+        }
+        /*$cotizacionSalarioMinimo = round($cotizacionSalarioMinimo, -1, PHP_ROUND_HALF_DOWN);
+        if($cotizacionSalarioMinimo > $cotizacionRedondeada) {            
+            $cotizacionRetornar = $cotizacionSalarioMinimo;                       
+        } else {
+            $cotizacionRetornar = $cotizacionRedondeada;
+        } */       
+        return $cotizacionRetornar;
+    }    
 }

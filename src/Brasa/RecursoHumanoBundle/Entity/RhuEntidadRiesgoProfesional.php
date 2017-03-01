@@ -41,11 +41,6 @@ class RhuEntidadRiesgoProfesional
      * @ORM\Column(name="codigo_interface", type="string", length=10, nullable=true)
      */    
     private $codigoInterface;
-
-    /**
-     * @ORM\OneToMany(targetEntity="RhuConfiguracion", mappedBy="entidadRiesgoProfesionalRel")
-     */
-    protected $configuracionEntidadRiesgoProfesionalRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuAccidenteTrabajo", mappedBy="entidadRiesgoProfesionalRel")
@@ -57,13 +52,14 @@ class RhuEntidadRiesgoProfesional
      */
     protected $ssoAportesEntidadRiesgoProfesionalRel;     
     
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->configuracionEntidadRiesgoProfesionalRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->accidentesTrabajoEntidadRiesgoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ssoAportesEntidadRiesgoProfesionalRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -194,40 +190,6 @@ class RhuEntidadRiesgoProfesional
     public function getCodigoInterface()
     {
         return $this->codigoInterface;
-    }
-
-    /**
-     * Add configuracionEntidadRiesgoProfesionalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion $configuracionEntidadRiesgoProfesionalRel
-     *
-     * @return RhuEntidadRiesgoProfesional
-     */
-    public function addConfiguracionEntidadRiesgoProfesionalRel(\Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion $configuracionEntidadRiesgoProfesionalRel)
-    {
-        $this->configuracionEntidadRiesgoProfesionalRel[] = $configuracionEntidadRiesgoProfesionalRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove configuracionEntidadRiesgoProfesionalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion $configuracionEntidadRiesgoProfesionalRel
-     */
-    public function removeConfiguracionEntidadRiesgoProfesionalRel(\Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion $configuracionEntidadRiesgoProfesionalRel)
-    {
-        $this->configuracionEntidadRiesgoProfesionalRel->removeElement($configuracionEntidadRiesgoProfesionalRel);
-    }
-
-    /**
-     * Get configuracionEntidadRiesgoProfesionalRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getConfiguracionEntidadRiesgoProfesionalRel()
-    {
-        return $this->configuracionEntidadRiesgoProfesionalRel;
     }
 
     /**

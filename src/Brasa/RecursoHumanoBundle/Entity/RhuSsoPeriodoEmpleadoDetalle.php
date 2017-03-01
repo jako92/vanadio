@@ -156,6 +156,16 @@ class RhuSsoPeriodoEmpleadoDetalle
      * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
      */         
     private $fechaHasta;    
+
+    /**
+     * @ORM\Column(name="fecha_retiro", type="date", nullable=true)
+     */         
+    private $fechaRetiro;    
+
+    /**
+     * @ORM\Column(name="fecha_ingreso", type="date", nullable=true)
+     */         
+    private $fechaIngreso;
     
     /**
      * @ORM\Column(name="variacion_transitoria_salario", type="string", length=1)
@@ -898,5 +908,53 @@ class RhuSsoPeriodoEmpleadoDetalle
     public function getSsoPeriodoEmpleadoRel()
     {
         return $this->ssoPeriodoEmpleadoRel;
+    }
+
+    /**
+     * Set fechaRetiro
+     *
+     * @param \DateTime $fechaRetiro
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setFechaRetiro($fechaRetiro)
+    {
+        $this->fechaRetiro = $fechaRetiro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRetiro
+     *
+     * @return \DateTime
+     */
+    public function getFechaRetiro()
+    {
+        return $this->fechaRetiro;
+    }
+
+    /**
+     * Set fechaIngreso
+     *
+     * @param \DateTime $fechaIngreso
+     *
+     * @return RhuSsoPeriodoEmpleadoDetalle
+     */
+    public function setFechaIngreso($fechaIngreso)
+    {
+        $this->fechaIngreso = $fechaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaIngreso
+     *
+     * @return \DateTime
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
     }
 }

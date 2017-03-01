@@ -229,7 +229,7 @@ class RhuSsoAporte
     private $incapacidadAccidenteTrabajoEnfermedadProfesional = 0;    
     
     /**
-     * @ORM\Column(name="codigo_entidad_pension_pertenece", type="string", length=6)
+     * @ORM\Column(name="codigo_entidad_pension_pertenece", type="string", length=6, nullable=true)
      */
     private $codigoEntidadPensionPertenece;     
     
@@ -3052,6 +3052,30 @@ class RhuSsoAporte
     }
 
     /**
+     * Set indicadorTarifaEspecialPensiones
+     *
+     * @param string $indicadorTarifaEspecialPensiones
+     *
+     * @return RhuSsoAporte
+     */
+    public function setIndicadorTarifaEspecialPensiones($indicadorTarifaEspecialPensiones)
+    {
+        $this->indicadorTarifaEspecialPensiones = $indicadorTarifaEspecialPensiones;
+
+        return $this;
+    }
+
+    /**
+     * Get indicadorTarifaEspecialPensiones
+     *
+     * @return string
+     */
+    public function getIndicadorTarifaEspecialPensiones()
+    {
+        return $this->indicadorTarifaEspecialPensiones;
+    }
+
+    /**
      * Set fechaIngreso
      *
      * @param string $fechaIngreso
@@ -3697,29 +3721,5 @@ class RhuSsoAporte
     public function getEntidadCajaRel()
     {
         return $this->entidadCajaRel;
-    }
-
-    /**
-     * Set indicadorTarifaEspecialPensiones
-     *
-     * @param string $indicadorTarifaEspecialPensiones
-     *
-     * @return RhuSsoAporte
-     */
-    public function setIndicadorTarifaEspecialPensiones($indicadorTarifaEspecialPensiones)
-    {
-        $this->indicadorTarifaEspecialPensiones = $indicadorTarifaEspecialPensiones;
-
-        return $this;
-    }
-
-    /**
-     * Get indicadorTarifaEspecialPensiones
-     *
-     * @return string
-     */
-    public function getIndicadorTarifaEspecialPensiones()
-    {
-        return $this->indicadorTarifaEspecialPensiones;
     }
 }
