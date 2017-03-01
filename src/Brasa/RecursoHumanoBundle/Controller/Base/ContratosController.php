@@ -662,7 +662,7 @@ class ContratosController extends Controller
             ->add('cajaRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadCaja',
                 'choice_label' => 'nombre',
-                'data' => $arContrato->getCargoRel(),
+                'data' => $arContrato->getEntidadCajaRel(),
             ))    
             ->add('terminacionContratoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuMotivoTerminacionContrato',
