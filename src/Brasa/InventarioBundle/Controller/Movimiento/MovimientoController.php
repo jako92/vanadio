@@ -1,5 +1,7 @@
 <?php
+
 namespace Brasa\InventarioBundle\Controller\Movimiento;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\InventarioBundle\Form\Type\InvMovimientoType;
@@ -13,9 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use PHPExcel_Style_Border;
 
+class MovimientoController extends Controller {
 
-class MovimientoController extends Controller
-{
     var $strListaDql = "";
 
     /**
@@ -23,25 +24,26 @@ class MovimientoController extends Controller
      */
     public function ingresoAction(Request $request, $codigoDocumentoClase) {
         $em = $this->getDoctrine()->getManager();
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioIngreso();
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 134, 1)) {
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 134, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $form->handleRequest($request);
         $this->listaIngreso($codigoDocumentoClase);
-        if ($form->isValid()) {
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrarIngreso($form);
-                $form = $this->formularioIngreso();
-                $this->listaIngreso();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrarIngreso($form);
+                    $form = $this->formularioIngreso();
+                    $this->listaIngreso();
+                }
             }
         }
-
         $arDocumentos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 40);
         return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:ingreso.html.twig', array(
-            'arDocumentos' => $arDocumentos,
-            'form' => $form->createView()));
+                    'arDocumentos' => $arDocumentos,
+                    'form' => $form->createView()));
     }
 
     /**
@@ -49,200 +51,202 @@ class MovimientoController extends Controller
      */
     public function listaAction(Request $request, $codigoDocumento) {
         $em = $this->getDoctrine()->getManager();
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();
-        $arDocumento = $em->getRepository('BrasaInventarioBundle:InvDocumento')->find($codigoDocumento);        
+        $arDocumento = $em->getRepository('BrasaInventarioBundle:InvDocumento')->find($codigoDocumento);
         $form = $this->formularioLista($arDocumento);
         $form->handleRequest($request);
         $this->lista($codigoDocumento);
-        if ($form->isValid()) {
-            if ($form->get('BtnExcel')->isClicked()) {
-                $this->filtrarLista($form);
-                $this->lista($codigoDocumento);
-                $this->generarExcel($codigoDocumento);
-            }
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrarLista($form);
-                $form = $this->formularioLista();
-                $this->lista($codigoDocumento);
-            }
-            if ($form->get('BtnEliminar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->eliminar($arrSeleccionados);
-                if ($respuesta == true){
-                    $objMensaje->Mensaje("error", "No se puede eliminar el movimiento, esta autorizado");
-                } else {
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_lista', array('codigoDocumento' => $codigoDocumento)));
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->filtrarLista($form);
+                    $this->lista($codigoDocumento);
+                    $this->generarExcel($codigoDocumento);
+                }
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrarLista($form);
+                    $form = $this->formularioLista();
+                    $this->lista($codigoDocumento);
+                }
+                if ($form->get('BtnEliminar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->eliminar($arrSeleccionados);
+                    if ($respuesta == true) {
+                        $objMensaje->Mensaje("error", "No se puede eliminar el movimiento, esta autorizado");
+                    } else {
+                        return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_lista', array('codigoDocumento' => $codigoDocumento)));
+                    }
                 }
             }
-        }        
+        }
         $arMovimientos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 40);
         return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:lista.html.twig', array(
-            'arMovimientos' => $arMovimientos,
-            'arDocumento' => $arDocumento,
-            'form' => $form->createView()));
+                    'arMovimientos' => $arMovimientos,
+                    'arDocumento' => $arDocumento,
+                    'form' => $form->createView()));
     }
 
     /**
      * @Route("/inv/movimiento/movimiento/nuevo/{codigoDocumento}/{codigoMovimiento}", name="brs_inv_movimiento_movimiento_nuevo")
      */
-    public function nuevoAction(Request $request,$codigoDocumento, $codigoMovimiento) {
+    public function nuevoAction(Request $request, $codigoDocumento, $codigoMovimiento) {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();            
+        $arDocumento = new \Brasa\InventarioBundle\Entity\InvDocumento();
         $arDocumento = $em->getRepository('BrasaInventarioBundle:InvDocumento')->find($codigoDocumento);
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
-        if($codigoMovimiento != 0) {
+        if ($codigoMovimiento != 0) {
             $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         } else {
             $arMovimiento->setFecha(new \DateTime('now'));
             $arMovimiento->setFechaVence(new \DateTime('now'));
         }
-        if($arDocumento->getCodigoDocumentoClaseFk() == 3) {
+        if ($arDocumento->getCodigoDocumentoClaseFk() == 3) {
             $form = $this->createForm(InvMovimientoFacturaType::class, $arMovimiento);
         } else {
             $form = $this->createForm(InvMovimientoType::class, $arMovimiento);
-        }        
+        }
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arrControles = $request->request->All();
-            if($arrControles['txtNit'] != '') {
-                $arTercero = new \Brasa\InventarioBundle\Entity\InvTercero();
-                $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->findOneBy(array('nit' => $arrControles['txtNit']));                
-                if(count($arTercero) > 0) {
-                    $arMovimiento->setTerceroRel($arTercero);
-                    $arMovimiento->setFormaPagoRel($arTercero->getFormaPagoRel());
-                    $arMovimiento->setDocumentoRel($arDocumento);
-                    $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
-                    $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
-                    $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
-                    $arMovimiento->setFechaVence($dateFechaVence);
-                    if($arDocumento->getAsignarConsecutivoCreacion()) {
-                        $consecutivo = $arDocumento->getConsecutivo();
-                        $arDocumento->setConsecutivo($consecutivo + 1);
-                        $em->persist($arDocumento);
-                        $arMovimiento->setNumero($consecutivo);                            
-                    }
-                    $em->persist($arMovimiento);
-                    $em->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrControles = $request->request->All();
+                if ($arrControles['txtNit'] != '') {
+                    $arTercero = new \Brasa\InventarioBundle\Entity\InvTercero();
+                    $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->findOneBy(array('nit' => $arrControles['txtNit']));
+                    if (count($arTercero) > 0) {
+                        $arMovimiento->setTerceroRel($arTercero);
+                        $arMovimiento->setFormaPagoRel($arTercero->getFormaPagoRel());
+                        $arMovimiento->setDocumentoRel($arDocumento);
+                        $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
+                        $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
+                        $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
+                        $arMovimiento->setFechaVence($dateFechaVence);
+                        if ($arDocumento->getAsignarConsecutivoCreacion()) {
+                            $consecutivo = $arDocumento->getConsecutivo();
+                            $arDocumento->setConsecutivo($consecutivo + 1);
+                            $em->persist($arDocumento);
+                            $arMovimiento->setNumero($consecutivo);
+                        }
+                        $em->persist($arMovimiento);
+                        $em->flush();
 
-                    if($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_nuevo', array('codigoDocumento' => $codigoDocumento, 'codigoMovimiento' => 0 )));
-                    } else {                
-                        return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $arMovimiento->getCodigoMovimientoPk())));
+                        if ($form->get('guardarnuevo')->isClicked()) {
+                            return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_nuevo', array('codigoDocumento' => $codigoDocumento, 'codigoMovimiento' => 0)));
+                        } else {
+                            return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $arMovimiento->getCodigoMovimientoPk())));
+                        }
+                    } else {
+                        $objMensaje->Mensaje("error", "El tercero no existe");
                     }
                 } else {
                     $objMensaje->Mensaje("error", "El tercero no existe");
-                  }
-            } else {
-                $objMensaje->Mensaje("error", "El tercero no existe");
+                }
             }
         }
-        
-        if($arDocumento->getCodigoDocumentoClaseFk() == 3) {
+        if ($arDocumento->getCodigoDocumentoClaseFk() == 3) {
             return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevoFactura.html.twig', array(
-                'arMovimiento' => $arMovimiento,
-                'arDocumento' => $arDocumento,
-                'form' => $form->createView()));            
+                        'arMovimiento' => $arMovimiento,
+                        'arDocumento' => $arDocumento,
+                        'form' => $form->createView()));
         } else {
             return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:nuevo.html.twig', array(
-                'arMovimiento' => $arMovimiento,
-                'arDocumento' => $arDocumento,
-                'form' => $form->createView()));
+                        'arMovimiento' => $arMovimiento,
+                        'arDocumento' => $arDocumento,
+                        'form' => $form->createView()));
         }
     }
 
     /**
      * @Route("/inv/movimiento/movimiento/detalle/{codigoMovimiento}", name="brs_inv_movimiento_movimiento_detalle")
      */
-    public function detalleAction(Request $request,$codigoMovimiento) {
+    public function detalleAction(Request $request, $codigoMovimiento) {
         $em = $this->getDoctrine()->getManager();
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $objMensaje = $this->get('mensajes_brasa');
-        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();        
-        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);        
+        $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+        $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         $form = $this->formularioDetalle($arMovimiento);
         $form->handleRequest($request);
-        if($form->isValid()) {
-            if($form->get('BtnAutorizar')->isClicked()) {
-                if($arMovimiento->getEstadoAutorizado() == 0) {
-                    $arrControles = $request->request->All();
-                    $this->actualizarDetalle($arrControles, $codigoMovimiento);
-                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->autorizar($codigoMovimiento);
-                    if($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta);
-                    } else {
-                        $em->flush();
-                    }                   
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
-                }
-            }
-            if($form->get('BtnDesAutorizar')->isClicked()) {
-                if($arMovimiento->getEstadoAutorizado() == 1) {
-                    if($arMovimiento->getEstadoImpreso() == 0) {
-                        $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->desautorizar($codigoMovimiento);
-                        if($respuesta != "") {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnAutorizar')->isClicked()) {
+                    if ($arMovimiento->getEstadoAutorizado() == 0) {
+                        $arrControles = $request->request->All();
+                        $this->actualizarDetalle($arrControles, $codigoMovimiento);
+                        $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->autorizar($codigoMovimiento);
+                        if ($respuesta != "") {
                             $objMensaje->Mensaje("error", $respuesta);
                         } else {
                             $em->flush();
                         }
                         return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
-                    }    
-                    else {
-                        $objMensaje->Mensaje("error","No se puede desautorizar, fue impreso el movimiento");
-                    }    
-                }
-            }
-            if($form->get('BtnDetalleActualizar')->isClicked()) {                
-                $arrControles = $request->request->All();
-                $this->actualizarDetalle($arrControles, $codigoMovimiento);                                                
-                return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
-            }            
-            if($form->get('BtnEliminarDetalle')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->eliminarSeleccionados($arrSeleccionados);                                
-                $em->getRepository('BrasaInventarioBundle:InvMovimiento')->liquidar($codigoMovimiento);
-                return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
-            }
-            if($form->get('BtnImprimir')->isClicked()) {                                
-                if($arMovimiento->getEstadoAutorizado() == 1) {
-                    if($arMovimiento->getEstadoImpreso() == 0) {
-                        $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->imprimir($codigoMovimiento);
-                        if($respuesta != "") {
-                            $objMensaje->Mensaje("error", $respuesta);
-                        } else {                        
-                            $em->flush();
-                        }                        
                     }
-                    if($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
-                        $arConfiguracion = $em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
-                        $codigoFormato = $arConfiguracion->getCodigoFormatoMovimiento();                                               
-                    
-                        if($codigoFormato <= 1) {
-                            $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura1();
-                            $objFormatoFactura->Generar($em, $codigoMovimiento);                    
+                }
+                if ($form->get('BtnDesAutorizar')->isClicked()) {
+                    if ($arMovimiento->getEstadoAutorizado() == 1) {
+                        if ($arMovimiento->getEstadoImpreso() == 0) {
+                            $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->desautorizar($codigoMovimiento);
+                            if ($respuesta != "") {
+                                $objMensaje->Mensaje("error", $respuesta);
+                            } else {
+                                $em->flush();
+                            }
+                            return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
+                        } else {
+                            $objMensaje->Mensaje("error", "No se puede desautorizar, fue impreso el movimiento");
                         }
-                        if($codigoFormato == 2) {
-                            $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura2();
-                            $objFormatoFactura->Generar($em, $codigoMovimiento);                    
+                    }
+                }
+                if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                    $arrControles = $request->request->All();
+                    $this->actualizarDetalle($arrControles, $codigoMovimiento);
+                    return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
+                }
+                if ($form->get('BtnEliminarDetalle')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->eliminarSeleccionados($arrSeleccionados);
+                    $em->getRepository('BrasaInventarioBundle:InvMovimiento')->liquidar($codigoMovimiento);
+                    return $this->redirect($this->generateUrl('brs_inv_movimiento_movimiento_detalle', array('codigoMovimiento' => $codigoMovimiento)));
+                }
+                if ($form->get('BtnImprimir')->isClicked()) {
+                    if ($arMovimiento->getEstadoAutorizado() == 1) {
+                        if ($arMovimiento->getEstadoImpreso() == 0) {
+                            $respuesta = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->imprimir($codigoMovimiento);
+                            if ($respuesta != "") {
+                                $objMensaje->Mensaje("error", $respuesta);
+                            } else {
+                                $em->flush();
+                            }
                         }
-                    }    
-                    
-                } else {
-                    $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada");
+                        if ($arMovimiento->getCodigoDocumentoClaseFk() == 3) {
+                            $arConfiguracion = $em->getRepository('BrasaInventarioBundle:InvConfiguracion')->find(1);
+                            $codigoFormato = $arConfiguracion->getCodigoFormatoMovimiento();
+
+                            if ($codigoFormato <= 1) {
+                                $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura1();
+                                $objFormatoFactura->Generar($em, $codigoMovimiento);
+                            }
+                            if ($codigoFormato == 2) {
+                                $objFormatoFactura = new \Brasa\InventarioBundle\Formatos\FormatoFactura2();
+                                $objFormatoFactura->Generar($em, $codigoMovimiento);
+                            }
+                        }
+                    } else {
+                        $objMensaje->Mensaje("error", "No puede imprimir el movimiento sin estar autorizada");
+                    }
                 }
             }
         }
-
         $arMovimientosDetalles = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
         $arMovimientosDetalles = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->FindBy(array('codigoMovimientoFk' => $codigoMovimiento));
         return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:detalle.html.twig', array(
                     'arMovimiento' => $arMovimiento,
                     'arMovimientoDetalle' => $arMovimientosDetalles,
                     'form' => $form->createView()
-                    ));
+        ));
     }
 
     /**
@@ -253,72 +257,71 @@ class MovimientoController extends Controller
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar',SubmitType::class, array('label'  => 'Guardar',))
-            ->getForm();
+                ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar',))
+                ->getForm();
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            if ($form->get('BtnGuardar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $arrControles = $request->request->All();
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigo) {
-                        $arItem = new \Brasa\InventarioBundle\Entity\InvItem();
-                        $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($codigo);
-                        $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
-                        $arMovimientoDetalle->setMovimientoRel($arMovimiento);
-                        $arMovimientoDetalle->setItemRel($arItem);                        
-                        $arMovimientoDetalle->setFechaVencimiento(new \DateTime('now'));
-                        $arMovimientoDetalle->setAfectaInventario($arItem->getAfectaInventario());
-                        $arMovimientoDetalle->setOperacionInventario($arMovimiento->getOperacionInventario());                        
-                        $arMovimientoDetalle->setPorcentajeIva($arItem->getPorcentajeIva());                        
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnGuardar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $arrControles = $request->request->All();
+                    if (count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arItem = new \Brasa\InventarioBundle\Entity\InvItem();
+                            $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($codigo);
+                            $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
+                            $arMovimientoDetalle->setMovimientoRel($arMovimiento);
+                            $arMovimientoDetalle->setItemRel($arItem);
+                            $arMovimientoDetalle->setFechaVencimiento(new \DateTime('now'));
+                            $arMovimientoDetalle->setAfectaInventario($arItem->getAfectaInventario());
+                            $arMovimientoDetalle->setOperacionInventario($arMovimiento->getOperacionInventario());
+                            $arMovimientoDetalle->setPorcentajeIva($arItem->getPorcentajeIva());
+                            $em->persist($arMovimientoDetalle);
+                        }
                         $em->persist($arMovimientoDetalle);
+                        $em->flush();
                     }
-                    $em->persist($arMovimientoDetalle);
-                    $em->flush();
                 }
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
             }
-            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
         $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->findAll();
         return $this->render('BrasaInventarioBundle:Movimiento/Movimiento:detalleNuevo.html.twig', array(
-            'arItem' => $arItem,
-            'form' => $form->createView()));
+                    'arItem' => $arItem,
+                    'form' => $form->createView()));
     }
 
     private function listaIngreso($codigoDocumentoClase) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvDocumento')->listaDql($codigoDocumentoClase);
-    }
-    
-    private function lista($codigoDocumento) {
-        $em = $this->getDoctrine()->getManager();
-        $session = new Session; 
-        $this->strListaDql =  $em->getRepository('BrasaInventarioBundle:InvMovimiento')->listaDql(
-            $codigoDocumento,
-            $session->get('filtroInvCodigoMovimiento'), 
-            $session->get('filtroInvNumeroMovimiento'),
-            $session->get('filtroInvSoporteMovimiento')
-            );
+        $this->strListaDql = $em->getRepository('BrasaInventarioBundle:InvDocumento')->listaDql($codigoDocumentoClase);
     }
 
-    private function filtrarLista ($form) {
-        $session = new Session;    
-        $session->set('filtroInvCodigoMovimiento', $form->get('TxtCodigo')->getData());        
+    private function lista($codigoDocumento) {
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session;
+        $this->strListaDql = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->listaDql(
+                $codigoDocumento, $session->get('filtroInvCodigoMovimiento'), $session->get('filtroInvNumeroMovimiento'), $session->get('filtroInvSoporteMovimiento')
+        );
+    }
+
+    private function filtrarLista($form) {
+        $session = new Session;
+        $session->set('filtroInvCodigoMovimiento', $form->get('TxtCodigo')->getData());
         $session->set('filtroInvNumeroMovimiento', $form->get('TxtNumero')->getData());
         $session->set('filtroInvSoporteMovimiento', $form->get('TxtSoporte')->getData());
-    }        
+    }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
         $form = $this->createFormBuilder()
-            ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroInvNumeroMovimiento')))
-            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroInvCodigoMovimiento')))    
-            ->add('TxtSoporte', TextType::class, array('label'  => 'Soporte','data' => $session->get('filtroInvSoporteMovimiento')))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))             
+                ->add('TxtNumero', TextType::class, array('label' => 'Numero', 'data' => $session->get('filtroInvNumeroMovimiento')))
+                ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroInvCodigoMovimiento')))
+                ->add('TxtSoporte', TextType::class, array('label' => 'Soporte', 'data' => $session->get('filtroInvSoporteMovimiento')))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();
         return $form;
     }
@@ -329,7 +332,7 @@ class MovimientoController extends Controller
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
         $arrBotonEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        if($ar->getEstadoAutorizado() == 1) {
+        if ($ar->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminar['disabled'] = true;
             $arrBotonDetalleActualizar['disabled'] = true;
@@ -338,12 +341,12 @@ class MovimientoController extends Controller
             $arrBotonImprimir['disabled'] = true;
         }
         $form = $this->createFormBuilder()
-            ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
-            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
-            ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
-            ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminar)
-            ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
-            ->getForm();
+                ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminar)
+                ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                ->getForm();
         return $form;
     }
 
@@ -351,7 +354,7 @@ class MovimientoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $form = $this->createFormBuilder()
-            ->getForm();
+                ->getForm();
         return $form;
     }
 
@@ -362,26 +365,26 @@ class MovimientoController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        /*for($col = 'I'; $col !== 'O'; $col++) {
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }*/
+        /* for($col = 'I'; $col !== 'O'; $col++) {
+          $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+          } */
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIG0')
-                    ->setCellValue('B1', 'FECHA')
-                    ->setCellValue('C1', 'NUMERO')
-                    ->setCellValue('D1', 'TERCERO')
-                    ->setCellValue('E1', 'AUTORIZADO');
+                ->setCellValue('A1', 'CÓDIG0')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'NUMERO')
+                ->setCellValue('D1', 'TERCERO')
+                ->setCellValue('E1', 'AUTORIZADO');
 
         $i = 2;
 
@@ -407,10 +410,10 @@ class MovimientoController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -418,30 +421,30 @@ class MovimientoController extends Controller
 
     private function actualizarDetalle($arrControles, $codigoMovimiento) {
         $em = $this->getDoctrine()->getManager();
-        $intIndice = 0;        
-        if(isset($arrControles['LblCodigo'])) {
+        $intIndice = 0;
+        if (isset($arrControles['LblCodigo'])) {
             foreach ($arrControles['LblCodigo'] as $codigo) {
-                $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();                
+                $arMovimientoDetalle = new \Brasa\InventarioBundle\Entity\InvMovimientoDetalle();
                 $arMovimientoDetalle = $em->getRepository('BrasaInventarioBundle:InvMovimientoDetalle')->find($codigo);
                 $lote = $arrControles['TxtLote'][$codigo];
                 $vence = $arrControles['TxtVence'][$codigo];
                 $vence = date_create($vence);
                 $bodega = $arrControles['TxtBodega'][$codigo];
                 $cantidad = $arrControles['TxtCantidad'][$codigo];
-                $valor = $arrControles['TxtValor'][$codigo];                
-                $descuento = $arrControles['TxtDescuento'][$codigo];                
-                $arMovimientoDetalle->setLoteFk($lote);                
+                $valor = $arrControles['TxtValor'][$codigo];
+                $descuento = $arrControles['TxtDescuento'][$codigo];
+                $arMovimientoDetalle->setLoteFk($lote);
                 $arMovimientoDetalle->setFechaVencimiento($vence);
                 $arMovimientoDetalle->setCodigoBodegaFk($bodega);
                 $arMovimientoDetalle->setCantidad($cantidad);
-                $arMovimientoDetalle->setCantidadOperada($cantidad*$arMovimientoDetalle->getOperacionInventario());
+                $arMovimientoDetalle->setCantidadOperada($cantidad * $arMovimientoDetalle->getOperacionInventario());
                 $arMovimientoDetalle->setValor($valor);
                 $arMovimientoDetalle->setPorcentajeDescuento($descuento);
                 $em->persist($arMovimientoDetalle);
             }
-            $em->flush();                            
+            $em->flush();
             $em->getRepository('BrasaInventarioBundle:InvMovimiento')->liquidar($codigoMovimiento);
-        } 
-    }    
-    
+        }
+    }
+
 }
