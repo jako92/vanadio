@@ -329,7 +329,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
                 $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
                 $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                 
-                $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());                
+                $arPeriodoEmpleadoDetalle->setTarifaRiesgos(0);
+                $arPeriodoEmpleadoDetalle->setTarifaCaja(0);                
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrIncapacidad['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrIncapacidad['fechaHastaNovedad'])); 
                 $diaSalarioLicencia = $ibcIncapacidad / $arrIncapacidad['dias'];

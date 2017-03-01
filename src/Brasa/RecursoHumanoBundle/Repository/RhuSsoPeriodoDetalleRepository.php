@@ -658,8 +658,10 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                         $tarifaPension = 0;
                         $cotizacionPension = 0;
                     }
-                    if($arPeriodoEmpleadoDetalle->getLicenciaMaternidad()) {
+                    if($arPeriodoEmpleadoDetalle->getLicenciaMaternidad()) {                        
+                        $tarifaCaja = 0;
                         $cotizacionCaja = 0;
+                        $tarifaRiesgos = 0;
                         $cotizacionRiesgos = 0;
                     }                    
                     $ibcCajaTotal += $ibcCaja;
