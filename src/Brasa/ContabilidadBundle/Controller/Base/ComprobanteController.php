@@ -8,92 +8,91 @@ use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbComprobanteType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+class ComprobanteController extends Controller {
 
-
-class ComprobanteController extends Controller
-{
     /**
      * @Route("/ctb/base/comprobantes/lista", name="brs_ctb_base_comprobantes_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 91, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 91, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->createFormBuilder() //
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel'))
-            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar'))
-            ->getForm(); 
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel'))
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))
+                ->getForm();
         $form->handleRequest($request);
         $arComprobantes = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-        if($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if(count($arrSeleccionados) > 0) {
-                foreach ($arrSeleccionados AS $codigoComprobante) {
-                    $arComprobante = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-                    $arComprobante = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);
-                    $em->remove($arComprobante);
-                    $em->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigoComprobante) {
+                        $arComprobante = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+                        $arComprobante = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);
+                        $em->remove($arComprobante);
+                        $em->flush();
+                    }
                 }
-            }
-            if($form->get('BtnExcel')->isClicked()) {
-                $this->generarExcel();
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $this->generarExcel();
+                }
             }
         }
         $arComprobantes = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
         $query = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->findAll();
-        $arComprobantes = $paginator->paginate($query, $request->query->getInt('page', 1)/*page number*/,20/*limit per page*/);        
+        $arComprobantes = $paginator->paginate($query, $request->query->getInt('page', 1)/* page number */, 20/* limit per page */);
         //$arComprobantes = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
 
         return $this->render('BrasaContabilidadBundle:Base/Comprobantes:lista.html.twig', array(
                     'arComprobantes' => $arComprobantes,
-                    'form'=> $form->createView()
-           
+                    'form' => $form->createView()
         ));
     }
-    
+
     /**
      * @Route("/ctb/base/comprobantes/nuevo/{codigoComprobante}", name="brs_ctb_base_comprobantes_nuevo")
      */
     public function nuevoAction(Request $request, $codigoComprobante) {
         $em = $this->getDoctrine()->getManager();
         $arComprobante = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-        if ($codigoComprobante != 0)
-        {
+        if ($codigoComprobante != 0) {
             $arComprobante = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);
         }
-        $form = $this->createForm(CtbComprobanteType::class, $arComprobante);  
+        $form = $this->createForm(CtbComprobanteType::class, $arComprobante);
         $form->handleRequest($request);
-        if ($form->isValid())
-        {
-            // guardar la tarea en la base de datos
-            $arComprobante = $form->getData();
-            $em->persist($arComprobante);
-            $em->flush();
-            return $this->redirect($this->generateUrl('brs_ctb_base_comprobantes_lista'));
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                // guardar la tarea en la base de datos
+                $arComprobante = $form->getData();
+                $em->persist($arComprobante);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_ctb_base_comprobantes_lista'));
+            }
         }
         return $this->render('BrasaContabilidadBundle:Base/Comprobantes:nuevo.html.twig', array(
-            'form' => $form->createView(),
+                    'form' => $form->createView(),
         ));
     }
-    
-    public function generarExcel(){
+
+    public function generarExcel() {
         $em = $this->getDoctrine()->getManager();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'NOMBRE');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'NOMBRE');
 
         $i = 2;
         $arComprobantes = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->findAll();
@@ -116,13 +115,13 @@ class ComprobanteController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-        
+
 }

@@ -8,69 +8,71 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ContabilizarAsientoController extends Controller
-{
+class ContabilizarAsientoController extends Controller {
+
     var $strDqlLista = "";
+
     /**
      * @Route("/ctb/procesos/contabilizar/asientos", name="brs_ctb_procesos_contabilizar_asientos")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 61)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 61)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');        
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
-        if($form->isValid()) {            
-            if ($form->get('BtnContabilizar')->isClicked()) {    
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigo) {
-                        $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();                    
-                        $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigo);
-                        $arAsientoDetalles = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();                    
-                        $arAsientoDetalles = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->findBy(array('codigoAsientoFk' => $codigo));
-                        foreach ($arAsientoDetalles as $arAsientoDetalle){
-                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                            $arRegistro->setCuentaRel($arAsientoDetalle->getCuentaRel());
-                            $arRegistro->setCentroCostoRel($arAsientoDetalle->getCentroCostoRel());
-                            $arRegistro->setTerceroRel($arAsientoDetalle->getTerceroRel());
-                            $arRegistro->setComprobanteRel($arAsientoDetalle->getAsientoRel()->getComprobanteRel());
-                            $arRegistro->setFecha($arAsientoDetalle->getAsientoRel()->getFecha());
-                            $arRegistro->setNumero($arAsientoDetalle->getSoporte());
-                            $arRegistro->setNumeroReferencia($arAsientoDetalle->getDocumentoReferente());
-                            $arRegistro->setDebito($arAsientoDetalle->getDebito());
-                            $arRegistro->setCredito($arAsientoDetalle->getCredito());
-                            $arRegistro->setBase($arAsientoDetalle->getValorBase());
-                            $arRegistro->setDescripcionContable($arAsientoDetalle->getDescripcion());
-                            $em->persist($arRegistro);
-                            $arAsiento->setEstadoContabilizado(1);
-                            $em->persist($arAsiento);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnContabilizar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    if (count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();
+                            $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigo);
+                            $arAsientoDetalles = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();
+                            $arAsientoDetalles = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->findBy(array('codigoAsientoFk' => $codigo));
+                            foreach ($arAsientoDetalles as $arAsientoDetalle) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setCuentaRel($arAsientoDetalle->getCuentaRel());
+                                $arRegistro->setCentroCostoRel($arAsientoDetalle->getCentroCostoRel());
+                                $arRegistro->setTerceroRel($arAsientoDetalle->getTerceroRel());
+                                $arRegistro->setComprobanteRel($arAsientoDetalle->getAsientoRel()->getComprobanteRel());
+                                $arRegistro->setFecha($arAsientoDetalle->getAsientoRel()->getFecha());
+                                $arRegistro->setNumero($arAsientoDetalle->getSoporte());
+                                $arRegistro->setNumeroReferencia($arAsientoDetalle->getDocumentoReferente());
+                                $arRegistro->setDebito($arAsientoDetalle->getDebito());
+                                $arRegistro->setCredito($arAsientoDetalle->getCredito());
+                                $arRegistro->setBase($arAsientoDetalle->getValorBase());
+                                $arRegistro->setDescripcionContable($arAsientoDetalle->getDescripcion());
+                                $em->persist($arRegistro);
+                                $arAsiento->setEstadoContabilizado(1);
+                                $em->persist($arAsiento);
+                            }
                         }
+                        $em->flush();
                     }
-                    $em->flush();
                 }
-            }            
-        }       
-                
-        $arAsientos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);                               
+            }
+        }
+        $arAsientos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaContabilidadBundle:Procesos/Contabilizar:Asiento.html.twig', array(
-            'arAsientos' => $arAsientos,
-            'form' => $form->createView()));
-    }          
-    
+                    'arAsientos' => $arAsientos,
+                    'form' => $form->createView()));
+    }
+
     private function formularioLista() {
-        $form = $this->createFormBuilder()                        
-            ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
-            ->getForm();        
+        $form = $this->createFormBuilder()
+                ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar',))
+                ->getForm();
         return $form;
-    }      
-    
+    }
+
     private function listar() {
-        $em = $this->getDoctrine()->getManager();                
-        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->pendientesContabilizarDql();  
-    }         
-    
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->pendientesContabilizarDql();
+    }
+
 }
