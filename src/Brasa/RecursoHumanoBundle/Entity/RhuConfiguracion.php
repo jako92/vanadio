@@ -239,7 +239,7 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="afecta_vacaciones_parafiscales", type="boolean")
      */
-    private $afectaVacacionesParafiscales = false;
+    private $afectaVacacionesParafiscales = 0;
     
     /**
      * @ORM\Column(name="codigo_formato_pago", type="integer")
@@ -267,6 +267,11 @@ class RhuConfiguracion
     private $codigoFormatoDescargo = 0;
     
     /**
+     * @ORM\Column(name="codigo_formato_factura", type="integer")
+     */    
+    private $codigoFormatoFactura = 0;
+    
+    /**
      * Tipo de base para la liquidacion de vacaciones 1-salario 2-salario+prestaciones 3-salario+recargos
      * @ORM\Column(name="tipo_base_pago_vacaciones", type="integer")
      */
@@ -276,7 +281,7 @@ class RhuConfiguracion
      * Se activa cuando el cliente maneja porcentajes en las liquidaciones
      * @ORM\Column(name="genera_porcentaje_liquidacion", type="boolean")
      */
-    private $generaPorcetnajeLiquidacion = false;    
+    private $generaPorcetnajeLiquidacion = 0;    
     
     /**
      * @ORM\Column(name="correo_nomina", type="string", length=100, nullable=true)
@@ -287,7 +292,7 @@ class RhuConfiguracion
      * Si esta activado muestra el mensaje en la colilla de pago
      * @ORM\Column(name="imprimir_mensaje_pago", type="boolean")
      */
-    private $imprimirMensajePago = false;       
+    private $imprimirMensajePago = 0;       
     
     /**
      * @ORM\Column(name="codigo_prima", type="integer")
@@ -308,7 +313,7 @@ class RhuConfiguracion
      * Si en el pago de primas se aplica un porcentaje en el salario
      * @ORM\Column(name="prestaciones_aplicar_porcentaje_salario", type="boolean")
      */
-    private $prestacionesAplicaPorcentajeSalario = false;     
+    private $prestacionesAplicaPorcentajeSalario = 0;     
 
     /**
      * @ORM\Column(name="nit_sena", type="string", length=20, nullable=false)
@@ -324,13 +329,13 @@ class RhuConfiguracion
      * Si se tiene en cuenta o no los dias de ausentismo en primas
      * @ORM\Column(name="dias_ausentismo_primas", type="boolean")
      */
-    private $diasAusentismoPrimas = false;      
+    private $diasAusentismoPrimas = 0;      
     
     /**
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="promedio_primas_laborado", type="boolean")
      */
-    private $promedioPrimasLaborado = false;     
+    private $promedioPrimasLaborado = 0;     
     
     /**
      * Si estos dias tiene valor el sistema divide el promedio en estos dias
@@ -342,13 +347,13 @@ class RhuConfiguracion
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="omitir_descuento_embargo_primas", type="boolean")
      */
-    private $omitirDescuentoEmbargoPrimas = false;    
+    private $omitirDescuentoEmbargoPrimas = 0;    
     
     /**
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="omitir_descuento_embargo_cesantias", type="boolean")
      */
-    private $omitirDescuentoEmbargoCesantias = false;         
+    private $omitirDescuentoEmbargoCesantias = 0;         
         
     /**
      * @ORM\Column(name="direccion_servidor_ardid", type="string", length=800, nullable=true)
@@ -363,14 +368,41 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="pagar_licencia_salario_pactado", type="boolean")
      */
-    private $pagarLicenciaSalarioPactado = false;    
-    
+    private $pagarLicenciaSalarioPactado = 0;
+
     /**
      * @ORM\Column(name="pagar_incapacidad_salario_pactado", type="boolean")
      */
-    private $pagarIncapacidadSalarioPactado = false;      
+    private $pagarIncapacidadSalarioPactado = false; 
+    
+    /**
+     * @ORM\Column(name="informacion_legal_factura", type="text", nullable=true)
+     */    
+    private $informacionLegalFactura; 
+
+    /**
+     * @ORM\Column(name="informacion_pago_factura", type="text", nullable=true)
+     */    
+    private $informacionPagoFactura;     
+    
+    /**
+     * @ORM\Column(name="informacion_contacto_factura", type="text", nullable=true)
+     */    
+    private $informacionContactoFactura;    
+    
+    /**
+     * @ORM\Column(name="informacion_resolucion_dian_factura", type="text", nullable=true)
+     */    
+    private $informacionResolucionDianFactura;    
+    
+    /**
+     * @ORM\Column(name="informacion_resolucion_supervigilancia_factura", type="text", nullable=true)
+     */    
+    private $informacionResolucionSupervigilanciaFactura;
+    
 
 
+  
     /**
      * Set codigoConfiguracionPk
      *
@@ -1596,6 +1628,30 @@ class RhuConfiguracion
     }
 
     /**
+     * Set codigoFormatoFactura
+     *
+     * @param integer $codigoFormatoFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setCodigoFormatoFactura($codigoFormatoFactura)
+    {
+        $this->codigoFormatoFactura = $codigoFormatoFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFormatoFactura
+     *
+     * @return integer
+     */
+    public function getCodigoFormatoFactura()
+    {
+        return $this->codigoFormatoFactura;
+    }
+
+    /**
      * Set tipoBasePagoVacaciones
      *
      * @param integer $tipoBasePagoVacaciones
@@ -2049,5 +2105,125 @@ class RhuConfiguracion
     public function getPagarIncapacidadSalarioPactado()
     {
         return $this->pagarIncapacidadSalarioPactado;
+    }
+
+    /**
+     * Set informacionLegalFactura
+     *
+     * @param string $informacionLegalFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setInformacionLegalFactura($informacionLegalFactura)
+    {
+        $this->informacionLegalFactura = $informacionLegalFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get informacionLegalFactura
+     *
+     * @return string
+     */
+    public function getInformacionLegalFactura()
+    {
+        return $this->informacionLegalFactura;
+    }
+
+    /**
+     * Set informacionPagoFactura
+     *
+     * @param string $informacionPagoFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setInformacionPagoFactura($informacionPagoFactura)
+    {
+        $this->informacionPagoFactura = $informacionPagoFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get informacionPagoFactura
+     *
+     * @return string
+     */
+    public function getInformacionPagoFactura()
+    {
+        return $this->informacionPagoFactura;
+    }
+
+    /**
+     * Set informacionContactoFactura
+     *
+     * @param string $informacionContactoFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setInformacionContactoFactura($informacionContactoFactura)
+    {
+        $this->informacionContactoFactura = $informacionContactoFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get informacionContactoFactura
+     *
+     * @return string
+     */
+    public function getInformacionContactoFactura()
+    {
+        return $this->informacionContactoFactura;
+    }
+
+    /**
+     * Set informacionResolucionDianFactura
+     *
+     * @param string $informacionResolucionDianFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura)
+    {
+        $this->informacionResolucionDianFactura = $informacionResolucionDianFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get informacionResolucionDianFactura
+     *
+     * @return string
+     */
+    public function getInformacionResolucionDianFactura()
+    {
+        return $this->informacionResolucionDianFactura;
+    }
+
+    /**
+     * Set informacionResolucionSupervigilanciaFactura
+     *
+     * @param string $informacionResolucionSupervigilanciaFactura
+     *
+     * @return RhuConfiguracion
+     */
+    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura)
+    {
+        $this->informacionResolucionSupervigilanciaFactura = $informacionResolucionSupervigilanciaFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get informacionResolucionSupervigilanciaFactura
+     *
+     * @return string
+     */
+    public function getInformacionResolucionSupervigilanciaFactura()
+    {
+        return $this->informacionResolucionSupervigilanciaFactura;
     }
 }

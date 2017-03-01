@@ -197,7 +197,7 @@ class FacturasController extends Controller
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
                     if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
-                        $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\Factura1();
+                        $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
                         $objFactura->Generar($em, $codigoFactura);                            
                     }                    
                 //}                                 
