@@ -1,4 +1,5 @@
 <?php
+
 namespace Brasa\CarteraBundle\Controller\Consulta;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,267 +12,263 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class AnticipoController extends Controller
-{
+class AnticipoController extends Controller {
+
     var $strListaDql = "";
     var $strDetalleDql = "";
     var $strFechaDesde = "";
     var $strFechaHasta = "";
-    
+
     /**
      * @Route("/cartera/consulta/anticipo/lista", name="brs_cartera_consulta_anticipo_lista")
-     */    
+     */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 52)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 52)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         //$this->estadoAnulado = 0;
         $form = $this->formularioFiltroLista();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isValid()) {            
-            if ($form->get('BtnFiltrarLista')->isClicked()) {
-                $this->filtrarLista($form, $request);
-                $this->lista();
-            }
-            if ($form->get('BtnExcelLista')->isClicked()) {
-                $this->filtrarLista($form, $request);
-                $this->lista();
-                $this->generarListaExcel();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrarLista')->isClicked()) {
+                    $this->filtrarLista($form, $request);
+                    $this->lista();
+                }
+                if ($form->get('BtnExcelLista')->isClicked()) {
+                    $this->filtrarLista($form, $request);
+                    $this->lista();
+                    $this->generarListaExcel();
+                }
             }
         }
         $arAnticipos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
         return $this->render('BrasaCarteraBundle:Consultas/Anticipo:lista.html.twig', array(
-            'arAnticipos' => $arAnticipos,
-            'form' => $form->createView()));
+                    'arAnticipos' => $arAnticipos,
+                    'form' => $form->createView()));
     }
-    
+
     /**
      * @Route("/cartera/consulta/anticipo/detalle", name="brs_cartera_consulta_anticipo_detalle")
-     */    
+     */
     public function detalleAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 53)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 53)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         //$this->estadoAnulado = 0;
         $form = $this->formularioFiltroDetalle();
         $form->handleRequest($request);
         $this->detalle();
-        if ($form->isValid()) {            
-            if ($form->get('BtnFiltrarDetalle')->isClicked()) {
-                $this->filtrarDetalle($form);
-                $this->detalle();
-            }
-            if ($form->get('BtnExcelDetalle')->isClicked()) {
-                $this->filtrarDetalle($form);
-                $this->detalle();
-                $this->generarDetalleExcel();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrarDetalle')->isClicked()) {
+                    $this->filtrarDetalle($form);
+                    $this->detalle();
+                }
+                if ($form->get('BtnExcelDetalle')->isClicked()) {
+                    $this->filtrarDetalle($form);
+                    $this->detalle();
+                    $this->generarDetalleExcel();
+                }
             }
         }
-        
         $arAnticiposDetalles = $paginator->paginate($em->createQuery($this->strDetalleDql), $request->query->get('page', 1), 100);
         return $this->render('BrasaCarteraBundle:Consultas/Anticipo:detalle.html.twig', array(
-            'arAnticiposDetalles' => $arAnticiposDetalles,
-            'form' => $form->createView()));
+                    'arAnticiposDetalles' => $arAnticiposDetalles,
+                    'form' => $form->createView()));
     }
-            
+
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
-        $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarAnticipo')->listaConsultaDql(
-                $session->get('filtroNumero'), 
-                $session->get('filtroCodigoCliente'), 
-                '',//$session->get('filtroAnticipoTipo'),
-                $session->get('filtroDesde'),
-                $session->get('filtroHasta'));
+        $this->strListaDql = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->listaConsultaDql(
+                $session->get('filtroNumero'), $session->get('filtroCodigoCliente'), '', //$session->get('filtroAnticipoTipo'),
+                $session->get('filtroDesde'), $session->get('filtroHasta'));
     }
-    
+
     private function detalle() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
-        $this->strDetalleDql =  $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->detalleConsultaDql(
-                $session->get('filtroNumero'), 
-                $session->get('filtroCodigoCliente'), 
-                '',//$session->get('filtroCuentaCobrarTipo'),
-                $session->get('filtroDesde'),
-                $session->get('filtroHasta'));
+        $this->strDetalleDql = $em->getRepository('BrasaCarteraBundle:CarAnticipoDetalle')->detalleConsultaDql(
+                $session->get('filtroNumero'), $session->get('filtroCodigoCliente'), '', //$session->get('filtroCuentaCobrarTipo'),
+                $session->get('filtroDesde'), $session->get('filtroHasta'));
     }
 
-    private function filtrarLista ($form, Request $request) {
-        $session = new session; 
-        /*$arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
-        if ($arAnticipoTipo == null){
-            $codigo = "";
-        } else {
-            $codigo = $arAnticipoTipo->getCodigoAnticipoTipoPk();
-        }*/
-        $fechaDesde =  $form->get('fechaDesde')->getData();
-        $fechaHasta =  $form->get('fechaHasta')->getData();        
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());           
+    private function filtrarLista($form, Request $request) {
+        $session = new session;
+        /* $arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
+          if ($arAnticipoTipo == null){
+          $codigo = "";
+          } else {
+          $codigo = $arAnticipoTipo->getCodigoAnticipoTipoPk();
+          } */
+        $fechaDesde = $form->get('fechaDesde')->getData();
+        $fechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroNumero', $form->get('TxtNumero')->getData());
         //$session->set('filtroAnticipoTipo', $codigo);
-        $session->set('filtroNit', $form->get('TxtNit')->getData());                         
+        $session->set('filtroNit', $form->get('TxtNit')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
         $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
-        
     }
-    
-    private function filtrarDetalle ($form) {
-        $session = new session; 
+
+    private function filtrarDetalle($form) {
+        $session = new session;
         $arCuentaCobrarTipo = $form->get('cuentaCobrarTipoRel')->getData();
-        if ($arCuentaCobrarTipo == null){
+        if ($arCuentaCobrarTipo == null) {
             $codigo = "";
         } else {
             $codigo = $arCuentaCobrarTipo->getCodigoCuentaCobrarTipoPk();
         }
-        $fechaDesde =  $form->get('fechaDesde')->getData();
-        $fechaHasta =  $form->get('fechaHasta')->getData();          
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());           
+        $fechaDesde = $form->get('fechaDesde')->getData();
+        $fechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroCuentaCobrarTipo', $codigo);
-        $session->set('filtroNit', $form->get('TxtNit')->getData());                         
+        $session->set('filtroNit', $form->get('TxtNit')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
         $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
-        
     }
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if($session->get('filtroNit')) {
+        if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
-            if($arCliente) {
+            if ($arCliente) {
                 $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroCodigoCliente', null);
                 $session->set('filtroNit', null);
-            }          
+            }
         } else {
             $session->set('filtroCodigoCliente', null);
-        }       
-        /*$arrayPropiedades = array(
-                'class' => 'BrasaCarteraBundle:CarAnticipoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('rt')
-                    ->orderBy('rt.nombre', 'ASC');},
-                'property' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'empty_value' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroAnticipoTipo')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
-        }*/
+        }
+        /* $arrayPropiedades = array(
+          'class' => 'BrasaCarteraBundle:CarAnticipoTipo',
+          'query_builder' => function (EntityRepository $er) {
+          return $er->createQueryBuilder('rt')
+          ->orderBy('rt.nombre', 'ASC');},
+          'property' => 'nombre',
+          'required' => false,
+          'empty_data' => "",
+          'empty_value' => "TODOS",
+          'data' => ""
+          );
+          if($session->get('filtroAnticipoTipo')) {
+          $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
+          } */
         $form = $this->createFormBuilder()
-            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now'))) 
-            ->add('BtnExcelLista', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroPedidoNumero')))
+                //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('BtnExcelLista', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrarLista', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
-    }   
-    
+    }
+
     private function formularioFiltroDetalle() {
         $em = $this->getDoctrine()->getManager();
         $session = $this->getRequest()->getSession();
         $strNombreCliente = "";
-        if($session->get('filtroNit')) {
+        if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
-            if($arCliente) {
+            if ($arCliente) {
                 $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroCodigoCliente', null);
                 $session->set('filtroNit', null);
-            }          
+            }
         } else {
             $session->set('filtroCodigoCliente', null);
-        }       
+        }
         $arrayPropiedades = array(
-                'class' => 'BrasaCarteraBundle:CarCuentaCobrarTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCuentaCobrarTipo')) {
+            'class' => 'BrasaCarteraBundle:CarCuentaCobrarTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCuentaCobrarTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
-            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnFiltrarDetalle', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroPedidoNumero')))
+                ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('BtnExcelDetalle', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrarDetalle', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
-    }   
+    }
 
     private function generarListaExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'P'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
-        }     
-        for($col = 'H'; $col !== 'N'; $col++) {
+        for ($col = 'A'; $col !== 'P'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'H'; $col !== 'N'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }        
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'NUMERO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'NIT')                
-                    ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'CUENTA')
-                    ->setCellValue('G1', 'FECHA PAGO')
-                    ->setCellValue('H1', 'TOTAL DESCUENTO')
-                    ->setCellValue('I1', 'TOTAL AJUSTE PESO')
-                    ->setCellValue('J1', 'TOTAL RTE ICA')
-                    ->setCellValue('K1', 'TOTAL RTE IVA')
-                    ->setCellValue('L1', 'TOTAL RTE FUENTE')
-                    ->setCellValue('M1', 'TOTAL')
-                    ->setCellValue('N1', 'ANULADO')
-                    ->setCellValue('O1', 'AUTORIZADO')
-                    ->setCellValue('P1', 'IMPRESO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'NIT')
+                ->setCellValue('E1', 'CLIENTE')
+                ->setCellValue('F1', 'CUENTA')
+                ->setCellValue('G1', 'FECHA PAGO')
+                ->setCellValue('H1', 'TOTAL DESCUENTO')
+                ->setCellValue('I1', 'TOTAL AJUSTE PESO')
+                ->setCellValue('J1', 'TOTAL RTE ICA')
+                ->setCellValue('K1', 'TOTAL RTE IVA')
+                ->setCellValue('L1', 'TOTAL RTE FUENTE')
+                ->setCellValue('M1', 'TOTAL')
+                ->setCellValue('N1', 'ANULADO')
+                ->setCellValue('O1', 'AUTORIZADO')
+                ->setCellValue('P1', 'IMPRESO');
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
         $arAnticipos = new \Brasa\CarteraBundle\Entity\CarAnticipo();
         $arAnticipos = $query->getResult();
-        
-        foreach ($arAnticipos as $arAnticipo) {            
+
+        foreach ($arAnticipos as $arAnticipo) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arAnticipo->getCodigoAnticipoPk())
                     ->setCellValue('B' . $i, $arAnticipo->getNumero())
@@ -286,22 +283,22 @@ class AnticipoController extends Controller
                     ->setCellValue('N' . $i, $objFunciones->devuelveBoolean($arAnticipo->getEstadoAnulado()))
                     ->setCellValue('O' . $i, $objFunciones->devuelveBoolean($arAnticipo->getEstadoAutorizado()))
                     ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arAnticipo->getEstadoImpreso()));
-            if($arAnticipo->getClienteRel()) {
+            if ($arAnticipo->getClienteRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('D' . $i, $arAnticipo->getClienteRel()->getNit());
+                        ->setCellValue('D' . $i, $arAnticipo->getClienteRel()->getNit());
             }
-            if($arAnticipo->getClienteRel()) {
+            if ($arAnticipo->getClienteRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E' . $i, $arAnticipo->getClienteRel()->getNombreCorto());
+                        ->setCellValue('E' . $i, $arAnticipo->getClienteRel()->getNombreCorto());
             }
-            if($arAnticipo->getCuentaRel()->getNombre()) {
+            if ($arAnticipo->getCuentaRel()->getNombre()) {
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('F' . $i, $arAnticipo->getCuentaRel()->getNombre());
+                        ->setCellValue('F' . $i, $arAnticipo->getCuentaRel()->getNombre());
             }
-            /*if($arAnticipo->getAnticipoTipoRel()) {
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('G' . $i, $arAnticipo->getAnticipoTipoRel()->getNombre());
-            }*/    
+            /* if($arAnticipo->getAnticipoTipoRel()) {
+              $objPHPExcel->setActiveSheetIndex(0)
+              ->setCellValue('G' . $i, $arAnticipo->getAnticipoTipoRel()->getNombre());
+              } */
             $i++;
         }
 
@@ -314,57 +311,57 @@ class AnticipoController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }     
-    
+    }
+
     private function generarDetalleExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'N'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
-        }     
-        for($col = 'H'; $col !== 'N'; $col++) {
+        for ($col = 'A'; $col !== 'N'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'H'; $col !== 'N'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }        
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'NUMERO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'NIT')                
-                    ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'CUENTA COBRAR TIPO')
-                    ->setCellValue('G1', 'DESCUENTO')
-                    ->setCellValue('H1', 'AJUSTE PESO')
-                    ->setCellValue('I1', 'RTE ICA')
-                    ->setCellValue('J1', 'RTE IVA')
-                    ->setCellValue('K1', 'RTE FUENTE')
-                    ->setCellValue('L1', 'VALOR');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'NIT')
+                ->setCellValue('E1', 'CLIENTE')
+                ->setCellValue('F1', 'CUENTA COBRAR TIPO')
+                ->setCellValue('G1', 'DESCUENTO')
+                ->setCellValue('H1', 'AJUSTE PESO')
+                ->setCellValue('I1', 'RTE ICA')
+                ->setCellValue('J1', 'RTE IVA')
+                ->setCellValue('K1', 'RTE FUENTE')
+                ->setCellValue('L1', 'VALOR');
 
         $i = 2;
         $query = $em->createQuery($this->strDetalleDql);
         $arAnticiposDetalles = new \Brasa\CarteraBundle\Entity\CarAnticipoDetalle();
         $arAnticiposDetalles = $query->getResult();
 
-        foreach ($arAnticiposDetalles as $arAnticipoDetalle) {            
+        foreach ($arAnticiposDetalles as $arAnticipoDetalle) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arAnticipoDetalle->getCodigoAnticipoDetallePk())
                     ->setCellValue('B' . $i, $arAnticipoDetalle->getNumeroFactura())
@@ -377,7 +374,7 @@ class AnticipoController extends Controller
                     ->setCellValue('I' . $i, $arAnticipoDetalle->getVrRetencionIca())
                     ->setCellValue('J' . $i, $arAnticipoDetalle->getVrRetencionIva())
                     ->setCellValue('K' . $i, $arAnticipoDetalle->getVrRetencionFuente())
-                    ->setCellValue('L' . $i, $arAnticipoDetalle->getValor());   
+                    ->setCellValue('L' . $i, $arAnticipoDetalle->getValor());
             $i++;
         }
 
@@ -390,14 +387,13 @@ class AnticipoController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }     
-
+    }
 
 }

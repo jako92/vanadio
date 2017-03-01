@@ -1,5 +1,7 @@
 <?php
+
 namespace Brasa\CarteraBundle\Controller\Consulta;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -9,49 +11,51 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class AnticipoResumenController extends Controller
-{
+class AnticipoResumenController extends Controller {
+
     var $strListaDql = "";
-    
+
     /**
      * @Route("/cartera/consulta/anticipo/resumen/", name="brs_cartera_consulta_anticipo_resumen")
-     */    
+     */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 51)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 51)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         //$this->estadoAnulado = 0;
         $form = $this->formularioFiltroLista();
         $form->handleRequest($request);
-        $this->filtrarLista($form);        
+        $this->filtrarLista($form);
         $this->lista();
         $fechaDesde = $form->get('fechaDesde')->getData();
         $fechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->isValid()) {            
-            if ($form->get('BtnFiltrarLista')->isClicked()) {
-                $this->filtrarLista($form);
-                //$form = $this->formularioFiltroLista();
-                $this->lista();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrarLista')->isClicked()) {
+                    $this->filtrarLista($form);
+                    //$form = $this->formularioFiltroLista();
+                    $this->lista();
+                }
+                if ($form->get('BtnImprimir')->isClicked()) {
+                    $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
+                    $codigoFormato = $arConfiguracion->getCodigoFormatoResumenAnticipo();
+                    if ($codigoFormato == 0) { //formato para cualquier empresa
+                        $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen();
+                        $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));
+                    }
+                    if ($codigoFormato == 1) { //formato para empresa horus
+                        $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen1();
+                        $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));
+                    }
+                    if ($codigoFormato == 2) { //formato para empresa horus2
+                        $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen2();
+                        $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));
+                    }
+                }
             }
-            if ($form->get('BtnImprimir')->isClicked()) {                                                
-                $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
-                $codigoFormato = $arConfiguracion->getCodigoFormatoResumenAnticipo();
-                if($codigoFormato == 0) { //formato para cualquier empresa
-                    $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen();
-                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
-                }
-                if($codigoFormato == 1) { //formato para empresa horus
-                    $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen1();
-                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
-                }
-                if($codigoFormato == 2) { //formato para empresa horus2
-                    $objImprimir = new \Brasa\CarteraBundle\Formatos\AnticipoResumen2();
-                    $objImprimir->Generar($em, $fechaDesde->format('Y/m/d'), $fechaHasta->format('Y/m/d'));                                          
-                }
-            }            
-        }    
+        }
         $strSql = "SELECT
             
             gen_cuenta.nombre AS cuenta, 
@@ -63,89 +67,85 @@ class AnticipoResumenController extends Controller
             WHERE car_anticipo.fecha >= '" . $fechaDesde->format('Y/m/d') . "' AND car_anticipo.fecha <= '" . $fechaHasta->format('Y/m/d') . "' 
             GROUP BY car_anticipo.codigo_cuenta_fk";
         $connection = $em->getConnection();
-        $statement = $connection->prepare($strSql);        
+        $statement = $connection->prepare($strSql);
         $statement->execute();
-        $arAnticiposResumen = $statement->fetchAll(); 
-        
+        $arAnticiposResumen = $statement->fetchAll();
+
         $arAnticipos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
         return $this->render('BrasaCarteraBundle:Consultas/Anticipo:resumen.html.twig', array(
-            'arAnticipos' => $arAnticipos,
-            'arAnticiposResumen' => $arAnticiposResumen,
-            'form' => $form->createView()));
-    }    
-            
+                    'arAnticipos' => $arAnticipos,
+                    'arAnticiposResumen' => $arAnticiposResumen,
+                    'form' => $form->createView()));
+    }
+
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $strFechaDesde = "";
         $strFechaHasta = "";
-        $this->strListaDql =  $em->getRepository('BrasaCarteraBundle:CarAnticipo')->listaConsultaDql(
-                $session->get('filtroNumero'), 
-                $session->get('filtroCodigoCliente'), 
-                '',//$session->get('filtroAnticipoTipo'),
-                $session->get('filtroDesde'),
-                $session->get('filtroHasta'));
-    }        
+        $this->strListaDql = $em->getRepository('BrasaCarteraBundle:CarAnticipo')->listaConsultaDql(
+                $session->get('filtroNumero'), $session->get('filtroCodigoCliente'), '', //$session->get('filtroAnticipoTipo'),
+                $session->get('filtroDesde'), $session->get('filtroHasta'));
+    }
 
-    private function filtrarLista ($form) {
-        $session = new session; 
-        /*$arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
-        if ($arAnticipoTipo == null){
-            $codigo = "";
-        } else {
-            $codigo = $arAnticipoTipo->getCodigoAnticipoTipoPk();
-        }*/
-        $fechaDesde =  $form->get('fechaDesde')->getData();
-        $fechaHasta =  $form->get('fechaHasta')->getData();
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());           
+    private function filtrarLista($form) {
+        $session = new session;
+        /* $arAnticipoTipo = $form->get('anticipoTipoRel')->getData();
+          if ($arAnticipoTipo == null){
+          $codigo = "";
+          } else {
+          $codigo = $arAnticipoTipo->getCodigoAnticipoTipoPk();
+          } */
+        $fechaDesde = $form->get('fechaDesde')->getData();
+        $fechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroNumero', $form->get('TxtNumero')->getData());
         //$session->set('filtroAnticipoTipo', $codigo);
-        $session->set('filtroNit', $form->get('TxtNit')->getData());                         
+        $session->set('filtroNit', $form->get('TxtNit')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
         $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
-        
-    }        
+    }
 
     private function formularioFiltroLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if($session->get('filtroNit')) {
+        if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
-            if($arCliente) {
+            if ($arCliente) {
                 $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroCodigoCliente', null);
                 $session->set('filtroNit', null);
-            }          
+            }
         } else {
             $session->set('filtroCodigoCliente', null);
-        }       
-        /*$arrayPropiedades = array(
-                'class' => 'BrasaCarteraBundle:CarAnticipoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('rt')
-                    ->orderBy('rt.nombre', 'ASC');},
-                'property' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'empty_value' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroAnticipoTipo')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
-        }*/
+        }
+        /* $arrayPropiedades = array(
+          'class' => 'BrasaCarteraBundle:CarAnticipoTipo',
+          'query_builder' => function (EntityRepository $er) {
+          return $er->createQueryBuilder('rt')
+          ->orderBy('rt.nombre', 'ASC');},
+          'property' => 'nombre',
+          'required' => false,
+          'empty_data' => "",
+          'empty_value' => "TODOS",
+          'data' => ""
+          );
+          if($session->get('filtroAnticipoTipo')) {
+          $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarAnticipoTipo", $session->get('filtroAnticipoTipo'));
+          } */
         $form = $this->createFormBuilder()
-            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))                
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))            
-            //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
-            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
-            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))            
-            ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir',))
-            ->add('BtnFiltrarLista', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroPedidoNumero')))
+                //->add('anticipoTipoRel', 'entity', $arrayPropiedades)
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
+                ->add('BtnImprimir', SubmitType::class, array('label' => 'Imprimir',))
+                ->add('BtnFiltrarLista', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
-    }               
+    }
 
 }

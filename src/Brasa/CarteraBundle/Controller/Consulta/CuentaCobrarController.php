@@ -1,5 +1,7 @@
 <?php
+
 namespace Brasa\CarteraBundle\Controller\Consulta;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
@@ -11,8 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class CuentaCobrarController extends Controller
-{
+class CuentaCobrarController extends Controller {
+
     var $strListaDql = "";
     var $strFechaDesde = "";
     var $strFechaHasta = "";
@@ -21,47 +23,49 @@ class CuentaCobrarController extends Controller
      * @Route("/cartera/consulta/cuentacobrar/lista", name="brs_cartera_consulta_cuentacobrar_lista")
      */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 50)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 50)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         //$this->estadoAnulado = 0;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $strWhere = "";
-        if ($form->isValid()) {
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->formularioFiltro();
-                $strWhere .= $this->devFiltro($form);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->formularioFiltro();
+                    $strWhere .= $this->devFiltro($form);
+                }
+                if ($form->get('BtnExcel')->isClicked()) {
+                    $strWhere .= $this->devFiltro($form);
+                    $this->generarExcel($strWhere);
+                }
+                if ($form->get('BtnPdf')->isClicked()) {
+                    $strWhere .= $this->devFiltro($form);
+                    $objEstadoCuenta = new \Brasa\CarteraBundle\Formatos\EstadoCuenta();
+                    $objEstadoCuenta->Generar($em, $strWhere);
+                }
             }
-            if ($form->get('BtnExcel')->isClicked()) {
-                $strWhere .= $this->devFiltro($form);
-                $this->generarExcel($strWhere);
-            }
-            if ($form->get('BtnPdf')->isClicked()) {
-                $strWhere .= $this->devFiltro($form);
-                $objEstadoCuenta = new \Brasa\CarteraBundle\Formatos\EstadoCuenta();
-                $objEstadoCuenta->Generar($em, $strWhere);
-            }            
         }
         $connection = $em->getConnection();
         $strSql = "SELECT  
                             sql_car_cartera_edades.*
                     FROM
                             sql_car_cartera_edades                       
-                    WHERE 1 " . $strWhere;                    
-        $statement = $connection->prepare($strSql);        
+                    WHERE 1 " . $strWhere;
+        $statement = $connection->prepare($strSql);
         $statement->execute();
-        $resultados = $statement->fetchAll();        
-        return $this->render('BrasaCarteraBundle:Consultas/CuentasCobrar:lista.html.twig', array(            
-            'arCuentasCobrar' => $resultados,
-            'form' => $form->createView()));
+        $resultados = $statement->fetchAll();
+        return $this->render('BrasaCarteraBundle:Consultas/CuentasCobrar:lista.html.twig', array(
+                    'arCuentasCobrar' => $resultados,
+                    'form' => $form->createView()));
     }
-    
+
     /**
      * @Route("/cartera/consulta/cuentacobrar/resumen/{codigoCuentaCobrar}", name="brs_car_consultas_cuentacobrar_resumen")
-     */    
+     */
     public function resumenAction(Request $request, $codigoCuentaCobrar) {
         $em = $this->getDoctrine()->getManager();
         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
@@ -71,59 +75,59 @@ class CuentaCobrarController extends Controller
         return $this->render('BrasaCarteraBundle:Consultas/CuentasCobrar:resumen.html.twig', array(
                     'arReciboDetalles' => $arReciboDetalles,
                     'arCuentaCobrar' => $arCuentaCobrar
-                    ));
-    }  
+        ));
+    }
 
     private function devFiltro($form) {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strWhere = "";
-        $arTipo = $form->get('cuentaCobrarTipoRel')->getData();  
-        if($arTipo) {
-           $strWhere .= " AND codigoCuentaCobrarTipoFk = " . $arTipo->getCodigoCuentaCobrarTipoPk(); 
+        $arTipo = $form->get('cuentaCobrarTipoRel')->getData();
+        if ($arTipo) {
+            $strWhere .= " AND codigoCuentaCobrarTipoFk = " . $arTipo->getCodigoCuentaCobrarTipoPk();
         }
-        $arAsesor = $form->get('asesorRel')->getData();  
-        if($arAsesor) {
-           $strWhere .= " AND codigoAsesorFk = " . $arAsesor->getCodigoAsesorPk(); 
-        }  
+        $arAsesor = $form->get('asesorRel')->getData();
+        if ($arAsesor) {
+            $strWhere .= " AND codigoAsesorFk = " . $arAsesor->getCodigoAsesorPk();
+        }
         $intRango = $form->get('rango')->getData();
-        if($intRango != 0) {
+        if ($intRango != 0) {
             $strWhere .= " AND rango = " . $intRango;
-        } 
+        }
         $nit = $form->get('TxtNit')->getData();
-        if($nit != "") {            
+        if ($nit != "") {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $nit));
-            if($arCliente) {            
-                   $strWhere .= " AND codigo_cliente_fk = " . $arCliente->getCodigoClientePk(); 
-            }            
+            if ($arCliente) {
+                $strWhere .= " AND codigo_cliente_fk = " . $arCliente->getCodigoClientePk();
+            }
         }
         $fecha = $form->get('fechaDesde')->getData();
-        if ($fecha){
+        if ($fecha) {
             $fecha = $fecha->format('Y-m-d');
             $strWhere .= " AND fecha >= " . $fecha;
         }
         $fecha = $form->get('fechaHasta')->getData();
-        if ($fecha){
+        if ($fecha) {
             $fecha = $fecha->format('Y-m-d');
             $strWhere .= " AND fecha <= " . $fecha;
         }
         $numero = $form->get('TxtNumero')->getData();
-        if($numero != "") {                                  
-           $strWhere .= " AND numeroDocumento = " . $numero; 
-        }        
+        if ($numero != "") {
+            $strWhere .= " AND numeroDocumento = " . $numero;
+        }
         return $strWhere;
     }
-    
+
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if($session->get('filtroNit')) {
+        if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
-            if($arCliente) {
+            if ($arCliente) {
                 $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroCodigoCliente', null);
                 $session->set('filtroNit', null);
             }
@@ -131,46 +135,48 @@ class CuentaCobrarController extends Controller
             $session->set('filtroCodigoCliente', null);
         }
         $arrayPropiedades = array(
-                'class' => 'BrasaCarteraBundle:CarCuentaCobrarTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCuentaCobrarTipo')) {
+            'class' => 'BrasaCarteraBundle:CarCuentaCobrarTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCuentaCobrarTipo')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $arrayPropiedadesAsesor = array(
-                'class' => 'BrasaGeneralBundle:GenAsesor',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('a')
-                    ->orderBy('a.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );        
-        if($session->get('filtroAsesor')) {
+            'class' => 'BrasaGeneralBundle:GenAsesor',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('a')
+                                ->orderBy('a.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroAsesor')) {
             $arrayPropiedadesAsesor['data'] = $em->getReference("BrasaGeneralBundle:GenAsesor", $session->get('filtroAsesor'));
-        }        
+        }
         $form = $this->createFormBuilder()
-            ->add('TxtNit', TextType::class, array('label'  => 'Nit','data' => $session->get('filtroNit')))
-            ->add('TxtNombreCliente', TextType::class, array('label'  => 'NombreCliente','data' => $strNombreCliente))
-            ->add('TxtNumero', TextType::class, array('label'  => 'Codigo','data' => $session->get('filtroPedidoNumero')))
-            ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
-            ->add('asesorRel', EntityType::class, $arrayPropiedadesAsesor)
-            ->add('rango', ChoiceType::class, array('choices' => array('TODOS' => '0','1 - 30' => '30', '31 - 60' => '60', '61 - 90' => '90', '91 - 180' => '180')))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))            
-            ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroPedidoNumero')))
+                ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
+                ->add('asesorRel', EntityType::class, $arrayPropiedadesAsesor)
+                ->add('rango', ChoiceType::class, array('choices' => array('TODOS' => '0', '1 - 30' => '30', '31 - 60' => '60', '61 - 90' => '90', '91 - 180' => '180')))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+                ->add('BtnPdf', SubmitType::class, array('label' => 'PDF',))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
     }
 
@@ -181,49 +187,49 @@ class CuentaCobrarController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'S'; $col++) {
+        for ($col = 'A'; $col !== 'S'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        for($col = 'J'; $col !== 'M'; $col++) {
+        for ($col = 'J'; $col !== 'M'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'NUMERO')
-                    ->setCellValue('C1', 'TIPO')
-                    ->setCellValue('D1', 'FECHA')
-                    ->setCellValue('E1', 'VENCE')
-                    ->setCellValue('F1', 'SOPORTE')
-                    ->setCellValue('G1', 'NIT')
-                    ->setCellValue('H1', 'CLIENTE')
-                    ->setCellValue('I1', 'ASESOR')
-                    ->setCellValue('J1', 'VALOR')
-                    ->setCellValue('K1', 'SALDO')                    
-                    ->setCellValue('L1', 'ABONO')
-                    ->setCellValue('M1', 'PLAZO')
-                    ->setCellValue('N1', 'VENCIMIENTO')
-                    ->setCellValue('O1', 'DIAS')
-                    ->setCellValue('P1', 'RANGO')
-                    ->setCellValue('Q1', 'GRUPO')
-                    ->setCellValue('R1', 'SUBGRUPO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'TIPO')
+                ->setCellValue('D1', 'FECHA')
+                ->setCellValue('E1', 'VENCE')
+                ->setCellValue('F1', 'SOPORTE')
+                ->setCellValue('G1', 'NIT')
+                ->setCellValue('H1', 'CLIENTE')
+                ->setCellValue('I1', 'ASESOR')
+                ->setCellValue('J1', 'VALOR')
+                ->setCellValue('K1', 'SALDO')
+                ->setCellValue('L1', 'ABONO')
+                ->setCellValue('M1', 'PLAZO')
+                ->setCellValue('N1', 'VENCIMIENTO')
+                ->setCellValue('O1', 'DIAS')
+                ->setCellValue('P1', 'RANGO')
+                ->setCellValue('Q1', 'GRUPO')
+                ->setCellValue('R1', 'SUBGRUPO');
 
-        $i = 2;        
+        $i = 2;
         $connection = $em->getConnection();
         $strSql = "SELECT  
                             sql_car_cartera_edades.*
                     FROM
                             sql_car_cartera_edades                       
-                    WHERE 1 " . $strWhere;                    
-        $statement = $connection->prepare($strSql);        
+                    WHERE 1 " . $strWhere;
+        $statement = $connection->prepare($strSql);
         $statement->execute();
         $arCuentasCobrar = $statement->fetchAll();
         foreach ($arCuentasCobrar as $arCuentasCobrar) {
@@ -258,14 +264,13 @@ class CuentaCobrarController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-
 
 }
