@@ -58,6 +58,11 @@ class TurSoportePagoPeriodo
     private $diasAdicionalesFebrero = 0;    
 
     /**
+     * @ORM\Column(name="dias_adicionales_fijo", type="integer")
+     */    
+    private $diasAdicionalesFijo = 0;    
+    
+    /**
      * @ORM\Column(name="dias_periodo", type="integer")
      */    
     private $diasPeriodo = 0;    
@@ -1094,5 +1099,29 @@ class TurSoportePagoPeriodo
     public function getProgramacionesAlternasSoportePagoPeriodoRel()
     {
         return $this->programacionesAlternasSoportePagoPeriodoRel;
+    }
+
+    /**
+     * Set diasAdicionalesFijo
+     *
+     * @param integer $diasAdicionalesFijo
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setDiasAdicionalesFijo($diasAdicionalesFijo)
+    {
+        $this->diasAdicionalesFijo = $diasAdicionalesFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get diasAdicionalesFijo
+     *
+     * @return integer
+     */
+    public function getDiasAdicionalesFijo()
+    {
+        return $this->diasAdicionalesFijo;
     }
 }

@@ -78,7 +78,10 @@ class TurSoportePagoRepository extends EntityRepository {
                         }                        
                     }                    
                 }
-                                                
+                if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFijo() > 0) {
+                     $diasTransporte += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFijo();
+                     $arrayResultado[$i]['dias'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFijo();
+                }                               
                 $intHoras = $arrayResultado[$i]['horasDescanso'] + $arrayResultado[$i]['horasNovedad'] + $arrayResultado[$i]['horasDiurnas'] + $arrayResultado[$i]['horasNocturnas'] + $arrayResultado[$i]['horasFestivasDiurnas'] + $arrayResultado[$i]['horasFestivasNocturnas'];                
                 $arSoportePagoAct->setDias($arrayResultado[$i]['dias']);
                 $arSoportePagoAct->setDiasTransporte($diasTransporte);
