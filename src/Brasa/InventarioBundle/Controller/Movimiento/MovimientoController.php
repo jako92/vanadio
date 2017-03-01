@@ -124,6 +124,7 @@ class MovimientoController extends Controller {
                         $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
                         $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
                         $arMovimiento->setFechaVence($dateFechaVence);
+                        $arMovimiento->setPlazoPago($arTercero->getPlazoPagoCliente());
                         if ($arDocumento->getAsignarConsecutivoCreacion()) {
                             $consecutivo = $arDocumento->getConsecutivo();
                             $arDocumento->setConsecutivo($consecutivo + 1);
