@@ -322,8 +322,6 @@ class DotacionController extends Controller
                                 $arDotacionDetalleDevolucion->setDotacionElementoRel($arDotacionElemento);
                                 $intCantidad = $arrControles['TxtCantidad'][$intIndice];
                                 $arDotacionDetalleDevolucion->setCantidadAsignada($intCantidad);
-                                $arDotacionDetalleDevolucion->setSerie($arDotacionDetalle->getSerie());
-                                $arDotacionDetalleDevolucion->setLote($arDotacionDetalle->getLote());
                                 $arDotacionDetalleDevolucion->setCodigoDotacionDetalleEnlaceFk($arDotacionDetalle->getCodigoDotacionDetallePk());
                                 $em->persist($arDotacionDetalleDevolucion);
                                 $arDotacionDetalle->setCantidadDevuelta($arDotacionDetalle->getCantidadDevuelta() + $intCantidad);                            
