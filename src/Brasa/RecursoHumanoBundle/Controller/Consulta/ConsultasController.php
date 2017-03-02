@@ -14,8 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class ConsultasController extends Controller
-{
+class ConsultasController extends Controller {
+
     var $strSqlCreditoLista = "";
     var $strSqlServiciosPorCobrarLista = "";
     var $strSqlPagoLista = "";
@@ -30,46 +30,44 @@ class ConsultasController extends Controller
     var $strSqlPagoPendientesBancoLista = "";
     var $strSqlEmpleadosLista = "";
     var $strSqlDotacionesPendientesLista = "";
-    var $strSqlProcesosDisciplinariosLista = "";    
+    var $strSqlProcesosDisciplinariosLista = "";
 
     /**
      * @Route("/rhu/consultas/pago/pendientes/banco", name="brs_rhu_consultas_pago_pendientes_banco")
      */
     public function PagoPendientesBancoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 30)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 30)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioPagoPendientesBancoLista();
         $form->handleRequest($request);
         $this->listarPagoPendientesBanco();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcel')->isClicked()) {
+            if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrarPagoPendientesBancoLista($form);
                 $this->listarPagoPendientesBanco();
                 $this->generarPagoPendientesBancoExcel();
             }
-            if($form->get('BtnPDF')->isClicked()) {
+            if ($form->get('BtnPDF')->isClicked()) {
                 $this->filtrarPagoPendientesBancoLista($form);
                 $this->listarPagoPendientesBanco();
                 $objReportePagoPendientesBanco = new \Brasa\RecursoHumanoBundle\Reportes\ReportePagoPendientesBanco();
                 $objReportePagoPendientesBanco->Generar($this, $this->strSqlPagoPendientesBancoLista);
             }
-            if($form->get('BtnFiltrar')->isClicked()) {
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarPagoPendientesBancoLista($form);
                 $this->listarPagoPendientesBanco();
             }
-
         }
         $arPagos = $paginator->paginate($em->createQuery($this->strSqlPagoPendientesBancoLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/PagoPendientesBanco:PagoPendientesBanco.html.twig', array(
-            'arPagos' => $arPagos,
-            'form' => $form->createView()
-            ));
+                    'arPagos' => $arPagos,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -77,39 +75,37 @@ class ConsultasController extends Controller
      */
     public function creditosGeneralAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 19)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 19)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioCreditosLista();
         $form->handleRequest($request);
         $this->CreditosListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelCredito')->isClicked()) {
+            if ($form->get('BtnExcelCredito')->isClicked()) {
                 $this->filtrarCreditoLista($form);
                 $this->CreditosListar();
                 $this->generarCreditoExcel();
             }
-            if($form->get('BtnPDFCredito')->isClicked()) {
+            if ($form->get('BtnPDFCredito')->isClicked()) {
                 $this->filtrarCreditoLista($form);
                 $this->CreditosListar();
                 $objReporteCreditos = new \Brasa\RecursoHumanoBundle\Reportes\ReporteCreditos();
                 $objReporteCreditos->Generar($this, $em, $this->strSqlCreditoLista);
             }
-            if($form->get('BtnFiltrarCredito')->isClicked()) {
+            if ($form->get('BtnFiltrarCredito')->isClicked()) {
                 $this->filtrarCreditoLista($form);
                 $this->CreditosListar();
             }
-
         }
         $arCreditos = $paginator->paginate($em->createQuery($this->strSqlCreditoLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Creditos:general.html.twig', array(
-            'arCreditos' => $arCreditos,
-            'form' => $form->createView()
-            ));
+                    'arCreditos' => $arCreditos,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -117,40 +113,38 @@ class ConsultasController extends Controller
      */
     public function PagoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 20)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 20)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioPagoLista();
         $form->handleRequest($request);
         $this->PagoListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelPago')->isClicked()) {
+            if ($form->get('BtnExcelPago')->isClicked()) {
                 $this->filtrarPagoLista($form);
                 $this->PagoListar();
                 $this->generarPagoExcel();
             }
-            /*if($form->get('BtnPDFPago')->isClicked()) {
-                $this->filtrarPagoLista($form);
-                $this->PagoListar();
-                $objReportePago = new \Brasa\RecursoHumanoBundle\Reportes\ReportePago();
-                $objReportePago->Generar($this, $this->strSqlPagoLista);
+            /* if($form->get('BtnPDFPago')->isClicked()) {
+              $this->filtrarPagoLista($form);
+              $this->PagoListar();
+              $objReportePago = new \Brasa\RecursoHumanoBundle\Reportes\ReportePago();
+              $objReportePago->Generar($this, $this->strSqlPagoLista);
 
-            }*/
-            if($form->get('BtnFiltrarPago')->isClicked()) {
+              } */
+            if ($form->get('BtnFiltrarPago')->isClicked()) {
                 $this->filtrarPagoLista($form);
                 $this->PagoListar();
             }
-
         }
         $arPagos = $paginator->paginate($em->createQuery($this->strSqlPagoLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Pagos:Pago.html.twig', array(
-            'arPagos' => $arPagos,
-            'form' => $form->createView()
-            ));
+                    'arPagos' => $arPagos,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -158,39 +152,37 @@ class ConsultasController extends Controller
      */
     public function serviciosCobrarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 38)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 38)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioServiciosPorCobrarLista();
         $form->handleRequest($request);
         $this->ServiciosPorCobrarListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelServiciosPorCobrar')->isClicked()) {
+            if ($form->get('BtnExcelServiciosPorCobrar')->isClicked()) {
                 $this->filtrarServiciosPorCobrarLista($form);
                 $this->ServiciosPorCobrarListar();
                 $this->generarServiciosPorCobrarExcel();
             }
-            if($form->get('BtnPDFServiciosPorCobrar')->isClicked()) {
+            if ($form->get('BtnPDFServiciosPorCobrar')->isClicked()) {
                 $this->filtrarServiciosPorCobrarLista($form);
                 $this->ServiciosPorCobrarListar();
                 $objReporteServiciosPorCobrar = new \Brasa\RecursoHumanoBundle\Reportes\ReporteServiciosPorCobrar();
                 $objReporteServiciosPorCobrar->Generar($this, $em, $this->strSqlServiciosPorCobrarLista);
             }
-            if($form->get('BtnFiltrarServiciosPorCobrar')->isClicked()) {
+            if ($form->get('BtnFiltrarServiciosPorCobrar')->isClicked()) {
                 $this->filtrarServiciosPorCobrarLista($form);
                 $this->ServiciosPorCobrarListar();
             }
-
         }
         $arServiciosPorCobrar = $paginator->paginate($em->createQuery($this->strSqlServiciosPorCobrarLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Servicios:porCobrar.html.twig', array(
-            'arServiciosPorCobrar' => $arServiciosPorCobrar,
-            'form' => $form->createView()
-            ));
+                    'arServiciosPorCobrar' => $arServiciosPorCobrar,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -198,39 +190,37 @@ class ConsultasController extends Controller
      */
     public function IncapacidadesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 22)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 22)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioIncapacidadesLista();
         $form->handleRequest($request);
         $this->IncapacidadesListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelIncapacidades')->isClicked()) {
+            if ($form->get('BtnExcelIncapacidades')->isClicked()) {
                 $this->filtrarIncapacidadesLista($form);
                 $this->IncapacidadesListar();
                 $this->generarIncapacidadesExcel();
             }
-            if($form->get('BtnPDFIncapacidades')->isClicked()) {
+            if ($form->get('BtnPDFIncapacidades')->isClicked()) {
                 $this->filtrarIncapacidadesLista($form);
                 $this->IncapacidadesListar();
                 $objReporteIncapacidades = new \Brasa\RecursoHumanoBundle\Reportes\ReporteIncapacidades();
                 $objReporteIncapacidades->Generar($this, $em, $this->strSqlIncapacidadesLista);
             }
-            if($form->get('BtnFiltrarIncapacidades')->isClicked()) {
+            if ($form->get('BtnFiltrarIncapacidades')->isClicked()) {
                 $this->filtrarIncapacidadesLista($form);
                 $this->IncapacidadesListar();
             }
-
         }
         $arIncapacidades = $paginator->paginate($em->createQuery($this->strSqlIncapacidadesLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Incapacidades:Incapacidades.html.twig', array(
-            'arIncapacidades' => $arIncapacidades,
-            'form' => $form->createView()
-            ));
+                    'arIncapacidades' => $arIncapacidades,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -238,39 +228,37 @@ class ConsultasController extends Controller
      */
     public function IncapacidadesCobrarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 23)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 23)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioIncapacidadesCobrarLista();
         $form->handleRequest($request);
         $this->IncapacidadesCobrarListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelIncapacidadesCobrar')->isClicked()) {
+            if ($form->get('BtnExcelIncapacidadesCobrar')->isClicked()) {
                 $this->filtrarIncapacidadesCobrarLista($form);
                 $this->IncapacidadesCobrarListar();
                 $this->generarIncapacidadesCobrarExcel();
             }
-            if($form->get('BtnPDFIncapacidadesCobrar')->isClicked()) {
+            if ($form->get('BtnPDFIncapacidadesCobrar')->isClicked()) {
                 $this->filtrarIncapacidadesCobrarLista($form);
                 $this->IncapacidadesCobrarListar();
                 $objReporteIncapacidadesCobrar = new \Brasa\RecursoHumanoBundle\Reportes\ReporteIncapacidadesCobrar();
                 $objReporteIncapacidadesCobrar->Generar($this, $em, $this->strSqlIncapacidadesCobrarLista);
             }
-            if($form->get('BtnFiltrarIncapacidadesCobrar')->isClicked()) {
+            if ($form->get('BtnFiltrarIncapacidadesCobrar')->isClicked()) {
                 $this->filtrarIncapacidadesCobrarLista($form);
                 $this->IncapacidadesCobrarListar();
             }
-
         }
         $arIncapacidadesCobrar = $paginator->paginate($em->createQuery($this->strSqlIncapacidadesCobrarLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/IncapacidadesCobrar:Incapacidades.html.twig', array(
-            'arIncapacidadesCobrar' => $arIncapacidadesCobrar,
-            'form' => $form->createView()
-            ));
+                    'arIncapacidadesCobrar' => $arIncapacidadesCobrar,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -278,39 +266,37 @@ class ConsultasController extends Controller
      */
     public function ProcesosDisciplinariosAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 33)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 33)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioProcesosDisciplinariosLista();
         $form->handleRequest($request);
         $this->ProcesosDisciplinariosListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelProcesosDisciplinarios')->isClicked()) {
+            if ($form->get('BtnExcelProcesosDisciplinarios')->isClicked()) {
                 $this->filtrarProcesosDisciplinariosLista($form);
                 $this->ProcesosDisciplinariosListar();
                 $this->generarProcesosDisciplinariosExcel();
             }
-            /*if($form->get('BtnPDFProcesosDisciplinarios')->isClicked()) {
-                $this->filtrarProcesosDisciplinariosLista($form);
-                $this->ProcesosDisciplinariosListar();
-                $objReporteProcesosDisciplinarios = new \Brasa\RecursoHumanoBundle\Reportes\ReporteProcesosDisciplinarios();
-                $objReporteProcesosDisciplinarios->Generar($this, $this->strSqlProcesosDisciplinariosLista);
-            }*/
-            if($form->get('BtnFiltrarProcesosDisciplinarios')->isClicked()) {
+            /* if($form->get('BtnPDFProcesosDisciplinarios')->isClicked()) {
+              $this->filtrarProcesosDisciplinariosLista($form);
+              $this->ProcesosDisciplinariosListar();
+              $objReporteProcesosDisciplinarios = new \Brasa\RecursoHumanoBundle\Reportes\ReporteProcesosDisciplinarios();
+              $objReporteProcesosDisciplinarios->Generar($this, $this->strSqlProcesosDisciplinariosLista);
+              } */
+            if ($form->get('BtnFiltrarProcesosDisciplinarios')->isClicked()) {
                 $this->filtrarProcesosDisciplinariosLista($form);
                 $this->ProcesosDisciplinariosListar();
             }
-
         }
         $arProcesosDisciplinarios = $paginator->paginate($em->createQuery($this->strSqlProcesosDisciplinariosLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/ProcesosDisciplinarios:ProcesosDisciplinarios.html.twig', array(
-            'arProcesosDisciplinarios' => $arProcesosDisciplinarios,
-            'form' => $form->createView()
-            ));
+                    'arProcesosDisciplinarios' => $arProcesosDisciplinarios,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -318,39 +304,37 @@ class ConsultasController extends Controller
      */
     public function AportesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 24)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 24)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioAportesLista();
         $form->handleRequest($request);
         $this->AportesListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelAportes')->isClicked()) {
+            if ($form->get('BtnExcelAportes')->isClicked()) {
                 $this->filtrarAportesLista($form);
                 $this->AportesListar();
                 $this->generarAportesExcel();
             }
-            /*if($form->get('BtnPDFAportes')->isClicked()) {
-                $this->filtrarAportesLista($form);
-                $this->AportesListar();
-                $objReporteAportes = new \Brasa\RecursoHumanoBundle\Reportes\ReporteAportes();
-                $objReporteAportes->Generar($this, $this->strSqlAportesLista);
-            }*/
-            if($form->get('BtnFiltrarAportes')->isClicked()) {
+            /* if($form->get('BtnPDFAportes')->isClicked()) {
+              $this->filtrarAportesLista($form);
+              $this->AportesListar();
+              $objReporteAportes = new \Brasa\RecursoHumanoBundle\Reportes\ReporteAportes();
+              $objReporteAportes->Generar($this, $this->strSqlAportesLista);
+              } */
+            if ($form->get('BtnFiltrarAportes')->isClicked()) {
                 $this->filtrarAportesLista($form);
                 $this->AportesListar();
             }
-
         }
         $arSsoAportes = $paginator->paginate($em->createQuery($this->strSqlAportesLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Aportes:Aportes.html.twig', array(
-            'arSsoAportes' => $arSsoAportes,
-            'form' => $form->createView()
-            ));
+                    'arSsoAportes' => $arSsoAportes,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -358,167 +342,160 @@ class ConsultasController extends Controller
      */
     public function VacacionesPagarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 28)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 28)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioVacacionesPagarLista();
         $form->handleRequest($request);
         $this->VacacionesPagarListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelVacacionesPagar')->isClicked()) {
+            if ($form->get('BtnExcelVacacionesPagar')->isClicked()) {
                 $this->filtrarVacacionesPagarLista($form);
                 $this->VacacionesPagarListar();
                 $this->generarVacacionesPagarExcel();
             }
-            if($form->get('BtnFiltrarVacacionesPagar')->isClicked()) {
+            if ($form->get('BtnFiltrarVacacionesPagar')->isClicked()) {
                 $this->filtrarVacacionesPagarLista($form);
                 $this->VacacionesPagarListar();
             }
-
         }
         $arVacacionesPagar = $paginator->paginate($em->createQuery($this->strSqlVacacionesPagarLista), $request->query->get('page', 1), 40);
 
         return $this->render('BrasaRecursoHumanoBundle:Consultas/VacacionesPagar:VacacionesPagar.html.twig', array(
-            'arVacacionesPagar' => $arVacacionesPagar,
-            'form' => $form->createView()
-            ));
+                    'arVacacionesPagar' => $arVacacionesPagar,
+                    'form' => $form->createView()
+        ));
     }
-    
+
     /**
      * @Route("/rhu/consultas/contrato/fecha/terminacion", name="brs_rhu_consultas_contrato_fecha_terminacion")
      */
     public function FechaTerminacionAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 26)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 26)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioFechaTerminacionLista();
         $form->handleRequest($request);
         $this->FechaTerminacionListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelFechaTerminacion')->isClicked()) {
+            if ($form->get('BtnExcelFechaTerminacion')->isClicked()) {
                 $this->filtrarFechaTerminacionLista($form);
                 $this->FechaTerminacionListar();
                 $this->generarFechaTerminacionExcel();
             }
-            if($form->get('BtnFiltrarFechaTerminacion')->isClicked()) {
+            if ($form->get('BtnFiltrarFechaTerminacion')->isClicked()) {
                 $this->filtrarFechaTerminacionLista($form);
                 $this->FechaTerminacionListar();
             }
         }
         $arFechaTerminacion = $paginator->paginate($em->createQuery($this->strSqlFechaTerminacionLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/FechaTerminacion:FechaTerminacion.html.twig', array(
-            'arFechaTerminacion' => $arFechaTerminacion,
-            'form' => $form->createView()
-            ));
+                    'arFechaTerminacion' => $arFechaTerminacion,
+                    'form' => $form->createView()
+        ));
     }
-    
+
     /**
      * @Route("/rhu/consultas/contrato/fecha/ingreso", name="brs_rhu_consultas_contrato_fecha_ingreso")
      */
     public function FechaIngresoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 25)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 25)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioIngresosContratosLista();
         $form->handleRequest($request);
         $this->contratosIngresosListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelIngresosContratos')->isClicked()) {
+            if ($form->get('BtnExcelIngresosContratos')->isClicked()) {
                 $this->filtrarIngresosContratosLista($form);
                 $this->contratosIngresosListar();
                 $this->generarIngresosContratosExcel();
             }
-            if($form->get('BtnFiltrarIngresosContratos')->isClicked()) {
+            if ($form->get('BtnFiltrarIngresosContratos')->isClicked()) {
                 $this->filtrarIngresosContratosLista($form);
                 $this->contratosIngresosListar();
             }
-
         }
         $arIngresosContratos = $paginator->paginate($em->createQuery($this->strSqlIngresosContratosLista), $request->query->get('page', 1), 40);
 
         return $this->render('BrasaRecursoHumanoBundle:Consultas/IngresosContratos:FechaIngreso.html.twig', array(
-            'arIngresosContratos' => $arIngresosContratos,
-            'form' => $form->createView()
-            ));
+                    'arIngresosContratos' => $arIngresosContratos,
+                    'form' => $form->createView()
+        ));
     }
-    
+
     /**
      * @Route("/rhu/consultas/contrato/periodo", name="brs_rhu_consultas_contrato_periodo")
      */
     public function ContratoPeriodoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 27)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 27)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioContratoPeriodo();
         $form->handleRequest($request);
         $this->contratosPeriodoListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelContratosPeriodo')->isClicked()) {
+            if ($form->get('BtnExcelContratosPeriodo')->isClicked()) {
                 $this->filtrarContratosPeriodoLista($form);
                 $this->contratosPeriodoListar();
                 $this->generarContratosPeriodoExcel();
             }
-            if($form->get('BtnFiltrarContratosPeriodo')->isClicked()) {
+            if ($form->get('BtnFiltrarContratosPeriodo')->isClicked()) {
                 $this->filtrarContratosPeriodoLista($form);
                 $this->contratosPeriodoListar();
             }
-
         }
         $arContratos = $paginator->paginate($em->createQuery($this->strSqlContratosPeriodoLista), $request->query->get('page', 1), 2000);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Contrato:periodo.html.twig', array(
-            'arContrato' => $arContratos,
-            'form' => $form->createView()
-            ));
-    }    
+                    'arContrato' => $arContratos,
+                    'form' => $form->createView()
+        ));
+    }
 
     /**
      * @Route("/rhu/consultas/empleado", name="brs_rhu_consultas_empleado")
      */
     public function EmpleadoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 14)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
-        }         
-        $paginator  = $this->get('knp_paginator');
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 14)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
         $session = new Session;
         $form = $this->formularioEmpleadoLista();
         $form->handleRequest($request);
         $this->EmpleadoListar();
-        if($form->isValid()) {
-            if($form->get('BtnFiltrar')->isClicked()) {
+        if ($form->isValid()) {
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarEmpleadoLista($form);
                 $this->EmpleadoListar();
             }
 
-            /*if($form->get('BtnPdf')->isClicked()) {
-                $this->filtrarEmpleadoLista($form);
-                $this->EmpleadoListar();
-                $objFormatoEmpleado = new \Brasa\RecursoHumanoBundle\Formatos\FormatoEmpleado();
-                $objFormatoEmpleado->Generar($this, $this->strSqlEmpleadosLista);
+            /* if($form->get('BtnPdf')->isClicked()) {
+              $this->filtrarEmpleadoLista($form);
+              $this->EmpleadoListar();
+              $objFormatoEmpleado = new \Brasa\RecursoHumanoBundle\Formatos\FormatoEmpleado();
+              $objFormatoEmpleado->Generar($this, $this->strSqlEmpleadosLista);
 
-            }*/
+              } */
 
-            if($form->get('BtnExcel')->isClicked()) {
+            if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrarEmpleadoLista($form);
                 $this->EmpleadoListar();
                 $this->generarEmpleadoExcel();
@@ -526,44 +503,42 @@ class ConsultasController extends Controller
         }
         $arEmpleados = $paginator->paginate($em->createQuery($this->strSqlEmpleadosLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:lista.html.twig', array(
-            'arEmpleados' => $arEmpleados,
-            'form' => $form->createView()
-            ));
+                    'arEmpleados' => $arEmpleados,
+                    'form' => $form->createView()
+        ));
     }
-    
+
     /**
      * @Route("/rhu/consultas/dotacion/pendiente", name="brs_rhu_consultas_dotacion_pendiente")
      */
     public function DotacionesPendientesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 39)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 39)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioDotacionesPendientesLista();
         $form->handleRequest($request);
         $this->DotacionesPendientesListar();
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnExcelDotacionesPendientes')->isClicked()) {
+            if ($form->get('BtnExcelDotacionesPendientes')->isClicked()) {
                 $this->filtrarDotacionesPendientesLista($form);
                 $this->DotacionesPendientesListar();
                 $this->generarDotacionesPendientesExcel();
             }
-            
-            if($form->get('BtnFiltrarDotacionesPendientes')->isClicked()) {
+
+            if ($form->get('BtnFiltrarDotacionesPendientes')->isClicked()) {
                 $this->filtrarDotacionesPendientesLista($form);
                 $this->DotacionesPendientesListar();
             }
-
         }
         $arDotacionesPendientes = $paginator->paginate($em->createQuery($this->strSqlDotacionesPendientesLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/DotacionesPendientes:DotacionesPendientes.html.twig', array(
-            'arDotacionesPendientes' => $arDotacionesPendientes,
-            'form' => $form->createView()
-            ));
+                    'arDotacionesPendientes' => $arDotacionesPendientes,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
@@ -571,10 +546,10 @@ class ConsultasController extends Controller
      */
     public function EmpleadodetalleAction(Request $request, $codigoEmpleado) {
         $em = $this->getDoctrine()->getManager();
-        
-        $paginator  = $this->get('knp_paginator');
+
+        $paginator = $this->get('knp_paginator');
         $form = $this->createFormBuilder()
-            ->getForm();
+                ->getForm();
         $form->handleRequest($request);
         $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($codigoEmpleado);
@@ -596,26 +571,27 @@ class ConsultasController extends Controller
         $arEmpleadoFamilia = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoFamilia')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado));
         $arEmpleadoDotacion = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacion();
         $arEmpleadoDotacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->findBy(array('codigoEmpleadoFk' => $codigoEmpleado));
-        if($form->isValid()) {
+        if ($form->isValid()) {
+            
         }
         //$arIncapacidades = $paginator->paginate($arIncapacidades, $this->get('request')->query->get('page', 1),5);
-        $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1),5);
+        $arIncapacidades = $paginator->paginate($arIncapacidades, $request->query->getInt('page', 1), 5);
         //$arVacaciones = $paginator->paginate($arVacaciones, $this->get('request')->query->get('page', 1),5);
-        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1),5);
+        $arVacaciones = $paginator->paginate($arVacaciones, $request->query->getInt('page', 1), 5);
         //$arLicencias = $paginator->paginate($arLicencias, $this->get('request')->query->get('page', 1),5);
-        $arLicencias = $paginator->paginate($arLicencias, $request->query->getInt('page', 1),5);
+        $arLicencias = $paginator->paginate($arLicencias, $request->query->getInt('page', 1), 5);
         //$arContratos = $paginator->paginate($arContratos, $this->get('request')->query->get('page', 1),5);
-        $arContratos = $paginator->paginate($arContratos, $request->query->getInt('page', 1),5);
+        $arContratos = $paginator->paginate($arContratos, $request->query->getInt('page', 1), 5);
         //$arCreditos = $paginator->paginate($arCreditos, $this->get('request')->query->get('page', 1),5);
-        $arCreditos = $paginator->paginate($arCreditos, $request->query->getInt('page', 1),5);
+        $arCreditos = $paginator->paginate($arCreditos, $request->query->getInt('page', 1), 5);
         //$arDisciplinarios = $paginator->paginate($arDisciplinarios, $this->get('request')->query->get('page', 1),5);
-        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $request->query->getInt('page', 1),5);
+        $arDisciplinarios = $paginator->paginate($arDisciplinarios, $request->query->getInt('page', 1), 5);
         //$arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $this->get('request')->query->get('page', 1),6);
-        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $request->query->getInt('page', 1),5);
+        $arEmpleadoEstudios = $paginator->paginate($arEmpleadoEstudios, $request->query->getInt('page', 1), 5);
         //$arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $this->get('request')->query->get('page', 1),8);
-        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $request->query->getInt('page', 1),5);
+        $arEmpleadoFamilia = $paginator->paginate($arEmpleadoFamilia, $request->query->getInt('page', 1), 5);
         //$arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $this->get('request')->query->get('page', 1),8);
-        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $request->query->getInt('page', 1),5);
+        $arEmpleadoDotacion = $paginator->paginate($arEmpleadoDotacion, $request->query->getInt('page', 1), 5);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:detalle.html.twig', array(
                     'arEmpleado' => $arEmpleado,
                     'arIncapacidades' => $arIncapacidades,
@@ -628,215 +604,164 @@ class ConsultasController extends Controller
                     'arEmpleadoFamilia' => $arEmpleadoFamilia,
                     'arEmpleadoDotacion' => $arEmpleadoDotacion,
                     'form' => $form->createView()
-                    ));
-    }  
+        ));
+    }
 
     private function listarPagoPendientesBanco() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlPagoPendientesBancoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaPagoPendientesBancoDql(
-
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
 
     private function CreditosListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlCreditoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCredito')->listaDQL(
-                    $session->get('filtroIdentificacion'),
-                    "",
-                    "",
-                    $session->get('filtroRhuCreditoEstadoPagado')
-                    );
+                $session->get('filtroIdentificacion'), "", "", $session->get('filtroRhuCreditoEstadoPagado')
+        );
     }
 
     private function ServiciosPorCobrarListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlServiciosPorCobrarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->listaServiciosPorCobrarDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
 
     private function PagoListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlPagoLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaConsultaPagosDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta'),
-                    $session->get('filtroCodigoPago')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta'), $session->get('filtroCodigoPago')
+        );
     }
 
     private function EmpleadoListar() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $this->strSqlEmpleadosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->listaDQL(
-                $session->get('filtroEmpleadoNombre'),
-                $session->get('filtroCodigoCentroCosto'),
-                $session->get('filtroEmpleadoActivo'),
-                $session->get('filtroIdentificacion'),
-                "",
-                $session->get('filtroEmpleadoContratado')
-                );
+                $session->get('filtroEmpleadoNombre'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroEmpleadoActivo'), $session->get('filtroIdentificacion'), "", $session->get('filtroEmpleadoContratado')
+        );
     }
 
     private function AportesListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlAportesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoAporte')->listaAportesDQL(
-                    $session->get('filtroRhuAnio'),
-                    $session->get('filtroRhuMes'),
-                    $session->get('filtroIdentificacion')
-                    );
+                $session->get('filtroRhuAnio'), $session->get('filtroRhuMes'), $session->get('filtroIdentificacion')
+        );
     }
 
     private function VacacionesPagarListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlVacacionesPagarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosVacacionCumplidaDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroHasta')
+        );
     }
-    
+
     private function contratosIngresosListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIngresosContratosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaIngresosContratosDQL(
-            $session->get('filtroCodigoContratoTipo'),
-            $session->get('filtroCodigoEmpleadoTipo'),
-            $session->get('filtroCodigoZona'),
-            $session->get('filtroCodigoSubzona'),
-            $session->get('filtroCodigoContrato'),
-            $session->get('filtroIdentificacion'),
-            $session->get('filtroDesde'),
-            $session->get('filtroHasta')
-            );
+                $session->get('filtroCodigoContratoTipo'), $session->get('filtroCodigoEmpleadoTipo'), $session->get('filtroCodigoZona'), $session->get('filtroCodigoSubzona'), $session->get('filtroCodigoContrato'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
 
     private function contratosPeriodoListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        if($session->get('filtroDesde') == "") {
+        if ($session->get('filtroDesde') == "") {
             $fecha = new \DateTime('now');
-            $session->set('filtroDesde', $fecha->format('Y/m/d'));                    
-        }        
-        if($session->get('filtroHasta') == "") {
+            $session->set('filtroDesde', $fecha->format('Y/m/d'));
+        }
+        if ($session->get('filtroHasta') == "") {
             $fecha = new \DateTime('now');
             $session->set('filtroHasta', $fecha->format('Y/m/d'));
-        }  
-        if($session->get('filtroCodigoCentroCosto') == "") {
+        }
+        if ($session->get('filtroCodigoCentroCosto') == "") {
             $session->set('filtroCodigoCentroCosto', "0");
-        }        
-        $this->strSqlContratosPeriodoLista  = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
-                    . "WHERE "
-                    . "c.fechaDesde <= '" .$session->get('filtroHasta') . "' "
-                    . " AND (c.fechaHasta >= '" . $session->get('filtroDesde') . "' "
-                    . " OR c.indefinido = 1) ";
-        if($session->get('filtroCodigoCentroCosto')) {
+        }
+        $this->strSqlContratosPeriodoLista = "SELECT c FROM BrasaRecursoHumanoBundle:RhuContrato c "
+                . "WHERE "
+                . "c.fechaDesde <= '" . $session->get('filtroHasta') . "' "
+                . " AND (c.fechaHasta >= '" . $session->get('filtroDesde') . "' "
+                . " OR c.indefinido = 1) ";
+        if ($session->get('filtroCodigoCentroCosto')) {
             $this->strSqlContratosPeriodoLista .= " AND c.codigoCentroCostoFk = " . $session->get('filtroCodigoCentroCosto');
         }
-        
-    }    
-    
+    }
+
     private function IncapacidadesListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIncapacidadesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta'),
-                    $session->get('filtroCodigoEntidadSalud')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta'), $session->get('filtroCodigoEntidadSalud')
+        );
     }
 
     private function IncapacidadesCobrarListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlIncapacidadesCobrarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesCobrarDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta'),
-                    $session->get('filtroCodigoEntidadSalud')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta'), $session->get('filtroCodigoEntidadSalud')
+        );
     }
 
     private function ProcesosDisciplinariosListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlProcesosDisciplinariosLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuDisciplinario')->listaProcesosDisciplinariosDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
-    
+
     private function DotacionesPendientesListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlDotacionesPendientesLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuDotacion')->listaDotacionesPendientesDQL(
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
-    
+
     private function FechaTerminacionListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlFechaTerminacionLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->listaContratosFechaTerminacionDQL(
-                    $session->get('filtroCodigoContratoTipo'),
-                    $session->get('filtroCodigoEmpleadoTipo'),
-                    $session->get('filtroCodigoZona'),
-                    $session->get('filtroCodigoSubzona'),
-                    $session->get('filtroCodigoCentroCosto'),
-                    $session->get('filtroIdentificacion'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );
+                $session->get('filtroCodigoContratoTipo'), $session->get('filtroCodigoEmpleadoTipo'), $session->get('filtroCodigoZona'), $session->get('filtroCodigoSubzona'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+        );
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDF', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDF', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -844,28 +769,29 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDF', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDF', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -873,22 +799,22 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $strNombreEmpleado = "";
-        if($session->get('filtroIdentificacion')) {
+        if ($session->get('filtroIdentificacion')) {
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
-            if($arEmpleado) {                
+            if ($arEmpleado) {
                 $strNombreEmpleado = $arEmpleado->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroIdentificacion', null);
-            }          
+            }
         }
         $form = $this->createFormBuilder()
-            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))            
-            ->add('estadoPagado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoPagado')))
-            ->add('BtnFiltrarCredito', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelCredito', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDFCredito', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
+                ->add('estadoPagado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'PAGADOS' => '1', 'SIN PAGAR' => '0'), 'data' => $session->get('filtroRhuCreditoEstadoPagado')))
+                ->add('BtnFiltrarCredito', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelCredito', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDFCredito', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -896,30 +822,45 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
+        $strNombreEmpleado = "";
+        if ($session->get('filtroIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
+            if ($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+            } else {
+                $session->set('filtroIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }
+
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('codigoPago', TextType::class, array('label'  => 'codigoPago'))
-            ->add('BtnFiltrarPago', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelPago', SubmitType::class, array('label'  => 'Excel',))
-            //->add('BtnPDFPago', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('codigoPago', TextType::class, array('label' => 'codigoPago'))
+                ->add('BtnFiltrarPago', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelPago', SubmitType::class, array('label' => 'Excel',))
+                //->add('BtnPDFPago', SubmitType::class, array('label'  => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -927,29 +868,30 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarServiciosPorCobrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelServiciosPorCobrar', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDFServiciosPorCobrar', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarServiciosPorCobrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelServiciosPorCobrar', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDFServiciosPorCobrar', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -958,12 +900,12 @@ class ConsultasController extends Controller
         $session = new Session;
 
         $form = $this->createFormBuilder()
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('TxtAnio',NumberType::class, array('label'  => 'Anio','data' => $session->get('filtroRhuAnio')))
-            ->add('TxtMes',NumberType::class, array('label'  => 'Mes','data' => $session->get('filtroRhuMes')))            
-            ->add('BtnFiltrarAportes', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelAportes', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('TxtAnio', NumberType::class, array('label' => 'Anio', 'data' => $session->get('filtroRhuAnio')))
+                ->add('TxtMes', NumberType::class, array('label' => 'Mes', 'data' => $session->get('filtroRhuMes')))
+                ->add('BtnFiltrarAportes', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelAportes', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
@@ -971,28 +913,29 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('estadoActivo', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
-            ->add('estadoContratado', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))    
-            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('estadoActivo', ChoiceType::class, array('choices' => array('TODOS' => '2', 'ACTIVOS' => '1', 'INACTIVOS' => '0')))
+                ->add('estadoContratado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))
+                ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $session->get('filtroNombre')))
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
@@ -1000,45 +943,47 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $arrayPropiedadesEntidadSalud = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('es')
-                    ->orderBy('es.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoEntidadSalud')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('es')
+                                ->orderBy('es.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEntidadSalud')) {
             $arrayPropiedadesEntidadSalud['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadSalud", $session->get('filtroCodigoEntidadSalud'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarIncapacidades', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelIncapacidades', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDFIncapacidades', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarIncapacidades', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelIncapacidades', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDFIncapacidades', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -1046,45 +991,47 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $arrayPropiedadesEntidadSalud = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('es')
-                    ->orderBy('es.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoEntidadSalud')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('es')
+                                ->orderBy('es.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEntidadSalud')) {
             $arrayPropiedadesEntidadSalud['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadSalud", $session->get('filtroCodigoEntidadSalud'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarIncapacidadesCobrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelIncapacidadesCobrar', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnPDFIncapacidadesCobrar', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('entidadSaludRel', EntityType::class, $arrayPropiedadesEntidadSalud)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarIncapacidadesCobrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelIncapacidadesCobrar', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnPDFIncapacidadesCobrar', SubmitType::class, array('label' => 'PDF',))
+                ->getForm();
         return $form;
     }
 
@@ -1092,58 +1039,60 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarProcesosDisciplinarios', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelProcesosDisciplinarios', SubmitType::class, array('label'  => 'Excel',))
-            //->add('BtnPDFProcesosDisciplinarios', SubmitType::class, array('label'  => 'PDF',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarProcesosDisciplinarios', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelProcesosDisciplinarios', SubmitType::class, array('label' => 'Excel',))
+                //->add('BtnPDFProcesosDisciplinarios', SubmitType::class, array('label'  => 'PDF',))
+                ->getForm();
         return $form;
     }
-    
+
     private function formularioDotacionesPendientesLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarDotacionesPendientes', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelDotacionesPendientes', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarDotacionesPendientes', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelDotacionesPendientes', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
@@ -1151,115 +1100,121 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
 
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarVacacionesPagar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelVacacionesPagar', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarVacacionesPagar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelVacacionesPagar', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
-    
+
     private function formularioFechaTerminacionLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $arrayPropiedadesTipo = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoEmpleadoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEmpleadoTipo')) {
             $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEmpleadoTipo", $session->get('filtroCodigoEmpleadoTipo'));
         }
         $arrayPropiedadesZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuZona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoZona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuZona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoZona')) {
             $arrayPropiedadesZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
         }
         $arrayPropiedadesSubZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoSubzona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoSubzona')) {
             $arrayPropiedadesSubZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSubzona", $session->get('filtroCodigoSubzona'));
         }
         $arrayPropiedadesTipoContrato = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoContratoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)    
-            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
-            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarFechaTerminacion', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelFechaTerminacion', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+                ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+                ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarFechaTerminacion', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelFechaTerminacion', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
@@ -1267,234 +1222,243 @@ class ConsultasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $arrayPropiedadesTipo = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoEmpleadoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEmpleadoTipo')) {
             $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEmpleadoTipo", $session->get('filtroCodigoEmpleadoTipo'));
         }
         $arrayPropiedadesZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuZona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoZona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuZona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoZona')) {
             $arrayPropiedadesZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
         }
         $arrayPropiedadesSubZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoSubzona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoSubzona')) {
             $arrayPropiedadesSubZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSubzona", $session->get('filtroCodigoSubzona'));
         }
         $arrayPropiedadesTipoContrato = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoContratoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)    
-            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
-            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('TxtContrato', TextType::class, array('label'  => 'Contrato','data' => $session->get('filtroCodigoContrato')))
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarIngresosContratos', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelIngresosContratos', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
+                ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+                ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+                ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('TxtContrato', TextType::class, array('label' => 'Contrato', 'data' => $session->get('filtroCodigoContrato')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarIngresosContratos', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelIngresosContratos', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
     private function formularioContratoPeriodo() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-        
+
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
-        }        
+        }
         $arrayPropiedadesTipo = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoEmpleadoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuEmpleadoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEmpleadoTipo')) {
             $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEmpleadoTipo", $session->get('filtroCodigoEmpleadoTipo'));
         }
         $arrayPropiedadesZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuZona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('et')
-                    ->orderBy('et.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoZona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuZona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('et')
+                                ->orderBy('et.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoZona')) {
             $arrayPropiedadesZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuZona", $session->get('filtroCodigoZona'));
         }
         $arrayPropiedadesSubZona = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoSubzona')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuSubzona',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoSubzona')) {
             $arrayPropiedadesSubZona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSubzona", $session->get('filtroCodigoSubzona'));
         }
         $arrayPropiedadesTipoContrato = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('sz')
-                    ->orderBy('sz.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoContratoTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sz')
+                                ->orderBy('sz.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoContratoTipo')) {
             $arrayPropiedadesTipoContrato['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuContratoTipo", $session->get('filtroCodigoContratoTipo'));
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::Class, $arrayPropiedades)    
-            ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)    
-            ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
-            ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)    
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))            
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-            ->add('BtnFiltrarContratosPeriodo', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcelContratosPeriodo', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::Class, $arrayPropiedades)
+                ->add('contratoTipoRel', EntityType::class, $arrayPropiedadesTipoContrato)
+                ->add('empleadoTipoRel', EntityType::class, $arrayPropiedadesTipo)
+                ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)
+                ->add('subZonaRel', EntityType::class, $arrayPropiedadesSubZona)
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
+                ->add('BtnFiltrarContratosPeriodo', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcelContratosPeriodo', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
-    }    
-    
+    }
+
     private function filtrarPagoPendientesBancoLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarCreditoLista($form) {
-        $session = new Session;                
+        $session = new Session;
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuCreditoEstadoPagado', $form->get('estadoPagado')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        
-        /*$dateFechaDesde = $form->get('fechaDesde')->getData();
-        $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }*/
+
+        /* $dateFechaDesde = $form->get('fechaDesde')->getData();
+          $dateFechaHasta = $form->get('fechaHasta')->getData();
+          if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+          $session->set('filtroDesde', $form->get('fechaDesde')->getData());
+          $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+          } else {
+          $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
+          $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
+          } */
     }
 
     private function filtrarPagoLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
-        }        
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
         $session->set('filtroCodigoPago', $form->get('codigoPago')->getData());
-        
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarEmpleadoLista($form) {
         $session = new Session;
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
-        }        
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
@@ -1504,268 +1468,268 @@ class ConsultasController extends Controller
 
     private function filtrarIncapacidadesLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+
         $codigoEntidadSalud = "";
-        if($form->get('entidadSaludRel')->getData()) {
-            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();    
+        if ($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
         }
         $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);
-        
-        
+
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarIncapacidadesCobrarLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        
+
         $codigoEntidadSalud = "";
-        if($form->get('entidadSaludRel')->getData()) {
-            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();    
+        if ($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
         }
         $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);
-        
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarProcesosDisciplinariosLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
-    
+
     private function filtrarDotacionesPendientesLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarAportesLista($form) {
         $session = new Session;
-                
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());        
-        $session->set('filtroRhuAnio', $form->get('TxtAnio')->getData());        
-        $session->set('filtroRhuMes', $form->get('TxtMes')->getData());        
+
+        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
+        $session->set('filtroRhuAnio', $form->get('TxtAnio')->getData());
+        $session->set('filtroRhuMes', $form->get('TxtMes')->getData());
     }
 
     private function filtrarServiciosPorCobrarLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
-        }        
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarVacacionesPagarLista($form) {
         $session = new Session;
-                
+
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        
+
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaHasta')->getData() == null) {
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
-    
+
     private function filtrarFechaTerminacionLista($form) {
         $session = new Session;
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $codigoContratoTipo = "";
-        if($form->get('contratoTipoRel')->getData()) {
-            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        if ($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();
         }
-        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);
         $codigoEmpleadoTipo = "";
-        if($form->get('empleadoTipoRel')->getData()) {
-            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        if ($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();
         }
         $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
         $codigoZona = "";
-        if($form->get('zonaRel')->getData()) {
-            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        if ($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
         }
         $session->set('filtroCodigoZona', $codigoZona);
         $codigoSubZona = "";
-        if($form->get('subZonaRel')->getData()) {
-            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        if ($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();
         }
         $session->set('filtroCodigoSubzona', $codigoZona);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-                
+
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
-    
+
     private function filtrarIngresosContratosLista($form) {
         $session = new Session;
         $codigoContratoTipo = "";
-        if($form->get('contratoTipoRel')->getData()) {
-            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        if ($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();
         }
-        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);
         $codigoEmpleadoTipo = "";
-        if($form->get('empleadoTipoRel')->getData()) {
-            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        if ($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();
         }
         $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
         $codigoZona = "";
-        if($form->get('zonaRel')->getData()) {
-            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        if ($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
         }
         $session->set('filtroCodigoZona', $codigoZona);
         $codigoSubZona = "";
-        if($form->get('subZonaRel')->getData()) {
-            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        if ($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();
         }
-        $session->set('filtroCodigoSubzona', $codigoZona);                                
-        
+        $session->set('filtroCodigoSubzona', $codigoZona);
+
         $session->set('filtroCodigoContrato', $form->get('TxtContrato')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
+        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
             $session->set('filtroDesde', $form->get('fechaDesde')->getData());
             $session->set('filtroHasta', $form->get('fechaHasta')->getData());
         } else {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
     }
 
     private function filtrarContratosPeriodoLista($form) {
         $session = new Session;
-                
+
         $fechaDesde = $form->get('fechaDesde')->getData();
         $fechaHasta = $form->get('fechaHasta')->getData();
-        if(!$fechaDesde) {
+        if (!$fechaDesde) {
             $fechaDesde = new \DateTime('now');
         }
-        if(!$fechaHasta) {
+        if (!$fechaHasta) {
             $fechaHasta = new \DateTime('now');
-        }        
+        }
         $codigoCentroCosto = "";
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();    
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $codigoContratoTipo = "";
-        if($form->get('contratoTipoRel')->getData()) {
-            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();    
+        if ($form->get('contratoTipoRel')->getData()) {
+            $codigoContratoTipo = $form->get('contratoTipoRel')->getData()->getCodigoContratoTipoPk();
         }
-        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);        
+        $session->set('filtroCodigoContratoTipo', $codigoContratoTipo);
         $codigoEmpleadoTipo = "";
-        if($form->get('empleadoTipoRel')->getData()) {
-            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();    
+        if ($form->get('empleadoTipoRel')->getData()) {
+            $codigoEmpleadoTipo = $form->get('empleadoTipoRel')->getData()->getCodigoEmpleadoTipoPk();
         }
         $session->set('filtroCodigoEmpleadoTipo', $codigoEmpleadoTipo);
         $codigoZona = "";
-        if($form->get('zonaRel')->getData()) {
-            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();    
+        if ($form->get('zonaRel')->getData()) {
+            $codigoZona = $form->get('zonaRel')->getData()->getCodigoZonaPk();
         }
         $session->set('filtroCodigoZona', $codigoZona);
         $codigoSubZona = "";
-        if($form->get('subZonaRel')->getData()) {
-            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();    
+        if ($form->get('subZonaRel')->getData()) {
+            $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();
         }
-        $session->set('filtroCodigoSubzona', $codigoZona);        
+        $session->set('filtroCodigoSubzona', $codigoZona);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroDesde', $fechaDesde->format('Y/m/d'));
-        $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));        
-    }    
-    
+        $session->set('filtroHasta', $fechaHasta->format('Y/m/d'));
+    }
+
     private function generarExcel() {
         ob_clean();
         set_time_limit(0);
@@ -1775,57 +1739,57 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'DESDE')
-                    ->setCellValue('C1', 'HASTA')
-                    ->setCellValue('D1', 'IDENTIFICACION')
-                    ->setCellValue('E1', 'NOMBRE')
-                    ->setCellValue('F1', 'CENTRO COSTOS')
-                    ->setCellValue('G1', 'BASICO')
-                    ->setCellValue('H1', 'TIEMPO EXTRA')
-                    ->setCellValue('I1', 'VALORES ADICIONALES')
-                    ->setCellValue('J1', 'AUX. TRANSPORTE')
-                    ->setCellValue('K1', 'ARP')
-                    ->setCellValue('L1', 'EPS')
-                    ->setCellValue('M1', 'PENSION')
-                    ->setCellValue('N1', 'CAJA')
-                    ->setCellValue('O1', 'ICBF')
-                    ->setCellValue('P1', 'SENA')
-                    ->setCellValue('Q1', 'CESANTIAS')
-                    ->setCellValue('R1', 'VACACIONES')
-                    ->setCellValue('S1', 'ADMON')
-                    ->setCellValue('T1', 'COSTO')
-                    ->setCellValue('U1', 'TOTAL')
-                    ->setCellValue('W1', 'NETO')
-                    ->setCellValue('X1', 'IBC')
-                    ->setCellValue('Y1', 'AUX. TRANSPORTE COTIZACION')
-                    ->setCellValue('Z1', 'DIAS PERIODO')
-                    ->setCellValue('AA1', 'SALARIO PERIODO')
-                    ->setCellValue('AB1', 'SALARIO EMPLEADO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'DESDE')
+                ->setCellValue('C1', 'HASTA')
+                ->setCellValue('D1', 'IDENTIFICACION')
+                ->setCellValue('E1', 'NOMBRE')
+                ->setCellValue('F1', 'CENTRO COSTOS')
+                ->setCellValue('G1', 'BASICO')
+                ->setCellValue('H1', 'TIEMPO EXTRA')
+                ->setCellValue('I1', 'VALORES ADICIONALES')
+                ->setCellValue('J1', 'AUX. TRANSPORTE')
+                ->setCellValue('K1', 'ARP')
+                ->setCellValue('L1', 'EPS')
+                ->setCellValue('M1', 'PENSION')
+                ->setCellValue('N1', 'CAJA')
+                ->setCellValue('O1', 'ICBF')
+                ->setCellValue('P1', 'SENA')
+                ->setCellValue('Q1', 'CESANTIAS')
+                ->setCellValue('R1', 'VACACIONES')
+                ->setCellValue('S1', 'ADMON')
+                ->setCellValue('T1', 'COSTO')
+                ->setCellValue('U1', 'TOTAL')
+                ->setCellValue('W1', 'NETO')
+                ->setCellValue('X1', 'IBC')
+                ->setCellValue('Y1', 'AUX. TRANSPORTE COTIZACION')
+                ->setCellValue('Z1', 'DIAS PERIODO')
+                ->setCellValue('AA1', 'SALARIO PERIODO')
+                ->setCellValue('AB1', 'SALARIO EMPLEADO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arPagos = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AB'; $col++) {
+        for ($col = 'A'; $col !== 'AB'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'G'; $col !== 'Y'; $col++) {
+        for ($col = 'G'; $col !== 'Y'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
-        for($col = 'Z'; $col !== 'AB'; $col++) {
+        for ($col = 'Z'; $col !== 'AB'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
@@ -1871,10 +1835,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -1889,43 +1853,43 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'DESDE')
-                    ->setCellValue('C1', 'HASTA')
-                    ->setCellValue('D1', 'IDENTIFICACION')
-                    ->setCellValue('E1', 'NOMBRE')
-                    ->setCellValue('F1', 'CENTRO COSTOS')
-                    ->setCellValue('G1', 'BASICO')
-                    ->setCellValue('H1', 'TIEMPO EXTRA')
-                    ->setCellValue('I1', 'VALORES ADICIONALES')
-                    ->setCellValue('J1', 'AUX. TRANSPORTE')
-                    ->setCellValue('K1', 'COSTO')
-                    ->setCellValue('L1', 'NETO')
-                    ->setCellValue('M1', 'IBC')
-                    ->setCellValue('N1', 'AUX. TRANSPORTE COTIZACION')
-                    ->setCellValue('O1', 'DIAS PERIODO')
-                    ->setCellValue('P1', 'SALARIO PERIODO')
-                    ->setCellValue('Q1', 'SALARIO EMPLEADO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'DESDE')
+                ->setCellValue('C1', 'HASTA')
+                ->setCellValue('D1', 'IDENTIFICACION')
+                ->setCellValue('E1', 'NOMBRE')
+                ->setCellValue('F1', 'CENTRO COSTOS')
+                ->setCellValue('G1', 'BASICO')
+                ->setCellValue('H1', 'TIEMPO EXTRA')
+                ->setCellValue('I1', 'VALORES ADICIONALES')
+                ->setCellValue('J1', 'AUX. TRANSPORTE')
+                ->setCellValue('K1', 'COSTO')
+                ->setCellValue('L1', 'NETO')
+                ->setCellValue('M1', 'IBC')
+                ->setCellValue('N1', 'AUX. TRANSPORTE COTIZACION')
+                ->setCellValue('O1', 'DIAS PERIODO')
+                ->setCellValue('P1', 'SALARIO PERIODO')
+                ->setCellValue('Q1', 'SALARIO EMPLEADO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlPagoPendientesBancoLista);
         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arPagos = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        }     
-        for($col = 'G'; $col !== 'Q'; $col++) {
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
+        for ($col = 'G'; $col !== 'Q'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
@@ -1962,10 +1926,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -1980,33 +1944,33 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'IDENTIFICACION')
-                    ->setCellValue('C1', 'EMPLEADO')
-                    ->setCellValue('D1', 'CODIGO CONTRATO')
-                    ->setCellValue('E1', 'IBC')
-                    ->setCellValue('F1', 'DESDE')
-                    ->setCellValue('G1', 'HASTA');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'IDENTIFICACION')
+                ->setCellValue('C1', 'EMPLEADO')
+                ->setCellValue('D1', 'CODIGO CONTRATO')
+                ->setCellValue('E1', 'IBC')
+                ->setCellValue('F1', 'DESDE')
+                ->setCellValue('G1', 'HASTA');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlCostosIbcLista);
         $arIbc = new \Brasa\RecursoHumanoBundle\Entity\RhuIbc();
         $arIbc = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for ($col = 'A'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'E'; $col !== 'E'; $col++) {
+        for ($col = 'E'; $col !== 'E'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
@@ -2032,10 +1996,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2050,55 +2014,53 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'TIPO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'IDENTIFICACION')
-                    ->setCellValue('E1', 'NOMBRE')
-                    ->setCellValue('F1', 'VR. CREDITO')
-                    ->setCellValue('G1', 'VR. CUOTA')
-                    ->setCellValue('H1', 'VR. SALDO')
-                    ->setCellValue('I1', 'CUOTAS')
-                    ->setCellValue('J1', 'CUOTA ACTUAL')                    
-                    ->setCellValue('K1', 'SUSPENDIDO')
-                    ->setCellValue('L1', 'PAGADO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'IDENTIFICACION')
+                ->setCellValue('E1', 'NOMBRE')
+                ->setCellValue('F1', 'VR. CREDITO')
+                ->setCellValue('G1', 'VR. CUOTA')
+                ->setCellValue('H1', 'VR. SALDO')
+                ->setCellValue('I1', 'CUOTAS')
+                ->setCellValue('J1', 'CUOTA ACTUAL')
+                ->setCellValue('K1', 'SUSPENDIDO')
+                ->setCellValue('L1', 'PAGADO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlCreditoLista);
         $arCreditos = new \Brasa\RecursoHumanoBundle\Entity\RhuCredito();
         $arCreditos = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'F'; $col !== 'H'; $col++) {
+        for ($col = 'F'; $col !== 'H'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arCreditos as $arCredito) {
-            /*if ($arCredito->getAprobado() == 1) {
-                $Aprobado = "SI";
-            }*/
+            /* if ($arCredito->getAprobado() == 1) {
+              $Aprobado = "SI";
+              } */
             if ($arCredito->getEstadoSuspendido() == 1) {
                 $Suspendido = "SI";
-            }
-            else {
+            } else {
                 $Suspendido = "NO";
             }
             if ($arCredito->getEstadoPagado() == 1) {
                 $pagado = "SI";
-            }
-            else {
+            } else {
                 $pagado = "NO";
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -2111,7 +2073,7 @@ class ConsultasController extends Controller
                     ->setCellValue('G' . $i, $arCredito->getVrCuota())
                     ->setCellValue('H' . $i, $arCredito->getSaldo())
                     ->setCellValue('I' . $i, $arCredito->getNumeroCuotas())
-                    ->setCellValue('J' . $i, $arCredito->getNumeroCuotaActual())                    
+                    ->setCellValue('J' . $i, $arCredito->getNumeroCuotaActual())
                     ->setCellValue('K' . $i, $Suspendido)
                     ->setCellValue('L' . $i, $pagado);
             $i++;
@@ -2127,10 +2089,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2145,59 +2107,59 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'CENTRO COSTOS')
-                    ->setCellValue('C1', 'IDENTIFICACION')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'DESDE')
-                    ->setCellValue('F1', 'HASTA')
-                    ->setCellValue('G1', 'VR. SALARIO')
-                    ->setCellValue('H1', 'VR. SALARIO PERIODO')
-                    ->setCellValue('I1', 'VR. SALARIO EMPLEADO')
-                    ->setCellValue('J1', 'VR. DEVENGADO')
-                    ->setCellValue('K1', 'VR. DEDUCCIONES')
-                    ->setCellValue('L1', 'VR. ADICIONAL TIEMPO')
-                    ->setCellValue('M1', 'VR. ADICIONAL VALOR')
-                    ->setCellValue('N1', 'VR. AUXILIO TRANSPORTE')
-                    ->setCellValue('O1', 'VR. AUXILIO TRANSPORTE COTIZACION')
-                    ->setCellValue('P1', 'VR. ARP')
-                    ->setCellValue('Q1', 'VR. EPS')
-                    ->setCellValue('R1', 'VR. PENSION')
-                    ->setCellValue('S1', 'VR. CAJA COMPENSACION')
-                    ->setCellValue('T1', 'VR. SENA')
-                    ->setCellValue('U1', 'VR. ICBF')
-                    ->setCellValue('V1', 'VR. CESANTIAS')
-                    ->setCellValue('W1', 'VR. VACACIONES')
-                    ->setCellValue('X1', 'VR. ADMINISTRACION')
-                    ->setCellValue('Y1', 'VR. NETO')
-                    ->setCellValue('Z1', 'VR. BRUTO')
-                    ->setCellValue('AA1', 'VR. TOTAL COBRAR')
-                    ->setCellValue('AB1', 'VR. COSTO')
-                    ->setCellValue('AC1', 'VR. INGRESO BASE COTIZACION')
-                    ->setCellValue('AD1', 'ESTADO COBRADO')
-                    ->setCellValue('AE1', 'DIAS PERIODO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'CENTRO COSTOS')
+                ->setCellValue('C1', 'IDENTIFICACION')
+                ->setCellValue('D1', 'EMPLEADO')
+                ->setCellValue('E1', 'DESDE')
+                ->setCellValue('F1', 'HASTA')
+                ->setCellValue('G1', 'VR. SALARIO')
+                ->setCellValue('H1', 'VR. SALARIO PERIODO')
+                ->setCellValue('I1', 'VR. SALARIO EMPLEADO')
+                ->setCellValue('J1', 'VR. DEVENGADO')
+                ->setCellValue('K1', 'VR. DEDUCCIONES')
+                ->setCellValue('L1', 'VR. ADICIONAL TIEMPO')
+                ->setCellValue('M1', 'VR. ADICIONAL VALOR')
+                ->setCellValue('N1', 'VR. AUXILIO TRANSPORTE')
+                ->setCellValue('O1', 'VR. AUXILIO TRANSPORTE COTIZACION')
+                ->setCellValue('P1', 'VR. ARP')
+                ->setCellValue('Q1', 'VR. EPS')
+                ->setCellValue('R1', 'VR. PENSION')
+                ->setCellValue('S1', 'VR. CAJA COMPENSACION')
+                ->setCellValue('T1', 'VR. SENA')
+                ->setCellValue('U1', 'VR. ICBF')
+                ->setCellValue('V1', 'VR. CESANTIAS')
+                ->setCellValue('W1', 'VR. VACACIONES')
+                ->setCellValue('X1', 'VR. ADMINISTRACION')
+                ->setCellValue('Y1', 'VR. NETO')
+                ->setCellValue('Z1', 'VR. BRUTO')
+                ->setCellValue('AA1', 'VR. TOTAL COBRAR')
+                ->setCellValue('AB1', 'VR. COSTO')
+                ->setCellValue('AC1', 'VR. INGRESO BASE COTIZACION')
+                ->setCellValue('AD1', 'ESTADO COBRADO')
+                ->setCellValue('AE1', 'DIAS PERIODO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlServiciosPorCobrarLista);
         $arServiciosPorCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
         $arServiciosPorCobrar = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AE'; $col++) {
+        for ($col = 'A'; $col !== 'AE'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'G'; $col !== 'AC'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        for ($col = 'G'; $col !== 'AC'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arServiciosPorCobrar as $arServiciosPorCobrar) {
             if ($arServiciosPorCobrar->getEstadoCobrado() == 1) {
@@ -2251,10 +2213,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2269,50 +2231,50 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'NÚMERO')
-                    ->setCellValue('C1', 'TIPO')
-                    ->setCellValue('D1', 'IDENTIFICACIÓN')
-                    ->setCellValue('E1', 'EMPLEADO')
-                    ->setCellValue('F1', 'CENTRO COSTOS')
-                    ->setCellValue('G1', 'PERIODO DESDE')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'HASTA')
-                    ->setCellValue('J1', 'VR. SALARIO')
-                    ->setCellValue('K1', 'IBC')
-                    ->setCellValue('L1', 'IBP')
-                    ->setCellValue('M1', 'VR. DEVENGADO')
-                    ->setCellValue('N1', 'VR. DEDUCCIONES')
-                    ->setCellValue('O1', 'VR. NETO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'NÚMERO')
+                ->setCellValue('C1', 'TIPO')
+                ->setCellValue('D1', 'IDENTIFICACIÓN')
+                ->setCellValue('E1', 'EMPLEADO')
+                ->setCellValue('F1', 'CENTRO COSTOS')
+                ->setCellValue('G1', 'PERIODO DESDE')
+                ->setCellValue('H1', 'DESDE')
+                ->setCellValue('I1', 'HASTA')
+                ->setCellValue('J1', 'VR. SALARIO')
+                ->setCellValue('K1', 'IBC')
+                ->setCellValue('L1', 'IBP')
+                ->setCellValue('M1', 'VR. DEVENGADO')
+                ->setCellValue('N1', 'VR. DEDUCCIONES')
+                ->setCellValue('O1', 'VR. NETO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlPagoLista);
         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arPagos = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'J'; $col !== 'O'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        for ($col = 'J'; $col !== 'O'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arPagos as $arPago) {
             $fechaDesdePago = '';
-            if ($arPago->getFechaDesdePago() != null){
+            if ($arPago->getFechaDesdePago() != null) {
                 $fechaDesdePago = $arPago->getFechaDesdePago()->format('Y/m/d');
             }
-            
+
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPago->getCodigoPagoPk())
                     ->setCellValue('B' . $i, $arPago->getNumero())
@@ -2342,10 +2304,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2360,53 +2322,53 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'TIPO')
-                    ->setCellValue('C1', 'DIAGNOSTICO')
-                    ->setCellValue('D1', 'EPS')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'CENTRO COSTOS')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'HASTA')
-                    ->setCellValue('J1', 'DÍAS')
-                    ->setCellValue('K1', 'PRORROGA')
-                    ->setCellValue('L1', 'TRANSCRIPCIÓN')
-                    ->setCellValue('M1', 'VR. INCAPACIDAD')
-                    ->setCellValue('N1', 'VR. PAGADO')
-                    ->setCellValue('O1', 'VR. SALDO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'DIAGNOSTICO')
+                ->setCellValue('D1', 'EPS')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'CENTRO COSTOS')
+                ->setCellValue('H1', 'DESDE')
+                ->setCellValue('I1', 'HASTA')
+                ->setCellValue('J1', 'DÍAS')
+                ->setCellValue('K1', 'PRORROGA')
+                ->setCellValue('L1', 'TRANSCRIPCIÓN')
+                ->setCellValue('M1', 'VR. INCAPACIDAD')
+                ->setCellValue('N1', 'VR. PAGADO')
+                ->setCellValue('O1', 'VR. SALDO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlIncapacidadesLista);
         $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidades = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'M'; $col !== 'O'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        for ($col = 'M'; $col !== 'O'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arIncapacidades as $arIncapacidad) {
-            if ($arIncapacidad->getEstadoProrroga() == 1){
+            if ($arIncapacidad->getEstadoProrroga() == 1) {
                 $prorroga = "SI";
-            }else {
+            } else {
                 $prorroga = "NO";
             }
-            if ($arIncapacidad->getEstadoTranscripcion() == 1){
+            if ($arIncapacidad->getEstadoTranscripcion() == 1) {
                 $transcripcion = "SI";
-            }else {
+            } else {
                 $transcripcion = "NO";
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -2438,10 +2400,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2456,53 +2418,53 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'TIPO')
-                    ->setCellValue('C1', 'DIAGNOSTICO')
-                    ->setCellValue('D1', 'EPS')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'CENTRO COSTOS')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'HASTA')
-                    ->setCellValue('J1', 'DÍAS')
-                    ->setCellValue('K1', 'PRORROGA')
-                    ->setCellValue('L1', 'TRANSCRIPCIÓN')
-                    ->setCellValue('M1', 'VR. INCAPACIDAD')
-                    ->setCellValue('N1', 'VR. PAGADO')
-                    ->setCellValue('O1', 'VR. SALDO');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'DIAGNOSTICO')
+                ->setCellValue('D1', 'EPS')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'CENTRO COSTOS')
+                ->setCellValue('H1', 'DESDE')
+                ->setCellValue('I1', 'HASTA')
+                ->setCellValue('J1', 'DÍAS')
+                ->setCellValue('K1', 'PRORROGA')
+                ->setCellValue('L1', 'TRANSCRIPCIÓN')
+                ->setCellValue('M1', 'VR. INCAPACIDAD')
+                ->setCellValue('N1', 'VR. PAGADO')
+                ->setCellValue('O1', 'VR. SALDO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlIncapacidadesCobrarLista);
         $arIncapacidadesCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidadesCobrar = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'M'; $col !== 'O'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        for ($col = 'M'; $col !== 'O'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arIncapacidadesCobrar as $arIncapacidadesCobrar) {
-            if ($arIncapacidadesCobrar->getEstadoProrroga() == 1){
+            if ($arIncapacidadesCobrar->getEstadoProrroga() == 1) {
                 $prorroga = "SI";
-            }else {
+            } else {
                 $prorroga = "NO";
             }
-            if ($arIncapacidadesCobrar->getEstadoTranscripcion() == 1){
+            if ($arIncapacidadesCobrar->getEstadoTranscripcion() == 1) {
                 $transcripcion = "SI";
-            }else {
+            } else {
                 $transcripcion = "NO";
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -2534,10 +2496,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2552,48 +2514,48 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'FECHA')
-                    ->setCellValue('C1', 'PROCESO')
-                    ->setCellValue('D1', 'CAUSAL O MOTIVO')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'GRUPO PAGO')                   
-                    ->setCellValue('H1', 'ZONA')
-                    ->setCellValue('I1', 'OPERACION')
-                    ->setCellValue('J1', 'USUARIO')
-                    ->setCellValue('K1', 'PROCESO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'PROCESO')
+                ->setCellValue('D1', 'CAUSAL O MOTIVO')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'GRUPO PAGO')
+                ->setCellValue('H1', 'ZONA')
+                ->setCellValue('I1', 'OPERACION')
+                ->setCellValue('J1', 'USUARIO')
+                ->setCellValue('K1', 'PROCESO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlProcesosDisciplinariosLista);
         $arProcesosDisciplinarios = new \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario();
         $arProcesosDisciplinarios = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for ($col = 'A'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
         foreach ($arProcesosDisciplinarios as $arProcesoDisciplinario) {
-            if ($arProcesoDisciplinario->getEstadoProcede() == 1){
-                    $estadoProcede = "SI";
+            if ($arProcesoDisciplinario->getEstadoProcede() == 1) {
+                $estadoProcede = "SI";
             } else {
                 $estadoProcede = "NO";
             }
             $zona = '';
-            if ($arProcesoDisciplinario->getEmpleadoRel()->getCodigoZonaFk() != null){
+            if ($arProcesoDisciplinario->getEmpleadoRel()->getCodigoZonaFk() != null) {
                 $zona = $arProcesoDisciplinario->getEmpleadoRel()->getZonaRel()->getNombre();
             }
             $operacion = '';
-            if ($arProcesoDisciplinario->getEmpleadoRel()->getCodigoSubzonaFk() != null){
+            if ($arProcesoDisciplinario->getEmpleadoRel()->getCodigoSubzonaFk() != null) {
                 $operacion = $arProcesoDisciplinario->getEmpleadoRel()->getSubzonaRel()->getNombre();
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -2603,7 +2565,7 @@ class ConsultasController extends Controller
                     ->setCellValue('D' . $i, $arProcesoDisciplinario->getDisciplinarioMotivoRel()->getNombre())
                     ->setCellValue('E' . $i, $arProcesoDisciplinario->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('F' . $i, $arProcesoDisciplinario->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('G' . $i, $arProcesoDisciplinario->getCentroCostoRel()->getNombre())                    
+                    ->setCellValue('G' . $i, $arProcesoDisciplinario->getCentroCostoRel()->getNombre())
                     ->setCellValue('H' . $i, $zona)
                     ->setCellValue('I' . $i, $operacion)
                     ->setCellValue('J' . $i, $estadoProcede)
@@ -2621,15 +2583,15 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-    
+
     private function generarDotacionesPendientesExcel() {
         ob_clean();
         set_time_limit(0);
@@ -2639,39 +2601,39 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'FECHA')
-                    ->setCellValue('C1', 'CÓDIGO DOTACIÓN')    
-                    ->setCellValue('D1', 'CENTRO COSTO')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'ELEMENTO DOTACIÓN')
-                    ->setCellValue('H1', 'CANTIDAD SOLICITADA')
-                    ->setCellValue('I1', 'CANTIDAD PENDIENTE')
-                    ->setCellValue('J1', 'NÚMERO INTERNO REFERENCIA')
-                    ->setCellValue('K1', 'SERIE')
-                    ->setCellValue('L1', 'LOTE');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'CÓDIGO DOTACIÓN')
+                ->setCellValue('D1', 'CENTRO COSTO')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'ELEMENTO DOTACIÓN')
+                ->setCellValue('H1', 'CANTIDAD SOLICITADA')
+                ->setCellValue('I1', 'CANTIDAD PENDIENTE')
+                ->setCellValue('J1', 'NÚMERO INTERNO REFERENCIA')
+                ->setCellValue('K1', 'SERIE')
+                ->setCellValue('L1', 'LOTE');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlDotacionesPendientesLista);
         $arDotacionesPendientes = new \Brasa\RecursoHumanoBundle\Entity\RhuDotacionDetalle();
         $arDotacionesPendientes = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        }     
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
         foreach ($arDotacionesPendientes as $arDotacionPendiente) {
-            
+
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arDotacionPendiente->getCodigoDotacionDetallePk())
                     ->setCellValue('B' . $i, $arDotacionPendiente->getDotacionRel()->getFecha()->format('Y/m/d'))
@@ -2698,10 +2660,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2715,193 +2677,193 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AV'; $col++) {
+        for ($col = 'A'; $col !== 'AV'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        } 
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'TIPO')
-                    ->setCellValue('C1', 'IDENTIFICACIÓN')
-                    ->setCellValue('D1', 'DV')
-                    ->setCellValue('E1', 'CIUDAD EXPEDICIÓN IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'FECHA EXPEDICIÓN IDENTIFICACIÓN')
-                    ->setCellValue('G1', 'LIBRETA MILITAR')
-                    ->setCellValue('H1', 'CENTRO COSTO')
-                    ->setCellValue('I1', 'NOMBRE')
-                    ->setCellValue('J1', 'TELÉFONO')
-                    ->setCellValue('K1', 'CELULAR')
-                    ->setCellValue('L1', 'DIRECCIÓN')
-                    ->setCellValue('M1', 'BARRIO')
-                    ->setCellValue('N1', 'CIUDAD RESIDENCIA')
-                    ->setCellValue('O1', 'RH')
-                    ->setCellValue('P1', 'SEXO')
-                    ->setCellValue('Q1', 'CORREO')
-                    ->setCellValue('R1', 'FECHA NACIMIENTO')
-                    ->setCellValue('S1', 'CIUDAD DE NACIMIENTO')
-                    ->setCellValue('T1', 'ESTADO CIVIL')
-                    ->setCellValue('U1', 'PADRE DE FAMILIA')
-                    ->setCellValue('V1', 'CABEZA DE HOGAR')
-                    ->setCellValue('W1', 'NIVEL DE ESTUDIO')
-                    ->setCellValue('X1', 'ENTIDAD SALUD')
-                    ->setCellValue('Y1', 'ENTIDAD PENSION')
-                    ->setCellValue('Z1', 'ENTIDAD CAJA DE COMPESACIÓN')
-                    ->setCellValue('AA1', 'ENTIDAD CESANTIAS')
-                    ->setCellValue('AB1', 'CLASIFICACIÓN DE RIESGO')
-                    ->setCellValue('AC1', 'CUENTA BANCARIA')
-                    ->setCellValue('AD1', 'BANCO')
-                    ->setCellValue('AE1', 'FECHA CONTRATO')
-                    ->setCellValue('AF1', 'FECHA FINALIZA CONTRATO')
-                    ->setCellValue('AG1', 'CARGO')
-                    ->setCellValue('AH1', 'DESCRIPCIÓN CARGO')
-                    ->setCellValue('AI1', 'TIPO PENSIÓN')
-                    ->setCellValue('AJ1', 'TIPO COTIZANTE')
-                    ->setCellValue('AK1', 'SUBTIPO COTIZANTE')
-                    ->setCellValue('AL1', 'ESTADO ACTIVO')
-                    ->setCellValue('AM1', 'ESTADO CONTRATO')
-                    ->setCellValue('AN1', 'CODIGO CONTRATO')
-                    ->setCellValue('AO1', 'TALLA CAMISA')
-                    ->setCellValue('AP1', 'TALLA JEANS')
-                    ->setCellValue('AQ1', 'TALLA CALZADO')
-                    ->setCellValue('AR1', 'DEPARTAMENTO')
-                    ->setCellValue('AS1', 'HORARIO')
-                    ->setCellValue('AT1', 'DISCAPACIDAD')
-                    ->setCellValue('AU1', 'ZONA')
-                    ->setCellValue('AV1', 'SUBZONA')
-                    ->setCellValue('AW1', 'TIPO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'IDENTIFICACIÓN')
+                ->setCellValue('D1', 'DV')
+                ->setCellValue('E1', 'CIUDAD EXPEDICIÓN IDENTIFICACIÓN')
+                ->setCellValue('F1', 'FECHA EXPEDICIÓN IDENTIFICACIÓN')
+                ->setCellValue('G1', 'LIBRETA MILITAR')
+                ->setCellValue('H1', 'CENTRO COSTO')
+                ->setCellValue('I1', 'NOMBRE')
+                ->setCellValue('J1', 'TELÉFONO')
+                ->setCellValue('K1', 'CELULAR')
+                ->setCellValue('L1', 'DIRECCIÓN')
+                ->setCellValue('M1', 'BARRIO')
+                ->setCellValue('N1', 'CIUDAD RESIDENCIA')
+                ->setCellValue('O1', 'RH')
+                ->setCellValue('P1', 'SEXO')
+                ->setCellValue('Q1', 'CORREO')
+                ->setCellValue('R1', 'FECHA NACIMIENTO')
+                ->setCellValue('S1', 'CIUDAD DE NACIMIENTO')
+                ->setCellValue('T1', 'ESTADO CIVIL')
+                ->setCellValue('U1', 'PADRE DE FAMILIA')
+                ->setCellValue('V1', 'CABEZA DE HOGAR')
+                ->setCellValue('W1', 'NIVEL DE ESTUDIO')
+                ->setCellValue('X1', 'ENTIDAD SALUD')
+                ->setCellValue('Y1', 'ENTIDAD PENSION')
+                ->setCellValue('Z1', 'ENTIDAD CAJA DE COMPESACIÓN')
+                ->setCellValue('AA1', 'ENTIDAD CESANTIAS')
+                ->setCellValue('AB1', 'CLASIFICACIÓN DE RIESGO')
+                ->setCellValue('AC1', 'CUENTA BANCARIA')
+                ->setCellValue('AD1', 'BANCO')
+                ->setCellValue('AE1', 'FECHA CONTRATO')
+                ->setCellValue('AF1', 'FECHA FINALIZA CONTRATO')
+                ->setCellValue('AG1', 'CARGO')
+                ->setCellValue('AH1', 'DESCRIPCIÓN CARGO')
+                ->setCellValue('AI1', 'TIPO PENSIÓN')
+                ->setCellValue('AJ1', 'TIPO COTIZANTE')
+                ->setCellValue('AK1', 'SUBTIPO COTIZANTE')
+                ->setCellValue('AL1', 'ESTADO ACTIVO')
+                ->setCellValue('AM1', 'ESTADO CONTRATO')
+                ->setCellValue('AN1', 'CODIGO CONTRATO')
+                ->setCellValue('AO1', 'TALLA CAMISA')
+                ->setCellValue('AP1', 'TALLA JEANS')
+                ->setCellValue('AQ1', 'TALLA CALZADO')
+                ->setCellValue('AR1', 'DEPARTAMENTO')
+                ->setCellValue('AS1', 'HORARIO')
+                ->setCellValue('AT1', 'DISCAPACIDAD')
+                ->setCellValue('AU1', 'ZONA')
+                ->setCellValue('AV1', 'SUBZONA')
+                ->setCellValue('AW1', 'TIPO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlEmpleadosLista);
         $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $arEmpleados = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'AW'; $col++) {
+        for ($col = 'A'; $col !== 'AW'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
         foreach ($arEmpleados as $arEmpleado) {
-            if ($arEmpleado->getCodigoCentroCostoFk() == null){
+            if ($arEmpleado->getCodigoCentroCostoFk() == null) {
                 $centroCosto = "";
-            }else{
+            } else {
                 $centroCosto = $arEmpleado->getCentroCostoRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoClasificacionRiesgoFk() == null){
+            if ($arEmpleado->getCodigoClasificacionRiesgoFk() == null) {
                 $clasificacionRiesgo = "";
-            }else{
+            } else {
                 $clasificacionRiesgo = $arEmpleado->getClasificacionRiesgoRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoCargoFk() == null){
+            if ($arEmpleado->getCodigoCargoFk() == null) {
                 $cargo = "";
-            }else{
+            } else {
                 $cargo = $arEmpleado->getCargoRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoTipoPensionFk() == null){
+            if ($arEmpleado->getCodigoTipoPensionFk() == null) {
                 $tipoPension = "";
-            }else{
+            } else {
                 $tipoPension = $arEmpleado->getTipoPensionRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoTipoCotizanteFk() == null){
+            if ($arEmpleado->getCodigoTipoCotizanteFk() == null) {
                 $tipoCotizante = "";
-            }else{
+            } else {
                 $tipoCotizante = $arEmpleado->getSsoTipoCotizanteRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoSubtipoCotizanteFk() == null){
+            if ($arEmpleado->getCodigoSubtipoCotizanteFk() == null) {
                 $subtipoCotizante = "";
-            }else{
+            } else {
                 $subtipoCotizante = $arEmpleado->getSsoSubtipoCotizanteRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoEntidadSaludFk() == null){
+            if ($arEmpleado->getCodigoEntidadSaludFk() == null) {
                 $entidadSalud = "";
-            }else{
+            } else {
                 $entidadSalud = $arEmpleado->getEntidadSaludRel()->getNombre();
             }
-            
-            if ($arEmpleado->getCodigoEntidadPensionFk() == null){
+
+            if ($arEmpleado->getCodigoEntidadPensionFk() == null) {
                 $entidadPension = "";
-            }else{
+            } else {
                 $entidadPension = $arEmpleado->getEntidadPensionRel()->getNombre();
             }
-            
-            if ($arEmpleado->getCodigoEntidadCajaFk() == null){
+
+            if ($arEmpleado->getCodigoEntidadCajaFk() == null) {
                 $entidadCaja = "";
-            }else{
+            } else {
                 $entidadCaja = $arEmpleado->getEntidadCajaRel()->getNombre();
-            }        
-            if ($arEmpleado->getCodigoSexoFk() == "M"){
+            }
+            if ($arEmpleado->getCodigoSexoFk() == "M") {
                 $sexo = "MASCULINO";
-            }else{
+            } else {
                 $sexo = "FEMENINO";
             }
-            if ($arEmpleado->getPadreFamilia() == 0){
+            if ($arEmpleado->getPadreFamilia() == 0) {
                 $padreFamilia = "NO";
-            }else{
+            } else {
                 $padreFamilia = "SI";
             }
-            if ($arEmpleado->getCabezaHogar() == 0){
+            if ($arEmpleado->getCabezaHogar() == 0) {
                 $cabezaHogar = "NO";
-            }else{
+            } else {
                 $cabezaHogar = "SI";
             }
-            if ($arEmpleado->getEstadoActivo() == 0){
+            if ($arEmpleado->getEstadoActivo() == 0) {
                 $estadoActivo = "NO";
-            }else{
+            } else {
                 $estadoActivo = "SI";
             }
-            if ($arEmpleado->getDiscapacidad() == 0){
+            if ($arEmpleado->getDiscapacidad() == 0) {
                 $discapacidad = "NO";
-            }else{
+            } else {
                 $discapacidad = "SI";
             }
-            if ($arEmpleado->getEstadoContratoActivo() == 0){
+            if ($arEmpleado->getEstadoContratoActivo() == 0) {
                 $estadoContratoActivo = "NO VIGENTE";
-            }else{
+            } else {
                 $estadoContratoActivo = "VIGENTE";
             }
-            if ($arEmpleado->getCodigoDepartamentoEmpresaFk() == null){
+            if ($arEmpleado->getCodigoDepartamentoEmpresaFk() == null) {
                 $departamentoEmpresa = "";
-            }else{
+            } else {
                 $departamentoEmpresa = $arEmpleado->getDepartamentoEmpresaRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoHorarioFk() == null){
+            if ($arEmpleado->getCodigoHorarioFk() == null) {
                 $horario = "";
-            }else{
+            } else {
                 $horario = $arEmpleado->getHorarioRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoEmpleadoEstudioTipoFk() == null){
+            if ($arEmpleado->getCodigoEmpleadoEstudioTipoFk() == null) {
                 $empleadoEstudioTipo = "";
-            }else{
+            } else {
                 $empleadoEstudioTipo = $arEmpleado->getEmpleadoEstudioTipoRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoEntidadCesantiaFk() == null){
+            if ($arEmpleado->getCodigoEntidadCesantiaFk() == null) {
                 $entidadCesantia = "";
-            }else{
+            } else {
                 $entidadCesantia = $arEmpleado->getEntidadCesantiaRel()->getNombre();
             }
-            if ($arEmpleado->getCodigoCiudadExpedicionFk() != null){
+            if ($arEmpleado->getCodigoCiudadExpedicionFk() != null) {
                 $ciudadExpedicion = $arEmpleado->getciudadExpedicionRel()->getNombre();
             } else {
                 $ciudadExpedicion = "";
             }
-            if ($arEmpleado->getCodigoCiudadNacimientoFk() != null){
+            if ($arEmpleado->getCodigoCiudadNacimientoFk() != null) {
                 $ciudadNacimiento = $arEmpleado->getCiudadNacimientoRel()->getNombre();
             } else {
                 $ciudadNacimiento = "";
             }
-            if ($arEmpleado->getCodigoRhPk() != null){
+            if ($arEmpleado->getCodigoRhPk() != null) {
                 $rh = $arEmpleado->getRhRel()->getTipo();
             } else {
                 $rh = "";
             }
-            if ($arEmpleado->getCodigoBancoFk() != null){
+            if ($arEmpleado->getCodigoBancoFk() != null) {
                 $banco = $arEmpleado->getBancoRel()->getNombre();
             } else {
                 $banco = "";
@@ -2953,15 +2915,15 @@ class ConsultasController extends Controller
                     ->setCellValue('AR' . $i, $departamentoEmpresa)
                     ->setCellValue('AS' . $i, $horario)
                     ->setCellValue('AT' . $i, $discapacidad);
-            if($arEmpleado->getCodigoZonaFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AU' . $i, $arEmpleado->getZonaRel()->getNombre()); 
+            if ($arEmpleado->getCodigoZonaFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AU' . $i, $arEmpleado->getZonaRel()->getNombre());
             }
-            if($arEmpleado->getCodigoSubzonaFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AV' . $i, $arEmpleado->getSubzonaRel()->getNombre()); 
+            if ($arEmpleado->getCodigoSubzonaFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AV' . $i, $arEmpleado->getSubzonaRel()->getNombre());
             }
-            if($arEmpleado->getCodigoEmpleadoTipoFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AW' . $i, $arEmpleado->getEmpleadoTipoRel()->getNombre()); 
-            }            
+            if ($arEmpleado->getCodigoEmpleadoTipoFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AW' . $i, $arEmpleado->getEmpleadoTipoRel()->getNombre());
+            }
             $i++;
         }
 
@@ -2975,10 +2937,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -2993,125 +2955,125 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        for($col = 'A'; $col !== 'BI'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
-                } 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        for ($col = 'A'; $col !== 'BI'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'SUCURSAL')
-                    ->setCellValue('C1', 'DOCUMENTO')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'SEC')
-                    ->setCellValue('F1', 'T_D')
-                    ->setCellValue('G1', 'T_COT')
-                    ->setCellValue('H1', 'SUBT_COT')
-                    ->setCellValue('I1', 'DEPARTAMENTO')
-                    ->setCellValue('J1', 'MUNICIPIO')
-                    ->setCellValue('K1', 'ING')
-                    ->setCellValue('L1', 'RET')
-                    ->setCellValue('M1', 'T_D_O_E')
-                    ->setCellValue('N1', 'T_A_O_E')
-                    ->setCellValue('O1', 'T_D_O_P')
-                    ->setCellValue('P1', 'T_A_O_P')
-                    ->setCellValue('Q1', 'VSP')
-                    ->setCellValue('R1', 'CORRECCIONES')
-                    ->setCellValue('S1', 'VST')
-                    ->setCellValue('T1', 'SLN')
-                    ->setCellValue('U1', 'D_SLN')
-                    ->setCellValue('V1', 'SALARIO')
-                    ->setCellValue('W1', 'S_M_A')
-                    ->setCellValue('X1', 'S_I')
-                    ->setCellValue('Y1', 'SUP')
-                    ->setCellValue('Z1', 'IG')
-                    ->setCellValue('AA1', 'DIAS')
-                    ->setCellValue('AB1', 'LM')
-                    ->setCellValue('AC1', 'DIAS')
-                    ->setCellValue('AD1', 'VAC')
-                    ->setCellValue('AE1', 'A_VOLUNTARIO')
-                    ->setCellValue('AF1', 'VCT')
-                    ->setCellValue('AG1', 'IRP')
-                    ->setCellValue('AH1', 'E_PENSIÓN')
-                    ->setCellValue('AI1', 'E_PENSIÓN TRASLADA')
-                    ->setCellValue('AJ1', 'E_SALUD')
-                    ->setCellValue('AK1', 'E_SALUD TRASLADA')
-                    ->setCellValue('AL1', 'C_COMPENSACIÓN')
-                    ->setCellValue('AM1', 'D_P')
-                    ->setCellValue('AN1', 'D_S')
-                    ->setCellValue('AO1', 'D_R')
-                    ->setCellValue('AP1', 'D_C')
-                    ->setCellValue('AQ1', 'I_P')
-                    ->setCellValue('AR1', 'I_S')
-                    ->setCellValue('AS1', 'I_R')
-                    ->setCellValue('AT1', 'I_C')
-                    ->setCellValue('AU1', 'T_P')
-                    ->setCellValue('AV1', 'T_S')
-                    ->setCellValue('AW1', 'T_R')
-                    ->setCellValue('AX1', 'T_C')
-                    ->setCellValue('AY1', 'C_P')
-                    ->setCellValue('AZ1', 'C_S')
-                    ->setCellValue('BA1', 'C_R')
-                    ->setCellValue('BB1', 'C_C')
-                    ->setCellValue('BC1', 'C_SN')
-                    ->setCellValue('BD1', 'C_I')
-                    ->setCellValue('BE1', 'A_V_F_P_O')
-                    ->setCellValue('BF1', 'C_V_F_P_O')
-                    ->setCellValue('BG1', 'TOTAL COTIZACIÓN')
-                    ->setCellValue('BH1', 'A_F_S_P_SL')
-                    ->setCellValue('BI1', 'A_F_S_P_SB');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'SUCURSAL')
+                ->setCellValue('C1', 'DOCUMENTO')
+                ->setCellValue('D1', 'EMPLEADO')
+                ->setCellValue('E1', 'SEC')
+                ->setCellValue('F1', 'T_D')
+                ->setCellValue('G1', 'T_COT')
+                ->setCellValue('H1', 'SUBT_COT')
+                ->setCellValue('I1', 'DEPARTAMENTO')
+                ->setCellValue('J1', 'MUNICIPIO')
+                ->setCellValue('K1', 'ING')
+                ->setCellValue('L1', 'RET')
+                ->setCellValue('M1', 'T_D_O_E')
+                ->setCellValue('N1', 'T_A_O_E')
+                ->setCellValue('O1', 'T_D_O_P')
+                ->setCellValue('P1', 'T_A_O_P')
+                ->setCellValue('Q1', 'VSP')
+                ->setCellValue('R1', 'CORRECCIONES')
+                ->setCellValue('S1', 'VST')
+                ->setCellValue('T1', 'SLN')
+                ->setCellValue('U1', 'D_SLN')
+                ->setCellValue('V1', 'SALARIO')
+                ->setCellValue('W1', 'S_M_A')
+                ->setCellValue('X1', 'S_I')
+                ->setCellValue('Y1', 'SUP')
+                ->setCellValue('Z1', 'IG')
+                ->setCellValue('AA1', 'DIAS')
+                ->setCellValue('AB1', 'LM')
+                ->setCellValue('AC1', 'DIAS')
+                ->setCellValue('AD1', 'VAC')
+                ->setCellValue('AE1', 'A_VOLUNTARIO')
+                ->setCellValue('AF1', 'VCT')
+                ->setCellValue('AG1', 'IRP')
+                ->setCellValue('AH1', 'E_PENSIÓN')
+                ->setCellValue('AI1', 'E_PENSIÓN TRASLADA')
+                ->setCellValue('AJ1', 'E_SALUD')
+                ->setCellValue('AK1', 'E_SALUD TRASLADA')
+                ->setCellValue('AL1', 'C_COMPENSACIÓN')
+                ->setCellValue('AM1', 'D_P')
+                ->setCellValue('AN1', 'D_S')
+                ->setCellValue('AO1', 'D_R')
+                ->setCellValue('AP1', 'D_C')
+                ->setCellValue('AQ1', 'I_P')
+                ->setCellValue('AR1', 'I_S')
+                ->setCellValue('AS1', 'I_R')
+                ->setCellValue('AT1', 'I_C')
+                ->setCellValue('AU1', 'T_P')
+                ->setCellValue('AV1', 'T_S')
+                ->setCellValue('AW1', 'T_R')
+                ->setCellValue('AX1', 'T_C')
+                ->setCellValue('AY1', 'C_P')
+                ->setCellValue('AZ1', 'C_S')
+                ->setCellValue('BA1', 'C_R')
+                ->setCellValue('BB1', 'C_C')
+                ->setCellValue('BC1', 'C_SN')
+                ->setCellValue('BD1', 'C_I')
+                ->setCellValue('BE1', 'A_V_F_P_O')
+                ->setCellValue('BF1', 'C_V_F_P_O')
+                ->setCellValue('BG1', 'TOTAL COTIZACIÓN')
+                ->setCellValue('BH1', 'A_F_S_P_SL')
+                ->setCellValue('BI1', 'A_F_S_P_SB');
         $i = 2;
         $query = $em->createQuery($this->strSqlAportesLista);
         $arAportes = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte();
         $arAportes = $query->getResult();
 
         foreach ($arAportes as $arAporte) {
-        /*$arEntidadPension = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
-        $arEntidadPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadPensionPertenece()));
-        $arEntidadPensionPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
-        $arEntidadPensionPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->find($arEntidadPension[0]);
+            /* $arEntidadPension = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
+              $arEntidadPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadPensionPertenece()));
+              $arEntidadPensionPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension();
+              $arEntidadPensionPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadPension')->find($arEntidadPension[0]);
 
-        $arEntidadSalud = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
-        $arEntidadSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadSaludPertenece()));
-        $arEntidadSaludPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
-        $arEntidadSaludPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->find($arEntidadSalud[0]);
+              $arEntidadSalud = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
+              $arEntidadSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadSaludPertenece()));
+              $arEntidadSaludPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud();
+              $arEntidadSaludPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadSalud')->find($arEntidadSalud[0]);
 
-        $arEntidadCaja = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja();
-        $arEntidadCaja = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadCaja')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadCajaPertenece()));
-        $arEntidadCajaPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja();
-        $arEntidadCajaPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadCaja')->find($arEntidadCaja[0]);
-         * 
-         */
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'BZ'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        }
-        for($col = 'V'; $col !== 'Y'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }
-        for($col = 'AQ'; $col !== 'BJ'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }
-        $entidadPension = '';
-        if ($arAporte->getCodigoEntidadPensionFk() != null){
-            $entidadPension = $arAporte->getEntidadPensionRel()->getNombre();
-        }
-        $entidadSalud = '';
-        if ($arAporte->getCodigoEntidadSaludFk() != null){
-            $entidadSalud = $arAporte->getEntidadSaludRel()->getNombre();
-        }
-        $entidadCaja = '';
-        if ($arAporte->getCodigoEntidadCajaFk() != null){
-            $entidadCaja = $arAporte->getEntidadCajaRel()->getNombre();
-        }
+              $arEntidadCaja = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja();
+              $arEntidadCaja = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadCaja')->findBy(array('codigoInterface' =>$arAporte->getCodigoEntidadCajaPertenece()));
+              $arEntidadCajaPertenece = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja();
+              $arEntidadCajaPertenece = $em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadCaja')->find($arEntidadCaja[0]);
+             * 
+             */
+            $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+            $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+            for ($col = 'A'; $col !== 'BZ'; $col++) {
+                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+                $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+            }
+            for ($col = 'V'; $col !== 'Y'; $col++) {
+                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+                $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+            }
+            for ($col = 'AQ'; $col !== 'BJ'; $col++) {
+                $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+                $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+            }
+            $entidadPension = '';
+            if ($arAporte->getCodigoEntidadPensionFk() != null) {
+                $entidadPension = $arAporte->getEntidadPensionRel()->getNombre();
+            }
+            $entidadSalud = '';
+            if ($arAporte->getCodigoEntidadSaludFk() != null) {
+                $entidadSalud = $arAporte->getEntidadSaludRel()->getNombre();
+            }
+            $entidadCaja = '';
+            if ($arAporte->getCodigoEntidadCajaFk() != null) {
+                $entidadCaja = $arAporte->getEntidadCajaRel()->getNombre();
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arAporte->getCodigoAportePk())
                     ->setCellValue('B' . $i, $arAporte->getSsoSucursalRel()->getNombre())
@@ -3174,7 +3136,7 @@ class ConsultasController extends Controller
                     ->setCellValue('BG' . $i, $arAporte->getTotalCotizacion())
                     ->setCellValue('BH' . $i, $arAporte->getAportesFondoSolidaridadPensionalSolidaridad())
                     ->setCellValue('BI' . $i, $arAporte->getAportesFondoSolidaridadPensionalSubsistencia())
-                    ;
+            ;
             $i++;
         }
 
@@ -3188,10 +3150,10 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
@@ -3206,42 +3168,42 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'TIPO CONTRATO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'NÚMERO')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'CENTRO COSTO')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'FECHA ULTIMO PAGO')
-                    ->setCellValue('J1', 'FECHA ULTIMO VACACIONES')
-                    ->setCellValue('K1', 'SALARIO')
-                    ->setCellValue('L1', 'VIGENTE');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'TIPO CONTRATO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'NÚMERO')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'CENTRO COSTO')
+                ->setCellValue('H1', 'DESDE')
+                ->setCellValue('I1', 'FECHA ULTIMO PAGO')
+                ->setCellValue('J1', 'FECHA ULTIMO VACACIONES')
+                ->setCellValue('K1', 'SALARIO')
+                ->setCellValue('L1', 'VIGENTE');
         $i = 2;
         $query = $em->createQuery($this->strSqlVacacionesPagarLista);
         $arVacacionesPagar = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arVacacionesPagar = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for($col = 'K'; $col !== 'K'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                    $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        for ($col = 'K'; $col !== 'K'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         foreach ($arVacacionesPagar as $arVacacionesPagar) {
-            if ($arVacacionesPagar->getEstadoActivo() == 1){
+            if ($arVacacionesPagar->getEstadoActivo() == 1) {
                 $vigente = "SI";
             } else {
                 $vigente = "NO";
@@ -3272,15 +3234,15 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-    
+
     private function generarFechaTerminacionExcel() {
         ob_clean();
         set_time_limit(0);
@@ -3290,60 +3252,60 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'Z'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        }         
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'TIPO CONTRATO')
-                    ->setCellValue('C1', 'IDENTIFICACIÓN')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'CENTRO COSTO')
-                    ->setCellValue('F1', 'CARGO')
-                    ->setCellValue('G1', 'DESDE')
-                    ->setCellValue('H1', 'HASTA')
-                    ->setCellValue('I1', 'MOTIVO')
-                    ->setCellValue('J1', 'TIPO')
-                    ->setCellValue('K1', 'ZONA')
-                    ->setCellValue('L1', 'SUBZONA')
-                    ->setCellValue('M1', 'USUARIO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'TIPO CONTRATO')
+                ->setCellValue('C1', 'IDENTIFICACIÓN')
+                ->setCellValue('D1', 'EMPLEADO')
+                ->setCellValue('E1', 'CENTRO COSTO')
+                ->setCellValue('F1', 'CARGO')
+                ->setCellValue('G1', 'DESDE')
+                ->setCellValue('H1', 'HASTA')
+                ->setCellValue('I1', 'MOTIVO')
+                ->setCellValue('J1', 'TIPO')
+                ->setCellValue('K1', 'ZONA')
+                ->setCellValue('L1', 'SUBZONA')
+                ->setCellValue('M1', 'USUARIO');
         $i = 2;
         $query = $em->createQuery($this->strSqlFechaTerminacionLista);
         $arFechaTerminaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arFechaTerminaciones = $query->getResult();
         foreach ($arFechaTerminaciones as $arFechaTerminacion) {
             $tipo = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null) {
                 $tipo = $arFechaTerminacion->getEmpleadoRel()->getEmpleadoTipoRel()->getNombre();
             }
             $zona = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoZonaFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoZonaFk() != null) {
                 $zona = $arFechaTerminacion->getEmpleadoRel()->getZonaRel()->getNombre();
             }
             $subzona = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoSubzonaFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoSubzonaFk() != null) {
                 $subzona = $arFechaTerminacion->getEmpleadoRel()->getSubzonaRel()->getNombre();
             }
             $motivo = "";
-            if ($arFechaTerminacion->getCodigoMotivoTerminacionContratoFk() != null){
+            if ($arFechaTerminacion->getCodigoMotivoTerminacionContratoFk() != null) {
                 $motivo = $arFechaTerminacion->getTerminacionContratoRel()->getMotivo();
             }
             $cargo = "";
-            if ($arFechaTerminacion->getCodigoCargoFk() != null){
+            if ($arFechaTerminacion->getCodigoCargoFk() != null) {
                 $cargo = $arFechaTerminacion->getCargoRel()->getNombre();
-            }            
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arFechaTerminacion->getCodigoContratoPk())
-                    ->setCellValue('B' . $i, $arFechaTerminacion->getContratoTipoRel()->getNombreCorto())                    
+                    ->setCellValue('B' . $i, $arFechaTerminacion->getContratoTipoRel()->getNombreCorto())
                     ->setCellValue('C' . $i, $arFechaTerminacion->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('D' . $i, $arFechaTerminacion->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('E' . $i, $arFechaTerminacion->getCentroCostoRel()->getNombre())
@@ -3366,15 +3328,15 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-    
+
     private function generarIngresosContratosExcel() {
         ob_clean();
         set_time_limit(0);
@@ -3384,48 +3346,48 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        
+
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'CONTRATO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'NÚMERO')
-                    ->setCellValue('E1', 'IDENTIFICACIÓN')
-                    ->setCellValue('F1', 'EMPLEADO')
-                    ->setCellValue('G1', 'CENTRO COSTO')
-                    ->setCellValue('H1', 'DESDE')
-                    ->setCellValue('I1', 'EMPLEADO TIPO')
-                    ->setCellValue('J1', 'ZONA')
-                    ->setCellValue('K1', 'SUBZONA');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'CONTRATO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'NÚMERO')
+                ->setCellValue('E1', 'IDENTIFICACIÓN')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'CENTRO COSTO')
+                ->setCellValue('H1', 'DESDE')
+                ->setCellValue('I1', 'EMPLEADO TIPO')
+                ->setCellValue('J1', 'ZONA')
+                ->setCellValue('K1', 'SUBZONA');
         $i = 2;
         $query = $em->createQuery($this->strSqlIngresosContratosLista);
         $arFechaIngresos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arFechaIngresos = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for ($col = 'A'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
         foreach ($arFechaIngresos as $arFechaIngreso) {
             $tipo = "";
-            if ($arFechaIngreso->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null){
+            if ($arFechaIngreso->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null) {
                 $tipo = $arFechaIngreso->getEmpleadoRel()->getEmpleadoTipoRel()->getNombre();
             }
             $zona = "";
-            if ($arFechaIngreso->getEmpleadoRel()->getCodigoZonaFk() != null){
+            if ($arFechaIngreso->getEmpleadoRel()->getCodigoZonaFk() != null) {
                 $zona = $arFechaIngreso->getEmpleadoRel()->getZonaRel()->getNombre();
             }
             $subzona = "";
-            if ($arFechaIngreso->getEmpleadoRel()->getCodigoSubzonaFk() != null){
+            if ($arFechaIngreso->getEmpleadoRel()->getCodigoSubzonaFk() != null) {
                 $subzona = $arFechaIngreso->getEmpleadoRel()->getSubzonaRel()->getNombre();
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -3453,15 +3415,15 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-    
+
     private function generarContratosPeriodoExcel() {
         ob_clean();
         set_time_limit(0);
@@ -3471,59 +3433,59 @@ class ConsultasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for ($col = 'A'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');                
-        }         
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'TIPO CONTRATO')
-                    ->setCellValue('C1', 'IDENTIFICACIÓN')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'GRUPO PAGO')
-                    ->setCellValue('F1', 'DESDE')
-                    ->setCellValue('G1', 'HASTA')
-                    ->setCellValue('H1', 'CARGO')
-                    ->setCellValue('I1', 'TIPO')
-                    ->setCellValue('J1', 'ZONA')
-                    ->setCellValue('K1', 'SUBZONA')
-                    ->setCellValue('L1', 'USUARIO');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'TIPO CONTRATO')
+                ->setCellValue('C1', 'IDENTIFICACIÓN')
+                ->setCellValue('D1', 'EMPLEADO')
+                ->setCellValue('E1', 'GRUPO PAGO')
+                ->setCellValue('F1', 'DESDE')
+                ->setCellValue('G1', 'HASTA')
+                ->setCellValue('H1', 'CARGO')
+                ->setCellValue('I1', 'TIPO')
+                ->setCellValue('J1', 'ZONA')
+                ->setCellValue('K1', 'SUBZONA')
+                ->setCellValue('L1', 'USUARIO');
         $i = 2;
         $query = $em->createQuery($this->strSqlContratosPeriodoLista);
         $arFechaTerminaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arFechaTerminaciones = $query->getResult();
         foreach ($arFechaTerminaciones as $arFechaTerminacion) {
             $tipo = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk() != null) {
                 $tipo = $arFechaTerminacion->getEmpleadoRel()->getEmpleadoTipoRel()->getNombre();
             }
             $zona = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoZonaFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoZonaFk() != null) {
                 $zona = $arFechaTerminacion->getEmpleadoRel()->getZonaRel()->getNombre();
             }
             $subzona = "";
-            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoSubzonaFk() != null){
+            if ($arFechaTerminacion->getEmpleadoRel()->getCodigoSubzonaFk() != null) {
                 $subzona = $arFechaTerminacion->getEmpleadoRel()->getSubzonaRel()->getNombre();
             }
             $motivo = "";
-            if ($arFechaTerminacion->getCodigoMotivoTerminacionContratoFk() != null){
+            if ($arFechaTerminacion->getCodigoMotivoTerminacionContratoFk() != null) {
                 $motivo = $arFechaTerminacion->getTerminacionContratoRel()->getMotivo();
             }
             $cargo = "";
-            if($arFechaTerminacion->getCodigoCargoFk()) {
+            if ($arFechaTerminacion->getCodigoCargoFk()) {
                 $cargo = $arFechaTerminacion->getCargoRel()->getNombre();
             }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arFechaTerminacion->getCodigoContratoPk())
-                    ->setCellValue('B' . $i, $arFechaTerminacion->getContratoTipoRel()->getNombreCorto())                    
+                    ->setCellValue('B' . $i, $arFechaTerminacion->getContratoTipoRel()->getNombreCorto())
                     ->setCellValue('C' . $i, $arFechaTerminacion->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('D' . $i, $arFechaTerminacion->getEmpleadoRel()->getNombreCorto())
                     ->setCellValue('E' . $i, $arFechaTerminacion->getCentroCostoRel()->getNombre())
@@ -3545,12 +3507,13 @@ class ConsultasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }    
+    }
+
 }

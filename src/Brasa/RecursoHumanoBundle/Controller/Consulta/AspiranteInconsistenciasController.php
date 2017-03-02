@@ -10,28 +10,29 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AspiranteInconsistenciasController extends Controller
-{
-    var $strSqlLista = "";    
+class AspiranteInconsistenciasController extends Controller {
+
+    var $strSqlLista = "";
+
     /**
      * @Route("/rhu/consultas/aspirantes/inconsistencias", name="brs_rhu_consultas_aspirantes_inconsistencias")
      */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 37)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 37)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $session = new Session;
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
-        if($form->isValid()) {
-            if($form->get('BtnFiltrar')->isClicked()) {
+        if ($form->isValid()) {
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form);
                 $this->listar();
             }
-            if($form->get('BtnExcel')->isClicked()) {
+            if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrarLista($form);
                 $this->listar();
                 $this->generarExcel();
@@ -39,38 +40,48 @@ class AspiranteInconsistenciasController extends Controller
         }
         $arAspirantes = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/AspirantesInconsistencia:lista.html.twig', array(
-            'arAspirantes' => $arAspirantes,
-            'form' => $form->createView()
-            ));
+                    'arAspirantes' => $arAspirantes,
+                    'form' => $form->createView()
+        ));
     }
-    
+
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->aspirantesInconsistenciaDQL(
-                $session->get('filtroEmpleadoNombre'),
-                $session->get('filtroIdentificacion'),
-                ""
-                );
+                 $session->get('filtroIdentificacion')
+        );
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
+        $strNombreEmpleado = "";
+        if ($session->get('filtroIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
+            if ($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            } else {
+                $session->set('filtroIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }
         $form = $this->createFormBuilder()
-            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $session->get('filtroNombre')))
-            ->add('TxtIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
     private function filtrarLista($form) {
-        $session = new Session;        
-        $session->set('filtroEmpleadoNombre', $form->get('TxtNombre')->getData());
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-    }    
+        $session = new Session;
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+    }
 
     private function generarExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
@@ -80,12 +91,12 @@ class AspiranteInconsistenciasController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -110,77 +121,77 @@ class AspiranteInconsistenciasController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('U')->setAutoSize(true);
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CODIGO')
-                    ->setCellValue('B1', 'FECHA')
-                    ->setCellValue('C1', 'CIUDAD')
-                    ->setCellValue('D1', 'TIPO IDENTIFICACION')
-                    ->setCellValue('E1', 'IDENTIFICACION')
-                    ->setCellValue('F1', 'CIUDAD NACIMIENTO')
-                    ->setCellValue('G1', 'FECHA NACIMIENTO')
-                    ->setCellValue('H1', 'CIUDAD EXPEDICION')
-                    ->setCellValue('I1', 'RH')
-                    ->setCellValue('J1', 'NOMBRE')
-                    ->setCellValue('K1', 'TELEFONO')
-                    ->setCellValue('L1', 'CELULAR')
-                    ->setCellValue('M1', 'DIRECCION')
-                    ->setCellValue('N1', 'BARRIO')
-                    ->setCellValue('O1', 'ESTADO CIVIL')
-                    ->setCellValue('P1', 'SEXO')
-                    ->setCellValue('Q1', 'CORREO')
-                    ->setCellValue('R1', 'DISPONIBILIDAD')
-                    ->setCellValue('S1', 'INCONSISTENCIA')
-                    ->setCellValue('T1', 'COMENTARIOS');
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'CIUDAD')
+                ->setCellValue('D1', 'TIPO IDENTIFICACION')
+                ->setCellValue('E1', 'IDENTIFICACION')
+                ->setCellValue('F1', 'CIUDAD NACIMIENTO')
+                ->setCellValue('G1', 'FECHA NACIMIENTO')
+                ->setCellValue('H1', 'CIUDAD EXPEDICION')
+                ->setCellValue('I1', 'RH')
+                ->setCellValue('J1', 'NOMBRE')
+                ->setCellValue('K1', 'TELEFONO')
+                ->setCellValue('L1', 'CELULAR')
+                ->setCellValue('M1', 'DIRECCION')
+                ->setCellValue('N1', 'BARRIO')
+                ->setCellValue('O1', 'ESTADO CIVIL')
+                ->setCellValue('P1', 'SEXO')
+                ->setCellValue('Q1', 'CORREO')
+                ->setCellValue('R1', 'DISPONIBILIDAD')
+                ->setCellValue('S1', 'INCONSISTENCIA')
+                ->setCellValue('T1', 'COMENTARIOS');
 
         $i = 2;
-                
+
         $query = $em->createQuery($this->strSqlLista);
         $arAspirantes = new \Brasa\RecursoHumanoBundle\Entity\RhuAspirante();
         $arAspirantes = $query->getResult();
         foreach ($arAspirantes as $arAspirantes) {
-            
+
             $ciudad = "";
-            if ($arAspirantes->getCodigoCiudadFk() <> null){
+            if ($arAspirantes->getCodigoCiudadFk() <> null) {
                 $ciudad = $arAspirantes->getCiudadRel()->getNombre();
             }
             $ciudadNacimiento = "";
-            if ($arAspirantes->getCodigoCiudadNacimientoFk() <> null){
+            if ($arAspirantes->getCodigoCiudadNacimientoFk() <> null) {
                 $ciudadNacimiento = $arAspirantes->getCiudadNacimientoRel()->getNombre();
             }
             $ciudadExpedicion = "";
-            if ($arAspirantes->getCodigoCiudadNacimientoFk() <> null){
+            if ($arAspirantes->getCodigoCiudadNacimientoFk() <> null) {
                 $ciudadExpedicion = $arAspirantes->getCiudadExpedicionRel()->getNombre();
             }
             $estadoCivil = "";
-            if ($arAspirantes->getCodigoEstadoCivilFk() <> null){
+            if ($arAspirantes->getCodigoEstadoCivilFk() <> null) {
                 $estadoCivil = $arAspirantes->getEstadoCivilRel()->getNombre();
             }
             $sexo = "";
-            if ($arAspirantes->getCodigoSexoFk() == "M"){
+            if ($arAspirantes->getCodigoSexoFk() == "M") {
                 $sexo = "MASCULINO";
             } else {
                 $sexo = "FEMENINO";
             }
             $disponibilidad = "";
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "1"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "1") {
                 $disponibilidad = "TIEMPO COMPLETO";
             }
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "2"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "2") {
                 $disponibilidad = "MEDIO TIEMPO";
             }
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "3"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "3") {
                 $disponibilidad = "POR HORAS";
             }
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "4"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "4") {
                 $disponibilidad = "DESDE CASA";
             }
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "5"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "5") {
                 $disponibilidad = "PRACTICAS";
             }
-            if ($arAspirantes->getCodigoDisponibilidadFk() == "0"){
+            if ($arAspirantes->getCodigoDisponibilidadFk() == "0") {
                 $disponibilidad = "NO APLICA";
             }
             $inconsistencia = "NO";
-            if ($arAspirantes->getBloqueado() == 1){
+            if ($arAspirantes->getBloqueado() == 1) {
                 $inconsistencia = "SI";
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -217,14 +228,13 @@ class AspiranteInconsistenciasController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
 
-   
 }
