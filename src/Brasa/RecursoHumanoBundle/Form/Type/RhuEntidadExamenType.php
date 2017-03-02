@@ -19,7 +19,7 @@ class RhuEntidadExamenType extends AbstractType
             ->add('nit', TextType::class, array('required' => true))
             ->add('direccion', TextType::class, array('required' => true))
             ->add('telefono', TextType::class, array('required' => true))
-            ->add('guardar', SubmitType::classs, array('label' => 'Guardar'));
+            ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
     public function getBlockPrefix()
