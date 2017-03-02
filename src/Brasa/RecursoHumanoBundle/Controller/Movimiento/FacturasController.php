@@ -184,7 +184,7 @@ class FacturasController extends Controller
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
                         if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
-                            $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\Factura1();
+                            $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
                             $objFactura->Generar($em, $codigoFactura);                            
                         }                        
                     //}                                         
@@ -202,7 +202,10 @@ class FacturasController extends Controller
                     }                    
                 //}                                 
                 return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
-            }                   
+            }
+            if ($form->get('BtnDetalleExcel')->isClicked()) {                
+                $this->generarDetalleExcel($codigoFactura);
+            }
         }
         $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
         $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));        
@@ -391,7 +394,7 @@ class FacturasController extends Controller
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->listaDql(
-                    $session->get('filtroCodigoTerceros'),
+                    $session->get('filtroCodigoCliente'),
                     $session->get('filtroCodigoCentroCosto'),
                     $session->get('filtroNumero'),
                     $session->get('filtroDesde'),
@@ -474,7 +477,8 @@ class FacturasController extends Controller
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);      
         $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);        
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
-        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);        
         $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleExamen = array('label' => 'Eliminar', 'disabled' => false);
@@ -498,6 +502,7 @@ class FacturasController extends Controller
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                                     
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                    
+                    ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
                     ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                    
                     ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)            
@@ -520,8 +525,14 @@ class FacturasController extends Controller
             ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
             ->setKeywords("office 2007 openxml php")
             ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);        
+        for($col = 'A'; $col !== 'O'; $col++) {
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                    
+        } 
+        for($col = 'G'; $col !== 'O'; $col++) {            
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        } 
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIGO FACTURA')
                     ->setCellValue('B1', 'NÚMERO')
@@ -537,7 +548,7 @@ class FacturasController extends Controller
                     ->setCellValue('L1', 'VR. BASE AIU')
                     ->setCellValue('M1', 'VR. TOTAL ADMNISTRACION')
                     ->setCellValue('N1', 'VR. TOTAL INGRESO MISION')
-                    ->setCellValue('O1', 'VR. COMENTARIOS');
+                    ->setCellValue('O1', 'COMENTARIOS');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -550,7 +561,7 @@ class FacturasController extends Controller
                     ->setCellValue('B' . $i, $arFactura->getNumero())
                     ->setCellValue('C' . $i, $arFactura->getFecha()->format('Y/m/d'))
                     ->setCellValue('D' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arFactura->getTerceroRel()->getNombreCorto())
+                    ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNombreCorto())
                     ->setCellValue('F' . $i, $arFactura->getCentroCostoRel()->getNombre())
                     ->setCellValue('G' . $i, $arFactura->getVrBruto())
                     ->setCellValue('H' . $i, $arFactura->getVrNeto())
@@ -570,6 +581,102 @@ class FacturasController extends Controller
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="facturas.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+    private function generarDetalleExcel($codigoFactura = '') {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();        
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        for($col = 'A'; $col !== 'W'; $col++) {
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
+        } 
+        for($col = 'E'; $col !== 'W'; $col++) {            
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }          
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'CÓDIGO')
+                    ->setCellValue('B1', 'PAGO')
+                    ->setCellValue('C1', 'DOCUMENTO')
+                    ->setCellValue('D1', 'EMPLEADO')
+                    ->setCellValue('E1', 'BASICO')
+                    ->setCellValue('F1', 'VR ADICIONAL PREST')
+                    ->setCellValue('G1', 'VR ADICIONAL NO PREST')
+                    ->setCellValue('H1', 'AUX TRANSPORTE')
+                    ->setCellValue('I1', 'ARP')
+                    ->setCellValue('J1', 'EPS')
+                    ->setCellValue('K1', 'PENSION')
+                    ->setCellValue('L1', 'CAJA')
+                    ->setCellValue('M1', 'SENA')
+                    ->setCellValue('N1', 'ICBF')
+                    ->setCellValue('O1', 'CESANTIAS')
+                    ->setCellValue('P1', 'CESANTIAS INT')
+                    ->setCellValue('Q1', 'PRIMAS')
+                    ->setCellValue('R1', 'VACACIONES')
+                    ->setCellValue('S1', 'A. PARAFISCALES')
+                    ->setCellValue('T1', 'ADMON')
+                    ->setCellValue('U1', 'COSTO')
+                    ->setCellValue('V1', 'TOTAL COBRO');
+                    
+        $i = 2;
+        //$query = $em->createQuery($this->strSqlLista);
+        $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+        $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+        //$arPagoBancos = $query->getResult();
+        foreach ($arFacturaDetalle as $arFacturaDetalle) {
+            
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arFacturaDetalle->getCodigoFacturaDetallePk())
+                    ->setCellValue('B' . $i, $arFacturaDetalle->getCodigoPagoFk())
+                    ->setCellValue('C' . $i, $arFacturaDetalle->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('D' . $i, $arFacturaDetalle->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('E' . $i, $arFacturaDetalle->getVrSalario())
+                    ->setCellValue('F' . $i, $arFacturaDetalle->getVrAdicionalPrestacional())
+                    ->setCellValue('G' . $i, $arFacturaDetalle->getVrAdicionalNoPrestacional())
+                    ->setCellValue('H' . $i, $arFacturaDetalle->getVrAuxilioTransporte())
+                    ->setCellValue('I' . $i, $arFacturaDetalle->getVrArp())
+                    ->setCellValue('J' . $i, $arFacturaDetalle->getVrEps())
+                    ->setCellValue('K' . $i, $arFacturaDetalle->getVrPension())
+                    ->setCellValue('L' . $i, $arFacturaDetalle->getVrCaja())
+                    ->setCellValue('M' . $i, $arFacturaDetalle->getVrSena())
+                    ->setCellValue('N' . $i, $arFacturaDetalle->getVrIcbf())
+                    ->setCellValue('O' . $i, $arFacturaDetalle->getVrCesantias())
+                    ->setCellValue('P' . $i, $arFacturaDetalle->getVrCesantiasIntereses())
+                    ->setCellValue('Q' . $i, $arFacturaDetalle->getVrPrimas())
+                    ->setCellValue('R' . $i, $arFacturaDetalle->getVrVacaciones())
+                    ->setCellValue('S' . $i, $arFacturaDetalle->getVrAporteParafiscales())
+                    ->setCellValue('T' . $i, $arFacturaDetalle->getVrAdministracion())
+                    ->setCellValue('U' . $i, $arFacturaDetalle->getVrCosto())
+                    ->setCellValue('V' . $i, $arFacturaDetalle->getVrTotalCobrar());
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('FacturaDetalles');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="FacturaDetalles.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

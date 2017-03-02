@@ -179,10 +179,10 @@ class RhuFacturaRepository extends EntityRepository {
 
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
-        $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();        
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         if($arFactura->getEstadoAutorizado() == 1) {
-            if($arFactura->getNumero() == 0) {
+            /*if($arFactura->getNumero() == 0) {
                 $intNumero = $em->getRepository('BrasaTurnoBundle:TurFacturaTipo')->consecutivo($arFactura->getCodigoFacturaTipoFk());
                 $arFactura->setNumero($intNumero);
                 $arFactura->setFecha(new \DateTime('now'));
@@ -231,7 +231,7 @@ class RhuFacturaRepository extends EntityRepository {
                         }
                         $em->persist($arCuentaCobrar);                        
                     }
-            }
+            }*/
             $em->persist($arFactura);
             $em->flush();
         } else {

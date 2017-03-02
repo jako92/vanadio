@@ -297,9 +297,13 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->Cell(107, 6, '', 1, 0, 'L');        
         $this->Cell(22, 6, 'SUBTOTAL:', 1, 0, 'L');
         $this->Cell(22, 6, number_format($arFactura->getVrBruto(), 0, '.', ','), 1, 0, 'R');
-        $this->SetXY(15,180);
-        $this->Cell(147, 36, '', 1, 0, 'L');
-        $this->SetXY(162,180);        
+        $this->SetXY(15,181);
+        //$this->Cell(147, 36, '', 1, 0, 'L');
+        $this->SetFont('Arial', 'B', 7);
+        $this->Rect(15, 180, 147, 30);
+        $this->MultiCell(145, 4,  utf8_decode($arFactura->getComentarios()), 0, 'L');
+        $this->SetXY(162,180);
+        $this->SetFont('Arial', 'B', 8);        
         $this->Cell(22, 6, 'BASE AIU:', 1, 0, 'L');
         $this->Cell(22, 6, number_format($arFactura->getVrBaseAIU(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(162,186);                
