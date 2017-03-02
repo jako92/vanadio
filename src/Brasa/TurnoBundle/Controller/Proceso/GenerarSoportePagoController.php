@@ -100,14 +100,22 @@ class GenerarSoportePagoController extends Controller {
                                             $arSoportePago->setDescansoOrdinario($arCentroCosto->getDescansoOrdinario());
                                             $arSoportePago->setSecuencia($arContrato->getSecuencia());
                                             if ($numeroContratos > 1) {
+                                                $arSoportePago->setContratoMultiple(1);
                                                 if ($arContrato->getFechaDesde() > $arSoportePagoPeriodo->getFechaDesde()) {
-                                                    $arSoportePago->setFechaDesde($arContrato->getFechaDesde());
-                                                    $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());
-                                                }
-                                                if ($arContrato->getFechaHasta() < $arSoportePagoPeriodo->getFechaHasta()) {
+                                                    $arSoportePago->setFechaDesde($arContrato->getFechaDesde());                                                    
+                                                } else {
                                                     $arSoportePago->setFechaDesde($arSoportePagoPeriodo->getFechaDesde());
-                                                    $arSoportePago->setFechaHasta($arContrato->getFechaHasta());
-                                                }
+                                                }                                                
+                                                
+                                                if($arContrato->getIndefinido() == 1) {
+                                                    $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());
+                                                } else {
+                                                    if ($arContrato->getFechaHasta() < $arSoportePagoPeriodo->getFechaHasta()) {                                                    
+                                                        $arSoportePago->setFechaHasta($arContrato->getFechaHasta());
+                                                    } else {
+                                                        $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());
+                                                    }                                                    
+                                                }                                                                                                     
                                             } else {
                                                 $arSoportePago->setFechaDesde($arSoportePagoPeriodo->getFechaDesde());
                                                 $arSoportePago->setFechaHasta($arSoportePagoPeriodo->getFechaHasta());

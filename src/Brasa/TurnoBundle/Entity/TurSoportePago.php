@@ -302,6 +302,12 @@ class TurSoportePago
      */    
     private $secuencia;    
     
+    /**     
+     * Que tiene varios contratos en el periodo
+     * @ORM\Column(name="contrato_multiple", type="boolean", nullable=true)
+     */    
+    private $contratoMultiple = false;     
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurSoportePagoPeriodo", inversedBy="soportesPagosSoportePagoPeriodoRel")
      * @ORM\JoinColumn(name="codigo_soporte_pago_periodo_fk", referencedColumnName="codigo_soporte_pago_periodo_pk")
@@ -1825,5 +1831,29 @@ class TurSoportePago
     public function getSecuencia()
     {
         return $this->secuencia;
+    }
+
+    /**
+     * Set contratoMultiple
+     *
+     * @param boolean $contratoMultiple
+     *
+     * @return TurSoportePago
+     */
+    public function setContratoMultiple($contratoMultiple)
+    {
+        $this->contratoMultiple = $contratoMultiple;
+
+        return $this;
+    }
+
+    /**
+     * Get contratoMultiple
+     *
+     * @return boolean
+     */
+    public function getContratoMultiple()
+    {
+        return $this->contratoMultiple;
     }
 }

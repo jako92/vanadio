@@ -50,7 +50,7 @@ class TurSoportePagoRepository extends EntityRepository {
             $query = $em->createQuery($dql);
             $arrayResultado = $query->getResult();
             for($i = 0; $i < count($arrayResultado); $i++){
-                if($arSoportePagoPeriodo->getDiasAdicionales() > 0) {
+                if($arSoportePagoPeriodo->getDiasAdicionales() > 0 && $arSoportePago->getContratoMultiple() == 0) {
                     $arrayResultado[$i]['dias'] += $arSoportePagoPeriodo->getDiasAdicionales();
                     $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodo->getDiasAdicionales() * 8;
                 }
@@ -176,9 +176,9 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arEmpleado->getCodigoContratoUltimoFk());
                 }
             }
-            if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionales() > 0) {
-                $arrayResultado[$i]['dias'] += $arSoportePagoPeriodo->getDiasAdicionales();
-                $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodo->getDiasAdicionales() * 8;
+            if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionales() > 0 && $arSoportePago->getContratoMultiple() == 0) {
+                $arrayResultado[$i]['dias'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionales();
+                $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionales() * 8;
             }
             $intHorasPago = $arrayResultado[$i]['horasDescanso'] + $arrayResultado[$i]['horasDiurnas'] + $arrayResultado[$i]['horasNocturnas'] + $arrayResultado[$i]['horasFestivasDiurnas'] + $arrayResultado[$i]['horasFestivasNocturnas'];
 
@@ -1270,6 +1270,8 @@ class TurSoportePagoRepository extends EntityRepository {
         $arSoportesPago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));                                
         foreach ($arSoportesPago as $arSoportePago) {
             if($arSoportePago->getSecuencia()) {
+                $intDiaInicial= $arSoportePago->getFechaDesde()->format('j');
+                $intDiaFinal = $arSoportePago->getFechaHasta()->format('j');
                 $arSecuencia = new \Brasa\TurnoBundle\Entity\TurSecuencia();
                 $arSecuencia = $em->getRepository('BrasaTurnoBundle:TurSecuencia')->find($arSoportePago->getSecuencia());                
                 $arSecuenciaDetalle = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
@@ -1283,7 +1285,7 @@ class TurSoportePagoRepository extends EntityRepository {
                 $arProgramacionAlterna->setAnio($arSoportePago->getAnio());
                 $arProgramacionAlterna->setMes($arSoportePago->getMes());            
                 $arProgramacionAlterna->setRecursoRel($arSoportePago->getRecursoRel());              
-                for($i = 1; $i <= 31; $i++) {
+                for($i = $intDiaInicial; $i <= $intDiaFinal; $i++) {
                     $strTurnoDefinitivo = NULL;
                     foreach ($arProgramacionDetalles as $arProgramacionDetalle) {
                         $strTurno = $arProgramacionDetalle['dia'.$i];
