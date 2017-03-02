@@ -53,7 +53,7 @@ class EmpleadoController extends Controller {
             if ($form->get('BtnInterfaz')->isClicked()) {
                 $this->filtrarLista($form);
                 $this->listar();
-                $this->generarExcelInterfaz();
+                $this->generarInterfaz();
             }
             if ($form->get('BtnInterfaz2')->isClicked()) {
                 $this->filtrarLista($form);
