@@ -120,7 +120,7 @@ class FormatoContrato extends \FPDF_FPDF {
         }
         $sustitucion18 = $ciudadExpedicion;
         $sustitucion19 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion16));
-        $sustitucion20 = $arContrato->getHorarioTrabajo();
+        $sustitucion20 = $arContrato->getTipoTiempoRel()->getNombre();
         $sustitucion21 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion16));
         //calculo meses        
         $interval = $feci->diff($fecf);
