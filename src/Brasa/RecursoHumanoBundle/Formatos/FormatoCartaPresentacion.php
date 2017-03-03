@@ -126,6 +126,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $sustitucion18 = $usuarioCarta;
         $sustitucion19 = $usuarioCargo;
+        $sustitucion20 = $arContrato->getCentroCostoRel()->getNombre();
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -146,6 +147,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $patron17 = '/#h/';
         $patron18 = '/#i/';
         $patron19 = '/#j/';
+        $patron20 = '/#k/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
@@ -165,6 +167,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron17, $sustitucion17, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron18, $sustitucion18, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron19, $sustitucion19, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron20, $sustitucion20, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 
