@@ -66,7 +66,12 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="tareasPendientes", type="integer")
      */
-    private $tareasPendientes = 0;    
+    private $tareasPendientes = 0;
+
+    /**
+     * @ORM\Column(name="cargo", type="string", length=255)
+     */
+    private $cargo;      
     
     /**
      * @ORM\ManyToOne(targetEntity="SegRoles", inversedBy="usersRolRel")
@@ -528,5 +533,29 @@ class User implements UserInterface, \Serializable
     public function getLogsUsuarioRel()
     {
         return $this->logsUsuarioRel;
+    }
+
+    /**
+     * Set cargo
+     *
+     * @param string $cargo
+     *
+     * @return User
+     */
+    public function setCargo($cargo)
+    {
+        $this->cargo = $cargo;
+
+        return $this;
+    }
+
+    /**
+     * Get cargo
+     *
+     * @return string
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
     }
 }

@@ -83,6 +83,8 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
         $usuarioCarta = self::$usuario;
         $usuarioCarta = $usuarioCarta->getNombreCorto();
+        $usuarioCargo = self::$usuario;
+        $usuarioCargo = $usuarioCarta->getCargo();
         //se reemplaza el contenido de la tabla contenido formato
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
@@ -123,6 +125,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $sustitucion16 = $arEntidadRiesgos->getNombre();
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $sustitucion18 = $usuarioCarta;
+        $sustitucion19 = $usuarioCargo;
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -142,6 +145,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $patron16 = '/#g/';
         $patron17 = '/#h/';
         $patron18 = '/#i/';
+        $patron19 = '/#i/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
@@ -160,6 +164,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron16, $sustitucion16, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron17, $sustitucion17, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron18, $sustitucion18, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron18, $sustitucion19, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 

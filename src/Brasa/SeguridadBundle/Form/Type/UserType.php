@@ -24,7 +24,8 @@ class UserType extends AbstractType
             ->add('nombreCorto', TextType::class, array('required' => true))
             ->add('username', TextType::class, array('required' => true))                
             ->add('email', TextType::class, array('required' => true))                
-            ->add('password', PasswordType::class, array('required' => true))            
+            ->add('password', PasswordType::class, array('required' => true))
+            ->add('cargo', TextType::class, array('required' => true)) 
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
