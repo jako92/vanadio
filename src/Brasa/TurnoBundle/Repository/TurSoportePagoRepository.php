@@ -71,11 +71,11 @@ class TurSoportePagoRepository extends EntityRepository {
                 if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
                     //Ajustar las horas de los turnos fijos
                     if($arSoportePago->getTurnoFijo()) {
-                        if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                        //if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
                             if($arSoportePago->getNovedad() == 0){
                                 $arrayResultado[$i]['horasDiurnas'] += $arSoportePagoPeriodoActualizar->getDiasAdicionalesFebrero() * 8;
                             }
-                        }                        
+                        //}                        
                     }                    
                 }
                 if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFijo() > 0) {
@@ -199,11 +199,11 @@ class TurSoportePagoRepository extends EntityRepository {
             if($arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() > 0) {
                 //Ajustar las horas de los turnos fijos
                 if($arSoportePago->getTurnoFijo()) {
-                    if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
+                    //if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
                         if($arSoportePago->getNovedad() != 0){
                             $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() * 8;
                         }
-                    }                        
+                    //}                        
                 }
                 //Ajustar los dias de transporte
                 if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
