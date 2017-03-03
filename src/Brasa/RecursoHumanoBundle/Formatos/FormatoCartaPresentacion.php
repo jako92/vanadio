@@ -84,7 +84,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $usuarioCarta = self::$usuario;
         $usuarioCarta = $usuarioCarta->getNombreCorto();
         $usuarioCargo = self::$usuario;
-        $usuarioCargo = $usuarioCarta->getCargo();
+        $usuarioCargo = $usuarioCargo->getCargo();
         //se reemplaza el contenido de la tabla contenido formato
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
@@ -145,7 +145,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $patron16 = '/#g/';
         $patron17 = '/#h/';
         $patron18 = '/#i/';
-        $patron19 = '/#i/';
+        $patron19 = '/#j/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
@@ -164,7 +164,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron16, $sustitucion16, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron17, $sustitucion17, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron18, $sustitucion18, $cadenaCambiada);
-        $cadenaCambiada = preg_replace($patron18, $sustitucion19, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron19, $sustitucion19, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 
