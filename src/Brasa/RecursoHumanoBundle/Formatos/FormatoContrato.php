@@ -37,7 +37,7 @@ class FormatoContrato extends \FPDF_FPDF {
         $this->Image('imagenes/logos/logo.jpg', 12, 13, 35, 17);
         //$this->Cell(185, 7, utf8_decode($arContenidoFormato->getTitulo()), 0, 0, 'C', 1);
         //$this->Text(10, 25, "Contrato numero: " . $arContrato->getCodigoContratoPk());
-        $this->Ln(20);
+        $this->Ln(23);
     }
 
     public function Body($pdf) {

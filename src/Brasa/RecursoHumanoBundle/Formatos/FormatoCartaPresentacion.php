@@ -77,7 +77,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $arConfiguracionAporte = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);                    
         $arEntidadRiesgos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
         if($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()) {
-            $arEntidadRiesgos = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findOneBy(array('codigoEntidadRiesgoPk' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
+            $arEntidadRiesgos = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->findOneBy(array('codigoInterface' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
         }
         setlocale(LC_ALL,"es_ES@euro","es_ES","esp");
         $pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
