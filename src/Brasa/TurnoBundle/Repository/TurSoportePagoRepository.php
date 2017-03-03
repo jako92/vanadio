@@ -200,7 +200,7 @@ class TurSoportePagoRepository extends EntityRepository {
                 //Ajustar las horas de los turnos fijos
                 if($arSoportePago->getTurnoFijo()) {
                     //if($arSoportePago->getSoportePagoPeriodoRel()->getDiasPeriodo() == $diasTransporte){
-                        if($arSoportePago->getNovedad() != 0){
+                        if($arSoportePago->getNovedad() == 0){
                             $arrayResultado[$i]['horasDiurnas'] += $arSoportePago->getSoportePagoPeriodoRel()->getDiasAdicionalesFebrero() * 8;
                         }
                     //}                        
