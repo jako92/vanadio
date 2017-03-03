@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_contrato")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuContratoRepository")
  */
+
 class RhuContrato
 {
     /**
@@ -258,6 +259,11 @@ class RhuContrato
      */    
     private $codigoContratoGrupoFk;     
     
+    /**
+     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroTrabajoFk;
+    
     /**     
      * @ORM\Column(name="limitarHoraExtra", type="boolean")
      */    
@@ -408,6 +414,12 @@ class RhuContrato
      * @ORM\JoinColumn(name="codigo_ciudad_labora_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadLaboraRel;
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
+     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
+     */
+    protected $centroTrabajoRel;   
     
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="contratoRel")
@@ -3078,5 +3090,53 @@ class RhuContrato
     public function getProgramacionesPagosHorasExtrasContratoRel()
     {
         return $this->programacionesPagosHorasExtrasContratoRel;
+    }
+
+    /**
+     * Set codigoCentroTrabajoFk
+     *
+     * @param integer $codigoCentroTrabajoFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
+    {
+        $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroTrabajoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroTrabajoFk()
+    {
+        return $this->codigoCentroTrabajoFk;
+    }
+
+    /**
+     * Set centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     *
+     * @return RhuContrato
+     */
+    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
+    {
+        $this->centroTrabajoRel = $centroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroTrabajoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
+     */
+    public function getCentroTrabajoRel()
+    {
+        return $this->centroTrabajoRel;
     }
 }

@@ -103,13 +103,32 @@ class ClienteController extends Controller
     public function detalleAction(Request $request, $codigoCliente) {
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
-        $form = $this->createFormBuilder()               
+        $form = $this->createFormBuilder()  
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
             ->getForm();
         $form->handleRequest($request);
+            if ($form->isValid()) {
+            if ($form->get('BtnEliminar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if ($arrSeleccionados == null) {
+                } else {
+                    foreach ($arrSeleccionados AS $codigoCentroTrabajo) {
+                            $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
+                            $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
+                            $em->remove($arCentroTrabajo);
+                        }
+                    }
+                    $em->flush();
+                }
+               echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }
         $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
         $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
+        $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
+        $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->findBy(array('codigoClienteFk' =>$codigoCliente));
         return $this->render('BrasaRecursoHumanoBundle:Base/Cliente:detalle.html.twig', array(        
             'arCliente' => $arCliente,
+            'arCentroTrabajo'=>$arCentroTrabajo,
             'form' => $form->createView()
                     ));
     }    

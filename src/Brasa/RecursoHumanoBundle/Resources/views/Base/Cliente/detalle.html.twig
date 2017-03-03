@@ -1,7 +1,7 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Cliente detalle - Soga App{% endblock %}
 {% block content %}
-      <section class="content-header">
+    <section class="content-header">
         <h1>
             Recurso humano
             <small>Cliente: detalle</small>
@@ -15,85 +15,120 @@
         </ol>
     </section>     
     <section class="content">        	
-    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-    {{ form_errors(form) }}
-    <div class="panel panel-default">
-        <div class="panel-heading">Información cliente</div>
-        <div class="panel-body">
-            <table width="100%" class="table table-condensed table-bordered">
-                <tr>
-                    <td class="titulo">CÓDIGO:</td>
-                    <td class="td-in-well">{{ arCliente.codigoClientePk }}</td>
-                    <td class="titulo">NIT:</th>
-                    <td class="td-in-well">{{ arCliente.nit }}</td>
-                    <td class="titulo">DV:</td>
-                    <td class="td-in-well">{{ arCliente.digitoVerificacion }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">CLIENTE:</td>
-                    <td class="td-in-well">{{ arCliente.nombreCorto }}</td>
-                    <td class="titulo">FORMA PAGO:</th>
-                    <td class="td-in-well">{{ arCliente.formaPagoRel.nombre }}</td>
-                    <td class="titulo">PLAZO:</td>
-                    <td class="td-in-well">{{ arCliente.plazoPago }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">DIRECCIÓN:</td>
-                    <td class="td-in-well">{{ arCliente.direccion }}</td>
-                    <td class="titulo">BARRIO:</th>
-                    <td class="td-in-well">{{ arCliente.barrio }}</td>
-                    <td class="titulo">CIUDAD:</td>
-                    <td class="td-in-well">{{ arCliente.ciudadRel.nombre }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">TELEFONO:</td>
-                    <td class="td-in-well">{{ arCliente.telefono }}</td>
-                    <td class="titulo">CELULAR:</th>
-                    <td class="td-in-well">{{ arCliente.celular }}</td>
-                    <td class="titulo">EMAIL:</td>
-                    <td class="td-in-well">{{ arCliente.email }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">GERENTE:</td>
-                    <td class="td-in-well">{{ arCliente.gerente }}</td>
-                    <td class="titulo">CELULAR:</th>
-                    <td class="td-in-well">{{ arCliente.celularGerente }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                </tr>
-                <tr>
-                    <td class="titulo">FINANCIERO:</td>
-                    <td class="td-in-well">{{ arCliente.financiero }}</td>
-                    <td class="titulo">CELULAR:</th>
-                    <td class="td-in-well">{{ arCliente.celularFinanciero }}</td>
-                    <td class="titulo"></td>
-                    <td class="td-in-well"></td>
-                </tr>
-                <tr>
-                    <td class="titulo">CONTACTO:</td>
-                    <td class="td-in-well">{{ arCliente.Contacto }}</td>
-                    <td class="titulo">CELULAR:</th>
-                    <td class="td-in-well">{{ arCliente.celularContacto }}</td>
-                    <td class="titulo">TELEFONO</td>
-                    <td class="td-in-well">{{ arCliente.telefonoContacto }}</td>
-                </tr>
-                <tr>
-                    <td class="titulo">COMENTARIOS:</td>
-                    <td class="td-in-well" colspan="5">{{ arCliente.comentarios }}
-                </tr>
-            </table>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Información cliente</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CÓDIGO:</td>
+                        <td class="td-in-well">{{ arCliente.codigoClientePk }}</td>
+                        <td class="titulo">NIT:</th>
+                        <td class="td-in-well">{{ arCliente.nit }}</td>
+                        <td class="titulo">DV:</td>
+                        <td class="td-in-well">{{ arCliente.digitoVerificacion }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">CLIENTE:</td>
+                        <td class="td-in-well">{{ arCliente.nombreCorto }}</td>
+                        <td class="titulo">FORMA PAGO:</th>
+                        <td class="td-in-well">{{ arCliente.formaPagoRel.nombre }}</td>
+                        <td class="titulo">PLAZO:</td>
+                        <td class="td-in-well">{{ arCliente.plazoPago }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">DIRECCIÓN:</td>
+                        <td class="td-in-well">{{ arCliente.direccion }}</td>
+                        <td class="titulo">BARRIO:</th>
+                        <td class="td-in-well">{{ arCliente.barrio }}</td>
+                        <td class="titulo">CIUDAD:</td>
+                        <td class="td-in-well">{{ arCliente.ciudadRel.nombre }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">TELEFONO:</td>
+                        <td class="td-in-well">{{ arCliente.telefono }}</td>
+                        <td class="titulo">CELULAR:</th>
+                        <td class="td-in-well">{{ arCliente.celular }}</td>
+                        <td class="titulo">EMAIL:</td>
+                        <td class="td-in-well">{{ arCliente.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">GERENTE:</td>
+                        <td class="td-in-well">{{ arCliente.gerente }}</td>
+                        <td class="titulo">CELULAR:</th>
+                        <td class="td-in-well">{{ arCliente.celularGerente }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">FINANCIERO:</td>
+                        <td class="td-in-well">{{ arCliente.financiero }}</td>
+                        <td class="titulo">CELULAR:</th>
+                        <td class="td-in-well">{{ arCliente.celularFinanciero }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">CONTACTO:</td>
+                        <td class="td-in-well">{{ arCliente.Contacto }}</td>
+                        <td class="titulo">CELULAR:</th>
+                        <td class="td-in-well">{{ arCliente.celularContacto }}</td>
+                        <td class="titulo">TELEFONO</td>
+                        <td class="td-in-well">{{ arCliente.telefonoContacto }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">COMENTARIOS:</td>
+                        <td class="td-in-well" colspan="5">{{ arCliente.comentarios }}
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#puestos" data-toggle="tab">Centro trabajo</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="puestos">
+                <!-- Menu Encabezado Movimiento -->
+                <div id="puestos" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <tr>
+                            <th>ID</th>                                
+                            <th>NOMBRE</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for arCentroTrabajo in arCentroTrabajo %}
+                            <tr>
+                                <td>{{ arCentroTrabajo.codigoCentroTrabajoPk }} </td>
+                                <td>{{ arCentroTrabajo.nombre }} </td>
+                                <td><a  href="javascript:abrirVentana3('{{ path('brs_rhu_base_centro_trabajo_nuevo',{'codigoCentroTrabajo': arCentroTrabajo.codigoCentroTrabajoPk, 'codigoCliente': arCliente.codigoClientePk})}}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCentroTrabajo.codigoCentroTrabajoPk }}" /></td>
+                            </tr>
+                        {% endfor %}
 
-    <!-- Botones Menu Items -->
-    <div class="btn-toolbar" style="float:left">
-        <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_cliente') }}" style="float:left">Volver</a>
+                    </table>
+                    <div class="btn-toolbar" style="float: right">
+                        <div class="btn-group">            
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_base_centro_trabajo_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoCentroTrabajo': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
+                        </div>
+                            <div class="btn-group">
+                                {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}</td>                   
+                            </div>
+                    </div>                    
+                </div>
+            </div>
         </div>
-    </div>
 
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-    <br/><br/><br/><br/>
+        <!-- Botones Menu Items -->
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_cliente') }}" style="float:left">Volver</a>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
     </section>
 {% endblock %}

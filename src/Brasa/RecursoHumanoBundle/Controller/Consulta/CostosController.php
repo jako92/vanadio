@@ -59,7 +59,7 @@ class CostosController extends Controller {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCosto')->listaDql(
-                $session->get('filtroRhuAnio'), $session->get('filtroRhuMes')
+                $session->get('filtroRhuAnio'), $session->get('filtroRhuMes'),  $session->get('filtroIdentificacion')
         );
     }
 

@@ -149,6 +149,11 @@ class RhuCliente
      */
     protected $facturasClienteRel;
     
+     /**
+     * @ORM\OneToMany(targetEntity="RhuCentroTrabajo", mappedBy="clienteRel")
+     */
+    protected $centroTrabajoClienteRel;
+    
     
     /**
      * Constructor
@@ -822,5 +827,39 @@ class RhuCliente
     public function getFacturasClienteRel()
     {
         return $this->facturasClienteRel;
+    }
+
+    /**
+     * Add centroTrabajoClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addCentroTrabajoClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel)
+    {
+        $this->centroTrabajoClienteRel[] = $centroTrabajoClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove centroTrabajoClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel
+     */
+    public function removeCentroTrabajoClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel)
+    {
+        $this->centroTrabajoClienteRel->removeElement($centroTrabajoClienteRel);
+    }
+
+    /**
+     * Get centroTrabajoClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCentroTrabajoClienteRel()
+    {
+        return $this->centroTrabajoClienteRel;
     }
 }

@@ -18,10 +18,11 @@ class RhuCostoRepository extends EntityRepository {
         }
         if($mes != "" ) {
             $dql .= " AND c.mes = " . $mes;
-        }                
+        } 
         if($numeroIdentificacion != "" ) {
-            $dql .= " AND e.numeroIdentificacion = '" . $numeroIdentificacion . "'";
-        }        
+            $dql .= " AND e.numeroIdentificacion LIKE '%". $numeroIdentificacion ."%'";
+        } 
+              
         $dql .= " ORDER BY c.anio, c.mes DESC";
         return $dql;
     }      
