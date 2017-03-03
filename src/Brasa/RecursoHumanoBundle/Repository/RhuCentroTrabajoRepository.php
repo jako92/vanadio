@@ -15,9 +15,10 @@ class RhuCentroTrabajoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT t, c FROM BrasaRecursoHumanoBundle:RhuCentrotrabajo t JOIN t.clienteRel c WHERE t.codigoClienteFk <> 0";
         if($strNombre != "") {
-            $dql .= " AND t.nombre = " . $strNombre;
+            $dql .= " AND t.nombre LIKE '%". $strNombre."%'";
+          
         }   
-       
+       $dql .= " ORDER BY t.codigoCentroTrabajoPk ASC";
         return $dql;
     }
 }

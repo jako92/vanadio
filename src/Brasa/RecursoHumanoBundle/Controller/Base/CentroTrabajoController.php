@@ -29,24 +29,12 @@ class CentroTrabajoController extends Controller {
         $this->filtrarLista($form);
         $this->listar();
         if ($form->isValid()) {
-            if ($form->get('BtnEliminar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if ($arrSeleccionados == null) {
-                } else {
-                    foreach ($arrSeleccionados AS $codigoCentroTrabajo) {
-                            $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
-                            $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
-                            $em->remove($arCentroTrabajo);
-                        }
-                    }
-                    $em->flush();
-                }
-                return $this->redirect($this->generateUrl('brs_rhu_base_centro_trabajo_lista'));
-            }
-            if ($form->get('BtnFiltrar')->isClicked()) {
+              if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form);
                 $this->listar();
             }
+            }
+          
         $arCentroTrabajo = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Base/CentroTrabajo:lista.html.twig', array(
                     'arCentroTrabajo' => $arCentroTrabajo,
@@ -108,7 +96,7 @@ class CentroTrabajoController extends Controller {
 
     private function filtrarLista($form) {
         $session = new Session;
-//        $session->set('filtroNombre', $form->get('TxtNombre')->getData());
+      $session->set('filtroNombre', $form->get('TxtNombre')->getData());
     }
 
 }
