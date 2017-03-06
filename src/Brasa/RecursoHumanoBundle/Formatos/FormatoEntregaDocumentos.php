@@ -73,6 +73,11 @@ class FormatoEntregaDocumentos extends \FPDF_FPDF {
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracionNomina = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+        $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();
+        $arConfiguracionAporte = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1); 
+        if($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()) {
+            $arEntidadRiesgos = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findOneBy(array('codigoInterface' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
+        }
         setlocale(LC_ALL,"es_ES@euro","es_ES","esp");
         $pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
         $arEntregaDocumentos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntregaDocumento();
@@ -121,7 +126,7 @@ class FormatoEntregaDocumentos extends \FPDF_FPDF {
         //$sustitucion13 = "no prestacinal";
         $sustitucion14 = $arContrato->getEntidadSaludRel()->getNombre();
         $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();
-        $sustitucion16 = $arConfiguracionNomina->getEntidadRiesgoProfesionalRel()->getNombre();
+        $sustitucion16 = $arEntidadRiesgos->getNombre();
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';

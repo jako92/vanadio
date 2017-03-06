@@ -1,6 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Formatos;
-class FormatoCartaPresentacion extends \FPDF_FPDF {
+class FormatoCartaAutorizacion extends \FPDF_FPDF {
     public static $em;
     
     public static $codigoContrato;
@@ -13,12 +13,12 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         self::$em = $em;
         self::$codigoContrato = $codigoContrato;
         self::$usuario = $usuario;
-        $pdf = new FormatoCartaPresentacion();
+        $pdf = new FormatoCartaAutorizacion();
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
-        $pdf->Output("CartaPresentacion$codigoContrato.pdf", 'D');        
+        $pdf->Output("CartaAutorizacion$codigoContrato.pdf", 'D');        
     } 
     
     public function Header() {
@@ -56,7 +56,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(19);        
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(32);        
         $this->SetXY(10, 10);
         $this->Ln(10);
         //$this->Cell(0, 0, $this->Image('imagenes/logos/firmanomina.jpg' , 15 ,150, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
@@ -68,7 +68,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(19);
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find(32);
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();

@@ -125,7 +125,8 @@ class ContratosController extends Controller
         }
         $form = $this->createFormBuilder()
             ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir Contrato'))
-            ->add('BtnImprimirCartaPresentacion', SubmitType::class, array('label'  => 'Carta presentación'))            
+            ->add('BtnImprimirCartaPresentacion', SubmitType::class, array('label'  => 'Carta presentación'))
+            ->add('BtnImprimirCartaAutorizacion', SubmitType::class, array('label'  => 'Carta Autorización')) 
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -136,6 +137,11 @@ class ContratosController extends Controller
             if($form->get('BtnImprimirCartaPresentacion')->isClicked()) {
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPresentacion();
+                $objFormatoContrato->Generar($em, $codigoContrato,$arUsuario);
+            }
+            if($form->get('BtnImprimirCartaAutorizacion')->isClicked()) {
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                $objFormatoContrato = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaAutorizacion();
                 $objFormatoContrato->Generar($em, $codigoContrato,$arUsuario);
             }
             

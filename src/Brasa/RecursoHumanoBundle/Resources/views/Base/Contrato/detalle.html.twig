@@ -30,7 +30,10 @@
                 <ul class="dropdown-menu" role="menu" >
                     <li>{{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
                     <li class="divider">a</li>
-                    <li>{{ form_widget(form.BtnImprimirCartaPresentacion, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>                    
+                    <li>{{ form_widget(form.BtnImprimirCartaPresentacion, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
+                    <li class="divider">a</li>
+                    <li>{{ form_widget(form.BtnImprimirCartaAutorizacion, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
+                    <li class="divider">a</li>                      
                     <li><a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_base_contratos_documentos', {'codigoContrato': arContrato.codigoContratoPk }) }}', 'Archivos', 500, 700)" >Entrega documentos</a></li>                                       
                 </ul>
                 <a class="btn btn-default btn-sm" id="{{ path('brs_rhu_contratos_informacion_inicial', { 'codigoContrato': arContrato.codigoContratoPk}) }}" style="float:left">Informacion inicial contrato</a>
