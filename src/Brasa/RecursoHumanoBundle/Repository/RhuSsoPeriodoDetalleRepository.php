@@ -589,11 +589,11 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $diasPension = $dias;
                     
                     //Despues del 6 marzo
-                    $ibc = $this->redondearIbc($dias, $ibc);
+                    $ibc = $this->redondearIbc2($ibc);
                     $ibcPension = $ibc;
                     $ibcSalud = $ibc;
                     $ibcRiesgos = $ibc;
-                    $ibcCaja = $this->redondearIbc($dias, $ibc+$vacaciones);
+                    $ibcCaja = $this->redondearIbc2($ibc+$vacaciones);
                     
                     $tarifaPension = $arPeriodoEmpleadoDetalle->getTarifaPension();
                     if($arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 19 || $arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 12) {
@@ -618,26 +618,19 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $cotizacionIcbf = $ibcPension * $tarifaIcbf / 100;                    
                     
                     //Redondeo forma 1                    
-                    $cotizacionPension = $this->redondearAporte2($cotizacionPension, $dias, $tarifaPension);
-                    $cotizacionSalud = $this->redondearAporte2($cotizacionSalud, $dias, $tarifaSalud);                    
-                    $cotizacionRiesgos = $this->redondearAporte2($cotizacionRiesgos, $dias, $tarifaRiesgos);
-                    $cotizacionCaja = $this->redondearAporte2($cotizacionCaja, $dias, $tarifaCaja);
-                    $cotizacionSena = $this->redondearAporte2($cotizacionSena, $dias, $tarifaSena);
-                    $cotizacionIcbf = $this->redondearAporte2($cotizacionIcbf, $dias, $tarifaIcbf);                                        
+                    //$cotizacionPension = $this->redondearAporte2($cotizacionPension, $dias, $tarifaPension);
+                    //$cotizacionSalud = $this->redondearAporte2($cotizacionSalud, $dias, $tarifaSalud);                    
+                    //$cotizacionRiesgos = $this->redondearAporte2($cotizacionRiesgos, $dias, $tarifaRiesgos);
+                    //$cotizacionCaja = $this->redondearAporte2($cotizacionCaja, $dias, $tarifaCaja);
+                    //$cotizacionSena = $this->redondearAporte2($cotizacionSena, $dias, $tarifaSena);
+                    //$cotizacionIcbf = $this->redondearAporte2($cotizacionIcbf, $dias, $tarifaIcbf);                                                           
                     
-                    //$cotizacionPension = $this->redondearAporte($ibcPension, $ibcPension, $tarifaPension, $dias);
-                    //$cotizacionSalud = $this->redondearAporte($ibcSalud, $ibcSalud, $tarifaSalud, $dias);                    
-                    //$cotizacionRiesgos = $this->redondearAporte($ibcRiesgos, $ibcRiesgos, $tarifaRiesgos, $dias);
-                    //$cotizacionCaja = $this->redondearAporte($ibcCaja, $ibcCaja, $tarifaCaja, $dias);
-                    //$cotizacionSena = $this->redondearAporte($ibcPension, $ibcPension, $tarifaSena, $dias);
-                    //$cotizacionIcbf = $this->redondearAporte($ibcPension, $ibcPension, $tarifaIcbf, $dias);                                                            
-                    
-                    /*$cotizacionPension = round($ibcPension * $tarifaPension / 100, -2);
-                    $cotizacionSalud = round($ibcSalud * $tarifaSalud / 100, -2);
-                    $cotizacionRiesgos = round($ibcRiesgos * $tarifaRiesgos / 100, -2);
-                    $cotizacionCaja = round($ibcCaja * $tarifaCaja / 100, -2);
-                    $cotizacionSena = round($ibcPension * $tarifaSena / 100, -2);
-                    $cotizacionIcbf = round($ibcPension * $tarifaIcbf / 100, -2);*/
+                    $cotizacionPension = round($cotizacionPension, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionSalud = round($cotizacionSalud, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionRiesgos = round($cotizacionRiesgos, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionCaja = round($cotizacionCaja, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionSena = round($cotizacionSena, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionIcbf = round($cotizacionIcbf, -2, PHP_ROUND_HALF_DOWN);
 
                     if($arAporte->getTipoCotizante() == '19' || $arAporte->getTipoCotizante() == '12' || $arAporte->getTipoCotizante() == '23') {
                         $cotizacionPension = 0;
@@ -710,11 +703,11 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $totalCotizacionGeneral += $totalCotizacion;
                     $arAporte->setTotalCotizacion($totalCotizacion);
                     $arAporte->setNumeroHorasLaboradas($arPeriodoEmpleadoDetalle->getHoras());
-                    $em->persist($arAporte);
-                    $i++;
-
+                    if($dias > 0) {
+                        $em->persist($arAporte);
+                        $i++;                        
+                    }
                 }
-
             }
         }
 
@@ -836,6 +829,11 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
         return $floIbcBruto;
     }
 
+    public function redondearIbc2($ibc) {
+        $ibcRetornar = round($ibc);
+        return $ibcRetornar;
+    }    
+    
     public function redondearAporte($floIbcTotal, $floIbc, $floTarifa, $intDias) {
         $em = $this->getEntityManager();
         $floTarifa = $floTarifa / 100;
