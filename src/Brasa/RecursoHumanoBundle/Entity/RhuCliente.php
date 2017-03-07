@@ -118,7 +118,7 @@ class RhuCliente
     private $usuario;     
     
     /**
-     * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
+     * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
      */    
     private $comentarios;                            
     
