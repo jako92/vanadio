@@ -154,11 +154,6 @@ class ProgramacionController extends Controller {
                     $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->marcarSeleccionados($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_programacion_detalle', array('codigoProgramacion' => $codigoProgramacion)));
                 }
-                if ($form->get('BtnDetalleAjuste')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->ajustarSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_programacion_detalle', array('codigoProgramacion' => $codigoProgramacion)));
-                }
                 if ($form->get('BtnDetalleEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $strResultado = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->eliminarDetallesSeleccionados($arrSeleccionados);
@@ -577,7 +572,6 @@ class ProgramacionController extends Controller {
                 ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)
-                ->add('BtnDetalleAjuste', SubmitType::class, $arrBotonDetalleAjuste)
                 ->getForm();
         return $form;
     }

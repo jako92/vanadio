@@ -211,11 +211,6 @@ class TurServicioDetalle
      * @ORM\Column(name="marca", type="boolean")
      */    
     private $marca = false;     
-
-    /**     
-     * @ORM\Column(name="ajuste_programacion", type="boolean")
-     */    
-    private $ajusteProgramacion = false;
     
     /**
      * @ORM\ManyToOne(targetEntity="TurServicio", inversedBy="serviciosDetallesServicioRel")
@@ -285,7 +280,6 @@ class TurServicioDetalle
      */
     protected $serviciosDetallesCompuestosServicioDetalleRel;     
 
-
     /**
      * Constructor
      */
@@ -294,6 +288,7 @@ class TurServicioDetalle
         $this->serviciosDetallesRecursosServicioDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosDetallesPlantillasServicioDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pedidosDetallesServicioDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->serviciosDetallesCompuestosServicioDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -352,6 +347,30 @@ class TurServicioDetalle
     public function getCodigoProyectoFk()
     {
         return $this->codigoProyectoFk;
+    }
+
+    /**
+     * Set codigoGrupoFacturacionFk
+     *
+     * @param integer $codigoGrupoFacturacionFk
+     *
+     * @return TurServicioDetalle
+     */
+    public function setCodigoGrupoFacturacionFk($codigoGrupoFacturacionFk)
+    {
+        $this->codigoGrupoFacturacionFk = $codigoGrupoFacturacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoGrupoFacturacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoGrupoFacturacionFk()
+    {
+        return $this->codigoGrupoFacturacionFk;
     }
 
     /**
@@ -544,6 +563,30 @@ class TurServicioDetalle
     public function getLiquidarDiasReales()
     {
         return $this->liquidarDiasReales;
+    }
+
+    /**
+     * Set compuesto
+     *
+     * @param boolean $compuesto
+     *
+     * @return TurServicioDetalle
+     */
+    public function setCompuesto($compuesto)
+    {
+        $this->compuesto = $compuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get compuesto
+     *
+     * @return boolean
+     */
+    public function getCompuesto()
+    {
+        return $this->compuesto;
     }
 
     /**
@@ -760,6 +803,102 @@ class TurServicioDetalle
     public function getVrPrecioMinimo()
     {
         return $this->vrPrecioMinimo;
+    }
+
+    /**
+     * Set vrPrecio
+     *
+     * @param float $vrPrecio
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrPrecio($vrPrecio)
+    {
+        $this->vrPrecio = $vrPrecio;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrecio
+     *
+     * @return float
+     */
+    public function getVrPrecio()
+    {
+        return $this->vrPrecio;
+    }
+
+    /**
+     * Set vrSubtotal
+     *
+     * @param float $vrSubtotal
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrSubtotal($vrSubtotal)
+    {
+        $this->vrSubtotal = $vrSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotal
+     *
+     * @return float
+     */
+    public function getVrSubtotal()
+    {
+        return $this->vrSubtotal;
+    }
+
+    /**
+     * Set vrIva
+     *
+     * @param float $vrIva
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrIva($vrIva)
+    {
+        $this->vrIva = $vrIva;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIva
+     *
+     * @return float
+     */
+    public function getVrIva()
+    {
+        return $this->vrIva;
+    }
+
+    /**
+     * Set vrBaseAiu
+     *
+     * @param float $vrBaseAiu
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrBaseAiu($vrBaseAiu)
+    {
+        $this->vrBaseAiu = $vrBaseAiu;
+
+        return $this;
+    }
+
+    /**
+     * Get vrBaseAiu
+     *
+     * @return float
+     */
+    public function getVrBaseAiu()
+    {
+        return $this->vrBaseAiu;
     }
 
     /**
@@ -1051,6 +1190,54 @@ class TurServicioDetalle
     }
 
     /**
+     * Set estadoCerrado
+     *
+     * @param boolean $estadoCerrado
+     *
+     * @return TurServicioDetalle
+     */
+    public function setEstadoCerrado($estadoCerrado)
+    {
+        $this->estadoCerrado = $estadoCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCerrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCerrado()
+    {
+        return $this->estadoCerrado;
+    }
+
+    /**
+     * Set marca
+     *
+     * @param boolean $marca
+     *
+     * @return TurServicioDetalle
+     */
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return boolean
+     */
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+
+    /**
      * Set servicioRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurServicio $servicioRel
@@ -1096,6 +1283,30 @@ class TurServicioDetalle
     public function getProyectoRel()
     {
         return $this->proyectoRel;
+    }
+
+    /**
+     * Set grupoFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurGrupoFacturacion $grupoFacturacionRel
+     *
+     * @return TurServicioDetalle
+     */
+    public function setGrupoFacturacionRel(\Brasa\TurnoBundle\Entity\TurGrupoFacturacion $grupoFacturacionRel = null)
+    {
+        $this->grupoFacturacionRel = $grupoFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get grupoFacturacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurGrupoFacturacion
+     */
+    public function getGrupoFacturacionRel()
+    {
+        return $this->grupoFacturacionRel;
     }
 
     /**
@@ -1318,246 +1529,6 @@ class TurServicioDetalle
     public function getPedidosDetallesServicioDetalleRel()
     {
         return $this->pedidosDetallesServicioDetalleRel;
-    }
-
-    /**
-     * Set marca
-     *
-     * @param boolean $marca
-     *
-     * @return TurServicioDetalle
-     */
-    public function setMarca($marca)
-    {
-        $this->marca = $marca;
-
-        return $this;
-    }
-
-    /**
-     * Get marca
-     *
-     * @return boolean
-     */
-    public function getMarca()
-    {
-        return $this->marca;
-    }
-
-    /**
-     * Set ajusteProgramacion
-     *
-     * @param boolean $ajusteProgramacion
-     *
-     * @return TurServicioDetalle
-     */
-    public function setAjusteProgramacion($ajusteProgramacion)
-    {
-        $this->ajusteProgramacion = $ajusteProgramacion;
-
-        return $this;
-    }
-
-    /**
-     * Get ajusteProgramacion
-     *
-     * @return boolean
-     */
-    public function getAjusteProgramacion()
-    {
-        return $this->ajusteProgramacion;
-    }
-
-    /**
-     * Set codigoGrupoFacturacionFk
-     *
-     * @param integer $codigoGrupoFacturacionFk
-     *
-     * @return TurServicioDetalle
-     */
-    public function setCodigoGrupoFacturacionFk($codigoGrupoFacturacionFk)
-    {
-        $this->codigoGrupoFacturacionFk = $codigoGrupoFacturacionFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoGrupoFacturacionFk
-     *
-     * @return integer
-     */
-    public function getCodigoGrupoFacturacionFk()
-    {
-        return $this->codigoGrupoFacturacionFk;
-    }
-
-    /**
-     * Set grupoFacturacionRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurGrupoFacturacion $grupoFacturacionRel
-     *
-     * @return TurServicioDetalle
-     */
-    public function setGrupoFacturacionRel(\Brasa\TurnoBundle\Entity\TurGrupoFacturacion $grupoFacturacionRel = null)
-    {
-        $this->grupoFacturacionRel = $grupoFacturacionRel;
-
-        return $this;
-    }
-
-    /**
-     * Get grupoFacturacionRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurGrupoFacturacion
-     */
-    public function getGrupoFacturacionRel()
-    {
-        return $this->grupoFacturacionRel;
-    }
-
-    /**
-     * Set vrSubtotal
-     *
-     * @param float $vrSubtotal
-     *
-     * @return TurServicioDetalle
-     */
-    public function setVrSubtotal($vrSubtotal)
-    {
-        $this->vrSubtotal = $vrSubtotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSubtotal
-     *
-     * @return float
-     */
-    public function getVrSubtotal()
-    {
-        return $this->vrSubtotal;
-    }
-
-    /**
-     * Set vrIva
-     *
-     * @param float $vrIva
-     *
-     * @return TurServicioDetalle
-     */
-    public function setVrIva($vrIva)
-    {
-        $this->vrIva = $vrIva;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIva
-     *
-     * @return float
-     */
-    public function getVrIva()
-    {
-        return $this->vrIva;
-    }
-
-    /**
-     * Set vrBaseAiu
-     *
-     * @param float $vrBaseAiu
-     *
-     * @return TurServicioDetalle
-     */
-    public function setVrBaseAiu($vrBaseAiu)
-    {
-        $this->vrBaseAiu = $vrBaseAiu;
-
-        return $this;
-    }
-
-    /**
-     * Get vrBaseAiu
-     *
-     * @return float
-     */
-    public function getVrBaseAiu()
-    {
-        return $this->vrBaseAiu;
-    }
-
-    /**
-     * Set vrPrecio
-     *
-     * @param float $vrPrecio
-     *
-     * @return TurServicioDetalle
-     */
-    public function setVrPrecio($vrPrecio)
-    {
-        $this->vrPrecio = $vrPrecio;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPrecio
-     *
-     * @return float
-     */
-    public function getVrPrecio()
-    {
-        return $this->vrPrecio;
-    }
-
-    /**
-     * Set estadoCerrado
-     *
-     * @param boolean $estadoCerrado
-     *
-     * @return TurServicioDetalle
-     */
-    public function setEstadoCerrado($estadoCerrado)
-    {
-        $this->estadoCerrado = $estadoCerrado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoCerrado
-     *
-     * @return boolean
-     */
-    public function getEstadoCerrado()
-    {
-        return $this->estadoCerrado;
-    }
-
-    /**
-     * Set compuesto
-     *
-     * @param boolean $compuesto
-     *
-     * @return TurServicioDetalle
-     */
-    public function setCompuesto($compuesto)
-    {
-        $this->compuesto = $compuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get compuesto
-     *
-     * @return boolean
-     */
-    public function getCompuesto()
-    {
-        return $this->compuesto;
     }
 
     /**

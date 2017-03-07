@@ -95,23 +95,7 @@ class TurServicioDetalleCompuestoRepository extends EntityRepository {
             $em->flush();       
         }
         
-    }            
-    
-    public function ajustarSeleccionados($arrSeleccionados) {        
-        if(count($arrSeleccionados) > 0) {
-            $em = $this->getEntityManager();
-            foreach ($arrSeleccionados AS $codigo) {                
-                $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($codigo);                
-                if($arServicioDetalle->getAjusteProgramacion() == 1) {
-                    $arServicioDetalle->setAjusteProgramacion(0);
-                } else {
-                    $arServicioDetalle->setAjusteProgramacion(1);
-                }                
-            }                                         
-            $em->flush();       
-        }
-        
-    }                
+    }                             
     
     public function numeroRegistros($codigo) {
         $em = $this->getEntityManager();

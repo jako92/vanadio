@@ -521,23 +521,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
             $em->flush();       
         }
         
-    }            
-    
-    public function ajustarSeleccionados($arrSeleccionados) {        
-        if(count($arrSeleccionados) > 0) {
-            $em = $this->getEntityManager();
-            foreach ($arrSeleccionados AS $codigo) {                
-                $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigo);                
-                if($arPedidoDetalle->getAjusteProgramacion() == 1) {
-                    $arPedidoDetalle->setAjusteProgramacion(0);
-                } else {
-                    $arPedidoDetalle->setAjusteProgramacion(1);
-                }                
-            }                                         
-            $em->flush();       
-        }
-        
-    }      
+    }                     
 
     public function festivo($arFestivos, $dateFecha) {
         $boolFestivo = 0;

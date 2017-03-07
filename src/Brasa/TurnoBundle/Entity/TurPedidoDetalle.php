@@ -260,12 +260,7 @@ class TurPedidoDetalle
     /**     
      * @ORM\Column(name="marca", type="boolean")
      */    
-    private $marca = false;     
-
-    /**     
-     * @ORM\Column(name="ajuste_programacion", type="boolean")
-     */    
-    private $ajusteProgramacion = false;    
+    private $marca = false;       
     
     /**
      * @ORM\Column(name="detalle", type="string", length=300, nullable=true)
@@ -380,7 +375,7 @@ class TurPedidoDetalle
      * @ORM\OneToMany(targetEntity="TurCostoDetalle", mappedBy="pedidoDetalleRel")
      */
     protected $costosDetallesPedidoDetalleRel;     
-    
+       
     /**
      * Constructor
      */
@@ -1580,30 +1575,6 @@ class TurPedidoDetalle
     public function getMarca()
     {
         return $this->marca;
-    }
-
-    /**
-     * Set ajusteProgramacion
-     *
-     * @param boolean $ajusteProgramacion
-     *
-     * @return TurPedidoDetalle
-     */
-    public function setAjusteProgramacion($ajusteProgramacion)
-    {
-        $this->ajusteProgramacion = $ajusteProgramacion;
-
-        return $this;
-    }
-
-    /**
-     * Get ajusteProgramacion
-     *
-     * @return boolean
-     */
-    public function getAjusteProgramacion()
-    {
-        return $this->ajusteProgramacion;
     }
 
     /**

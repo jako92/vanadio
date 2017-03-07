@@ -230,12 +230,7 @@ class TurProgramacionDetalle
     /**     
      * @ORM\Column(name="marca", type="boolean")
      */    
-    private $marca = false;     
-
-    /**     
-     * @ORM\Column(name="ajuste_programacion", type="boolean")
-     */    
-    private $ajusteProgramacion = false;    
+    private $marca = false;         
     
     /**
      * @ORM\Column(name="periodo_bloqueo", type="integer")
@@ -1326,30 +1321,6 @@ class TurProgramacionDetalle
     public function getMarca()
     {
         return $this->marca;
-    }
-
-    /**
-     * Set ajusteProgramacion
-     *
-     * @param boolean $ajusteProgramacion
-     *
-     * @return TurProgramacionDetalle
-     */
-    public function setAjusteProgramacion($ajusteProgramacion)
-    {
-        $this->ajusteProgramacion = $ajusteProgramacion;
-
-        return $this;
-    }
-
-    /**
-     * Get ajusteProgramacion
-     *
-     * @return boolean
-     */
-    public function getAjusteProgramacion()
-    {
-        return $this->ajusteProgramacion;
     }
 
     /**

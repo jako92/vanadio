@@ -177,11 +177,6 @@ class ServicioController extends Controller {
                     $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->marcarSeleccionados($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
                 }
-                if ($form->get('BtnDetalleAjuste')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->ajustarSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
                 if ($form->get('BtnDetalleConceptoActualizar')->isClicked()) {
                     $arrControles = $request->request->All();
                     $this->actualizarDetalleConcepto($arrControles, $codigoServicio);
@@ -704,8 +699,7 @@ class ServicioController extends Controller {
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->add('BtnDetalleCerrar', SubmitType::class, $arrBotonDetalleCerrar)
                 ->add('BtnDetalleAbrir', SubmitType::class, $arrBotonDetalleAbrir)
-                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)
-                ->add('BtnDetalleAjuste', SubmitType::class, $arrBotonDetalleAjuste)
+                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)                
                 ->add('BtnDetalleConceptoActualizar', SubmitType::class, $arrBotonDetalleConceptoActualizar)
                 ->add('BtnDetalleConceptoEliminar', SubmitType::class, $arrBotonDetalleConceptoEliminar)
                 ->getForm();

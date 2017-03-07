@@ -213,11 +213,6 @@ class PedidoController extends Controller {
                     $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->marcarSeleccionados($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
                 }
-                if ($form->get('BtnDetalleAjuste')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->ajustarSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
-                }
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     $arrControles = $request->request->All();
                     $this->actualizarDetalle($arrControles, $codigoPedido);
@@ -677,8 +672,7 @@ class PedidoController extends Controller {
                             $arPedidoDetalle->setCantidad($arServicioDetalle->getCantidad());
                             $arPedidoDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorIva());
                             $arPedidoDetalle->setVrPrecioAjustado($arServicioDetalle->getVrPrecioAjustado());
-                            $arPedidoDetalle->setFechaIniciaPlantilla($arServicioDetalle->getFechaIniciaPlantilla());
-                            $arPedidoDetalle->setAjusteProgramacion($arServicioDetalle->getAjusteProgramacion());
+                            $arPedidoDetalle->setFechaIniciaPlantilla($arServicioDetalle->getFechaIniciaPlantilla());                            
                             $arPedidoDetalle->setLiquidarDiasReales($arServicioDetalle->getLiquidarDiasReales());
                             $arPedidoDetalle->setAnio($arPedido->getFechaProgramacion()->format('Y'));
                             $arPedidoDetalle->setMes($arPedido->getFechaProgramacion()->format('m'));
@@ -1110,8 +1104,7 @@ class PedidoController extends Controller {
                 ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->add('BtnDetalleDesprogramar', SubmitType::class, $arrBotonDetalleDesprogramar)
-                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)
-                ->add('BtnDetalleAjuste', SubmitType::class, $arrBotonDetalleAjuste)
+                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)                
                 ->add('BtnDesprogramar', SubmitType::class, $arrBotonDesprogramar)
                 ->add('BtnDetalleConceptoActualizar', SubmitType::class, $arrBotonDetalleConceptoActualizar)
                 ->add('BtnDetalleConceptoEliminar', SubmitType::class, $arrBotonDetalleConceptoEliminar)

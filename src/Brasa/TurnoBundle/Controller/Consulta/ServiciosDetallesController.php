@@ -364,7 +364,7 @@ class ServiciosDetallesController extends Controller {
                     ->setCellValue('AA' . $i, $arServicioDetalle->getVrPrecioAjustado())
                     ->setCellValue('AB' . $i, $arServicioDetalle->getVrTotalDetalle())
                     ->setCellValue('AC' . $i, $objFunciones->devuelveBoolean($arServicioDetalle->getMarca()))
-                    ->setCellValue('AD' . $i, $objFunciones->devuelveBoolean($arServicioDetalle->getAjusteProgramacion()));
+                    ->setCellValue('AD' . $i, "");
 
             if ($arServicioDetalle->getPuestoRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)

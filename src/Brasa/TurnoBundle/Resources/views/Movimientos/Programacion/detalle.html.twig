@@ -143,7 +143,7 @@
                                                     {% endif %}  
                                                     {% set floHorasDiurnasProgramadas = floHorasDiurnasProgramadas + arProgramacionDetalle.horasDiurnas %} 
                                                     {% set floHorasNocturnasProgramadas = floHorasNocturnasProgramadas + arProgramacionDetalle.horasNocturnas %}                                 
-                                                    <tr style='height: 10px' width="250" {% if arProgramacionDetalle.ajusteProgramacion == 1 %} class="danger" {% endif %}>
+                                                    <tr style='height: 10px' width="250">
                                                         <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_resumen', {'codigoProgramacionDetalle': arProgramacionDetalle.codigoProgramacionDetallePk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arProgramacionDetalle.codigoProgramacionDetallePk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arProgramacionDetalle.codigoProgramacionDetallePk }}"></td>
                                                             {% if arProgramacionDetalle.codigoRecursoFk is not null %}
                                                                 {% if arProgramacion.estadoAutorizado == 0 %}
@@ -201,8 +201,7 @@
                                                             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoPuesto': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo libre</a>
                                                         {% endif %}
                                                     </div>
-                                                    <div class="btn-group">
-                                                        {{ form_widget(form.BtnDetalleAjuste, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                                                    <div class="btn-group">                                                        
                                                         {{ form_widget(form.BtnDetalleMarcar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                                            
                                                         {{ form_widget(form.BtnDetalleEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
                                                     </div>
