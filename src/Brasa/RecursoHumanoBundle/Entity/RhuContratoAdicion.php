@@ -42,7 +42,11 @@ class RhuContratoAdicion
      */    
     private $codigoUsuario;
            
-
+    /**
+     * @ORM\Column(name="valor_adicional", type="float")
+     */    
+    private $valorAdicional;
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="contratosAdicionalesContratoRel")
      * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
@@ -55,7 +59,11 @@ class RhuContratoAdicion
      */
     protected $contratoAdicionTipoRel;
 
-        
+         /**
+     * @ORM\ManyToOne(targetEntity="RhuPagoConcepto", inversedBy="contratoAdicionRel")
+     * @ORM\JoinColumn(name="codigo_pago_concepto_fk", referencedColumnName="codigo_pago_concepto_pk")
+     */
+    protected $pagoConceptoRel;   
 
     
 
@@ -235,5 +243,53 @@ class RhuContratoAdicion
     public function getContratoAdicionTipoRel()
     {
         return $this->contratoAdicionTipoRel;
+    }
+
+    /**
+     * Set pagoConceptoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel
+     *
+     * @return RhuContratoAdicion
+     */
+    public function setPagoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel = null)
+    {
+        $this->pagoConceptoRel = $pagoConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoConceptoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto
+     */
+    public function getPagoConceptoRel()
+    {
+        return $this->pagoConceptoRel;
+    }
+
+    /**
+     * Set valorAdicional
+     *
+     * @param float $valorAdicional
+     *
+     * @return RhuContratoAdicion
+     */
+    public function setValorAdicional($valorAdicional)
+    {
+        $this->valorAdicional = $valorAdicional;
+
+        return $this;
+    }
+
+    /**
+     * Get valorAdicional
+     *
+     * @return float
+     */
+    public function getValorAdicional()
+    {
+        return $this->valorAdicional;
     }
 }

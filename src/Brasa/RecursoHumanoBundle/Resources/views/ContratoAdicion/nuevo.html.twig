@@ -25,7 +25,18 @@
                     <label for="form_contratoAdicionTipoRel" class="col-sm-2 control-label">Tipo contrato adicion:</label>
                     <div class="col-sm-10">                       
                         {{ form_widget(form.contratoAdicionTipoRel, { 'attr': {'class': 'form-control'} }) }}
-
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_pagoConceptoRel" class="col-sm-2 control-label">Concepto de pago:</label>
+                    <div class="col-sm-10">                       
+                        {{ form_widget(form.pagoConceptoRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">Valor de la adicion:</label>
+                    <div class="col-sm-10">                       
+                        {{ form_widget(form.valorAdicional, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>    
                 <div class="form-group">

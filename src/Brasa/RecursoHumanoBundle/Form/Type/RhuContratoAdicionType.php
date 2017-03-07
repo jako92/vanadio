@@ -21,11 +21,16 @@ class RhuContratoAdicionType extends AbstractType
         $builder
             ->add('fecha', DateType::class)
             ->add('contenido', TextareaType::class, array('required' => false))
+            ->add('valorAdicional', NumberType::class, array('required'  => true))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->add('contratoAdicionTipoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuContratoAdicionTipo',
                 'choice_label' => 'nombre',
-            ))    ;            
+            ))
+            ->add('pagoConceptoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
+                'choice_label' => 'nombre',
+            ))                 ;            
     }
 
     public function getBlockPrefix()

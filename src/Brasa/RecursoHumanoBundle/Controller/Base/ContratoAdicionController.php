@@ -54,7 +54,7 @@ class ContratoAdicionController extends Controller
             $arContratoAdicion->setContratoRel($arContrato);            
             $arContratoAdicion->setFecha($form->get('fecha')->getData());            
             $arContratoAdicion->setCodigoUsuario($arUsuario->getUserName());            
-            $arContratoAdicion->setContenido($contenido);            
+            $arContratoAdicion->setContenido($contenido);
             $em->persist($arContratoAdicion);                       
             $em->flush();
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                                         

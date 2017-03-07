@@ -48,7 +48,7 @@ class FormatoContratoAdicion extends \FPDF_FPDF {
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
         $arContratoAdicion = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion();
-        $arContratoAdicion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find(self::$codigoContratoAdicion);        
+        $arContratoAdicion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->find(self::$codigoContratoAdicion);      
         //$arContenidoFormatoAdicion = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
         //$arContenidoFormatoAdicion = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->findOneBy(array('adicional' => 1));        
         $contenido = $arContratoAdicion->getContenido();                      
@@ -127,6 +127,12 @@ class FormatoContratoAdicion extends \FPDF_FPDF {
         $sustitucion26 .= ")";
         $sustitucion27 = $arContrato->getCiudadContratoRel()->getNombre();
         $sustitucion28 = $arContrato->getCiudadLaboraRel()->getNombre();
+        $sustitucion29 = $arContratoAdicion->getPagoConceptoRel()->getNombre();
+        $adicionLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContratoAdicion')->numtoletras($arContratoAdicion->getValorAdicional());
+        $sustitucion30 = $adicionLetras." $(";
+        $sustitucion30 .= number_format($arContratoAdicion->getValorAdicional(), 2,'.',',');
+        $sustitucion30 .= ")";
+        
         //contenido de la cadena
         //$cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
@@ -157,6 +163,8 @@ class FormatoContratoAdicion extends \FPDF_FPDF {
         $patron26 = '/#q/';
         $patron27 = '/#r/';
         $patron28 = '/#s/';
+        $patron29 = '/#t/';
+        $patron30 = '/#u/';
         //reemplazar en la cadena
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
@@ -186,6 +194,8 @@ class FormatoContratoAdicion extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron26, $sustitucion26, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron27, $sustitucion27, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron28, $sustitucion28, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron29, $sustitucion29, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron30, $sustitucion30, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
    
     }

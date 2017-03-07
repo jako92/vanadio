@@ -228,7 +228,11 @@ class RhuPagoConcepto
      */
     protected $pagosConceptosCuentasPagoConceptoRel;    
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="pagoConceptoRel")
+     */
+    protected $contratoAdicionRel;    
+    
     /**
      * Constructor
      */
@@ -1394,5 +1398,39 @@ class RhuPagoConcepto
     public function getPagosConceptosCuentasPagoConceptoRel()
     {
         return $this->pagosConceptosCuentasPagoConceptoRel;
+    }
+
+    /**
+     * Add contratoAdicionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratoAdicionRel
+     *
+     * @return RhuPagoConcepto
+     */
+    public function addContratoAdicionRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratoAdicionRel)
+    {
+        $this->contratoAdicionRel[] = $contratoAdicionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratoAdicionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratoAdicionRel
+     */
+    public function removeContratoAdicionRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratoAdicionRel)
+    {
+        $this->contratoAdicionRel->removeElement($contratoAdicionRel);
+    }
+
+    /**
+     * Get contratoAdicionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratoAdicionRel()
+    {
+        return $this->contratoAdicionRel;
     }
 }
