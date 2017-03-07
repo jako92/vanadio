@@ -103,6 +103,7 @@ class ClienteController extends Controller {
         $paginator = $this->get('knp_paginator');
         $form = $this->createFormBuilder()
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnEliminarSucursal', SubmitType::class, array('label' => 'Eliminar',))
                 ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -120,15 +121,32 @@ class ClienteController extends Controller {
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_rhu_base_cliente_detalle', array('codigoCliente' => $codigoCliente)));
             }
+            if ($form->get('BtnEliminarSucursal')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if ($arrSeleccionados == null) {
+                    
+                } else {
+                    foreach ($arrSeleccionados AS $codigoSucursal) {
+                        $arSucursal = new \Brasa\RecursoHumanoBundle\Entity\RhuSucursal();
+                        $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+                        $em->remove($arSucursal);
+                    }
+                }
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_rhu_base_cliente_detalle', array('codigoCliente' => $codigoCliente)));
+            }
             //echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
         $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
         $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
         $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
         $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->findBy(array('codigoClienteFk' => $codigoCliente));
+        $arSucursal = new \Brasa\RecursoHumanoBundle\Entity\RhuSucursal();
+        $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->findBy(array('codigoClienteFk' => $codigoCliente));
         return $this->render('BrasaRecursoHumanoBundle:Base/Cliente:detalle.html.twig', array(
                     'arCliente' => $arCliente,
                     'arCentroTrabajo' => $arCentroTrabajo,
+                    'arSucursal' => $arSucursal,
                     'form' => $form->createView()
         ));
     }

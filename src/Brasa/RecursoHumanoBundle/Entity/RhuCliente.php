@@ -154,6 +154,11 @@ class RhuCliente
      */
     protected $centroTrabajoClienteRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuSucursal", mappedBy="clienteRel") 
+     */ 
+    protected $sucursalClienteRel;
+    
     
     /**
      * Constructor
@@ -163,6 +168,8 @@ class RhuCliente
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->centroTrabajoClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sucursalClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -861,5 +868,39 @@ class RhuCliente
     public function getCentroTrabajoClienteRel()
     {
         return $this->centroTrabajoClienteRel;
+    }
+
+    /**
+     * Add sucursalClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel)
+    {
+        $this->sucursalClienteRel[] = $sucursalClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove sucursalClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel
+     */
+    public function removeSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel)
+    {
+        $this->sucursalClienteRel->removeElement($sucursalClienteRel);
+    }
+
+    /**
+     * Get sucursalClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSucursalClienteRel()
+    {
+        return $this->sucursalClienteRel;
     }
 }

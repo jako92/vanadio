@@ -1,17 +1,17 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="rhu_centro_trabajo")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuCentroTrabajoRepository")
  */
-class RhuCentroTrabajo
-{
+class RhuCentroTrabajo {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_centro_trabajo_pk", type="integer")
@@ -21,24 +21,37 @@ class RhuCentroTrabajo
 
     /**
      * @ORM\Column(name="nombre", type="string", length=160, nullable=true)
-     */    
+     */
     private $nombre;
-    
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoClienteFk;
-    
+
+    /**
+     * @ORM\Column(name="estado_activo",type="boolean", nullable=true)
+     */
+    private $estadoActivo = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="centroTrabajoClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
      */
     protected $contratoRel;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contratoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoCentroTrabajoPk
@@ -99,6 +112,30 @@ class RhuCentroTrabajo
     }
 
     /**
+     * Set estadoActivo
+     *
+     * @param boolean $estadoActivo
+     *
+     * @return RhuCentroTrabajo
+     */
+    public function setEstadoActivo($estadoActivo)
+    {
+        $this->estadoActivo = $estadoActivo;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoActivo
+     *
+     * @return boolean
+     */
+    public function getEstadoActivo()
+    {
+        return $this->estadoActivo;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
@@ -120,13 +157,6 @@ class RhuCentroTrabajo
     public function getClienteRel()
     {
         return $this->clienteRel;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->contratoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
