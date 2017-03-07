@@ -295,8 +295,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $arPeriodoEmpleadoDetalle->setDias($arrVacacion['dias']);
                 $arPeriodoEmpleadoDetalle->setHoras($arrVacacion['horas']);
                 $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
-                $arPeriodoEmpleadoDetalle->setIbc(round($arrVacacion['ibc']));
-                $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
+                $arPeriodoEmpleadoDetalle->setIbc($arrVacacion['ibc']);
+                //$arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
                 $arPeriodoEmpleadoDetalle->setVacaciones(1);
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                 $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
@@ -305,6 +305,10 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $arPeriodoEmpleadoDetalle->setTarifaCaja(4);                   
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrVacacion['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrVacacion['fechaHastaNovedad']));
+                $diaSalarioVacacion = $ibcVacaciones / $arrVacacion['dias'];
+                if($diaSalarioVacacion != $diaSalario) {
+                    $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
+                }                
                 if($diasOrdinariosTotal <= 0 && $novedadesIngresoRetiro == FALSE) {
                     $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
                     $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);            
@@ -380,8 +384,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 if($arLicencia->getLicenciaTipoRel()->getMaternidad() == 1) {
                     $diasLicenciaMaternidad += $arrLicencia['dias'];
                     $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
-                    $ibcLicencia = ceil($arrLicencia['ibc']);
-                    $arPeriodoEmpleadoDetalle->setIbc(round($ibcLicencia));
+                    $ibcLicencia = $arrLicencia['ibc'];                    
                     $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                     $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
                     $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
@@ -389,11 +392,12 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 } else {
                     $ibcLicencia = $diaSalario * $arrLicencia['dias'];
                     $diasLicencia += $arrLicencia['dias'];
-                    $arPeriodoEmpleadoDetalle->setLicencia(1);
-                    $arPeriodoEmpleadoDetalle->setIbc(ceil($ibcLicencia));
+                    $arPeriodoEmpleadoDetalle->setLicencia(1);                    
                     $arPeriodoEmpleadoDetalle->setTarifaPension(12);
                     $arPeriodoEmpleadoDetalle->setTarifaSalud(0);
-                }                
+                }                    
+                
+                $arPeriodoEmpleadoDetalle->setIbc($ibcLicencia);
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
                 $arPeriodoEmpleadoDetalle->setDias($arrLicencia['dias']);
                 $arPeriodoEmpleadoDetalle->setHoras($arrLicencia['horas']);
@@ -513,7 +517,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $ibc = ($ibc * 70) / 100;
             }*/
             $arPeriodoEmpleadoActualizar->setVrSalario($floSalario);                        
-            $arPeriodoEmpleadoActualizar->setVrVacaciones($ibcVacaciones);
+            //$arPeriodoEmpleadoActualizar->setVrVacaciones($ibcVacaciones);
             $arPeriodoEmpleadoActualizar->setDias($intDiasCotizar);        
             $arPeriodoEmpleadoActualizar->setIbc($ibc);                        
             $em->persist($arPeriodoEmpleadoActualizar);

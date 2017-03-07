@@ -625,12 +625,12 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     //$cotizacionSena = $this->redondearAporte2($cotizacionSena, $dias, $tarifaSena);
                     //$cotizacionIcbf = $this->redondearAporte2($cotizacionIcbf, $dias, $tarifaIcbf);                                                           
                     
-                    $cotizacionPension = round($cotizacionPension, -2, PHP_ROUND_HALF_DOWN);
-                    $cotizacionSalud = round($cotizacionSalud, -2, PHP_ROUND_HALF_DOWN);
-                    $cotizacionRiesgos = round($cotizacionRiesgos, -2, PHP_ROUND_HALF_DOWN);
-                    $cotizacionCaja = round($cotizacionCaja, -2, PHP_ROUND_HALF_DOWN);
-                    $cotizacionSena = round($cotizacionSena, -2, PHP_ROUND_HALF_DOWN);
-                    $cotizacionIcbf = round($cotizacionIcbf, -2, PHP_ROUND_HALF_DOWN);
+                    $cotizacionPension = $this->redondearAporte3($cotizacionPension);
+                    $cotizacionSalud = $this->redondearAporte3($cotizacionSalud);
+                    $cotizacionRiesgos = $this->redondearAporte3($cotizacionRiesgos);
+                    $cotizacionCaja = $this->redondearAporte3($cotizacionCaja);
+                    $cotizacionSena = $this->redondearAporte3($cotizacionSena);
+                    $cotizacionIcbf = $this->redondearAporte3($cotizacionIcbf);
 
                     if($arAporte->getTipoCotizante() == '19' || $arAporte->getTipoCotizante() == '12' || $arAporte->getTipoCotizante() == '23') {
                         $cotizacionPension = 0;
@@ -830,7 +830,7 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
     }
 
     public function redondearIbc2($ibc) {
-        $ibcRetornar = round($ibc);
+        $ibcRetornar = ceil($ibc);
         return $ibcRetornar;
     }    
     
@@ -931,4 +931,10 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
         } */       
         return $cotizacionRetornar;
     }    
+    
+    public function redondearAporte3($cotizacion, $significance = 100) {        
+        $cotizacionRetornar = 0;
+        return ( is_numeric($cotizacion) && is_numeric($significance) ) ? (ceil($cotizacion/$significance)*$significance) : 0;        
+    }      
+    
 }
