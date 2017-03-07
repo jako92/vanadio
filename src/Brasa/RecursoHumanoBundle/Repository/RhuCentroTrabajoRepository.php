@@ -13,7 +13,7 @@ class RhuCentroTrabajoRepository extends EntityRepository {
     
     public function listaDql ($strNombre = "") {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT t, c FROM BrasaRecursoHumanoBundle:RhuCentrotrabajo t JOIN t.clienteRel c WHERE t.codigoClienteFk <> 0";
+        $dql   = "SELECT t, c FROM BrasaRecursoHumanoBundle:RhuCentrotrabajo t JOIN t.sucursalRel c WHERE t.codigoSucursalFk <> 0";
         if($strNombre != "") {
             $dql .= " AND t.nombre LIKE '%". $strNombre."%'";
           

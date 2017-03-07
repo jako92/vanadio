@@ -259,10 +259,10 @@ class RhuContrato
      */    
     private $codigoContratoGrupoFk;     
     
-    /**
-     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCentroTrabajoFk;
+//    /**
+//     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
+//     */    
+//    private $codigoCentroTrabajoFk;
     
     /**     
      * @ORM\Column(name="limitarHoraExtra", type="boolean")
@@ -415,11 +415,11 @@ class RhuContrato
      */
     protected $ciudadLaboraRel;
     
-     /**
-     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
-     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
-     */
-    protected $centroTrabajoRel;   
+//     /**
+//     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
+//     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
+//     */
+//    protected $centroTrabajoRel;   
     
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="contratoRel")
@@ -530,14 +530,16 @@ class RhuContrato
      * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="contratoRel")
      */
     protected $contratosAdicionalesContratoRel;
-    
+  
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->liquidacionesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prestacionesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->programacionesPagosDetallesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->programacionesPagosHorasExtrasContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->provisionesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoPeriodosEmpleadosContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1817,6 +1819,54 @@ class RhuContrato
     }
 
     /**
+     * Set codigoclienteFk
+     *
+     * @param integer $codigoclienteFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoclienteFk($codigoclienteFk)
+    {
+        $this->codigoclienteFk = $codigoclienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoclienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoclienteFk()
+    {
+        return $this->codigoclienteFk;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuContrato
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
+    }
+
+    /**
      * Set empleadoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
@@ -2331,6 +2381,40 @@ class RhuContrato
     }
 
     /**
+     * Add prestacionesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addPrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
+    {
+        $this->prestacionesContratoRel[] = $prestacionesContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
+     */
+    public function removePrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
+    {
+        $this->prestacionesContratoRel->removeElement($prestacionesContratoRel);
+    }
+
+    /**
+     * Get prestacionesContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesContratoRel()
+    {
+        return $this->prestacionesContratoRel;
+    }
+
+    /**
      * Add programacionesPagosDetallesContratoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel
@@ -2362,6 +2446,40 @@ class RhuContrato
     public function getProgramacionesPagosDetallesContratoRel()
     {
         return $this->programacionesPagosDetallesContratoRel;
+    }
+
+    /**
+     * Add programacionesPagosHorasExtrasContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
+    {
+        $this->programacionesPagosHorasExtrasContratoRel[] = $programacionesPagosHorasExtrasContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesPagosHorasExtrasContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
+     */
+    public function removeProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
+    {
+        $this->programacionesPagosHorasExtrasContratoRel->removeElement($programacionesPagosHorasExtrasContratoRel);
+    }
+
+    /**
+     * Get programacionesPagosHorasExtrasContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesPagosHorasExtrasContratoRel()
+    {
+        return $this->programacionesPagosHorasExtrasContratoRel;
     }
 
     /**
@@ -2974,169 +3092,5 @@ class RhuContrato
     public function getContratosAdicionalesContratoRel()
     {
         return $this->contratosAdicionalesContratoRel;
-    }
-
-    /**
-     * Set codigoclienteFk
-     *
-     * @param integer $codigoclienteFk
-     *
-     * @return RhuContrato
-     */
-    public function setCodigoclienteFk($codigoclienteFk)
-    {
-        $this->codigoclienteFk = $codigoclienteFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoclienteFk
-     *
-     * @return integer
-     */
-    public function getCodigoclienteFk()
-    {
-        return $this->codigoclienteFk;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
-     *
-     * @return RhuContrato
-     */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
-     */
-    public function getClienteRel()
-    {
-        return $this->clienteRel;
-    }
-
-    /**
-     * Add prestacionesContratoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
-     *
-     * @return RhuContrato
-     */
-    public function addPrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
-    {
-        $this->prestacionesContratoRel[] = $prestacionesContratoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove prestacionesContratoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
-     */
-    public function removePrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
-    {
-        $this->prestacionesContratoRel->removeElement($prestacionesContratoRel);
-    }
-
-    /**
-     * Get prestacionesContratoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPrestacionesContratoRel()
-    {
-        return $this->prestacionesContratoRel;
-    }
-
-    /**
-     * Add programacionesPagosHorasExtrasContratoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
-     *
-     * @return RhuContrato
-     */
-    public function addProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
-    {
-        $this->programacionesPagosHorasExtrasContratoRel[] = $programacionesPagosHorasExtrasContratoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove programacionesPagosHorasExtrasContratoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
-     */
-    public function removeProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
-    {
-        $this->programacionesPagosHorasExtrasContratoRel->removeElement($programacionesPagosHorasExtrasContratoRel);
-    }
-
-    /**
-     * Get programacionesPagosHorasExtrasContratoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProgramacionesPagosHorasExtrasContratoRel()
-    {
-        return $this->programacionesPagosHorasExtrasContratoRel;
-    }
-
-    /**
-     * Set codigoCentroTrabajoFk
-     *
-     * @param integer $codigoCentroTrabajoFk
-     *
-     * @return RhuContrato
-     */
-    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
-    {
-        $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCentroTrabajoFk
-     *
-     * @return integer
-     */
-    public function getCodigoCentroTrabajoFk()
-    {
-        return $this->codigoCentroTrabajoFk;
-    }
-
-    /**
-     * Set centroTrabajoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
-     *
-     * @return RhuContrato
-     */
-    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
-    {
-        $this->centroTrabajoRel = $centroTrabajoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get centroTrabajoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
-     */
-    public function getCentroTrabajoRel()
-    {
-        return $this->centroTrabajoRel;
     }
 }

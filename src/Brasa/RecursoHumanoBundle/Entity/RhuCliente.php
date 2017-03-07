@@ -149,11 +149,6 @@ class RhuCliente
      */
     protected $facturasClienteRel;
     
-     /**
-     * @ORM\OneToMany(targetEntity="RhuCentroTrabajo", mappedBy="clienteRel")
-     */
-    protected $centroTrabajoClienteRel;
-    
     /**
      * @ORM\OneToMany(targetEntity="RhuSucursal", mappedBy="clienteRel") 
      */ 

@@ -40,7 +40,21 @@ class RhuSucursal
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
+    
+         /**
+     * @ORM\OneToMany(targetEntity="RhuCentroTrabajo", mappedBy="sucursalRel")
+     */
+    protected $centroTrabajoRel;
    
+
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->centroTrabajoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoSucursalPk
@@ -146,5 +160,39 @@ class RhuSucursal
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Add centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     *
+     * @return RhuSucursal
+     */
+    public function addCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel)
+    {
+        $this->centroTrabajoRel[] = $centroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     */
+    public function removeCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel)
+    {
+        $this->centroTrabajoRel->removeElement($centroTrabajoRel);
+    }
+
+    /**
+     * Get centroTrabajoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCentroTrabajoRel()
+    {
+        return $this->centroTrabajoRel;
     }
 }

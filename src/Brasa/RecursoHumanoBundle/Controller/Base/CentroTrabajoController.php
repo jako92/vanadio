@@ -47,9 +47,9 @@ class CentroTrabajoController extends Controller {
     }
 
     /**
-     * @Route("/rhu/base/centro/trabajo/nuevo/{codigoCentroTrabajo}/{codigoCliente}", name="brs_rhu_base_centro_trabajo_nuevo")
+     * @Route("/rhu/base/centro/trabajo/nuevo/{codigoCentroTrabajo}/{codigoSucursal}", name="brs_rhu_base_centro_trabajo_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoCentroTrabajo, $codigoCliente) {
+    public function nuevoAction(Request $request, $codigoCentroTrabajo, $codigoSucursal) {
         $em = $this->getDoctrine()->getManager();
         $arUsuario = $this->getUser();
         if ($codigoCentroTrabajo == 0) {
@@ -58,14 +58,14 @@ class CentroTrabajoController extends Controller {
             $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
         }
 
-        $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-        $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
-        $nombre = $arCliente->getNombreCorto();
+        $arSucursal = new \Brasa\RecursoHumanoBundle\Entity\RhuSucursal();
+        $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+        $nombre = $arSucursal->getNombre();
         $form = $this->createForm(RhuCentroTrabajoType::class, $arCentroTrabajo);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arCentroTrabajo = $form->getData();
-            $arCentroTrabajo->setClienteRel($arCliente);
+            $arCentroTrabajo->setSucursalRel($arSucursal);
             $em->persist($arCentroTrabajo);
             $em->flush();
             //return $this->redirect($this->generateUrl('brs_tur_base_cliente_detalle'));
@@ -74,7 +74,7 @@ class CentroTrabajoController extends Controller {
 
         return $this->render('BrasaRecursoHumanoBundle:Base/CentroTrabajo:nuevo.html.twig', array(
                     'arCentroTrabajo' => $arCentroTrabajo,
-                    'arClientes' => $arCliente,
+                    'arSucursal' => $arSucursal,
                     'nombre' => $nombre,
                     'form' => $form->createView()
         ));

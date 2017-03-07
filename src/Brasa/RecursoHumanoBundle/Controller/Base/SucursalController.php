@@ -79,6 +79,49 @@ class SucursalController extends Controller {
         ));
     }
 
+    /**
+     * @Route("/rhu/base/sucursal/detalle/{codigoSucursal}", name="brs_rhu_base_sucursal_detalle")
+     */
+    public function detalleAction(Request $request, $codigoSucursal) {
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 31, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+        }
+        $paginator = $this->get('knp_paginator');
+        $session = new session;
+        $form = $this->createFormBuilder()
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+           
+            if ($form->get('BtnEliminar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if ($arrSeleccionados == null) {
+                    
+                } else {
+                    foreach ($arrSeleccionados AS $codigoCentroTrabajo) {
+                        $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
+                        $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
+                        $em->remove($arCentroTrabajo);
+                    }
+                }
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_rhu_base_sucursal_detalle', array('codigoSucursal' => $codigoSucursal)));
+            }
+        }
+        $arSucursal = new \Brasa\RecursoHumanoBundle\Entity\RhuSucursal();
+        $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+        $arCentroTrabajo = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo();
+        $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->findBy(array('codigoSucursalFk' => $codigoSucursal));
+        return $this->render('BrasaRecursoHumanoBundle:Base/Sucursal:detalle.html.twig', array(
+                    'arSucursal' => $arSucursal,
+                    'arCentroTrabajo' => $arCentroTrabajo,
+                    'codigoCliente' => $arSucursal->getCodigoClienteFk(),
+                    'form' => $form->createView()
+        ));
+    }
+
     private function listar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();

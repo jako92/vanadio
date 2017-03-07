@@ -25,9 +25,9 @@ class RhuCentroTrabajo {
     private $nombre;
 
     /**
-     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_sucursal_fk", type="integer", nullable=true)
      */
-    private $codigoClienteFk;
+    private $codigoSucursalFk;
 
     /**
      * @ORM\Column(name="estado_activo",type="boolean", nullable=true)
@@ -35,16 +35,17 @@ class RhuCentroTrabajo {
     private $estadoActivo = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="centroTrabajoClienteRel")
-     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     * @ORM\ManyToOne(targetEntity="RhuSucursal", inversedBy="centroTrabajoRel")
+     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
      */
-    protected $clienteRel;
+    protected $sucursalRel;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
-     */
-    protected $contratoRel;
+//    /**
+//     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
+//     */
+//    protected $contratoRel;
 
+   
     /**
      * Constructor
      */
@@ -88,27 +89,27 @@ class RhuCentroTrabajo {
     }
 
     /**
-     * Set codigoClienteFk
+     * Set codigoSucursalFk
      *
-     * @param integer $codigoClienteFk
+     * @param integer $codigoSucursalFk
      *
      * @return RhuCentroTrabajo
      */
-    public function setCodigoClienteFk($codigoClienteFk)
+    public function setCodigoSucursalFk($codigoSucursalFk)
     {
-        $this->codigoClienteFk = $codigoClienteFk;
+        $this->codigoSucursalFk = $codigoSucursalFk;
 
         return $this;
     }
 
     /**
-     * Get codigoClienteFk
+     * Get codigoSucursalFk
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
+    public function getCodigoSucursalFk()
     {
-        return $this->codigoClienteFk;
+        return $this->codigoSucursalFk;
     }
 
     /**
@@ -136,27 +137,27 @@ class RhuCentroTrabajo {
     }
 
     /**
-     * Set clienteRel
+     * Set sucursalRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel
      *
      * @return RhuCentroTrabajo
      */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel = null)
     {
-        $this->clienteRel = $clienteRel;
+        $this->sucursalRel = $sucursalRel;
 
         return $this;
     }
 
     /**
-     * Get clienteRel
+     * Get sucursalRel
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSucursal
      */
-    public function getClienteRel()
+    public function getSucursalRel()
     {
-        return $this->clienteRel;
+        return $this->sucursalRel;
     }
 
     /**

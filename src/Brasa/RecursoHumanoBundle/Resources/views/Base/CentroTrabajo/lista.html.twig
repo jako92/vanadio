@@ -44,13 +44,13 @@
             <tr>
                 <th>ID</th>
                 <th>NOMBRE</th>
-                <th>CLIENTE</th>
+                <th>SUCURSAL</th>
             </tr>
             {% for arCentroTrabajo in arCentroTrabajo %}
                 <tr>
                     <td>{{ arCentroTrabajo.codigoCentroTrabajoPk }} </td>
                     <td>{{ arCentroTrabajo.nombre  }}</td>
-                    <td>{{ arCentroTrabajo.clienteRel.nombreCorto | default('')}}</td>
+                    <td>{{ arCentroTrabajo.sucursalRel.nombre | default('')}}</td>
                 </tr>
             {% endfor %}
         </table>
