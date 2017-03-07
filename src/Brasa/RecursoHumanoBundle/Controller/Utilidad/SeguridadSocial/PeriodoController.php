@@ -1543,8 +1543,7 @@ class PeriodoController extends Controller {
             $codigoSucursal = $arPeriodoDetalle->getSsoSucursalRel()->getCodigoInterface();
             $sucursal = $arPeriodoDetalle->getSsoSucursalRel()->getNombre();
         }
-        //$periodoPagoDiferenteSalud = $arPeriodoDetalle->getSsoPeriodoRel()->getAnio() . '-' . $this->RellenarNr($arPeriodoDetalle->getSsoPeriodoRel()->getMes(), "0", 2, "I");
-        //$periodoPagoSalud = $arPeriodoDetalle->getSsoPeriodoRel()->getAnioPago() . '-' . $this->RellenarNr($arPeriodoDetalle->getSsoPeriodoRel()->getMesPago(), "0", 2, "I");
+        $periodoPagoDiferenteSalud = $arPeriodoDetalle->getSsoPeriodoRel()->getAnio() . '-' . $this->RellenarNr($arPeriodoDetalle->getSsoPeriodoRel()->getMes(), "0", 2, "I");        
         $periodoPagoSalud = $arPeriodoDetalle->getSsoPeriodoRel()->getAnioPago() . '-' . $this->RellenarNr($arPeriodoDetalle->getSsoPeriodoRel()->getMesPago(), "0", 2, "I");
         
         //1	2	1	2	N	Tipo de registro	Obligatorio. Debe ser 01
@@ -1576,7 +1575,7 @@ class PeriodoController extends Controller {
         //14	6	299	304	A	Código de la ARL a la cual el aportante se encuentra afiliado	Lo suministra el aportante 
         fputs($ar, $this->RellenarNr($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales(), " ", 6, "D"));
         //15	7	305	311	A	Periodo de pago para los sistemas diferentes al de salud	Obligatorio. Formato año y mes (aaaa-mm). Lo calcula el Operador de Información.
-        fputs($ar, $this->RellenarNr("", " ", 7, "D"));
+        fputs($ar, $this->RellenarNr($periodoPagoDiferenteSalud, " ", 7, "D"));
         //16	7	312	318	A	Periodo de pago para el sistema de salud	Obligatorio. Formato año y mes (aaaa-mm). Lo suministra el aportante.
         fputs($ar, $this->RellenarNr($periodoPagoSalud, " ", 7, "D"));
         //17	10	319	328	N	Número de radicación o de la Planilla Integrada de Liquidación de aportes.	Asignado por el sistema . Debe ser único por operador de información. 
