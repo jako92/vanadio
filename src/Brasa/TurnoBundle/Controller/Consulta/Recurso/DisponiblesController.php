@@ -1,6 +1,6 @@
 <?php
 
-namespace Brasa\TurnoBundle\Controller\Consulta;
+namespace Brasa\TurnoBundle\Controller\Consulta\Recurso;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class RecursosDisponiblesController extends Controller {
+class DisponiblesController extends Controller {
 
     var $strListaDql = "";
     var $codigoPedido = "";
@@ -23,6 +24,7 @@ class RecursosDisponiblesController extends Controller {
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 42)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
+        $session = new session;
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
@@ -111,10 +113,17 @@ class RecursosDisponiblesController extends Controller {
                 }
             }
         }
+        $codigoPuesto = $session->get('filtroCodigoPuesto');        
+        if($codigoPuesto) {            
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);            
+        } else {
+           $arPuesto = null; 
+        }
         return $this->render('BrasaTurnoBundle:Consultas/Recurso:disponible.html.twig', array(
                     'arRecurso' => $arrDisponibles,
                     'anio' => $anio,
                     'mes' => $mes,
+                    'arPuesto' => $arPuesto,
                     'form' => $form->createView()));
     }
 
@@ -138,13 +147,25 @@ class RecursosDisponiblesController extends Controller {
     }
 
     private function filtrar($form) {
-        
+        $session = new session;
+        $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());        
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
+        $strNombrePuesto = "";
+        if ($session->get('filtroCodigoPuesto')) {
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($session->get('filtroCodigoPuesto'));
+            if ($arPuesto) {
+                $strNombrePuesto = $arPuesto->getNombre();
+            } else {
+                $session->set('filtroCodigoPuesto', null);
+            }
+        }        
         $form = $this->createFormBuilder()
+                ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
+                ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))                
                 ->add('fecha', DateType::class, array('format' => 'yyyyMMdd', 'data' => new \DateTime('now')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();

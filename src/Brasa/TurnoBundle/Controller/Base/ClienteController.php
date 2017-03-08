@@ -137,12 +137,10 @@ class ClienteController extends Controller {
         $arGruposFacturacion = $em->getRepository('BrasaTurnoBundle:TurGrupoFacturacion')->findBy(array('codigoClienteFk' => $codigoCliente));
         $arClienteDirecciones = new \Brasa\TurnoBundle\Entity\TurClienteDireccion();
         $arClienteDirecciones = $em->getRepository('BrasaTurnoBundle:TurClienteDireccion')->findBy(array('codigoClienteFk' => $codigoCliente));
-        $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->findBy(array('codigoClienteFk' => $codigoCliente));
         return $this->render('BrasaTurnoBundle:Base/Cliente:detalle.html.twig', array(
                     'arCliente' => $arCliente,
                     'arPuestos' => $arPuestos,
-                    'arProyectos' => $arProyectos,
-                    'arCentroTrabajo'=>$arCentroTrabajo,
+                    'arProyectos' => $arProyectos,                    
                     'arGruposFacturacion' => $arGruposFacturacion,
                     'arClienteDirecciones' => $arClienteDirecciones,
                     'form' => $form->createView()
