@@ -531,15 +531,7 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $ibc = $arPeriodoEmpleadoDetalle->getIbc();
                     $vacaciones = $arPeriodoEmpleadoDetalle->getVrVacaciones();
                     $arAporte->setVrVacaciones($vacaciones);
-                    $arAporte->setVrIngresoBaseCotizacion($ibc);
-
-                    if($arPeriodoEmpleadoDetalle->getSalarioIntegral() == 'X') {
-                        $arAporte->setSalarioIntegral($arPeriodoEmpleadoDetalle->getSalarioIntegral());
-                    } else {
-                        $arAporte->setSalarioIntegral(' ');
-                    }
-
-                    $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());
+                    $arAporte->setVrIngresoBaseCotizacion($ibc);                    
                     if($arPeriodoEmpleadoDetalle->getIncapacidadGeneral()) {
                         $arAporte->setIncapacidadGeneral('X');
                         $arAporte->setDiasIncapacidadGeneral($dias);
@@ -575,7 +567,9 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     if($arPeriodoEmpleadoDetalle->getIngreso() == "X") {
                         $arAporte->setFechaIngreso($arPeriodoEmpleadoDetalle->getFechaIngreso()->format('Y-m-d'));
                     }
-                    $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());
+                    $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());                    
+                    $arAporte->setSalarioIntegral($arPeriodoEmpleado->getSalarioIntegral());
+                    
                     
                     $arAporte->setSalarioBasico($salario);
                     $arAporte->setCodigoEntidadPensionPertenece($arPeriodoEmpleado->getCodigoEntidadPensionPertenece());
@@ -615,15 +609,7 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $cotizacionRiesgos = $ibcRiesgos * $tarifaRiesgos / 100;
                     $cotizacionCaja = $ibcCaja * $tarifaCaja / 100;
                     $cotizacionSena = $ibcPension * $tarifaSena / 100;
-                    $cotizacionIcbf = $ibcPension * $tarifaIcbf / 100;                    
-                    
-                    //Redondeo forma 1                    
-                    //$cotizacionPension = $this->redondearAporte2($cotizacionPension, $dias, $tarifaPension);
-                    //$cotizacionSalud = $this->redondearAporte2($cotizacionSalud, $dias, $tarifaSalud);                    
-                    //$cotizacionRiesgos = $this->redondearAporte2($cotizacionRiesgos, $dias, $tarifaRiesgos);
-                    //$cotizacionCaja = $this->redondearAporte2($cotizacionCaja, $dias, $tarifaCaja);
-                    //$cotizacionSena = $this->redondearAporte2($cotizacionSena, $dias, $tarifaSena);
-                    //$cotizacionIcbf = $this->redondearAporte2($cotizacionIcbf, $dias, $tarifaIcbf);                                                           
+                    $cotizacionIcbf = $ibcPension * $tarifaIcbf / 100;                                                                            
                     
                     $cotizacionPension = $this->redondearAporte3($cotizacionPension);
                     $cotizacionSalud = $this->redondearAporte3($cotizacionSalud);

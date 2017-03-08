@@ -194,7 +194,7 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
         $arPeriodoEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
         $arPeriodoEmpleados = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->findBy(array('codigoPeriodoDetalleFk' => $codigoPeriodoDetalle));     
         foreach ($arPeriodoEmpleados as $arPeriodoEmpleado) {
-            $arPeriodoEmpleadoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
+            $arPeriodoEmpleadoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();            
             $arPeriodoEmpleadoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->find($arPeriodoEmpleado->getCodigoPeriodoEmpleadoPk());                        
             $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
             $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arPeriodoEmpleado->getCodigoContratoFk());                            
@@ -516,6 +516,9 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             //$arPeriodoEmpleadoActualizar->setVrVacaciones($ibcVacaciones);
             $arPeriodoEmpleadoActualizar->setDias($intDiasCotizar);        
             $arPeriodoEmpleadoActualizar->setIbc($ibc);                        
+            if($arContrato->getSalarioIntegral() == 1) {
+                $arPeriodoEmpleadoActualizar->setSalarioIntegral("X");
+            }
             $em->persist($arPeriodoEmpleadoActualizar);
             $arPeriodoDetalle->setEstadoActualizado(1);
             $em->persist($arPeriodoDetalle);

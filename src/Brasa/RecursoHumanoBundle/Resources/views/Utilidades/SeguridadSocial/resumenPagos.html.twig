@@ -52,6 +52,8 @@
             <th>AD</th>
             <th>PREST</th>
             <th>COT</th>
+            <th>HORAS</th>
+            <th>DIAS</th>
             <th>VALOR</th>
             <th>IBC</th>
             <th>IBP</th>
@@ -67,6 +69,8 @@
                 <td>{% if arPagosDetalles.adicional == 1 %}SI{% else %}NO{% endif %}</td>
                 <td>{% if arPagosDetalles.prestacional == 1 %}SI{% else %}NO{% endif %}</td>
                 <td>{% if arPagosDetalles.cotizacion == 1 %}SI{% else %}NO{% endif %}</td>
+                <td style="text-align: right">{{ arPagosDetalles.numeroHoras | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arPagosDetalles.numeroDias | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arPagosDetalles.vrPago | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arPagosDetalles.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arPagosDetalles.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>

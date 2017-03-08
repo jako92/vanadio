@@ -686,7 +686,7 @@ class PeriodoController extends Controller {
     }
 
     /**
-     * @Route("/rhu/seguridadsocial/resumen/pago/{codigoPeriodoDetalle}/{codigoEmpleado}", name="brs_rhu_ss_resumen_pago")
+     * @Route("/rhu/utilidad/seguridad/social/resumen/pago/{codigoPeriodoDetalle}/{codigoEmpleado}", name="brs_rhu_utilidad_seguridad_social_resumen_pago")
      */
     public function resumenPagosAction(Request $request, $codigoPeriodoDetalle, $codigoEmpleado) {
         $em = $this->getDoctrine()->getManager();
@@ -699,7 +699,7 @@ class PeriodoController extends Controller {
 
         $arPagos = $paginator->paginate($em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaConsultaPagosDQL("", $arEmpleado->getNumeroIdentificacion(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y/m/d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y/m/d'), "", "")), $request->query->get('page', 1), 50);
         $arPagosDetalles = $paginator->paginate($em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaConsultaPagosDetallesDQL($arEmpleado->getNumeroIdentificacion(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta())), $request->query->get('page', 1), 50);
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:resumenPagos.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:resumenPagos.html.twig', array(
                     'arPeriodoDetalle' => $arPeriodoDetalle,
                     'arPagos' => $arPagos,
                     'arPagosDetalles' => $arPagosDetalles,
