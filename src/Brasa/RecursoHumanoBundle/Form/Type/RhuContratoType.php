@@ -23,10 +23,7 @@ class RhuContratoType extends AbstractType {
                     'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                     'choice_label' => 'nombreCorto',
                 ))
-                ->add('centroTrabajoRel', EntityType::class, array(
-                    'class' => 'BrasaRecursoHumanoBundle:RhuCentroTrabajo',
-                    'choice_label' => 'nombre',
-                ))
+            
                 ->add('contratoTipoRel', EntityType::class, array(
                     'class' => 'BrasaRecursoHumanoBundle:RhuContratoTipo',
                     'choice_label' => 'nombre',
