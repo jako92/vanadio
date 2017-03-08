@@ -88,7 +88,7 @@
             </tr>
             {% for arSecuenciaDetalles in arSecuenciaDetalles %}
                 <tr>                
-                    <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_tur_base_secuencia_detalle_editar', { 'codigoSecuenciaDetalle': arSecuenciaDetalles.codigoSecuenciaDetallePk}) }}', 'AgregarContrato', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20></a></td>                                    
+                    <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_tur_base_secuencia_detalle_editar', { 'codigoSecuenciaDetalle': arSecuenciaDetalles.codigoSecuenciaDetallePk}) }}', 'editarSecuencia', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20></a></td>                                    
                     <td>{{ arSecuenciaDetalles.nombre }}</td>                                  
                     <td>{{ arSecuenciaDetalles.dias  }}</td>
                     <td>{{ arSecuenciaDetalles.dia1  }}</td>

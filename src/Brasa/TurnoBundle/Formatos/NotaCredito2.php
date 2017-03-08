@@ -307,6 +307,10 @@ class NotaCredito2 extends \FPDF_FPDF {
         $this->Text(60, 222, $arFactura->getClienteRel()->getSectorComercialRel()->getNombre());
         $this->Text(90, 222, "Estrato =");
         $this->Ln(4);
+        
+        
+        $this->SetFont('Arial', 'B', 8);        
+        $this->Text(30, 230, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
         //$this->SetFont('Arial', '', 8);
         //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoFactura());
         //$this->SetXY(30,228);

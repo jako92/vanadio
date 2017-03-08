@@ -26,20 +26,36 @@
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
-
-                <div class="form-group form-group-sm">
-                    <label for="form_TxtNombre" class="col-sm-3 control-label">Nombre:</label>
-                    <div class="col-sm-9">
+                <div     class="form-group form-group-sm">
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">     
+                                    {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.TxtNombre , { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <label for="form_TxtCodigo" class="col-sm-3 control-label">Codigo:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Codigo:</label>
+                    <div class="col-sm-4">                  
                         {{ form_widget(form.TxtCodigo, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
+                    </div>                    
+                </div>                                                                          
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -67,7 +83,7 @@
                     <td>{{ arPuestos.nombre }}</td>
                     <td>{{ arPuestos.ciudadRel.nombre | default('')}}</td>
                     <td>{{ arPuestos.operacionRel.nombre |default('')  }}</td>
-                    <td>{{ arPuestos.codigoCentroCostoFk| default('')  }}</td>                
+                    <td>{{ arPuestos.codigoCentroCostoContabilidadFk | default('')  }}</td>                
                     <td style="text-align: right">{{ arPuestos.costoDotacion | number_format(0, '.', ',') }}</td>
                     <td style="text-align: center"><a href="{{ path('brs_tur_base_puesto_nuevo', {'codigoPuesto': arPuestos.codigoPuestoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td style="text-align: center"><a href="{{ path('brs_tur_base_puesto_detalle', { 'codigoPuesto': arPuestos.codigoPuestoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>

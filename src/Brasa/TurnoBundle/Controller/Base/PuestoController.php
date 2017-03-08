@@ -40,9 +40,12 @@ class PuestoController extends Controller {
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
+                    $form = $this->formularioFiltro();
+                    $this->lista();
                 }
                 if ($form->get('BtnExcel')->isClicked()) {
                     $this->filtrar($form);
+                    $form = $this->formularioFiltro();
                     $this->generarExcel();
                 }
             }
@@ -100,9 +103,12 @@ class PuestoController extends Controller {
         }
         $arPuestoDotaciones = new \Brasa\TurnoBundle\Entity\TurPuestoDotacion();
         $arPuestoDotaciones = $em->getRepository('BrasaTurnoBundle:TurPuestoDotacion')->findBy(array('codigoPuestoFk' => $codigoPuesto));
+        $arPuestoAdicionales = new \Brasa\TurnoBundle\Entity\TurPuestoAdicional();
+        $arPuestoAdicionales = $em->getRepository('BrasaTurnoBundle:TurPuestoAdicional')->findBy(array('codigoPuestoFk' => $codigoPuesto));        
         return $this->render('BrasaTurnoBundle:Base/Puesto:detalle.html.twig', array(
                     'arPuesto' => $arPuesto,
                     'arPuestoDotaciones' => $arPuestoDotaciones,
+                    'arPuestoAdicionales' => $arPuestoAdicionales,
                     'form' => $form->createView()
         ));
     }
@@ -156,20 +162,42 @@ class PuestoController extends Controller {
     }
 
     private function lista() {
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurPuesto')->listaDQL(
-                $this->strCodigo, '', $this->strNombre
+        $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurPuesto')->listaDql(
+                $this->strCodigo, 
+                $session->get('filtroCodigoCliente'), 
+                $this->strNombre
         );
     }
 
     private function filtrar($form) {
+        $session = new session;
         $this->strCodigo = $form->get('TxtCodigo')->getData();
         $this->strNombre = $form->get('TxtNombre')->getData();
+        $session->set('filtroNit', $form->get('TxtNit')->getData());
         $this->lista();
     }
 
     private function formularioFiltro() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;
+        $strNombreCliente = "";
+        if ($session->get('filtroNit')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+            if ($arCliente) {
+                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
+                $strNombreCliente = $arCliente->getNombreCorto();
+            } else {
+                $session->set('filtroCodigoCliente', null);
+                $session->set('filtroNit', null);
+            }
+        } else {
+            $session->set('filtroCodigoCliente', null);
+        }        
         $form = $this->createFormBuilder()
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))                
                 ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $this->strNombre))
                 ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $this->strCodigo))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))

@@ -1,7 +1,7 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
     <!-- Content Header (Page header) -->
-   <section class="content-header">
+    <section class="content-header">
         <h1>
             Programacion turnos
             <small>Puesto: detalle</small>
@@ -16,12 +16,7 @@
         </ol>
     </section>     
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
+
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">
@@ -77,6 +72,7 @@
                         <td class="titulo">PESO MAXIMO:</td>
                         <td class="td-in-well">{{ arPuesto.pesoMaximo }}</td>
                         <td class="titulo">SEXO:</td>
+                        {% if arPuesto.codigoSexoFk == null %}<td class="td-in-well">INDIFERENTE</td>{% endif %}
                         {% if arPuesto.codigoSexoFk == '0' %}<td class="td-in-well">INDIFERENTE</td>{% endif %}
                         {% if arPuesto.codigoSexoFk == 'M' %}<td class="td-in-well">MASCULINO</td>{% endif %}
                         {% if arPuesto.codigoSexoFk == 'F' %}<td class="td-in-well">FEMENINO</td>{% endif %}
@@ -101,6 +97,7 @@
 
         <ul class="nav nav-tabs">
             <li class="active"><a href="#dotaciones" data-toggle="tab">Dotaciones</a></li>            
+            <li><a href="#adicionales" data-toggle="tab">Adicionales al pago</a></li>            
         </ul>
 
         <div class="tab-content">
@@ -137,8 +134,30 @@
                     </div>                    
                 </div>
             </div>
-
+            <div class="tab-pane" id="adicionales">
+                <!-- Menu Encabezado Movimiento -->
+                <div id="adicionales" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <tr>
+                            <th>COD</th>                                
+                            <th>CANTIDAD</th>
+                            <th>VALOR</th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPuestoAdicional[]');"/></th>
+                        </tr>
+                        {% for arPuestoAdicionales in arPuestoAdicionales %}
+                            <tr>
+                                <td>{{ arPuestoAdicionales.codigoPuestoAdicionalPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arPuestoAdicionales.codigoPuestoAdicionalPk }}"></td>                                                    
+                                <td style="text-align: right">{{ arPuestoAdicionales.cantidad | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arPuestoAdicionales.valor | number_format(2, '.', ',') }}</td>                                
+                                <td><input type="checkbox" name="ChkSeleccionarPuestoAdicional[]" value="{{ arPuestoAdicionales.codigoPuestoAdicionalPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>                  
+                </div>
+            </div>
         </div>
+
+
 
         {{ form_rest(form) }}
         {{ form_end(form) }}

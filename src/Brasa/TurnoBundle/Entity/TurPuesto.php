@@ -246,6 +246,11 @@ class TurPuesto
     protected $puestosDotacionesPuestoRel;     
     
     /**
+     * @ORM\OneToMany(targetEntity="TurPuestoAdicional", mappedBy="puestoRel")
+     */
+    protected $puestosAdicionalesPuestoRel;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="TurSimulacionDetalle", mappedBy="puestoRel")
      */
     protected $simulacionesDetallesPuestoRel;    
@@ -271,7 +276,6 @@ class TurPuesto
     protected $costosDetallesPuestoRel;     
     
 
-
     /**
      * Constructor
      */
@@ -285,6 +289,7 @@ class TurPuesto
         $this->programacionesAlternasPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosServiciosPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->puestosDotacionesPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->puestosAdicionalesPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->simulacionesDetallesPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasDetallesPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rhuEmpleadosPuestoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1436,6 +1441,40 @@ class TurPuesto
     public function getPuestosDotacionesPuestoRel()
     {
         return $this->puestosDotacionesPuestoRel;
+    }
+
+    /**
+     * Add puestosAdicionalesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuestoAdicional $puestosAdicionalesPuestoRel
+     *
+     * @return TurPuesto
+     */
+    public function addPuestosAdicionalesPuestoRel(\Brasa\TurnoBundle\Entity\TurPuestoAdicional $puestosAdicionalesPuestoRel)
+    {
+        $this->puestosAdicionalesPuestoRel[] = $puestosAdicionalesPuestoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove puestosAdicionalesPuestoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPuestoAdicional $puestosAdicionalesPuestoRel
+     */
+    public function removePuestosAdicionalesPuestoRel(\Brasa\TurnoBundle\Entity\TurPuestoAdicional $puestosAdicionalesPuestoRel)
+    {
+        $this->puestosAdicionalesPuestoRel->removeElement($puestosAdicionalesPuestoRel);
+    }
+
+    /**
+     * Get puestosAdicionalesPuestoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPuestosAdicionalesPuestoRel()
+    {
+        return $this->puestosAdicionalesPuestoRel;
     }
 
     /**
