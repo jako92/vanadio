@@ -40,10 +40,10 @@ class RhuCentroTrabajo {
      */
     protected $sucursalRel;
 
-//    /**
-//     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
-//     */
-//    protected $contratoRel;
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
+     */
+    protected $contratoRel;
 
    
     /**

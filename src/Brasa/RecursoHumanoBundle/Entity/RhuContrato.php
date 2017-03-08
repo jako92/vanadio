@@ -259,10 +259,15 @@ class RhuContrato
      */    
     private $codigoContratoGrupoFk;     
     
-//    /**
-//     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
-//     */    
-//    private $codigoCentroTrabajoFk;
+    /**
+     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroTrabajoFk;
+    
+       /**
+     * @ORM\Column(name="codigo_sucursal_fk", type="integer", nullable=true)
+     */    
+    private $codigosucursalFk;
     
     /**     
      * @ORM\Column(name="limitarHoraExtra", type="boolean")
@@ -415,11 +420,17 @@ class RhuContrato
      */
     protected $ciudadLaboraRel;
     
-//     /**
-//     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
-//     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
-//     */
-//    protected $centroTrabajoRel;   
+     /**
+     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
+     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
+     */
+    protected $centroTrabajoRel;   
+    
+      /**
+     * @ORM\ManyToOne(targetEntity="RhuSucursal", inversedBy="contratoRel")
+     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
+     */
+    protected $sucursalRel;  
     
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="contratoRel")
@@ -531,6 +542,7 @@ class RhuContrato
      */
     protected $contratosAdicionalesContratoRel;
   
+    
     /**
      * Constructor
      */
@@ -1723,6 +1735,54 @@ class RhuContrato
     }
 
     /**
+     * Set codigoCentroTrabajoFk
+     *
+     * @param integer $codigoCentroTrabajoFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
+    {
+        $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroTrabajoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroTrabajoFk()
+    {
+        return $this->codigoCentroTrabajoFk;
+    }
+
+    /**
+     * Set codigosucursalFk
+     *
+     * @param integer $codigosucursalFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigosucursalFk($codigosucursalFk)
+    {
+        $this->codigosucursalFk = $codigosucursalFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigosucursalFk
+     *
+     * @return integer
+     */
+    public function getCodigosucursalFk()
+    {
+        return $this->codigosucursalFk;
+    }
+
+    /**
      * Set limitarHoraExtra
      *
      * @param boolean $limitarHoraExtra
@@ -2344,6 +2404,54 @@ class RhuContrato
     public function getCiudadLaboraRel()
     {
         return $this->ciudadLaboraRel;
+    }
+
+    /**
+     * Set centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     *
+     * @return RhuContrato
+     */
+    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
+    {
+        $this->centroTrabajoRel = $centroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroTrabajoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
+     */
+    public function getCentroTrabajoRel()
+    {
+        return $this->centroTrabajoRel;
+    }
+
+    /**
+     * Set sucursalRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\Rhusucursal $sucursalRel
+     *
+     * @return RhuContrato
+     */
+    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\Rhusucursal $sucursalRel = null)
+    {
+        $this->sucursalRel = $sucursalRel;
+
+        return $this;
+    }
+
+    /**
+     * Get sucursalRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\Rhusucursal
+     */
+    public function getSucursalRel()
+    {
+        return $this->sucursalRel;
     }
 
     /**

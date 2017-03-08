@@ -1,18 +1,17 @@
 <?php
 
-
 namespace Brasa\RecursoHumanoBundle\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="rhu_sucursal")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuSucursalRepository")
  */
-class RhuSucursal
-{
+class RhuSucursal {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_sucursal_pk", type="integer")
@@ -22,38 +21,42 @@ class RhuSucursal
 
     /**
      * @ORM\Column(name="nombre", type="string", length=160, nullable=true)
-     */    
+     */
     private $nombre;
-    
-     /**
+
+    /**
      * @ORM\Column(name="estado_activo",type="boolean", nullable=true)
-     */    
-    private $estadoActivo=0;
-    
+     */
+    private $estadoActivo = 0;
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoClienteFk;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="sucursalClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
-    
-         /**
+
+    /**
      * @ORM\OneToMany(targetEntity="RhuCentroTrabajo", mappedBy="sucursalRel")
      */
     protected $centroTrabajoRel;
-   
 
-    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="sucursalRel")
+     */
+    protected $contratoRel;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->centroTrabajoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -194,5 +197,39 @@ class RhuSucursal
     public function getCentroTrabajoRel()
     {
         return $this->centroTrabajoRel;
+    }
+
+    /**
+     * Add contratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel
+     *
+     * @return RhuSucursal
+     */
+    public function addContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel)
+    {
+        $this->contratoRel[] = $contratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove contratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel
+     */
+    public function removeContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel)
+    {
+        $this->contratoRel->removeElement($contratoRel);
+    }
+
+    /**
+     * Get contratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContratoRel()
+    {
+        return $this->contratoRel;
     }
 }
