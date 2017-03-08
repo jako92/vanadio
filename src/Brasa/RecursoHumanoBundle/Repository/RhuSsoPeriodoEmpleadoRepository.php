@@ -299,9 +299,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 //$arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
                 $arPeriodoEmpleadoDetalle->setVacaciones(1);
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
-                $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                            
+                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                            
+                $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                            
                 $arPeriodoEmpleadoDetalle->setTarifaCaja(4);                   
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrVacacion['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrVacacion['fechaHastaNovedad']));
@@ -350,9 +349,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $ibcIncapacidad = ceil($arrIncapacidad['ibc']);                
                 $arPeriodoEmpleadoDetalle->setIbc($ibcIncapacidad);   
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
-                $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                                 
+                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                            
+                $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                                 
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrIncapacidad['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrIncapacidad['fechaHastaNovedad']));             
                 $diaSalarioLicencia = $ibcIncapacidad / $arrIncapacidad['dias'];
@@ -386,9 +384,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                     $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
                     $ibcLicencia = $arrLicencia['ibc'];                    
                     $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-                    $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
-                    $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-                    $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);                               
+                    $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                                
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                               
                 } else {
                     $ibcLicencia = $diaSalario * $arrLicencia['dias'];
                     $diasLicencia += $arrLicencia['dias'];
@@ -433,9 +430,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
             $arPeriodoEmpleadoDetalle->setIbc($ibc);            
             $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-            $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);            
-            $porcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
-            $arPeriodoEmpleadoDetalle->setTarifaSalud($porcentaje);            
+            $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                        
+            $arPeriodoEmpleadoDetalle->setTarifaSalud(4);            
             $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
             $arPeriodoEmpleadoDetalle->setTarifaCaja(4); 
             $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
