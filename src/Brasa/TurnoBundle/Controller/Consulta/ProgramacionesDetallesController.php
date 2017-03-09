@@ -193,7 +193,10 @@ class ProgramacionesDetallesController extends Controller {
                 ->setCellValue('AJ1', 'D28')
                 ->setCellValue('AK1', 'D29')
                 ->setCellValue('AL1', 'D30')
-                ->setCellValue('AM1', 'D31');
+                ->setCellValue('AM1', 'D31')
+                ->setCellValue('AN1', 'HORAS')
+                ->setCellValue('AO1', 'HORAS D')
+                ->setCellValue('AP1', 'HORAS N');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -235,7 +238,10 @@ class ProgramacionesDetallesController extends Controller {
                     ->setCellValue('AJ' . $i, $arProgramacionDetalle->getDia28())
                     ->setCellValue('AK' . $i, $arProgramacionDetalle->getDia29())
                     ->setCellValue('AL' . $i, $arProgramacionDetalle->getDia30())
-                    ->setCellValue('AM' . $i, $arProgramacionDetalle->getDia31());
+                    ->setCellValue('AM' . $i, $arProgramacionDetalle->getDia31())
+                    ->setCellValue('AN' . $i, $arProgramacionDetalle->getHoras())
+                    ->setCellValue('AO' . $i, $arProgramacionDetalle->getHorasDiurnas())
+                    ->setCellValue('AP' . $i, $arProgramacionDetalle->getHorasNocturnas());
 
             if ($arProgramacionDetalle->getPuestoRel()) {
                 $objPHPExcel->setActiveSheetIndex(0)
