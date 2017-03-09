@@ -43,6 +43,7 @@ DELETE FROM tur_cotizacion;
 /*DELETE FROM tur_recurso;*/
 
 /* Recurso humano */
+DELETE FROM rhu_prestacion;
 DELETE FROM rhu_visita;
 DELETE FROM rhu_provision;
 DELETE FROM rhu_provision_periodo;
@@ -76,6 +77,7 @@ DELETE FROM rhu_cambio_salario;
 DELETE FROM rhu_factura_detalle;
 DELETE FROM rhu_factura;
 DELETE FROM rhu_sso_aporte;
+DELETE FROM rhu_sso_periodo_empleado_detalle;
 DELETE FROM rhu_sso_periodo_empleado;
 DELETE FROM rhu_sso_periodo_detalle;
 DELETE FROM rhu_seleccion_entrevista;
