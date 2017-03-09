@@ -427,42 +427,44 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             if($ibc < $ibcMinimo) {
                 $ibc = ceil($ibcMinimo);
             }            
-            $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
-            $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
-            $arPeriodoEmpleadoDetalle->setDias($diasOrdinarios);
-            $arPeriodoEmpleadoDetalle->setHoras($horasOrdinarias);
-            $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
-            $arPeriodoEmpleadoDetalle->setIbc($ibc);            
-            $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-            $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                        
-            $arPeriodoEmpleadoDetalle->setTarifaSalud(4);            
-            $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
-            $arPeriodoEmpleadoDetalle->setTarifaCaja(4); 
-            $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
-            $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);            
-            if($strNovedadRetiro == 'X') {
-                $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
-                $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findOneBy(array('codigoContratoFk' => $arContrato->getCodigoContratoPk(), 'estadoAutorizado' => 1));
-                if($arLiquidacion) {
-                    $ibcVacaciones = $arLiquidacion->getVrVacaciones();
-                    $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
-                }
-            }   
-            if($strNovedadIngreso == "X") {
-                $arPeriodoEmpleadoDetalle->setFechaIngreso($arContrato->getFechaDesde());
-            }            
-            $diaSalarioOrdinario = 0;
             if($diasOrdinarios > 0) {
-                $diaSalarioOrdinario = $ibc / $diasOrdinarios;
-            } else {
-                echo "Problema dias " . $arPeriodoEmpleado->getEmpleadoRel()->getNumeroIdentificacion() . " ";
-            }
-            
-            if($diaSalarioOrdinario != $diaSalario) {
-                $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
-            }         
+                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
+                $arPeriodoEmpleadoDetalle->setDias($diasOrdinarios);
+                $arPeriodoEmpleadoDetalle->setHoras($horasOrdinarias);
+                $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);
+                $arPeriodoEmpleadoDetalle->setIbc($ibc);            
+                $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
+                $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                        
+                $arPeriodoEmpleadoDetalle->setTarifaSalud(4);            
+                $arPeriodoEmpleadoDetalle->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());
+                $arPeriodoEmpleadoDetalle->setTarifaCaja(4); 
+                $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
+                $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);            
+                if($strNovedadRetiro == 'X') {
+                    $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
+                    $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findOneBy(array('codigoContratoFk' => $arContrato->getCodigoContratoPk(), 'estadoAutorizado' => 1));
+                    if($arLiquidacion) {
+                        $ibcVacaciones = $arLiquidacion->getVrVacaciones();
+                        $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
+                    }
+                }   
+                if($strNovedadIngreso == "X") {
+                    $arPeriodoEmpleadoDetalle->setFechaIngreso($arContrato->getFechaDesde());
+                }            
+                $diaSalarioOrdinario = 0;
+                if($diasOrdinarios > 0) {
+                    $diaSalarioOrdinario = $ibc / $diasOrdinarios;
+                } else {
+                    echo "Problema dias " . $arPeriodoEmpleado->getEmpleadoRel()->getNumeroIdentificacion() . " ";
+                }
 
-            $em->persist($arPeriodoEmpleadoDetalle);            
+                if($diaSalarioOrdinario != $diaSalario) {
+                    $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
+                }         
+
+                $em->persist($arPeriodoEmpleadoDetalle);                 
+            }           
             
             //$arrLicencias
             
