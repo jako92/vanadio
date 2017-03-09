@@ -34,18 +34,24 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-4">
+                    <label class="col-sm-1 control-label"></label>
 
-                    </div>
                     <label class="col-sm-2 control-label">Secuencia:</label>
                     <div class="col-sm-3">                  
                         {{ form_widget(form.secuenciaDetalleRel , { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                   
+                    </div>          
+                    <label class="col-sm-1 control-label">Pocision:</label>
                     <div class="col-sm-1">                  
                         {{ form_widget(form.TxtPosicion , { 'attr': {'class': 'form-control'} }) }}
-                    </div>                                       
-
+                    </div>              
+                    <label class="col-sm-1 control-label">Desde:</label>
+                    <div class="col-sm-1">                  
+                        {{ form_widget(form.TxtDesde , { 'attr': {'class': 'form-control'} }) }}
+                    </div> 
+                    <label class="col-sm-1 control-label">Hasta:</label>
+                    <div class="col-sm-1">                  
+                        {{ form_widget(form.TxtHasta , { 'attr': {'class': 'form-control'} }) }}
+                    </div>                     
                 </div>                                     
             </div>
         </div>    

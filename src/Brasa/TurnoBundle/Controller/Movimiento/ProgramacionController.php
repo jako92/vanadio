@@ -247,8 +247,9 @@ class ProgramacionController extends Controller {
     public function detalleNuevoAction(Request $request, $codigoProgramacion, $codigoPuesto) {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
-        $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
+        $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();        
         $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $arProgramacion->getFecha()->format('m') + 1, 1, $arProgramacion->getFecha()->format('Y')) - 1));
         $form = $this->createFormBuilder()
                 ->add('secuenciaDetalleRel', EntityType::class, array(
                     'class' => 'BrasaTurnoBundle:TurSecuenciaDetalle',
@@ -261,6 +262,8 @@ class ProgramacionController extends Controller {
                 ->add('TxtCodigoRecurso', TextType::class)
                 ->add('TxtNombreRecurso', TextType::class)
                 ->add('TxtPosicion', NumberType::class, array('data' => 1))
+                ->add('TxtDesde', NumberType::class, array('data' => 1))
+                ->add('TxtHasta', NumberType::class, array('data' => $intUltimoDia))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar',))
                 ->getForm();
         $form->handleRequest($request);
@@ -272,6 +275,8 @@ class ProgramacionController extends Controller {
                     if ($codigoRecurso) {
                         $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($codigoRecurso);
                     }
+                    $desde = $form->get('TxtDesde')->getData();
+                    $hasta = $form->get('TxtHasta')->getData();
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $arrControles = $request->request->All();
                     if (count($arrSeleccionados) > 0) {
@@ -299,7 +304,7 @@ class ProgramacionController extends Controller {
                                     if ($posicionInicial <= $arrSecuenciaDetalle) {
                                         $j = $posicionInicial;
                                     }
-                                    for ($i = 1; $i <= $intUltimoDia; $i++) {
+                                    for ($i = $desde; $i <= $hasta; $i++) {
                                         if ($i == 1) {
                                             $arProgramacionDetalle->setDia1($arrSecuenciaDetalle[$j]);
                                         }
