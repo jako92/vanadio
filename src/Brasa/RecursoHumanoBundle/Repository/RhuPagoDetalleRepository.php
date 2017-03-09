@@ -390,6 +390,15 @@ class RhuPagoDetalleRepository extends EntityRepository {
         $arrayResultado = $query->getResult();        
         return $arrayResultado;
     }    
+    public function licenciaAgrupada($fechaDesde, $fechaHasta, $codigoContrato) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MIN(pd.fechaHastaNovedad) as fechaHastaNovedad FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
+                . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoLicenciaFk IS NOT NULL";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();        
+        return $arrayResultado;
+    }        
     public function incapacidad($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
         $dql   = "SELECT pd.codigoIncapacidadFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MIN(pd.fechaHastaNovedad) as fechaHastaNovedad FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "

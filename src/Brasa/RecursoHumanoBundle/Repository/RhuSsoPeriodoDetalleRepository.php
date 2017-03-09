@@ -567,7 +567,10 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     if($arPeriodoEmpleadoDetalle->getIngreso() == "X") {
                         $arAporte->setFechaIngreso($arPeriodoEmpleadoDetalle->getFechaIngreso()->format('Y-m-d'));
                     }
-                    $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());                    
+                    // 19 Aprendices del Sena en etapa productiva
+                    if($arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() != 19 && $arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() != 12 ) {
+                        $arAporte->setVariacionTransitoriaSalario($arPeriodoEmpleadoDetalle->getVariacionTransitoriaSalario());                                            
+                    }                    
                     $arAporte->setSalarioIntegral($arPeriodoEmpleado->getSalarioIntegral());
                     
                     
@@ -581,27 +584,44 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $arAporte->setEntidadRiesgoProfesionalRel($arEntidadRiesgos);
 
                     $diasPension = $dias;
-                    
+                    $diasRiesgos = $dias;
+                    $diasCaja = $dias;
                     //Despues del 6 marzo
                     $ibc = $this->redondearIbc2($ibc);
                     $ibcPension = $ibc;
                     $ibcSalud = $ibc;
                     $ibcRiesgos = $ibc;
                     $ibcCaja = $this->redondearIbc2($ibc+$vacaciones);
+                    $ibcOtrosParafiscales = $ibc;
                     
-                    $tarifaPension = $arPeriodoEmpleadoDetalle->getTarifaPension();
-                    if($arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 19 || $arPeriodoEmpleado->getContratoRel()->getCodigoTipoCotizanteFk() == 12) {
-                        $tarifaPension = 12.5;
-                    }
+                    $tarifaPension = $arPeriodoEmpleadoDetalle->getTarifaPension();                                      
                     $tarifaSalud = $arPeriodoEmpleadoDetalle->getTarifaSalud();
                     $tarifaRiesgos = $arPeriodoEmpleadoDetalle->getTarifaRiesgos();
                     $tarifaCaja = $arPeriodoEmpleadoDetalle->getTarifaCaja();
                     $tarifaIcbf = 0;
                     $tarifaSena = 0;
-                    if((($ibc) > (10 * $arConfiguracionNomina->getVrSalario()))) {
+                    if($arAporte->getTipoCotizante() == '19' || $arAporte->getTipoCotizante() == '12' || $arAporte->getTipoCotizante() == '23') {
+                        $diasPension = 0;
+                        $tarifaPension = 0;
+                        $ibcPension = 0;
+                        $tarifaSalud = 12.5;  
+                        $ibcCaja = 0;
+                        $diasCaja = 0;
+                        $tarifaCaja = 0;
+                    }                    
+                    if($arAporte->getTipoCotizante() == '12') {
+                        $diasRiesgos = 0;
+                        $tarifaRiesgos = 0;
+                    }  
+                    if($arAporte->getTipoCotizante() == '23') {
+                        $tarifaSalud = 0;
+                    }
+                    if((($ibc) > (10 * $arConfiguracionNomina->getVrSalario()))) {                        
                         $tarifaSalud = 12.5;
                         $tarifaIcbf = 3;
                         $tarifaSena = 2;
+                    } else {
+                        $ibcOtrosParafiscales = 0;
                     }
 
                     $cotizacionPension = $ibcPension * $tarifaPension / 100;
@@ -646,14 +666,14 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $ibcCajaTotal += $ibcCaja;
                     $arAporte->setDiasCotizadosPension($diasPension);
                     $arAporte->setDiasCotizadosSalud($dias);
-                    $arAporte->setDiasCotizadosRiesgosProfesionales($dias);
-                    $arAporte->setDiasCotizadosCajaCompensacion($dias);
+                    $arAporte->setDiasCotizadosRiesgosProfesionales($diasRiesgos);
+                    $arAporte->setDiasCotizadosCajaCompensacion($diasCaja);
 
                     $arAporte->setIbcPension($ibcPension);
                     $arAporte->setIbcSalud($ibcSalud);
                     $arAporte->setIbcRiesgosProfesionales($ibcRiesgos);
                     $arAporte->setIbcCaja($ibcCaja);
-
+                    $arAporte->setIbcOtrosParafiscalesDiferentesCcf($ibcOtrosParafiscales);
                     $arAporte->setTarifaPension($tarifaPension);
                     $arAporte->setTarifaSalud($tarifaSalud);
                     $arAporte->setTarifaRiesgos($tarifaRiesgos);

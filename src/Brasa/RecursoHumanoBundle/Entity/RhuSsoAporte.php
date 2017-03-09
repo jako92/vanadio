@@ -665,6 +665,7 @@ class RhuSsoAporte
     
 
 
+
     /**
      * Get codigoAportePk
      *
