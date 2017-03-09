@@ -188,7 +188,7 @@ class TurProgramacionDetalleRepository extends EntityRepository {
                 foreach ($arPlantillaDetalles as $arPlantillaDetalle) {
                     $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
                     $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
-                    $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPlantilla->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getFechaIniciaPlantilla());
+                    $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPlantilla->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getServicioDetalleRel()->getFechaIniciaPlantilla());
                     $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);                    
                     $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso();
                     $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleRecurso')->findBy(array('codigoServicioDetalleFk' => $arPedidoDetalle->getCodigoServicioDetalleFk(), 'posicion' => $arPlantillaDetalle->getPosicion()));
