@@ -288,7 +288,11 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             foreach ($arrVacaciones as $arrVacacion) {
                 $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();                
                 $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($arrVacacion['codigoVacacionFk']);                
-                $diasVacaciones += $arrVacacion['dias'];
+                $diasVacaciones += $arrVacacion['dias'];                
+                $ibcMinimo = ($salarioMinimo / 30) * $diasVacaciones;            
+                if($arrVacacion['ibc'] < $ibcMinimo) {
+                    $arrVacacion['ibc'] = ceil($ibcMinimo);
+                }
                 $ibcVacaciones += $arrVacacion['ibc'];
                 $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
