@@ -115,8 +115,8 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <div class="pull-left">
-                            <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                        <div class="col-xs-4 text-left">
+                            <a href="{{ path('brs_seg_usuario_detalle_ver', { 'codigoUsuario': app.user.id }) }}">Perfil</a>
                         </div>
                         <div class="pull-right">
                             <a href="{{ path('logout') }}" class="btn btn-default btn-flat">Cerrar sesion</a>
