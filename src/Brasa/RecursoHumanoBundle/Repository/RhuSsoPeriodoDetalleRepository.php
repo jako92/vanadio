@@ -684,19 +684,35 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $floCotizacionFSPSolidaridad = 0;
                     $floCotizacionFSPSubsistencia = 0;
                     $floAporteVoluntarioFondoPensionesObligatorias = 0;
-                    $floCotizacionVoluntariaFondoPensionesObligatorias = 0;
-
+                    $floCotizacionVoluntariaFondoPensionesObligatorias = 0;                    
                     if($ibcPension >= ($arConfiguracionNomina->getVrSalario() * 4)) {
-                        $floCotizacionFSPSolidaridad = round($ibcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
-                        $floCotizacionFSPSubsistencia = round($ibcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
+                        $porcentajeSolidaridad = $this->porcentajeFondo($arConfiguracionNomina->getVrSalario(), $ibcPension);
+                        $porcentajeSubsistencia = $porcentajeSolidaridad - 0.5;
+                        $cotizacionSolidaridad = $ibcPension * 0.5 / 100;
+                        $cotizacionSubsistencia = $ibcPension * $porcentajeSubsistencia / 100;
+                
+                        $floCotizacionFSPSolidaridad = $this->redondearAporte3($cotizacionSolidaridad);
+                        $floCotizacionFSPSubsistencia = $this->redondearAporte3($cotizacionSubsistencia);
                     }
 
+                    
+                    /*if($floSalario >= ($arConfiguracionNomina->getVrSalario() * 4)) {
+                        $floCotizacionFSPSolidaridad = 0;
+                        $floCotizacionFSPSubsistencia = 0;
+                    }
+                    
+                    if($floIbcPension >= ($arConfiguracionNomina->getVrSalario() * 4)) {
+                        $floCotizacionFSPSolidaridad = round($floIbcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
+                        $floCotizacionFSPSubsistencia = round($floIbcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
+                    }*/                     
+                    
+                    
                     $cotizacionFondos = $floAporteVoluntarioFondoPensionesObligatorias + $floCotizacionVoluntariaFondoPensionesObligatorias + $cotizacionPension;
 
                     $arAporte->setAporteVoluntarioFondoPensionesObligatorias($floAporteVoluntarioFondoPensionesObligatorias);
                     $arAporte->setCotizacionVoluntarioFondoPensionesObligatorias($floCotizacionVoluntariaFondoPensionesObligatorias);
                     $arAporte->setAportesFondoSolidaridadPensionalSolidaridad($floCotizacionFSPSolidaridad);
-                    $arAporte->setAportesFondoSolidaridadPensionalSubsistencia($floCotizacionFSPSolidaridad);
+                    $arAporte->setAportesFondoSolidaridadPensionalSubsistencia($floCotizacionFSPSubsistencia);
                     $arAporte->setTotalCotizacionFondos($cotizacionFondos);
                     $arAporte->setCotizacionPension($cotizacionPension);
                     $arAporte->setCotizacionSalud($cotizacionSalud);
@@ -943,4 +959,27 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
         return ( is_numeric($cotizacion) && is_numeric($significance) ) ? (ceil($cotizacion/$significance)*$significance) : 0;        
     }      
     
+    public function porcentajeFondo($salarioMinimo, $ibc) {
+        $salariosMinimos = round($ibc / $salarioMinimo);
+        $porcentaje = 0;
+        if($salariosMinimos >= 4 && $salariosMinimos < 16) {
+            $porcentaje = 1;
+        }
+        if($salariosMinimos >= 16 && $salariosMinimos < 17) {
+            $porcentaje = 1.2;   
+        }
+        if($salariosMinimos >= 17 && $salariosMinimos < 18) {
+            $porcentaje = 1.4; 
+        }
+        if($salariosMinimos >= 18 && $salariosMinimos < 19) {
+            $porcentaje = 1.6; 
+        }
+        if($salariosMinimos >= 19 && $salariosMinimos < 20) {
+            $porcentaje = 1.8; 
+        }
+        if($salariosMinimos >= 20) {
+            $porcentaje = 2; 
+        }                
+        return $porcentaje;
+    }
 }
