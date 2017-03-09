@@ -314,14 +314,18 @@ class FormatoHojaVida extends \FPDF_FPDF {
             $empleadoFamiliaEntidadSalud = "";
                 if ($arEmpleadoFamiliares->getEntidadSaludRel() != null){
                 $empleadoFamiliaEntidadSalud = $arEmpleadoFamiliares->getEntidadSaludRel()->getNombre();
-            }
+                }
             $this->Cell(30, 6, $empleadoFamiliaEntidadSalud, 1, 0, 'L', 1);
-            $this->Cell(32, 6, utf8_decode($arEmpleadoFamiliares->getEntidadCajaRel()->getNombre()), 1, 0, 'L', 1);
+            $empleadoFamiliaEntidadCaja = "";
+                if ($arEmpleadoFamiliares->getEntidadCajaRel() !=null){
+                $empleadoFamiliaEntidadCaja = $arEmpleadoFamiliares->getEntidadCajaRel()->getNombre();
+                }
+            $this->Cell(32, 6,$empleadoFamiliaEntidadCaja , 1, 0, 'L', 1);
             $this->SetFont('Arial','',8);
             $fechaNacimientoFamiliar = "";
-            if ($arEmpleadoFamiliares->getFechaNacimiento() != null){
+                if ($arEmpleadoFamiliares->getFechaNacimiento() != null){
                 $fechaNacimientoFamiliar = $arEmpleadoFamiliares->getFechaNacimiento()->format('Y/m/d');
-            }
+                }
             $this->Cell(18, 6, $fechaNacimientoFamiliar, 1, 0, 'L', 1);
             $this->SetFont('Arial','',6);
             $this->Cell(34, 6, utf8_decode($arEmpleadoFamiliares->getOcupacion()), 1, 0, 'L', 1);
