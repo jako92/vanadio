@@ -374,79 +374,46 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             //Licencias
             $diasLicencia = 0;
             $diasLicenciaMaternidad = 0;  
-            if($diasOrdinariosTotal > 0) {
-                foreach ($arrLicencias as $arrLicencia) {
-                    $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
-                    $arLicencia = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();                
-                    $arLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->find($arrLicencia['codigoLicenciaFk']);
-                    if($arLicencia->getLicenciaTipoRel()->getMaternidad() == 1) {
-                        $diasLicenciaMaternidad += $arrLicencia['dias'];
-                        $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
-                        $ibcLicencia = $arrLicencia['ibc'];                    
-                        $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
-                        $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                                
-                        $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                      
-                    } else {
-                        $ibcLicencia = $diaSalario * $arrLicencia['dias'];
-                        $diasLicencia += $arrLicencia['dias'];
-                        $arPeriodoEmpleadoDetalle->setLicencia(1);                    
-                        $arPeriodoEmpleadoDetalle->setTarifaPension(12);
-                        $arPeriodoEmpleadoDetalle->setTarifaSalud(0);
-                    }                    
+            foreach ($arrLicencias as $arrLicencia) {
+                $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                $arLicencia = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();                
+                $arLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->find($arrLicencia['codigoLicenciaFk']);
+                if($arLicencia->getLicenciaTipoRel()->getMaternidad() == 1) {
+                    $diasLicenciaMaternidad += $arrLicencia['dias'];
+                    $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
+                    $ibcLicencia = $arrLicencia['ibc'];                    
+                    $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
+                    $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                                
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                      
+                } else {
+                    $ibcLicencia = $diaSalario * $arrLicencia['dias'];
+                    $diasLicencia += $arrLicencia['dias'];
+                    $arPeriodoEmpleadoDetalle->setLicencia(1);                    
+                    $arPeriodoEmpleadoDetalle->setTarifaPension(12);
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud(0);
+                }                    
 
-                    $arPeriodoEmpleadoDetalle->setIbc($ibcLicencia);
-                    $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
-                    $arPeriodoEmpleadoDetalle->setDias($arrLicencia['dias']);
-                    $arPeriodoEmpleadoDetalle->setHoras($arrLicencia['horas']);
-                    $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);                                
-                    $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrLicencia['fechaDesdeNovedad']));
-                    $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrLicencia['fechaHastaNovedad']));           
-                    if($diasOrdinariosTotal <= 0 && $novedadesIngresoRetiro == FALSE) {
-                        $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
-                        $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);               
-                        if($strNovedadRetiro == 'X') {
-                            $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
-                        }                     
-                        if($strNovedadIngreso == "X") {
-                            $arPeriodoEmpleadoDetalle->setFechaIngreso($arContrato->getFechaDesde());
-                        }  
-                        $novedadesIngresoRetiro = TRUE;
-                    }                
-                    $em->persist($arPeriodoEmpleadoDetalle);
-                }
-            } else {
-                $arrLicencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->licenciaAgrupada($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
-                foreach ($arrLicencias as $arrLicencia) {
-                    if($arrLicencia['dias']) {
-                        $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
-                        $ibcLicencia = $diaSalario * $arrLicencia['dias'];
-                        $diasLicencia += $arrLicencia['dias'];
-                        $arPeriodoEmpleadoDetalle->setLicencia(1);                    
-                        $arPeriodoEmpleadoDetalle->setTarifaPension(12);
-                        $arPeriodoEmpleadoDetalle->setTarifaSalud(0);                                        
-
-                        $arPeriodoEmpleadoDetalle->setIbc($ibcLicencia);
-                        $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
-                        $arPeriodoEmpleadoDetalle->setDias($arrLicencia['dias']);
-                        $arPeriodoEmpleadoDetalle->setHoras($arrLicencia['horas']);
-                        $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);                                
-                        $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrLicencia['fechaDesdeNovedad']));
-                        $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrLicencia['fechaHastaNovedad']));           
-                        if($diasOrdinariosTotal <= 0 && $novedadesIngresoRetiro == FALSE) {
-                            $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
-                            $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);               
-                            if($strNovedadRetiro == 'X') {
-                                $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
-                            }                     
-                            if($strNovedadIngreso == "X") {
-                                $arPeriodoEmpleadoDetalle->setFechaIngreso($arContrato->getFechaDesde());
-                            }  
-                            $novedadesIngresoRetiro = TRUE;
-                        }                
-                        $em->persist($arPeriodoEmpleadoDetalle);                        
-                    }                    
+                $arPeriodoEmpleadoDetalle->setIbc($ibcLicencia);
+                $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
+                $arPeriodoEmpleadoDetalle->setDias($arrLicencia['dias']);
+                $arPeriodoEmpleadoDetalle->setHoras($arrLicencia['horas']);
+                $arPeriodoEmpleadoDetalle->setVrSalario($floSalario);                                
+                $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrLicencia['fechaDesdeNovedad']));
+                $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrLicencia['fechaHastaNovedad']));           
+                if($diasOrdinariosTotal <= 0 && $novedadesIngresoRetiro == FALSE) {
+                    $arPeriodoEmpleadoDetalle->setIngreso($strNovedadIngreso);
+                    $arPeriodoEmpleadoDetalle->setRetiro($strNovedadRetiro);               
+                    if($strNovedadRetiro == 'X') {
+                        $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
+                    }                     
+                    if($strNovedadIngreso == "X") {
+                        $arPeriodoEmpleadoDetalle->setFechaIngreso($arContrato->getFechaDesde());
+                    }  
+                    $novedadesIngresoRetiro = TRUE;
                 }                
-            }            
+                $em->persist($arPeriodoEmpleadoDetalle);
+            }
+                     
             
             $diasOrdinarios = $intDiasCotizar - $diasLicenciaMaternidad - $diasLicencia - $diasIncapacidadLaboral - $diasIncapacidad - $diasVacaciones;
             $horasOrdinarias = $diasOrdinarios * 8;
