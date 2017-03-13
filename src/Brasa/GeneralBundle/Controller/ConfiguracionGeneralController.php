@@ -71,7 +71,7 @@ class ConfiguracionGeneralController extends Controller {
                 ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))
                 ->getForm();
         $formConfiguracionGeneral->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($formConfiguracionGeneral->isSubmitted()) {
             if ($formConfiguracionGeneral->isValid()) {
                 if ($formConfiguracionGeneral->get('guardar')->isClicked()) {
                     $controles = $request->request->get('form');
@@ -124,7 +124,7 @@ class ConfiguracionGeneralController extends Controller {
                 }
             }
         }
-        if ($form->isSubmitted()) {
+        if ($formConfiguracionGeneral->isSubmitted()) {
             if ($formConfiguracionNotificaciones->isValid()) {
                 $arConfiguracionNotificaciones->setCorreoTurnoInconsistencia($formConfiguracionNotificaciones->get('correoTurnoInconsistencia')->getData());
                 $em->persist($arConfiguracionNotificaciones);

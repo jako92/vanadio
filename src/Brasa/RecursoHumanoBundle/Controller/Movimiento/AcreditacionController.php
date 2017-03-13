@@ -118,6 +118,28 @@ class AcreditacionController extends Controller
     }
 
     /**
+     * @Route("/rhu/movimiento/acreditacion/detalle/{codigoAcreditacion}", name="brs_rhu_movimiento_acreditacion_detalle")
+     */
+    public function detalleAction(Request $request, $codigoAcreditacion) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arAcreditacion = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacion();
+        $arAcreditacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacion')->find($codigoAcreditacion);
+        $form = $this->formularioDetalle($arAcreditacion);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+            }            
+        }
+
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Acreditacion:detalle.html.twig', array(
+                    'arAcreditacion' => $arAcreditacion,
+                    'form' => $form->createView()
+        ));
+    }    
+    
+    /**
      * @Route("/rhu/movimiento/acreditacion/cargar/validacion/", name="brs_rhu_movimiento_acreditacion_cargar_validacion")
      */
     public function cargarValidacionAction(Request $request) {
@@ -237,7 +259,7 @@ class AcreditacionController extends Controller
             'form' => $form->createView()
             ));
     }
-
+        
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
@@ -283,6 +305,12 @@ class AcreditacionController extends Controller
         return $form;
     }
 
+    private function formularioDetalle($ar) {
+        $form = $this->createFormBuilder()
+                ->getForm();
+        return $form;
+    }    
+    
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;

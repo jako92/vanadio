@@ -41,7 +41,7 @@ class RhuAcreditacionRepository extends EntityRepository {
         if($fechaHasta != '') {
             $dql .= " AND a.fechaVencimiento <= '$fechaHasta'";
         }        
-        //$dql .= " ORDER BY p.empleadoRel.nombreCorto";
+        $dql .= " ORDER BY a.codigoAcreditacionPk DESC";
         return $dql;
     } 
     

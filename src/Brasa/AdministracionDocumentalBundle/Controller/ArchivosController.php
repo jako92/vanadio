@@ -47,7 +47,7 @@ class ArchivosController extends Controller
         if($form->isValid()) {
             if($form->get('BtnCargar')->isClicked()) {                
                 $objArchivo = $form['attachment']->getData();
-                if($objArchivo->getClientOriginalExtension() == 'pdf') {
+                if ($objArchivo->getClientSize()){
                     $arArchivo = new \Brasa\AdministracionDocumentalBundle\Entity\AdArchivo();                    
                     $arArchivo->setNombre($objArchivo->getClientOriginalName());
                     $arArchivo->setExtensionOriginal($objArchivo->getClientOriginalExtension());                
@@ -58,20 +58,16 @@ class ArchivosController extends Controller
                     $arArchivo->setDescripcion($form->get('descripcion')->getData());
                     $arArchivo->setComentarios($form->get('comentarios')->getData());
                     $arDirectorio = $em->getRepository('BrasaAdministracionDocumentalBundle:AdDirectorio')->devolverDirectorio();
-                    $arArchivo->setDirectorioRel($arDirectorio);
-                    if ($objArchivo->getClientSize()){
-                        $em->persist($arArchivo);
-                        $em->flush();
-                        $strDestino = $arDirectorio->getRutaPrincipal() . $arDirectorio->getNumero() . "/";
-                        $strArchivo = $arArchivo->getCodigoArchivoPk() . "_" . $objArchivo->getClientOriginalName();
-                        $form['attachment']->getData()->move($strDestino, $strArchivo);                    
-                        return $this->redirect($this->generateUrl('brs_ad_archivos_lista', array('codigoDocumento' => $codigoDocumento, 'numero' => $numero)));
-                    } else {
-                        $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido");
-                    }    
+                    $arArchivo->setDirectorioRel($arDirectorio);                    
+                    $em->persist($arArchivo);
+                    $em->flush();
+                    $strDestino = $arDirectorio->getRutaPrincipal() . $arDirectorio->getNumero() . "/";
+                    $strArchivo = $arArchivo->getCodigoArchivoPk() . "_" . $objArchivo->getClientOriginalName();
+                    $form['attachment']->getData()->move($strDestino, $strArchivo);                    
+                    return $this->redirect($this->generateUrl('brs_ad_archivos_lista', array('codigoDocumento' => $codigoDocumento, 'numero' => $numero)));
                 } else {
-                    $objMensaje->Mensaje("error", "Solo se pueden cargar arhivos pdf");
-                }
+                    $objMensaje->Mensaje('error', "El archivo tiene un tamaño mayor al permitido");
+                }    
             }                                   
         }         
         return $this->render('BrasaAdministracionDocumentalBundle:Archivos:cargar.html.twig', array(
@@ -111,7 +107,9 @@ class ArchivosController extends Controller
         $em->flush();
         //$rutadirectorio = $arArchivo->getDirectorioRel()->getRutaPrincipal() . $arArchivo->getDirectorioRel()->getNumero() . "/" . $arArchivo->getCodigoArchivoPk() . "_" . $arArchivo->getNombre();
         $strRuta = $arArchivo->getDirectorioRel()->getRutaPrincipal() . $arArchivo->getDirectorioRel()->getNumero() . "/" . $codigoArchivo . "_" . $arArchivo->getNombre();
-        unlink($strRuta);
+        if (file_exists($strRuta)) {
+            unlink($strRuta);    
+        }        
         return $this->redirect($this->generateUrl('brs_ad_archivos_lista', array('codigoDocumento' => $arArchivo->getCodigoDocumentoFk(), 'numero' =>$arArchivo->getNumero())));      
     }
     
