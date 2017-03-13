@@ -128,7 +128,10 @@ class ReclamoController extends Controller
         $form = $this->formularioDetalle($arReclamo);
         $form->handleRequest($request);
         if($form->isValid()) {
-                        
+            if($form->get('BtnImprimir')->isClicked()) {
+                $objFormatoDetalleReclamo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoReclamo();
+                $objFormatoDetalleReclamo->Generar($em, $codigoReclamo);
+            }                
         }
         $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuReclamo')->find($codigoReclamo);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Reclamo:detalle.html.twig', array(
@@ -179,8 +182,10 @@ class ReclamoController extends Controller
         return $form;
     }
 
-    private function formularioDetalle($ar) {
-        $form = $this->createFormBuilder()            
+    private function formularioDetalle($arReclamo) {
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $form = $this->createFormBuilder()
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->getForm();  
         return $form;
     }    

@@ -23,6 +23,12 @@
         </script>        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
+        <div class="btn-toolbar" style="float:left">
+        <div class="btn-group">
+            {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+        </div>
+        </div>
+        <br /><br />
         <!-- Encabezado Movimiento -->
         <div class="panel panel-default">
             <div class="panel-heading">Información reclamo</div>
