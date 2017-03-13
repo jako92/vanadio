@@ -1,6 +1,6 @@
 <?php
 
-namespace Brasa\RecursoHumanoBundle\Controller\Consulta;
+namespace Brasa\RecursoHumanoBundle\Controller\Consulta\Contrato;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class ContratoFechaVencimientoController extends Controller
+class FechaVencimientoController extends Controller
 {
     var $strDqlLista = "";
     var $intNumero = 0;
@@ -261,11 +261,11 @@ class ContratoFechaVencimientoController extends Controller
                     ->setCellValue('L' . $i, $subzona);
             $i++;
         }
-        $objPHPExcel->getActiveSheet()->setTitle('ReporteFechaVencimiento');
+        $objPHPExcel->getActiveSheet()->setTitle('contratos');
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="ReporteFechaVencimiento.xlsx"');
+        header('Content-Disposition: attachment;filename="ReporteContratoFechaVencimiento.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
