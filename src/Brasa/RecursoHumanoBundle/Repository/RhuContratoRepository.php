@@ -178,7 +178,7 @@ class RhuContratoRepository extends EntityRepository {
     
     //lista contratos con las fecha de vencimiento, contratos vigentes
     public function listaContratosFechaVencimientoDQL($strCodigoContratoTipo = "",$strCodigoEmpleadoTipo = "", $strCodigoZona = "", $strCodigoSubZona = "", $strCodigoCentroCosto = "", $strIdentificacion = "", $strVencimiento = "") {        
-        $dql   = "SELECT c, e FROM BrasaRecursoHumanoBundle:RhuContrato c JOIN c.empleadoRel e WHERE c.codigoContratoPk <> 0 AND c.estadoActivo = 1";
+        $dql   = "SELECT c, e FROM BrasaRecursoHumanoBundle:RhuContrato c JOIN c.empleadoRel e WHERE c.estadoActivo = 1 AND c.indefinido = 0";
         if($strCodigoContratoTipo != "") {
             $dql .= " AND c.codigoContratoTipoFk = " . $strCodigoContratoTipo;
         }

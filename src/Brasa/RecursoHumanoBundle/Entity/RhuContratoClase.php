@@ -22,6 +22,11 @@ class RhuContratoClase
      */    
     private $nombre;                      
     
+    /**     
+     * @ORM\Column(name="indefinido", type="boolean")
+     */    
+    private $indefinido = false;     
+    
     /**
      * @ORM\OneToMany(targetEntity="RhuContratoTipo", mappedBy="contratoClaseRel")
      */
