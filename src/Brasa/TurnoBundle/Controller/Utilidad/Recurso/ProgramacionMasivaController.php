@@ -5,12 +5,15 @@ namespace Brasa\TurnoBundle\Controller\Utilidad\Recurso;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProgramacionMasivaController extends Controller {
 
@@ -53,9 +56,234 @@ class ProgramacionMasivaController extends Controller {
                     'arRecurso' => $arRecurso,
                     'arrDiaSemana' => $arrDiaSemana,
                     'form' => $form->createView(),
+                    'anio' => $anio,
+                    'mes' => $mes,
+            
         ));
     }
 
+    /**
+     * @Route("/tur/utilidad/recurso/programacion/masiva/detalle/nuevo/{anio}/{mes}/{codigoRecurso}", name="brs_tur_utilidad_recurso_programacion_masiva_detalle_nuevo")
+     */
+    public function detalleNuevoAction(Request $request, $anio, $mes, $codigoRecurso) {
+        $session = new session;
+        $em = $this->getDoctrine()->getManager();
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $mes + 1, 1, $anio) - 1));
+        $strNombreCliente = "";
+        if ($session->get('filtroNit')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+            if ($arCliente) {
+                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
+                $strNombreCliente = $arCliente->getNombreCorto();
+            } else {
+                $session->set('filtroCodigoCliente', null);
+                $session->set('filtroNit', null);
+            }
+        } else {
+            $session->set('filtroCodigoCliente', null);
+        }                
+        $strNombrePuesto = "";
+        if ($session->get('filtroCodigoPuesto')) {
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($session->get('filtroCodigoPuesto'));
+            if ($arPuesto) {
+                $strNombrePuesto = $arPuesto->getNombre();
+            } else {
+                $session->set('filtroCodigoPuesto', null);
+            }
+        }        
+        $form = $this->createFormBuilder()
+                ->add('secuenciaDetalleRel', EntityType::class, array(
+                    'class' => 'BrasaTurnoBundle:TurSecuenciaDetalle',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('s')
+                                ->orderBy('s.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => false))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))                            
+                ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
+                ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))
+                ->add('TxtPosicion', NumberType::class, array('data' => 1))
+                ->add('TxtDesde', NumberType::class, array('data' => 1))
+                ->add('TxtHasta', NumberType::class, array('data' => $intUltimoDia))                
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                /*if ($form->get('BtnGuardar')->isClicked()) {
+                    $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($codigoRecurso);
+                    $desde = $form->get('TxtDesde')->getData();
+                    $hasta = $form->get('TxtHasta')->getData();
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $arrControles = $request->request->All();
+                    if (count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $intCantidad = $arrControles['TxtCantidad' . $codigo];
+                            for ($i = 1; $i <= $intCantidad; $i++) {
+                                $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+                                $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigo);
+                                $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+                                $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+                                $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+                                $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+                                $arProgramacionDetalle->setAnio($arProgramacion->getFecha()->format('Y'));
+                                $arProgramacionDetalle->setMes($arProgramacion->getFecha()->format('m'));
+                                if ($arRecurso) {
+                                    $arProgramacionDetalle->setRecursoRel($arRecurso);
+                                }
+
+                                $arSecuenciaDetalle = $form->get('secuenciaDetalleRel')->getData();
+                                if ($arSecuenciaDetalle) {
+                                    $posicionInicial = $form->get('TxtPosicion')->getData();
+                                    $arrSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->convertirArray($arSecuenciaDetalle);
+                                    $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $arProgramacion->getFecha()->format('m') + 1, 1, $arProgramacion->getFecha()->format('Y')) - 1));
+                                    $j = 1;
+                                    if ($posicionInicial <= $arrSecuenciaDetalle) {
+                                        $j = $posicionInicial;
+                                    }
+                                    for ($i = $desde; $i <= $hasta; $i++) {
+                                        if ($i == 1) {
+                                            $arProgramacionDetalle->setDia1($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 2) {
+                                            $arProgramacionDetalle->setDia2($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 3) {
+                                            $arProgramacionDetalle->setDia3($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 4) {
+                                            $arProgramacionDetalle->setDia4($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 5) {
+                                            $arProgramacionDetalle->setDia5($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 6) {
+                                            $arProgramacionDetalle->setDia6($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 7) {
+                                            $arProgramacionDetalle->setDia7($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 8) {
+                                            $arProgramacionDetalle->setDia8($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 9) {
+                                            $arProgramacionDetalle->setDia9($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 10) {
+                                            $arProgramacionDetalle->setDia10($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 11) {
+                                            $arProgramacionDetalle->setDia11($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 12) {
+                                            $arProgramacionDetalle->setDia12($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 13) {
+                                            $arProgramacionDetalle->setDia13($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 14) {
+                                            $arProgramacionDetalle->setDia14($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 15) {
+                                            $arProgramacionDetalle->setDia15($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 16) {
+                                            $arProgramacionDetalle->setDia16($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 17) {
+                                            $arProgramacionDetalle->setDia17($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 18) {
+                                            $arProgramacionDetalle->setDia18($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 19) {
+                                            $arProgramacionDetalle->setDia19($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 20) {
+                                            $arProgramacionDetalle->setDia20($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 21) {
+                                            $arProgramacionDetalle->setDia21($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 22) {
+                                            $arProgramacionDetalle->setDia22($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 23) {
+                                            $arProgramacionDetalle->setDia23($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 24) {
+                                            $arProgramacionDetalle->setDia24($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 25) {
+                                            $arProgramacionDetalle->setDia25($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 26) {
+                                            $arProgramacionDetalle->setDia26($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 27) {
+                                            $arProgramacionDetalle->setDia27($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 28) {
+                                            $arProgramacionDetalle->setDia28($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 29) {
+                                            $arProgramacionDetalle->setDia29($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 30) {
+                                            $arProgramacionDetalle->setDia30($arrSecuenciaDetalle[$j]);
+                                        }
+                                        if ($i == 31) {
+                                            $arProgramacionDetalle->setDia31($arrSecuenciaDetalle[$j]);
+                                        }
+                                        $j++;
+                                        if ($j > $arrSecuenciaDetalle['dias']) {
+                                            $j = 1;
+                                        }
+                                    }
+                                }
+                                $em->persist($arProgramacionDetalle);
+                            }
+                        }
+                        $em->flush();
+                    }
+                    $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                    
+                }*/
+                if ($request->request->get('OpSeleccionar')) {
+                    $codigoPedidoDetalle = $request->request->get('OpSeleccionar');
+                    $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);
+                    $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->findOneBy(array('codigoClienteFk' => $arPedidoDetalle->getPedidoRel()->getCodigoClienteFk(), 'anio' => $anio, 'mes' => $mes));
+                    if($arProgramacion) {
+                        $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($codigoRecurso);
+                        $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+                        $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+                        $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+                        $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+                        $arProgramacionDetalle->setAnio($anio);
+                        $arProgramacionDetalle->setMes($mes);
+                        $arProgramacionDetalle->setRecursoRel($arRecurso);
+                        $em->persist($arProgramacionDetalle);
+                        $em->flush();
+                        //$em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
+                    }
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                    
+                }
+                if ($form->get('BtnFiltrar')->isClicked()) {                
+                    $session->set('filtroNit', $form->get('TxtNit')->getData());
+                    $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());
+                    return $this->redirect($this->generateUrl('brs_tur_utilidad_recurso_programacion_masiva_detalle_nuevo', array('anio' => $anio, 'mes' => $mes, 'codigoRecurso' => $codigoRecurso)));
+                }                
+            }
+        }
+        $arPedidosDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->listaFecha($anio, $mes, $session->get('filtroCodigoCliente'), $session->get('filtroCodigoPuesto'));
+        return $this->render('BrasaTurnoBundle:Utilidades/Recurso:detalleNuevo.html.twig', array(
+                    'arPedidosDetalle' => $arPedidosDetalle,
+                    'form' => $form->createView()));
+    }    
+    
     private function formularioDetalleEditar() {
         $form = $this->createFormBuilder(array(), array('csrf_protection' => false))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))

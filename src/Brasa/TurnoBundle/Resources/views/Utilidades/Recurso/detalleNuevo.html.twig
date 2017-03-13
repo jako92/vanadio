@@ -14,25 +14,45 @@
             <div class="panel-heading">Datos</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Recurso:</label>
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-lg-2">
                                 <div class="input-group">
-                                    {{ form_widget(form.TxtCodigoRecurso, { 'attr': {'class': 'form-control'} }) }}
+                                    {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
                                 </div>
                             </div>
                             <div class="col-lg-10">
-                                <div class="input-group">
-                                    {{ form_widget(form.TxtNombreRecurso, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}
-                                    <span class="input-group-btn">
-                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_recurso', { 'campoCodigo': 'form_TxtCodigoRecurso', 'campoNombre': 'form_TxtNombreRecurso' }) }}', 'buscarRecurso', 600, 900)">Buscar</a>
+                                <div class="input-group">     
+                                    {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">Puesto:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.TxtCodigoPuesto, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    {{ form_widget(form.TxtNombrePuesto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_puesto2', { 'campoCodigo': 'form_TxtCodigoPuesto', 'campoNombre': 'form_TxtNombrePuesto' }) }}', 'buscarPuesto', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
                 <div class="form-group form-group-sm">                      
                     <label class="col-sm-2 control-label">Secuencia:</label>
                     <div class="col-sm-4">                  
@@ -50,7 +70,12 @@
                     <div class="col-sm-1">                  
                         {{ form_widget(form.TxtHasta , { 'attr': {'class': 'form-control'} }) }}
                     </div>                     
-                </div>                                     
+                </div>   
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>                    
             </div>
         </div>    
         <table class="table table-striped table-bordered table-condensed table-hover">
@@ -61,33 +86,19 @@
                 <th>SERVICIO</th>
                 <th>MODALIDAD</th>
                 <th>PERIODO</th>
-                <th>PLANTILLA</th>
-                <th>DES</th>
-                <th>HAS</th>            
-                <th>LU</th>
-                <th>MA</th>
-                <th>MI</th>
-                <th>JU</th>
-                <th>VI</th>
-                <th>SA</th>
-                <th>DO</th>
-                <th>FE</th>
-                <th>CANT</th>
+                <th>PUESTO</th>                                
                 <th>H(P)</th>            
                 <th>HD(P)</th>            
-                <th>HN(P)</th>            
-                <th style="text-align: right">TOTAL</th>
-                <th></th>
+                <th>HN(P)</th>                                            
                 <th></th>
             </tr>   
-            {% set intPuesto = '' %}
+            {% set intCliente = '' %}
             {%for arPedidosDetalle in arPedidosDetalle %}
-                {% if intPuesto != arPedidosDetalle.codigoPuestoFk or arPedidosDetalle.codigoPuestoFk == '' %}                                
+                {% if intCliente != arPedidosDetalle.pedidoRel.codigoClienteFk or arPedidosDetalle.pedidoRel.codigoClienteFk == '' %}                                
                     <tr>
-                        <td id="suptipo" colspan="38"><b>{{ arPedidosDetalle.puestoRel.nombre | default('') }}<b/>
-                        </td>
+                        <td id="suptipo" colspan="38"><b>{{ arPedidosDetalle.pedidoRel.clienteRel.nombreCorto | default('') }}<b/></td>
                     </tr>
-                    {% set intPuesto = arPedidosDetalle.codigoPuestoFk %}
+                    {% set intCliente = arPedidosDetalle.pedidoRel.codigoClienteFk %}
                 {% endif %}                 
                 <tr>
                     <td>{{ arPedidosDetalle.pedidoRel.numero}}</td>   
@@ -96,30 +107,14 @@
                     <td>{{ arPedidosDetalle.conceptoServicioRel.nombre | default('') }}</td>                    
                     <td>{{ arPedidosDetalle.modalidadServicioRel.nombre | default('') }}</td>                    
                     <td>{{ arPedidosDetalle.periodoRel.nombre  }}</td>  
-                    <td>{{ arPedidosDetalle.plantillaRel.nombre | default('')  }}</td>
-                    <td>{{ arPedidosDetalle.diaDesde }}</td>
-                    <td>{{ arPedidosDetalle.diaHasta }}</td>                
-                    <td>{% if arPedidosDetalle.lunes == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.martes == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.miercoles == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.jueves == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.viernes == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.sabado == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.domingo == 1%} SI {% else %} NO {% endif %}</td>                
-                    <td>{% if arPedidosDetalle.festivo == 1%} SI {% else %} NO {% endif %}</td> 
-                    <td style="text-align: right">{{ arPedidosDetalle.cantidad | number_format(0, '.', ',') }}</td>
+                    <td>{{ arPedidosDetalle.puestoRel.nombre | default('')  }}</td>                    
                     <td style="text-align: right">{{ arPedidosDetalle.horas | number_format(0, '.', ',') }}({{ arPedidosDetalle.horasProgramadas | number_format(0, '.', ',') }})</td>
                     <td style="text-align: right">{{ arPedidosDetalle.horasDiurnas | number_format(0, '.', ',') }}({{ arPedidosDetalle.horasDiurnasProgramadas | number_format(0, '.', ',') }})</td>
-                    <td style="text-align: right">{{ arPedidosDetalle.horasNocturnas | number_format(0, '.', ',') }}({{ arPedidosDetalle.horasNocturnasProgramadas | number_format(0, '.', ',') }})</td>
-                    <td style="text-align: right">{{ arPedidosDetalle.vrTotalDetalle | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtCantidad{{ arPedidosDetalle.codigoPedidoDetallePk }}" value="1" size="10" style="width:25px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                
-                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidosDetalle.codigoPedidoDetallePk }}" /></td>
+                    <td style="text-align: right">{{ arPedidosDetalle.horasNocturnas | number_format(0, '.', ',') }}({{ arPedidosDetalle.horasNocturnasProgramadas | number_format(0, '.', ',') }})</td>                                        
+                    <td style="text-align: center"><button class="btn btn-default btn-xs" type="submit" name="OpSeleccionar" value="{{ arPedidosDetalle.codigoPedidoDetallePk }}">Seleccionar</button></td>
                     {%endfor%}
             </tr>            
         </table>                                 
-        <div class="modal-footer">            
-            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-        </div>
         <blockquote>
             <p>Recuerde que para agregar un pedido debe estas autorizado y no puede estar anulado.</p>
             <footer>Requiere <cite title="Source Title">pedido autorizado, sin anular</cite></footer>

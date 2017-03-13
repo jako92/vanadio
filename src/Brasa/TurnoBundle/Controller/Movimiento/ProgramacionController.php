@@ -86,6 +86,8 @@ class ProgramacionController extends Controller {
                         $arProgramacion->setClienteRel($arCliente);
                         $arUsuario = $this->getUser();
                         $arProgramacion->setUsuario($arUsuario->getUserName());
+                        $arProgramacion->setAnio($arProgramacion->getFecha()->format('Y'));
+                        $arProgramacion->setMes($arProgramacion->getFecha()->format('j'));
                         if ($em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->numeroRegistros($codigoProgramacion) <= 0) {
                             $em->persist($arProgramacion);
                             $em->flush();

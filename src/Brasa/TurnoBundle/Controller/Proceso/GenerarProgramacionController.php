@@ -35,6 +35,8 @@ class GenerarProgramacionController extends Controller {
                     $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
                     $arProgramacion->setClienteRel($arPedido->getClienteRel());
                     $arProgramacion->setFecha($arPedido->getFechaProgramacion());
+                    $arProgramacion->setAnio($arPedido->getFechaProgramacion()->format('Y'));
+                    $arProgramacion->setMes($arPedido->getFechaProgramacion()->format('j'));
                     $arUsuario = $this->getUser();
                     $arProgramacion->setUsuario($arUsuario->getUserName());
                     $em->persist($arProgramacion);
@@ -62,6 +64,8 @@ class GenerarProgramacionController extends Controller {
                                     $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
                                     $arProgramacion->setClienteRel($arPedidoActualizar->getClienteRel());
                                     $arProgramacion->setFecha($arPedidoActualizar->getFechaProgramacion());
+                                    $arProgramacion->setAnio($arPedido->getFechaProgramacion()->format('Y'));
+                                    $arProgramacion->setMes($arPedido->getFechaProgramacion()->format('j'));                                    
                                     $em->persist($arProgramacion);
                                     $arPedidoDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
                                     $arPedidoDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->findBy(array('codigoPedidoFk' => $arPedidoActualizar->getCodigoPedidoPk()));

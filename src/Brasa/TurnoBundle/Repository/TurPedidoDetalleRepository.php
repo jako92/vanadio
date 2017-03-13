@@ -390,6 +390,21 @@ class TurPedidoDetalleRepository extends EntityRepository {
         $arResultado = $query->getResult();
         return $arResultado;                
     }    
+
+    public function listaFecha($anio = "", $mes = "", $codigoCliente = "", $codigoPuesto = "") {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p "
+                . "WHERE p.estadoAutorizado = 1 AND p.estadoAnulado = 0 AND pd.anio >= $anio AND pd.mes >= $mes ";
+        if($codigoCliente != "" && $codigoCliente != 0) {
+            $dql .= " AND p.codigoClienteFk = " . $codigoCliente;
+        }   
+        if($codigoPuesto != "" && $codigoPuesto != 0) {
+            $dql .= " AND pd.codigoPuestoFk = " . $codigoPuesto;
+        }           
+        $query = $em->createQuery($dql);
+        $arResultado = $query->getResult();
+        return $arResultado;                
+    }    
     
     public function pendientesFacturarDql($codigoCliente, $boolMostrarTodo = 0, $numero = '') {
         $em = $this->getEntityManager();
