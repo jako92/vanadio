@@ -185,4 +185,28 @@ class RhuContratoClase
     {
         return $this->contratosAdicionesTiposContratoClaseRel;
     }
+
+    /**
+     * Set indefinido
+     *
+     * @param boolean $indefinido
+     *
+     * @return RhuContratoClase
+     */
+    public function setIndefinido($indefinido)
+    {
+        $this->indefinido = $indefinido;
+
+        return $this;
+    }
+
+    /**
+     * Get indefinido
+     *
+     * @return boolean
+     */
+    public function getIndefinido()
+    {
+        return $this->indefinido;
+    }
 }
