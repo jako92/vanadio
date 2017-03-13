@@ -227,7 +227,6 @@ class ContratosController extends Controller
                $objMensaje->Mensaje("error", "El empleado esta bloqueado por información interna"); 
                $intEstado = 2;
             }
-
         }
         $form = $this->createForm(RhuContratoType::class, $arContrato); 
         $form->handleRequest($request);
@@ -279,6 +278,15 @@ class ContratosController extends Controller
                                     $arContrato->setFactor($arContrato->getTipoTiempoRel()->getFactor());
                                     $arContrato->setFactorHorasDia($arContrato->getTipoTiempoRel()->getFactorHorasDia());
                                     $arContrato->setContratoClaseRel($arContrato->getContratoTipoRel()->getContratoClaseRel());
+                                    $codigoCliente= $request->request->get('cliente');
+                                    $codigoSucursal= $request->request->get('sucursal');
+                                    $codigoCentroTrabajo= $request->request->get('centro');
+                                    $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
+                                    $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+                                    $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
+                                    $arContrato->setClienteRel($arCliente);
+                                    $arContrato->setSucursalRel($arSucursal);
+                                    $arContrato->setCentroTrabajoRel($arCentroTrabajo);
                                     if($arContrato->getTipoTiempoRel()->getFactor() > 0) {
                                         $arContrato->setVrSalarioPago($arContrato->getVrSalario() / $arContrato->getTipoTiempoRel()->getFactor());
                                     } else {
@@ -340,7 +348,10 @@ class ContratosController extends Controller
                                     $arEmpleado->setEntidadPensionRel($arContrato->getEntidadPensionRel());
                                     $arEmpleado->setEntidadSaludRel($arContrato->getEntidadSaludRel());
                                     $arEmpleado->setEntidadCajaRel($arContrato->getEntidadCajaRel());
-                                    $arEmpleado->setCodigoContratoUltimoFk($arContrato->getCodigoContratoPk());
+                                    $arEmpleado->setCodigoContratoUltimoFk($arContrato->getCodigoContratoPk());                                    
+                                    $arContrato->setClienteRel($arContrato->getClienteRel()->getCodigoClientePk());
+                                    $arContrato->setSucursalRel($arContrato->getSucursalRel()->getCodigoSucursalPk());
+                                    $arContrato->setCentroTrabajoRel($arContrato->getCentroTrabajoRel()->getCodigoCentroTrabajoPk());    
                                     $em->persist($arEmpleado);
                                     $em->flush();
                                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
@@ -373,6 +384,15 @@ class ContratosController extends Controller
                             } else {
                                 $arContrato->setVrSalarioPago($arContrato->getVrSalario());
                             }
+                            $codigoCliente= $request->request->get('cliente');
+                            $codigoSucursal= $request->request->get('sucursal');
+                            $codigoCentroTrabajo= $request->request->get('centro');
+                            $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
+                            $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+                            $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
+                            $arContrato->setClienteRel($arCliente);
+                            $arContrato->setSucursalRel($arSucursal);
+                            $arContrato->setCentroTrabajoRel($arCentroTrabajo);
                             $em->persist($arContrato);
                             $em->flush();
                             $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 33, 2, $arContrato->getCodigoContratoPk());                            
