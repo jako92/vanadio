@@ -22,7 +22,7 @@ class RhuRequisitoRepository extends EntityRepository {
             $dql .= " AND r.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
         
-        $dql .= " ORDER BY r.fecha";
+        $dql .= " ORDER BY r.fecha DESC";
         return $dql;
     }
 }

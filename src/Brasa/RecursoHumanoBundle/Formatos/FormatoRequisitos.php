@@ -65,7 +65,7 @@ class FormatoRequisitos extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(10);
-        $header = array(utf8_decode('CÓDIGO'), utf8_decode('CONCEPTO'), 'TIPO', 'ENTREGADO', 'APLICA', 'ESTADO');
+        $header = array(utf8_decode('CÓDIGO'), utf8_decode('CONCEPTO'), 'TIPO', 'ENTREGADO', 'APLICA');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -73,7 +73,7 @@ class FormatoRequisitos extends \FPDF_FPDF {
         $this->SetFont('', 'B', 8);
 
         //creamos la cabecera de la tabla.
-        $w = array(15, 100, 24, 21, 12, 21);
+        $w = array(15, 121, 24, 21, 12, 21);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -99,7 +99,7 @@ class FormatoRequisitos extends \FPDF_FPDF {
         foreach ($arRequisitoDetalle as $arRequisitoDetalle) {
             $pdf->SetFont('Arial', '', 8);
             $pdf->Cell(15, 4, $arRequisitoDetalle->getCodigoRequisitoDetallePk(), 1, 0, 'L');
-            $pdf->Cell(100, 4, utf8_decode($arRequisitoDetalle->getRequisitoConceptoRel()->getNombre()), 1, 0, 'L');
+            $pdf->Cell(121, 4, utf8_decode($arRequisitoDetalle->getRequisitoConceptoRel()->getNombre()), 1, 0, 'L');
             $pdf->SetFont('Arial', '', 7.5);
             $pdf->Cell(24, 4, $arRequisitoDetalle->getTipo(), 1, 0, 'L');
             if($arRequisitoDetalle->getEstadoEntregado() == 1) {
@@ -111,12 +111,7 @@ class FormatoRequisitos extends \FPDF_FPDF {
                 $pdf->Cell(12, 4, 'NO', 1, 0, 'L');
             } else {
                 $pdf->Cell(12, 4, 'SI', 1, 0, 'L');
-            }
-            if($arRequisitoDetalle->getEstadoPendiente() == 1) {
-                $pdf->Cell(21, 4, 'PENDIENTE', 1, 0, 'L');
-            } else {
-                $pdf->Cell(21, 4, 'CERRADO', 1, 0, 'L');
-            }
+            }            
 
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 7);
