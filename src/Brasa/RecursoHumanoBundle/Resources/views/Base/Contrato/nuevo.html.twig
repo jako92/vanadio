@@ -211,7 +211,11 @@
                         <label for="form_entidadCesantiaRel" class="col-sm-3 control-label">Cliente:</label>
                         <div class="col-sm-9">
                             <select id="cliente" name="cliente" class="form-control">
-                                <option value="0">Seleccione uno...</option>
+                                {% if arContrato.codigoContratoPk != 0 %}
+                                    <option value="{{arCliente.codigoClientePk}}">{{arCliente.nombreCorto}}</option>
+                                {% else %}     
+                                    <option value="0">Seleccione uno...</option>
+                                {% endif %}
                             </select>
                         </div> 
                     </div>
@@ -219,7 +223,11 @@
                         <label for="form_entidadCesantiaRel" class="col-sm-3 control-label">Sucursal:</label>
                         <div class="col-sm-9">
                             <select id="sucursal" name="sucursal" class="form-control">
-                                <option value="0">Seleccione uno...</option>
+                               {% if arContrato.codigoContratoPk != 0 %}
+                                    <option value="{{arSucursal.codigoSucursalPk}}">{{arSucursal.nombre}}</option>
+                                {% else %}     
+                                    <option value="0">Seleccione uno...</option>
+                                {% endif %}
                             </select>
                         </div> 
                     </div>
@@ -227,7 +235,11 @@
                         <label for="form_entidadCesantiaRel" class="col-sm-3 control-label">Centro trabajo:</label>
                         <div class="col-sm-9">
                             <select id="centro" name="centro" class="form-control">
-                                <option value="0">Seleccione uno...</option>
+                               {% if arContrato.codigoContratoPk != 0 %}
+                                    <option value="{{arCentroTrabajo.codigoCentroTrabajoPk}}">{{arCentroTrabajo.nombre}}</option>
+                                {% else %}     
+                                    <option value="0">Seleccione uno...</option>
+                                {% endif %}
                             </select>
                         </div> 
                     </div>
