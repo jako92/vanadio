@@ -13,7 +13,6 @@ class AdDocumento
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_documento_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoDocumentoPk;    
     
@@ -22,18 +21,20 @@ class AdDocumento
      */    
     private $nombre;  
     
-    /**
-     * @ORM\OneToMany(targetEntity="AdArchivo", mappedBy="documentoRel")
-     */
-    protected $archivosDocumentoRel;     
-   
+
 
     /**
-     * Constructor
+     * Set codigoDocumentoPk
+     *
+     * @param integer $codigoDocumentoPk
+     *
+     * @return AdDocumento
      */
-    public function __construct()
+    public function setCodigoDocumentoPk($codigoDocumentoPk)
     {
-        $this->archivosDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->codigoDocumentoPk = $codigoDocumentoPk;
+
+        return $this;
     }
 
     /**
@@ -68,39 +69,5 @@ class AdDocumento
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Add archivosDocumentoRel
-     *
-     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel
-     *
-     * @return AdDocumento
-     */
-    public function addArchivosDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel)
-    {
-        $this->archivosDocumentoRel[] = $archivosDocumentoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove archivosDocumentoRel
-     *
-     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel
-     */
-    public function removeArchivosDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel)
-    {
-        $this->archivosDocumentoRel->removeElement($archivosDocumentoRel);
-    }
-
-    /**
-     * Get archivosDocumentoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getArchivosDocumentoRel()
-    {
-        return $this->archivosDocumentoRel;
     }
 }

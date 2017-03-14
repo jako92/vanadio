@@ -60,13 +60,7 @@ class AdArchivo
     /**
      * @ORM\Column(name="comentarios", type="string", length=250, nullable=true)
      */    
-    private $comentarios;      
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="AdDocumento", inversedBy="archivosDocumentoRel")
-     * @ORM\JoinColumn(name="codigo_documento_fk", referencedColumnName="codigo_documento_pk")
-     */
-    protected $documentoRel;     
+    private $comentarios;             
     
     /**
      * @ORM\ManyToOne(targetEntity="AdDirectorio", inversedBy="archivosDirectorioRel")
@@ -74,6 +68,7 @@ class AdArchivo
      */
     protected $directorioRel;     
        
+
 
     /**
      * Get codigoArchivoPk
@@ -254,54 +249,6 @@ class AdArchivo
     }
 
     /**
-     * Set documentoRel
-     *
-     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdDocumento $documentoRel
-     *
-     * @return AdArchivo
-     */
-    public function setDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdDocumento $documentoRel = null)
-    {
-        $this->documentoRel = $documentoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get documentoRel
-     *
-     * @return \Brasa\AdministracionDocumentalBundle\Entity\AdDocumento
-     */
-    public function getDocumentoRel()
-    {
-        return $this->documentoRel;
-    }
-
-    /**
-     * Set directorioRel
-     *
-     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio $directorioRel
-     *
-     * @return AdArchivo
-     */
-    public function setDirectorioRel(\Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio $directorioRel = null)
-    {
-        $this->directorioRel = $directorioRel;
-
-        return $this;
-    }
-
-    /**
-     * Get directorioRel
-     *
-     * @return \Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio
-     */
-    public function getDirectorioRel()
-    {
-        return $this->directorioRel;
-    }
-
-    /**
      * Set descripcion
      *
      * @param string $descripcion
@@ -347,5 +294,29 @@ class AdArchivo
     public function getComentarios()
     {
         return $this->comentarios;
+    }
+
+    /**
+     * Set directorioRel
+     *
+     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio $directorioRel
+     *
+     * @return AdArchivo
+     */
+    public function setDirectorioRel(\Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio $directorioRel = null)
+    {
+        $this->directorioRel = $directorioRel;
+
+        return $this;
+    }
+
+    /**
+     * Get directorioRel
+     *
+     * @return \Brasa\AdministracionDocumentalBundle\Entity\AdDirectorio
+     */
+    public function getDirectorioRel()
+    {
+        return $this->directorioRel;
     }
 }
