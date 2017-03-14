@@ -208,11 +208,34 @@ class ContratosController extends Controller {
         $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1); //SALARIO MINIMO
         $douSalarioMinimo = $arConfiguracion->getVrSalario();
         if ($codigoContrato != 0) {
+            $codigoCliente = 0;
+            $cliente = "";
+            $codigoSucursal = 0;
+            $sucursal = "";
+            $codigoCentroTrabajo = 0;
+            $centroTrabajo = "";
             $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
-            $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($arContrato->getCodigoClienteFk());
-            $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($arContrato->getCodigoSucursalFk());
-            $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($arContrato->getCodigoCentroTrabajoFk());
-
+            if ($arContrato->getCodigoClienteFk() != null) {
+                $codigoCliente = $arContrato->getCodigoClienteFk();
+            }
+            $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigoCliente);
+            if ($arCliente) {
+                $cliente = $arCliente->getNombreCorto();
+            }
+            if ($arContrato->getCodigoSucursalFk() != null) {
+                $codigoSucursal = $arContrato->getCodigoSucursalFk();
+            }
+            $arSucursal = $em->getRepository('BrasaRecursoHumanoBundle:RhuSucursal')->find($codigoSucursal);
+            if ($arSucursal) {
+                $sucursal = $arSucursal->getNombre();
+            }
+            if ($arContrato->getCodigoCentroTrabajoFk() != null) {
+                $codigoCentroTrabajo = $arContrato->getCodigoCentroTrabajoFk();
+            }
+            $arCentroTrabajo = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroTrabajo')->find($codigoCentroTrabajo);
+            if ($arCentroTrabajo) {
+                $centroTrabajo = $arCentroTrabajo->getNombre();
+            }
         } else {
             $arContrato->setFechaDesde(new \DateTime('now'));
             $arContrato->setFechaHasta(new \DateTime('now'));
@@ -440,9 +463,12 @@ class ContratosController extends Controller {
                     'arContrato' => $arContrato,
                     'arEmpleado' => $arEmpleado,
                     'intEstado' => $intEstado,
-                    'arCliente' =>$arCliente,
-                    'arSucursal' =>$arSucursal,
-                    'arCentroTrabajo' =>$arCentroTrabajo,
+                    'codigoCliente' => $codigoCliente,
+                    'cliente' => $cliente,
+                    'codigoSucursal' => $codigoSucursal,
+                    'sucursal' => $sucursal,
+                    'codigoCentroTrabajo' => $codigoCentroTrabajo,
+                    'centroTrabajo' => $centroTrabajo,
                     'form' => $form->createView()));
     }
 

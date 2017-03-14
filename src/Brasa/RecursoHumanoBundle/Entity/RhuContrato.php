@@ -292,7 +292,7 @@ class RhuContrato
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
-    private $codigoclienteFk;
+    private $codigoClienteFk;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="contratosClienteRel")
@@ -1879,27 +1879,27 @@ class RhuContrato
     }
 
     /**
-     * Set codigoclienteFk
+     * Set codigoClienteFk
      *
-     * @param integer $codigoclienteFk
+     * @param integer $codigoClienteFk
      *
      * @return RhuContrato
      */
-    public function setCodigoclienteFk($codigoclienteFk)
+    public function setCodigoClienteFk($codigoClienteFk)
     {
-        $this->codigoclienteFk = $codigoclienteFk;
+        $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
     }
 
     /**
-     * Get codigoclienteFk
+     * Get codigoClienteFk
      *
      * @return integer
      */
-    public function getCodigoclienteFk()
+    public function getCodigoClienteFk()
     {
-        return $this->codigoclienteFk;
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -2433,11 +2433,11 @@ class RhuContrato
     /**
      * Set sucursalRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\Rhusucursal $sucursalRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel
      *
      * @return RhuContrato
      */
-    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\Rhusucursal $sucursalRel = null)
+    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel = null)
     {
         $this->sucursalRel = $sucursalRel;
 
@@ -2447,7 +2447,7 @@ class RhuContrato
     /**
      * Get sucursalRel
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\Rhusucursal
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSucursal
      */
     public function getSucursalRel()
     {

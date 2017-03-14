@@ -25,8 +25,8 @@
         </script>
         <script type="text/javascript" >
             $(document).ready(function () {
-            $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-          });
+                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
+            });
         </script>
 
 
@@ -212,7 +212,11 @@
                         <div class="col-sm-9">
                             <select id="cliente" name="cliente" class="form-control">
                                 {% if arContrato.codigoContratoPk != 0 %}
-                                    <option value="{{arCliente.codigoClientePk}}">{{arCliente.nombreCorto}}</option>
+                                    {% if codigoCliente != 0 %}
+                                        <option value="{{codigoCliente}}">{{cliente}}</option>
+                                    {% else %}
+                                        <option value="0">Seleccione uno...</option>
+                                    {% endif %}    
                                 {% else %}     
                                     <option value="0">Seleccione uno...</option>
                                 {% endif %}
@@ -223,8 +227,12 @@
                         <label for="form_entidadCesantiaRel" class="col-sm-3 control-label">Sucursal:</label>
                         <div class="col-sm-9">
                             <select id="sucursal" name="sucursal" class="form-control">
-                               {% if arContrato.codigoContratoPk != 0 %}
-                                    <option value="{{arSucursal.codigoSucursalPk}}">{{arSucursal.nombre}}</option>
+                                {% if arContrato.codigoContratoPk != 0 %}
+                                    {% if codigoSucursal != 0%}
+                                        <option value="{{codigoSucursal}}">{{sucursal}}</option>
+                                    {% else %}
+                                        <option value="0">Seleccione uno...</option>
+                                    {% endif %}  
                                 {% else %}     
                                     <option value="0">Seleccione uno...</option>
                                 {% endif %}
@@ -235,44 +243,47 @@
                         <label for="form_entidadCesantiaRel" class="col-sm-3 control-label">Centro trabajo:</label>
                         <div class="col-sm-9">
                             <select id="centro" name="centro" class="form-control">
-                               {% if arContrato.codigoContratoPk != 0 %}
-                                    <option value="{{arCentroTrabajo.codigoCentroTrabajoPk}}">{{arCentroTrabajo.nombre}}</option>
-                                {% else %}     
-                                    <option value="0">Seleccione uno...</option>
-                                {% endif %}
-                            </select>
-                        </div> 
+                                {% if arContrato.codigoContratoPk != 0 %}
+                                    {% if codigoCentroTrabajo != null%}
+                                        <option value="{{codigoCentroTrabajo}}">{{centroTrabajo}}</option>
+                                    {% else %}
+                                        <option value="0">Seleccione uno...</option>
+                                    {% endif %}                                  {% else %}     
+                                        <option value="0">Seleccione uno...</option>
+                                    {% endif %}
+                                </select>
+                            </div> 
+                        </div>
                     </div>
-                </div>
-            </div> 
-            <div class="panel panel-default">
-                <div class="panel-heading">Informacion turnos</div>
-                <div class="panel-body">
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label">Turno fijo ordinario:</label>
-                        <div class="col-sm-9">
-                            {{ form_widget(form.turnoFijoOrdinario) }}
-                        </div>
-                    </div>            
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label">Secuencia:</label>
-                        <div class="col-sm-9">
-                            {{ form_widget(form.secuencia, { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    </div>                 
-                    <div class="form-group form-group-sm">
-                        <label class="col-sm-3 control-label">Devengado pactado:</label>
-                        <div class="col-sm-9">
-                            {{ form_widget(form.vrDevengadoPactado, { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    </div>    
-                </div>
-            </div>                 
-            <div class="modal-footer">              
-                {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
-            </div>    
-            {{ form_end(form) }}
-        </div>
-        <br/><br/><br/><br/>
-    </section>
-{% endblock %}
+                </div> 
+                <div class="panel panel-default">
+                    <div class="panel-heading">Informacion turnos</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">Turno fijo ordinario:</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(form.turnoFijoOrdinario) }}
+                            </div>
+                        </div>            
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">Secuencia:</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(form.secuencia, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>                 
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">Devengado pactado:</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(form.vrDevengadoPactado, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>    
+                    </div>
+                </div>                 
+                <div class="modal-footer">              
+                    {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
+                </div>    
+                {{ form_end(form) }}
+            </div>
+            <br/><br/><br/><br/>
+        </section>
+    {% endblock %}
