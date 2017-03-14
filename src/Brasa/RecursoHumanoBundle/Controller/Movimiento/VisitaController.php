@@ -124,7 +124,7 @@ class VisitaController extends Controller
         $em = $this->getDoctrine()->getManager();
         
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
+        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();        
         $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
         $form = $this->formularioDetalle($arVisita);
         $form->handleRequest($request);
@@ -160,6 +160,9 @@ class VisitaController extends Controller
                 if($arVisita->getEstadoAutorizado() == 1) {
                     $arVisita->setEstadoCerrado(1);
                     $em->persist($arVisita);
+                    $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arVisita->getCodigoEmpleadoFk());
+                    $arEmpleado->setFechaUltimaVisita($arVisita->getFechaVence());
+                    $em->persist($arEmpleado);
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));                                                
                 }

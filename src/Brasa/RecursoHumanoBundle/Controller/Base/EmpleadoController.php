@@ -450,7 +450,7 @@ class EmpleadoController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'AZ'; $col++) {
+        for ($col = 'A'; $col !== 'BA'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
@@ -506,7 +506,9 @@ class EmpleadoController extends Controller {
                 ->setCellValue('AV1', 'SUBZONA')
                 ->setCellValue('AW1', 'TIPO')
                 ->setCellValue('AX1', 'C.CONTABILIDAD')
-                ->setCellValue('AY1', 'PUESTO');
+                ->setCellValue('AY1', 'PUESTO')
+                ->setCellValue('AZ1', 'VENCE VISITA');
+        
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -642,7 +644,10 @@ class EmpleadoController extends Controller {
             if ($arEmpleado->getFechaExpedicionIdentificacion() != null) {
                 $fechaExpedicionIdentificacion = $arEmpleado->getFechaExpedicionIdentificacion()->Format('Y-m-d');
             }
-
+            $venceUltimaVisita = "";
+            if($arEmpleado->getFechaUltimaVisita()) {
+                $venceUltimaVisita = $arEmpleado->getFechaUltimaVisita()->format('Y-m-d');
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                     ->setCellValue('B' . $i, $arEmpleado->getTipoIdentificacionRel()->getNombre())
@@ -690,7 +695,9 @@ class EmpleadoController extends Controller {
                     ->setCellValue('AR' . $i, $departamentoEmpresa)
                     ->setCellValue('AS' . $i, $horario)
                     ->setCellValue('AT' . $i, $discapacidad)
-                    ->setCellValue('AX' . $i, $arEmpleado->getCodigoCentroCostoContabilidadFk());
+                    ->setCellValue('AX' . $i, $arEmpleado->getCodigoCentroCostoContabilidadFk())
+                    ->setCellValue('AZ' . $i, $venceUltimaVisita);
+            
             if ($arEmpleado->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AU' . $i, $arEmpleado->getZonaRel()->getNombre());
             }

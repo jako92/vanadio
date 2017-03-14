@@ -390,6 +390,11 @@ class RhuEmpleado
     private $codigoClienteTurnoFk;     
     
     /**
+     * @ORM\Column(name="fecha_ultima_visita", type="date", nullable=true)
+     */    
+    private $fechaUltimaVisita;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuClasificacionRiesgo", inversedBy="empleadosClasificacionRiesgoRel")
      * @ORM\JoinColumn(name="codigo_clasificacion_riesgo_fk", referencedColumnName="codigo_clasificacion_riesgo_pk")
      */
@@ -4782,5 +4787,29 @@ class RhuEmpleado
     public function getCertificadosIngresosAcumuladosEmpleadoRel()
     {
         return $this->certificadosIngresosAcumuladosEmpleadoRel;
+    }
+
+    /**
+     * Set fechaUltimaVisita
+     *
+     * @param \DateTime $fechaUltimaVisita
+     *
+     * @return RhuEmpleado
+     */
+    public function setFechaUltimaVisita($fechaUltimaVisita)
+    {
+        $this->fechaUltimaVisita = $fechaUltimaVisita;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaUltimaVisita
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltimaVisita()
+    {
+        return $this->fechaUltimaVisita;
     }
 }
