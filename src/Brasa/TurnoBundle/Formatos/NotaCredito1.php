@@ -79,14 +79,15 @@ class NotaCredito1 extends \FPDF_FPDF {
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('');
+        $this->Rect(15, 96, 10, 100);
+        $this->Rect(25, 96, 124, 100);
+        $this->Rect(149, 96, 28, 100);
+        $this->Rect(177, 96, 28, 100);
         $this->Ln(8);
     }
 
     public function Body($pdf) {
-        $pdf->Rect(15, 96, 10, 100);
-        $pdf->Rect(25, 96, 124, 100);
-        $pdf->Rect(149, 96, 28, 100);
-        $pdf->Rect(177, 96, 28, 100);
+
         $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
         $arFactura = self::$em->getRepository('BrasaTurnoBundle:TurFactura')->find(self::$codigoFactura);         
         $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
@@ -323,7 +324,7 @@ class NotaCredito1 extends \FPDF_FPDF {
         //$this->Text(50, 251, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
 
         //Número de página
-        //$this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');
+        $this->Text(180, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');
     }
 
     public function GenerarEncabezadoFactura($em) {
