@@ -21,6 +21,10 @@ class AdDocumento
      */    
     private $nombre;  
     
+    /**
+     * @ORM\OneToMany(targetEntity="AdArchivo", mappedBy="documentoRel")
+     */
+    protected $archivosDocumentoRel;     
 
     /**
      * Set codigoDocumentoPk
@@ -68,5 +72,46 @@ class AdDocumento
     public function getNombre()
     {
         return $this->nombre;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->archivosDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add archivosDocumentoRel
+     *
+     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel
+     *
+     * @return AdDocumento
+     */
+    public function addArchivosDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel)
+    {
+        $this->archivosDocumentoRel[] = $archivosDocumentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove archivosDocumentoRel
+     *
+     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel
+     */
+    public function removeArchivosDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdArchivo $archivosDocumentoRel)
+    {
+        $this->archivosDocumentoRel->removeElement($archivosDocumentoRel);
+    }
+
+    /**
+     * Get archivosDocumentoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArchivosDocumentoRel()
+    {
+        return $this->archivosDocumentoRel;
     }
 }
