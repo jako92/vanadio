@@ -237,6 +237,12 @@ class ContratosController extends Controller {
                 $centroTrabajo = $arCentroTrabajo->getNombre();
             }
         } else {
+            $codigoCliente = 0;
+            $cliente = "";
+            $codigoSucursal = 0;
+            $sucursal = "";
+            $codigoCentroTrabajo = 0;
+            $centroTrabajo = "";
             $arContrato->setFechaDesde(new \DateTime('now'));
             $arContrato->setFechaHasta(new \DateTime('now'));
             $arContrato->setIndefinido(1);
