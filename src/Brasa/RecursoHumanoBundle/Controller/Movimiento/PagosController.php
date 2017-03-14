@@ -58,7 +58,7 @@ class PagosController extends Controller
                     $em->persist($arPagoActualizar);
                 }
                 $em->flush();
-                echo "Corregido";                
+                             
             }
             if($form->get('BtnExcel')->isClicked()) {                
                 $this->filtrarLista($form, $request);

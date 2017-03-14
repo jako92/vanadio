@@ -254,6 +254,9 @@ class ProgramacionesPagoController extends Controller {
         $arVacaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->periodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), "", $arProgramacionPago->getCodigoCentroCostoFk());
         $arVacaciones = $paginator->paginate($arVacaciones, $request->query->get('page', 1), 200);
+        $arProgramacionPagoHoraExtra = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra();
+        $arProgramacionPagoHoraExtra = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoHoraExtra')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
+        $arProgramacionPagoHoraExtra = $paginator->paginate($arProgramacionPagoHoraExtra, $request->query->get('page', 1), 200);
 
         $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->listaDQL($codigoProgramacionPago));
         $arProgramacionPagoDetalles = $paginator->paginate($query, $request->query->get('page', 1), 2000);
@@ -269,6 +272,7 @@ class ProgramacionesPagoController extends Controller {
                     'arIncapacidades' => $arIncapacidades,
                     'arLicencias' => $arLicencias,
                     'arVacaciones' => $arVacaciones,
+                    'arProgramacionPagoHoraExtra' => $arProgramacionPagoHoraExtra,
                     'arProgramacionPagoDetalles' => $arProgramacionPagoDetalles,
                     'arProgramacionPagoDetalleSedes' => $arProgramacionPagoDetalleSedes,
                     'arProgramacionPago' => $arProgramacionPago,

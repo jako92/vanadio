@@ -637,6 +637,26 @@ class PagosAdicionalesController extends Controller
                                 $arProgramacionPagoHoraExtra->setHorasRecargoFestivoNocturno($intHoras);
                                 $em->persist($arProgramacionPagoHoraExtra);
                             }
+                                if($arrControles['TxtHDNC'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHDNC'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasDomingoNoCompensado($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                                if($arrControles['TxtHDC'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHDC'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasDomingoCompensado($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                                if($arrControles['TxtHRNFC'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHRNFC'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasRecargoNocturnoFestivoCompensado($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
+                                if($arrControles['TxtHRNFNC'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHRNFNC'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasRecargoNocturnoFestivoNoCompensado($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
                         }
                         $intIndice++;
                     }
