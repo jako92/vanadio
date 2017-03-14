@@ -178,7 +178,7 @@ class AdDocumento implements FixtureInterface
             $arDocumento->setCodigoDocumentoPk(21);
             $arDocumento->setNombre("ACREDITACION");
             $manager->persist($arDocumento);                
-        }        
+        }               
         $manager->flush();
     }
 }

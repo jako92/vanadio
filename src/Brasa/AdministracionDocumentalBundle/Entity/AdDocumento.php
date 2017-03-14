@@ -13,7 +13,6 @@ class AdDocumento
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_documento_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoDocumentoPk;    
     
@@ -23,6 +22,19 @@ class AdDocumento
     private $nombre;  
     
 
+    /**
+     * Set codigoDocumentoPk
+     *
+     * @param integer $codigoDocumentoPk
+     *
+     * @return AdDocumento
+     */
+    public function setCodigoDocumentoPk($codigoDocumentoPk)
+    {
+        $this->codigoDocumentoPk = $codigoDocumentoPk;
+
+        return $this;
+    }
 
     /**
      * Get codigoDocumentoPk
