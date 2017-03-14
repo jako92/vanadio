@@ -68,7 +68,11 @@ class AdArchivo
      */
     protected $directorioRel;     
        
-
+    /**
+     * @ORM\ManyToOne(targetEntity="AdDocumento", inversedBy="archivosDocumentoRel")
+     * @ORM\JoinColumn(name="codigo_documento_fk", referencedColumnName="codigo_documento_pk")
+     */
+    protected $documentoRel; 
  
 
 
@@ -320,5 +324,29 @@ class AdArchivo
     public function getDirectorioRel()
     {
         return $this->directorioRel;
+    }
+
+    /**
+     * Set documentoRel
+     *
+     * @param \Brasa\AdministracionDocumentalBundle\Entity\AdDocumento $documentoRel
+     *
+     * @return AdArchivo
+     */
+    public function setDocumentoRel(\Brasa\AdministracionDocumentalBundle\Entity\AdDocumento $documentoRel = null)
+    {
+        $this->documentoRel = $documentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get documentoRel
+     *
+     * @return \Brasa\AdministracionDocumentalBundle\Entity\AdDocumento
+     */
+    public function getDocumentoRel()
+    {
+        return $this->documentoRel;
     }
 }
