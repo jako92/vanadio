@@ -6,13 +6,13 @@ class MySQL
     {
         if(!isset($this->conexion))
         {
-            $link = mysqli_connect("localhost", "root", "1152689427", "bdseracis");
+            $link = mysqli_connect("localhost", "root", "1152689427", "bdsogercol");
 //            $this->conexion = (new mysqli('localhost', 'root', '1152689427','bdseracis') or die(mysqli_error()));
 //         mysqli_select_db($this->conexion,"bdseracis" ) or die (mysqli_error());
         }
     }
     function consulta($consulta){
-        $link = mysqli_connect("localhost", "root", "1152689427", "bdseracis");
+        $link = mysqli_connect("localhost", "root", "1152689427", "bdsogercol");
         $resultado = mysqli_query($link, $consulta);
         if(!$resultado){
             echo'Mysql Error:'.mysqli_error();
