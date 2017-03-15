@@ -57,7 +57,7 @@ class CambioSalarioNotificacion extends \FPDF_FPDF {
             $sustitucion1 = strftime("%d de ". $this->MesesEspañol($fechaActual->format('m')) ." de %Y");        
             $sustitucion2 = $arCambioSalario->getFechaInicio()->format('Y');
             $sustitucion3 = strftime("%d de ". $this->MesesEspañol($arCambioSalario->getFechaInicio()->format('m')) ." de %Y");         
-            $sustitucion4 = $arCambioSalario->getVrSalarioNuevo();
+            $sustitucion4 = number_format($arCambioSalario->getVrSalarioNuevo(), 0,'.',',');            
             $sustitucion5 = $arConfiguracion->getNombreEmpresa();                        
             $sustitucion6 = $arCambioSalario->getEmpleadoRel()->getNombreCorto();                        
             $sustitucion7 = "";
