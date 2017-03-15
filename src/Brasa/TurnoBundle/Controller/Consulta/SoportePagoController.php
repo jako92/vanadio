@@ -13,25 +13,21 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class SoportePagoDetalleController extends Controller {
+class SoportePagoController extends Controller {
 
     var $strListaDql = "";
     var $codigoSoportePago = "";
     var $codigoRecurso = "";
 
     /**
-     * @Route("/tur/consulta/soporte/pago/detalle", name="brs_tur_consulta_soporte_pago_detalle")
+     * @Route("/tur/consulta/soporte/pago/", name="brs_tur_consulta_soporte_pago")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 43)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
-        }
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
-        $this->lista();
-        $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
+        $this->lista();        
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $arrControles = $request->request->All();
@@ -48,9 +44,9 @@ class SoportePagoDetalleController extends Controller {
                 }
             }
         }
-        $arSoportePagoDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
-        return $this->render('BrasaTurnoBundle:Consultas/SoportePago:detalle.html.twig', array(
-                    'arSoportePagoDetalles' => $arSoportePagoDetalles,
+        $arSoportesPago = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
+        return $this->render('BrasaTurnoBundle:Consultas/SoportePago:lista.html.twig', array(
+                    'arSoportesPago' => $arSoportesPago,
                     'form' => $form->createView()));
     }
 
@@ -64,8 +60,10 @@ class SoportePagoDetalleController extends Controller {
             $strFechaDesde = $session->get('filtroSoportePagoDetalleFechaDesde');
             $strFechaHasta = $session->get('filtroSoportePagoDetalleFechaHasta');
         }
-        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurSoportePagoDetalle')->listaConsultaDql(
-                $this->codigoSoportePago, $session->get('filtroCodigoRecurso'), $strFechaDesde, $strFechaHasta, $session->get('filtroCodigoTurno')
+        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->listaConsultaDql(                
+                $session->get('filtroCodigoRecurso'), 
+                $strFechaDesde, 
+                $strFechaHasta                
         );
     }
 
@@ -76,8 +74,7 @@ class SoportePagoDetalleController extends Controller {
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroSoportePagoDetalleFechaDesde', $dateFechaDesde->format('Y/m/d'));
         $session->set('filtroSoportePagoDetalleFechaHasta', $dateFechaHasta->format('Y/m/d'));
-        $session->set('filtroSoportePagoDetalleFiltrarFecha', $form->get('filtrarFecha')->getData());
-        $session->set('filtroCodigoTurno', $form->get('TxtCodigoTurno')->getData());
+        $session->set('filtroSoportePagoDetalleFiltrarFecha', $form->get('filtrarFecha')->getData());        
     }
 
     private function formularioFiltro() {
@@ -106,8 +103,7 @@ class SoportePagoDetalleController extends Controller {
         $dateFechaDesde = date_create($strFechaDesde);
         $form = $this->createFormBuilder()
                 ->add('TxtCodigoRecurso', TextType::class, array('data' => $session->get('filtroCodigoRecurso')))
-                ->add('TxtNombreRecurso', TextType::class, array('data' => $strNombreRecurso))
-                ->add('TxtCodigoTurno', TextType::class, array('data' => $session->get('filtroCodigoTurno')))
+                ->add('TxtNombreRecurso', TextType::class, array('data' => $strNombreRecurso))                
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroSoportePagoDetalleFiltrarFecha')))
@@ -147,19 +143,18 @@ class SoportePagoDetalleController extends Controller {
                 ->setCellValue('F1', 'COD')
                 ->setCellValue('G1', 'TURNO')
                 ->setCellValue('H1', 'DIAS')
-                ->setCellValue('I1', 'DES')
-                ->setCellValue('J1', 'INC')
-                ->setCellValue('K1', 'HDS')
-                ->setCellValue('L1', 'HD')
-                ->setCellValue('M1', 'HN')
-                ->setCellValue('N1', 'HFD')
-                ->setCellValue('O1', 'HFN')
-                ->setCellValue('P1', 'HEOD')
-                ->setCellValue('Q1', 'HEON')
-                ->setCellValue('R1', 'HEFD')
-                ->setCellValue('S1', 'HEFN')
-                ->setCellValue('T1', 'H')
-                ->setCellValue('U1', 'PUESTO');
+                ->setCellValue('I1', 'DESCANSO')
+                ->setCellValue('J1', 'HDS')
+                ->setCellValue('K1', 'HD')
+                ->setCellValue('L1', 'HN')
+                ->setCellValue('M1', 'HFD')
+                ->setCellValue('N1', 'HFN')
+                ->setCellValue('O1', 'HEOD')
+                ->setCellValue('P1', 'HEON')
+                ->setCellValue('Q1', 'HEFD')
+                ->setCellValue('R1', 'HEFN')
+                ->setCellValue('S1', 'H');
+
         $i = 2;
 
         $query = $em->createQuery($this->strListaDql);
@@ -177,20 +172,17 @@ class SoportePagoDetalleController extends Controller {
                     ->setCellValue('G' . $i, $arSoportePagoDetalle->getTurnoRel()->getNombre())
                     ->setCellValue('H' . $i, $arSoportePagoDetalle->getDias())
                     ->setCellValue('I' . $i, $arSoportePagoDetalle->getDescanso())
-                    ->setCellValue('J' . $i, $arSoportePagoDetalle->getIncapacidad())
-                    ->setCellValue('K' . $i, $arSoportePagoDetalle->getHorasDescanso())
-                    ->setCellValue('L' . $i, $arSoportePagoDetalle->getHorasDiurnas())
-                    ->setCellValue('M' . $i, $arSoportePagoDetalle->getHorasNocturnas())
-                    ->setCellValue('N' . $i, $arSoportePagoDetalle->getHorasFestivasDiurnas())
-                    ->setCellValue('O' . $i, $arSoportePagoDetalle->getHorasFestivasNocturnas())
-                    ->setCellValue('P' . $i, $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas())
-                    ->setCellValue('Q' . $i, $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas())
-                    ->setCellValue('R' . $i, $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas())
-                    ->setCellValue('S' . $i, $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas())
-                    ->setCellValue('T' . $i, $arSoportePagoDetalle->getHoras());
-            if($arSoportePagoDetalle->getCodigoPedidoDetalleFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U' . $i, $arSoportePagoDetalle->getPedidoDetalleRel()->getPuestoRel()->getNombre());                
-            }
+                    ->setCellValue('J' . $i, $arSoportePagoDetalle->getHorasDescanso())
+                    ->setCellValue('K' . $i, $arSoportePagoDetalle->getHorasDiurnas())
+                    ->setCellValue('L' . $i, $arSoportePagoDetalle->getHorasNocturnas())
+                    ->setCellValue('M' . $i, $arSoportePagoDetalle->getHorasFestivasDiurnas())
+                    ->setCellValue('N' . $i, $arSoportePagoDetalle->getHorasFestivasNocturnas())
+                    ->setCellValue('O' . $i, $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas())
+                    ->setCellValue('P' . $i, $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas())
+                    ->setCellValue('Q' . $i, $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas())
+                    ->setCellValue('R' . $i, $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas())
+                    ->setCellValue('S' . $i, $arSoportePagoDetalle->getHoras());
+
 
             $i++;
         }

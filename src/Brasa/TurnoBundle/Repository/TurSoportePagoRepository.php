@@ -11,6 +11,21 @@ class TurSoportePagoRepository extends EntityRepository {
         return $dql;
     }
 
+    public function listaConsultaDql($codigoRecurso = "", $fechaDesde='', $fechaHasta = '') {
+        $dql   = "SELECT sp FROM BrasaTurnoBundle:TurSoportePago sp WHERE sp.codigoSoportePagoPk <> 0 ";                
+        if($codigoRecurso != '') {
+            $dql .= "AND sp.codigoRecursoFk = " . $codigoRecurso;  
+        }        
+        if($fechaDesde != "") {
+            $dql .= " AND sp.fechaDesde >= '" . $fechaDesde . "'";
+        }
+        if($fechaHasta != "") {
+            $dql .= " AND sp.fechaDesde <= '" . $fechaHasta . "'";
+        }                
+        $dql .= " ORDER BY sp.fechaDesde DESC ";
+        return $dql;
+    }         
+    
     public function resumen($arSoportePagoPeriodo) {
         $em = $this->getEntityManager();
         $arSoportePagoPeriodoActualizar = new \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();        

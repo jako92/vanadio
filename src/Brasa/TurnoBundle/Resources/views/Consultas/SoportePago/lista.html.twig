@@ -1,10 +1,10 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Consulta soporte pago detalle - Soga App{% endblock %}
+{% block title %}Consulta soporte pago lista - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Programacion de turnos
-            <small>Soporte pago: detalle</small>
+            <small>Soporte pago: lista</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -14,12 +14,7 @@
             <li class="active">Detalle</li>
         </ol>
     </section>    
-    <section class="content"> 
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>    
+    <section class="content">    
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
@@ -45,19 +40,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                                               
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Turno:</label>
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <div class="input-group">
-                                    {{ form_widget(form.TxtCodigoTurno, { 'attr': {'class': 'form-control'} }) }}
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                </div>                    
+                </div>                                                                   
                 <div class="form-group form-group-sm">  
                     <div class="form-group form-group-sm">
                         <label for="form_fecha" class="col-sm-2 control-label">Desde:</label>
@@ -95,56 +78,39 @@
                 <th>COD</th>
                 <th>CEDULA</th>
                 <th>NOMBRE</th>
-                <th>FECHA</th>
-                <th>COD</th>
-                <th>TURNO</th>
+                <th>DESDE</th>
+                <th>HASTA</th>                
                 <th>DIAS</th>
+                <th>NOV</th>
                 <th>DES</th>
                 <th>INC</th>
-                <th>HDS</th>
-                <th>HD</th>
-                <th>HN</th>
-                <th>HFD</th>
-                <th>HFN</th>
-                <th>HEOD</th>
-                <th>HEON</th>
-                <th>HEFD</th>
-                <th>HEFN</th>
-                <th>H</th>
+                <th>LIC</th>
+                <th>VAC</th>
             </tr>
-            {% set intCodigoCliente = '' %}
-            {% for arSoportePagoDetalles in arSoportePagoDetalles %}                 
+            {% for arSoportesPago in arSoportesPago %}                 
                 <tr>
-                    <td>{{ arSoportePagoDetalles.codigoSoportePagoFk}}</td>
-                    <td>{{ arSoportePagoDetalles.recursoRel.codigoRecursoPk }}</td>
-                    <td>{{ arSoportePagoDetalles.recursoRel.numeroIdentificacion }}</td>
-                    <td>{{ arSoportePagoDetalles.recursoRel.nombreCorto }}</td>
-                    <td>{{ arSoportePagoDetalles.fecha | date('Y/m/d')}}</td>
-                     <td>{{ arSoportePagoDetalles.turnoRel.codigoTurnoPk}}</td>
-                    <td>{{ arSoportePagoDetalles.turnoRel.nombre}}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.dias | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.descanso | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.incapacidad | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasDescanso | number_format(2, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasDiurnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasNocturnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasFestivasDiurnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasFestivasNocturnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasOrdinariasDiurnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasOrdinariasNocturnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasFestivasDiurnas | number_format(2, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horasExtrasFestivasNocturnas | number_format(2, '.', ',') }}</td>                                
-                    <td style="text-align: right">{{ arSoportePagoDetalles.horas | number_format(2, '.', ',') }}</td>
+                    <td>{{ arSoportesPago.codigoSoportePagoPk}}</td>
+                    <td>{{ arSoportesPago.recursoRel.codigoRecursoPk }}</td>
+                    <td>{{ arSoportesPago.recursoRel.numeroIdentificacion }}</td>
+                    <td>{{ arSoportesPago.recursoRel.nombreCorto }}</td>
+                    <td>{{ arSoportesPago.fechaDesde | date('Y/m/d')}}</td>
+                    <td>{{ arSoportesPago.fechaHasta | date('Y/m/d')}}</td>                                        
+                    <td style="text-align: right">{{ arSoportesPago.dias | number_format(0, '.', ',') }}</td>                                    
+                    <td style="text-align: right">{{ arSoportesPago.novedad | number_format(0, '.', ',') }}</td>                                    
+                    <td style="text-align: right">{{ arSoportesPago.descanso | number_format(0, '.', ',') }}</td>                                    
+                    <td style="text-align: right">{{ arSoportesPago.incapacidad | number_format(0, '.', ',') }}</td>                                    
+                    <td style="text-align: right">{{ arSoportesPago.licencia | number_format(0, '.', ',') }}</td>                                    
+                    <td style="text-align: right">{{ arSoportesPago.vacacion | number_format(0, '.', ',') }}</td>                                    
                 </tr>
             {% endfor %}
         </table>        
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arSoportePagoDetalles.getTotalItemCount }}</span></div>                        
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arSoportesPago.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-            {{ knp_pagination_render(arSoportePagoDetalles) }}       
+            {{ knp_pagination_render(arSoportesPago) }}       
         </div>
         <div class="btn-toolbar" style="float: right">
             <div class="btn-group">                                                                
