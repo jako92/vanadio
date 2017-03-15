@@ -63,11 +63,10 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $em->getConnection()->executeQuery($strSql); 
                 $strSql = "DELETE FROM rhu_pago WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
                 $em->getConnection()->executeQuery($strSql);
-
-                $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));
+                $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));                
                 foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                        
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->generarPago($arProgramacionPagoDetalle, $arProgramacionPagoProcesar, $arCentroCosto, $arConfiguracion);   
-                }
+                }                
                 $arProgramacionPagoProcesar->setEstadoGenerado(1);
                 $em->persist($arProgramacionPagoProcesar);
                 $em->flush();                                                                               
