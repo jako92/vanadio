@@ -13,9 +13,13 @@ class GenContenido
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_contenido_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoContenidoPk;
+    
+    /**
+     * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
+     */    
+    private $nombre;    
     
     /**
      * @ORM\Column(name="numero_formato", type="integer", nullable=true)
@@ -52,7 +56,21 @@ class GenContenido
      */    
     private $requiereFormatoIso = false;                
     
-    
+   
+
+    /**
+     * Set codigoContenidoPk
+     *
+     * @param integer $codigoContenidoPk
+     *
+     * @return GenContenido
+     */
+    public function setCodigoContenidoPk($codigoContenidoPk)
+    {
+        $this->codigoContenidoPk = $codigoContenidoPk;
+
+        return $this;
+    }
 
     /**
      * Get codigoContenidoPk
@@ -230,5 +248,29 @@ class GenContenido
     public function getRequiereFormatoIso()
     {
         return $this->requiereFormatoIso;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return GenContenido
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
     }
 }

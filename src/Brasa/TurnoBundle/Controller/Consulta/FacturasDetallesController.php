@@ -163,9 +163,8 @@ class FacturasDetallesController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'M'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        for ($col = 'A'; $col !== 'P'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
         }
         for ($col = 'G'; $col !== 'K'; $col++) {
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
@@ -185,7 +184,8 @@ class FacturasDetallesController extends Controller {
                 ->setCellValue('K1', 'ANIO')
                 ->setCellValue('L1', 'MES')
                 ->setCellValue('M1', 'PUESTO')
-                ->setCellValue('N1', 'C.COSTO');
+                ->setCellValue('N1', 'C.COSTO')
+                ->setCellValue('O1', 'PED_DET');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -202,7 +202,8 @@ class FacturasDetallesController extends Controller {
                     ->setCellValue('G' . $i, $arFacturaDetalle->getCantidad())
                     ->setCellValue('H' . $i, $arFacturaDetalle->getVrPrecio())
                     ->setCellValue('I' . $i, $arFacturaDetalle->getPorIva())
-                    ->setCellValue('J' . $i, $arFacturaDetalle->getSubtotal());
+                    ->setCellValue('J' . $i, $arFacturaDetalle->getSubtotal())
+                    ->setCellValue('O' . $i, $arFacturaDetalle->getCodigoPedidoDetalleFk());
 
             if ($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arFacturaDetalle->getPedidoDetalleRel()->getAnio());
