@@ -56,7 +56,10 @@ class GenContenido
      */    
     private $requiereFormatoIso = false;                
     
-   
+    /**
+     * @ORM\Column(name="etiqueta", type="text", nullable=true)
+     */    
+    private $etiqueta;  
 
     /**
      * Set codigoContenidoPk
@@ -272,5 +275,29 @@ class GenContenido
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set etiqueta
+     *
+     * @param string $etiqueta
+     *
+     * @return GenContenido
+     */
+    public function setEtiqueta($etiqueta)
+    {
+        $this->etiqueta = $etiqueta;
+
+        return $this;
+    }
+
+    /**
+     * Get etiqueta
+     *
+     * @return string
+     */
+    public function getEtiqueta()
+    {
+        return $this->etiqueta;
     }
 }

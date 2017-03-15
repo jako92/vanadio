@@ -163,6 +163,12 @@ class ContratosController extends Controller {
                 $objFormatoContratoAdicion = new \Brasa\RecursoHumanoBundle\Formatos\FormatoContratoAdicion();
                 $objFormatoContratoAdicion->Generar($em, $codigoContrato, $codigoContratoAdicion, $arUsuario);
             }
+            if ($request->request->get('OpImprimirCambioSalarioNotificacion')) {
+                $codigoCambioSalario = $request->request->get('OpImprimirCambioSalarioNotificacion');
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\CambioSalarioNotificacion();
+                $objFormato->Generar($em, $codigoCambioSalario, $arUsuario);
+            }
         }
         $arCambiosSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
         $arCambiosSalario = $em->getRepository('BrasaRecursoHumanoBundle:RhuCambioSalario')->findBy(array('codigoContratoFk' => $codigoContrato));

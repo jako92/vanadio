@@ -173,15 +173,18 @@
                             <tr>
                                 <th>CÓDIGO</th>
                                 <th>FECHA</th>
+                                <th>INICIO</th>
                                 <th>ANTERIOR</th>
                                 <th>NUEVO</th>
                                 <th>DETALLE</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                             {% for arCambiosSalario in arCambiosSalario %}
                                 <tr>
                                     <td><input type="hidden" name="LblCodigo[]" value="{{ arCambiosSalario.codigoCambioSalarioPk }}">{{ arCambiosSalario.codigoCambioSalarioPk }} </td>
                                     <td>{{ arCambiosSalario.fecha |date("Y/m/d")  }}</td>                            
+                                    <td>{{ arCambiosSalario.fechaInicio |date("Y/m/d")  }}</td>                            
                                     <td style="text-align: right">{{ arCambiosSalario.vrSalarioAnterior | number_format(0, '.', ',') }}</td>
                                     <td style="text-align: right">{{ arCambiosSalario.vrSalarioNuevo | number_format(0, '.', ',') }}</td>
                                     <td>{{ arCambiosSalario.detalle  }}</td>
@@ -189,7 +192,8 @@
                                         <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cambio_salario_nuevo', { 'codigoContrato': arContrato.codigoContratoPk,  'codigoCambioSalario': arCambiosSalario.codigoCambioSalarioPk}) }}', 'EditarCambioSalario', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                                             {% else %}
                                         <td></td>
-                                    {% endif %}    
+                                    {% endif %} 
+                                    <td><button class="btn btn-default btn-xs" type="submit" name="OpImprimirCambioSalarioNotificacion" value="{{ arCambiosSalario.codigoCambioSalarioPk }}">Imprimir notificacion</button></td>
                                 </tr>
                             {% endfor %}
                         </table>

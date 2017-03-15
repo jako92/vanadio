@@ -31,6 +31,11 @@ class RhuCambioSalario
      * @ORM\Column(name="fecha", type="date", nullable=true)
      */    
     private $fecha;                 
+
+    /**
+     * @ORM\Column(name="fecha_inicio", type="date", nullable=true)
+     */    
+    private $fechaInicio;
     
     /**
      * @ORM\Column(name="vr_salario_anterior", type="float")
@@ -290,5 +295,29 @@ class RhuCambioSalario
     public function getCodigoUsuario()
     {
         return $this->codigoUsuario;
+    }
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     *
+     * @return RhuCambioSalario
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
     }
 }

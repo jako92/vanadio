@@ -23,16 +23,15 @@ class CambioSalarioController extends Controller
         $arCambioSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
         $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
-        if ($codigoCambioSalario != 0)
-        {
+        if ($codigoCambioSalario != 0) {
             $arCambioSalario = $em->getRepository('BrasaRecursoHumanoBundle:RhuCambioSalario')->find($codigoCambioSalario);
-            $dateAplicacion = $arCambioSalario->getFecha();
+            $dateAplicacion = $arCambioSalario->getFechaInicio();
         }else {
             $dateAplicacion = new \DateTime('now');
         }    
         $form = $this->createFormBuilder()
             ->add('salarioNuevo', NumberType::class, array('required' => true, 'data' => $arCambioSalario->getVrSalarioNuevo()))
-            ->add('fechaAplicacion', DateType::class, array('data' => new \DateTime('now')))
+            ->add('fechaAplicacion', DateType::class, array('data' => $dateAplicacion))
             ->add('detalle', TextType::class, array('required' => true, 'data' => $arCambioSalario->getDetalle()))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
             ->getForm();
@@ -44,10 +43,11 @@ class CambioSalarioController extends Controller
                 $objMensaje->Mensaje("error", "El cambio de salario se debe realizar despues del pago del ".$arContrato->getFechaUltimoPago()->format('Y/m/d')."");
             } else {
                 $arCambioSalario->setContratoRel($arContrato);
-                $arCambioSalario->setEmpleadoRel($arContrato->getEmpleadoRel());
-                $arCambioSalario->setFecha($form->get('fechaAplicacion')->getData());
+                $arCambioSalario->setEmpleadoRel($arContrato->getEmpleadoRel());                
+                $arCambioSalario->setFechaInicio($form->get('fechaAplicacion')->getData());
                 $arCambioSalario->setVrSalarioNuevo($form->get('salarioNuevo')->getData());    
                 if ($codigoCambioSalario == 0){
+                    $arCambioSalario->setFecha(new \DateTime('now'));
                     $arCambioSalario->setVrSalarioAnterior($arContrato->getVrSalario());
                     $arCambioSalario->setCodigoUsuario($arUsuario->getUserName());
                 }
