@@ -14,7 +14,7 @@ class RhuIncapacidadPagoRepository extends EntityRepository {
     public function listaDQL($strCodigoEntidadSalud = "") {                
         $dql   = "SELECT ip FROM BrasaRecursoHumanoBundle:RhuIncapacidadPago ip WHERE ip.codigoIncapacidadPagoPk <> 0";
         if($strCodigoEntidadSalud != "") {
-            $dql .= " AND ip.codigoEntidadExamenFk = " . $strCodigoEntidadSalud;
+            $dql .= " AND ip.codigoEntidadSaludFk = " . $strCodigoEntidadSalud;
         }     
         
         $dql .= " ORDER BY ip.codigoIncapacidadPagoPk";
