@@ -34,12 +34,17 @@ class ContratoController extends Controller {
                 $cliente = new \nusoap_client($direccionServidor);
                 $error = FALSE;
                 $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                //$arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('codigoContratoPk' => 2203), array(), 1);
+                //$arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array(), array(), 5);
                 $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findAll();
                 foreach ($arContratos as $arContrato) {
+                    $lugarExpedidionIdentificacion = "";
+                    if($arContrato->getEmpleadoRel()->getCodigoCiudadExpedicionFk()) {
+                        $lugarExpedidionIdentificacion = $arContrato->getEmpleadoRel()->getCiudadExpedicionRel()->getNombre();
+                    }
                     $result = $cliente->call("getInsertarEmpleado", array(
                         "codigoIdentificacionTipo" => $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                         "identificacionNumero" => $arContrato->getEmpleadoRel()->getNumeroIdentificacion(),
+                        "lugarExpedicionIdentificacion" => $lugarExpedidionIdentificacion,
                         "nombre1" => $arContrato->getEmpleadoRel()->getNombre1(),
                         "nombre2" => $arContrato->getEmpleadoRel()->getNombre2(),
                         "apellido1" => $arContrato->getEmpleadoRel()->getApellido1(),
@@ -63,10 +68,11 @@ class ContratoController extends Controller {
                         if($arContrato->getEstadoActivo()) {
                             $vigente = 1;
                         }
-                        $result = $cliente->call("getInsertarContrato", array(
+                        $result = $cliente->call("getInsertarContrato", array(                            
                             "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
-                            "numero" => $arContrato->getNumero(),
                             "codigo" => $arContrato->getCodigoContratoPk(),                            
+                            "tipo" => $arContrato->getContratoTipoRel()->getNombre(),
+                            "numero" => $arContrato->getNumero(),                            
                             "codigoClase" => $arContrato->getCodigoContratoClaseFk(),                            
                             "codigoIdentificacionTipo" => $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                             "identificacionNumero" => $arContrato->getEmpleadoRel()->getNumeroIdentificacion(),                            
