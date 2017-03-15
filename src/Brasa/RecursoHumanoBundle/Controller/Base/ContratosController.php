@@ -167,7 +167,7 @@ class ContratosController extends Controller {
                 $codigoCambioSalario = $request->request->get('OpImprimirCambioSalarioNotificacion');
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\CambioSalarioNotificacion();
-                $objFormato->Generar($em, $codigoCambioSalario, $arUsuario);
+                $objFormato->Generar($em, array($codigoCambioSalario), $arUsuario);                
             }
         }
         $arCambiosSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
