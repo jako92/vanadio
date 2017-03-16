@@ -1027,7 +1027,19 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
         }        
         if($arProgramacionPagoHoraExtra->getHorasRecargoFestivoNocturno() > 0) {
             $arrExtra[] = array('concepto' => $arConfiguracion->getCodigoHoraRecargoFestivoNocturno(), 'horas' => $arProgramacionPagoHoraExtra->getHorasRecargoFestivoNocturno());
+        }
+        if($arProgramacionPagoHoraExtra->getHorasDomingoNoCompensado() > 0) {
+            $arrExtra[] = array('concepto' => $arConfiguracion->getHorasDomingoNoCompensado(), 'horas' => $arProgramacionPagoHoraExtra->getHorasDomingoNoCompensado());
         }     
+        if($arProgramacionPagoHoraExtra->getHorasDomingoCompensado() > 0) {
+            $arrExtra[] = array('concepto' => $arConfiguracion->getHorasDomingoCompensado(), 'horas' => $arProgramacionPagoHoraExtra->getHorasDomingoCompensado());
+        }    
+        if($arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoCompensado() > 0) {
+            $arrExtra[] = array('concepto' => $arConfiguracion->getHorasRecargoNocturnoFestivoCompensado(), 'horas' => $arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoCompensado());
+        }    
+        if($arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoNoCompensado() > 0) {
+            $arrExtra[] = array('concepto' => $arConfiguracion->getHorasRecargoNocturnoFestivoNoCompensado(), 'horas' => $arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoNoCompensado());
+        }    
         
         return $arrExtra;
     }    

@@ -400,7 +400,25 @@ class RhuConfiguracion
      */    
     private $informacionResolucionSupervigilanciaFactura;
     
-
+    /**
+     * @ORM\Column(name="horas_domingo_no_compensado", type="integer")
+     */    
+    private $horasDomingoNoCompensado; 
+    
+    /**
+     * @ORM\Column(name="horas_domingo_compensado", type="integer")
+     */    
+    private $horasDomingoCompensado;       
+    
+    /**
+     * @ORM\Column(name="horas_recargo_nocturno_festivo_compensado", type="integer")
+     */    
+    private $horasRecargoNocturnoFestivoCompensado;       
+    
+    /**
+     * @ORM\Column(name="horas_recargo_nocturno_festivo_no_compensado", type="integer")
+     */    
+    private $horasRecargoNocturnoFestivoNoCompensado;     
 
   
     /**
@@ -2225,5 +2243,101 @@ class RhuConfiguracion
     public function getInformacionResolucionSupervigilanciaFactura()
     {
         return $this->informacionResolucionSupervigilanciaFactura;
+    }
+
+    /**
+     * Set horasDomingoNoCompensado
+     *
+     * @param float $horasDomingoNoCompensado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setHorasDomingoNoCompensado($horasDomingoNoCompensado)
+    {
+        $this->horasDomingoNoCompensado = $horasDomingoNoCompensado;
+
+        return $this;
+    }
+
+    /**
+     * Get horasDomingoNoCompensado
+     *
+     * @return float
+     */
+    public function getHorasDomingoNoCompensado()
+    {
+        return $this->horasDomingoNoCompensado;
+    }
+
+    /**
+     * Set horasDomingoCompensado
+     *
+     * @param float $horasDomingoCompensado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setHorasDomingoCompensado($horasDomingoCompensado)
+    {
+        $this->horasDomingoCompensado = $horasDomingoCompensado;
+
+        return $this;
+    }
+
+    /**
+     * Get horasDomingoCompensado
+     *
+     * @return float
+     */
+    public function getHorasDomingoCompensado()
+    {
+        return $this->horasDomingoCompensado;
+    }
+
+    /**
+     * Set horasRecargoNocturnoFestivoCompensado
+     *
+     * @param float $horasRecargoNocturnoFestivoCompensado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setHorasRecargoNocturnoFestivoCompensado($horasRecargoNocturnoFestivoCompensado)
+    {
+        $this->horasRecargoNocturnoFestivoCompensado = $horasRecargoNocturnoFestivoCompensado;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoNocturnoFestivoCompensado
+     *
+     * @return float
+     */
+    public function getHorasRecargoNocturnoFestivoCompensado()
+    {
+        return $this->horasRecargoNocturnoFestivoCompensado;
+    }
+
+    /**
+     * Set horasRecargoNocturnoFestivoNoCompensado
+     *
+     * @param float $horasRecargoNocturnoFestivoNoCompensado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setHorasRecargoNocturnoFestivoNoCompensado($horasRecargoNocturnoFestivoNoCompensado)
+    {
+        $this->horasRecargoNocturnoFestivoNoCompensado = $horasRecargoNocturnoFestivoNoCompensado;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoNocturnoFestivoNoCompensado
+     *
+     * @return float
+     */
+    public function getHorasRecargoNocturnoFestivoNoCompensado()
+    {
+        return $this->horasRecargoNocturnoFestivoNoCompensado;
     }
 }
