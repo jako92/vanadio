@@ -499,7 +499,7 @@ class RhuProgramacionPagoHoraExtraRepository extends EntityRepository {
             //Subsidio transporte
             if($arProgramacionPagoDetalle->getPagoAuxilioTransporte() == 1) {
                 if($arProgramacionPagoDetalle->getDiasTransporte() > 0) {
-                    if($arProgramacionPagoDetalle->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $intPagoConceptoTransporte = $arConfiguracion->getCodigoAuxilioTransporte();
                         $arPagoConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->find($intPagoConceptoTransporte);
                         $duoVrAuxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();

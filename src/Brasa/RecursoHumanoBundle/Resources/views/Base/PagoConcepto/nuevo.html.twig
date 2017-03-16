@@ -140,49 +140,7 @@
                     </div>
                 </div>    
             </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Contabilidad</div>
-            <div class="panel-body">
-
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Cuenta administrativa:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.codigoCuentaFk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Tipo cuenta administrativa:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.tipoCuenta, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Cuenta operacion:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.codigoCuentaOperacionFk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Tipo cuenta operacion:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.tipoCuentaOperacion, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div> 
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Cuenta comercial:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.codigoCuentaComercialFk, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Tipo cuenta comercial:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.tipoCuentaComercial, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>                
-            </div>
-        </div>                
+        </div>               
         <div class="modal-footer">
             <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_pago_concepto_lista') }}">Cancelar</a>
             {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}

@@ -131,7 +131,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                     if($arContrato->getCodigoSalarioTipoFk() == 2) {
                         $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
                     } else {                                        
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioCesantias = $douSalario;
@@ -141,7 +141,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $salarioPromedioCesantias = ($salarioPromedioCesantias * $arLiquidacion->getPorcentajeIbp())/100;
                     }
                     if($arLiquidacion->getLiquidarSalario() == true) {
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioCesantias = $douSalario;
@@ -150,7 +150,7 @@ class RhuLiquidacionRepository extends EntityRepository {
 
                     //No se puede liquidar por menos del minimo
                     $salarioPromedioMinimo = $salarioMinimo;
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioMinimo += $auxilioTransporte;
                     }
                     if($salarioPromedioCesantias < $salarioPromedioMinimo) {
@@ -223,7 +223,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioPrimas = 0;
                         }                         
                     } else {
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioPrimas = $douSalario;
@@ -233,7 +233,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $salarioPromedioPrimas = ($salarioPromedioPrimas * $arLiquidacion->getPorcentajeIbp())/100;
                     }
                     if($arLiquidacion->getLiquidarSalario() == true) {
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioPrimas = $douSalario;
@@ -241,7 +241,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                         
                     }  
                     $salarioPromedioMinimo = $salarioMinimo;
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioMinimo += $auxilioTransporte;
                     }
                     if($salarioPromedioPrimas < $salarioPromedioMinimo) {

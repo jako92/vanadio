@@ -279,9 +279,9 @@ class RhuEmpleado
     private $horasLaboradasPeriodo = 0;
     
     /**
-     * @ORM\Column(name="padre_familia", type="float")
+     * @ORM\Column(name="padre_familia", type="boolean")
      */
-    private $padreFamilia = 0;
+    private $padreFamilia = false;
     
     /**
      * @ORM\Column(name="codigo_empleado_estudio_tipo_fk", type="integer", length=4, nullable=true)
@@ -788,6 +788,7 @@ class RhuEmpleado
     protected $turCostosDetallesEmpleadoRel; 
     
 
+
     /**
      * Constructor
      */
@@ -804,11 +805,13 @@ class RhuEmpleado
         $this->licenciasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->programacionesPagosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->programacionesPagosHorasExtrasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->liquidacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prestacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosDescargosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->certificadosIngresosAcumuladosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosFamiliasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosEstudiosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->acreditacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -2052,7 +2055,7 @@ class RhuEmpleado
     /**
      * Set padreFamilia
      *
-     * @param float $padreFamilia
+     * @param boolean $padreFamilia
      *
      * @return RhuEmpleado
      */
@@ -2066,7 +2069,7 @@ class RhuEmpleado
     /**
      * Get padreFamilia
      *
-     * @return float
+     * @return boolean
      */
     public function getPadreFamilia()
     {
@@ -2551,6 +2554,54 @@ class RhuEmpleado
     public function getCentroCostoFijo()
     {
         return $this->centroCostoFijo;
+    }
+
+    /**
+     * Set codigoClienteTurnoFk
+     *
+     * @param integer $codigoClienteTurnoFk
+     *
+     * @return RhuEmpleado
+     */
+    public function setCodigoClienteTurnoFk($codigoClienteTurnoFk)
+    {
+        $this->codigoClienteTurnoFk = $codigoClienteTurnoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteTurnoFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteTurnoFk()
+    {
+        return $this->codigoClienteTurnoFk;
+    }
+
+    /**
+     * Set fechaUltimaVisita
+     *
+     * @param \DateTime $fechaUltimaVisita
+     *
+     * @return RhuEmpleado
+     */
+    public function setFechaUltimaVisita($fechaUltimaVisita)
+    {
+        $this->fechaUltimaVisita = $fechaUltimaVisita;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaUltimaVisita
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltimaVisita()
+    {
+        return $this->fechaUltimaVisita;
     }
 
     /**
@@ -3480,6 +3531,40 @@ class RhuEmpleado
     }
 
     /**
+     * Add programacionesPagosHorasExtrasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addProgramacionesPagosHorasExtrasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel)
+    {
+        $this->programacionesPagosHorasExtrasEmpleadoRel[] = $programacionesPagosHorasExtrasEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionesPagosHorasExtrasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel
+     */
+    public function removeProgramacionesPagosHorasExtrasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel)
+    {
+        $this->programacionesPagosHorasExtrasEmpleadoRel->removeElement($programacionesPagosHorasExtrasEmpleadoRel);
+    }
+
+    /**
+     * Get programacionesPagosHorasExtrasEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionesPagosHorasExtrasEmpleadoRel()
+    {
+        return $this->programacionesPagosHorasExtrasEmpleadoRel;
+    }
+
+    /**
      * Add liquidacionesEmpleadoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesEmpleadoRel
@@ -3647,6 +3732,40 @@ class RhuEmpleado
     public function getDisciplinariosDescargosEmpleadoRel()
     {
         return $this->disciplinariosDescargosEmpleadoRel;
+    }
+
+    /**
+     * Add certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
+    {
+        $this->certificadosIngresosAcumuladosEmpleadoRel[] = $certificadosIngresosAcumuladosEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
+     */
+    public function removeCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
+    {
+        $this->certificadosIngresosAcumuladosEmpleadoRel->removeElement($certificadosIngresosAcumuladosEmpleadoRel);
+    }
+
+    /**
+     * Get certificadosIngresosAcumuladosEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCertificadosIngresosAcumuladosEmpleadoRel()
+    {
+        return $this->certificadosIngresosAcumuladosEmpleadoRel;
     }
 
     /**
@@ -4695,121 +4814,5 @@ class RhuEmpleado
     public function getTurCostosDetallesEmpleadoRel()
     {
         return $this->turCostosDetallesEmpleadoRel;
-    }
-
-    /**
-     * Set codigoClienteTurnoFk
-     *
-     * @param integer $codigoClienteTurnoFk
-     *
-     * @return RhuEmpleado
-     */
-    public function setCodigoClienteTurnoFk($codigoClienteTurnoFk)
-    {
-        $this->codigoClienteTurnoFk = $codigoClienteTurnoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoClienteTurnoFk
-     *
-     * @return integer
-     */
-    public function getCodigoClienteTurnoFk()
-    {
-        return $this->codigoClienteTurnoFk;
-    }
-
-    /**
-     * Add programacionesPagosHorasExtrasEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel
-     *
-     * @return RhuEmpleado
-     */
-    public function addProgramacionesPagosHorasExtrasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel)
-    {
-        $this->programacionesPagosHorasExtrasEmpleadoRel[] = $programacionesPagosHorasExtrasEmpleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove programacionesPagosHorasExtrasEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel
-     */
-    public function removeProgramacionesPagosHorasExtrasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasEmpleadoRel)
-    {
-        $this->programacionesPagosHorasExtrasEmpleadoRel->removeElement($programacionesPagosHorasExtrasEmpleadoRel);
-    }
-
-    /**
-     * Get programacionesPagosHorasExtrasEmpleadoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProgramacionesPagosHorasExtrasEmpleadoRel()
-    {
-        return $this->programacionesPagosHorasExtrasEmpleadoRel;
-    }
-
-    /**
-     * Add certificadosIngresosAcumuladosEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
-     *
-     * @return RhuEmpleado
-     */
-    public function addCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
-    {
-        $this->certificadosIngresosAcumuladosEmpleadoRel[] = $certificadosIngresosAcumuladosEmpleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove certificadosIngresosAcumuladosEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel
-     */
-    public function removeCertificadosIngresosAcumuladosEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado $certificadosIngresosAcumuladosEmpleadoRel)
-    {
-        $this->certificadosIngresosAcumuladosEmpleadoRel->removeElement($certificadosIngresosAcumuladosEmpleadoRel);
-    }
-
-    /**
-     * Get certificadosIngresosAcumuladosEmpleadoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCertificadosIngresosAcumuladosEmpleadoRel()
-    {
-        return $this->certificadosIngresosAcumuladosEmpleadoRel;
-    }
-
-    /**
-     * Set fechaUltimaVisita
-     *
-     * @param \DateTime $fechaUltimaVisita
-     *
-     * @return RhuEmpleado
-     */
-    public function setFechaUltimaVisita($fechaUltimaVisita)
-    {
-        $this->fechaUltimaVisita = $fechaUltimaVisita;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaUltimaVisita
-     *
-     * @return \DateTime
-     */
-    public function getFechaUltimaVisita()
-    {
-        return $this->fechaUltimaVisita;
     }
 }

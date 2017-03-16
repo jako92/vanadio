@@ -652,7 +652,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                             $salarioPromedioPrimas = ($ibpPrimas / $intDiasSalrioPromedio) * 30;     
                         }                                                 
                     } else {
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioPrimas = $douSalario;
@@ -665,7 +665,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     if($intDiasSalrioPromedio > 0) {
                         $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
                     }                    
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioPrimas = $douSalario + $auxilioTransporte + $otrosConceptos;
                     } else {
                         $salarioPromedioPrimas = $douSalario + $otrosConceptos;
@@ -683,7 +683,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                         foreach ($arParametrosPrestacionPrima as $arParametroPrestacion) {
                             if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                                 if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    if($arContrato->getAuxilioTransporte() == 1) {
                                         $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                                     } else {
                                         $salarioPromedioPrimas = $douSalario;
@@ -769,7 +769,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     if($intDiasSalrioPromedio > 0) {
                         $salarioPromedioCesantias = ($ibpCesantias / $intDiasSalrioPromedio) * 30;     
                     } else {
-                        if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                        if($arContrato->getAuxilioTransporte() == 1) {
                             $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                         } else {
                             $salarioPromedioCesantias = $douSalario;
@@ -782,7 +782,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     if($intDiasSalrioPromedio > 0) {
                         $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
                     }                    
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
                     } else {
                         $salarioPromedioCesantias = $douSalario + $otrosConceptos;
@@ -800,7 +800,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                         foreach ($arParametrosPrestacion as $arParametroPrestacion) {
                             if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                                 if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    if($arContrato->getAuxilioTransporte() == 1) {
                                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                                     } else {
                                         $salarioPromedioCesantias = $douSalario;
@@ -815,7 +815,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 }                   
                 $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                               
                 if($salarioPromedioCesantias < $salarioMinimo) {
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                     } else {
                         $salarioPromedioCesantias = $douSalario;
@@ -1148,7 +1148,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                         $salarioPromedioPrimas = ($ibpPrimas / $intDiasSalrioPromedio) * 30;     
                     }                    
                 } else {
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                     } else {
                         $salarioPromedioPrimas = $douSalario;
@@ -1161,7 +1161,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 if($intDiasSalrioPromedio > 0) {
                     $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
                 }
-                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                if($arContrato->getAuxilioTransporte() == 1) {
                     $salarioPromedioPrimas = $douSalario + $auxilioTransporte + $otrosConceptos;
                 } else {
                     $salarioPromedioPrimas = $douSalario + $otrosConceptos;
@@ -1180,7 +1180,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     foreach ($arParametrosPrestacionPrima as $arParametroPrestacion) {
                         if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                             if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                if($arContrato->getAuxilioTransporte() == 1) {
                                     $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                                 } else {
                                     $salarioPromedioPrimas = $douSalario;
@@ -1246,7 +1246,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 if($intDiasSalrioPromedio > 0) {
                     $salarioPromedioCesantias = ($ibpCesantias / $intDiasSalrioPromedio) * 30;     
                 } else {
-                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                    if($arContrato->getAuxilioTransporte() == 1) {
                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                     } else {
                         $salarioPromedioCesantias = $douSalario;
@@ -1259,7 +1259,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 if($intDiasSalrioPromedio > 0) {
                     $otrosConceptos = ($ibpConceptos / $intDiasSalrioPromedio) * 30;
                 }
-                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                if($arContrato->getAuxilioTransporte() == 1) {
                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
                 } else {
                     $salarioPromedioCesantias = $douSalario + $otrosConceptos;
@@ -1278,7 +1278,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     foreach ($arParametrosPrestacionCesantia as $arParametroPrestacion) {
                         if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                             if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                if($arContrato->getAuxilioTransporte() == 1) {
                                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                                 } else {
                                     $salarioPromedioCesantias = $douSalario;
@@ -1293,7 +1293,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             }                           
             $diasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arContrato->getCodigoContratoPk());                                                
             if($salarioPromedioCesantias < $salarioMinimo) {
-                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                if($arContrato->getAuxilioTransporte() == 1) {
                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                 } else {
                     $salarioPromedioCesantias = $douSalario;

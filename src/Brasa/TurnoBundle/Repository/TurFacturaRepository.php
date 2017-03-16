@@ -410,16 +410,16 @@ class TurFacturaRepository extends EntityRepository {
             $em->persist($arFactura);
 
             //Anular cuenta por cobrar
-            /*$arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => 2, 'numeroDocumento' => $arFactura->getNumero()));
-            if($arCuentaCobrar) {
-                if($arCuentaCobrar->getValorOriginal() == $arCuentaCobrar->getSaldo()) {
-                    $arCuentaCobrar->setSaldo(0);
-                    $arCuentaCobrar->setValorOriginal(0);
-                    $arCuentaCobrar->setAbono(0);
-                    $em->persist($arCuentaCobrar);
-                }
-            }*/
+            $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => $arFactura->getFacturaTipoRel()->getCodigoDocumentoCartera(), 'numeroDocumento' => $arFactura->getNumero()));
+            if($arCuentaCobrar) {                                
+                $arCuentaCobrar->setValorOriginal(0);
+                $arCuentaCobrar->setAbono(0);
+                $arCuentaCobrar->setSaldo(0);
+                $arCuentaCobrar->setSaldoOperado(0);
+                $arCuentaCobrar->setSubtotal(0);
+                $em->persist($arCuentaCobrar);                
+            }
             $em->flush();
 
         } else {

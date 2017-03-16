@@ -75,7 +75,7 @@ class ProyeccionParametroController extends Controller
                                 if($intDiasCesantiasSalarioPromedio > 0) {
                                     $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantiasSalarioPromedio) * 30;                                                                                                                 
                                 } else {
-                                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    if($arContrato->getAuxilioTransporte() == 1) {
                                         $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                                     } else {
                                         $salarioPromedioCesantias = $douSalario;
@@ -88,7 +88,7 @@ class ProyeccionParametroController extends Controller
                                 if($intDiasCesantiasSalarioPromedio > 0) {
                                     $otrosConceptos = ($ibpConceptos / $intDiasCesantiasSalarioPromedio) * 30;
                                 }
-                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                if($arContrato->getAuxilioTransporte() == 1) {
                                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte + $otrosConceptos;
                                 } else {
                                     $salarioPromedioCesantias = $douSalario + $otrosConceptos;
@@ -108,7 +108,7 @@ class ProyeccionParametroController extends Controller
                                     foreach ($arParametrosPrestacionCesantia as $arParametroPrestacion) {
                                         if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                                             if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                                if($arContrato->getAuxilioTransporte() == 1) {
                                                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                                                 } else {
                                                     $salarioPromedioCesantias = $douSalario;
@@ -123,7 +123,7 @@ class ProyeccionParametroController extends Controller
                             }
                             $intDiasCesantias -= $intDiasAusentismo;
                             if($salarioPromedioCesantias < $salarioMinimo) {
-                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                if($arContrato->getAuxilioTransporte() == 1) {
                                     $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
                                 } else {
                                     $salarioPromedioCesantias = $douSalario;
@@ -183,14 +183,14 @@ class ProyeccionParametroController extends Controller
                                         $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrimaSalarioPromedio) * 30;     
                                     }                                                                        
                                 } else {
-                                    if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                    if($arContrato->getAuxilioTransporte() == 1) {
                                         $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                                     } else {
                                         $salarioPromedioPrimas = $douSalario;
                                     }
                                 }
                             } else {
-                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                if($arContrato->getAuxilioTransporte() == 1) {
                                     $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                                 } else {
                                     $salarioPromedioPrimas = $douSalario;
@@ -209,7 +209,7 @@ class ProyeccionParametroController extends Controller
                                     foreach ($arParametrosPrestacionPrima as $arParametroPrestacion) {
                                         if($intDiasLaborados >= $arParametroPrestacion->getDiaDesde() && $intDiasLaborados <= $arParametroPrestacion->getDiaHasta()) {
                                             if($arParametroPrestacion->getOrigen() == 'SAL') {
-                                                if($arContrato->getEmpleadoRel()->getAuxilioTransporte() == 1) {
+                                                if($arContrato->getAuxilioTransporte() == 1) {
                                                     $salarioPromedioPrimas = $douSalario + $auxilioTransporte;
                                                 } else {
                                                     $salarioPromedioPrimas = $douSalario;

@@ -124,8 +124,8 @@
                                 <td class="td-in-well">{{ arContrato.ssoTipoCotizanteRel.nombre|default('') }}</td>
                             </tr>     
                             <tr>
-                                <td class="titulo"></td>
-                                <td></td>
+                                <td class="titulo">AUX. TRANSPORTE</td>
+                                <td>{% if arContrato.auxilioTransporte == 1 %} SI {% else %} NO {% endif %}</td>
                                 <td class="titulo">ENTIDAD CESANTIA:</td>
                                 <td class="td-in-well">{{ arContrato.entidadCesantiaRel.nombre|default('') }}</td>
                                 <td class="titulo">SUBTIPO COTIZANTE:</td>

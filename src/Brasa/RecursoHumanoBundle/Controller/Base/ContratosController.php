@@ -329,6 +329,11 @@ class ContratosController extends Controller {
                                     } else {
                                         $arContrato->setVrSalarioPago($arContrato->getVrSalario());
                                     }
+                                    if ($arContrato->getVrSalario() <= $douSalarioMinimo * 2) {
+                                        $arContrato->setAuxilioTransporte(1);
+                                    } else {
+                                        $arContrato->setAuxilioTransporte(0);
+                                    }                                    
                                     $arContrato->setCodigoUsuario($arUsuario->getUserName());
                                     $em->persist($arContrato);
                                     //Insertar el recurso en recursos
@@ -362,11 +367,7 @@ class ContratosController extends Controller {
                                     }
                                     $em->flush();
                                     $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 33, 1, $arContrato->getCodigoContratoPk());
-                                    if ($codigoContrato == 0 && $arContrato->getVrSalario() <= $douSalarioMinimo * 2) {
-                                        $arEmpleado->setAuxilioTransporte(1);
-                                    } else {
-                                        $arEmpleado->setAuxilioTransporte(0);
-                                    }
+
                                     $arEmpleado->setCentroCostoRel($arContrato->getCentroCostoRel());
                                     $arEmpleado->setTipoTiempoRel($arContrato->getTipoTiempoRel());
                                     $arEmpleado->setVrSalario($arContrato->getVrSalario());
