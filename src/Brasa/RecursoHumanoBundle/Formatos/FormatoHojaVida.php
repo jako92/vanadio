@@ -174,7 +174,7 @@ class FormatoHojaVida extends \FPDF_FPDF {
         $this->SetFont('Arial','B',7.5);
         $this->Cell(46, 5, utf8_decode("DIRECCIÓN DE RESIDENCIA"), 1, 0, 'C', 1);
         $this->Cell(34, 5, "DEPARTAMENTO", 1, 0, 'C', 1);
-        $this->Cell(49, 5, "CUIDAD", 1, 0, 'C', 1);
+        $this->Cell(49, 5, "CIUDAD", 1, 0, 'C', 1);
         $this->Cell(46, 5, "BARRIO", 1, 0, 'C', 1);
         $this->Cell(29, 5, "TELEFONO", 1, 0, 'C', 1);
         $this->SetXY($intX, $intY + 36);
@@ -274,7 +274,7 @@ class FormatoHojaVida extends \FPDF_FPDF {
         $this->Cell(48, 6, "ESTUDIOS", 1, 0, 'C', 1);
         $this->Cell(61, 6, utf8_decode("INSTITUCIÓN"), 1, 0, 'C', 1);
         $this->SetFont('Arial','B',8);
-        $this->Cell(34, 6, "CUIDAD", 1, 0, 'C', 1);
+        $this->Cell(34, 6, "CIUDAD", 1, 0, 'C', 1);
         $this->Cell(61, 6, "TITULO OBTENIDO", 1, 0, 'C', 1);
         $this->SetXY($intX, $intY + 96);
         $rango = 96;
