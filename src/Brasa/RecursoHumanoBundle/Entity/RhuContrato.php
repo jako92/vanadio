@@ -295,6 +295,11 @@ class RhuContrato
     private $codigoClienteFk;
     
     /**
+     * @ORM\Column(name="auxilio_transporte", type="boolean")
+     */    
+    private $auxilioTransporte = false;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="contratosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -3200,5 +3205,29 @@ class RhuContrato
     public function getContratosAdicionalesContratoRel()
     {
         return $this->contratosAdicionalesContratoRel;
+    }
+
+    /**
+     * Set auxilioTransporte
+     *
+     * @param boolean $auxilioTransporte
+     *
+     * @return RhuContrato
+     */
+    public function setAuxilioTransporte($auxilioTransporte)
+    {
+        $this->auxilioTransporte = $auxilioTransporte;
+
+        return $this;
+    }
+
+    /**
+     * Get auxilioTransporte
+     *
+     * @return boolean
+     */
+    public function getAuxilioTransporte()
+    {
+        return $this->auxilioTransporte;
     }
 }

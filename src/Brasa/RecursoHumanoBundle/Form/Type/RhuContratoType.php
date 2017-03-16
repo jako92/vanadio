@@ -141,6 +141,7 @@ class RhuContratoType extends AbstractType {
                     'choice_label' => 'nombre',
                     'required' => true))
                 ->add('turnoFijoOrdinario', CheckboxType::class, array('required' => false))
+                ->add('auxilioTransporte', CheckboxType::class, array('required' => false))
                 ->add('secuencia', NumberType::class, array('required' => false))
                 ->add('guardar', SubmitType::class);
     }
