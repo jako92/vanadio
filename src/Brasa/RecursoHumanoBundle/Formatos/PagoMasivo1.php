@@ -10,8 +10,9 @@ class PagoMasivo1 extends \FPDF_FPDF {
     public static $fechaDesde;
     public static $fechaHasta;
     public static $dato;
+    public static $codigoCentroCosto;    
     
-    public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "") {        
+    public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "", $centroCosto = "") {        
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
@@ -25,6 +26,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
         self::$fechaDesde = $fechaDesde;
         self::$fechaHasta = $fechaHasta;
         self::$dato = $dato;
+        self::$codigoCentroCosto = $centroCosto;
         //$pdf = new FormatoPagoMasivo('P', 'mm', array(215, 147));
         $pdf = new PagoMasivo1('P','mm', 'letter');
         $pdf->AliasNbPages();
@@ -98,7 +100,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
         $pdf->SetFillColor(200, 200, 200);
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);        
-        $dql = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaImpresionDql(self::$codigoPago, self::$codigoProgramacionPago, self::$codigoZona, self::$codigoSubzona, self::$porFecha, self::$fechaDesde, self::$fechaHasta, self::$dato);        
+        $dql = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaImpresionDql(self::$codigoPago, self::$codigoProgramacionPago, self::$codigoZona, self::$codigoSubzona, self::$porFecha, self::$fechaDesde, self::$fechaHasta, self::$dato, self::$codigoCentroCosto);        
         $query = self::$em->createQuery($dql);
         $arPagos = $query->getResult();
         $numeroPagos = count($arPagos);

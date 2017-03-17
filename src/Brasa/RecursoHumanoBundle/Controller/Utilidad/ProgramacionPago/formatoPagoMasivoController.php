@@ -47,16 +47,23 @@ class formatoPagoMasivoController extends Controller
                     $codigoSubzona = $arSubzona->getCodigoSubzonaPk();
                 } else {
                     $codigoSubzona = "";
-                }    
+                }   
+                $arCentroCosto = $form->get('centroCostoRel')->getData();
+                if($arCentroCosto) {
+                    $codigoCentroCosto = $arCentroCosto->getCodigoCentroCostoPk();
+                } else {
+                    $codigoCentroCosto = "";
+                } 
+                
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
                 if($codigoFormato <= 1) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto);
                 }
                 if($codigoFormato == 2) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData());
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto);
                 }                                 
             }            
         }                    
