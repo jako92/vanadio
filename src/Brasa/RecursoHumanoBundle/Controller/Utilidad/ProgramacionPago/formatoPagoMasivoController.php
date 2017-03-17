@@ -94,7 +94,24 @@ class formatoPagoMasivoController extends Controller
             );
         if($session->get('filtroRhuCodigoSubzona')) {
             $arrayPropiedadesSubzona['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSubzona", $session->get('filtroRhuCodigoSubzona'));
+        }     
+        $arrayPropiedadesCentroCosto = array(
+                'class' => 'BrasaContabilidadBundle:CtbCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.codigoCentroCostoPk', 'ASC');},
+                'choice_label' => 'nombre',
+                'choice_label' => function ($centroCosto) {
+                return $centroCosto->getCodigoCentroCostoPk() . '-' . $centroCosto->getNombre();},                            
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCostoContabilidad')) {
+            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaContabilidadBundle:CtbCentroCosto", $session->get('filtroCodigoCentroCostoContabilidad'));
         }        
+          
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/')."01";
         $intUltimoDia = $strUltimoDiaMes = date("d",(mktime(0,0,0,$dateFecha->format('m')+1,1,$dateFecha->format('Y'))-1));
@@ -109,7 +126,8 @@ class formatoPagoMasivoController extends Controller
         $dateFechaHasta = date_create($strFechaHasta);        
         $form = $this->createFormBuilder()  
             ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)                
-            ->add('subzonaRel', EntityType::class, $arrayPropiedadesSubzona)                
+            ->add('subzonaRel', EntityType::class, $arrayPropiedadesSubzona)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)                
             ->add('numero',TextType::class, array('required'  => false, 'data' => ""))
             ->add('dato',TextType::class, array('required'  => false, 'data' => ""))
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))                            

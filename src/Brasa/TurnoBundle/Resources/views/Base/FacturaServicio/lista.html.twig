@@ -46,6 +46,8 @@
                 <th>{{ knp_pagination_sortable(arFacturaServicios, 'CÓDIGO', 'p.codigoFacturaServicioPk') }}</th>
                 <th>NOMBRE</th>                
                 <th>IVA</th>
+                <th>POR_BASE_RET</th>
+                <th>POR_RET</th>
                 <th>C_ING</th>
                 <th>C_CAR</th>
                 <th>C_IVA</th>
@@ -60,6 +62,8 @@
                     <td>{{ arFacturaServicios.codigoFacturaServicioPk  }}</td>
                     <td>{{ arFacturaServicios.nombre }}</td>                                
                     <td>{{ arFacturaServicios.porcentajeIva }}</td> 
+                    <td>{{ arFacturaServicios.porBaseRetencionFuente }}</td> 
+                    <td>{{ arFacturaServicios.porRetencionFuente }}</td> 
                     <td>{{ arFacturaServicios.codigoCuentaIngresoFk }}</td>
                     <td>{{ arFacturaServicios.codigoCuentaCarteraFk }}</td> 
                     <td>{{ arFacturaServicios.codigoCuentaIvaFk }}</td> 
