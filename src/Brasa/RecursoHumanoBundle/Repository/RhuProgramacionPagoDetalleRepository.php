@@ -176,6 +176,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 }
                 if($arProgramacionPagoDetalle->getEmpleadoRel()->getPagadoEntidadSalud() == 1) {
                     $douPagoDetalle = 0;
+                    $douIngresoBaseCotizacionIncapacidad = 0;
                 }
                 $douPagoDetalle = round($douPagoDetalle);
                 $devengado += $douPagoDetalle;
