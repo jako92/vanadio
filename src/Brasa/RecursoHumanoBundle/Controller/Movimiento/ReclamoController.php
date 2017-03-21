@@ -129,7 +129,7 @@ class ReclamoController extends Controller
         $form->handleRequest($request);
         if($form->isValid()) {
             if($form->get('BtnImprimir')->isClicked()) {
-                $objFormatoDetalleReclamo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoReclamo();
+                $objFormatoDetalleReclamo = new \Brasa\RecursoHumanoBundle\Formatos\Reclamo();
                 $objFormatoDetalleReclamo->Generar($em, $codigoReclamo);
             }                
         }
