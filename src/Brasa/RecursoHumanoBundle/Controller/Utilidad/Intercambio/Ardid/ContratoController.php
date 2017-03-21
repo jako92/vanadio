@@ -57,6 +57,7 @@ class ContratoController extends Controller {
                         $grupoPago = "";
                         $cargo = "";
                         $vigente = 0;
+                        $auxilioTransporte = 0;
                         if ($arContrato->getEmpleadoRel()) {
                             if ($arContrato->getCargoRel()) {
                                 $cargo = $arContrato->getCargoRel()->getNombre();
@@ -67,6 +68,9 @@ class ContratoController extends Controller {
                         }
                         if($arContrato->getEstadoActivo()) {
                             $vigente = 1;
+                        }
+                        if($arContrato->getAuxilioTransporte()) {
+                            $auxilioTransporte = 1;
                         }
                         $result = $cliente->call("getInsertarContrato", array(                            
                             "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
@@ -81,7 +85,8 @@ class ContratoController extends Controller {
                             "cargo" => $cargo,
                             "grupoDePago" => $grupoPago,                            
                             "vrSalario" => $arContrato->getVrSalario(),
-                            "vigente" => $vigente
+                            "vigente" => $vigente,
+                            "auxilioTransporte" => $auxilioTransporte
                         ));
                         $indiceRespuesta = substr($result, 0, 2);   
                         $contenidoRespuesta = substr($result, 2, strlen($result));   
