@@ -99,8 +99,7 @@ class RhuExamenRepository extends EntityRepository {
                     $arRequisitoDetalle->setRequisitoRel($arRequisito);
                     $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoConcepto);
                     $arRequisitoDetalle->setTipo('GENERAL');
-                    $arRequisitoDetalle->setCantidad(1);
-                    $arRequisitoDetalle->setCantidadPendiente(1);
+                    $arRequisitoDetalle->setCantidad(1);                    
                     $em->persist($arRequisitoDetalle);
                 }
                 $arRequisitoCargo = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoCargo();
@@ -111,7 +110,6 @@ class RhuExamenRepository extends EntityRepository {
                     $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoCargo->getRequisitoConceptoRel());
                     $arRequisitoDetalle->setTipo('CARGO');
                     $arRequisitoDetalle->setCantidad(1);
-                    $arRequisitoDetalle->setCantidadPendiente(1);
                     $em->persist($arRequisitoDetalle);
                 }
                 $em->flush();

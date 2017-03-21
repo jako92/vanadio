@@ -23,7 +23,7 @@ class RhuCambioSalarioRepository extends EntityRepository {
         return $arCambioSalario;
     }  
     
-    public function listaConsultaDql($strDesde = "", $strHasta = "") {        
+    public function listaConsultaDql($strDesde = "", $strHasta = "", $codigoEmpleado = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT cs FROM BrasaRecursoHumanoBundle:RhuCambioSalario cs WHERE cs.codigoCambioSalarioPk <> 0";
         if($strDesde != "") {
@@ -32,6 +32,9 @@ class RhuCambioSalarioRepository extends EntityRepository {
         if($strHasta != "") {
             $dql .= " AND cs.fechaInicio <= '" . $strHasta . "'";
         } 
+        if($codigoEmpleado != "") {
+            $dql .= " AND cs.codigoEmpleadoFk = $codigoEmpleado";
+        }         
         $dql .= " ORDER BY cs.codigoCambioSalarioPk DESC";
         return $dql;
     }          

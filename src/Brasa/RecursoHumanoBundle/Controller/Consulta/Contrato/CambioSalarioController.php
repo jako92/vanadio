@@ -32,11 +32,13 @@ class CambioSalarioController extends Controller {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if ($form->get('BtnExcel')->isClicked()) {
                     $this->filtrarLista($form, $request);
+                    $this->formularioLista();
                     $this->listar();
                     $this->generarExcel();
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrarLista($form, $request);
+                    $this->formularioLista();
                     $this->listar();
                 }
                 if ($form->get('BtnImprimirNotificacionMasiva')->isClicked()) {
@@ -74,7 +76,8 @@ class CambioSalarioController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCambioSalario')->listaConsultaDql(
                 $session->get('filtroDesde'), 
-                $session->get('filtroHasta')
+                $session->get('filtroHasta'),
+                $session->get('filtroRhuCodigoEmpleado')
         );
     }
 
@@ -99,7 +102,12 @@ class CambioSalarioController extends Controller {
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
             if ($arEmpleado) {
                 $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            } else {
+                $session->set('filtroRhuCodigoEmpleado', '');
             }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', '');
         }
 
         $form = $this->createFormBuilder()
@@ -120,6 +128,7 @@ class CambioSalarioController extends Controller {
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
         $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
     }
 
     private function generarExcel() {
