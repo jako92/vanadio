@@ -41,11 +41,17 @@ class CambioSalarioController extends Controller {
                 }
                 if ($form->get('BtnImprimirNotificacionMasiva')->isClicked()) {
                     $arrCodigosCambioSalario = array();
-                    $query = $em->createQuery($this->strDqlLista);
+                    /*$query = $em->createQuery($this->strDqlLista);
                     $arCambiosSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
                     $arCambiosSalario = $query->getResult();                    
                     foreach ($arCambiosSalario as $arCambioSalario) {                        
                         $arrCodigosCambioSalario[] = $arCambioSalario->getCodigoCambioSalarioPk();
+                    }*/
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    if (count($arrSeleccionados) > 0) {
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arrCodigosCambioSalario[] = $codigo;
+                        }   
                     }
                     if(count($arrCodigosCambioSalario) > 0) {
                         $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -56,7 +62,7 @@ class CambioSalarioController extends Controller {
             }            
         }
         
-        $arCambiosSalario = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
+        $arCambiosSalario = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 1000);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Contrato:cambioSalario.html.twig', array(
                     'arCambiosSalario' => $arCambiosSalario,
                     'form' => $form->createView()

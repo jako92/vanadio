@@ -68,7 +68,8 @@
                 <th>FECHA</th>
                 <th>INICIO</th>
                 <th style="text-align: right">ANTERIOR</th>
-                <th style="text-align: right">NUEVO</th>                
+                <th style="text-align: right">NUEVO</th>  
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>
             {% for arCambiosSalario in arCambiosSalario %}
                 <tr>
@@ -80,6 +81,7 @@
                     <td>{{ arCambiosSalario.fechaInicio |date("Y/m/d")  }}</td>
                     <td style="text-align: right">{{ arCambiosSalario.vrSalarioAnterior | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCambiosSalario.vrSalarioNuevo | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCambiosSalario.codigoCambioSalarioPk }}" /></td>
                 </tr>
             {% endfor %}
         </table>
