@@ -854,7 +854,7 @@ class EmpleadoController extends Controller {
             $ciudad = $arEmpleados->getCiudadRel()->getNombre();
             $ciudad = explode("-", $ciudad);
             $ciudad = $ciudad[0];
-            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(), "!", $arEmpleados->getDireccion(), "!", $ciudad , "!", $arEmpleados->getTelefono(),"", "!","","!", $arEmpleados->getCorreo(),"!","","!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getPaisRel()->getPais(),"!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!"," ","!", $arEmpleados->getCiudadRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getNombre(),"!"," ","!"," ","!");
+            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(),"!", $arEmpleados->getDireccion(),"!", $ciudad ,"!", $arEmpleados->getTelefono(),"!","!", $arEmpleados->getCorreo(),"!","!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getPaisRel()->getPais(),"!","!","!","!","!","!","!","!","!","!","!","!", $arEmpleados->getCiudadRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getCodigoDane(),"!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getNombre(),"!","!","!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
