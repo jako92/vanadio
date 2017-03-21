@@ -84,6 +84,16 @@ class CarCliente
     private $usuario;
 
     /**
+     * @ORM\Column(name="contacto", type="string", length=120, nullable=true)
+     */
+    private $contacto;
+
+    /**
+     * @ORM\Column(name="contacto_telefono", type="string", length=60, nullable=true)
+     */
+    private $contactoTelefono;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenAsesor", inversedBy="carClientesAsesorRel")
      * @ORM\JoinColumn(name="codigo_asesor_fk", referencedColumnName="codigo_asesor_pk")
      */
@@ -701,5 +711,53 @@ class CarCliente
     public function getAnticiposClienteRel()
     {
         return $this->anticiposClienteRel;
+    }
+
+    /**
+     * Set contacto
+     *
+     * @param string $contacto
+     *
+     * @return CarCliente
+     */
+    public function setContacto($contacto)
+    {
+        $this->contacto = $contacto;
+
+        return $this;
+    }
+
+    /**
+     * Get contacto
+     *
+     * @return string
+     */
+    public function getContacto()
+    {
+        return $this->contacto;
+    }
+
+    /**
+     * Set contactoTelefono
+     *
+     * @param string $contactoTelefono
+     *
+     * @return CarCliente
+     */
+    public function setContactoTelefono($contactoTelefono)
+    {
+        $this->contactoTelefono = $contactoTelefono;
+
+        return $this;
+    }
+
+    /**
+     * Get contactoTelefono
+     *
+     * @return string
+     */
+    public function getContactoTelefono()
+    {
+        return $this->contactoTelefono;
     }
 }

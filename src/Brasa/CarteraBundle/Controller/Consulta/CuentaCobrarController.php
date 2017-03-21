@@ -42,6 +42,10 @@ class CuentaCobrarController extends Controller {
                     $strWhere .= $this->devFiltro($form);
                     $this->generarExcel($strWhere);
                 }
+                if ($form->get('BtnExcel2')->isClicked()) {
+                    $strWhere .= $this->devFiltro($form);
+                    $this->generarExcel2($strWhere);
+                }                
                 if ($form->get('BtnPdf')->isClicked()) {
                     $strWhere .= $this->devFiltro($form);
                     $objEstadoCuenta = new \Brasa\CarteraBundle\Formatos\EstadoCuenta();
@@ -175,6 +179,7 @@ class CuentaCobrarController extends Controller {
                 ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
                 ->add('BtnPdf', SubmitType::class, array('label' => 'PDF',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnExcel2', SubmitType::class, array('label' => 'Excel cobrar',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();
         return $form;
@@ -273,4 +278,101 @@ class CuentaCobrarController extends Controller {
         exit;
     }
 
+    private function generarExcel2($strWhere) {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'U'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'J'; $col !== 'M'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'TIPO')
+                ->setCellValue('D1', 'FECHA')
+                ->setCellValue('E1', 'VENCE')
+                ->setCellValue('F1', 'SOPORTE')
+                ->setCellValue('G1', 'NIT')
+                ->setCellValue('H1', 'CLIENTE')
+                ->setCellValue('I1', 'ASESOR')
+                ->setCellValue('J1', 'VALOR')
+                ->setCellValue('K1', 'SALDO')
+                ->setCellValue('L1', 'ABONO')
+                ->setCellValue('M1', 'PLAZO')
+                ->setCellValue('N1', 'VENCIMIENTO')
+                ->setCellValue('O1', 'DIAS')
+                ->setCellValue('P1', 'RANGO')
+                ->setCellValue('Q1', 'GRUPO')
+                ->setCellValue('R1', 'SUBGRUPO')
+                ->setCellValue('S1', 'CONTACTO')
+                ->setCellValue('T1', 'TELEFONO');
+
+        $i = 2;
+        $connection = $em->getConnection();
+        $strSql = "SELECT  
+                            sql_car_cartera_edades.*
+                    FROM
+                            sql_car_cartera_edades                       
+                    WHERE 1 " . $strWhere;
+        $statement = $connection->prepare($strSql);
+        $statement->execute();
+        $arCuentasCobrar = $statement->fetchAll();
+        foreach ($arCuentasCobrar as $arCuentasCobrar) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arCuentasCobrar['codigoCuentaCobrarPk'])
+                    ->setCellValue('B' . $i, $arCuentasCobrar['numeroDocumento'])
+                    ->setCellValue('C' . $i, $arCuentasCobrar['tipoCuentaCobrar'])
+                    ->setCellValue('D' . $i, $arCuentasCobrar['fecha'])
+                    ->setCellValue('E' . $i, $arCuentasCobrar['fechaVence'])
+                    ->setCellValue('F' . $i, $arCuentasCobrar['soporte'])
+                    ->setCellValue('G' . $i, $arCuentasCobrar['nitCliente'])
+                    ->setCellValue('H' . $i, $arCuentasCobrar['nombreCliente'])
+                    ->setCellValue('I' . $i, $arCuentasCobrar['nombreAsesor'])
+                    ->setCellValue('J' . $i, $arCuentasCobrar['valorOriginal'])
+                    ->setCellValue('K' . $i, $arCuentasCobrar['saldo'])
+                    ->setCellValue('L' . $i, $arCuentasCobrar['abono'])
+                    ->setCellValue('M' . $i, $arCuentasCobrar['plazo'])
+                    ->setCellValue('N' . $i, $arCuentasCobrar['tipoVencimiento'])
+                    ->setCellValue('O' . $i, $arCuentasCobrar['diasVencida'])
+                    ->setCellValue('P' . $i, $arCuentasCobrar['rango'])
+                    ->setCellValue('Q' . $i, $arCuentasCobrar['grupo'])
+                    ->setCellValue('R' . $i, $arCuentasCobrar['subgrupo'])
+                    ->setCellValue('S' . $i, $arCuentasCobrar['contacto'])
+                    ->setCellValue('T' . $i, $arCuentasCobrar['contactoTelefono']);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('CuentasCobrar');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="CuentasCobrar.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }    
+    
 }

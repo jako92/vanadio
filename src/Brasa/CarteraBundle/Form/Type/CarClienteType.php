@@ -44,6 +44,8 @@ class CarClienteType extends AbstractType
             ->add('celular', TextType::class, array('required' => false))                              
             ->add('fax', TextType::class, array('required' => false))                              
             ->add('email', TextType::class, array('required' => false))                                                                
+            ->add('contacto', TextType::class, array('required' => false))                                                                                            
+            ->add('contactoTelefono', TextType::class, array('required' => false))                                                                                            
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
