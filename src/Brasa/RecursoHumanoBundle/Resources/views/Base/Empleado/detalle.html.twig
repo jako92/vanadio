@@ -119,30 +119,32 @@
                         <td class="td-in-well">{{ arEmpleado.entidadCesantiaRel.nombre |default('') }}</td>
                         <td class="titulo">TIPO CUENTA:</td>
                         <td class="td-in-well">{% if arEmpleado.tipocuenta == "S" %}AHORRO{% else %}{% if arEmpleado.tipoCuenta == "D" %}CORRIENTE{% else %}SIN TIPO CUENTA{% endif%}{% endif %}</td>
-                        <td class="titulo">AUXILIO TRANSPORTE:</td>
-                        <td class="td-in-well">{% if arEmpleado.auxilioTransporte == 1 %} SI {% else %} NO{% endif %}</td>
-                    </tr>
-                    <tr>
                         <td class="titulo">HORARIO:</td>
                         <td><a href="{{ path('brs_rhu_base_horario_listar') }}" target="_blanck" >{{ arEmpleado.horarioRel.nombre|default('SIN HORARIO')  }}</a></td>
+                    </tr>
+                    <tr>
                         <td class="titulo">BANCO</td>
                         <td class="td-in-well">{{ arEmpleado.bancoRel.nombre | default('') }}</td>
                         <td class="titulo">DV</td>
                         <td class="td-in-well">{{ arEmpleado.digitoVerificacion }}</td>
-                    </tr>
-                    <tr>
                         <td class="titulo">TIPO EMPLEADO:</td>
                         <td>{{ arEmpleado.empleadoTipoRel.nombre|default('') }}</td>
+                    </tr>
+                    <tr>
+
                         <td class="titulo">ZONA:</td>
                         <td class="td-in-well">{{ arEmpleado.zonaRel.nombre|default('') }}</td>
                         <td class="titulo">SUB ZONA:</td>
                         <td class="td-in-well">{{ arEmpleado.subZonaRel.nombre|default('') }}</td>
+                        <td class="titulo">VENCE VISITA:</td>
+                        <td>{{ arEmpleado.fechaUltimaVisita | date('Y-m-d') }}</td>                        
                     </tr>
                     <tr>
-                        <td class="titulo">VENCE VISITA:</td>
-                        <td>{{ arEmpleado.fechaUltimaVisita | date('Y-m-d') }}</td>
+
                         <td class="titulo">CENTRO COSTO:</td>
                         <td class="td-in-well">{{ arEmpleado.codigoCentroCostoContabilidadFk }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                     </tr>                    
