@@ -106,6 +106,8 @@ class RhuLiquidacionRepository extends EntityRepository {
                                 $arLiquidacion->setCodigoProgramacionPagoDetalleFk($arPago->getCodigoProgramacionPagoDetalleFk());
                             }
                             $arLiquidacion->setCodigoPagoFk($arPago->getCodigoPagoPk());
+                        } else {
+                            $arLiquidacion->setCodigoPagoFk(null);
                         }                    
                     }
                     $arLiquidacion->setDiasCesantiasAnterior($diasCesantiaAnterior);                
