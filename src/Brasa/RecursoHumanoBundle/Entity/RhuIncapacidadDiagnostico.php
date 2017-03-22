@@ -18,7 +18,7 @@ class RhuIncapacidadDiagnostico
     private $codigoIncapacidadDiagnosticoPk;                        
     
     /**
-     * @ORM\Column(name="nombre", type="string", length=200, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=800, nullable=true)
      */    
     private $nombre;     
 
