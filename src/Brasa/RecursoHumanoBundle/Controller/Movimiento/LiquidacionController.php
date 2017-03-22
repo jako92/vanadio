@@ -156,8 +156,12 @@ class LiquidacionController extends Controller
             }            
             if($form->get('BtnLiquidar')->isClicked()) {
                 if($arLiquidacion->getEstadoAutorizado() == 0) {
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($codigoLiquidacion);
-                    $em->flush();
+                    $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($codigoLiquidacion);
+                    if($respuesta == "") {
+                        $em->flush();
+                    } else {
+                        $objMensaje->Mensaje("error", $respuesta);                        
+                    }                    
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                 } else {
                     $objMensaje->Mensaje("error", "No puede reliquidar una liquidacion autorizada");
