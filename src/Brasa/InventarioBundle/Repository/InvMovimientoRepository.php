@@ -24,7 +24,7 @@ class InvMovimientoRepository extends EntityRepository {
         if($soporte != "" ) {
             $dql .= " AND m.soporte = '" . $soporte . "'";
         }        
-        $dql .= " ORDER BY m.codigoMovimientoPk";
+        $dql .= " ORDER BY m.codigoMovimientoPk DESC";
         return $dql;
     }
     

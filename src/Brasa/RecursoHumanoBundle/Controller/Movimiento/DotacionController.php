@@ -404,6 +404,9 @@ class DotacionController extends Controller
             $arrBotonDesAutorizar['disabled'] = true;
             $arrBotonImprimir['disabled'] = true;
         }
+        if($ar->getCodigoDotacionTipoFk() == 2) {
+            $arrBotonGenerarSalidaInventario['disabled'] = true; 
+        }
         $form = $this->createFormBuilder()                        
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
