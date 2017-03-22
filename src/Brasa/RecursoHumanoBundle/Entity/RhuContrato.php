@@ -129,7 +129,7 @@ class RhuContrato
     private $comentarios;    
     
     /**
-     * @ORM\Column(name="comentarios_terminacion", type="string", length=200, nullable=true)
+     * @ORM\Column(name="comentarios_terminacion", type="string", length=2000, nullable=true)
      */    
     private $comentariosTerminacion;    
     
