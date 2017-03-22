@@ -420,6 +420,10 @@ class RhuConfiguracion
      */    
     private $horasRecargoNocturnoFestivoNoCompensado;     
 
+    /**
+     * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
+     */
+    private $liquidarVacacionesSalario = false;    
   
     /**
      * Set codigoConfiguracionPk
@@ -2339,5 +2343,29 @@ class RhuConfiguracion
     public function getHorasRecargoNocturnoFestivoNoCompensado()
     {
         return $this->horasRecargoNocturnoFestivoNoCompensado;
+    }
+
+    /**
+     * Set liquidarVacacionesSalario
+     *
+     * @param boolean $liquidarVacacionesSalario
+     *
+     * @return RhuConfiguracion
+     */
+    public function setLiquidarVacacionesSalario($liquidarVacacionesSalario)
+    {
+        $this->liquidarVacacionesSalario = $liquidarVacacionesSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidarVacacionesSalario
+     *
+     * @return boolean
+     */
+    public function getLiquidarVacacionesSalario()
+    {
+        return $this->liquidarVacacionesSalario;
     }
 }

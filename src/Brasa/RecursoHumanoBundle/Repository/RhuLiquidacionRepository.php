@@ -84,7 +84,6 @@ class RhuLiquidacionRepository extends EntityRepository {
 
                 //Liquidar cesantias
                 if($arLiquidacion->getLiquidarCesantias() == 1) {
-
                     $salarioPromedioCesantiasAnterior = 0;
                     $diasCesantiaAnterior = 0;
                     $cesantiaAnterior = 0;
@@ -318,6 +317,9 @@ class RhuLiquidacionRepository extends EntityRepository {
                         } else {
                             $salarioVacaciones = $douSalario;
                         }   
+                        if($arConfiguracion->getLiquidarVacacionesSalario()) {
+                            $salarioVacaciones = $douSalario;
+                        }
                         if($arLiquidacion->getVrSalarioVacacionPropuesto() > 0) {
                             $salarioVacaciones = $arLiquidacion->getVrSalarioVacacionPropuesto();
                         }
