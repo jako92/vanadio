@@ -375,15 +375,27 @@ class CierreMesController extends Controller {
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
-                /* if($request->request->get('OpCerrar')) {
-                  $codigoCierreMes = $request->request->get('OpCerrar');
-                  $arCierreMes = NEW \Brasa\TurnoBundle\Entity\TurCierreMes();
-                  $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
-                  $arCierreMes->setEstadoCerrado(1);
-                  $em->persist($arCierreMes);
-                  $em->flush();
-                  return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago'));
-                  } */
+                if($request->request->get('OpCerrar')) {
+                    set_time_limit(0);
+                    ini_set("memory_limit", -1);                    
+                    $codigoCierreMes = $request->request->get('OpCerrar');
+                    $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+                    $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
+                    $arCostos = new \Brasa\TurnoBundle\Entity\TurCosto();
+                    $arCostos = $em->getRepository('BrasaTurnoBundle:TurCosto')->findBy(array('anio' => $arCierreMes->getAnio(), 'mes' => $arCierreMes->getMes()));
+                    foreach ($arCostos as $arCosto) {                      
+                        $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();                                              
+                        $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arCosto->getCodigoEmpleadoFk());
+                        if($arEmpleado->getCentroCostoFijo() == 0) {
+                            $arEmpleado->setCentroCostoContabilidadRel($arCosto->getCentroCostoRel());
+                            $em->persist($arEmpleado);
+                        }                                                
+                    }                  
+                    $arCierreMes->setEstadoCerrado(1);
+                    $em->persist($arCierreMes);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
+                }
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurCierreMes')->eliminar($arrSeleccionados);

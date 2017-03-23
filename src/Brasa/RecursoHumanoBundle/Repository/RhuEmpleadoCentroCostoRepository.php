@@ -20,7 +20,7 @@ class RhuEmpleadoCentroCostoRepository extends EntityRepository {
         if($mes != "") {
              $dql .= " AND ecc.mes = " . $mes;
         }        
-        $dql .= " ORDER BY ecc.anio, ecc.mes DESC";
+        $dql .= " ORDER BY ecc.mes, ecc.anio DESC";
         return $dql;
     }
     
