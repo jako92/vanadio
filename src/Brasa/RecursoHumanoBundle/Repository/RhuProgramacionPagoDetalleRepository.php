@@ -237,12 +237,12 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 }
                 
                 $douIngresoBasePrestacional = $douIngresoBasePrestacional + $douPagoDetalle;                                        
-                $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                    
-                $douIngresoBaseCotizacion += $douPagoDetalle;    
+                $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                                        
                 $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);                
                 if($arLicencia->getLicenciaTipoRel()->getSuspensionContratoTrabajo()) {
                     if($arLicencia->getLicenciaTipoRel()->getRemunerado()) {                        
                         $douIngresoBaseCotizacionDescuento += $douPagoDetalle;    
+                        $douIngresoBaseCotizacion += $douPagoDetalle;
                     }
                 }
                 if($arLicencia->getLicenciaTipoRel()->getMaternidad()) {
