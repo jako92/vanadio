@@ -57,6 +57,10 @@ class RhuPagoAdicional
      */
     private $valor = 0;     
     
+    /**
+     * @ORM\Column(name="horas", type="float")
+     */
+    private $horas = 0;    
     
     /**
      * @ORM\Column(name="codigo_programacion_pago_fk", type="integer", nullable=true)
@@ -112,6 +116,11 @@ class RhuPagoAdicional
      * @ORM\Column(name="codigo_usuario_ultima_edicion", type="string", length=50, nullable=true)
      */    
     private $codigoUsuarioUltimaEdicion;    
+    
+    /**     
+     * @ORM\Column(name="liquidar_horas_salario", type="boolean")
+     */    
+    private $liquidarHorasSalario = 0;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuPagoConcepto", inversedBy="pagosAdicionalesPagoConceptoRel")
@@ -670,5 +679,53 @@ class RhuPagoAdicional
     public function getAplicaDiaLaboradoSinDescanso()
     {
         return $this->aplicaDiaLaboradoSinDescanso;
+    }
+
+    /**
+     * Set horas
+     *
+     * @param float $horas
+     *
+     * @return RhuPagoAdicional
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+
+        return $this;
+    }
+
+    /**
+     * Get horas
+     *
+     * @return float
+     */
+    public function getHoras()
+    {
+        return $this->horas;
+    }
+
+    /**
+     * Set liquidarHorasSalario
+     *
+     * @param boolean $liquidarHorasSalario
+     *
+     * @return RhuPagoAdicional
+     */
+    public function setLiquidarHorasSalario($liquidarHorasSalario)
+    {
+        $this->liquidarHorasSalario = $liquidarHorasSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidarHorasSalario
+     *
+     * @return boolean
+     */
+    public function getLiquidarHorasSalario()
+    {
+        return $this->liquidarHorasSalario;
     }
 }

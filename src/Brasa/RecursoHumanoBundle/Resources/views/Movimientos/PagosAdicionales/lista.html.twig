@@ -84,6 +84,7 @@
                 <th>EMPLEADO</th>
                 <th>CANT</th>
                 <th>VALOR</th>
+                <th>HORAS</th>
                 <th>ADL</th>
                 <th>ADL_SD</th>
                 <th>ACT</th>
@@ -105,6 +106,7 @@
                 <td>{{ arPagosAdicionales.empleadoRel.nombreCorto|default('Sin nombre') }}</td>
                 <td style="text-align: right">{{ arPagosAdicionales.cantidad | number_format(1, '.', ',') }}</td>                            
                 <td style="text-align: right">{{ arPagosAdicionales.valor | number_format(2, '.', ',') }}</td>                                                                        
+                <td style="text-align: right">{{ arPagosAdicionales.horas | number_format(1, '.', ',') }}</td>                                                                        
                 <td>{% if arPagosAdicionales.aplicaDiaLaborado == 1 %} SI {% else %} NO {% endif %}</td>                        
                 <td>{% if arPagosAdicionales.aplicaDiaLaboradoSinDescanso == 1 %} SI {% else %} NO {% endif %}</td>                        
                 <td>{% if arPagosAdicionales.estadoInactivo == 1 %} NO {% else %} SI {% endif %}</td>                        
