@@ -35,6 +35,10 @@ class FormatoCarta extends \FPDF_FPDF {
         self::$promedioIbpSugerido = $promedioIbpSugerido; //carta laboral
         self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
         $pdf = new FormatoCarta();
+        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);        
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());        
+        #Establecemos los márgenes izquierda, arriba y derecha: 
+        $pdf->SetMargins($arContenidoFormato->getMargenIzquierda(), 25 , $arContenidoFormato->getMargenDerecha());        
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 12);
@@ -94,7 +98,7 @@ class FormatoCarta extends \FPDF_FPDF {
     }
 
     public function Body($pdf) {
-        $pdf->SetXY(10, 65);
+        //$pdf->SetXY(10, 65);
         $pdf->SetFont('Arial', '', 10);
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);        
