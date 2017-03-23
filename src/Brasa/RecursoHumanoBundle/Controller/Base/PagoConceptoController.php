@@ -192,19 +192,11 @@ class PagoConceptoController extends Controller
         }
         $form = $this->createForm(RhuPagoConceptoType::class, $arPagoConcepto);         
         $form->handleRequest($request);
-        if ($form->isValid())
-        {
-            // guardar la tarea en la base de datos
+        if ($form->isValid()) {            
             $arPagoConcepto = $form->getData();
-            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoConcepto->getCodigoCuentaFk());
-            if ($arCuenta){
-                $em->persist($arPagoConcepto);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_rhu_base_pago_concepto_lista'));
-            } else {
-                $objMensaje->Mensaje("error", "No existe la cuenta en el plan de cuentas");
-            }
-            
+            $em->persist($arPagoConcepto);
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_rhu_base_pago_concepto_lista'));            
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/PagoConcepto:nuevo.html.twig', array(
             'form' => $form->createView(),
