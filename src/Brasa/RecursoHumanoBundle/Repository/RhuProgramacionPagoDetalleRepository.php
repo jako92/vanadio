@@ -299,6 +299,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $devengadoPrestacional += $douPagoDetalle;
                     }
                 }                
+                $arPagoDetalle->setNumeroHoras($arPagoAdicional->getHoras());
                 $arPagoDetalle->setDetalle($arPagoAdicional->getDetalle());
                 $arPagoDetalle->setVrPago($douPagoDetalle);
                 $arPagoDetalle->setOperacion($arPagoAdicional->getPagoConceptoRel()->getOperacion());
