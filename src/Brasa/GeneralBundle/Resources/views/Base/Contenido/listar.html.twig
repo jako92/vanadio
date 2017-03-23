@@ -25,7 +25,9 @@
                 <th>COD. FORMATO</th>
                 <th>VERSIÓN</th>
                 <th>FECHA VERSIÓN</th>
-                <th>REQUIERE FORMATO ISO</th>
+                <th>ISO</th>
+                <th>M_IZQ</th>
+                <th>M_DER</th>                
                 <th></th>
                 <th></th>
             </tr>
@@ -38,6 +40,8 @@
                     <td align="justify">{{arContenidos.version}}</td>
                     <td align="justify">{% if arContenidos.fechaVersion != null %}{{arContenidos.fechaVersion | date('Y-m-d')}}{% else %}{% endif %}</td>
                     <td align="justify">{% if arContenidos.requiereFormatoIso == 1%} SI {% else %} NO {% endif %}</td>
+                    <td>{{arContenidos.margenIzquierda}}</td>
+                    <td>{{arContenidos.margenDerecha}}</td>                    
                     <td><a href="{{ path('brs_gen_base_contenido_nuevo',{'codigoContenido': arContenidos.codigoContenidoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arContenidos.codigoContenidoPk }}" /></td>
                     {%endfor%}

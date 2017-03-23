@@ -77,7 +77,8 @@ class ContenidoController extends Controller {
             }
         }
         return $this->render('BrasaGeneralBundle:Base/Contenido:nuevo.html.twig', array(
-                    'form' => $form->createView(),
+            'arContenido' => $arContenido,        
+            'form' => $form->createView(),
         ));
     }
 

@@ -52,7 +52,15 @@ class GenContenidoFormatoSecundario
      */    
     private $requiereFormatoIso = false;
     
-
+    /**
+     * @ORM\Column(name="margen_izquierda", type="integer")
+     */    
+    private $margenIzquierda = 0;    
+    
+    /**
+     * @ORM\Column(name="margen_derecha", type="integer")
+     */    
+    private $margenDerecha = 0; 
 
     /**
      * Get codigoContenidoFormatoSecundarioPk
@@ -230,5 +238,53 @@ class GenContenidoFormatoSecundario
     public function getRequiereFormatoIso()
     {
         return $this->requiereFormatoIso;
+    }
+
+    /**
+     * Set margenIzquierda
+     *
+     * @param integer $margenIzquierda
+     *
+     * @return GenContenidoFormatoSecundario
+     */
+    public function setMargenIzquierda($margenIzquierda)
+    {
+        $this->margenIzquierda = $margenIzquierda;
+
+        return $this;
+    }
+
+    /**
+     * Get margenIzquierda
+     *
+     * @return integer
+     */
+    public function getMargenIzquierda()
+    {
+        return $this->margenIzquierda;
+    }
+
+    /**
+     * Set margenDerecha
+     *
+     * @param integer $margenDerecha
+     *
+     * @return GenContenidoFormatoSecundario
+     */
+    public function setMargenDerecha($margenDerecha)
+    {
+        $this->margenDerecha = $margenDerecha;
+
+        return $this;
+    }
+
+    /**
+     * Get margenDerecha
+     *
+     * @return integer
+     */
+    public function getMargenDerecha()
+    {
+        return $this->margenDerecha;
     }
 }

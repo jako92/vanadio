@@ -51,7 +51,16 @@ class GenContenidoFormato
      * @ORM\Column(name="requiere_formato_iso", type="boolean")
      */    
     private $requiereFormatoIso = false;
-        
+
+    /**
+     * @ORM\Column(name="margen_izquierda", type="integer")
+     */    
+    private $margenIzquierda = 0;    
+    
+    /**
+     * @ORM\Column(name="margen_derecha", type="integer")
+     */    
+    private $margenDerecha = 0;        
     
      /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuDisciplinarioTipo", mappedBy="contenidoFormatoRel")
@@ -75,6 +84,7 @@ class GenContenidoFormato
     
     
     
+
     /**
      * Constructor
      */
@@ -262,6 +272,54 @@ class GenContenidoFormato
     public function getRequiereFormatoIso()
     {
         return $this->requiereFormatoIso;
+    }
+
+    /**
+     * Set margenIzquierda
+     *
+     * @param integer $margenIzquierda
+     *
+     * @return GenContenidoFormato
+     */
+    public function setMargenIzquierda($margenIzquierda)
+    {
+        $this->margenIzquierda = $margenIzquierda;
+
+        return $this;
+    }
+
+    /**
+     * Get margenIzquierda
+     *
+     * @return integer
+     */
+    public function getMargenIzquierda()
+    {
+        return $this->margenIzquierda;
+    }
+
+    /**
+     * Set margenDerecha
+     *
+     * @param integer $margenDerecha
+     *
+     * @return GenContenidoFormato
+     */
+    public function setMargenDerecha($margenDerecha)
+    {
+        $this->margenDerecha = $margenDerecha;
+
+        return $this;
+    }
+
+    /**
+     * Get margenDerecha
+     *
+     * @return integer
+     */
+    public function getMargenDerecha()
+    {
+        return $this->margenDerecha;
     }
 
     /**

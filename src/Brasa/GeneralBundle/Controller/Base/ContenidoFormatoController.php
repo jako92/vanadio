@@ -50,7 +50,7 @@ class ContenidoFormatoController extends Controller {
                 }
             }
         }
-        $arContenidoFormatos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
+        $arContenidoFormatos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
         return $this->render('BrasaGeneralBundle:Base/ContenidoFormato:listar.html.twig', array(
                     'arContenidoFormatos' => $arContenidoFormatos,
                     'form' => $form->createView()

@@ -238,18 +238,21 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 
                 $douIngresoBasePrestacional = $douIngresoBasePrestacional + $douPagoDetalle;                                        
                 $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                    
-                if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {
-                    $douIngresoBaseCotizacion += $douPagoDetalle;                     
-                    $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);
+                $douIngresoBaseCotizacion += $douPagoDetalle;    
+                $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);                
+                if($arLicencia->getLicenciaTipoRel()->getSuspensionContratoTrabajo()) {
+                    if($arLicencia->getLicenciaTipoRel()->getRemunerado()) {                        
+                        $douIngresoBaseCotizacionDescuento += $douPagoDetalle;    
+                    }
+                }
+                if($arLicencia->getLicenciaTipoRel()->getMaternidad()) {
+                    $douIngresoBaseCotizacionDescuento += $douPagoDetalle;
                 }
                 if($arLicencia->getLicenciaTipoRel()->getAusentismo() == 1) {
                     $arPagoDetalle->setDiasAusentismo($intDias);
                 }
                 if($arPagoConcepto->getOperacion() == 0) {
                     $douPagoDetalle = 0;
-                } 
-                if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {
-                    $douIngresoBaseCotizacionDescuento += $douPagoDetalle;                                         
                 }                
                 $douPagoDetalle = round($douPagoDetalle);
                 $devengado += $douPagoDetalle;
@@ -569,7 +572,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $douPorcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                 $intOperacion = -1;
                 if($douPorcentaje > 0) {
-                    $douPagoDetalle = ($douIngresoBaseCotizacionDescuento * $douPorcentaje)/100; 
+                    $douPagoDetalle = ($douIngresoBaseCotizacion * $douPorcentaje)/100; 
                     $douPagoDetalle = round($douPagoDetalle);
                     $pension = $douPagoDetalle;
                     $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
@@ -589,7 +592,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $douValorHoraMinimo = ($douVrSalarioMinimo / 240) * 4;
                         if($douVrHora > $douValorHoraMinimo) {
                             $douPorcentaje = 1;
-                            $douPagoDetalle = ($douIngresoBaseCotizacionDescuento * $douPorcentaje)/100; 
+                            $douPagoDetalle = ($douIngresoBaseCotizacion * $douPorcentaje)/100; 
                             $douPagoDetalle = round($douPagoDetalle);
                             $pension += $douPagoDetalle;
                             $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();

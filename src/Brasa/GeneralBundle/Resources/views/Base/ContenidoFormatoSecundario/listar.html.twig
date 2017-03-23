@@ -25,6 +25,8 @@
                 <th>COD. FORMATO</th>
                 <th>VERSIÓN</th>
                 <th>FECHA VERSIÓN</th>
+                <th>M_IZQ</th>
+                <th>M_DER</th>                
                 <th></th>
                 <th></th>
             </tr>
@@ -36,6 +38,8 @@
                     <td align="justify">{{arContenidoFormatos.codigoFormatoIso}}</td>
                     <td align="justify">{{arContenidoFormatos.version}}</td>
                     <td align="justify">{% if arContenidoFormatos.fechaVersion != null %}{{arContenidoFormatos.fechaVersion | date('Y-m-d')}}{% else %}{% endif %}</td>
+                    <td>{{arContenidoFormatos.margenIzquierda}}</td>
+                    <td>{{arContenidoFormatos.margenDerecha}}</td>
                     <td><a href="{{ path('brs_gen_base_contenido_formato_secundario_nuevo',{'codigoContenidoFormato': arContenidoFormatos.codigoContenidoFormatoSecundarioPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arContenidoFormatos.codigoContenidoFormatoSecundarioPk }}" /></td>
                     {%endfor%}
