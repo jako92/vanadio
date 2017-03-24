@@ -1,0 +1,29 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Programacion de pago detalle nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Programacion pago detalle: nuevo</small>
+        </h1>        
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion</div>
+            <div class="panel-body">                              
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Descuento pension:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.descuentoPension) }}
+                    </div>
+                </div>                
+            </div>
+        </div>                   
+        <div class="modal-footer">        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}            
+        </div>    
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

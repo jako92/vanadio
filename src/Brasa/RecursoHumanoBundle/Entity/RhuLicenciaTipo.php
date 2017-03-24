@@ -35,17 +35,7 @@ class RhuLicenciaTipo
     /**     
      * @ORM\Column(name="maternidad", type="boolean")
      */    
-    private $maternidad = false;
-
-    /**     
-     * @ORM\Column(name="suspension_contrato_trabajo", type="boolean")
-     */    
-    private $suspensionContratoTrabajo = false;
-    
-    /**     
-     * @ORM\Column(name="remunerado", type="boolean")
-     */    
-    private $remunerado = false;    
+    private $maternidad = false;      
     
     /**
      * @ORM\Column(name="codigo_pago_concepto_fk", type="integer", nullable=true)
@@ -62,7 +52,7 @@ class RhuLicenciaTipo
      * @ORM\OneToMany(targetEntity="RhuLicencia", mappedBy="licenciaTipoRel")
      */
     protected $licenciasLicenciaTipoRel;     
-
+    
 
     /**
      * Constructor
@@ -258,53 +248,5 @@ class RhuLicenciaTipo
     public function getLicenciasLicenciaTipoRel()
     {
         return $this->licenciasLicenciaTipoRel;
-    }
-
-    /**
-     * Set suspensionContratoTrabajo
-     *
-     * @param boolean $suspensionContratoTrabajo
-     *
-     * @return RhuLicenciaTipo
-     */
-    public function setSuspensionContratoTrabajo($suspensionContratoTrabajo)
-    {
-        $this->suspensionContratoTrabajo = $suspensionContratoTrabajo;
-
-        return $this;
-    }
-
-    /**
-     * Get suspensionContratoTrabajo
-     *
-     * @return boolean
-     */
-    public function getSuspensionContratoTrabajo()
-    {
-        return $this->suspensionContratoTrabajo;
-    }
-
-    /**
-     * Set remunerado
-     *
-     * @param boolean $remunerado
-     *
-     * @return RhuLicenciaTipo
-     */
-    public function setRemunerado($remunerado)
-    {
-        $this->remunerado = $remunerado;
-
-        return $this;
-    }
-
-    /**
-     * Get remunerado
-     *
-     * @return boolean
-     */
-    public function getRemunerado()
-    {
-        return $this->remunerado;
     }
 }

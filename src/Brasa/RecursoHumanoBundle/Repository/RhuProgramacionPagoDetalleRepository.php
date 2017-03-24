@@ -56,7 +56,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $douVrHoraSalarioMinimo = ($douVrSalarioMinimo / 30) / 8;
             $douIngresoBasePrestacional = 0;
             $douIngresoBaseCotizacion = 0;
-            $douIngresoBaseCotizacionDescuento = 0;
+            $douIngresoBaseCotizacionSalud = 0;
             $devengado = 0;
             $devengadoPrestacional = 0;
             $salud = 0;
@@ -112,8 +112,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $em->persist($arPagoDetalle);                                                                                                                                                                                                                                     
             }              
             
-            //Procesar Incapacidades
-            //if($arProgramacionPagoDetalle->getEmpleadoRel()->getPagadoEntidadSalud() == 0) {
+            //Procesar Incapacidades            
             $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
             $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->periodo($arProgramacionPagoDetalle->getFechaDesdePago(), $arProgramacionPagoDetalle->getFechaHasta(), $arProgramacionPagoDetalle->getCodigoEmpleadoFk());                                                                        
             foreach ($arIncapacidades as $arIncapacidad) {             
@@ -193,7 +192,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
                 $douIngresoBasePrestacional += $douIngresoBasePrestacionIncapacidad;                                        
                 $douIngresoBaseCotizacion  += $douIngresoBaseCotizacionIncapacidad;
-                $douIngresoBaseCotizacionDescuento += $douIngresoBaseCotizacionIncapacidad;
+                $douIngresoBaseCotizacionSalud += $douIngresoBaseCotizacionIncapacidad;
                 $arPagoDetalle->setVrIngresoBasePrestacion($douIngresoBasePrestacionIncapacidad);                                                                            
                 $arPagoDetalle->setVrIngresoBaseCotizacion($douIngresoBaseCotizacionIncapacidad); 
                 $arPagoDetalle->setVrIngresoBaseCotizacionIncapacidad($douIngresoBaseCotizacionIncapacidadControl);
@@ -236,24 +235,20 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     } 
                 }
                 
-                $douIngresoBasePrestacional = $douIngresoBasePrestacional + $douPagoDetalle;                                        
-                $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                                        
-                $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);                
-                if($arLicencia->getLicenciaTipoRel()->getSuspensionContratoTrabajo()) {
-                    if($arLicencia->getLicenciaTipoRel()->getRemunerado()) {                        
-                        $douIngresoBaseCotizacionDescuento += $douPagoDetalle;    
-                        $douIngresoBaseCotizacion += $douPagoDetalle;
-                    }
-                }
-                if($arLicencia->getLicenciaTipoRel()->getMaternidad()) {
-                    $douIngresoBaseCotizacionDescuento += $douPagoDetalle;
-                }
+                $douIngresoBasePrestacional += $douPagoDetalle;                                        
+                $douIngresoBaseCotizacion += $douPagoDetalle;
+                $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                                                                        
+                $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);                           
+               
                 if($arLicencia->getLicenciaTipoRel()->getAusentismo() == 1) {
                     $arPagoDetalle->setDiasAusentismo($intDias);
                 }
                 if($arPagoConcepto->getOperacion() == 0) {
                     $douPagoDetalle = 0;
-                }                
+                }
+                if($douPagoDetalle > 0) {
+                    $douIngresoBaseCotizacionSalud += $douPagoDetalle;
+                }
                 $douPagoDetalle = round($douPagoDetalle);
                 $devengado += $douPagoDetalle;
                 $devengadoPrestacional += $douPagoDetalle;
@@ -311,7 +306,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 if($arPagoAdicional->getPagoConceptoRel()->getPrestacional() == 1) {
                     if($arPagoAdicional->getPagoConceptoRel()->getGeneraIngresoBaseCotizacion() == 1) {
                         $douIngresoBaseCotizacion += $douPagoDetalleOperado; 
-                        $douIngresoBaseCotizacionDescuento += $douPagoDetalleOperado;
+                        $douIngresoBaseCotizacionSalud += $douPagoDetalleOperado;
                         $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalleOperado);
                         $arPagoDetalle->setVrIngresoBaseCotizacionAdicional($douPagoDetalleOperado);
                         $arPagoDetalle->setCotizacion(1);
@@ -356,7 +351,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     }                                        
                     if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {
                         $douIngresoBaseCotizacion += $douPagoDetalle; 
-                        $douIngresoBaseCotizacionDescuento += $douPagoDetalle;
+                        $douIngresoBaseCotizacionSalud += $douPagoDetalle;
                         $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);
                         $arPagoDetalle->setCotizacion(1);
                         $douVrHoraAdicional = ($douVrHora * $arPagoConcepto->getPorPorcentajeTiempoExtra())/100;
@@ -405,7 +400,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         }                                        
                         if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {
                             $douIngresoBaseCotizacion += $douPagoDetalle; 
-                            $douIngresoBaseCotizacionDescuento += $douPagoDetalle;
+                            $douIngresoBaseCotizacionSalud += $douPagoDetalle;
                             $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);
                             $arPagoDetalle->setCotizacion(1);
                             $douVrHoraAdicional = ($douVrHora * $arPagoConcepto->getPorPorcentajeTiempoExtra())/100;
@@ -445,7 +440,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                     }                                        
                     if($arPagoConcepto->getGeneraIngresoBaseCotizacion() == 1) {
                         $douIngresoBaseCotizacion += $douPagoDetalle; 
-                        $douIngresoBaseCotizacionDescuento += $douPagoDetalle;
+                        $douIngresoBaseCotizacionSalud += $douPagoDetalle;
                         $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalle);
                         $arPagoDetalle->setCotizacion(1);
                         if($arPagoConcepto->getComponeSalario() == 1) {                                                    
@@ -541,7 +536,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             }                        
             $douIngresoBasePrestacional += $douPagoDetalle;
             $douIngresoBaseCotizacion += $douPagoDetalleCotizacion; 
-            $douIngresoBaseCotizacionDescuento += $douPagoDetalleCotizacion;
+            $douIngresoBaseCotizacionSalud += $douPagoDetalleCotizacion;
             $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);
             $arPagoDetalle->setVrIngresoBaseCotizacion($douPagoDetalleCotizacion);
 
@@ -551,7 +546,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                 $floPorcentaje = $arContrato->getTipoSaludRel()->getPorcentajeEmpleado();
                 $intOperacion = -1;
                 if($floPorcentaje > 0) {
-                    $douPagoDetalle = ($douIngresoBaseCotizacionDescuento * $floPorcentaje)/100;     
+                    $douPagoDetalle = ($douIngresoBaseCotizacionSalud * $floPorcentaje)/100;     
                     $douPagoDetalle = round($douPagoDetalle);
                     $salud = $douPagoDetalle;
                     $arPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
@@ -569,7 +564,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             }                        
 
             //Liquidar pension
-            if($arProgramacionPagoDetalle->getDescuentoPension() == 1) {                            
+            if($arProgramacionPagoDetalle->getDescuentoPension() == 1) {
                 $douPorcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleado();
                 $intOperacion = -1;
                 if($douPorcentaje > 0) {

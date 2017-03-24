@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuProgramacionPagoType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuProgramacionPagoDetalleType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -280,6 +281,30 @@ class ProgramacionesPagoController extends Controller {
         ));
     }
 
+    /**
+     * @Route("/rhu/programaciones/pago/detalle/nuevo/{codigoProgramacionPagoDetalle}", name="brs_rhu_programaciones_pago_detalle_nuevo")
+     */
+    public function detalleNuevoAction(Request $request, $codigoProgramacionPagoDetalle) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = $this->get('mensajes_brasa');
+        $paginator = $this->get('knp_paginator');
+        $arProgramacionPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle();
+        $arProgramacionPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->find($codigoProgramacionPagoDetalle);
+        $form = $this->createForm(RhuProgramacionPagoDetalleType::class, $arProgramacionPagoDetalle);
+        $form->handleRequest($request);
+        if($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arProgramacionPagoDetalle = $form->getData();
+                $em->persist($arProgramacionPagoDetalle);
+                $em->flush();
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }            
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/ProgramacionesPago:detalleNuevo.html.twig', array(
+                    'form' => $form->createView()
+        ));
+    }    
+    
     /**
      * @Route("/rhu/programaciones/pago/detalle/prima/{codigoProgramacionPago}", name="brs_rhu_programaciones_pago_detalle_prima")
      */

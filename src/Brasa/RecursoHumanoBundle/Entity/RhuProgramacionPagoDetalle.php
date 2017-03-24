@@ -137,17 +137,17 @@ class RhuProgramacionPagoDetalle
     /**
      * @ORM\Column(name="descuento_salud", type="boolean")
      */
-    private $descuentoSalud = 1;    
+    private $descuentoSalud = true;    
 
     /**
      * @ORM\Column(name="descuento_pension", type="boolean")
      */
-    private $descuentoPension = 1;        
+    private $descuentoPension = true;        
 
     /**
      * @ORM\Column(name="pago_auxilio_transporte", type="boolean")
      */
-    private $pagoAuxilioTransporte = 1;            
+    private $pagoAuxilioTransporte = true;            
 
     /**     
      * @ORM\Column(name="dias_incapacidad", type="integer")
@@ -172,12 +172,12 @@ class RhuProgramacionPagoDetalle
     /**     
      * @ORM\Column(name="salario_integral", type="boolean")
      */
-    private $salarioIntegral = 0;     
+    private $salarioIntegral = false;     
     
     /**
      * @ORM\Column(name="soporte_turno", type="boolean")
      */
-    private $soporteTurno = 1;    
+    private $soporteTurno = true;    
 
     /**
      * @ORM\Column(name="codigo_soporte_pago_fk", type="integer", nullable=true)
@@ -292,7 +292,7 @@ class RhuProgramacionPagoDetalle
     /**
      * @ORM\Column(name="dias_ausentismo", type="integer")
      */
-    private $diasAusentismo = 0;  
+    private $diasAusentismo = 0;     
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuProgramacionPago", inversedBy="programacionesPagosDetallesProgramacionPagoRel")
@@ -610,6 +610,30 @@ class RhuProgramacionPagoDetalle
     public function getVrSalarioPrima()
     {
         return $this->vrSalarioPrima;
+    }
+
+    /**
+     * Set vrSalarioCesantia
+     *
+     * @param float $vrSalarioCesantia
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrSalarioCesantia($vrSalarioCesantia)
+    {
+        $this->vrSalarioCesantia = $vrSalarioCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioCesantia
+     *
+     * @return float
+     */
+    public function getVrSalarioCesantia()
+    {
+        return $this->vrSalarioCesantia;
     }
 
     /**
@@ -1549,6 +1573,102 @@ class RhuProgramacionPagoDetalle
     }
 
     /**
+     * Set vrSalarioCesantiaPropuesto
+     *
+     * @param float $vrSalarioCesantiaPropuesto
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrSalarioCesantiaPropuesto($vrSalarioCesantiaPropuesto)
+    {
+        $this->vrSalarioCesantiaPropuesto = $vrSalarioCesantiaPropuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioCesantiaPropuesto
+     *
+     * @return float
+     */
+    public function getVrSalarioCesantiaPropuesto()
+    {
+        return $this->vrSalarioCesantiaPropuesto;
+    }
+
+    /**
+     * Set vrInteresCesantia
+     *
+     * @param float $vrInteresCesantia
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrInteresCesantia($vrInteresCesantia)
+    {
+        $this->vrInteresCesantia = $vrInteresCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get vrInteresCesantia
+     *
+     * @return float
+     */
+    public function getVrInteresCesantia()
+    {
+        return $this->vrInteresCesantia;
+    }
+
+    /**
+     * Set vrInteresCesantiaPagado
+     *
+     * @param float $vrInteresCesantiaPagado
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setVrInteresCesantiaPagado($vrInteresCesantiaPagado)
+    {
+        $this->vrInteresCesantiaPagado = $vrInteresCesantiaPagado;
+
+        return $this;
+    }
+
+    /**
+     * Get vrInteresCesantiaPagado
+     *
+     * @return float
+     */
+    public function getVrInteresCesantiaPagado()
+    {
+        return $this->vrInteresCesantiaPagado;
+    }
+
+    /**
+     * Set diasAusentismo
+     *
+     * @param integer $diasAusentismo
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setDiasAusentismo($diasAusentismo)
+    {
+        $this->diasAusentismo = $diasAusentismo;
+
+        return $this;
+    }
+
+    /**
+     * Get diasAusentismo
+     *
+     * @return integer
+     */
+    public function getDiasAusentismo()
+    {
+        return $this->diasAusentismo;
+    }
+
+    /**
      * Set programacionPagoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago $programacionPagoRel
@@ -1720,125 +1840,5 @@ class RhuProgramacionPagoDetalle
     public function getPagosProgramacionPagoDetalleRel()
     {
         return $this->pagosProgramacionPagoDetalleRel;
-    }
-
-    /**
-     * Set diasAusentismo
-     *
-     * @param integer $diasAusentismo
-     *
-     * @return RhuProgramacionPagoDetalle
-     */
-    public function setDiasAusentismo($diasAusentismo)
-    {
-        $this->diasAusentismo = $diasAusentismo;
-
-        return $this;
-    }
-
-    /**
-     * Get diasAusentismo
-     *
-     * @return integer
-     */
-    public function getDiasAusentismo()
-    {
-        return $this->diasAusentismo;
-    }
-
-    /**
-     * Set vrSalarioCesantia
-     *
-     * @param float $vrSalarioCesantia
-     *
-     * @return RhuProgramacionPagoDetalle
-     */
-    public function setVrSalarioCesantia($vrSalarioCesantia)
-    {
-        $this->vrSalarioCesantia = $vrSalarioCesantia;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioCesantia
-     *
-     * @return float
-     */
-    public function getVrSalarioCesantia()
-    {
-        return $this->vrSalarioCesantia;
-    }
-
-    /**
-     * Set vrSalarioCesantiaPropuesto
-     *
-     * @param float $vrSalarioCesantiaPropuesto
-     *
-     * @return RhuProgramacionPagoDetalle
-     */
-    public function setVrSalarioCesantiaPropuesto($vrSalarioCesantiaPropuesto)
-    {
-        $this->vrSalarioCesantiaPropuesto = $vrSalarioCesantiaPropuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioCesantiaPropuesto
-     *
-     * @return float
-     */
-    public function getVrSalarioCesantiaPropuesto()
-    {
-        return $this->vrSalarioCesantiaPropuesto;
-    }
-
-    /**
-     * Set vrInteresCesantia
-     *
-     * @param float $vrInteresCesantia
-     *
-     * @return RhuProgramacionPagoDetalle
-     */
-    public function setVrInteresCesantia($vrInteresCesantia)
-    {
-        $this->vrInteresCesantia = $vrInteresCesantia;
-
-        return $this;
-    }
-
-    /**
-     * Get vrInteresCesantia
-     *
-     * @return float
-     */
-    public function getVrInteresCesantia()
-    {
-        return $this->vrInteresCesantia;
-    }
-
-    /**
-     * Set vrInteresCesantiaPagado
-     *
-     * @param float $vrInteresCesantiaPagado
-     *
-     * @return RhuProgramacionPagoDetalle
-     */
-    public function setVrInteresCesantiaPagado($vrInteresCesantiaPagado)
-    {
-        $this->vrInteresCesantiaPagado = $vrInteresCesantiaPagado;
-
-        return $this;
-    }
-
-    /**
-     * Get vrInteresCesantiaPagado
-     *
-     * @return float
-     */
-    public function getVrInteresCesantiaPagado()
-    {
-        return $this->vrInteresCesantiaPagado;
     }
 }
