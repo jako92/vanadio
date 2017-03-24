@@ -53,7 +53,7 @@
                         <td class="titulo">NUMERO:</td>
                         <td class="td-in-well">{{ arPedido.numero }}</td>
                         <td class="titulo">FECHA:</td>
-                        <td class="td-in-well">{{ arPedido.fecha |date("Y/m/d") }}</td>                       
+                        <td class="td-in-well">{{ arPedido.fecha |date("Y/m/d H:i") }}</td>                       
                         <td class="titulo" >COSTO:</td>
                         <td align="right">{{ arPedido.vrTotalCosto | number_format(0, '.', ',')}}</td>
                     </tr>

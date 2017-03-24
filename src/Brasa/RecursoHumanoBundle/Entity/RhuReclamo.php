@@ -31,6 +31,11 @@ class RhuReclamo
      * @ORM\Column(name="fecha", type="date", nullable=true)
      */         
     private $fecha;    
+
+    /**
+     * @ORM\Column(name="fecha_cierre", type="date", nullable=true)
+     */         
+    private $fechaCierre; 
     
     /**
      * @ORM\Column(name="fecha_solucion", type="date", nullable=true)
@@ -288,5 +293,29 @@ class RhuReclamo
     public function getReclamo()
     {
         return $this->reclamo;
+    }
+
+    /**
+     * Set fechaCierre
+     *
+     * @param \DateTime $fechaCierre
+     *
+     * @return RhuReclamo
+     */
+    public function setFechaCierre($fechaCierre)
+    {
+        $this->fechaCierre = $fechaCierre;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCierre
+     *
+     * @return \DateTime
+     */
+    public function getFechaCierre()
+    {
+        return $this->fechaCierre;
     }
 }

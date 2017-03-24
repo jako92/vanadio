@@ -261,8 +261,6 @@ class ProgramacionesPagoController extends Controller {
 
         $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->listaDQL($codigoProgramacionPago));
         $arProgramacionPagoDetalles = $paginator->paginate($query, $request->query->get('page', 1), 2000);
-        $arProgramacionPagoDetalleSedes = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalleSede();
-        $arProgramacionPagoDetalleSedes = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalleSede')->findAll();
         if ($request->getMethod() == 'POST') {
             $arrControles = $request->request->All();
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -274,8 +272,7 @@ class ProgramacionesPagoController extends Controller {
                     'arLicencias' => $arLicencias,
                     'arVacaciones' => $arVacaciones,
                     'arProgramacionPagoHoraExtra' => $arProgramacionPagoHoraExtra,
-                    'arProgramacionPagoDetalles' => $arProgramacionPagoDetalles,
-                    'arProgramacionPagoDetalleSedes' => $arProgramacionPagoDetalleSedes,
+                    'arProgramacionPagoDetalles' => $arProgramacionPagoDetalles,                    
                     'arProgramacionPago' => $arProgramacionPago,
                     'form' => $form->createView()
         ));

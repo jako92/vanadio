@@ -15,16 +15,6 @@
         </ol>
     </section>    
     <section class="content">        	
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
-        </script>        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
@@ -89,10 +79,11 @@
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
-                <th>{{ knp_pagination_sortable(arReclamos, 'CODIGO', 'ee.codigoReclamoPk') }}</th>
+                <th>{{ knp_pagination_sortable(arReclamos, 'ID', 'ee.codigoReclamoPk') }}</th>
                 <th>DOCUMENTO</th>
                 <th>{{ knp_pagination_sortable(arReclamos, 'NOMBRE', 'e.nombreCorto') }}</th>                
-                <th>FECHA</th>                                                
+                <th>FECHA</th>
+                <th>CIERRE</th>
                 <th>CER</th>                
                 <th style="text-align: center"></th>                
                 <th></th>
@@ -104,6 +95,7 @@
                     <td>{{ arReclamos.empleadoRel.numeroIdentificacion  }}</td>
                     <td>{{ arReclamos.empleadoRel.nombreCorto  }}</td>                                                                
                     <td>{{ arReclamos.fecha |date('Y/m/d') }}</td>                                                               
+                    <td>{{ arReclamos.fechaCierre |date('Y/m/d') }}</td>                                                               
                     <td>{% if arReclamos.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>                                 
                     <td style="text-align: center">{% if arReclamos.estadoCerrado == 0 %}<a href="{{ path('brs_rhu_movimiento_reclamo_nuevo', {'codigoReclamo': arReclamos.codigoReclamoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                
                     <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_reclamo_detalle', { 'codigoReclamo': arReclamos.codigoReclamoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                
@@ -114,7 +106,7 @@
 
         <!-- Botones Menu Items -->.
         <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Estudios <span class="badge">{{ arReclamos.getTotalItemCount }}</span></div>
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arReclamos.getTotalItemCount }}</span></div>
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
             {{ knp_pagination_render(arReclamos) }}

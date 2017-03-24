@@ -82,6 +82,7 @@ class ReclamoController extends Controller
         } else {
             $arReclamo->setFecha(new \DateTime('now'));
             $arReclamo->setFechaRegistro(new \DateTime('now'));            
+            $arReclamo->setFechaCierre(new \DateTime('now'));
         }
 
         $form = $this->createForm(RhuReclamoType::class, $arReclamo);
@@ -103,8 +104,8 @@ class ReclamoController extends Controller
 
                     if($form->get('guardarnuevo')->isClicked()) {
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_reclamo_nuevo', array('codigoReclamo' => 0)));
-                    } else {
-                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_reclamo'));
+                    } else {                        
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_reclamo_detalle', array('codigoReclamo' => $arReclamo->getCodigoReclamoPk())));
                     }
                 } else {
                     $objMensaje->Mensaje("error", "El empleado no existe");
@@ -123,8 +124,8 @@ class ReclamoController extends Controller
     public function detalleAction(Request $request, $codigoReclamo) {
         $em = $this->getDoctrine()->getManager();        
         $objMensaje = $this->get('mensajes_brasa');
-        $arReclamo = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudio();
-        $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleadoEstudio')->find($codigoReclamo);
+        $arReclamo = new \Brasa\RecursoHumanoBundle\Entity\RhuReclamo();
+        $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuReclamo')->find($codigoReclamo);
         $form = $this->formularioDetalle($arReclamo);
         $form->handleRequest($request);
         if($form->isValid()) {
@@ -132,6 +133,15 @@ class ReclamoController extends Controller
                 $objFormatoDetalleReclamo = new \Brasa\RecursoHumanoBundle\Formatos\Reclamo();
                 $objFormatoDetalleReclamo->Generar($em, $codigoReclamo);
             }                
+            if($form->get('BtnCerrar')->isClicked()) {
+                if($arReclamo->getEstadoCerrado() == 0) {
+                    $arReclamo->setEstadoCerrado(1);
+                    $arReclamo->setFechaCierre(new \DateTime('now'));
+                    $em->persist($arReclamo);
+                    $em->flush();                    
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_movimiento_reclamo_detalle', array('codigoReclamo' => $codigoReclamo)));
+            }            
         }
         $arReclamo = $em->getRepository('BrasaRecursoHumanoBundle:RhuReclamo')->find($codigoReclamo);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Reclamo:detalle.html.twig', array(
@@ -182,9 +192,14 @@ class ReclamoController extends Controller
         return $form;
     }
 
-    private function formularioDetalle($arReclamo) {
-        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+    private function formularioDetalle($ar) {
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
+        $arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => false);        
+        if($ar->getEstadoCerrado() == 1) {
+            $arrBotonCerrar['disabled'] = true;
+        }        
         $form = $this->createFormBuilder()
+                ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->getForm();  
         return $form;
@@ -240,20 +255,10 @@ class ReclamoController extends Controller
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID')
                     ->setCellValue('B1', 'DOCUMENTO')
-                    ->setCellValue('C1', 'NOMBRE')
-                    ->setCellValue('D1', 'TIPO')
-                    ->setCellValue('E1', 'VENCE')
-                    ->setCellValue('F1', 'CARGO')
-                    ->setCellValue('G1', 'REGISTRO')
-                    ->setCellValue('H1', 'REC')
-                    ->setCellValue('I1', 'MOTIVO')
-                    ->setCellValue('J1', 'VAL')
-                    ->setCellValue('K1', 'NUMERO')
-                    ->setCellValue('L1', 'FECHA')
-                    ->setCellValue('M1', 'ACREDITADO')
-                    ->setCellValue('N1', 'FECHA')
-                    ->setCellValue('O1', 'VENCE');
-
+                    ->setCellValue('C1', 'EMPLEADO')
+                    ->setCellValue('D1', 'FECHA')
+                    ->setCellValue('E1', 'CIERRE')
+                    ->setCellValue('F1', 'CERRADO');
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
         $arReclamoes = new \Brasa\RecursoHumanoBundle\Entity\RhuReclamo();
@@ -263,24 +268,9 @@ class ReclamoController extends Controller
                     ->setCellValue('A' . $i, $arReclamo->getCodigoReclamoPk())
                     ->setCellValue('B' . $i, $arReclamo->getEmpleadoRel()->getnumeroIdentificacion())
                     ->setCellValue('C' . $i, $arReclamo->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('D' . $i, $arReclamo->getReclamoTipoRel()->getNombre())
-                    ->setCellValue('E' . $i, $arReclamo->getFechaVenceCurso()->format('Y/m/d'))
-                    ->setCellValue('F' . $i, $arReclamo->getReclamoTipoRel()->getCargo())
-                    ->setCellValue('G' . $i, $arReclamo->getNumeroRegistro())
-                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoRechazado()))
-                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoValidado()))
-                    ->setCellValue('K' . $i, $arReclamo->getNumeroValidacion())                    
-                    ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoAcreditado()));
-            if($arReclamo->getCodigoReclamoRechazoFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arReclamo->getReclamoRechazoRel()->getNombre());
-            }
-            if($arReclamo->getEstadoValidado()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $i, $arReclamo->getFechaValidacion()->format('Y-m-d'));
-            }
-            if($arReclamo->getEstadoAcreditado()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N' . $i, $arReclamo->getFechaReclamo()->format('Y-m-d'));
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $i, $arReclamo->getFechaVencimiento()->format('Y-m-d'));
-            }            
+                    ->setCellValue('D' . $i, $arReclamo->getFecha()->format('Y/m/d'))
+                    ->setCellValue('E' . $i, $arReclamo->getFechaCierre()->format('Y/m/d'))                    
+                    ->setCellValue('F' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoCerrado()));           
             $i++;
         }
 
