@@ -16,8 +16,11 @@ class RhuRequisitoType extends AbstractType
         $builder                 
             ->add('cargoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-            ))             
+                'required' => true))                
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
             ->add('nombreCorto', TextType::class, array('required' => false))                
             ->add('comentarios', TextareaType::class, array('required' => false))
