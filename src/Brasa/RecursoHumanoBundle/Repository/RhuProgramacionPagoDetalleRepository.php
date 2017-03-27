@@ -1000,7 +1000,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
         }        
         if($arProgramacionPagoDetalle->getHorasRecargoFestivoNocturno() > 0) {
             $arrExtra[] = array('concepto' => $arConfiguracion->getCodigoHoraRecargoFestivoNocturno(), 'horas' => $arProgramacionPagoDetalle->getHorasRecargoFestivoNocturno());
-        }     
+        }
         
         return $arrExtra;
     }    
@@ -1050,7 +1050,10 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
         }    
         if($arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoNoCompensado() > 0) {
             $arrExtra[] = array('concepto' => $arConfiguracion->getHorasRecargoNocturnoFestivoNoCompensado(), 'horas' => $arProgramacionPagoHoraExtra->getHorasRecargoNocturnoFestivoNoCompensado());
-        }    
+        } 
+        if($arProgramacionPagoHoraExtra->getHorasExtraDominicalDiurna() > 0) {
+            $arrExtra[] = array('concepto' => $arConfiguracion->getCodigoHorasExtraDominicalDiurna(), 'horas' => $arProgramacionPagoHoraExtra->getHorasExtraDominicalDiurna());
+        }     
         
         return $arrExtra;
     }    

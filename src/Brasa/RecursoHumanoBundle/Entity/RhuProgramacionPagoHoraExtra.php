@@ -105,7 +105,12 @@ class RhuProgramacionPagoHoraExtra
     /**
      * @ORM\Column(name="horas_recargo_nocturno_festivo_no_compensado", type="float")
      */    
-    private $horasRecargoNocturnoFestivoNoCompensado = 0;       
+    private $horasRecargoNocturnoFestivoNoCompensado = 0;
+    
+    /**
+     * @ORM\Column(name="horas_extra_dominical_diurna", type="float")
+     */    
+    private $horasExtraDominicalDiurna = 0;   
     
     /**
      * @ORM\Column(name="horas_novedad", type="float")
@@ -699,5 +704,29 @@ class RhuProgramacionPagoHoraExtra
     public function getHorasRecargoNocturnoFestivoNoCompensado()
     {
         return $this->horasRecargoNocturnoFestivoNoCompensado;
+    }
+
+    /**
+     * Set horasExtraDominicalDiurna
+     *
+     * @param float $horasExtraDominicalDiurna
+     *
+     * @return RhuProgramacionPagoHoraExtra
+     */
+    public function setHorasExtraDominicalDiurna($horasExtraDominicalDiurna)
+    {
+        $this->horasExtraDominicalDiurna = $horasExtraDominicalDiurna;
+
+        return $this;
+    }
+
+    /**
+     * Get horasExtraDominicalDiurna
+     *
+     * @return float
+     */
+    public function getHorasExtraDominicalDiurna()
+    {
+        return $this->horasExtraDominicalDiurna;
     }
 }

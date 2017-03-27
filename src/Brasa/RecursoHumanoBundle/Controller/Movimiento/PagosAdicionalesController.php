@@ -657,6 +657,11 @@ class PagosAdicionalesController extends Controller
                                 $arProgramacionPagoHoraExtra->setHorasRecargoNocturnoFestivoNoCompensado($intHoras);
                                 $em->persist($arProgramacionPagoHoraExtra);
                             }
+                            if($arrControles['TxtHEDD'.$intCodigo] != "" ) {
+                                $intHoras = $arrControles['TxtHEDD'.$intCodigo];
+                                $arProgramacionPagoHoraExtra->setHorasExtraDominicalDiurna($intHoras);
+                                $em->persist($arProgramacionPagoHoraExtra);
+                            }
                         }
                         $intIndice++;
                     }

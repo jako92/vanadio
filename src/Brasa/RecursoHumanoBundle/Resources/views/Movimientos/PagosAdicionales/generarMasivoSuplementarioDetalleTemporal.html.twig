@@ -69,6 +69,7 @@
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas domingo compensado">H.D.C</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas recargo nocturno festivo compensado">H.R.N.F.C</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas recargo nocturno festivo no compensado">H.R.N.F.N.C</p></th>
+                        <th><p data-toggle="tooltip" data-placement="top" title="Horas extra dominical diurna">H.E.D.D</p></th>
                         <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTable(this, 'ChkSeleccionar[]');"/></th>
                     </tr>
                     {% for arProgramacionPagoHoraExtra in arProgramacionPagoHoraExtra %}
@@ -96,6 +97,7 @@
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHDC{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasDomingoCompensado }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHRNFC{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoCompensado }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHRNFNC{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoNoCompensado }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                            <td style="text-align: right"><input class="input-grid" type="text" name="TxtHEDD{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasExtraDominicalDiurna }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" /></td>
                             {% else %}
                             <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasNocturnas | number_format(0, '.', ',') }}</td> 
@@ -112,6 +114,7 @@
                             <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoCompensado | number_format(0, '.', ',') }}</td>
                             <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoCompensado | number_format(0, '.', ',') }}</td>
                             <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoNoCompensado | number_format(0, '.', ',') }}</td>
+                            <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtraDominicalDiurna | number_format(0, '.', ',') }}</td>
                             <td></td>
                         {% endif %}
                         </tr>

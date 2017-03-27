@@ -418,7 +418,12 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="horas_recargo_nocturno_festivo_no_compensado", type="integer")
      */    
-    private $horasRecargoNocturnoFestivoNoCompensado;     
+    private $horasRecargoNocturnoFestivoNoCompensado;
+    
+    /**
+     * @ORM\Column(name="horas_extra_dominical_diurna", type="integer")
+     */    
+    private $horasExtraDominicalDiurna;   
 
     /**
      * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
@@ -2367,5 +2372,29 @@ class RhuConfiguracion
     public function getLiquidarVacacionesSalario()
     {
         return $this->liquidarVacacionesSalario;
+    }
+
+    /**
+     * Set horasExtraDominicalDiurna
+     *
+     * @param \interger $horasExtraDominicalDiurna
+     *
+     * @return RhuConfiguracion
+     */
+    public function setHorasExtraDominicalDiurna(\interger $horasExtraDominicalDiurna)
+    {
+        $this->horasExtraDominicalDiurna = $horasExtraDominicalDiurna;
+
+        return $this;
+    }
+
+    /**
+     * Get horasExtraDominicalDiurna
+     *
+     * @return \interger
+     */
+    public function getHorasExtraDominicalDiurna()
+    {
+        return $this->horasExtraDominicalDiurna;
     }
 }
