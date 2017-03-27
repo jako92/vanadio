@@ -314,6 +314,7 @@
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas domingo compensado">H.D.C</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas recargo nocturno festivo compensado">H.R.N.F.C</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas recargo nocturno festivo no compensado">H.R.N.F.N.C</p></th>
+                        <th><p data-toggle="tooltip" data-placement="top" title="Horas extra dominical diurnas">H.E.D.D</p></th>
                     </tr>
                     {% for arProgramacionPagoHoraExtra in arProgramacionPagoHoraExtra %}
                         <input type="hidden" name="LblCodigo[]" value="{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}"> 
@@ -337,6 +338,7 @@
                         <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoCompensado | number_format(0, '.', ',') }}</td>
                         <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoCompensado | number_format(0, '.', ',') }}</td>
                         <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoNoCompensado | number_format(0, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtraDominicalDiurna | number_format(0, '.', ',') }}</td>
                         </tr>
                     {% endfor %}
                 </table>
