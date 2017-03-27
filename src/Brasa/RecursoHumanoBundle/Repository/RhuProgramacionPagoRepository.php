@@ -56,27 +56,35 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
             //Validar que este en el año actual
             if($arProgramacionPagoProcesar->getFechaDesde()->format('Y') <= $arConfiguracion->getAnioActual()) {
-                $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
-                $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPagoProcesar->getCodigoCentroCostoFk());                
-                ini_set("memory_limit", -1);
-                $strSql = "DELETE rhu_pago_detalle FROM rhu_pago_detalle LEFT JOIN rhu_pago on rhu_pago_detalle.codigo_pago_fk = rhu_pago.codigo_pago_pk WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
-                $em->getConnection()->executeQuery($strSql); 
-                $strSql = "DELETE FROM rhu_pago WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
-                $em->getConnection()->executeQuery($strSql);
-                $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));                
-                foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                        
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->generarPago($arProgramacionPagoDetalle, $arProgramacionPagoProcesar, $arCentroCosto, $arConfiguracion);   
-                }                
-                $arProgramacionPagoProcesar->setEstadoGenerado(1);
-                $em->persist($arProgramacionPagoProcesar);
-                $em->flush();                                                                               
+                $arProgramacionPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->findBy(array('codigoProgramacionPagoFk' => $arProgramacionPagoProcesar->getCodigoProgramacionPagoPk()));                                
+                foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                                        
+                    if($arProgramacionPagoDetalle->getSalarioHoras() == 1 && $arProgramacionPagoDetalle->getMarca() == 0) {
+                        $strMensaje = "El empleado " . $arProgramacionPagoDetalle->getEmpleadoRel()->getNombreCorto() . " es sabatino y no esta marcado";
+                        break;
+                    }
+                }
+                if($strMensaje == "") {
+                    $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
+                    $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arProgramacionPagoProcesar->getCodigoCentroCostoFk());                
+                    ini_set("memory_limit", -1);
+                    $strSql = "DELETE rhu_pago_detalle FROM rhu_pago_detalle LEFT JOIN rhu_pago on rhu_pago_detalle.codigo_pago_fk = rhu_pago.codigo_pago_pk WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
+                    $em->getConnection()->executeQuery($strSql); 
+                    $strSql = "DELETE FROM rhu_pago WHERE rhu_pago.codigo_programacion_pago_fk = " . $codigoProgramacionPago;                           
+                    $em->getConnection()->executeQuery($strSql);
+
+                    foreach ($arProgramacionPagoDetalles as $arProgramacionPagoDetalle) {                        
+                        $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoDetalle')->generarPago($arProgramacionPagoDetalle, $arProgramacionPagoProcesar, $arCentroCosto, $arConfiguracion);   
+                    }                
+                    $arProgramacionPagoProcesar->setEstadoGenerado(1);
+                    $em->persist($arProgramacionPagoProcesar);
+                    $em->flush();                     
+                }                                                                              
             } else {
                 $strMensaje = "No se puede generar programacion porque el año es mayor al ultimo año cerrado";
             }                            
         } else {
             $strMensaje = "Solo se pueden generar programaciones que no esten generadas y que tengan empleados o tiene inconsistencias en la programacion";
         }        
-        set_time_limit(90);
         return $strMensaje;
     }
     
@@ -580,6 +588,9 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 $arProgramacionPagoDetalle->setFactorDia($arContrato->getFactorHorasDia());  
                 $diasTransporte = $intDiasDevolver - ($intDiasVacaciones+$intDiasLicencia+$intDiasIncapacidad);
                 $arProgramacionPagoDetalle->setDiasTransporte($diasTransporte);
+                if($arContrato->getCodigoTipoTiempoFk() == 3) {
+                    $arProgramacionPagoDetalle->setSalarioHoras(1);
+                }
                 $em->persist($arProgramacionPagoDetalle);
                 
                 if($floNeto < 0) {
@@ -1057,7 +1068,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             }        
 
             $floValorDia = $arContrato->getVrSalarioPago() / 30;       
-            $floValorHora = $floValorDia / $arContrato->getFactorHorasDia();   
+            $floValorHora = $floValorDia / 8;   
             $arProgramacionPagoDetalle->setVrDia($floValorDia);
             $arProgramacionPagoDetalle->setVrHora($floValorHora);
             $floDevengado = $arProgramacionPagoDetalle->getDias() * $floValorDia;
@@ -1088,7 +1099,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             }  
             $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
             $dias = $intDiasDevolver - $diasNovedad;
-            $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * 8;
+            $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * $arContrato->getFactorHorasDia();
             $horasDiurnas = ($intDiasDevolver * $arContrato->getFactorHorasDia()) - $horasNovedad;
             if($intDiasPeriodoReales == $diasNovedad) {
                 $dias = 0;

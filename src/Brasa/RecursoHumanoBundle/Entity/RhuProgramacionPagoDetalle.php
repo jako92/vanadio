@@ -257,7 +257,7 @@ class RhuProgramacionPagoDetalle
     /**
      * @ORM\Column(name="marca", type="boolean", nullable=true)
      */
-    private $marca = 0;    
+    private $marca = false;    
     
     /**
      * @ORM\Column(name="vr_ajuste_devengado", type="float")
@@ -295,6 +295,11 @@ class RhuProgramacionPagoDetalle
     private $diasAusentismo = 0;     
     
     /**
+     * @ORM\Column(name="salario_horas", type="boolean")
+     */
+    private $salarioHoras = false;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuProgramacionPago", inversedBy="programacionesPagosDetallesProgramacionPagoRel")
      * @ORM\JoinColumn(name="codigo_programacion_pago_fk", referencedColumnName="codigo_programacion_pago_pk")
      */
@@ -327,6 +332,7 @@ class RhuProgramacionPagoDetalle
      */
     protected $pagosProgramacionPagoDetalleRel;    
     
+
 
     /**
      * Constructor
@@ -1666,6 +1672,30 @@ class RhuProgramacionPagoDetalle
     public function getDiasAusentismo()
     {
         return $this->diasAusentismo;
+    }
+
+    /**
+     * Set salarioHoras
+     *
+     * @param boolean $salarioHoras
+     *
+     * @return RhuProgramacionPagoDetalle
+     */
+    public function setSalarioHoras($salarioHoras)
+    {
+        $this->salarioHoras = $salarioHoras;
+
+        return $this;
+    }
+
+    /**
+     * Get salarioHoras
+     *
+     * @return boolean
+     */
+    public function getSalarioHoras()
+    {
+        return $this->salarioHoras;
     }
 
     /**

@@ -661,7 +661,10 @@ class ProgramacionesPagoController extends Controller {
                     $em->remove($arPago);
                 }
                 if (!$arProgramacionPagoDetalle->getCodigoSoportePagoFk()) {
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->actualizarEmpleado($codigoProgramacionPagoDetalle);
+                    $arContrato = $arProgramacionPagoDetalle->getContratoRel();
+                    if($arContrato->getCodigoTipoTiempoFk() != 3) {                        
+                        $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->actualizarEmpleado($codigoProgramacionPagoDetalle);                        
+                    }                    
                 } else {
                     $arContrato = $arProgramacionPagoDetalle->getContratoRel();
                     $arProgramacionPagoDetalle->setVrSalario($arContrato->getVrSalarioPago());
