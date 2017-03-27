@@ -421,14 +421,14 @@ class RhuConfiguracion
     private $horasRecargoNocturnoFestivoNoCompensado;
     
     /**
+     * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
+     */
+    private $liquidarVacacionesSalario = false; 
+    
+    /**
      * @ORM\Column(name="horas_extra_dominical_diurna", type="integer")
      */    
     private $horasExtraDominicalDiurna;   
-
-    /**
-     * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
-     */
-    private $liquidarVacacionesSalario = false;    
   
     /**
      * Set codigoConfiguracionPk
