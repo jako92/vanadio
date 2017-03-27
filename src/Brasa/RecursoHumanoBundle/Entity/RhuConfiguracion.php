@@ -430,6 +430,8 @@ class RhuConfiguracion
      */    
     private $horasExtraDominicalDiurna;   
   
+
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -2257,7 +2259,7 @@ class RhuConfiguracion
     /**
      * Set horasDomingoNoCompensado
      *
-     * @param float $horasDomingoNoCompensado
+     * @param integer $horasDomingoNoCompensado
      *
      * @return RhuConfiguracion
      */
@@ -2271,7 +2273,7 @@ class RhuConfiguracion
     /**
      * Get horasDomingoNoCompensado
      *
-     * @return float
+     * @return integer
      */
     public function getHorasDomingoNoCompensado()
     {
@@ -2281,7 +2283,7 @@ class RhuConfiguracion
     /**
      * Set horasDomingoCompensado
      *
-     * @param float $horasDomingoCompensado
+     * @param integer $horasDomingoCompensado
      *
      * @return RhuConfiguracion
      */
@@ -2295,7 +2297,7 @@ class RhuConfiguracion
     /**
      * Get horasDomingoCompensado
      *
-     * @return float
+     * @return integer
      */
     public function getHorasDomingoCompensado()
     {
@@ -2305,7 +2307,7 @@ class RhuConfiguracion
     /**
      * Set horasRecargoNocturnoFestivoCompensado
      *
-     * @param float $horasRecargoNocturnoFestivoCompensado
+     * @param integer $horasRecargoNocturnoFestivoCompensado
      *
      * @return RhuConfiguracion
      */
@@ -2319,7 +2321,7 @@ class RhuConfiguracion
     /**
      * Get horasRecargoNocturnoFestivoCompensado
      *
-     * @return float
+     * @return integer
      */
     public function getHorasRecargoNocturnoFestivoCompensado()
     {
@@ -2329,7 +2331,7 @@ class RhuConfiguracion
     /**
      * Set horasRecargoNocturnoFestivoNoCompensado
      *
-     * @param float $horasRecargoNocturnoFestivoNoCompensado
+     * @param integer $horasRecargoNocturnoFestivoNoCompensado
      *
      * @return RhuConfiguracion
      */
@@ -2343,7 +2345,7 @@ class RhuConfiguracion
     /**
      * Get horasRecargoNocturnoFestivoNoCompensado
      *
-     * @return float
+     * @return integer
      */
     public function getHorasRecargoNocturnoFestivoNoCompensado()
     {
@@ -2377,11 +2379,11 @@ class RhuConfiguracion
     /**
      * Set horasExtraDominicalDiurna
      *
-     * @param \interger $horasExtraDominicalDiurna
+     * @param integer $horasExtraDominicalDiurna
      *
      * @return RhuConfiguracion
      */
-    public function setHorasExtraDominicalDiurna(\interger $horasExtraDominicalDiurna)
+    public function setHorasExtraDominicalDiurna($horasExtraDominicalDiurna)
     {
         $this->horasExtraDominicalDiurna = $horasExtraDominicalDiurna;
 
@@ -2391,7 +2393,7 @@ class RhuConfiguracion
     /**
      * Get horasExtraDominicalDiurna
      *
-     * @return \interger
+     * @return integer
      */
     public function getHorasExtraDominicalDiurna()
     {
