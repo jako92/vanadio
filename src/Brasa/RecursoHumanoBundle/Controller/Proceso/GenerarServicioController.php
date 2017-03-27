@@ -75,6 +75,10 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrAdicionalValor($arPago->getVrAdicionalValor());                            
                             $arServicio->setVrAuxilioTransporteCotizacion($arPago->getVrAuxilioTransporteCotizacion());
                             $arServicio->setVrIngresoBasePrestacion($arPago->getVrIngresoBasePrestacion());
+                            $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
+                            $pension = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleado()) / 100;
+                            $arServicio->setVrPension($pension);
+                            
                             $arp = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100;
                             $arServicio->setVrArp($arp);
                             $cesantias = ($arPago->getVrIngresoBasePrestacion() * $porcentajeCesantias) / 100;
@@ -87,8 +91,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setvrPrimas($primas);
                             $caja = ($arPago->getVrIngresoBasePrestacion() * $porcentajeCaja) / 100;
                             $arServicio->setVrCaja($caja);                                                                                                                
-                            $pension = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleado()) / 100;
-                            $arServicio->setVrPension($pension);
+
                             $aporteParafiscales = ($vacaciones * $porcentajeAporteParafiscales) / 100;                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);                                                        
                             $neto = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $arp + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
@@ -105,7 +108,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());                            
                             $em->persist($arServicio);                            
                         }                          
-                        $arProgramacionPago->setServicioGenerado(1);
+                        //$arProgramacionPago->setServicioGenerado(1);
                         $em->persist($arProgramacionPago);
                         $em->flush(); 
                     }                                        

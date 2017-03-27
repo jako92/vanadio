@@ -14,12 +14,7 @@
             <li class="active">Por cobrar</li>
         </ol>
     </section>    
-    <section class="content">        	
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
-        </script>        
+    <section class="content">        	        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
@@ -63,25 +58,12 @@
                 <th>IDENTIFICACIÓN</th>
                 <th>EMPLEADO</th>                
                 <th>DESDE</th>
-                <th>HASTA</th>
-                <th>DIAS</th>
-                <th>SALARIO</th>
-                <th>SALARIO.P</th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Tiempo suplementario pagado">T.ADIC</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Valores adicionales pagados">V.ADIC</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Auxilio transporte ">AUX.T</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Auxilio transporte">AUX.T.C</p></th>
-                <th>ARP</th>
-                <th>EPS</th>
-                <th>PENSIÓN</th>
-                <th>CAJA</th>
-                <th>SENA</th>
-                <th>ICBF</th>
-                <th>CES/INT</th>
-                <th>VAC</th>
-                <th>ADMON</th>
-                <th>NETO</th>
-                <th>TOTAL</th>
+                <th>HASTA</th>                
+                <th>SALARIO</th>                
+                <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Aportes pension">PENSION</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Aportes salud">SALUD</p></th>
             </tr>
             {% set douTotalNeto = 0  %}
             {% set douTotalCobrar = 0  %}
@@ -93,35 +75,14 @@
                     <td>{{ arServiciosPorCobrar.empleadoRel.numeroIdentificacion  }}</td>
                     <td>{{ arServiciosPorCobrar.empleadoRel.nombreCorto  }}</td>                
                     <td>{{ arServiciosPorCobrar.fechaDesde |date("Y/m/d")  }}</td>
-                    <td>{{ arServiciosPorCobrar.fechaHasta |date("Y/m/d")  }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.diasPeriodo | number_format(0, '.', ',') }}</td>
+                    <td>{{ arServiciosPorCobrar.fechaHasta |date("Y/m/d")  }}</td>                    
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrSalario | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrSalarioPeriodo | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAdicionalTiempo | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAdicionalValor | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAuxilioTransporte | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAuxilioTransporteCotizacion | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrArp | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrEps | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrPension | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrCaja | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrSena | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrIcbf | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrCesantias | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrVacaciones | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>                
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrNeto | number_format(0, '.', ',') }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrTotalCobrar | number_format(0, '.', ',') }}</td>
-                    {% set douTotalNeto = douTotalNeto + arServiciosPorCobrar.vrNeto %}
-                    {% set douTotalCobrar = douTotalCobrar + arServiciosPorCobrar.vrTotalCobrar %}
-                    {% set douTotalPension = douTotalPension + arServiciosPorCobrar.vrPension %}
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>                    
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>                    
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrPension | number_format(0, '.', ',') }}</td>                    
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrEps | number_format(0, '.', ',') }}</td>                    
                 </tr>
             {% endfor %}
-            <td colspan="15"></td>
-            <td style="text-align: right">{{ douTotalPension | number_format(0, '.', ',') }}</td>
-            <td colspan="6"></td>
-            <td style="text-align: right">{{ douTotalNeto | number_format(0, '.', ',') }}</td>
-            <td style="text-align: right">{{ douTotalCobrar | number_format(0, '.', ',') }}</td>
         </table>
         <div class="btn-toolbar" style="float: left">
             <div class="btn-group">

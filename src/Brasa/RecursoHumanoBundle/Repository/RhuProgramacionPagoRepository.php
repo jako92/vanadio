@@ -565,8 +565,8 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                 }     
                 
                 $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
-                $dias = $intDiasDevolver - $diasNovedad;                                
-                $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * 8;
+                $dias = $intDiasDevolver - $diasNovedad;                 
+                $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * $arContrato->getFactorHorasDia();
                 $horasDiurnas = ($intDiasDevolver * $arContrato->getFactorHorasDia()) - $horasNovedad;
                 if($intDiasPeriodoReales == $diasNovedad) {
                     $dias = 0;
