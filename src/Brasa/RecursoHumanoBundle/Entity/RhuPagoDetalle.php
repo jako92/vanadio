@@ -111,7 +111,7 @@ class RhuPagoDetalle
      * @ORM\Column(name="vr_extra", type="float")
      */
     private $vrExtra= 0;     
-
+    
     /**
      * @ORM\Column(name="vr_adicional_prestacional", type="float")
      */
