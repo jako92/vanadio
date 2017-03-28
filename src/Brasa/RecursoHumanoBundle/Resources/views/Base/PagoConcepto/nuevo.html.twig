@@ -1,5 +1,5 @@
 {% extends '::base2.html.twig' %}
-{% block title %}Pago concepto nuevo - Soga App{% endblock %} 
+{% block title %}Pago concepto nuevo - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
@@ -14,133 +14,64 @@
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Concepto de pago</a></li>
             <li class="active">Nuevo</li>
         </ol>
-    </section>    
-    <section class="content">        	
+    </section>
+    <section class="content">
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Nombre:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Compone salario:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.componeSalario, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <label for="form_componeSalario"  class="control-label">Salario {{ form_widget(form.componeSalario) }}</label>
+                        <label for="form_componeValor"  class="control-label">Compone valor {{ form_widget(form.componeValor) }}</label>
+                        <label for="form_prestacional"  class="control-label">Prestacional {{ form_widget(form.prestacional) }}</label>
+                        <label for="form_generaIngresoBasePrestacion"  class="control-label">IBP {{ form_widget(form.generaIngresoBasePrestacion) }}</label>
+                        <label for="form_generaIngresoBaseCotizacion"  class="control-label">IBC {{ form_widget(form.generaIngresoBaseCotizacion) }}</label>
+                        <label for="form_conceptoAdicion"  class="control-label">Adional al pago {{ form_widget(form.conceptoAdicion) }}</label>
+                        <label for="form_conceptoIncapacidad"  class="control-label">Incapacidad {{ form_widget(form.conceptoIncapacidad) }}</label>
+                        <label for="form_conceptoPension"  class="control-label">Pension {{ form_widget(form.conceptoPension) }}</label>
+                        <label for="form_conceptoSalud"  class="control-label">Salud {{ form_widget(form.conceptoSalud) }}</label>
+                        <label for="form_recargoNocturno"  class="control-label">Recargo nocturno {{ form_widget(form.recargoNocturno) }}</label>
+                        <label for="form_horaExtra"  class="control-label">Horas extra {{ form_widget(form.horaExtra) }}</label>
+                        <label for="form_conceptoAuxilioTransporte"  class="control-label">Aux_tte {{ form_widget(form.conceptoAuxilioTransporte) }}</label>
+                        <label for="form_provisionIndemnizacion"  class="control-label">Provision indemnizacion {{ form_widget(form.provisionIndemnizacion) }}</label>
+                        <label for="form_provisionVacacion"  class="control-label">Provision vacacion {{ form_widget(form.provisionVacacion) }}</label>
+                        <label for="form_conceptoFondoSolidaridadPensional"  class="control-label">FSP {{ form_widget(form.conceptoFondoSolidaridadPensional) }}</label>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Compone porcentaje:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.componePorcentaje, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Compone valor:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.componeValor, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Por porcentaje:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-2 control-label">Porcentaje:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porPorcentaje, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
-                </div> 
+                    <label class="col-sm-2 control-label">Porcentaje horas extra:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.porPorcentajeTiempoExtra, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>                    
+                </div>
+
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Prestacional:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.prestacional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>                
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">I.B.P:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.generaIngresoBasePrestacion, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>                
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">I.B.C:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.generaIngresoBaseCotizacion, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>                                               
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Operación:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-2 control-label">Operación:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.operacion, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Adición:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.conceptoAdicion, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Incapacidad:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.conceptoIncapacidad, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>                               
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Pensión:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.conceptoPension, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Salud:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.conceptoSalud, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-4 control-label">Recargo nocturno:</label>
-                    <div class="col-sm-2">                  
-                        {{ form_widget(form.recargoNocturno) }}
-                    </div>
-                    <label class="col-sm-4 control-label">Auxilio transporte:</label>
-                    <div class="col-sm-2">                  
-                        {{ form_widget(form.conceptoAuxilioTransporte) }}
-                    </div>                    
-                </div>                    
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Indemnizacion (Provision):</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.provisionIndemnizacion) }}
-                    </div>
-                </div>   
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Vacacion (Provision):</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.provisionVacacion) }}
-                    </div>
-                </div>                     
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Tipo adicional:</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-2 control-label">Tipo adicional:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.tipoAdicional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
-                </div>    
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Interface:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.codigoInterface, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-4 control-label">Concepto solidaridad pensional:</label>
-                    <div class="col-sm-8">
-                        {{ form_widget(form.conceptoFondoSolidaridadPensional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>    
             </div>
-        </div>               
+        </div>
         <div class="modal-footer">
             <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_base_pago_concepto_lista') }}">Cancelar</a>
             {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}

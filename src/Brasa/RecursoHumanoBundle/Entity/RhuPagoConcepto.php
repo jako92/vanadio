@@ -159,6 +159,11 @@ class RhuPagoConcepto
     private $recargoNocturno = false;     
     
     /**
+     * @ORM\Column(name="hora_extra", type="boolean")
+     */    
+    private $horaExtra = false;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="pagoConceptoRel")
      */
     protected $pagosDetallesPagoConceptoRel;     
@@ -250,6 +255,8 @@ class RhuPagoConcepto
         $this->creditosTiposPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->liquidacionesAdicionalesPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->vacacionesAdicionalesPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pagosConceptosCuentasPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contratoAdicionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -647,6 +654,30 @@ class RhuPagoConcepto
     }
 
     /**
+     * Set conceptoComision
+     *
+     * @param boolean $conceptoComision
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoComision($conceptoComision)
+    {
+        $this->conceptoComision = $conceptoComision;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoComision
+     *
+     * @return boolean
+     */
+    public function getConceptoComision()
+    {
+        return $this->conceptoComision;
+    }
+
+    /**
      * Set codigoCuentaFk
      *
      * @param string $codigoCuentaFk
@@ -908,6 +939,54 @@ class RhuPagoConcepto
     public function getRecargoNocturno()
     {
         return $this->recargoNocturno;
+    }
+
+    /**
+     * Set horaExtra
+     *
+     * @param boolean $horaExtra
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setHoraExtra($horaExtra)
+    {
+        $this->horaExtra = $horaExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get horaExtra
+     *
+     * @return boolean
+     */
+    public function getHoraExtra()
+    {
+        return $this->horaExtra;
+    }
+
+    /**
+     * Set conceptoFondoSolidaridadPensional
+     *
+     * @param boolean $conceptoFondoSolidaridadPensional
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoFondoSolidaridadPensional($conceptoFondoSolidaridadPensional)
+    {
+        $this->conceptoFondoSolidaridadPensional = $conceptoFondoSolidaridadPensional;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoFondoSolidaridadPensional
+     *
+     * @return boolean
+     */
+    public function getConceptoFondoSolidaridadPensional()
+    {
+        return $this->conceptoFondoSolidaridadPensional;
     }
 
     /**
@@ -1316,54 +1395,6 @@ class RhuPagoConcepto
     public function getVacacionesAdicionalesPagoConceptoRel()
     {
         return $this->vacacionesAdicionalesPagoConceptoRel;
-    }
-
-    /**
-     * Set conceptoComision
-     *
-     * @param boolean $conceptoComision
-     *
-     * @return RhuPagoConcepto
-     */
-    public function setConceptoComision($conceptoComision)
-    {
-        $this->conceptoComision = $conceptoComision;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoComision
-     *
-     * @return boolean
-     */
-    public function getConceptoComision()
-    {
-        return $this->conceptoComision;
-    }
-
-    /**
-     * Set conceptoFondoSolidaridadPensional
-     *
-     * @param boolean $conceptoFondoSolidaridadPensional
-     *
-     * @return RhuPagoConcepto
-     */
-    public function setConceptoFondoSolidaridadPensional($conceptoFondoSolidaridadPensional)
-    {
-        $this->conceptoFondoSolidaridadPensional = $conceptoFondoSolidaridadPensional;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoFondoSolidaridadPensional
-     *
-     * @return boolean
-     */
-    public function getConceptoFondoSolidaridadPensional()
-    {
-        return $this->conceptoFondoSolidaridadPensional;
     }
 
     /**

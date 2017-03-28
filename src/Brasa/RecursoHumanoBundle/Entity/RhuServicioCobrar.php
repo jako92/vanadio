@@ -101,14 +101,14 @@ class RhuServicioCobrar
     private $vrAuxilioTransporteCotizacion = 0;    
     
     /**
-     * @ORM\Column(name="vr_arp", type="float")
+     * @ORM\Column(name="vr_riesgos", type="float")
      */
-    private $vrArp = 0;    
+    private $vrRiesgos = 0;    
     
     /**
-     * @ORM\Column(name="vr_eps", type="float")
+     * @ORM\Column(name="vr_salud", type="float")
      */
-    private $vrEps = 0;    
+    private $vrSalud = 0;    
     
     /**
      * @ORM\Column(name="vr_pension", type="float")
@@ -136,14 +136,19 @@ class RhuServicioCobrar
     private $vrCesantias = 0;
     
     /**
+     * @ORM\Column(name="vr_cesantias_intereses", type="float")
+     */
+    private $vrCesantiasIntereses = 0;    
+    
+    /**
      * @ORM\Column(name="vr_primas", type="float")
      */
     private $vrPrimas = 0;
 
     /**
-     * @ORM\Column(name="vr_cesantias_intereses", type="float")
+     * @ORM\Column(name="vr_prestaciones", type="float")
      */
-    private $vrCesantiasIntereses = 0;
+    private $vrPrestaciones = 0;
     
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
@@ -235,7 +240,6 @@ class RhuServicioCobrar
     protected $facturasDetallesServicioCobrarRel;
     
 
-    
     
     /**
      * Constructor
@@ -640,51 +644,51 @@ class RhuServicioCobrar
     }
 
     /**
-     * Set vrArp
+     * Set vrRiesgos
      *
-     * @param float $vrArp
+     * @param float $vrRiesgos
      *
      * @return RhuServicioCobrar
      */
-    public function setVrArp($vrArp)
+    public function setVrRiesgos($vrRiesgos)
     {
-        $this->vrArp = $vrArp;
+        $this->vrRiesgos = $vrRiesgos;
 
         return $this;
     }
 
     /**
-     * Get vrArp
+     * Get vrRiesgos
      *
      * @return float
      */
-    public function getVrArp()
+    public function getVrRiesgos()
     {
-        return $this->vrArp;
+        return $this->vrRiesgos;
     }
 
     /**
-     * Set vrEps
+     * Set vrSalud
      *
-     * @param float $vrEps
+     * @param float $vrSalud
      *
      * @return RhuServicioCobrar
      */
-    public function setVrEps($vrEps)
+    public function setVrSalud($vrSalud)
     {
-        $this->vrEps = $vrEps;
+        $this->vrSalud = $vrSalud;
 
         return $this;
     }
 
     /**
-     * Get vrEps
+     * Get vrSalud
      *
      * @return float
      */
-    public function getVrEps()
+    public function getVrSalud()
     {
-        return $this->vrEps;
+        return $this->vrSalud;
     }
 
     /**
@@ -1271,5 +1275,29 @@ class RhuServicioCobrar
     public function getFacturasDetallesServicioCobrarRel()
     {
         return $this->facturasDetallesServicioCobrarRel;
+    }
+
+    /**
+     * Set vrPrestaciones
+     *
+     * @param float $vrPrestaciones
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrPrestaciones($vrPrestaciones)
+    {
+        $this->vrPrestaciones = $vrPrestaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrestaciones
+     *
+     * @return float
+     */
+    public function getVrPrestaciones()
+    {
+        return $this->vrPrestaciones;
     }
 }

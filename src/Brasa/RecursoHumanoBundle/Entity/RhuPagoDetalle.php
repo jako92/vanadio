@@ -111,6 +111,16 @@ class RhuPagoDetalle
      * @ORM\Column(name="vr_extra", type="float")
      */
     private $vrExtra= 0;     
+
+    /**
+     * @ORM\Column(name="vr_adicional_prestacional", type="float")
+     */
+    private $vrAdicionalPrestacional= 0;
+
+    /**
+     * @ORM\Column(name="vr_adicional_no_prestacional", type="float")
+     */
+    private $vrAdicionalNoPrestacional= 0;
     
     /**
      * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer", nullable=true)
@@ -1138,5 +1148,53 @@ class RhuPagoDetalle
     public function getFechaHastaNovedad()
     {
         return $this->fechaHastaNovedad;
+    }
+
+    /**
+     * Set vrAdicionalPrestacional
+     *
+     * @param float $vrAdicionalPrestacional
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
+    {
+        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalPrestacional()
+    {
+        return $this->vrAdicionalPrestacional;
+    }
+
+    /**
+     * Set vrAdicionalNoPrestacional
+     *
+     * @param float $vrAdicionalNoPrestacional
+     *
+     * @return RhuPagoDetalle
+     */
+    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
+    {
+        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalNoPrestacional()
+    {
+        return $this->vrAdicionalNoPrestacional;
     }
 }

@@ -161,6 +161,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
         }
         return $adicionalPrestacional;
     }
+    
     public function adicionalNoPrestacional($codigoPago) {
         $em = $this->getEntityManager();
         $dql   = "SELECT SUM(pd.vrPago) as Pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
@@ -229,6 +230,19 @@ class RhuPagoDetalleRepository extends EntityRepository {
         $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacionAdicional) as recagosNocturnos FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN pd.pagoConceptoRel pc "
                 . "WHERE pc.recargoNocturno = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $recargosNocturnos = $arrayResultado[0]['recagosNocturnos'];
+        if($recargosNocturnos == null) {
+            $recargosNocturnos = 0;
+        }
+        return $recargosNocturnos;
+    }     
+    
+    public function recargoNocturnoPago($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacionAdicional) as recagosNocturnos FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoConceptoRel pc "
+                . "WHERE pc.recargoNocturno = 1 AND pd.codigoPagoFk = " . $codigoPago;
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         $recargosNocturnos = $arrayResultado[0]['recagosNocturnos'];

@@ -47,127 +47,6 @@ class PagoConceptoController extends Controller
             if($form->get('BtnExcel')->isClicked()) {
                 $this->generarExcel();
             }
-        /**if($form->get('BtnExcel')->isClicked()) {
-                $objPHPExcel = new \PHPExcel();
-                // Set document properties
-                $objPHPExcel->getProperties()->setCreator("EMPRESA")
-                    ->setLastModifiedBy("EMPRESA")
-                    ->setTitle("Office 2007 XLSX Test Document")
-                    ->setSubject("Office 2007 XLSX Test Document")
-                    ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-                    ->setKeywords("office 2007 openxml php")
-                    ->setCategory("Test result file");
-                $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-                $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-                $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'Código')
-                            ->setCellValue('B1', 'Nombre')
-                            ->setCellValue('C1', 'Compone Salario')
-                            ->setCellValue('D1', 'Compone Porcentaje')
-                            ->setCellValue('E1', 'Compone Valor')
-                            ->setCellValue('F1', 'Por Porcentaje')
-                            ->setCellValue('G1', 'Prestacional')
-                            ->setCellValue('H1', 'Operación')
-                            ->setCellValue('I1', 'Concepto Adición')
-                            ->setCellValue('J1', 'Concepto Incapacidad')
-                            ->setCellValue('K1', 'Concepto Auxilio Transporte')
-                            ->setCellValue('L1', 'Código Cuenta')
-                            ->setCellValue('M1', 'Tipo Cuenta')
-                            ->setCellValue('N1', 'Concepto Pensión')
-                            ->setCellValue('O1', 'Concepto Salud')
-                            ->setCellValue('P1', 'Tipo Adicional');
-
-                $i = 2;
-                $arPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto;
-                $arPagoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findAll();
-                
-                foreach ($arPagoConceptos as $arPagoConcepto) {
-                    if($arPagoConcepto->getComponeSalario() == 1){
-                       $componeSalario = "SI";
-                    }else{
-                       $componeSalario = "NO"; 
-                    }
-                    if($arPagoConcepto->getComponePorcentaje() == 1){
-                       $componePorcentaje = "SI";
-                    }else{
-                       $componePorcentaje = "NO"; 
-                    }
-                    if($arPagoConcepto->getComponeValor() == 1){
-                       $componeValor = "SI";
-                    }else{
-                       $componeValor = "NO"; 
-                    }
-                    if($arPagoConcepto->getPrestacional() == 1){
-                       $prestacional = "SI";
-                    }else{
-                       $prestacional = "NO"; 
-                    }
-                    if($arPagoConcepto->getConceptoAdicion() == 1){
-                       $conceptoAdicion = "SI";
-                    }else{
-                       $conceptoAdicion = "NO"; 
-                    }
-                    if($arPagoConcepto->getConceptoIncapacidad() == 1){
-                       $conceptoIncapacidad = "SI";
-                    }else{
-                       $conceptoIncapacidad = "NO"; 
-                    }
-                    if($arPagoConcepto->getConceptoAuxilioTransporte() == 1){
-                       $conceptoAuxTransporte = "SI";
-                    }else{
-                       $conceptoAuxTransporte = "NO"; 
-                    }
-                    if($arPagoConcepto->getConceptoPension() == 1){
-                       $conceptoPension = "SI";
-                    }else{
-                       $conceptoPension = "NO"; 
-                    }
-                    if($arPagoConcepto->getConceptoSalud() == 1){
-                       $conceptoSalud = "SI";
-                    }else{
-                       $conceptoSalud = "NO"; 
-                    }
-                    $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue('A' . $i, $arPagoConcepto->getCodigoPagoConceptoPk())
-                            ->setCellValue('B' . $i, $arPagoConcepto->getNombre())
-                            ->setCellValue('C' . $i, $componeSalario)
-                            ->setCellValue('D' . $i, $componePorcentaje)
-                            ->setCellValue('E' . $i, $componeValor)
-                            ->setCellValue('F' . $i, $arPagoConcepto->getPorPorcentaje())
-                            ->setCellValue('G' . $i, $prestacional)
-                            ->setCellValue('H' . $i, $arPagoConcepto->getOperacion())
-                            ->setCellValue('I' . $i, $conceptoAdicion)
-                            ->setCellValue('J' . $i, $conceptoIncapacidad)
-                            ->setCellValue('K' . $i, $conceptoAuxTransporte)
-                            ->setCellValue('L' . $i, $arPagoConcepto->getCodigoCuentaFk())
-                            ->setCellValue('M' . $i, $arPagoConcepto->getTipoCuenta())
-                            ->setCellValue('N' . $i, $conceptoPension)
-                            ->setCellValue('O' . $i, $conceptoSalud)
-                            ->setCellValue('P' . $i, $arPagoConcepto->getTipoAdicional());
-                    $i++;
-                }
-
-                $objPHPExcel->getActiveSheet()->setTitle('PagoConcepto');
-                $objPHPExcel->setActiveSheetIndex(0);
-
-                // Redirect output to a client’s web browser (Excel2007)
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="PagoConcepto.xls"');
-                header('Cache-Control: max-age=0');
-                // If you're serving to IE 9, then the following may be needed
-                header('Cache-Control: max-age=1');
-                // If you're serving to IE over SSL, then the following may be needed
-                header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-                header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-                header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-                header ('Pragma: public'); // HTTP/1.0
-                $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-                $objWriter->save('php://output');
-                exit;
-            }
-           
-         * 
-         */ 
         }
         $arPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto();
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findAll();
@@ -273,10 +152,12 @@ class PagoConceptoController extends Controller
     }   
     
     private function generarExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager();
+        
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -316,21 +197,6 @@ class PagoConceptoController extends Controller
                 $arPagoConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findAll();
                 
                 foreach ($arPagoConceptos as $arPagoConcepto) {
-                    if($arPagoConcepto->getComponeSalario() == 1){
-                       $componeSalario = "SI";
-                    }else{
-                       $componeSalario = "NO"; 
-                    }
-                    if($arPagoConcepto->getComponePorcentaje() == 1){
-                       $componePorcentaje = "SI";
-                    }else{
-                       $componePorcentaje = "NO"; 
-                    }
-                    if($arPagoConcepto->getComponeValor() == 1){
-                       $componeValor = "SI";
-                    }else{
-                       $componeValor = "NO"; 
-                    }
                     if($arPagoConcepto->getPrestacional() == 1){
                        $prestacional = "SI";
                     }else{
@@ -364,9 +230,9 @@ class PagoConceptoController extends Controller
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arPagoConcepto->getCodigoPagoConceptoPk())
                             ->setCellValue('B' . $i, $arPagoConcepto->getNombre())
-                            ->setCellValue('C' . $i, $componeSalario)
-                            ->setCellValue('D' . $i, $componePorcentaje)
-                            ->setCellValue('E' . $i, $componeValor)
+                            ->setCellValue('C' . $i, $objFunciones->devuelveBoolean($arPagoConcepto->getComponeSalario()))
+                            ->setCellValue('D' . $i, $objFunciones->devuelveBoolean($arPagoConcepto->getComponePorcentaje()))
+                            ->setCellValue('E' . $i, $objFunciones->devuelveBoolean($arPagoConcepto->getComponeValor()))
                             ->setCellValue('F' . $i, $arPagoConcepto->getPorPorcentaje())
                             ->setCellValue('G' . $i, $prestacional)
                             ->setCellValue('H' . $i, $arPagoConcepto->getOperacion())
