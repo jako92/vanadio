@@ -378,7 +378,8 @@ class AcreditacionController extends Controller
                     ->setCellValue('L1', 'FECHA')
                     ->setCellValue('M1', 'ACREDITADO')
                     ->setCellValue('N1', 'FECHA')
-                    ->setCellValue('O1', 'VENCE');
+                    ->setCellValue('O1', 'VENCE')
+                    ->setCellValue('P1', 'CONTRATO ACTIVO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -396,7 +397,8 @@ class AcreditacionController extends Controller
                     ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoRechazado()))
                     ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoValidado()))
                     ->setCellValue('K' . $i, $arAcreditacion->getNumeroValidacion())                    
-                    ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoAcreditado()));
+                    ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoAcreditado()))
+                    ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEmpleadoRel()->getEstadoContratoActivo()));
             if($arAcreditacion->getCodigoAcreditacionRechazoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arAcreditacion->getAcreditacionRechazoRel()->getNombre());
             }
