@@ -32,6 +32,7 @@ class ContabilizarPagoBancoController extends Controller
             if ($form->get('BtnContabilizar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
+                    $mensajeError = "";
                     $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
 
@@ -80,31 +81,51 @@ class ContabilizarPagoBancoController extends Controller
                                     if($arPagoBancoDetalle->getCodigoPagoFk()) {
                                         $docRerefencia = $arPagoBancoDetalle->getPagoRel()->getNumero();
                                     }                                    
-                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoBanco->getPagoBancoTipoRel()->getCodigoCuentaFk());
-                                    $arRegistro->setComprobanteRel($arComprobanteContable);
-                                    $arRegistro->setCuentaRel($arCuenta);
-                                    $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
-                                    $arRegistro->setNumeroReferencia($docRerefencia);
-                                    $arRegistro->setFecha($arPagoBanco->getFecha());
-                                    $arRegistro->setDebito($arPagoBancoDetalle->getVrPago());
-                                    $arRegistro->setDescripcionContable('PAGO');
-                                    $em->persist($arRegistro);                                    
-                                   
+                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                                    
+                                    if($arPagoBanco->getPagoBancoTipoRel()->getCodigoCuentaFk()) {
+                                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoBanco->getPagoBancoTipoRel()->getCodigoCuentaFk());
+                                        if($arCuenta) {
+                                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                                            $arRegistro->setCuentaRel($arCuenta);
+                                            $arRegistro->setTerceroRel($arTercero);
+                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumeroReferencia($docRerefencia);
+                                            $arRegistro->setFecha($arPagoBanco->getFecha());
+                                            $arRegistro->setDebito($arPagoBancoDetalle->getVrPago());
+                                            $arRegistro->setDescripcionContable('PAGO');
+                                            $em->persist($arRegistro);                                    
 
-                                    //Banco
-                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                                    $codigoCuenta = $arPagoBanco->getCuentaRel()->getCodigoCuentaFk();
-                                    $arCuentaBanco = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
-                                    $arRegistro->setComprobanteRel($arComprobanteContable);
-                                    $arRegistro->setCuentaRel($arCuentaBanco);
-                                    $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
-                                    $arRegistro->setNumeroReferencia($docRerefencia);
-                                    $arRegistro->setFecha($arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion());
-                                    $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());
-                                    $arRegistro->setDescripcionContable('');
-                                    $em->persist($arRegistro);
+
+                                            //Banco
+                                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                            $codigoCuenta = $arPagoBanco->getCuentaRel()->getCodigoCuentaFk();
+                                            if($codigoCuenta) {
+                                                $arCuentaBanco = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                                                if($arCuentaBanco) {
+                                                    $arRegistro->setComprobanteRel($arComprobanteContable);
+                                                    $arRegistro->setCuentaRel($arCuentaBanco);
+                                                    $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                                    $arRegistro->setNumeroReferencia($docRerefencia);
+                                                    $arRegistro->setFecha($arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion());
+                                                    $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());
+                                                    $arRegistro->setDescripcionContable('');
+                                                    $em->persist($arRegistro);                                                                                                                                            
+                                                } else {
+                                                    $mensajeError = "La cuenta contable de la cuenta bancaria no existe";
+                                                    break;                                                     
+                                                }
+                                            } else {
+                                                $mensajeError = "La cuenta contable de la cuenta bancaria no esta configurada";
+                                                break;                                                
+                                            }
+                                        } else {
+                                            $mensajeError = "La cuenta de pago banco tipo no existe";
+                                            break;
+                                        }                                        
+                                    } else {
+                                        $mensajeError = "La cuenta de pago banco tipo no esta configurada";
+                                        break;      
+                                    }
                                 }
                             }                            
                         } else {
@@ -225,9 +246,12 @@ class ContabilizarPagoBancoController extends Controller
                                 }
                             }                            
                         }
-
-                        $arPagoBanco->setEstadoContabilizado(1);
-                        $em->persist($arPagoBanco);
+                        if($mensajeError == "") {
+                            $arPagoBanco->setEstadoContabilizado(1);
+                            $em->persist($arPagoBanco);                            
+                        } else {
+                            $objMensaje->Mensaje("error", $mensajeError);
+                        }
                     }
                     $em->flush();
                 }
