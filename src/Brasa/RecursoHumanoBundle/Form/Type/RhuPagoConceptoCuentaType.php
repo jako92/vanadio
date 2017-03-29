@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RhuPagoConceptoCuentaType extends AbstractType
 {
@@ -27,7 +28,7 @@ class RhuPagoConceptoCuentaType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))
             ->add('codigoCuentaFk', TextType::class, array('required' => true))            
-            ->add('tipoCuenta', NumberType::class, array('required' => true))                                
+            ->add('tipoCuenta', ChoiceType::class, array('choices' => array('DEBITO' => '1', 'CREDITO' => '2',)))                              
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
