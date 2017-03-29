@@ -62,7 +62,7 @@
                         <td class="titulo">TIPO SALARIO:</td>
                         <td class="td-in-well">{{ arContrato.salarioTipoRel.nombre|default('') }}</td>
                         <td class="titulo">SALARIO:</td>
-                        <td class="td-in-well-numerico" align="right">$ {{ arContrato.vrSalario | number_format(2, '.', ',') }}</td>                   
+                        <td class="td-in-well-numerico" align="right">$ {% if arContrato.CodigoTipoTiempoFk == 2 %} {{arContrato.vrSalarioPago | number_format(0, '.', ',') }} {% else %} {{arContrato.vrSalario | number_format(0, '.', ',') }} {% endif %}</td>                   
                     </tr>    
                     <tr>
                         <td class="titulo">FECHA TERMINA:</td>

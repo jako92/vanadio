@@ -98,7 +98,7 @@
                     <td>{{ arContratos.tipoTiempoRel.nombre  }}</td>
                     <td>{{ arContratos.fechaDesde |date("Y/m/d")  }}</td>
                     <td>{% if arContratos.estadoActivo == 0 or arContratos.codigoContratoClaseFk == 2 %} {{ arContratos.fechaHasta |date("Y/m/d")  }} {% else %} INDEFINIDO {% endif %}</td>
-                    <td style="text-align: right">{{ arContratos.vrSalario | number_format(0, '.', ',') }}</td>                            
+                    <td style="text-align: right">{% if arContratos.CodigoTipoTiempoFk == 2 %} {{arContratos.vrSalarioPago | number_format(0, '.', ',') }} {% else %} {{arContratos.vrSalario | number_format(0, '.', ',') }} {% endif %}</td>                            
                     <td>{% if arContratos.estadoActivo == 1 %} SI {% else %} NO {% endif %}</td>
                     <td>{{ arContratos.fechaUltimoPagoVacaciones |date("Y/m/d")  }}</td>
                     {% if arContratos.estadoTerminado == 0 %}
