@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class PagosController extends Controller
+class PagoController extends Controller
 {
     var $strDqlLista = "";
     var $intNumero = 0;
@@ -33,29 +33,22 @@ class PagosController extends Controller
                 set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findAll();
-                foreach ($arPagos as $arPago) { 
-                    $ingresoBaseCotizacion = 0;
+                //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findAll();
+                $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoPagoPk' => 467));
+                foreach ($arPagos as $arPago) {                     
                     $arPagosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                     $arPagosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));            
                     foreach ($arPagosDetalles as $arPagoDetalle) {                        
-                        /*$arPagoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
-                        $arPagoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->find($arPagoDetalle->getCodigoPagoDetallePk());
-                        if($arPagoDetalle->getPagoConceptoRel()->getGeneraIngresoBaseCotizacion() == 1) {
-                            $arPagoDetalleAct->setVrIngresoBaseCotizacion($arPagoDetalle->getVrPago());
-                        } else {
-                            $arPagoDetalleAct->setVrIngresoBaseCotizacion(0);
-                            $arPagoDetalleAct->setVrIngresoBaseCotizacionAdicional(0);
-                            $arPagoDetalleAct->setVrIngresoBaseCotizacionSalario(0);
-                        }*/
-                        $ingresoBaseCotizacion += $arPagoDetalle->getVrIngresoBaseCotizacion();
-                        //$em->persist($arPagoDetalleAct);                                             
-                    }     
-                    $arPagoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                    $arPagoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arPago->getCodigoPagoPk());
-                    
-                    $arPagoActualizar->setVrIngresoBaseCotizacion($ingresoBaseCotizacion);
-                    $em->persist($arPagoActualizar);
+                        if($arPagoDetalle->getPagoConceptoRel()->getHoraExtra()) {
+                            $arPagoDetalleActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                            $arPagoDetalleActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->find($arPagoDetalle->getCodigoPagoDetallePk());
+                            $vrHoraSalario = $arPago->getVrSalarioEmpleado() / 30 / 8;
+                            $vrHoraExtra = $vrHoraSalario * $arPagoDetalle->getPagoConceptoRel()->getPorPorcentajeTiempoExtra() / 100;
+                            $vrExtra = $arPagoDetalle->getNumeroHoras() * $vrHoraExtra;
+                            $arPagoDetalleActualizar->setVrExtra($vrExtra);
+                            $em->persist($arPagoDetalleActualizar);                            
+                        }
+                    }                        
                 }
                 $em->flush();
                              
@@ -281,7 +274,7 @@ class PagosController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => false))
             ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;

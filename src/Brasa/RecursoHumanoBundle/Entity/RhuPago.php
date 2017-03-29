@@ -220,6 +220,21 @@ class RhuPago
     private $codigoSoportePagoFk;    
     
     /**
+     * @ORM\Column(name="vr_extra", type="float")
+     */
+    private $vrExtra = 0;     
+    
+    /**
+     * @ORM\Column(name="vr_adicional_prestacional", type="float")
+     */
+    private $vrAdicionalPrestacional= 0;
+
+    /**
+     * @ORM\Column(name="vr_adicional_no_prestacional", type="float")
+     */
+    private $vrAdicionalNoPrestacional= 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuPagoTipo", inversedBy="pagosPagoTipoRel")
      * @ORM\JoinColumn(name="codigo_pago_tipo_fk", referencedColumnName="codigo_pago_tipo_pk")
      */
@@ -1645,5 +1660,77 @@ class RhuPago
     public function getPeriodoPagoRel()
     {
         return $this->periodoPagoRel;
+    }
+
+    /**
+     * Set vrExtra
+     *
+     * @param float $vrExtra
+     *
+     * @return RhuPago
+     */
+    public function setVrExtra($vrExtra)
+    {
+        $this->vrExtra = $vrExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get vrExtra
+     *
+     * @return float
+     */
+    public function getVrExtra()
+    {
+        return $this->vrExtra;
+    }
+
+    /**
+     * Set vrAdicionalPrestacional
+     *
+     * @param float $vrAdicionalPrestacional
+     *
+     * @return RhuPago
+     */
+    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
+    {
+        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalPrestacional()
+    {
+        return $this->vrAdicionalPrestacional;
+    }
+
+    /**
+     * Set vrAdicionalNoPrestacional
+     *
+     * @param float $vrAdicionalNoPrestacional
+     *
+     * @return RhuPago
+     */
+    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
+    {
+        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalNoPrestacional()
+    {
+        return $this->vrAdicionalNoPrestacional;
     }
 }

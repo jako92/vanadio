@@ -96,6 +96,9 @@ class RhuPagoRepository extends EntityRepository {
         $douIngresoBaseCotizacion = 0;
         $douIngresoBasePrestacion = 0;
         $intDiasAusentismo = 0;
+        $valorExtra = 0;
+        $adicionalPrestacional = 0;
+        $adicionalNoPrestacional = 0;
         $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
         $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $codigoPago));         
         foreach ($arPagoDetalles as $arPagoDetalle) {
@@ -138,6 +141,9 @@ class RhuPagoRepository extends EntityRepository {
             $douIngresoBasePrestacion += $arPagoDetalle->getVrIngresoBasePrestacion();
             $intDiasAusentismo += $arPagoDetalle->getDiasAusentismo();
             $douAdicionCotizacion += $arPagoDetalle->getVrIngresoBaseCotizacionAdicional();
+            $valorExtra += $arPagoDetalle->getVrExtra();
+            $adicionalPrestacional += $arPagoDetalle->getVrAdicionalPrestacional();
+            $adicionalNoPrestacional += $arPagoDetalle->getVrAdicionalNoPrestacional();
         }
         
         //$arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                        
@@ -157,7 +163,9 @@ class RhuPagoRepository extends EntityRepository {
         $arPago->setVrIngresoBaseCotizacion($douIngresoBaseCotizacion);
         $arPago->setVrIngresoBasePrestacion($douIngresoBasePrestacion);
         $arPago->setDiasAusentismo($intDiasAusentismo);
-        
+        $arPago->setVrExtra($valorExtra);
+        $arPago->setVrAdicionalPrestacional($adicionalPrestacional);
+        $arPago->setVrAdicionalNoPrestacional($adicionalNoPrestacional);
         $floSalarioMinimo = $arConfiguracion->getVrSalario();
         $floVrDiaMinimo = $floSalarioMinimo/30;        
         $douIngresoBaseCotizacionMinimo = $floVrDiaMinimo * $arPago->getDiasPeriodo();
