@@ -556,6 +556,7 @@ class PagosAdicionalesController extends Controller
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->add('BtnCargar', SubmitType::class, array('label'  => 'Cargar',))
+            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
             ->add('BtnEliminarExtra', SubmitType::class, array('label'  => 'Eliminar'))
             ->getForm();
         $form->handleRequest($request);
@@ -952,6 +953,102 @@ class PagosAdicionalesController extends Controller
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="PagosAdicionales.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+    private function generarMasivoSuplementarioTemporalExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session;
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);        
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'IDENTIFICACION')
+                    ->setCellValue('B1', 'NOMBRE')
+                    ->setCellValue('C1', 'H.D')
+                    ->setCellValue('D1', 'H.N')
+                    ->setCellValue('E1', 'H.F.D')
+                    ->setCellValue('F1', 'H.F.N')
+                    ->setCellValue('G1', 'H.E.O.D')
+                    ->setCellValue('H1', 'H.E.O.N')
+                    ->setCellValue('I1', 'H.E.F.D')
+                    ->setCellValue('J1', 'H.E.F.N')
+                    ->setCellValue('K1', 'H.R.N')
+                    ->setCellValue('L1', 'H.R.F.D')
+                    ->setCellValue('M1', 'H.R.F.N')
+                    ->setCellValue('N1', 'H.D.N.C')
+                    ->setCellValue('O1', 'H.D.C')
+                    ->setCellValue('P1', 'H.R.N.F.C')
+                    ->setCellValue('Q1', 'H.R.N.F.N.C')
+                    ->setCellValue('R1', 'H.R.D.D');
+
+        $i = 2;
+        $query = $em->createQuery($this->strDqlLista);
+        $arPagoHorasExtra = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra();
+        $arPagoHorasExtra = $query->getResult();
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $i, $arPagoHorasExtra->getEmpleadoRel()->getNumeroIdentificacion())
+                ->setCellValue('B' . $i, $arPagoHorasExtra->getEmpleadoRel()->getNombreCorto())
+                ->setCellValue('C' . $i, $arPagoHorasExtra->getHorasDiurnas())
+                ->setCellValue('D' . $i, $arPagoHorasExtra->getHorasNocturnas())
+                ->setCellValue('E' . $i, $arPagoHorasExtra->getHorasFestivasDiurnas())
+                ->setCellValue('F' . $i, $arPagoHorasExtra->getHorasFestivasNocturnas())
+                ->setCellValue('G' . $i, $arPagoHorasExtra->getHorasExtrasOrdinariasDiurnas()) 
+                ->setCellValue('H' . $i, $arPagoHorasExtra->getHorasExtrasOrdinariasNocturnas())
+                ->setCellValue('I' . $i, $arPagoHorasExtra->getHorasExtrasFestivasDiurnas())
+                ->setCellValue('J' . $i, $arPagoHorasExtra->getHorasExtrasFestivasNocturnas())    
+                ->setCellValue('K' . $i, $arPagoHorasExtra->getHorasRecargoNocturno())
+                ->setCellValue('L' . $i, $arPagoHorasExtra->getHorasRecargoFestivoDiurno())    
+                ->setCellValue('M' . $i, $arPagoHorasExtra->getHorasRecargoFestivoNocturno())    
+                ->setCellValue('N' . $i, $arPagoHorasExtra->getHorasDomingoNoCompensado())    
+                ->setCellValue('O' . $i, $arPagoHorasExtra->getHorasDomingoCompensado())
+                ->setCellValue('P' . $i, $arPagoHorasExtra->getHorasRecargoNocturnoFestivoCompensado())    
+                ->setCellValue('Q' . $i, $arPagoHorasExtra->getHorasRecargoNocturnoFestivoNoCompensado())
+                ->setCellValue('R' . $i, $arPagoHorasExtra->getHorasExtraDominicalDiurna());                        
+            $i++;
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="TiempoSuplementario.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
