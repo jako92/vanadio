@@ -208,8 +208,18 @@ class RhuServicioCobrar
     /**
      * @ORM\Column(name="dias_periodo", type="integer")
      */
-    private $diasPeriodo = 0;             
-
+    private $diasPeriodo = 0;               
+    
+    /**
+     * @ORM\Column(name="vr_prestacional", type="float")
+     */
+    private $vrPrestacional = 0;
+    
+    /**
+     * @ORM\Column(name="vr_no_prestacional", type="float")
+     */
+    private $vrNoPrestacional = 0;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuPago", inversedBy="serviciosCobrarPagoRel")
      * @ORM\JoinColumn(name="codigo_pago_fk", referencedColumnName="codigo_pago_pk")
@@ -240,7 +250,6 @@ class RhuServicioCobrar
     protected $facturasDetallesServicioCobrarRel;
     
 
-    
     /**
      * Constructor
      */
@@ -812,6 +821,30 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set vrCesantiasIntereses
+     *
+     * @param float $vrCesantiasIntereses
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrCesantiasIntereses($vrCesantiasIntereses)
+    {
+        $this->vrCesantiasIntereses = $vrCesantiasIntereses;
+
+        return $this;
+    }
+
+    /**
+     * Get vrCesantiasIntereses
+     *
+     * @return float
+     */
+    public function getVrCesantiasIntereses()
+    {
+        return $this->vrCesantiasIntereses;
+    }
+
+    /**
      * Set vrPrimas
      *
      * @param float $vrPrimas
@@ -836,27 +869,27 @@ class RhuServicioCobrar
     }
 
     /**
-     * Set vrCesantiasIntereses
+     * Set vrPrestaciones
      *
-     * @param float $vrCesantiasIntereses
+     * @param float $vrPrestaciones
      *
      * @return RhuServicioCobrar
      */
-    public function setVrCesantiasIntereses($vrCesantiasIntereses)
+    public function setVrPrestaciones($vrPrestaciones)
     {
-        $this->vrCesantiasIntereses = $vrCesantiasIntereses;
+        $this->vrPrestaciones = $vrPrestaciones;
 
         return $this;
     }
 
     /**
-     * Get vrCesantiasIntereses
+     * Get vrPrestaciones
      *
      * @return float
      */
-    public function getVrCesantiasIntereses()
+    public function getVrPrestaciones()
     {
-        return $this->vrCesantiasIntereses;
+        return $this->vrPrestaciones;
     }
 
     /**
@@ -1148,6 +1181,54 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set vrPrestacional
+     *
+     * @param float $vrPrestacional
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrPrestacional($vrPrestacional)
+    {
+        $this->vrPrestacional = $vrPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrestacional
+     *
+     * @return float
+     */
+    public function getVrPrestacional()
+    {
+        return $this->vrPrestacional;
+    }
+
+    /**
+     * Set vrNoPrestacional
+     *
+     * @param float $vrNoPrestacional
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrNoPrestacional($vrNoPrestacional)
+    {
+        $this->vrNoPrestacional = $vrNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrNoPrestacional()
+    {
+        return $this->vrNoPrestacional;
+    }
+
+    /**
      * Set pagoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel
@@ -1275,29 +1356,5 @@ class RhuServicioCobrar
     public function getFacturasDetallesServicioCobrarRel()
     {
         return $this->facturasDetallesServicioCobrarRel;
-    }
-
-    /**
-     * Set vrPrestaciones
-     *
-     * @param float $vrPrestaciones
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrPrestaciones($vrPrestaciones)
-    {
-        $this->vrPrestaciones = $vrPrestaciones;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPrestaciones
-     *
-     * @return float
-     */
-    public function getVrPrestaciones()
-    {
-        return $this->vrPrestaciones;
     }
 }

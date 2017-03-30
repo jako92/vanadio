@@ -16,8 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ConsultasController extends Controller {
 
-    var $strSqlCreditoLista = "";
-    var $strSqlServiciosPorCobrarLista = "";
+    var $strSqlCreditoLista = "";    
     var $strSqlPagoLista = "";
     var $strSqlIncapacidadesLista = "";
     var $strSqlIncapacidadesCobrarLista = "";
@@ -143,44 +142,6 @@ class ConsultasController extends Controller {
         $arPagos = $paginator->paginate($em->createQuery($this->strSqlPagoLista), $request->query->get('page', 1), 40);
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Pagos:Pago.html.twig', array(
                     'arPagos' => $arPagos,
-                    'form' => $form->createView()
-        ));
-    }
-
-    /**
-     * @Route("/rhu/consultas/servicios/cobrar", name="brs_rhu_consultas_servicios_cobrar")
-     */
-    public function serviciosCobrarAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-
-        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 38)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
-        }
-        $paginator = $this->get('knp_paginator');
-        $form = $this->formularioServiciosPorCobrarLista();
-        $form->handleRequest($request);
-        $this->ServiciosPorCobrarListar();
-        if ($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');
-            if ($form->get('BtnExcelServiciosPorCobrar')->isClicked()) {
-                $this->filtrarServiciosPorCobrarLista($form);
-                $this->ServiciosPorCobrarListar();
-                $this->generarServiciosPorCobrarExcel();
-            }
-            if ($form->get('BtnPDFServiciosPorCobrar')->isClicked()) {
-                $this->filtrarServiciosPorCobrarLista($form);
-                $this->ServiciosPorCobrarListar();
-                $objReporteServiciosPorCobrar = new \Brasa\RecursoHumanoBundle\Reportes\ReporteServiciosPorCobrar();
-                $objReporteServiciosPorCobrar->Generar($this, $em, $this->strSqlServiciosPorCobrarLista);
-            }
-            if ($form->get('BtnFiltrarServiciosPorCobrar')->isClicked()) {
-                $this->filtrarServiciosPorCobrarLista($form);
-                $this->ServiciosPorCobrarListar();
-            }
-        }
-        $arServiciosPorCobrar = $paginator->paginate($em->createQuery($this->strSqlServiciosPorCobrarLista), $request->query->get('page', 1), 40);
-        return $this->render('BrasaRecursoHumanoBundle:Consultas/Servicios:porCobrar.html.twig', array(
-                    'arServiciosPorCobrar' => $arServiciosPorCobrar,
                     'form' => $form->createView()
         ));
     }
@@ -623,14 +584,6 @@ class ConsultasController extends Controller {
         );
     }
 
-    private function ServiciosPorCobrarListar() {
-        $session = new Session;
-        $em = $this->getDoctrine()->getManager();
-        $this->strSqlServiciosPorCobrarLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->listaServiciosPorCobrarDQL(
-                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
-        );
-    }
-
     private function PagoListar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
@@ -860,37 +813,6 @@ class ConsultasController extends Controller {
                 ->add('BtnFiltrarPago', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcelPago', SubmitType::class, array('label' => 'Excel',))
                 //->add('BtnPDFPago', SubmitType::class, array('label'  => 'PDF',))
-                ->getForm();
-        return $form;
-    }
-
-    private function formularioServiciosPorCobrarLista() {
-        $em = $this->getDoctrine()->getManager();
-        $session = new Session;
-        $arrayPropiedades = array(
-            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('cc')
-                                ->orderBy('cc.nombre', 'ASC');
-            },
-            'choice_label' => 'nombre',
-            'required' => false,
-            'empty_data' => "",
-            'placeholder' => "TODOS",
-            'data' => ""
-        );
-        if ($session->get('filtroCodigoCentroCosto')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
-        }
-
-        $form = $this->createFormBuilder()
-                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => DateType::class,)))
-                ->add('BtnFiltrarServiciosPorCobrar', SubmitType::class, array('label' => 'Filtrar'))
-                ->add('BtnExcelServiciosPorCobrar', SubmitType::class, array('label' => 'Excel',))
-                ->add('BtnPDFServiciosPorCobrar', SubmitType::class, array('label' => 'PDF',))
                 ->getForm();
         return $form;
     }
@@ -1571,29 +1493,6 @@ class ConsultasController extends Controller {
         $session->set('filtroRhuMes', $form->get('TxtMes')->getData());
     }
 
-    private function filtrarServiciosPorCobrarLista($form) {
-        $session = new Session;
-
-        $codigoCentroCosto = "";
-        if ($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
-        $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        //$session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        //$session->set('filtroHasta', $form->get('fechaHasta')->getData());
-
-        $dateFechaDesde = $form->get('fechaDesde')->getData();
-        $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null) {
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
-        }
-    }
-
     private function filtrarVacacionesPagarLista($form) {
         $session = new Session;
 
@@ -2085,130 +1984,6 @@ class ConsultasController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="ConsultaCreditos.xlsx"');
-        header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
-        header('Cache-Control: max-age=1');
-        // If you're serving to IE over SSL, then the following may be needed
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-        $objWriter->save('php://output');
-        exit;
-    }
-
-    private function generarServiciosPorCobrarExcel() {
-        ob_clean();
-        set_time_limit(0);
-        ini_set("memory_limit", -1);
-        $em = $this->getDoctrine()->getManager();
-        $session = new Session;
-        $objPHPExcel = new \PHPExcel();
-        // Set document properties
-        $objPHPExcel->getProperties()->setCreator("EMPRESA")
-                ->setLastModifiedBy("EMPRESA")
-                ->setTitle("Office 2007 XLSX Test Document")
-                ->setSubject("Office 2007 XLSX Test Document")
-                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-                ->setKeywords("office 2007 openxml php")
-                ->setCategory("Test result file");
-
-        $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CODIGO')
-                ->setCellValue('B1', 'CENTRO COSTOS')
-                ->setCellValue('C1', 'IDENTIFICACION')
-                ->setCellValue('D1', 'EMPLEADO')
-                ->setCellValue('E1', 'DESDE')
-                ->setCellValue('F1', 'HASTA')
-                ->setCellValue('G1', 'VR. SALARIO')
-                ->setCellValue('H1', 'VR. SALARIO PERIODO')
-                ->setCellValue('I1', 'VR. SALARIO EMPLEADO')
-                ->setCellValue('J1', 'VR. DEVENGADO')
-                ->setCellValue('K1', 'VR. DEDUCCIONES')
-                ->setCellValue('L1', 'VR. ADICIONAL TIEMPO')
-                ->setCellValue('M1', 'VR. ADICIONAL VALOR')
-                ->setCellValue('N1', 'VR. AUXILIO TRANSPORTE')
-                ->setCellValue('O1', 'VR. AUXILIO TRANSPORTE COTIZACION')
-                ->setCellValue('P1', 'VR. ARP')
-                ->setCellValue('Q1', 'VR. EPS')
-                ->setCellValue('R1', 'VR. PENSION')
-                ->setCellValue('S1', 'VR. CAJA COMPENSACION')
-                ->setCellValue('T1', 'VR. SENA')
-                ->setCellValue('U1', 'VR. ICBF')
-                ->setCellValue('V1', 'VR. CESANTIAS')
-                ->setCellValue('W1', 'VR. VACACIONES')
-                ->setCellValue('X1', 'VR. ADMINISTRACION')
-                ->setCellValue('Y1', 'VR. NETO')
-                ->setCellValue('Z1', 'VR. BRUTO')
-                ->setCellValue('AA1', 'VR. TOTAL COBRAR')
-                ->setCellValue('AB1', 'VR. COSTO')
-                ->setCellValue('AC1', 'VR. INGRESO BASE COTIZACION')
-                ->setCellValue('AD1', 'ESTADO COBRADO')
-                ->setCellValue('AE1', 'DIAS PERIODO');
-
-        $i = 2;
-        $query = $em->createQuery($this->strSqlServiciosPorCobrarLista);
-        $arServiciosPorCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
-        $arServiciosPorCobrar = $query->getResult();
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
-        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'AE'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
-        }
-        for ($col = 'G'; $col !== 'AC'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }
-        foreach ($arServiciosPorCobrar as $arServiciosPorCobrar) {
-            if ($arServiciosPorCobrar->getEstadoCobrado() == 1) {
-                $estado = "SI";
-            } else {
-                $estado = "NO";
-            }
-
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arServiciosPorCobrar->getCodigoServicioCobrarPk())
-                    ->setCellValue('B' . $i, $arServiciosPorCobrar->getCentroCostoRel()->getNombre())
-                    ->setCellValue('C' . $i, $arServiciosPorCobrar->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('D' . $i, $arServiciosPorCobrar->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arServiciosPorCobrar->getFechaDesde()->format('Y/m/d'))
-                    ->setCellValue('F' . $i, $arServiciosPorCobrar->getFechaHasta()->format('Y/m/d'))
-                    ->setCellValue('G' . $i, $arServiciosPorCobrar->getVrSalario())
-                    ->setCellValue('H' . $i, $arServiciosPorCobrar->getVrSalarioPeriodo())
-                    ->setCellValue('I' . $i, $arServiciosPorCobrar->getVrSalarioEmpleado())
-                    ->setCellValue('J' . $i, $arServiciosPorCobrar->getVrDevengado())
-                    ->setCellValue('K' . $i, $arServiciosPorCobrar->getVrDeducciones())
-                    ->setCellValue('L' . $i, $arServiciosPorCobrar->getVrAdicionalTiempo())
-                    ->setCellValue('M' . $i, $arServiciosPorCobrar->getVrAdicionalValor())
-                    ->setCellValue('N' . $i, $arServiciosPorCobrar->getVrAuxilioTransporte())
-                    ->setCellValue('O' . $i, $arServiciosPorCobrar->getVrAuxilioTransporteCotizacion())
-                    ->setCellValue('P' . $i, $arServiciosPorCobrar->getVrArp())
-                    ->setCellValue('Q' . $i, $arServiciosPorCobrar->getVrEps())
-                    ->setCellValue('R' . $i, $arServiciosPorCobrar->getVrPension())
-                    ->setCellValue('S' . $i, $arServiciosPorCobrar->getVrCaja())
-                    ->setCellValue('T' . $i, $arServiciosPorCobrar->getVrSena())
-                    ->setCellValue('U' . $i, $arServiciosPorCobrar->getVrIcbf())
-                    ->setCellValue('V' . $i, $arServiciosPorCobrar->getVrCesantias())
-                    ->setCellValue('W' . $i, $arServiciosPorCobrar->getVrVacaciones())
-                    ->setCellValue('X' . $i, $arServiciosPorCobrar->getVrAdministracion())
-                    ->setCellValue('Y' . $i, $arServiciosPorCobrar->getVrNeto())
-                    ->setCellValue('Z' . $i, $arServiciosPorCobrar->getVrBruto())
-                    ->setCellValue('AA' . $i, $arServiciosPorCobrar->getVrTotalCobrar())
-                    ->setCellValue('AB' . $i, $arServiciosPorCobrar->getVrCosto())
-                    ->setCellValue('AC' . $i, $arServiciosPorCobrar->getVrIngresoBaseCotizacion())
-                    ->setCellValue('AD' . $i, $estado)
-                    ->setCellValue('AE' . $i, $arServiciosPorCobrar->getDiasPeriodo());
-            $i++;
-        }
-
-        $objPHPExcel->getActiveSheet()->setTitle('ServiciosPorCobrar');
-        $objPHPExcel->setActiveSheetIndex(0);
-
-        // Redirect output to a client’s web browser (Excel2007)
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="ConsultaServiciosPorCobrar.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

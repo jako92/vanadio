@@ -58,10 +58,13 @@
                 <th>IDENTIFICACIÓN</th>
                 <th>EMPLEADO</th>
                 <th>DESDE</th>
-                <th>HASTA</th>
-                <th>SALARIO</th>
+                <th>HASTA</th>                
                 <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>
-                <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>                
+                <th>BASICO</th>                
+                <th><p data-toggle="tooltip" data-placement="top" title="Horas extra y bonificaciones prestacionales">PRE</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Adicionales al pago no prestacionales">NO_PRE</p></th>
+                <th><p data-toggle="tooltip" data-placement="top" title="subsidio de transporte">TTE</p></th>
                 <th><p data-toggle="tooltip" data-placement="top" title="Aportes pension">PENSION</p></th>
                 <th><p data-toggle="tooltip" data-placement="top" title="Aportes salud">SALUD</p></th>
                 <th><p data-toggle="tooltip" data-placement="top" title="Aportes riesgos">RIESGOS</p></th>
@@ -80,10 +83,13 @@
                     <td>{{ arServiciosPorCobrar.empleadoRel.numeroIdentificacion  }}</td>
                     <td>{{ arServiciosPorCobrar.empleadoRel.nombreCorto  }}</td>
                     <td>{{ arServiciosPorCobrar.fechaDesde |date("Y/m/d")  }}</td>
-                    <td>{{ arServiciosPorCobrar.fechaHasta |date("Y/m/d")  }}</td>
-                    <td style="text-align: right">{{ arServiciosPorCobrar.vrSalario | number_format(0, '.', ',') }}</td>
+                    <td>{{ arServiciosPorCobrar.fechaHasta |date("Y/m/d")  }}</td>                    
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrSalario | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrPrestacional | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrNoPrestacional | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arServiciosPorCobrar.vrAuxilioTransporte | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrPension | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrSalud | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arServiciosPorCobrar.vrRiesgos | number_format(0, '.', ',') }}</td>

@@ -77,31 +77,35 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
                             
                             //Aportes seguridad social
-                            $pension = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100;
+                            $pension = round(($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100);                            
                             $arServicio->setVrPension($pension);                            
                             
                             //Calculo de prestaciones
-                            $cesantias = ($arPago->getVrIngresoBasePrestacion() * $porcentajeCesantias) / 100;
+                            $cesantias = round(($arPago->getVrIngresoBasePrestacion() * $porcentajeCesantias) / 100);
                             $arServicio->setVrCesantias($cesantias);
-                            $interesesCesantias = ($arPago->getVrIngresoBasePrestacion() * $porcentajeInteresesCesantias) / 100;
+                            $interesesCesantias = round(($arPago->getVrIngresoBasePrestacion() * $porcentajeInteresesCesantias) / 100);
                             $arServicio->setVrCesantiasIntereses($interesesCesantias);
-                            $primas = ($arPago->getVrIngresoBasePrestacion() * $porcentajePrimas) / 100;
+                            $primas = round(($arPago->getVrIngresoBasePrestacion() * $porcentajePrimas) / 100);
                             $arServicio->setvrPrimas($primas);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);
-                            if($arPago->getCodigoPagoPk() == 467) {
-                                echo "1";
-                            }
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
-                            $vacaciones = ($arPago->getVrSalario() * $porcentajeVacaciones) / 100;
+                            $vacaciones = round(($arPago->getVrSalario() * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
-                            $riesgos = ($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100;
+                            $riesgos = round(($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100);
                             $arServicio->setVrRiesgos($riesgos);                            
-                            $caja = ($arPago->getVrIngresoBaseCotizacion() * $porcentajeCaja) / 100;
+                            $caja = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeCaja) / 100);
                             $arServicio->setVrCaja($caja);                                                                                                                
-                            $aporteParafiscales = ($vacaciones * 4) / 100;                            
+                            $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
+                            //Informacion adicional
+                            //Valor de las horas extra y los adicionales prestacionales
+                            $prestacional = $arPago->getVrAdicionalPrestacional() + $arPago->getVrExtra();
+                            //Valor de los adicionales no prestacionales
+                            $noPrestacional = $arPago->getVrAdicionalNoPrestacional();
+                            $arServicio->setVrPrestacional($prestacional);
+                            $arServicio->setVrNoPrestacional($noPrestacional);
                             $neto = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
                             if ($arCentroCosto->getAplicaPorcentajeAdministracion() == true){
                                 $valorAdministracion = ($neto * $porcentajeAdministracion) / 100;
