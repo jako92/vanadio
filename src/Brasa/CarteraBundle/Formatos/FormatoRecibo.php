@@ -73,7 +73,7 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("CLIENTE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',6);
-        $this->Cell(115, 5, $arRecibo->getClienteRel()->getNombreCorto(), 1, 0, 'L', 1);
+        $this->Cell (115, 5, utf8_decode($arRecibo->getClienteRel()->getNombreCorto()), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(23, 5, utf8_decode("AJ. PESO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -83,7 +83,7 @@ class FormatoRecibo extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(26, 5, utf8_decode("CUENTA BANCO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(62, 5, $arRecibo->getCuentaRel()->getNombre(), 1, 0, 'L', 1);
+        $this->Cell(62, 5,$arRecibo->getCuentaRel()->getNombre(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(21, 5, utf8_decode("NIT:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
