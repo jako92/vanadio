@@ -7,9 +7,8 @@ class FormatoCartaTrasladoSalud extends \FPDF_FPDF {
     
     public static $usuario;
     
-    public function Generar($miThis, $codigoTrasladoSalud, $usuario) {        
+    public function Generar($em, $codigoTrasladoSalud, $usuario) {        
         ob_clean();
-        $em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoTrasladoSalud = $codigoTrasladoSalud;
         self::$usuario = $usuario;
