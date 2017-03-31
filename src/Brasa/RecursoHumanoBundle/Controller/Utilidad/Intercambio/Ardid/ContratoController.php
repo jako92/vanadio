@@ -75,7 +75,7 @@ class ContratoController extends Controller {
                         $result = $cliente->call("getInsertarContrato", array(                            
                             "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
                             "codigo" => $arContrato->getCodigoContratoPk(),                            
-                            "tipo" => $arContrato->getContratoTipoRel()->getNombre(),
+                            "tipo" => utf8_decode($arContrato->getContratoTipoRel()->getNombre()),
                             "numero" => $arContrato->getNumero(),                            
                             "codigoClase" => $arContrato->getCodigoContratoClaseFk(),                            
                             "codigoIdentificacionTipo" => $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
