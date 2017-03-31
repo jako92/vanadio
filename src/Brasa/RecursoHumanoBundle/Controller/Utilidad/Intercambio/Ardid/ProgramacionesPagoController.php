@@ -44,11 +44,11 @@ class ProgramacionesPagoController extends Controller {
                             $result = $cliente->call("getInsertarEmpleado", array(
                                 "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                 "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
-                                "nombre1" => $arPago->getEmpleadoRel()->getNombre1(),
-                                "nombre2" => $arPago->getEmpleadoRel()->getNombre2(),
-                                "apellido1" => $arPago->getEmpleadoRel()->getApellido1(),
-                                "apellido2" => $arPago->getEmpleadoRel()->getApellido2(),
-                                "nombreCorto" => $arPago->getEmpleadoRel()->getNombreCorto(),
+                                "nombre1" => utf8_decode($arPago->getEmpleadoRel()->getNombre1()),
+                                "nombre2" => utf8_decode($arPago->getEmpleadoRel()->getNombre2()),
+                                "apellido1" => utf8_decode($arPago->getEmpleadoRel()->getApellido1()),
+                                "apellido2" => utf8_decode($arPago->getEmpleadoRel()->getApellido2()),
+                                "nombreCorto" => utf8_decode($arPago->getEmpleadoRel()->getNombreCorto()),
                                 "correo" => $arPago->getEmpleadoRel()->getCorreo(),));
                             $indiceRespuesta = substr($result, 0, 2);   
                             $contenidoRespuesta = substr($result, 2, strlen($result));

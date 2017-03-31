@@ -45,11 +45,11 @@ class ContratoController extends Controller {
                         "codigoIdentificacionTipo" => $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                         "identificacionNumero" => $arContrato->getEmpleadoRel()->getNumeroIdentificacion(),
                         "lugarExpedicionIdentificacion" => $lugarExpedidionIdentificacion,
-                        "nombre1" => $arContrato->getEmpleadoRel()->getNombre1(),
-                        "nombre2" => $arContrato->getEmpleadoRel()->getNombre2(),
-                        "apellido1" => $arContrato->getEmpleadoRel()->getApellido1(),
-                        "apellido2" => $arContrato->getEmpleadoRel()->getApellido2(),
-                        "nombreCorto" => $arContrato->getEmpleadoRel()->getNombreCorto(),
+                        "nombre1" => utf8_decode($arContrato->getEmpleadoRel()->getNombre1()),
+                        "nombre2" => utf8_decode($arContrato->getEmpleadoRel()->getNombre2()),
+                        "apellido1" => utf8_decode($arContrato->getEmpleadoRel()->getApellido1()),
+                        "apellido2" => utf8_decode($arContrato->getEmpleadoRel()->getApellido2()),
+                        "nombreCorto" => utf8_decode($arContrato->getEmpleadoRel()->getNombreCorto()),
                         "correo" => $arContrato->getEmpleadoRel()->getCorreo(),));
                     $indiceRespuesta = substr($result, 0, 2);   
                     $contenidoRespuesta = substr($result, 2, strlen($result));
