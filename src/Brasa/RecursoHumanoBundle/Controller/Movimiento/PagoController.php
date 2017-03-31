@@ -36,16 +36,17 @@ class PagoController extends Controller
                 $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findAll();
                 //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoPagoPk' => 467));
                 foreach ($arPagos as $arPago) {     
-                    $arPagoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+                    $arPagoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                    
                     $arPagoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arPago->getCodigoPagoPk());
                     $vrExtraTotal = 0;
                     $adicionalPrestacional = 0;
                     $adicionalNoPrestacional = 0;
                     $salario = 0;
+                    $ingresoBasePrestacion = 0;
                     $arPagosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                     $arPagosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));            
                     foreach ($arPagosDetalles as $arPagoDetalle) {                        
-                        $arPagoDetalleActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
+                        $arPagoDetalleActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();                        
                         $arPagoDetalleActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->find($arPagoDetalle->getCodigoPagoDetallePk());
                         if($arPagoDetalle->getPagoConceptoRel()->getHoraExtra()) {
                             $vrHoraSalario = $arPago->getVrSalarioEmpleado() / 30 / 8;
@@ -67,13 +68,15 @@ class PagoController extends Controller
                         } 
                         if($arPagoDetalle->getPagoConceptoRel()->getComponeSalario() == 1) {
                             $salario +=$arPagoDetalle->getVrPago();
-                        }                         
+                        }   
+                        $ingresoBasePrestacion += $arPagoDetalle->getVrIngresoBasePrestacion();
                         $em->persist($arPagoDetalleActualizar);                            
                     }
                     $arPagoActualizar->setVrExtra($vrExtraTotal);
                     $arPagoActualizar->setVrAdicionalPrestacional($adicionalPrestacional);
                     $arPagoActualizar->setVrAdicionalNoPrestacional($adicionalNoPrestacional); 
                     $arPagoActualizar->setVrSalario($salario);
+                    $arPagoActualizar->setVrIngresoBasePrestacion($ingresoBasePrestacion);
                     $em->persist($arPagoActualizar);
                 }
                 $em->flush();                             

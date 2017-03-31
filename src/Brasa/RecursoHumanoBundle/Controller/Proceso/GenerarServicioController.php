@@ -62,6 +62,7 @@ class GenerarServicioController extends Controller
                             $salarioBasico = $arPago->getVrSalario();
                             $adicionalPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
                             $adicionalNoPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                            
+                            $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporteCotizacion();                            
                             $arServicio->setVrAdicionalPrestacional($adicionalPrestacional);
                             $arServicio->setVrAdicionalNoPrestacional($adicionalNoPrestacional);
                             $auxilioTransporte = $arPago->getVrAuxilioTransporte();
@@ -73,19 +74,19 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrAdicionalTiempo($arPago->getVrAdicionalTiempo());
                             $arServicio->setVrAdicionalValor($arPago->getVrAdicionalValor());                            
                             $arServicio->setVrAuxilioTransporteCotizacion($arPago->getVrAuxilioTransporteCotizacion());
-                            $arServicio->setVrIngresoBasePrestacion($arPago->getVrIngresoBasePrestacion());
+                            $arServicio->setVrIngresoBasePrestacion($ingresoBasePrestaciones);
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
                             
                             //Aportes seguridad social
                             $pension = round(($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100);                            
-                            $arServicio->setVrPension($pension);                            
+                            $arServicio->setVrPension($pension);                                                        
                             
                             //Calculo de prestaciones
-                            $cesantias = round(($arPago->getVrIngresoBasePrestacion() * $porcentajeCesantias) / 100);
+                            $cesantias = round(($ingresoBasePrestaciones * $porcentajeCesantias) / 100);
                             $arServicio->setVrCesantias($cesantias);
-                            $interesesCesantias = round(($arPago->getVrIngresoBasePrestacion() * $porcentajeInteresesCesantias) / 100);
+                            $interesesCesantias = round(($ingresoBasePrestaciones * $porcentajeInteresesCesantias) / 100);
                             $arServicio->setVrCesantiasIntereses($interesesCesantias);
-                            $primas = round(($arPago->getVrIngresoBasePrestacion() * $porcentajePrimas) / 100);
+                            $primas = round(($ingresoBasePrestaciones * $porcentajePrimas) / 100);
                             $arServicio->setvrPrimas($primas);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);

@@ -41,7 +41,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPago->setVrSalarioPeriodo($arProgramacionPagoDetalle->getVrDevengado());
             $arPago->setProgramacionPagoRel($arProgramacionPagoProcesar);
             $arPago->setContratoRel($arContrato);                        
-            $arPago->setDiasPeriodo($arProgramacionPagoDetalle->getDias());
+            $arPago->setDiasPeriodo($arProgramacionPagoDetalle->getDiasReales());
             $arPago->setCodigoUsuario($arProgramacionPagoProcesar->getCodigoUsuario());
             $arPago->setComentarios($arProgramacionPagoDetalle->getComentarios());
             $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk());
@@ -611,6 +611,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $arPagoDetalle->setVrPagoOperado($douPagoDetalle * $arPagoConcepto->getOperacion());
                         $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
                         $em->persist($arPagoDetalle);
+                        $douAuxilioTransporteCotizacion = round($arProgramacionPagoDetalle->getDiasReales() * ($arConfiguracion->getVrAuxilioTransporte() / 30));
+                        $arPago->setVrAuxilioTransporteCotizacion($douAuxilioTransporteCotizacion);                        
                     }
                 }                            
             }
@@ -665,8 +667,6 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             }                        
 
             $intDiasLaborados = $intHorasLaboradas / $intFactorDia;                        
-            $douAuxilioTransporteCotizacion = round($arProgramacionPagoDetalle->getDiasTransporte() * ($arConfiguracion->getVrAuxilioTransporte() / 30));
-            $arPago->setVrAuxilioTransporteCotizacion($douAuxilioTransporteCotizacion);
             $arPago->setDiasLaborados($intDiasLaborados);
             $em->persist($arPago);
             $codigoPago = 0;
