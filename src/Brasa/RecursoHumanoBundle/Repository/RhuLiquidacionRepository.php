@@ -119,7 +119,7 @@ class RhuLiquidacionRepository extends EntityRepository {
 
                     $dateFechaDesde = $arLiquidacion->getContratoRel()->getFechaUltimoPagoCesantias();            
                     $dateFechaHasta = $arLiquidacion->getContratoRel()->getFechaHasta();
-                    if($dateFechaHasta > $dateFechaDesde) {
+                    if($dateFechaHasta >= $dateFechaDesde) {
                         $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();  
                         $ibpCesantiasInicial = round($ibpCesantiasInicial);
                         $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
