@@ -241,7 +241,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     
     public function recargoNocturnoPago($codigoPago) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT SUM(pd.vrIngresoBaseCotizacionAdicional) as recagosNocturnos FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoConceptoRel pc "
+        $dql   = "SELECT SUM(pd.vrExtra) as recagosNocturnos FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoConceptoRel pc "
                 . "WHERE pc.recargoNocturno = 1 AND pd.codigoPagoFk = " . $codigoPago;
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();

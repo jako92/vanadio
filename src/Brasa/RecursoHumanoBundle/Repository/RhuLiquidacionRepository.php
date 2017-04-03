@@ -123,8 +123,8 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $ibpCesantiasInicial = $arContrato->getIbpCesantiasInicial();  
                         $ibpCesantiasInicial = round($ibpCesantiasInicial);
                         $ibpCesantias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
-                        $ibpCesantias += $ibpCesantiasInicial+$douIBPAdicional;                  
-                        $ibpCesantias = round($ibpCesantias);
+                        $ibpCesantias += $ibpCesantiasInicial+$douIBPAdicional;                          
+                        $ibpCesantias = round($ibpCesantias);                        
                         $intDiasAusentismo = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->diasAusentismo($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                            
                         $intDiasAusentismo += $arLiquidacion->getDiasAusentismoAdicional();
                         if($arLiquidacion->getDiasAusentismoPropuesto() > 0) {
@@ -136,6 +136,10 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $intDiasCesantias = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);                  
                         if($arContrato->getCodigoSalarioTipoFk() == 2) {
                             $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
+                            //Configuracion especifica para grtemporales                        
+                            if($arConfiguracion->getAuxilioTransporteNoPrestacional()) {
+                                $salarioPromedioCesantias += $auxilioTransporte;
+                            }                            
                         } else {                                        
                             if($arContrato->getAuxilioTransporte() == 1) {
                                 $salarioPromedioCesantias = $douSalario + $auxilioTransporte;
@@ -153,7 +157,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                                 $salarioPromedioCesantias = $douSalario;
                             }                    
                         }
-
+                        
                         //No se puede liquidar por menos del minimo
                         $salarioPromedioMinimo = $salarioMinimo;
                         if($arContrato->getAuxilioTransporte() == 1) {

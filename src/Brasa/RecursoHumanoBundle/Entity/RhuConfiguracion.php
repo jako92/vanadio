@@ -430,7 +430,10 @@ class RhuConfiguracion
      */    
     private $horasExtraDominicalDiurna;   
   
-
+    /**
+     * @ORM\Column(name="auxilio_transporte_no_prestacional", type="boolean")
+     */
+    private $auxilioTransporteNoPrestacional = false; 
 
     /**
      * Set codigoConfiguracionPk
@@ -2398,5 +2401,29 @@ class RhuConfiguracion
     public function getHorasExtraDominicalDiurna()
     {
         return $this->horasExtraDominicalDiurna;
+    }
+
+    /**
+     * Set auxilioTransporteNoPrestacional
+     *
+     * @param boolean $auxilioTransporteNoPrestacional
+     *
+     * @return RhuConfiguracion
+     */
+    public function setAuxilioTransporteNoPrestacional($auxilioTransporteNoPrestacional)
+    {
+        $this->auxilioTransporteNoPrestacional = $auxilioTransporteNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get auxilioTransporteNoPrestacional
+     *
+     * @return boolean
+     */
+    public function getAuxilioTransporteNoPrestacional()
+    {
+        return $this->auxilioTransporteNoPrestacional;
     }
 }
