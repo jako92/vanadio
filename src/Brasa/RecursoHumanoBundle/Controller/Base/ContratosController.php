@@ -762,6 +762,7 @@ class ContratosController extends Controller {
                 ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $arContrato->getFechaHasta(), 'attr' => array('class' => 'date',)))
                 ->add('vrDevengadoPactado', NumberType::class, array('data' => $arContrato->getVrDevengadoPactado()))
                 ->add('turnoFijoOrdinario', CheckboxType::class, array('required' => false, 'data' => $arContrato->getTurnoFijoOrdinario()))
+                ->add('auxilioTransporte', CheckboxType::class, array('required' => false, 'data' => $arContrato->getAuxilioTransporte()))                
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $formActualizar->handleRequest($request);
@@ -785,7 +786,7 @@ class ContratosController extends Controller {
                 $arContrato->setSsoSubtipoCotizanteRel($formActualizar->get('ssoSubtipoCotizanteRel')->getData());
                 $arContrato->setVrDevengadoPactado($formActualizar->get('vrDevengadoPactado')->getData());
                 $arContrato->setTurnoFijoOrdinario($formActualizar->get('turnoFijoOrdinario')->getData());
-
+                $arContrato->setAuxilioTransporte($formActualizar->get('auxilioTransporte')->getData());
                 $em->persist($arContrato);
                 $em->flush();
                 echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
