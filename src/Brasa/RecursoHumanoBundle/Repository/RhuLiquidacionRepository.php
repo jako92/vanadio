@@ -229,6 +229,10 @@ class RhuLiquidacionRepository extends EntityRepository {
                         if($arContrato->getCodigoSalarioTipoFk() == 2) {
                             if($intDiasPrimaLiquidar > 0) {
                                 $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrimaLiquidar) * 30;
+                                //Configuracion especifica para grtemporales                        
+                                if($arConfiguracion->getAuxilioTransporteNoPrestacional()) {
+                                    $salarioPromedioPrimas += $auxilioTransporte;
+                                }                                
                             } else {
                                 $salarioPromedioPrimas = 0;
                             }                         
