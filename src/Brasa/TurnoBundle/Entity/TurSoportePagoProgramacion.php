@@ -197,7 +197,11 @@ class TurSoportePagoProgramacion
      */    
     private $dia31;    
     
-
+    /**     
+     * @ORM\Column(name="exportado_ardid", type="boolean")
+     */    
+    private $exportadoArdid = false; 
+    
     /**
      * Get codigoSoportePagoProgramacionPk
      *
@@ -1070,5 +1074,29 @@ class TurSoportePagoProgramacion
     public function getCodigoSoportePagoFk()
     {
         return $this->codigoSoportePagoFk;
+    }
+
+    /**
+     * Set exportadoArdid
+     *
+     * @param boolean $exportadoArdid
+     *
+     * @return TurSoportePagoProgramacion
+     */
+    public function setExportadoArdid($exportadoArdid)
+    {
+        $this->exportadoArdid = $exportadoArdid;
+
+        return $this;
+    }
+
+    /**
+     * Get exportadoArdid
+     *
+     * @return boolean
+     */
+    public function getExportadoArdid()
+    {
+        return $this->exportadoArdid;
     }
 }

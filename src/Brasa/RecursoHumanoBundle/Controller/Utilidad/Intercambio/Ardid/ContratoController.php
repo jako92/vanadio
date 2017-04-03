@@ -107,6 +107,62 @@ class ContratoController extends Controller {
                     $em->flush();                            
                 } */                                   
             }
+            if($form->get('BtnSincronizarProgramacion')->isClicked()) {               
+                set_time_limit(0);
+                ini_set("memory_limit", -1);  
+                $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+                $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                $direccionServidor = $arConfiguracion->getDireccionServidorArdid();
+                $cliente = new \nusoap_client($direccionServidor);
+                $error = FALSE;
+                $arSoportePagoProgramaciones = new \Brasa\TurnoBundle\Entity\TurSoportePagoProgramacion();                                
+                $arSoportePagoProgramaciones = $em->getRepository('BrasaTurnoBundle:TurSoportePagoProgramacion')->findBy(array('exportadoArdid' => 0));
+                foreach ($arSoportePagoProgramaciones as $arSoportePagoProgramacion) {
+                        $result = $cliente->call("getInsertarProgramacion", array(                            
+                            "codigoEmpresa" => $arConfiguracion->getCodigoEmpresaArdid(),
+                            "codigoSoportePago" => $arSoportePagoProgramacion->getCodigoSoportePagoFk(),                            
+                            "dia1" => $arSoportePagoProgramacion->getDia1(),
+                            "dia2" => $arSoportePagoProgramacion->getDia2(),
+                            "dia3" => $arSoportePagoProgramacion->getDia3(),
+                            "dia4" => $arSoportePagoProgramacion->getDia4(),
+                            "dia5" => $arSoportePagoProgramacion->getDia5(),
+                            "dia6" => $arSoportePagoProgramacion->getDia6(),
+                            "dia7" => $arSoportePagoProgramacion->getDia7(),
+                            "dia8" => $arSoportePagoProgramacion->getDia8(),
+                            "dia9" => $arSoportePagoProgramacion->getDia9(),
+                            "dia10" => $arSoportePagoProgramacion->getDia10(),
+                            "dia11" => $arSoportePagoProgramacion->getDia11(),
+                            "dia12" => $arSoportePagoProgramacion->getDia12(),
+                            "dia13" => $arSoportePagoProgramacion->getDia13(),
+                            "dia14" => $arSoportePagoProgramacion->getDia14(),
+                            "dia15" => $arSoportePagoProgramacion->getDia15(),
+                            "dia16" => $arSoportePagoProgramacion->getDia16(),
+                            "dia17" => $arSoportePagoProgramacion->getDia17(),
+                            "dia18" => $arSoportePagoProgramacion->getDia18(),
+                            "dia19" => $arSoportePagoProgramacion->getDia19(),
+                            "dia20" => $arSoportePagoProgramacion->getDia20(),
+                            "dia21" => $arSoportePagoProgramacion->getDia21(),
+                            "dia22" => $arSoportePagoProgramacion->getDia22(),
+                            "dia23" => $arSoportePagoProgramacion->getDia23(),
+                            "dia24" => $arSoportePagoProgramacion->getDia24(),
+                            "dia25" => $arSoportePagoProgramacion->getDia25(),
+                            "dia26" => $arSoportePagoProgramacion->getDia26(),
+                            "dia27" => $arSoportePagoProgramacion->getDia27(),
+                            "dia28" => $arSoportePagoProgramacion->getDia28(),
+                            "dia29" => $arSoportePagoProgramacion->getDia29(),
+                            "dia30" => $arSoportePagoProgramacion->getDia30(),
+                            "dia31" => $arSoportePagoProgramacion->getDia31(),                                                        
+                        ));
+                        $indiceRespuesta = substr($result, 0, 2);   
+                        $contenidoRespuesta = substr($result, 2, strlen($result));   
+                        if ($indiceRespuesta == '02') {
+                            $objMensaje->Mensaje("error", "Se presento un error con el servicio web trasmitiendo el programacion " . $arSoportePagoProgramacion->getCodigoSoportePagoProgramacionPk() . ":" . $contenidoRespuesta);
+                            $error = TRUE;
+                            break;
+                        }
+
+                }                                 
+            }            
             return $this->redirect($this->generateUrl('brs_rhu_utilidad_intercambio_ardid_contrato'));
         }        
         return $this->render('BrasaRecursoHumanoBundle:Utilidades/Intercambio/Ardid:contrato.html.twig', array(                    
@@ -116,6 +172,7 @@ class ContratoController extends Controller {
     private function formularioLista() {
         $form = $this->createFormBuilder()
                 ->add('BtnSincronizar', SubmitType::class, array('label'  => 'Sincronizar',))
+                ->add('BtnSincronizarProgramacion', SubmitType::class, array('label'  => 'Sincronizar programacion',))
                 ->getForm();
         return $form;
     }
