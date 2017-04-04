@@ -81,6 +81,11 @@ class ProgramacionesPagoController extends Controller {
                                     $grupoPago = $arPago->getCentroCostoRel()->getNombre();
                                     $periodoPago = $arPago->getCentroCostoRel()->getPeriodoPagoRel()->getNombre();
                                 }
+                                if($arPago->getCodigoSoportePagoFk()) {
+                                    $soportePago = $arPago->getCodigoSoportePagoFk();
+                                } else {
+                                    $soportePago = 0;
+                                }
                                 $result = $cliente->call("getInsertarPago", array(
                                     "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                     "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
@@ -103,7 +108,7 @@ class ProgramacionesPagoController extends Controller {
                                     "banco" => $banco,
                                     "pension" => $pension,
                                     "salud" => $salud,
-                                    "codigoSoportePago" => $arPago->getCodigoSoportePagoFk(),
+                                    "codigoSoportePago" => $soportePago,
                                 ));
                                 $indiceRespuesta = substr($result, 0, 2);   
                                 $contenidoRespuesta = substr($result, 2, strlen($result));   
