@@ -102,7 +102,8 @@ class ProgramacionesPagoController extends Controller {
                                     "cuenta" => $cuenta,
                                     "banco" => $banco,
                                     "pension" => $pension,
-                                    "salud" => $salud
+                                    "salud" => $salud,
+                                    "codigoSoportePago" => $arPago->getCodigoSoportePagoFk(),
                                 ));
                                 $indiceRespuesta = substr($result, 0, 2);   
                                 $contenidoRespuesta = substr($result, 2, strlen($result));   
