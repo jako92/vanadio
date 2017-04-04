@@ -164,7 +164,9 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioMinimo += $auxilioTransporte;
                         }
                         if($salarioPromedioCesantias < $salarioPromedioMinimo) {
-                            $salarioPromedioCesantias = $salarioPromedioMinimo;
+                            if($arContrato->getCodigoTipoTiempoFk() != 2) {
+                                $salarioPromedioCesantias = $salarioPromedioMinimo;
+                            }                            
                         }
 
                         if($arLiquidacion->getVrSalarioCesantiasPropuesto() > 0) {
@@ -259,7 +261,9 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioMinimo += $auxilioTransporte;
                         }
                         if($salarioPromedioPrimas < $salarioPromedioMinimo) {
-                            $salarioPromedioPrimas = $salarioPromedioMinimo;
+                            if($arContrato->getCodigoTipoTiempoFk() != 2) {
+                                $salarioPromedioPrimas = $salarioPromedioMinimo;
+                            }                            
                         }                    
                         if($arLiquidacion->getVrSalarioPrimaPropuesto() > 0) {
                             $salarioPromedioPrimas = $arLiquidacion->getVrSalarioPrimaPropuesto();
