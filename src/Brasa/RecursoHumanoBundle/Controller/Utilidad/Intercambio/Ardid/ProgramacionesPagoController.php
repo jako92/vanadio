@@ -38,7 +38,7 @@ class ProgramacionesPagoController extends Controller {
                         $cliente = new \nusoap_client($direccionServidor);
                         $error = FALSE;
                         $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                        //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago), array(), 1);
+                        //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoPagoPk' => 13897), array(), 1);
                         $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
                         foreach ($arPagos as $arPago) {
                             $result = $cliente->call("getInsertarEmpleado", array(
