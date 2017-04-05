@@ -95,7 +95,7 @@ class PeriodoController extends Controller {
                         }
                     }
                 }
-                return $this->redirect($this->generateUrl('brs_rhu_ss_periodo_lista'));
+                return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social'));
             }
         }
         $arSsoPeriodos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
@@ -122,7 +122,7 @@ class PeriodoController extends Controller {
             $em->flush();
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:nuevo.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:nuevo.html.twig', array(
                     'form' => $form->createView()));
     }
 
@@ -414,7 +414,7 @@ class PeriodoController extends Controller {
             $em->flush();
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:detalleNuevo.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:detalleNuevo.html.twig', array(
                     'form' => $form->createView()));
     }
 
@@ -610,7 +610,7 @@ class PeriodoController extends Controller {
             }
         }
         $arSsoTrasladoEmpleados = $paginator->paginate($em->createQuery($this->strDqlListaEmpleados), $request->query->get('page', 1), 200);
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:trasladar.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:trasladar.html.twig', array(
                     'arPeriodoDetalle' => $arPeriodoDetalle,
                     'arTrasladoEmpleados' => $arSsoTrasladoEmpleados,
                     'form' => $form->createView()));
@@ -679,7 +679,7 @@ class PeriodoController extends Controller {
             }
         }
         $arSsoCopiarEmpleados = $paginator->paginate($em->createQuery($this->strDqlListaEmpleados), $request->query->get('page', 1), 200);
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:copiar.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:copiar.html.twig', array(
                     'arPeriodoDetalle' => $arPeriodoDetalle,
                     'arCopiarEmpleados' => $arSsoCopiarEmpleados,
                     'form' => $form->createView()));

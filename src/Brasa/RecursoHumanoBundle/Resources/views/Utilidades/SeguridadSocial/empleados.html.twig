@@ -92,10 +92,10 @@
         </div>
         {% if  arPeriodoDetalle.estadoGenerado == 0 %}    
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_ss_periodo_detalle_empleados_copiar', { 'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePk}) }}', 'Traslado', 600, 900)" style="float:left">Copiar</a>
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_detalle_empleados_copiar', { 'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePk}) }}', 'Traslado', 600, 900)" style="float:left">Copiar</a>
             </div>
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_ss_periodo_detalle_empleados_trasladar', { 'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePk}) }}', 'Traslado', 600, 900)" style="float:left">Trasladar</a>
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_detalle_empleados_trasladar', { 'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePk}) }}', 'Traslado', 600, 900)" style="float:left">Trasladar</a>
             </div>    
         {% endif %}
         <div class="btn-group">
