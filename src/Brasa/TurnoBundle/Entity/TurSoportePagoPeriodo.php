@@ -149,6 +149,11 @@ class TurSoportePagoPeriodo
     private $pagarDia31 = false;    
     
     /**     
+     * @ORM\Column(name="pagar_dia_31_extra", type="boolean")
+     */    
+    private $pagarDia31Extra = false;    
+    
+    /**     
      * @ORM\Column(name="inconsistencias", type="boolean")
      */    
     private $inconsistencias = false;            
@@ -1123,5 +1128,29 @@ class TurSoportePagoPeriodo
     public function getDiasAdicionalesFijo()
     {
         return $this->diasAdicionalesFijo;
+    }
+
+    /**
+     * Set pagarDia31Extra
+     *
+     * @param boolean $pagarDia31Extra
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setPagarDia31Extra($pagarDia31Extra)
+    {
+        $this->pagarDia31Extra = $pagarDia31Extra;
+
+        return $this;
+    }
+
+    /**
+     * Get pagarDia31Extra
+     *
+     * @return boolean
+     */
+    public function getPagarDia31Extra()
+    {
+        return $this->pagarDia31Extra;
     }
 }

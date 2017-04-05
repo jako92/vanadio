@@ -493,7 +493,9 @@ class TurSoportePagoRepository extends EntityRepository {
         $arSoportePagoDetalle->setVacacion($arTurno->getVacacion());
         $arSoportePagoDetalle->setIngreso($arTurno->getIngreso());
         $arSoportePagoDetalle->setInduccion($arTurno->getInduccion());
-        
+        if($dateFecha->format('d') == 31) {
+            $arSoportePagoDetalle->setDia31(1);
+        }
         
         if($dateFecha->format('d') == 31 && $arSoportePagoPeriodo->getPagarDia31() == false) {
             $arSoportePagoDetalle->setDias(0);
@@ -512,9 +514,20 @@ class TurSoportePagoRepository extends EntityRepository {
             $arSoportePagoDetalle->setHorasDiurnas($arrHoras['horasDiurnas']);
             $arSoportePagoDetalle->setHorasNocturnas($arrHoras['horasNocturnas']);
             $arSoportePagoDetalle->setHorasFestivasDiurnas($arrHoras['horasFestivasDiurnas']);
-            $arSoportePagoDetalle->setHorasFestivasNocturnas($arrHoras['horasFestivasNocturnas']);
+            $arSoportePagoDetalle->setHorasFestivasNocturnas($arrHoras['horasFestivasNocturnas']);                            
+        }        
+        if($dateFecha->format('d') == 31 && $arSoportePagoPeriodo->getPagarDia31Extra()) {
+            $arSoportePagoDetalle->setDias(0);
+            $arSoportePagoDetalle->setHoras(0);
+            $arSoportePagoDetalle->setHorasDiurnas(0);
+            $arSoportePagoDetalle->setHorasNocturnas(0);
+            $arSoportePagoDetalle->setHorasFestivasDiurnas(0);
+            $arSoportePagoDetalle->setHorasFestivasNocturnas(0);
+            $arSoportePagoDetalle->setHorasRecargoNocturno(0);
+            $arSoportePagoDetalle->setHorasRecargoFestivoDiurno(0);
+            $arSoportePagoDetalle->setHorasRecargoFestivoNocturno(0);            
         }
-
+        
         $arSoportePagoDetalle->setHorasExtrasOrdinariasDiurnas($arrHoras['horasExtrasDiurnas']);
         $arSoportePagoDetalle->setHorasExtrasOrdinariasNocturnas($arrHoras['horasExtrasNocturnas']);
         $arSoportePagoDetalle->setHorasExtrasFestivasDiurnas($arrHoras['horasExtrasFestivasDiurnas']);
@@ -548,6 +561,9 @@ class TurSoportePagoRepository extends EntityRepository {
             $arSoportePagoDetalle->setTurnoRel($arTurno);
             $arSoportePagoDetalle->setDescanso($arTurno->getDescanso());
             $arSoportePagoDetalle->setNovedad(0);
+            if($dateFecha->format('d') == 31) {
+                $arSoportePagoDetalle->setDia31(1);
+            }            
             if($dateFecha->format('d') == 31 && $arSoportePagoPeriodo->getPagarDia31() == false) {
                 $arSoportePagoDetalle->setDias(0);
                 $arSoportePagoDetalle->setHoras(0);
@@ -559,12 +575,23 @@ class TurSoportePagoRepository extends EntityRepository {
                 $arSoportePagoDetalle->setHorasRecargoFestivoDiurno($arrHoras1['horasFestivasDiurnas']);
                 $arSoportePagoDetalle->setHorasRecargoFestivoNocturno($arrHoras1['horasFestivasNocturnas']);
             } else {
-                $arSoportePagoDetalle->setDias(0);
-                $arSoportePagoDetalle->setHoras(0);
                 $arSoportePagoDetalle->setHorasDiurnas($arrHoras1['horasDiurnas']);
                 $arSoportePagoDetalle->setHorasNocturnas($arrHoras1['horasNocturnas']);
                 $arSoportePagoDetalle->setHorasFestivasDiurnas($arrHoras1['horasFestivasDiurnas']);
-                $arSoportePagoDetalle->setHorasFestivasNocturnas($arrHoras1['horasFestivasNocturnas']);
+                $arSoportePagoDetalle->setHorasFestivasNocturnas($arrHoras1['horasFestivasNocturnas']);                                                
+                $arSoportePagoDetalle->setDias(0);
+                $arSoportePagoDetalle->setHoras(0);
+            }
+            if($dateFecha->format('d') == 31 && $arSoportePagoPeriodo->getPagarDia31Extra()) {
+                $arSoportePagoDetalle->setDias(0);
+                $arSoportePagoDetalle->setHoras(0);
+                $arSoportePagoDetalle->setHorasDiurnas(0);
+                $arSoportePagoDetalle->setHorasNocturnas(0);
+                $arSoportePagoDetalle->setHorasFestivasDiurnas(0);
+                $arSoportePagoDetalle->setHorasFestivasNocturnas(0);
+                $arSoportePagoDetalle->setHorasRecargoNocturno(0);
+                $arSoportePagoDetalle->setHorasRecargoFestivoDiurno(0);
+                $arSoportePagoDetalle->setHorasRecargoFestivoNocturno(0);                
             }
             $arSoportePagoDetalle->setHorasExtrasOrdinariasDiurnas($arrHoras1['horasExtrasDiurnas']);
             $arSoportePagoDetalle->setHorasExtrasOrdinariasNocturnas($arrHoras1['horasExtrasNocturnas']);
@@ -1003,6 +1030,8 @@ class TurSoportePagoRepository extends EntityRepository {
                     $horasFestivasNoche = 0;
                     $horasExtraDia = 0;
                     $horasExtraNoche = 0;
+                    $horasExtraDia31 = 0;
+                    $horasExtraNoche31 = 0;                    
                     $horasExtraFestivasDia = 0;
                     $horasExtraFestivasNoche = 0;   
                     $horasRecargoNocturno = 0;
@@ -1013,15 +1042,20 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arSoportePagoDetalles = $em->getRepository('BrasaTurnoBundle:TurSoportePagoDetalle')->findBy(array('codigoSoportePagoFk' => $arSoportePago->getCodigoSoportePagoPk()));                    
                     foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {                        
                         if($arSoportePagoDetalle->getFestivo() == 0) {
-                            $horasTurno += $arSoportePagoDetalle->getHoras();
+                            $horasTurno += $arSoportePagoDetalle->getHoras();                                                        
                             $horasDia += $arSoportePagoDetalle->getHorasDiurnas() + $arSoportePagoDetalle->getHorasFestivasDiurnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas() + $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();
                             $horasNoche += $arSoportePagoDetalle->getHorasNocturnas() + $arSoportePagoDetalle->getHorasFestivasNocturnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas() + $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas();
                             $horasRecargoNocturno += $arSoportePagoDetalle->getHorasNocturnas();
-                        } else {
+                        } else {                            
                             $horasFestivasDia +=  $arSoportePagoDetalle->getHorasDiurnas() + $arSoportePagoDetalle->getHorasFestivasDiurnas();
                             $horasFestivasNoche +=  $arSoportePagoDetalle->getHorasNocturnas() + $arSoportePagoDetalle->getHorasFestivasNocturnas();                            
                             $horasExtraFestivasDia +=  $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas() + $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();
                             $horasExtraFestivasNoche +=  $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas() + $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas();
+                            $horasRecargoNocturno += $arSoportePagoDetalle->getHorasFestivasNocturnas();                                                                                        
+                        }
+                        if($arSoportePagoDetalle->getDia31()) {
+                            $horasExtraDia31 += $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();
+                            $horasExtraNoche31 += $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();
                         }
                         $descansoAuxilioTransporte += $arSoportePagoDetalle->getDescanso();
                     }
@@ -1064,8 +1098,8 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arSoportePagoAct->setHorasNocturnas($horasNoche);
                     $arSoportePagoAct->setHorasFestivasDiurnas($horasFestivasDia);
                     $arSoportePagoAct->setHorasFestivasNocturnas($horasFestivasNoche);
-                    $arSoportePagoAct->setHorasExtrasOrdinariasDiurnas($horasExtraDia);
-                    $arSoportePagoAct->setHorasExtrasOrdinariasNocturnas($horasExtraNoche);
+                    $arSoportePagoAct->setHorasExtrasOrdinariasDiurnas($horasExtraDia + $horasExtraDia31);
+                    $arSoportePagoAct->setHorasExtrasOrdinariasNocturnas($horasExtraNoche + $horasExtraNoche31);
                     $arSoportePagoAct->setHorasExtrasFestivasDiurnas($horasExtraFestivasDia);
                     $arSoportePagoAct->setHorasExtrasFestivasNocturnas($horasExtraFestivasNoche);
                     $arSoportePagoAct->setHorasRecargoNocturno($horasRecargoNocturno);

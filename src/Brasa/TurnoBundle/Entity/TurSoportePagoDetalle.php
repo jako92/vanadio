@@ -193,6 +193,11 @@ class TurSoportePagoDetalle
     private $festivo = false;     
     
     /**
+     * @ORM\Column(name="dia31", type="boolean")
+     */    
+    private $dia31 = false;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurSoportePago", inversedBy="soportesPagosDetallesSoportePagoRel")
      * @ORM\JoinColumn(name="codigo_soporte_pago_fk", referencedColumnName="codigo_soporte_pago_pk")
      */
@@ -1222,5 +1227,29 @@ class TurSoportePagoDetalle
     public function getTurnoRel()
     {
         return $this->turnoRel;
+    }
+
+    /**
+     * Set dia31
+     *
+     * @param boolean $dia31
+     *
+     * @return TurSoportePagoDetalle
+     */
+    public function setDia31($dia31)
+    {
+        $this->dia31 = $dia31;
+
+        return $this;
+    }
+
+    /**
+     * Get dia31
+     *
+     * @return boolean
+     */
+    public function getDia31()
+    {
+        return $this->dia31;
     }
 }

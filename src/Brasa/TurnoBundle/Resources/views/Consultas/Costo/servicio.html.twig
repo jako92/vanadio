@@ -106,8 +106,8 @@
             </tr>            
             {% for arCostoServicio in arCostoServicio %}
                 <tr>
-                    <td>{{ arCostoServicio.pedidoDetalleRel.pedidoRel.numero | default('')  }}</td>
-                    <td>{{ arCostoServicio.codigoPedidoDetalleFk  }}</td>                                        
+                    <td>{{ arCostoServicio.pedidoDetalleRel.pedidoRel.numero | default('')  }}</td>                    
+                    <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_resumen', {'codigoPedidoDetalle': arCostoServicio.codigoPedidoDetalleFk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arCostoServicio.codigoPedidoDetalleFk }}</a></td>                                                    
                     <td>{{ arCostoServicio.anio }}</td>
                     <td>{{ arCostoServicio.mes }}</td>
                     <td>{{ arCostoServicio.clienteRel.nombreCorto |default('') }}</td>
