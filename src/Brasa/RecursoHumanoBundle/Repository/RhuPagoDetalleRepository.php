@@ -264,7 +264,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
             $ibp = 0;
         }
         return $ibp;
-    }
+    }      
     
     public function auxTransporteCertificadoIngreso($fechaDesde, $fechaHasta, $codigoEmpleado,$codigoConceptoAuxTransporte) {
         $em = $this->getEntityManager();

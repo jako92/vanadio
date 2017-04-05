@@ -164,7 +164,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioMinimo += $auxilioTransporte;
                         }
                         if($salarioPromedioCesantias < $salarioPromedioMinimo) {
-                            if($arContrato->getCodigoTipoTiempoFk() != 2) {
+                            if($arContrato->getCodigoTipoTiempoFk() == 1) {
                                 $salarioPromedioCesantias = $salarioPromedioMinimo;
                             }                            
                         }
@@ -261,7 +261,7 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioMinimo += $auxilioTransporte;
                         }
                         if($salarioPromedioPrimas < $salarioPromedioMinimo) {
-                            if($arContrato->getCodigoTipoTiempoFk() != 2) {
+                            if($arContrato->getCodigoTipoTiempoFk() == 1) {
                                 $salarioPromedioPrimas = $salarioPromedioMinimo;
                             }                            
                         }                    
@@ -344,7 +344,11 @@ class RhuLiquidacionRepository extends EntityRepository {
                         }                    
                         if($arLiquidacion->getEliminarAusentismo() > 0) {
                             $intDiasAusentismo = 0;
-                        }       
+                        }   
+                        if($arContrato->getCodigoTipoTiempoFk() == 3) {
+                            $ibpSalario = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->ibpSalario($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
+                            $salarioVacaciones = $ibpSalario;
+                        }
                         $salarioVacaciones = round($salarioVacaciones);
                         $intDiasVacaciones = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);                                
                         $intDiasVacacionesLiquidar = $intDiasVacaciones-$intDiasAusentismo;

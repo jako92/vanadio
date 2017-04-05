@@ -465,6 +465,20 @@ class RhuPagoRepository extends EntityRepository {
         return $ibc;
     }
     
+    public function ibpSalario($fechaDesde, $fechaHasta, $codigoContrato) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(p.vrSalario) as ibp FROM BrasaRecursoHumanoBundle:RhuPago p "
+                . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $ibp = $arrayResultado[0]['ibp'];
+        if($ibp == null) {
+            $ibp = 0;
+        }
+        return $ibp;
+    }     
+    
     public function tiempoSuplementarioCartaLaboral($intPeriodo, $codigoContrato) {
         $em = $this->getEntityManager(); 
         $dql   = "SELECT vr_devengado FROM rhu_pago "
