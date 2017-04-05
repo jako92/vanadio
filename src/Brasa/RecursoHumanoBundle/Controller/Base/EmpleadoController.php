@@ -858,7 +858,7 @@ class EmpleadoController extends Controller {
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
-            fputs($ar, "\n");
+            fputs($ar, "\r\n");
             $strSecuencia ++;
         }
         //fputs($ar, "03" . $this->RellenarNr(($strSecuencia-1), "0", 9) . $strValorTotal . "\n");
