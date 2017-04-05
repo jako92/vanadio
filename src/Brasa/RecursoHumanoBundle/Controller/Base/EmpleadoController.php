@@ -839,7 +839,7 @@ class EmpleadoController extends Controller {
         $query = $em->createQuery($this->strSqlLista);
         $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $arEmpleados = $query->getResult();
-        $strNombreArchivo = "interfaz2" . date('YmdHis') . ".txt";
+        $strNombreArchivo = "GTERCEROS".".txt";
         $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
         //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
         ob_clean();

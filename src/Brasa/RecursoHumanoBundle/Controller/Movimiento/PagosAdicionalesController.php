@@ -966,11 +966,13 @@ class PagosAdicionalesController extends Controller
         exit;
     }
     
-    private function generarMasivoSuplementarioTemporalExcel() {
+    private function generarMasivoSuplementarioTemporalExcel($codigoProgramacionPago) {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
+        $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $objPHPExcel = new \PHPExcel();
