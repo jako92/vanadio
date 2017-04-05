@@ -95,18 +95,13 @@ class FormatoHojaVida extends \FPDF_FPDF {
         $this->SetXY(55, 38);
         $this->Cell(100, 50, number_format($arEmpleado->getVrSalario(), 2, '.', ','), 0, 0, 'C', 0);
         $this->SetXY(25, 44);
-        $this->Cell(30, 55, "BONIFICACION" , 0, 0, 'L', 0);
+        $this->Cell(30, 55, "RIESGO ARP" , 0, 0, 'L', 0);
         $this->Cell(100, 55, "______________________________________________________________" , 0, 0, 'C', 0);
         $this->SetXY(55, 44);
-        $this->Cell(100, 55, "0.00" , 0, 0, 'C', 0);
-        $this->SetXY(25, 50);
-        $this->Cell(30, 60, "RIESGO ARP" , 0, 0, 'L', 0);
-        $this->Cell(100, 60, "______________________________________________________________" , 0, 0, 'C', 0);
-        $this->SetXY(55, 50);
         if ($arEmpleado->getClasificacionRiesgoRel() == ""){
-            $this->Cell(100, 60, "SIN DEFINIR" , 0, 0, 'C', 0);
+            $this->Cell(100, 55, "SIN DEFINIR" , 0, 0, 'C', 0);
         } else {
-            $this->Cell(100, 60, $arEmpleado->getClasificacionRiesgoRel()->getNombre() , 0, 0, 'C', 0);
+            $this->Cell(100, 55, $arEmpleado->getClasificacionRiesgoRel()->getNombre() , 0, 0, 'C', 0);
         }
         
         $this->EncabezadoDetalles();
