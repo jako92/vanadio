@@ -164,14 +164,18 @@ class PeriodoController extends Controller {
                             $arPeriodoEmpleadoEliminar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado();
                             $arPeriodoEmpleadoEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleado')->findBy(array('codigoPeriodoDetalleFk' => $codigoPeriodoDetalle));
                             foreach ($arPeriodoEmpleadoEliminar AS $arPeriodoEmpleadoEliminar) {
-                                $em->remove($arPeriodoEmpleadoEliminar);
-                                $em->flush();
+                                $arPeriodoEmpleadoDetalleEliminar = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
+                                $arPeriodoEmpleadoDetalleEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoEmpleadoDetalle')->findBy(array('codigoPeriodoEmpleadoFk' => $arPeriodoEmpleadoEliminar->getCodigoPeriodoEmpleadoPk()));                                
+                                foreach ($arPeriodoEmpleadoDetalleEliminar AS $arPeriodoEmpleadoDetalleEliminar) {
+                                    $em->remove($arPeriodoEmpleadoDetalleEliminar);
+                                }
+                                $em->remove($arPeriodoEmpleadoEliminar);                                
                             }
-                            $em->remove($arPeriodoDetalleEliminar);
-                            $em->flush();
-                        }
-                        return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle', array('codigoPeriodo' => $codigoPeriodo)));
+                            $em->remove($arPeriodoDetalleEliminar);                            
+                        }                        
                     }
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle', array('codigoPeriodo' => $codigoPeriodo)));
                 }
             }
             if ($request->request->get('OpDesgenerar')) {
