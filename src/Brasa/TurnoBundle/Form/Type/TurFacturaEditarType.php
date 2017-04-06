@@ -27,7 +27,8 @@ class TurFacturaEditarType extends AbstractType
             ->add('fecha', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('fechaVence', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('descripcion', TextType::class, array('required' => false))                             
-            ->add('guardar', SubmitType::class);
+            ->add('guardar', SubmitType::class)
+            ->add('reliquidar', SubmitType::class);
     }
 
     public function getBlockPrefix()

@@ -51,9 +51,14 @@ class EditarFacturaController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $arFactura = $form->getData();
-                $em->persist($arFactura);
-                $em->flush();
+                if ($form->get('guardar')->isClicked()) {
+                    $arFactura = $form->getData();
+                    $em->persist($arFactura);
+                    $em->flush();                    
+                }
+                if ($form->get('reliquidar')->isClicked()) {
+                    $em->getRepository('BrasaTurnoBundle:TurFactura')->liquidar($codigoFactura);
+                }
                 return $this->redirect($this->generateUrl('brs_tur_utilidad_editar_factura'));
             }
         }
