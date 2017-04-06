@@ -41,9 +41,14 @@ class ProgramacionesPagoController extends Controller {
                         //$arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoPagoPk' => 13897), array(), 1);
                         $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));
                         foreach ($arPagos as $arPago) {
+                            $lugarExpedidionIdentificacion = "";
+                            if($arPago->getEmpleadoRel()->getCodigoCiudadExpedicionFk()) {
+                                $lugarExpedidionIdentificacion = $arPago->getEmpleadoRel()->getCiudadExpedicionRel()->getNombre();
+                            }                            
                             $result = $cliente->call("getInsertarEmpleado", array(
                                 "codigoIdentificacionTipo" => $arPago->getEmpleadoRel()->getTipoIdentificacionRel()->getCodigoInterface(),
                                 "identificacionNumero" => $arPago->getEmpleadoRel()->getNumeroIdentificacion(),
+                                "lugarExpedicionIdentificacion" => $lugarExpedidionIdentificacion,
                                 "nombre1" => utf8_decode($arPago->getEmpleadoRel()->getNombre1()),
                                 "nombre2" => utf8_decode($arPago->getEmpleadoRel()->getNombre2()),
                                 "apellido1" => utf8_decode($arPago->getEmpleadoRel()->getApellido1()),

@@ -43,6 +43,7 @@
             <th>DETALLE</th>
             <th>GEN</th>
             <th>CER</th>
+            <th>EMP</th>
             <th>REG</th>
             <th style="text-align: right">TOTAL</th>
             <th></th>
@@ -61,6 +62,7 @@
                 <td>{{ arSsoPeriodoDetalles.detalle  }}</td>
                 <td {% if arSsoPeriodoDetalles.estadoGenerado == 1 %}class="success"{% endif %}>{% if arSsoPeriodoDetalles.estadoGenerado == 1 %} SI {% else %} NO {% endif %}</td>
                 <td {% if arSsoPeriodoDetalles.estadoCerrado == 1 %}class="success"{% endif %}>{% if arSsoPeriodoDetalles.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>
+                <td>{{ arSsoPeriodoDetalles.numeroEmpleados  }}</td>
                 <td>{{ arSsoPeriodoDetalles.numeroRegistros  }}</td>
                 <td style="text-align: right">{{ arSsoPeriodoDetalles.totalCotizacion | number_format(0, '.', ',') }} </td>
                 <td>{% if arSsoPeriodoDetalles.estadoGenerado == 1 %} <button class="btn btn-default btn-xs" type="submit" name="OpGenerarArchivo" value="{{ arSsoPeriodoDetalles.codigoPeriodoDetallePk }}">Archivo plano</button>  {% endif %}</td>
