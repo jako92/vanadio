@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FormatoCarta extends \FPDF_FPDF {
     public static $em;
     public static $arUsuario;
+    public static $usuario;
     public static $request;
     public static $codigoTipoCarta;
     public static $fechaProceso;
@@ -17,12 +18,13 @@ class FormatoCarta extends \FPDF_FPDF {
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
     
-    public function Generar($miThis, $em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    public function Generar($miThis, $em, $arUsuario, $usuarioCarta, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
-        //$arUsuario = $miThis->get('security.context')->getToken()->getUser();
+        //$usuarioCarta = $miThis->get('security.context')->getToken()->getUser();
         self::$arUsuario = $arUsuario;
+        self::$usuario = $usuarioCarta;
         self::$em = $em;
         self::$codigoTipoCarta = $codigoTipoCarta;
         self::$fechaProceso = $fechaProceso;
@@ -201,7 +203,7 @@ class FormatoCarta extends \FPDF_FPDF {
         }*/
         $sustitucion16 = $entidadRiesgoProfesional;
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();         
-        //$sustitucion18 = $usuarioCarta;
+        $sustitucion18 = self::$arUsuario;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();
         $sustitucion20 = $arConfiguracion->getDigitoVerificacionEmpresa();
         $motivoTerminacionContrato = '';
@@ -316,7 +318,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron15, $sustitucion15, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron16, $sustitucion16, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron17, $sustitucion17, $cadenaCambiada);
-        //$cadenaCambiada = preg_replace($patron18, $sustitucion18, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron18, $sustitucion18, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron19, $sustitucion19, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron20, $sustitucion20, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron21, $sustitucion21, $cadenaCambiada);
