@@ -395,7 +395,11 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 if($arLicencia->getLicenciaTipoRel()->getMaternidad() == 1) {
                     $diasLicenciaMaternidad += $diasLicenciaIndividual;
                     $arPeriodoEmpleadoDetalle->setLicenciaMaternidad(1);
-                    $ibcLicencia = $arrLicencia['ibc'];                    
+                    $ibcLicencia = $arrLicencia['ibc'];            
+                    $diaSalarioLicencia = $ibcLicencia / $diasLicenciaIndividual;
+                    if($diaSalarioLicencia != $diaSalario) {
+                        $arPeriodoEmpleadoDetalle->setVariacionTransitoriaSalario('X');
+                    }                    
                     $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
                     $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                                
                     $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                      
@@ -475,60 +479,10 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 }         
 
                 $em->persist($arPeriodoEmpleadoDetalle);                 
-            }           
-            
-            //$arrLicencias
-            
-//            $arPeriodoEmpleadoActualizar->setVrSalario($floSalario);            
-//            $arPeriodoEmpleadoActualizar->setIngreso($strNovedadIngreso);
-//            $arPeriodoEmpleadoActualizar->setRetiro($strNovedadRetiro);
-//            $floSuplementario = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->tiempoSuplementario($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());            
-//            $arPeriodoEmpleadoActualizar->setVrSuplementario($floSuplementario);
-//            
-//            $intDiasLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->diasLicencia($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta(), $arPeriodoEmpleado->getCodigoEmpleadoFk(), 2);
-//            $arPeriodoEmpleadoActualizar->setDiasLicencia($intDiasLicencia);          
-//            $intDiasIncapacidadGeneral = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidad($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta(), $arPeriodoEmpleado->getCodigoEmpleadoFk(), 1);
-//            $arPeriodoEmpleadoActualizar->setDiasIncapacidadGeneral($intDiasIncapacidadGeneral);
-//            $intDiasLicenciaMaternidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->diasLicencia($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta(), $arPeriodoEmpleado->getCodigoEmpleadoFk(), 1);
-//            $arPeriodoEmpleadoActualizar->setDiasLicenciaMaternidad($intDiasLicenciaMaternidad);
-//            $intDiasIncapacidadLaboral = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidad($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta(), $arPeriodoEmpleado->getCodigoEmpleadoFk(), 2);
-//            $arPeriodoEmpleadoActualizar->setDiasIncapacidadLaboral($intDiasIncapacidadLaboral);                                                
-//            $arPeriodoEmpleadoActualizar->setDias($intDiasCotizar);
-//            $arrVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->diasVacacionesDisfrute($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde(), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta(), $arPeriodoEmpleado->getCodigoEmpleadoFk(), $arPeriodoEmpleado->getCodigoContratoFk());
-//            if($strNovedadRetiro == 'X') {
-//                $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findOneBy(array('codigoContratoFk' => $arContrato->getCodigoContratoPk(), 'estadoAutorizado' => 1));
-//                if($arLiquidacion) {
-//                    $arrVacaciones['aporte'] += $arLiquidacion->getVrVacaciones();
-//                }
-//            }            
-//            $arPeriodoEmpleadoActualizar->setDiasVacaciones($arrVacaciones['dias']);            
-//            $arPeriodoEmpleadoActualizar->setVrVacaciones($arrVacaciones['aporte']);
-//            $arPeriodoEmpleadoActualizar->setTarifaRiesgos($arContrato->getClasificacionRiesgoRel()->getPorcentaje());                        
+            }                       
             $arPeriodoEmpleadoActualizar->setCodigoEntidadPensionPertenece($arContrato->getEntidadPensionRel()->getCodigoInterface());
             $arPeriodoEmpleadoActualizar->setCodigoEntidadSaludPertenece($arContrato->getEntidadSaludRel()->getCodigoInterface());
             $arPeriodoEmpleadoActualizar->setCodigoEntidadCajaPertenece($arContrato->getEntidadCajaRel()->getCodigoInterface());
-//            if($arContrato->getCodigoTipoCotizanteFk() == 19) {
-//                $intDiasLaborados = $intDiasCotizar;
-//            } else {
-//               $intDiasLaborados = $intDiasCotizar - $intDiasLicencia; 
-//            }
-//            $arrIbc = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibc($arPeriodoDetalle->getSsoPeriodoRel()->getFechaDesde()->format('Y-m-d'), $arPeriodoDetalle->getSsoPeriodoRel()->getFechaHasta()->format('Y-m-d'), $arContrato->getCodigoContratoPk());                        
-//            $ibc = $arrIbc['ibc'];
-//            $ibc = round($ibc);
-//            $ibcMinimo = ($salarioMinimo / 30) * $intDiasLaborados;            
-//            if($ibc < $ibcMinimo) {
-//                $ibc = $ibcMinimo;
-//            }
-//            $arPeriodoEmpleadoActualizar->setHoras($arrIbc['horas']);
-//            $ibcSalario = round(($floSalario / 30) * $intDiasLaborados);
-//            if($ibcSalario != $ibc) {
-//                $arPeriodoEmpleadoActualizar->setVariacionTransitoriaSalario('X');
-//            }
-
-            //Se quita porque ya en la generacion se calcula el 70%
-            /*if($arContrato->getSalarioIntegral() == 1) {
-                $ibc = ($ibc * 70) / 100;
-            }*/
             $arPeriodoEmpleadoActualizar->setVrSalario($floSalario);                        
             //$arPeriodoEmpleadoActualizar->setVrVacaciones($ibcVacaciones);
             $arPeriodoEmpleadoActualizar->setDias($intDiasCotizar);        

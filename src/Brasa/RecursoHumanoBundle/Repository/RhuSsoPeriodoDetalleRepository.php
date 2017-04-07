@@ -586,7 +586,7 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $diasPension = $dias;
                     $diasRiesgos = $dias;
                     $diasCaja = $dias;
-                    //Despues del 6 marzo
+
                     $ibc = $this->redondearIbc2($ibc);
                     $ibcPension = $ibc;
                     $ibcSalud = $ibc;
@@ -612,6 +612,9 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     if($arAporte->getTipoCotizante() == '12') {
                         $diasRiesgos = 0;
                         $tarifaRiesgos = 0;
+                        if($arAporte->getSubtipoCotizante() == '0') {
+                            $ibcRiesgos = 0;
+                        }
                     }  
                     if($arAporte->getTipoCotizante() == '23') {
                         $tarifaSalud = 0;
@@ -690,22 +693,11 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                         $porcentajeSubsistencia = $porcentajeSolidaridad - 0.5;
                         $cotizacionSolidaridad = $ibcPension * 0.5 / 100;
                         $cotizacionSubsistencia = $ibcPension * $porcentajeSubsistencia / 100;
-                
+
                         $floCotizacionFSPSolidaridad = $this->redondearAporte3($cotizacionSolidaridad);
                         $floCotizacionFSPSubsistencia = $this->redondearAporte3($cotizacionSubsistencia);
-                    }
-
-                    
-                    /*if($floSalario >= ($arConfiguracionNomina->getVrSalario() * 4)) {
-                        $floCotizacionFSPSolidaridad = 0;
-                        $floCotizacionFSPSubsistencia = 0;
-                    }
-                    
-                    if($floIbcPension >= ($arConfiguracionNomina->getVrSalario() * 4)) {
-                        $floCotizacionFSPSolidaridad = round($floIbcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
-                        $floCotizacionFSPSubsistencia = round($floIbcPension * 0.005, -2, PHP_ROUND_HALF_DOWN);
-                    }*/                     
-                    
+                    }                           
+                                                        
                     
                     $cotizacionFondos = $floAporteVoluntarioFondoPensionesObligatorias + $floCotizacionVoluntariaFondoPensionesObligatorias + $cotizacionPension;
 
