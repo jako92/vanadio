@@ -387,15 +387,20 @@ class ServicioController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $arServicioDetalle = $form->getData();
-                $em->persist($arServicioDetalle);
-                $em->flush();
+                if ($form->get('puestoRel')->getData() == '') {
+                    $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+                    $objMensaje->Mensaje("error", "Debe seleccionar un puesto para crear el nuevo servicio");
+                } else {
+                    $arServicioDetalle = $form->getData();
+                    $em->persist($arServicioDetalle);
+                    $em->flush();
 
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle_nuevo', array('codigoServicio' => $codigoServicio, 'codigoServicioDetalle' => 0)));
                 } else {
                     $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
                 }
             }
         }
@@ -699,7 +704,7 @@ class ServicioController extends Controller {
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->add('BtnDetalleCerrar', SubmitType::class, $arrBotonDetalleCerrar)
                 ->add('BtnDetalleAbrir', SubmitType::class, $arrBotonDetalleAbrir)
-                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)                
+                ->add('BtnDetalleMarcar', SubmitType::class, $arrBotonDetalleMarcar)
                 ->add('BtnDetalleConceptoActualizar', SubmitType::class, $arrBotonDetalleConceptoActualizar)
                 ->add('BtnDetalleConceptoEliminar', SubmitType::class, $arrBotonDetalleConceptoEliminar)
                 ->getForm();
