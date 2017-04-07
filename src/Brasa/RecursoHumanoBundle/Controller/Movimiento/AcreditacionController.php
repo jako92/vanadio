@@ -23,9 +23,9 @@ class AcreditacionController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        
-        /*if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 12, 1)) {
+        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 139, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
-        }*/
+        }
         $paginator  = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);

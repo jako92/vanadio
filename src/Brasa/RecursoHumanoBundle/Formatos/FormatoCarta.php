@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FormatoCarta extends \FPDF_FPDF {
     public static $em;
     public static $arUsuario;
+    public static $usuario;
     public static $request;
     public static $codigoTipoCarta;
     public static $fechaProceso;
@@ -17,12 +18,13 @@ class FormatoCarta extends \FPDF_FPDF {
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
     
-    public function Generar($miThis, $em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    public function Generar($miThis, $em, $arUsuario, $usuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
         //$arUsuario = $miThis->get('security.context')->getToken()->getUser();
         self::$arUsuario = $arUsuario;
+        self::$usuario = $usuario;
         self::$em = $em;
         self::$codigoTipoCarta = $codigoTipoCarta;
         self::$fechaProceso = $fechaProceso;
@@ -130,6 +132,8 @@ class FormatoCarta extends \FPDF_FPDF {
         $floPromedioSalario = $arSuplementario;
         $arNoPrestacional = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->noPrestacionalCartaLaboral($intPeriodo, $arContrato->getCodigoContratoPk());            
         $floNoPrestacional = $arNoPrestacional;
+        $usuarioCarta = self::$usuario;
+        $usuarioCarta = $usuarioCarta->getNombreCorto();
         //fin promedio mensual
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
         $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);
@@ -145,7 +149,7 @@ class FormatoCarta extends \FPDF_FPDF {
                $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
                $cadena = $arContenidoFormato->getContenido();
              }
-          }            
+          }
         //se reemplaza el contenido de la tabla tipo de proceso disciplinario
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
@@ -201,7 +205,7 @@ class FormatoCarta extends \FPDF_FPDF {
         }*/
         $sustitucion16 = $entidadRiesgoProfesional;
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();         
-        $sustitucion18 = self::$arUsuario;
+        $sustitucion18 = $usuarioCarta;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();
         $sustitucion20 = $arConfiguracion->getDigitoVerificacionEmpresa();
         $motivoTerminacionContrato = '';
