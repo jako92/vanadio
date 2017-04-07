@@ -177,6 +177,11 @@ class ControlPuestoController extends Controller {
                 $numeroComunicacion = $form->get('numeroComunicacion')->getData();
                 $arControlPuestoDetalle->setNovedad($novedad);
                 $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                if($novedad != "") {
+                    $arControlPuestoDetalle->setEstadoNovedad(1);
+                } else {
+                    $arControlPuestoDetalle->setEstadoNovedad(0);
+                }
                 $em->persist($arControlPuestoDetalle);
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
@@ -188,6 +193,28 @@ class ControlPuestoController extends Controller {
         ));
     }
 
+    /**
+     * @Route("/tur/movimiento/control/puesto/ver/puesto/{codigoControlPuestoDetalle}", name="brs_tur_movimiento_control_puesto_ver_puesto")
+     */
+    public function verPuestoAction(Request $request, $codigoControlPuestoDetalle) {
+        $em = $this->getDoctrine()->getManager();
+        $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+        $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+        $form = $this->createFormBuilder()
+                ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            if ($form->isValid()) {
+            }
+        }
+        $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+        $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findBy(array('codigoPuestoFk' => $arControlPuestoDetalle->getCodigoPuestoFk(), 'anio' => $arControlPuestoDetalle->getControlPuestoRel()->getFecha()->format('Y'), 'mes' => $arControlPuestoDetalle->getControlPuestoRel()->getFecha()->format('m')));
+        return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:verPuesto.html.twig', array(
+                    'arProgramacionDetalles' => $arProgramacionDetalles,
+                    'form' => $form->createView()
+        ));
+    }    
+    
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();

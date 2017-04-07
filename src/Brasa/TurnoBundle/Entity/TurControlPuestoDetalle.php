@@ -32,6 +32,11 @@ class TurControlPuestoDetalle
      */    
     private $estadoCerrado = false;     
     
+    /**     
+     * @ORM\Column(name="estado_novedad", type="boolean")
+     */    
+    private $estadoNovedad = false;     
+    
     /**
      * @ORM\Column(name="novedad", type="string", length=1000, nullable=true)
      */    
@@ -290,5 +295,29 @@ class TurControlPuestoDetalle
     public function getControlPuestoRel()
     {
         return $this->controlPuestoRel;
+    }
+
+    /**
+     * Set estadoNovedad
+     *
+     * @param boolean $estadoNovedad
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setEstadoNovedad($estadoNovedad)
+    {
+        $this->estadoNovedad = $estadoNovedad;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoNovedad
+     *
+     * @return boolean
+     */
+    public function getEstadoNovedad()
+    {
+        return $this->estadoNovedad;
     }
 }

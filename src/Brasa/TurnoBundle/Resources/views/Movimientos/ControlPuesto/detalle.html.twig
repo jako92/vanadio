@@ -56,7 +56,7 @@
                     <table class="table table-striped table-bordered table-condensed">
                         <tr>
                             <th>ID</th>
-                            <th>CLIENTE</th>
+                            <th>CLIENTE</th>                            
                             <th>CODIGO</th>
                             <th>PUESTO</th>
                             <th>NUMERO_C</th>
@@ -69,11 +69,11 @@
                         {% for arControlPuestoDetalle in arControlPuestoDetalle %}
                             <tr>
                                 <td>{{ arControlPuestoDetalle.codigoControlPuestoDetallePk }}</td>
-                                <td>{{ arControlPuestoDetalle.puestoRel.clienteRel.nombreCorto | default('') }}</td>
-                                <td>{{ arControlPuestoDetalle.codigoPuestoFk }}</td>
+                                <td>{{ arControlPuestoDetalle.puestoRel.clienteRel.nombreCorto | default('') }}</td>                                
+                                <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_control_puesto_ver_puesto', {'codigoControlPuestoDetalle': arControlPuestoDetalle.codigoControlPuestoDetallePk }) }}', 'VerDetallePuesto', 600, 1000)">{{ arControlPuestoDetalle.codigoPuestoFk }}</a></td>               
                                 <td>{{ arControlPuestoDetalle.puestoRel.nombre | default('') }}</td>
                                 <td>{{ arControlPuestoDetalle.numeroComunicacion }}</td>
-                                <td>{{ arControlPuestoDetalle.novedad }}</td> 
+                                <td {% if arControlPuestoDetalle.estadoNovedad == 0 %} class="success" {% else %} class="danger" {% endif %}>{{ arControlPuestoDetalle.novedad }}</td> 
                                 <td>{% if arControlPuestoDetalle.estadoCerrado == 1 %} {{ arControlPuestoDetalle.fecha |date('Y-m-d H:i:s') }} {% else %}  {% endif %}</td>
                                 <td style="text-align: center">{% if arControlPuestoDetalle.estadoCerrado == 0 %} <a class="btn btn-default btn-xs" id="{{ path('brs_tur_movimiento_control_puesto_detalle_novedad', {'codigoControlPuestoDetalle': arControlPuestoDetalle.codigoControlPuestoDetallePk}) }}" style="float:left">Novedad</a> {% endif %}</td>
                                 <td>{% if arControlPuestoDetalle.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arControlPuestoDetalle.codigoControlPuestoDetallePk }}">Cerrar</button>{% endif %}</td>
