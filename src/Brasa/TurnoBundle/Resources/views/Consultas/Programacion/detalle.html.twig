@@ -113,8 +113,7 @@
         </div>
         <table class="table table-striped table-bordered table-condensed">
             <tr>
-
-                <th colspan="3">RECURSO</th>
+                <th colspan="5">RECURSO</th>
                 <th>1</th>
                 <th>2</th>
                 <th>3</th>
@@ -153,8 +152,8 @@
             {% set intCodigoCliente = '' %}
             {% for arProgramacionDetalle in arProgramacionDetalle %}
                 {% if intCodigoCliente != arProgramacionDetalle.programacionRel.codigoClienteFk %}
-                    <tr>
-                        <td id="suptipo" colspan="38"><b>{{ arProgramacionDetalle.programacionRel.clienteRel.nombreCorto | default('') }}</b></td>
+                    <tr>                        
+                        <td id="suptipo" colspan="40"><b>{{ arProgramacionDetalle.programacionRel.clienteRel.nombreCorto | default('') }}</b></td>
                     </tr>
                     {% set intCodigoCliente = arProgramacionDetalle.programacionRel.codigoClienteFk %}
                     {% set intCodigoPuesto = '' %}
@@ -167,6 +166,8 @@
                     {% set intCodigoPuesto = arProgramacionDetalle.codigoPuestoFk %}
                 {% endif %}
                 <tr>
+                    <td>{{ arProgramacionDetalle.anio }}</td>
+                    <td>{{ arProgramacionDetalle.mes }}</td>
                     <td>{{ arProgramacionDetalle.codigoRecursoFk }}</td>
                     <td>{{ arProgramacionDetalle.recursoRel.numeroIdentificacion | default('') }}</td>
                     {% if editarProgramacion == 1 %}
