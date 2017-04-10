@@ -576,7 +576,7 @@ class PeriodoController extends Controller {
             $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->liquidar($arAporte->getCodigoPeriodoDetalleFk());
             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
-        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial/Periodos:detalleAportesEditar.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Utilidades/SeguridadSocial:detalleAportesEditar.html.twig', array(
                     'form' => $form->createView()));
     }
 

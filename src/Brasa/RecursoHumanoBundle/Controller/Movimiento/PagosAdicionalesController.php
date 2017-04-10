@@ -688,6 +688,10 @@ class PagosAdicionalesController extends Controller
                 $this->filtrarListaTiempoSuplementirioTemporalMasivo($form, $request);
                 $this->listarTiempoSuplementarioTemporalMasivo($arProgramacionPago);
             }
+            if($form->get('BtnExcel')->isClicked()) {
+                $this->listarTiempoSuplementarioTemporalMasivo($form);
+                $this->generarMasivoSuplementarioTemporalExcel($codigoProgramacionPago);
+            }
         }
 
         $arProgramacionPagoHoraExtra = $paginator->paginate($arProgramacionPagoHoraExtra, $request->query->get('page', 1), 150);
@@ -832,7 +836,7 @@ class PagosAdicionalesController extends Controller
                     '',
                     $ar->getCodigoCentroCostoFk(),
                     1,
-                    $session->get('filtroCodigoDepartamentoEmpresa')
+                    ''
                     );
     }
 
@@ -967,13 +971,13 @@ class PagosAdicionalesController extends Controller
     }
     
     private function generarMasivoSuplementarioTemporalExcel($codigoProgramacionPago) {
+        $em = $this->getDoctrine()->getManager();
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
-        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
-        $em = $this->getDoctrine()->getManager();
+        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);        
         $session = new Session;
         $objPHPExcel = new \PHPExcel();
         // Set document properties
