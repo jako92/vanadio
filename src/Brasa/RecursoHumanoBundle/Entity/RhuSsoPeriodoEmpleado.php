@@ -153,6 +153,11 @@ class RhuSsoPeriodoEmpleado
     private $codigoEntidadCajaPertenece;    
     
     /**
+     * @ORM\Column(name="ibc_fondo_solidaridad", type="float")
+     */    
+    private $IbcFondoSolidaridad = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuSsoPeriodo", inversedBy="ssoPeriodosEmpleadosSsoPeriodoRel")
      * @ORM\JoinColumn(name="codigo_periodo_fk", referencedColumnName="codigo_periodo_pk")
      */
@@ -1005,5 +1010,29 @@ class RhuSsoPeriodoEmpleado
     public function getTarifaCaja()
     {
         return $this->tarifaCaja;
+    }
+
+    /**
+     * Set ibcFondoSolidaridad
+     *
+     * @param float $ibcFondoSolidaridad
+     *
+     * @return RhuSsoPeriodoEmpleado
+     */
+    public function setIbcFondoSolidaridad($ibcFondoSolidaridad)
+    {
+        $this->IbcFondoSolidaridad = $ibcFondoSolidaridad;
+
+        return $this;
+    }
+
+    /**
+     * Get ibcFondoSolidaridad
+     *
+     * @return float
+     */
+    public function getIbcFondoSolidaridad()
+    {
+        return $this->IbcFondoSolidaridad;
     }
 }

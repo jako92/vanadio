@@ -441,7 +441,10 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $ibcMinimo = ($salarioMinimo / 30) * $diasOrdinarios;            
             if($ibc < $ibcMinimo) {
                 $ibc = ceil($ibcMinimo);
-            }            
+            } 
+            //Para verificar si el empleado alcansa el monto de cotizacion de fondos de solidaridad
+            $ibcFS = $ibc + $ibcVacaciones;
+            
             if($diasOrdinarios > 0) {
                 $arPeriodoEmpleadoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleadoDetalle();
                 $arPeriodoEmpleadoDetalle->setSsoPeriodoEmpleadoRel($arPeriodoEmpleadoActualizar);
@@ -460,8 +463,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                     $arPeriodoEmpleadoDetalle->setFechaRetiro($arContrato->getFechaHasta());
                     $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->findOneBy(array('codigoContratoFk' => $arContrato->getCodigoContratoPk(), 'estadoAutorizado' => 1));
                     if($arLiquidacion) {
-                        $ibcVacaciones = $arLiquidacion->getVrVacaciones();
-                        $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacaciones);
+                        $ibcVacacionesLiquidacion = $arLiquidacion->getVrVacaciones();
+                        $arPeriodoEmpleadoDetalle->setVrVacaciones($ibcVacacionesLiquidacion);
                     }
                 }   
                 if($strNovedadIngreso == "X") {
@@ -486,7 +489,8 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
             $arPeriodoEmpleadoActualizar->setVrSalario($floSalario);                        
             //$arPeriodoEmpleadoActualizar->setVrVacaciones($ibcVacaciones);
             $arPeriodoEmpleadoActualizar->setDias($intDiasCotizar);        
-            $arPeriodoEmpleadoActualizar->setIbc($ibc);                        
+            $arPeriodoEmpleadoActualizar->setIbc($ibc); 
+            $arPeriodoEmpleadoActualizar->setIbcFondoSolidaridad($ibcFS);
             if($arContrato->getSalarioIntegral() == 1) {
                 $arPeriodoEmpleadoActualizar->setSalarioIntegral("X");
             }
