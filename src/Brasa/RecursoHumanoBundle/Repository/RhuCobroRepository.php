@@ -11,28 +11,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuCobroRepository extends EntityRepository {    
     
-    public function listaDql($intNumero = 0, $strCodigoCentroCosto = "", $strIdentificacion = "", $intTipo = "", $strDesde = "", $strHasta = "") {        
-        $em = $this->getEntityManager();
-        $dql   = "SELECT p, e FROM BrasaRecursoHumanoBundle:RhuPago p JOIN p.empleadoRel e WHERE p.codigoPagoPk <> 0";
-        if($intNumero != "" && $intNumero != 0) {
-            $dql .= " AND p.numero = " . $intNumero;
-        }
-        if($strCodigoCentroCosto != "") {
-            $dql .= " AND p.codigoCentroCostoFk = " . $strCodigoCentroCosto;
-        }   
-        if($intTipo != "" && $intTipo != 0) {
-            $dql .= " AND p.codigoPagoTipoFk =" . $intTipo;
-        }        
-        if($strIdentificacion != "" ) {
-            $dql .= " AND e.numeroIdentificacion = '" . $strIdentificacion . "'";
-        }
-        if($strDesde != "" || $strDesde != 0){
-            $dql .= " AND p.fechaDesde >='" . $strDesde . "'";
-        }
-        if($strHasta != "" || $strHasta != 0) {
-            $dql .= " AND p.fechaHasta <='" . $strHasta . "'";
-        }
-        $dql .= " ORDER BY p.codigoPagoPk DESC";
+    public function listaDql() {                
+        $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCobro c WHERE c.codigoCobroPk <> 0";       
+        $dql .= " ORDER BY c.codigoCobroPk DESC";
         return $dql;
     }                        
     

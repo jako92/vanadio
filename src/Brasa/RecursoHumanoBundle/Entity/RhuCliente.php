@@ -158,7 +158,16 @@ class RhuCliente
      * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="clienteRel") 
      */ 
     protected $examenesClienteRel;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="clienteRel") 
+     */ 
+    protected $cobrosClienteRel;    
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="clienteRel") 
+     */ 
+    protected $serviciosCobrarClienteRel; 
     
     /**
      * Constructor
@@ -936,5 +945,73 @@ class RhuCliente
     public function getExamenesClienteRel()
     {
         return $this->examenesClienteRel;
+    }
+
+    /**
+     * Add cobrosClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel)
+    {
+        $this->cobrosClienteRel[] = $cobrosClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove cobrosClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel
+     */
+    public function removeCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel)
+    {
+        $this->cobrosClienteRel->removeElement($cobrosClienteRel);
+    }
+
+    /**
+     * Get cobrosClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCobrosClienteRel()
+    {
+        return $this->cobrosClienteRel;
+    }
+
+    /**
+     * Add serviciosCobrarClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel)
+    {
+        $this->serviciosCobrarClienteRel[] = $serviciosCobrarClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove serviciosCobrarClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel
+     */
+    public function removeServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel)
+    {
+        $this->serviciosCobrarClienteRel->removeElement($serviciosCobrarClienteRel);
+    }
+
+    /**
+     * Get serviciosCobrarClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosCobrarClienteRel()
+    {
+        return $this->serviciosCobrarClienteRel;
     }
 }

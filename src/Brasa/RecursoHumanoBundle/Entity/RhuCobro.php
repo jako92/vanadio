@@ -32,7 +32,27 @@ class RhuCobro
      */
     private $vrBasico = 0;     
 
-
+    /**
+     * @ORM\Column(name="estado_autorizado", type="boolean")
+     */    
+    private $estadoAutorizado = 0;    
+    
+    /**
+     * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
+     */    
+    private $comentarios;     
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="cobrosClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="cobroRel")
+     */
+    protected $serviciosCobrarCobroRel;    
+    
     /**
      * Get codigoCobroPk
      *
@@ -113,5 +133,118 @@ class RhuCobro
     public function getVrBasico()
     {
         return $this->vrBasico;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuCobro
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
+    }
+
+    /**
+     * Set comentarios
+     *
+     * @param string $comentarios
+     *
+     * @return RhuCobro
+     */
+    public function setComentarios($comentarios)
+    {
+        $this->comentarios = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return string
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->serviciosCobrarCobroRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add serviciosCobrarCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel
+     *
+     * @return RhuCobro
+     */
+    public function addServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel)
+    {
+        $this->serviciosCobrarCobroRel[] = $serviciosCobrarCobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove serviciosCobrarCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel
+     */
+    public function removeServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel)
+    {
+        $this->serviciosCobrarCobroRel->removeElement($serviciosCobrarCobroRel);
+    }
+
+    /**
+     * Get serviciosCobrarCobroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosCobrarCobroRel()
+    {
+        return $this->serviciosCobrarCobroRel;
+    }
+
+    /**
+     * Set estadoAutorizado
+     *
+     * @param boolean $estadoAutorizado
+     *
+     * @return RhuCobro
+     */
+    public function setEstadoAutorizado($estadoAutorizado)
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAutorizado
+     *
+     * @return boolean
+     */
+    public function getEstadoAutorizado()
+    {
+        return $this->estadoAutorizado;
     }
 }

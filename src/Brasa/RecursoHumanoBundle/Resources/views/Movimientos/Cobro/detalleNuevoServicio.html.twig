@@ -1,0 +1,70 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Cobro detalle servicio nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Cobro: detalle servicio nuevo</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cobro</a></li>
+            <li class="active">Detalle servicio nuevo</li>
+        </ol>
+    </section>    
+    <section class="content">        	        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}            
+    <table class="table table-striped table-bordered table-condensed">
+        <tr>
+            <th>CÓDIGO</th>
+            <th>PERIODO</th>                    
+            <th>EMPLEADO</th>                    
+            <th style="text-align: right">BÁSICO</th>
+            <th style="text-align: right">T.A</th>
+            <th style="text-align: right">V.A</th>
+            <th style="text-align: right">AUX. TRANS</th>
+            <th style="text-align: right">RIESGOS</th>
+            <th style="text-align: right">EPS</th>
+            <th style="text-align: right">PENSION</th>
+            <th style="text-align: right">CAJA</th>
+            <th style="text-align: right">CESANTIAS</th>
+            <th style="text-align: right">VACACIONES</th>
+            <th style="text-align: right">ADMON</th>
+            <th style="text-align: right">COSTO</th>
+            <th style="text-align: right">TOTAL</th>
+            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
+        </tr>
+
+        {% for arServiciosCobrar in arServiciosCobrar %}
+            <tr> 
+                <td><input type="hidden" name="LblCodigo[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}">{{ arServiciosCobrar.codigoServicioCobrarPk }}</td>  
+                <td>{{ arServiciosCobrar.programacionPagoRel.fechaDesde |date("Y/m/d")  }}-{{ arServiciosCobrar.programacionPagoRel.fechaHasta |date("Y/m/d")  }}</td>
+                <td>{{ arServiciosCobrar.empleadoRel.nombreCorto }}</td>                        
+                <td style="text-align: right">{{ arServiciosCobrar.VrSalario | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalTiempo | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalValor | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrRiesgos | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrSalud | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrPension | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrCaja | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrCesantias | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrCosto | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrTotalCobrar | number_format(0, '.', ',') }}</td>
+                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}" /></td>
+            </tr>
+        {% endfor %}                                
+    </table>
+    {{ knp_pagination_render(arServiciosCobrar) }}
+    <div class="modal-footer">                
+        {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+    </div> 
+    <br />
+    {{ form_end(form) }}
+    <br/><br/><br/><br/>
+</section>
+{% endblock %}

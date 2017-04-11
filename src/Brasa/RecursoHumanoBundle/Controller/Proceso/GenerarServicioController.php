@@ -54,6 +54,7 @@ class GenerarServicioController extends Controller
                             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arPago->getCodigoEmpleadoFk());
                             $arServicio->setPagoRel($arPago);                            
                             $arServicio->setCentroCostoRel($arCentroCosto);
+                            $arServicio->setClienteRel($arCentroCosto->getClienteRel());
                             $arServicio->setEmpleadoRel($arEmpleado);
                             $arServicio->setProgramacionPagoRel($arProgramacionPago);
                             $arServicio->setFechaDesde($arPago->getFechaDesdePago());

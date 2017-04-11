@@ -32,6 +32,15 @@ class RhuServicioCobrar
      */    
     private $codigoProgramacionPagoFk; 
     
+    /**
+     * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
+     */    
+    private $codigoCobroFk;    
+    
+    /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteFk;     
     
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
@@ -219,6 +228,18 @@ class RhuServicioCobrar
      * @ORM\Column(name="vr_no_prestacional", type="float")
      */
     private $vrNoPrestacional = 0;    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="serviciosCobrarCobroRel")
+     * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
+     */
+    protected $cobroRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="serviciosCobrarClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuPago", inversedBy="serviciosCobrarPagoRel")
@@ -338,6 +359,30 @@ class RhuServicioCobrar
     public function getCodigoProgramacionPagoFk()
     {
         return $this->codigoProgramacionPagoFk;
+    }
+
+    /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
     }
 
     /**
@@ -1229,6 +1274,30 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set cobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
+    {
+        $this->cobroRel = $cobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
+     */
+    public function getCobroRel()
+    {
+        return $this->cobroRel;
+    }
+
+    /**
      * Set pagoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagoRel
@@ -1356,5 +1425,53 @@ class RhuServicioCobrar
     public function getFacturasDetallesServicioCobrarRel()
     {
         return $this->facturasDetallesServicioCobrarRel;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 }

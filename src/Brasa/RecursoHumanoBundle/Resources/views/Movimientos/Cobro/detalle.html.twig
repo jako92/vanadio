@@ -1,0 +1,140 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Cobro detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Cobro: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cobro</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">        	        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_nuevo', {'codigoCobro': 0 }) }}">Nuevo</a>
+                {% if arCobro.estadoAutorizado == 0 %}
+                    <a  class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_nuevo', {'codigoCobro': arCobro.codigoCobroPk }) }}">Editar</a>
+                {% endif %}
+                {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
+                {{ form_widget(form.BtnAnular, { 'attr': {'class': 'btn btn-default btn-sm', 'onclick': 'return confirm("Esta seguro de anular la cobro?")'} }) }}
+            </div>
+        </div>
+        <div style="float:right">
+            {% if arCobro.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}                        
+        </div>
+        <br /><br />
+        <!-- Encabezado Movimiento -->
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general cobro</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered ">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td>{{ arCobro.codigoCobroPk }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arCobro.fecha|date("Y/m/d") }}</td>
+                        <td class="titulo">BASICO:</td>
+                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrBasico | number_format(0, '.', ',') }}</td>                   
+                    </tr>                    
+                    <tr>
+                        <td class="titulo">COMENTARIOS:</td>
+                        <td colspan="7"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Fin Encabezado Movimiento -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#servicios" data-toggle="tab">Servicios</a></li>
+        </ul>    
+        <div class="tab-content">
+            <div class="tab-pane active" id="servicios">
+                <div id="servicios" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <tr>
+                            <th>ID</th>
+                            <th>IDENTIFICACIÓN</th>
+                            <th>EMPLEADO</th>
+                            <th>DESDE</th>
+                            <th>HASTA</th>                
+                            <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>                
+                            <th>BASICO</th>                
+                            <th><p data-toggle="tooltip" data-placement="top" title="Horas extra y bonificaciones prestacionales">PRE</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Adicionales al pago no prestacionales">NO_PRE</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="subsidio de transporte">TTE</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes pension">PENSION</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes salud">SALUD</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes riesgos">RIESGOS</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes caja">CAJA</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes sena">SENA</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aportes icbf">ICBF</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Prestaciones sociales (cesantias, primas, intereses)">PRESTACIONES</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Vacaciones">VACACIONES</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PARAFISCAL</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Valor de la administracion">ADMON</p></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarServicio[]');"/></th>
+                        </tr>
+
+                        {% for arServicioCobrar in arServiciosCobrar %}
+                            <tr> 
+                                <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }} </td>                                
+                                <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion  }}</td>
+                                <td>{{ arServicioCobrar.empleadoRel.nombreCorto  }}</td>
+                                <td>{{ arServicioCobrar.fechaDesde |date("Y/m/d")  }}</td>
+                                <td>{{ arServicioCobrar.fechaHasta |date("Y/m/d")  }}</td>                    
+                                <td style="text-align: right">{{ arServicioCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrSalario | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrPrestacional | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrNoPrestacional | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrAuxilioTransporte | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrPension | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrSalud | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrRiesgos | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrCaja | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrSena | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrIcbf | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrPrestaciones | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrVacaciones | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrAporteParafiscales | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>
+                                <td><input type="checkbox" name="ChkSeleccionarServicio[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
+                            </tr>
+                        {% endfor %} 
+                    </table>
+                    <!-- Fin Botones Menu Items -->
+                    <div class="btn-toolbar" style="float:right">
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnDetalleExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                        
+                        </div>
+                        <div class="btn-group">
+                            {% if arCobro.estadoAutorizado == 0 %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_servicio', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo</a>
+                            {% endif %}    
+                        </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnEliminarDetalleServicio, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
+                        </div>
+                    </div>            
+                </div>
+            </div>                   
+        </div>                        
+        <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_lista') }}" style="float:left">Volver</a>
+        </div>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
