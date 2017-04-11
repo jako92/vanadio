@@ -567,10 +567,31 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                     $arProgramacionPagoDetalle->setDiasLicencia($intDiasLicencia);
                 }     
                 //dias incapacidad
-                $intDiasIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidadPeriodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                
+                //$intDiasIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidadPeriodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                
+                //if($intDiasIncapacidad > 0) {                                        
+                //    $arProgramacionPagoDetalle->setDiasIncapacidad($intDiasIncapacidad);
+                //}     
+                $intDiasIncapacidad = 0;
+                $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
+                $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->periodo($arProgramacionPagoDetalle->getFechaDesdePago(), $arProgramacionPagoDetalle->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                                                                        
+                foreach ($arIncapacidades as $arIncapacidad) {             
+                    $fechaDesde = $arProgramacionPagoDetalle->getFechaDesdePago();
+                    $fechaHasta = $arProgramacionPagoDetalle->getFechaHasta();
+                    if($arIncapacidad->getFechaDesde() >  $fechaDesde) {
+                        $fechaDesde = $arIncapacidad->getFechaDesde();
+                    }             
+                    if($arIncapacidad->getFechaHasta() < $fechaHasta) {
+                        $fechaHasta = $arIncapacidad->getFechaHasta();                
+                    }                    
+                    $intDias = $fechaDesde->diff($fechaHasta);
+                    $intDias = $intDias->format('%a');   
+                    $intDias += 1;  
+                    $intDiasIncapacidad += $intDias;
+                }                         
                 if($intDiasIncapacidad > 0) {                                        
                     $arProgramacionPagoDetalle->setDiasIncapacidad($intDiasIncapacidad);
-                }     
+                }                
+                
                 
                 $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
                 $dias = $intDiasDevolver - $diasNovedad;                 
@@ -1091,12 +1112,31 @@ class RhuProgramacionPagoRepository extends EntityRepository {
             $intDiasLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->diasLicenciaPeriodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                
             if($intDiasLicencia > 0) {                                        
                 $arProgramacionPagoDetalle->setDiasLicencia($intDiasLicencia);
-            }     
+            } 
+            
             //dias incapacidad
-            $intDiasIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidadPeriodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                
+            //$intDiasIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->diasIncapacidadPeriodo($arProgramacionPago->getFechaDesde(), $arProgramacionPago->getFechaHasta(), $arContrato->getCodigoEmpleadoFk());                 
+            $intDiasIncapacidad = 0;
+            $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
+            $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->periodo($arProgramacionPagoDetalle->getFechaDesdePago(), $arProgramacionPagoDetalle->getFechaHasta(), $arProgramacionPagoDetalle->getCodigoEmpleadoFk());                                                                        
+            foreach ($arIncapacidades as $arIncapacidad) {             
+                $fechaDesde = $arProgramacionPagoDetalle->getFechaDesdePago();
+                $fechaHasta = $arProgramacionPagoDetalle->getFechaHasta();
+                if($arIncapacidad->getFechaDesde() >  $fechaDesde) {
+                    $fechaDesde = $arIncapacidad->getFechaDesde();
+                }             
+                if($arIncapacidad->getFechaHasta() < $fechaHasta) {
+                    $fechaHasta = $arIncapacidad->getFechaHasta();                
+                }                    
+                $intDias = $fechaDesde->diff($fechaHasta);
+                $intDias = $intDias->format('%a');   
+                $intDias += 1;  
+                $intDiasIncapacidad += $intDias;
+            }                         
             if($intDiasIncapacidad > 0) {                                        
                 $arProgramacionPagoDetalle->setDiasIncapacidad($intDiasIncapacidad);
-            }  
+            } 
+            
             $diasNovedad = $intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones;
             $dias = $intDiasDevolver - $diasNovedad;
             $horasNovedad = ($intDiasIncapacidad + $intDiasLicencia + $intDiasVacaciones) * $arContrato->getFactorHorasDia();
