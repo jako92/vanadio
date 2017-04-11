@@ -354,7 +354,7 @@ class IntercambioDatosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-        $query = $em->createQuery($this->strSqlLista);
+        $query = $em->createQuery($this->strDqlLista);
         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
         $arRegistro = $query->getResult();
         $strNombreArchivo = "CMDMOVIMIENTO".".txt";
@@ -369,7 +369,11 @@ class IntercambioDatosController extends Controller {
         $strSecuencia = 1;
         foreach ($arRegistro AS $arRegistro) {
             //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
-            $array = array("!","!","!","!","!",$arRegistro->getFecha(),"!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $arRegistro->getTerceroRel()->getNumeroIdentificacion(),"!",$arRegistro->getTerceroRel()->getNumeroIdentificacion(),"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
+            $identificacion = "";
+            if($arRegistro->getCodigoTerceroFk()) {
+                $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
+            }
+            $array = array("!","!","!","!","!",$arRegistro->getFecha()->Format('Y/m/d'),"!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $identificacion,"!",$identificacion,"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
