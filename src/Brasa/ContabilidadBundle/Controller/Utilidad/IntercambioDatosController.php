@@ -98,6 +98,11 @@ class IntercambioDatosController extends Controller {
                     $this->listar();
                     $this->generarExcelInterfaceOfimatica();
                 }
+                if ($form->get('BtnGenerarSoftland')->isClicked()) {
+                    $this->filtrar($form, $request);
+                    $this->listar();
+                    $this->generarSoftland();
+                }
             }
         }
         return $this->render('BrasaContabilidadBundle:Utilidad/IntercambioDatos:exportar.html.twig', array(
@@ -157,6 +162,7 @@ class IntercambioDatosController extends Controller {
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroCtbRegistroFiltrarFecha')))
                 ->add('BtnGenerarOfimatica', SubmitType::class, array('label' => 'Ofimatica',))
                 ->add('BtnGenerarIlimitada', SubmitType::class, array('label' => 'Ilimitada',))
+                ->add('BtnGenerarSoftland', SubmitType::class, array('label' => 'Softland',))
                 ->getForm();
         return $form;
     }
@@ -342,6 +348,47 @@ class IntercambioDatosController extends Controller {
             $Nro = $Str . $Nro;
 
         return (string) $Nro;
+    }
+    
+    private function generarSoftland() {
+        $em = $this->getDoctrine()->getManager();
+        $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $query = $em->createQuery($this->strSqlLista);
+        $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+        $arRegistro = $query->getResult();
+        $strNombreArchivo = "CMDMOVIMIENTO".".txt";
+        $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
+        //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $ar = fopen($strArchivo, "a") or die("Problemas en la creacion del archivo plano");
+        //$arEmpleados = new Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();                   
+        //Inicio cuerpo
+        $strSecuencia = 1;
+        foreach ($arRegistro AS $arRegistro) {
+            //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
+            $array = array("!","!","!","!","!",$arRegistro->getFecha(),"!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $arRegistro->getTerceroRel()->getNumeroIdentificacion(),"!",$arRegistro->getTerceroRel()->getNumeroIdentificacion(),"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
+            foreach ($array as $fields) {
+                fputs($ar, $fields);
+            }
+            fputs($ar, "\r\n");
+            $strSecuencia ++;
+        }
+        //fputs($ar, "03" . $this->RellenarNr(($strSecuencia-1), "0", 9) . $strValorTotal . "\n");
+        fclose($ar);
+        $em->flush();
+        //Fin cuerpo                        
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv; charset=ISO-8859-15');
+        header('Content-Disposition: attachment; filename=' . basename($strArchivo));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($strArchivo));
+        readfile($strArchivo);
+        exit;
     }
 
 }

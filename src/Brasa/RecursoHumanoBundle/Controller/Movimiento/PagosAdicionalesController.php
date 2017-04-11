@@ -689,7 +689,7 @@ class PagosAdicionalesController extends Controller
                 $this->listarTiempoSuplementarioTemporalMasivo($arProgramacionPago);
             }
             if($form->get('BtnExcel')->isClicked()) {
-                $this->listarTiempoSuplementarioTemporalMasivo($form);
+                $this->listarTiempoSuplementarioTemporalMasivo($form, $arProgramacionPago);
                 $this->generarMasivoSuplementarioTemporalExcel($codigoProgramacionPago);
             }
         }
