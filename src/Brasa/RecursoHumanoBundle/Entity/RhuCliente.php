@@ -153,6 +153,11 @@ class RhuCliente
      * @ORM\OneToMany(targetEntity="RhuSucursal", mappedBy="clienteRel") 
      */ 
     protected $sucursalClienteRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="clienteRel") 
+     */ 
+    protected $examenesClienteRel;
     
     
     /**
@@ -897,5 +902,39 @@ class RhuCliente
     public function getSucursalClienteRel()
     {
         return $this->sucursalClienteRel;
+    }
+
+    /**
+     * Add examenesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel)
+    {
+        $this->examenesClienteRel[] = $examenesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove examenesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel
+     */
+    public function removeExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel)
+    {
+        $this->examenesClienteRel->removeElement($examenesClienteRel);
+    }
+
+    /**
+     * Get examenesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExamenesClienteRel()
+    {
+        return $this->examenesClienteRel;
     }
 }

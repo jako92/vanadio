@@ -38,6 +38,11 @@ class RhuExamen
     private $codigoFacturaFk;
 
     /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteFk;    
+    
+    /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
      */    
     private $codigoCargoFk;
@@ -50,12 +55,12 @@ class RhuExamen
     /**     
      * @ORM\Column(name="estado_aprobado", type="boolean")
      */    
-    private $estadoAprobado = 0;     
+    private $estadoAprobado = false;     
 
     /**     
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
-    private $estadoAutorizado = 0;    
+    private $estadoAutorizado = false;    
     
     /**
      * @ORM\Column(name="nombreCorto", type="string")
@@ -96,12 +101,12 @@ class RhuExamen
     /**     
      * @ORM\Column(name="estado_pagado", type="boolean")
      */    
-    private $estadoPagado = 0;
+    private $estadoPagado = false;
 
     /**     
      * @ORM\Column(name="estado_cobrado", type="boolean")
      */    
-    private $estadoCobrado = 0;    
+    private $estadoCobrado = false;    
     
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
@@ -116,12 +121,17 @@ class RhuExamen
     /**     
      * @ORM\Column(name="control", type="boolean")
      */    
-    private $control = 0;
+    private $control = false;
 
     /**     
      * @ORM\Column(name="control_pago", type="boolean")
      */    
-    private $controlPago = 0;
+    private $controlPago = false;
+    
+    /**     
+     * @ORM\Column(name="cobro_cliente", type="boolean")
+     */    
+    private $cobroCliente = false;    
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
@@ -165,6 +175,12 @@ class RhuExamen
     protected $cargoRel;
     
     /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="examenesClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuExamenDetalle", mappedBy="examenRel")
      */
     protected $examenesExamenDetalleRel;
@@ -179,7 +195,6 @@ class RhuExamen
      */
     protected $examenesExamenRestriccionMedicaRel;
     
-
     /**
      * Constructor
      */
@@ -294,6 +309,30 @@ class RhuExamen
     public function getCodigoFacturaFk()
     {
         return $this->codigoFacturaFk;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuExamen
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -705,6 +744,30 @@ class RhuExamen
     }
 
     /**
+     * Set cobroCliente
+     *
+     * @param boolean $cobroCliente
+     *
+     * @return RhuExamen
+     */
+    public function setCobroCliente($cobroCliente)
+    {
+        $this->cobroCliente = $cobroCliente;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroCliente
+     *
+     * @return boolean
+     */
+    public function getCobroCliente()
+    {
+        return $this->cobroCliente;
+    }
+
+    /**
      * Set codigoUsuario
      *
      * @param string $codigoUsuario
@@ -870,6 +933,30 @@ class RhuExamen
     public function getCargoRel()
     {
         return $this->cargoRel;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuExamen
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 
     /**
