@@ -107,7 +107,7 @@ class FormatoPagoBanco extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7);
 
         //creamos la cabecera de la tabla.
-        $w = array(5, 20,25, 75, 30, 20, 15);
+        $w = array(12, 16,25, 75, 30, 20, 15);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -129,13 +129,13 @@ class FormatoPagoBanco extends \FPDF_FPDF {
         $pdf->SetFont('Arial', '', 7);
         $var = 0;
         foreach ($arPagoBancoDetalles as $arPagoBancoDetalle) {            
-            $pdf->Cell(5, 4, $arPagoBancoDetalle->getCodigoPagoBancoDetallePk(), 1, 0, 'L');
+            $pdf->Cell(12, 4, $arPagoBancoDetalle->getCodigoPagoBancoDetallePk(), 1, 0, 'L');
             if($arPagoBancoDetalle->getCodigoPagoFk()) {
-                $pdf->Cell(20, 4, $arPagoBancoDetalle->getPagoRel()->getNumero(), 1, 0, 'L');    
+                $pdf->Cell(16, 4, $arPagoBancoDetalle->getPagoRel()->getNumero(), 1, 0, 'L');    
             } elseif($arPagoBancoDetalle->getCodigoLiquidacionFk()) {
-                $pdf->Cell(20, 4,$arPagoBancoDetalle->getCodigoLiquidacionFk(), 1, 0, 'L');    
+                $pdf->Cell(16, 4,$arPagoBancoDetalle->getCodigoLiquidacionFk(), 1, 0, 'L');    
             } elseif ($arPagoBancoDetalle->getCodigoVacacionFk()) {
-                $pdf->Cell(20, 4,$arPagoBancoDetalle->getCodigoVacacionFk(), 1, 0, 'L');
+                $pdf->Cell(16, 4,$arPagoBancoDetalle->getCodigoVacacionFk(), 1, 0, 'L');
             } else {
                 $pdf->Cell(25, 4, "", 1, 0, 'L');    
             }
@@ -151,7 +151,7 @@ class FormatoPagoBanco extends \FPDF_FPDF {
             
         }
             $pdf->SetFont('Arial', 'B', 7);
-            $pdf->Cell(175, 5, "TOTAL: ", 1, 0, 'R');
+            $pdf->Cell(178, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
             $pdf->Cell(15, 5, number_format($var,0, '.', ','), 1, 0, 'R');
         
