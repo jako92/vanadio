@@ -17,4 +17,59 @@ class RhuCobroRepository extends EntityRepository {
         return $dql;
     }                        
     
+    public function liquidar($codigoCobro) {        
+        $em = $this->getEntityManager();       
+        $basico = 0;
+        $prestacional = 0;
+        $noPrestacional = 0;
+        $auxilioTransporte = 0;
+        $pension = 0;
+        $salud = 0;
+        $riesgos = 0;
+        $caja = 0;
+        $sena = 0;
+        $icbf = 0;
+        $prestaciones = 0;
+        $vacaciones = 0;
+        $aporteParafiscales = 0;
+        $administracion = 0;
+        
+        $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+        $arServiciosCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => $codigoCobro));                
+        foreach ($arServiciosCobrar as $arServicioCobrar) {
+            $basico += $arServicioCobrar->getVrSalario();
+            $prestacional += $arServicioCobrar->getVrPrestacional();
+            $noPrestacional += $arServicioCobrar->getVrNoPrestacional();
+            $auxilioTransporte += $arServicioCobrar->getVrAuxilioTransporte();
+            $pension += $arServicioCobrar->getVrPension();
+            $salud += $arServicioCobrar->getVrSalud();
+            $riesgos += $arServicioCobrar->getVrRiesgos();
+            $caja += $arServicioCobrar->getVrCaja();
+            $sena += $arServicioCobrar->getVrSena();
+            $icbf += $arServicioCobrar->getVrIcbf();
+            $prestaciones += $arServicioCobrar->getVrPrestaciones();
+            $vacaciones += $arServicioCobrar->getVrVacaciones();
+            $aporteParafiscales += $arServicioCobrar->getVrAporteParafiscales();
+            $administracion += $arServicioCobrar->getVrAdministracion();            
+        }        
+        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);                
+        $arCobro->setVrBasico($basico);
+        $arCobro->getVrPrestacional($prestacional);
+        $arCobro->setVrNoPrestacional($noPrestacional);
+        $arCobro->setVrAuxilioTransporte($auxilioTransporte);
+        $arCobro->setVrPension($pension);
+        $arCobro->setVrSalud($salud);
+        $arCobro->setVrRiesgos($riesgos);
+        $arCobro->setVrCaja($caja);
+        $arCobro->setVrSena($sena);
+        $arCobro->setVrIcbf($icbf);
+        $arCobro->setVrPrestaciones($prestaciones);
+        $arCobro->setVrVacaciones($vacaciones);
+        $arCobro->setVrAporteParafiscales($aporteParafiscales);
+        $arCobro->setVrAdministracion($administracion);
+        $em->persist($arCobro);
+        $em->flush();
+        return true;
+    }    
+    
 }

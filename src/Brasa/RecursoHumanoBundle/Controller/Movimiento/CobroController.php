@@ -125,48 +125,17 @@ class CobroController extends Controller
             if($form->get('BtnEliminarDetalleServicio')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionarServicio');
                 if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoCobroDetalle) {
-                        $arCobroDetalleEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobroDetalle')->find($codigoCobroDetalle);
-                        $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($arCobroDetalleEliminar->getCodigoServicioCobrarFk());
+                    foreach ($arrSeleccionados AS $codigo) {                        
+                        $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($codigo);                                                
                         $arServicioCobrar->setEstadoCobrado(0);
-                        $em->persist($arServicioCobrar);
-                        $em->remove($arCobroDetalleEliminar);                        
+                        $arServicioCobrar->setCobroRel(null);
+                        $em->persist($arServicioCobrar);                        
                     }
                     $em->flush();  
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
                 }
-            }
-            if($form->get('BtnEliminarDetalleExamen')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionarExamen');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoExamen) {
-                        $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-                        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
-                        $arExamen->setEstadoCobrado(0);
-                        $arExamen->setCobroRel(NULL);                                                                        
-                        $em->persist($arExamen);                       
-                    }
-                    $em->flush();  
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
-                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
-                }
-            }            
-            if($form->get('BtnEliminarDetalleSeleccion')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionarSeleccion');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoSeleccion) {
-                        $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
-                        $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
-                        $arSeleccion->setEstadoCobrado(0);
-                        $arSeleccion->setCobroRel(NULL);                                                                        
-                        $em->persist($arSeleccion);                       
-                    }
-                    $em->flush();  
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
-                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
-                }
-            }             
+            }           
             if($form->get('BtnImprimir')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->imprimir($codigoCobro);
                 if($strResultado != "") {
@@ -182,19 +151,7 @@ class CobroController extends Controller
                     //}                                         
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));                                                
-            }
-            
-            if($form->get('BtnVistaPrevia')->isClicked()) {          
-                $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                //if($arCobro->getCobroTipoRel()->getTipo() == 1) {
-                    if($arConfiguracion->getCodigoFormatoCobro() <= 1) {
-                        $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCobro();
-                        $objCobro->Generar($em, $codigoCobro);                            
-                    }                    
-                //}                                 
-                return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));                                                
-            }
+            }           
             if ($form->get('BtnDetalleExcel')->isClicked()) {                
                 $this->generarDetalleExcel($codigoCobro);
             }
@@ -234,7 +191,7 @@ class CobroController extends Controller
                         }
                     }                    
                     $em->flush();                    
-                    //$em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
