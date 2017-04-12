@@ -44,7 +44,7 @@ class RhuPagoAdicionalRepository extends EntityRepository {
         $dql .= " ORDER BY pa.codigoPagoAdicionalPk DESC";
         return $dql;
     } 
-    
+        
     public function listaAdicionalesDql($strIdentificacion = "", $aplicarDiaLaborado = "", $codigoCentroCosto = "", $codigoPagoConcepto = "", $estadoInactivo = "", $modalidad = "", $periodo = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT pa,e FROM BrasaRecursoHumanoBundle:RhuPagoAdicional pa JOIN pa.empleadoRel e WHERE pa.codigoPagoAdicionalPk <> 0 ";   

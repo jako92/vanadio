@@ -834,8 +834,6 @@ class PagosAdicionalesController extends Controller
         $session = new Session;
         $this->strDqlListaTiempoSuplementarioMasivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->ListaTiempoSuplementarioMasivoDql(
                     '',
-                    $ar->getCodigoCentroCostoFk(),
-                    1,
                     ''
                     );
     }
@@ -1029,7 +1027,7 @@ class PagosAdicionalesController extends Controller
                     ->setCellValue('R1', 'H.R.D.D');
 
         $i = 2;
-        $query = $em->createQuery($this->strDqlLista);
+        $query = $em->createQuery($this->strDqlListaTiempoSuplementarioMasivo);
         $arPagoHorasExtra = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra();
         $arPagoHorasExtra = $query->getResult();
             $objPHPExcel->setActiveSheetIndex(0)

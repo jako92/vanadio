@@ -92,6 +92,15 @@ class FormatoExamen extends \FPDF_FPDF {
         $this->Cell(100, 6, $arExamen->getEntidadExamenRel()->getNombre() , 1, 0, 'L', 1);
         $this->SetXY(10, $intY + 15);
         $this->SetFont('Arial','B',8);
+        $this->Cell(30, 6, "CARGO" , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);
+        $this->Cell(30, 6, $arExamen->getCargoRel()->getNombre() , 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',8);
+        $this->Cell(30, 6, "CLIENTE:" , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(100, 6, $arExamen->getClienteRel()->getNombreCorto() , 1, 0, 'L', 1);
+        $this->SetXY(10, $intY + 20);
+        $this->SetFont('Arial','B',8);
         $this->Cell(30, 5, utf8_decode("DIRECCIÓN:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->Cell(100, 5, $arExamen->getEntidadExamenRel()->getDireccion() , 1, 0, 'L', 1);
@@ -100,7 +109,7 @@ class FormatoExamen extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->Cell(30, 5, $arExamen->getEntidadExamenRel()->getTelefono() , 1, 0, 'L', 1);
         
-        $this->SetXY(10, $intY + 20);
+        $this->SetXY(10, $intY + 25);
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 5, utf8_decode("COMENTARIOS:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
@@ -112,7 +121,7 @@ class FormatoExamen extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(14);
-        $header = array('COD', 'TIPO', 'TIPO EXAMEN');
+        $header = array('COD', 'TIPO', 'TIPO EXAMEN', 'VR.EXAMEN');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -120,7 +129,7 @@ class FormatoExamen extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7);
 
         //creamos la cabecera de la tabla.
-        $w = array(10, 10, 170);
+        $w = array(10, 10, 150, 20);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -142,10 +151,21 @@ class FormatoExamen extends \FPDF_FPDF {
         foreach ($arExamenDetalles as $arExamenDetalle) {            
             $pdf->Cell(10, 4, $arExamenDetalle->getCodigoExamenDetallePk(), 1, 0, 'L');
             $pdf->Cell(10, 4, $arExamenDetalle->getExamenTipoRel()->getCodigoExamenTipoPk(), 1, 0, 'L');
-            $pdf->Cell(170, 4, utf8_decode($arExamenDetalle->getExamenTipoRel()->getNombre()), 1, 0, 'L');                
+            $pdf->Cell(150, 4, utf8_decode($arExamenDetalle->getExamenTipoRel()->getNombre()), 1, 0, 'L');
+            $pdf->Cell(20, 4, number_format($arExamenDetalle->getVrPrecio(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
+            $w = array(10, 10, 150, 20);
         }
+        $w=$pdf->getY();
+        $pdf->SetXY(160,$w + 4);
+        $pdf->SetFont('Arial','B',7);
+        $pdf->Cell(20, 4, "TOTAL",1, 0, 'L');
+        $pdf->SetFont('Arial','',7);
+        $pdf->Cell(20, 4,  number_format($arExamenDetalle->getExamenRel()->getVrTotal(), 0, '.', ','), 1, 0, 'R');
+        $pdf->SetFont('Arial','B',8);
+        $pdf->SetXY(10,$w + 15);
+        $pdf->Cell(20, 4, "Aceptada y Firmada:"."_______________________________________________", 0, 'L');
     }
 
     public function Footer() {
