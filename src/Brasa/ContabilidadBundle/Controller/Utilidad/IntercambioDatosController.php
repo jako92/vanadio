@@ -373,7 +373,8 @@ class IntercambioDatosController extends Controller {
             if($arRegistro->getCodigoTerceroFk()) {
                 $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
             }
-            $array = array("!","!","!","!","!",$arRegistro->getFecha()->Format('Y/m/d'),"!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $identificacion,"!",$identificacion,"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
+            list($anio, $mes)= explode('/', $arRegistro->getFecha()->Format('Y/m/d'));
+            $array = array($anio,"!",$mes,"!","!","!","!","!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $identificacion,"!",$identificacion,"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
