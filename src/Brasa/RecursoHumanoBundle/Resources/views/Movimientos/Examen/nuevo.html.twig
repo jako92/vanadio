@@ -60,20 +60,19 @@
                     </div>                    
                 </div>                  
                 <div class="form-group form-group-sm">
-                    <label for="form_fechaNacimiento" class="col-sm-2 control-label">Fecha Nacimiento:</label>
+                    <label for="form_fechaNacimiento" class="col-sm-2 control-label">Fecha nacimiento:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.fechaNacimiento, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                    <label for="form_ciudadRel" class="col-sm-2 control-label">Ciudad:</label>
+                    <label for="form_ciudadRel" class="col-sm-2 control-label">Ciudad nacimiento:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.ciudadRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>                    
                 </div>
                 <div class="form-group form-group-sm">
                     <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-10">
-                        <label for="form_cobroCliente"  class="control-label">Cobro cliente {{ form_widget(form.cobroCliente) }}</label>                        
-                        <label for="form_controlPago"  class="control-label">Control pago {{ form_widget(form.controlPago) }}</label>                        
+                    <div class="col-sm-10">                        
+                        <label for="form_controlPago"  class="control-label">Cobro empleado {{ form_widget(form.controlPago) }}</label>                        
                     </div>
                 </div>    
                 <div class="form-group">

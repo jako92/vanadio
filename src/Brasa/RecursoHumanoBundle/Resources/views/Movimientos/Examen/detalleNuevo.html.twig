@@ -12,21 +12,24 @@
 
         <table class="table table-striped table-bordered table-condensed table-hover">
             <tr>
-
-                <th>CÓDIGO</th>
+                <th>ID</th>
+                <th>CODIGO</th>
                 <th>NOMBRE</th> 
-                <th>INGRESO</th>
+                <th>PRECIO</th>
+                <th><p data-toggle="tooltip" data-placement="top" title="INGRESO">ING</p></th>
                 <th></th>
             </tr>
 
-            {%for arExamenTipos in arExamenTipos %}
+            {%for arExamenListaPrecio in arExamenListaPrecios %}
                 <tr>
-                    <td>{{arExamenTipos.codigoExamenTipoPk}}</td>
-                    <td>{{arExamenTipos.nombre}}</td>
-                    <td>{% if arExamenTipos.ingreso == 1 %} SI {% else %} NO {% endif %}</td>
-                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arExamenTipos.codigoExamenTipoPk }}" /></td>
-                    {%endfor%}
-            </tr>            
+                    <td>{{ arExamenListaPrecio.codigoExamenListaPrecioPk }}</td>
+                    <td>{{ arExamenListaPrecio.codigoExamenTipoFk }}</td>
+                    <td>{{ arExamenListaPrecio.examenTipoRel.nombre}}</td>
+                    <td class="td-in-well" align="right">{{ arExamenListaPrecio.precio | number_format(0, '.', ',') }}</td>
+                    <td>{% if arExamenListaPrecio.examenTipoRel.ingreso == 1 %} SI {% else %} NO {% endif %}</td>                    
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arExamenListaPrecio.codigoExamenListaPrecioPk }}" /></td>
+                </tr>                       
+            {%endfor%}                        
         </table>    
 
         <div class="modal-footer">            

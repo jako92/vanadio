@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RhuClienteType extends AbstractType
 {
@@ -37,8 +38,7 @@ class RhuClienteType extends AbstractType
             ->add('direccion', TextType::class, array('required' => false))  
             ->add('barrio', TextType::class, array('required' => false))  
             ->add('telefono', TextType::class, array('required' => false))                              
-            ->add('celular', TextType::class, array('required' => false))                              
-            ->add('fax', TextType::class, array('required' => false))                              
+            ->add('celular', TextType::class, array('required' => false))                                          
             ->add('email', TextType::class, array('required' => false))                              
             ->add('gerente', TextType::class, array('required' => false))                  
             ->add('celularGerente', TextType::class, array('required' => false))                  
@@ -48,6 +48,7 @@ class RhuClienteType extends AbstractType
             ->add('celularContacto', TextType::class, array('required' => false))  
             ->add('telefonoContacto', TextType::class, array('required' => false))  
             ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('cobroExamen', ChoiceType::class, array('choices' => array('CLIENTE' => 'C', 'EMPLEADO' => 'E', 'NO COBRAR' => 'N')))                                            
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

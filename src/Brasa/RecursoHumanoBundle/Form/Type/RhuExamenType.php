@@ -49,8 +49,7 @@ class RhuExamenType extends AbstractType
             ->add('nombreCorto', TextType::class, array('required' => true))
             ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('controlPago', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))
-            ->add('controlPago', CheckboxType::class, array('required' => false))
-            ->add('cobroCliente', CheckboxType::class, array('required' => false))
+            ->add('controlPago', CheckboxType::class, array('required' => false))            
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

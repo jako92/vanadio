@@ -118,6 +118,11 @@ class RhuCliente
     private $usuario;     
     
     /**
+     * @ORM\Column(name="cobro_examen", type="string", length=1, nullable=true)
+     */
+    private $cobroExamen;    
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
      */    
     private $comentarios;                            
@@ -169,6 +174,7 @@ class RhuCliente
      */ 
     protected $serviciosCobrarClienteRel; 
     
+
     /**
      * Constructor
      */
@@ -177,8 +183,10 @@ class RhuCliente
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->centroTrabajoClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sucursalClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->examenesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cobrosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->serviciosCobrarClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -672,6 +680,30 @@ class RhuCliente
     }
 
     /**
+     * Set cobroExamen
+     *
+     * @param string $cobroExamen
+     *
+     * @return RhuCliente
+     */
+    public function setCobroExamen($cobroExamen)
+    {
+        $this->cobroExamen = $cobroExamen;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroExamen
+     *
+     * @return string
+     */
+    public function getCobroExamen()
+    {
+        return $this->cobroExamen;
+    }
+
+    /**
      * Set comentarios
      *
      * @param string $comentarios
@@ -843,40 +875,6 @@ class RhuCliente
     public function getFacturasClienteRel()
     {
         return $this->facturasClienteRel;
-    }
-
-    /**
-     * Add centroTrabajoClienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel
-     *
-     * @return RhuCliente
-     */
-    public function addCentroTrabajoClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel)
-    {
-        $this->centroTrabajoClienteRel[] = $centroTrabajoClienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove centroTrabajoClienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel
-     */
-    public function removeCentroTrabajoClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoClienteRel)
-    {
-        $this->centroTrabajoClienteRel->removeElement($centroTrabajoClienteRel);
-    }
-
-    /**
-     * Get centroTrabajoClienteRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCentroTrabajoClienteRel()
-    {
-        return $this->centroTrabajoClienteRel;
     }
 
     /**

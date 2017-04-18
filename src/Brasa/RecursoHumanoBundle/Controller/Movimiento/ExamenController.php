@@ -72,6 +72,11 @@ class ExamenController extends Controller
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arExamen = $form->getData();
+            if($arExamen->getClienteRel()) {
+                $arExamen->setCobro($arExamen->getClienteRel()->getCobroExamen());
+            } else {
+                $arExamen->setCobro('N');
+            }
             if($codigoExamen == 0) {
                 $arExamen->setCodigoUsuario($arUsuario->getUserName());
                 if($arExamen->getExamenClaseRel()->getCodigoExamenClasePk() == 1 && $codigoExamen == 0) {
@@ -299,13 +304,13 @@ class ExamenController extends Controller
     /**
      * @Route("/rhu/examen/detalle/nuevo/{codigoExamen}", name="brs_rhu_examen_detalle_nuevo")
      */
-    public function detalleNuevoAction(Request $request, $codigoExamen) {
-        
+    public function detalleNuevoAction(Request $request, $codigoExamen) {        
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();
-        $arExamenTipos = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenTipo')->findAll();
         $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
+        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);        
+        $arExamenListaPrecios = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenListaPrecio')->findBy(array('codigoEntidadExamenFk' => $arExamen->getCodigoEntidadExamenFk()));
+
         $form = $this->createFormBuilder()
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
@@ -315,15 +320,16 @@ class ExamenController extends Controller
                 if ($arExamen->getEstadoAutorizado() == 0){
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     if(count($arrSeleccionados) > 0) {
-                        foreach ($arrSeleccionados AS $codigoExamenTipo) {
-                            $arExamenTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenTipo')->find($codigoExamenTipo);
+                        foreach ($arrSeleccionados AS $codigo) {
+                            $arExamenListaPrecio = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenListaPrecio();                            
+                            $arExamenListaPrecio = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenListaPrecio')->find($codigo);
+                            $arExamenTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenTipo')->find($arExamenListaPrecio->getCodigoExamenTipoFk());
                             $arExamenDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
                             $arExamenDetalle->setExamenTipoRel($arExamenTipo);
                             $arExamenDetalle->setExamenRel($arExamen);
                             $arExamenDetalle->setFechaExamen($arExamen->getFecha());
-                            $arExamenDetalle->setFechaVence($arExamen->getFecha());
-                            $douPrecio = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenListaPrecio')->devuelvePrecio($arExamen->getCodigoEntidadExamenFk(), $codigoExamenTipo);
-                            $arExamenDetalle->setVrPrecio($douPrecio);
+                            $arExamenDetalle->setFechaVence($arExamen->getFecha());                            
+                            $arExamenDetalle->setVrPrecio($arExamenListaPrecio->getPrecio());
                             $em->persist($arExamenDetalle);
                         }
                         $em->flush();
@@ -339,7 +345,7 @@ class ExamenController extends Controller
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Examen:detalleNuevo.html.twig', array(
-            'arExamenTipos' => $arExamenTipos,
+            'arExamenListaPrecios' => $arExamenListaPrecios,
             'arExamen' => $arExamen,
             'form' => $form->createView()));
     }

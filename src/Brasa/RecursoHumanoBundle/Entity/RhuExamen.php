@@ -126,17 +126,17 @@ class RhuExamen
     /**     
      * @ORM\Column(name="control_pago", type="boolean")
      */    
-    private $controlPago = false;
-    
-    /**     
-     * @ORM\Column(name="cobro_cliente", type="boolean")
-     */    
-    private $cobroCliente = false;    
+    private $controlPago = false;      
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */    
     private $codigoUsuario;
+    
+    /**
+     * @ORM\Column(name="cobro", type="string", length=1, nullable=true)
+     */    
+    private $cobro;     
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuExamenClase", inversedBy="examenesExamenClaseRel")
@@ -744,30 +744,6 @@ class RhuExamen
     }
 
     /**
-     * Set cobroCliente
-     *
-     * @param boolean $cobroCliente
-     *
-     * @return RhuExamen
-     */
-    public function setCobroCliente($cobroCliente)
-    {
-        $this->cobroCliente = $cobroCliente;
-
-        return $this;
-    }
-
-    /**
-     * Get cobroCliente
-     *
-     * @return boolean
-     */
-    public function getCobroCliente()
-    {
-        return $this->cobroCliente;
-    }
-
-    /**
      * Set codigoUsuario
      *
      * @param string $codigoUsuario
@@ -789,6 +765,30 @@ class RhuExamen
     public function getCodigoUsuario()
     {
         return $this->codigoUsuario;
+    }
+
+    /**
+     * Set cobro
+     *
+     * @param string $cobro
+     *
+     * @return RhuExamen
+     */
+    public function setCobro($cobro)
+    {
+        $this->cobro = $cobro;
+
+        return $this;
+    }
+
+    /**
+     * Get cobro
+     *
+     * @return string
+     */
+    public function getCobro()
+    {
+        return $this->cobro;
     }
 
     /**
