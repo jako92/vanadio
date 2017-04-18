@@ -21,8 +21,8 @@
         <table class="table table-striped table-bordered table-condensed table-hover">
             <tr>
 
-                <th>CÓDIGO</th>
-                <th>{{ knp_pagination_sortable(arExamenTipos, 'NOMBRE', 'nit') }}</th> 
+                <th>ID</th>
+                <th>{{ knp_pagination_sortable(arExamenTipos, 'NOMBRE', 'nombre') }}</th> 
                 <th>INGRESO</th>
                 <th></th>
                 <th></th>
@@ -39,7 +39,7 @@
             </tr>            
         </table>
         <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Exámen tipos <span class="badge">{{ arExamenTipos.getTotalItemCount }}</span></div>                        
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arExamenTipos.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
             {{ knp_pagination_render(arExamenTipos) }}       
