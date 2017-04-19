@@ -86,13 +86,13 @@ class SeleccionController extends Controller
     /**
      * @Route("/rhu/seleccion/nuevo/{codigoSeleccion}", name="brs_rhu_seleccion_nuevo")
      */
-    public function nuevoAction(Request $request, $codigoSeleccion) {
-        
+    public function nuevoAction(Request $request, $codigoSeleccion) {        
         $em = $this->getDoctrine()->getManager();
-        $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
+        $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();        
         if($codigoSeleccion != 0) {
             $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
         } else {
+            $arSeleccion->setFechaNacimiento(new \DateTime('now'));
             $arSeleccion->setFechaPruebas(new \DateTime('now'));
         }
         $form = $this->createForm(RhuSeleccionType::class, $arSeleccion);

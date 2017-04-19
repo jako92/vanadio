@@ -30,6 +30,7 @@ class RhuSeleccionType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuSeleccionRequisito',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('cc')
+                    ->where('cc.estadoCerrado = 0')
                     ->orderBy('cc.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => false))                
@@ -92,7 +93,7 @@ class RhuSeleccionType extends AbstractType
                     ->orderBy('z.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))                            
-            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => new \DateTime('now'),'attr' => array('class' => 'date',)))
+            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array('class' => 'date',)))
             ->add('nombre1', TextType::class, array('required' => true))
             ->add('nombre2', TextType::class, array('required' => false))
             ->add('apellido1', TextType::class, array('required' => true))
