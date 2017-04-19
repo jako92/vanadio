@@ -138,7 +138,9 @@ class RhuLiquidacionRepository extends EntityRepository {
                             $salarioPromedioCesantias = ($ibpCesantias / $intDiasCesantias) * 30;  
                             //Configuracion especifica para grtemporales                        
                             if($arConfiguracion->getAuxilioTransporteNoPrestacional()) {
-                                $salarioPromedioCesantias += $auxilioTransporte;
+                                if($arContrato->getAuxilioTransporte() == 1) {
+                                    $salarioPromedioCesantias += $auxilioTransporte;
+                                }                                
                             }                            
                         } else {                                        
                             if($arContrato->getAuxilioTransporte() == 1) {
