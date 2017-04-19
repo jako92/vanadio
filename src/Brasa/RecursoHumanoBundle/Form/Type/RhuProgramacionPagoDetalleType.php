@@ -15,7 +15,8 @@ class RhuProgramacionPagoDetalleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {        
         $builder             
-            ->add('descuentoPension', CheckboxType::class, array('required' => false))                                            
+            ->add('descuentoPension', CheckboxType::class, array('required' => false))
+            ->add('descuentoSalud', CheckboxType::class, array('required' => false))
             ->add('guardar', SubmitType::class);        
     }
  
