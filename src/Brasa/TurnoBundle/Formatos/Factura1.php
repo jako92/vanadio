@@ -235,8 +235,8 @@ class Factura1 extends \FPDF_FPDF {
         $totales = array('SUBTOTAL: ' . " " . " ",
             'BASE AIU: ' . " " . " ",
             '(+)IVA: ' . " " . " ",
-            '(+)RTE FUENTE: ' . " " . " ",
-            '(+)RTE IVA: ' . " " . " ",
+            '(-)RTE FUENTE: ' . " " . " ",
+            '(-)RTE IVA: ' . " " . " ",
             'TOTAL GENERAL: ' . " " . " "
         );
 

@@ -374,7 +374,21 @@ class IntercambioDatosController extends Controller {
                 $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
             }
             list($anio, $mes)= explode('/', $arRegistro->getFecha()->Format('Y/m/d'));
-            $array = array($anio,"!",$mes,"!","!","!","!","!",$arRegistro->getCodigoRegistroPk(),"!",$arRegistro->getNumero(),"!","000","!","000","!","!", $identificacion,"!",$identificacion,"!","00000","!","000000000000000","!",$arRegistro->getDescripcionContable(),"!");
+            $vrMovimiento = '';
+            if($arRegistro->getDebito() != 0){
+                $vrMovimiento = $arRegistro->getDebito();
+            }
+            else{
+                $vrMovimiento = $arRegistro->getCredito();
+            }
+            $naturalezaMovimiento = '';
+            if($arRegistro->getDebito() != 0){
+                $naturalezaMovimiento = 'CNO';
+            }
+            else{
+                $naturalezaMovimiento = 'DNO';
+            }
+            $array = array($anio,"!",$mes,"!",'0000'. $arRegistro->getCodigoComprobanteFk(),"!","00000","!",'00000'. '00000'. $arRegistro->getCodigoComprobanteFk(). $arRegistro->getNumero() ,"!",$arRegistro->getFecha()->Format('d/m/Y'),"!","!",$arRegistro->getCodigoCuentaFk(),"!", $arRegistro->getCodigoCentroCostoFk(),"!","000","!", "!", "!", $arRegistro->getTerceroRel()->getNumeroIdentificacion(),"!","000","!", $arRegistro->getTerceroRel()->getNumeroIdentificacion() ,"!","000","!", $arRegistro->getNumeroReferencia(),"!", $arRegistro->getDescripcionContable(),"!","!","!","!", $vrMovimiento,"!",$arRegistro->getBase(),"!","0.00","!", $naturalezaMovimiento, "!","PRI","!","0","!","!","!","F","0.00000000");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
