@@ -185,6 +185,7 @@ class DisciplinarioController extends Controller
             }
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arProcesoDisciplinario->getEstadoAutorizado() == 1) {
+                    $usuario = $this->get('security.token_storage')->getToken()->getUser();
                     $codigoProcesoDisciplinarioTipo = $arProcesoDisciplinario->getCodigoDisciplinarioTipoFk();
                     $codigoProcesoDisciplinario = $arProcesoDisciplinario->getCodigoDisciplinarioPk();
                     
@@ -192,15 +193,15 @@ class DisciplinarioController extends Controller
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 0){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinario();
-                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario, $usuario);
                     }
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 1){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinario1teg();
-                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario, $usuario);
                     }
                     if ($arConfiguracion->getCodigoFormatoDisciplinario() == 2){
                         $objFormatoProceso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoProcesoDisciplinarioEstelar();
-                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario);
+                        $objFormatoProceso->Generar($em, $codigoProcesoDisciplinarioTipo, $codigoProcesoDisciplinario, $usuario);
                     }
                                                                                
                 }    

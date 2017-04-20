@@ -357,7 +357,7 @@ class IntercambioDatosController extends Controller {
         $query = $em->createQuery($this->strDqlLista);
         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
         $arRegistro = $query->getResult();
-        $strNombreArchivo = "CMDMOVIMIENTO".".txt";
+        $strNombreArchivo = "CMDMOVIMIENTO".".txt". date('YmdHis');
         $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
         //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
         ob_clean();
