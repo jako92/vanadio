@@ -36,8 +36,13 @@
                     <td><input type="checkbox" name="ChkSeleccionarServicioConcepto[]" value="{{ arPedidoDetalleConceptos.codigoPedidoDetalleConceptoPk }}" /></td>
                 </tr>
             {% endfor %}
-        </table>    
-
+        </table>
+        <div class="btn-group" style="float: left">
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPedidoDetalleConceptos.getTotalItemCount }}</span></div>                        
+        </div>
+        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+            {{ knp_pagination_render(arPedidoDetalleConceptos) }}       
+        </div>
         <div class="modal-footer">            
             {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
         </div>

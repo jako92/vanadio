@@ -93,7 +93,11 @@ class FormatoHojaVida extends \FPDF_FPDF {
         $this->Cell(30, 50, "SALARIO" , 0, 0, 'L', 0);
         $this->Cell(100, 50, "______________________________________________________________" , 0, 0, 'C', 0);
         $this->SetXY(55, 38);
-        $this->Cell(100, 50, number_format($arEmpleado->getVrSalario(), 2, '.', ','), 0, 0, 'C', 0);
+        if ($arEmpleado->getCodigoTipoTiempoFk() == 2){
+            $this->Cell(100, 50, number_format($arEmpleado->getVrSalario() / 2, 2, '.', ','), 0, 0, 'C', 0);
+        } else {
+            $this->Cell(100, 50, number_format($arEmpleado->getVrSalario(), 2, '.', ','), 0, 0, 'C', 0);
+        }          
         $this->SetXY(25, 44);
         $this->Cell(30, 55, "RIESGO ARP" , 0, 0, 'L', 0);
         $this->Cell(100, 55, "______________________________________________________________" , 0, 0, 'C', 0);
