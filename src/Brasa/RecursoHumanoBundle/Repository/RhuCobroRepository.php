@@ -54,7 +54,7 @@ class RhuCobroRepository extends EntityRepository {
         }        
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);                
         $arCobro->setVrBasico($basico);
-        $arCobro->getVrPrestacional($prestacional);
+        $arCobro->setVrPrestacional($prestacional);
         $arCobro->setVrNoPrestacional($noPrestacional);
         $arCobro->setVrAuxilioTransporte($auxilioTransporte);
         $arCobro->setVrPension($pension);
