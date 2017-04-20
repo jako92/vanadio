@@ -122,7 +122,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());                            
                             $em->persist($arServicio);                            
                         }                          
-                        //$arProgramacionPago->setServicioGenerado(1);
+                        $arProgramacionPago->setServicioGenerado(1);
                         $em->persist($arProgramacionPago);
                         $em->flush(); 
                     }                                        
