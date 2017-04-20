@@ -30,7 +30,7 @@ class PagoController extends Controller
         $this->listar();
         if($form->isValid()) {
             if($form->get('BtnCorregirIbc')->isClicked()) {
-                set_time_limit(0);
+                /*set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                 $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findAll();
@@ -79,7 +79,8 @@ class PagoController extends Controller
                     $arPagoActualizar->setVrIngresoBasePrestacion($ingresoBasePrestacion);
                     $em->persist($arPagoActualizar);
                 }
-                $em->flush();                             
+                $em->flush();   
+                */
             }
             if($form->get('BtnExcel')->isClicked()) {                
                 $this->filtrarLista($form, $request);
@@ -302,7 +303,7 @@ class PagoController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => false))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
             ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;
