@@ -430,5 +430,18 @@ class RhuPagoDetalleRepository extends EntityRepository {
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();        
         return $arrayResultado;
-    }      
+    }    
+    
+    public function horasIncapacidad($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.numeroHoras) as numeroHoras FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd "
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.codigoIncapacidadFk IS NOT NULL";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $numeroHoras = $arrayResultado[0]['numeroHoras'];
+        if($numeroHoras == null) {
+            $numeroHoras = 0;
+        }
+        return $numeroHoras;
+    }    
 }

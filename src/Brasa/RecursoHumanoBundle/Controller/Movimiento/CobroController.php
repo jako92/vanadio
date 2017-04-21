@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCobroType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuServicioCobrarType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -164,6 +165,30 @@ class CobroController extends Controller
                     'form' => $form->createView(),
                     ));
     }
+    
+    /**
+     * @Route("/rhu/cobro/detalle/editar/{codigoCobro}/{codigoServicioCobrar}", name="brs_rhu_cobro_detalle_editar")
+     */
+    public function detalleEditarAction(Request $request, $codigoServicioCobrar, $codigoCobro) {
+        $em = $this->getDoctrine()->getManager();        
+        $arServicioCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+        $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($codigoServicioCobrar);
+
+        $form = $this->createForm(RhuServicioCobrarType::class, $arServicioCobrar);       
+        $form->handleRequest($request);
+        if ($form->isValid()) {            
+            $arServicioCobrar = $form->getData();                           
+            $em->persist($arServicioCobrar);
+            $em->flush();
+            $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            
+        }                
+
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalleEditar.html.twig', array(
+            'arServicioCobrar' => $arServicioCobrar,
+            'form' => $form->createView()));
+    }      
     
     /**
      * @Route("/rhu/cobro/detalle/nuevo/servicio/{codigoCobro}", name="brs_rhu_cobro_detalle_nuevo_servicio")

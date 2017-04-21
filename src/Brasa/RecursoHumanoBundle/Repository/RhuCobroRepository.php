@@ -19,6 +19,7 @@ class RhuCobroRepository extends EntityRepository {
     
     public function liquidar($codigoCobro) {        
         $em = $this->getEntityManager();       
+        $numeroRegistros = 0;
         $basico = 0;
         $prestacional = 0;
         $noPrestacional = 0;
@@ -50,7 +51,8 @@ class RhuCobroRepository extends EntityRepository {
             $prestaciones += $arServicioCobrar->getVrPrestaciones();
             $vacaciones += $arServicioCobrar->getVrVacaciones();
             $aporteParafiscales += $arServicioCobrar->getVrAporteParafiscales();
-            $administracion += $arServicioCobrar->getVrAdministracion();            
+            $administracion += $arServicioCobrar->getVrAdministracion(); 
+            $numeroRegistros++;
         }        
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);                
         $arCobro->setVrBasico($basico);
@@ -67,6 +69,7 @@ class RhuCobroRepository extends EntityRepository {
         $arCobro->setVrVacaciones($vacaciones);
         $arCobro->setVrAporteParafiscales($aporteParafiscales);
         $arCobro->setVrAdministracion($administracion);
+        $arCobro->setNumeroRegistros($numeroRegistros);
         $em->persist($arCobro);
         $em->flush();
         return true;

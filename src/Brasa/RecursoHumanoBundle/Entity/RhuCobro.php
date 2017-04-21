@@ -128,6 +128,11 @@ class RhuCobro
     private $comentarios;     
     
     /**
+     * @ORM\Column(name="numero_registros", type="integer")
+     */
+    private $numeroRegistros = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="cobrosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -739,5 +744,29 @@ class RhuCobro
     public function getVrAdministracion()
     {
         return $this->vrAdministracion;
+    }
+
+    /**
+     * Set numeroRegistros
+     *
+     * @param integer $numeroRegistros
+     *
+     * @return RhuCobro
+     */
+    public function setNumeroRegistros($numeroRegistros)
+    {
+        $this->numeroRegistros = $numeroRegistros;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroRegistros
+     *
+     * @return integer
+     */
+    public function getNumeroRegistros()
+    {
+        return $this->numeroRegistros;
     }
 }

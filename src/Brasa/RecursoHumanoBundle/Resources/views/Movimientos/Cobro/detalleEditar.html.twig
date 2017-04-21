@@ -1,0 +1,113 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Programacion de pago nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Programacion pago: nuevo</small>
+        </h1>        
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion</div>
+            <div class="panel-body">                              
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Basico:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrSalario, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>                               
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Prestacional:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrPrestacional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">No prestacional:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrNoPrestacional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Trasnporte:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrAuxilioTransporte, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Pension:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrPension, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Salud:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrSalud, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Riesgos:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrRiesgos, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">% Riesgos:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.porcentajeRiesgos, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>                    
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Caja:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrCaja, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Sena:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrSena, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Icbf:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrIcbf, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Prestaciones:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrPrestaciones, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Vacaciones:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrVacaciones, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Aporte parafiscales:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrAporteParafiscales, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label  class="col-sm-3 control-label">Administracion:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrAdministracion, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>                    
+            </div>
+        </div>                   
+        <div class="modal-footer">        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}            
+        </div>    
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

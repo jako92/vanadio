@@ -52,6 +52,7 @@ class GenerarServicioController extends Controller
                         foreach ($arPagos as $arPago){
                             $arServicio = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
                             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arPago->getCodigoEmpleadoFk());
+                            $arContrato = $arPago->getContratoRel();
                             $arServicio->setPagoRel($arPago);                            
                             $arServicio->setCentroCostoRel($arCentroCosto);
                             $arServicio->setClienteRel($arCentroCosto->getClienteRel());
@@ -94,7 +95,9 @@ class GenerarServicioController extends Controller
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
                             $vacaciones = round((($arPago->getVrSalario() + $recargoNorturno) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
-                            $riesgos = round(($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje()) / 100);
+                            $porcentajeRiesgos = $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje();
+                            $riesgos = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeRiesgos) / 100);
+                            $arServicio->setPorcentajeRiesgos($porcentajeRiesgos);
                             $arServicio->setVrRiesgos($riesgos);                            
                             $caja = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeCaja) / 100);
                             $arServicio->setVrCaja($caja);                                                                                                                
@@ -119,7 +122,23 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrCosto($neto);
                             $arServicio->setVrAdministracion($valorAdministracion);
                             $arServicio->setVrTotalCobrar($totalCobrar);
-                            $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());                            
+                            $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());   
+                            
+                            //Horas de novedad
+                            $horasNovedad = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->horasIncapacidad($arPago->getCodigoPagoPk());
+                            
+                            //Novedad de ingreso y retiro  
+                            $ingreso = "";
+                            $retiro = "";
+                            if($arContrato->getFechaDesde() >= $arProgramacionPago->getFechaDesde()) {
+                                $ingreso = $arContrato->getFechaDesde()->format('Y-m-d');
+                            }
+                            if($arContrato->getIndefinido() == 0 && $arContrato->getFechaHasta() <= $arProgramacionPago->getFechaHasta()) {                    
+                                $retiro = $arContrato->getFechaHasta()->format('Y-m-d');                    
+                            }                            
+                            $arServicio->setIngreso($ingreso);
+                            $arServicio->setRetiro($retiro);
+                            $arServicio->setHorasIncapacidad($horasNovedad);
                             $em->persist($arServicio);                            
                         }                          
                         $arProgramacionPago->setServicioGenerado(1);

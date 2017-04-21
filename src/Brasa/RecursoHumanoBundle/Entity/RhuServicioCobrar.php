@@ -230,6 +230,26 @@ class RhuServicioCobrar
     private $vrNoPrestacional = 0;    
 
     /**
+     * @ORM\Column(name="porcentaje_riesgos", type="float")
+     */
+    private $porcentajeRiesgos = 0;    
+    
+    /**
+     * @ORM\Column(name="horas_incapacidad", type="integer")
+     */
+    private $horasIncapacidad = 0;     
+    
+    /**
+     * @ORM\Column(name="ingreso", type="string", length=20, nullable=true)
+     */    
+    private $ingreso;    
+    
+    /**
+     * @ORM\Column(name="retiro", type="string", length=20, nullable=true)
+     */    
+    private $retiro;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="serviciosCobrarCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
@@ -270,7 +290,6 @@ class RhuServicioCobrar
      */
     protected $facturasDetallesServicioCobrarRel;
     
-
     /**
      * Constructor
      */
@@ -383,6 +402,30 @@ class RhuServicioCobrar
     public function getCodigoCobroFk()
     {
         return $this->codigoCobroFk;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -1274,6 +1317,54 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set porcentajeRiesgos
+     *
+     * @param float $porcentajeRiesgos
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeRiesgos($porcentajeRiesgos)
+    {
+        $this->porcentajeRiesgos = $porcentajeRiesgos;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeRiesgos
+     *
+     * @return float
+     */
+    public function getPorcentajeRiesgos()
+    {
+        return $this->porcentajeRiesgos;
+    }
+
+    /**
+     * Set horasIncapacidad
+     *
+     * @param integer $horasIncapacidad
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setHorasIncapacidad($horasIncapacidad)
+    {
+        $this->horasIncapacidad = $horasIncapacidad;
+
+        return $this;
+    }
+
+    /**
+     * Get horasIncapacidad
+     *
+     * @return integer
+     */
+    public function getHorasIncapacidad()
+    {
+        return $this->horasIncapacidad;
+    }
+
+    /**
      * Set cobroRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
@@ -1295,6 +1386,30 @@ class RhuServicioCobrar
     public function getCobroRel()
     {
         return $this->cobroRel;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 
     /**
@@ -1428,50 +1543,50 @@ class RhuServicioCobrar
     }
 
     /**
-     * Set codigoClienteFk
+     * Set ingreso
      *
-     * @param integer $codigoClienteFk
+     * @param string $ingreso
      *
      * @return RhuServicioCobrar
      */
-    public function setCodigoClienteFk($codigoClienteFk)
+    public function setIngreso($ingreso)
     {
-        $this->codigoClienteFk = $codigoClienteFk;
+        $this->ingreso = $ingreso;
 
         return $this;
     }
 
     /**
-     * Get codigoClienteFk
+     * Get ingreso
      *
-     * @return integer
+     * @return string
      */
-    public function getCodigoClienteFk()
+    public function getIngreso()
     {
-        return $this->codigoClienteFk;
+        return $this->ingreso;
     }
 
     /**
-     * Set clienteRel
+     * Set retiro
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     * @param string $retiro
      *
      * @return RhuServicioCobrar
      */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    public function setRetiro($retiro)
     {
-        $this->clienteRel = $clienteRel;
+        $this->retiro = $retiro;
 
         return $this;
     }
 
     /**
-     * Get clienteRel
+     * Get retiro
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     * @return string
      */
-    public function getClienteRel()
+    public function getRetiro()
     {
-        return $this->clienteRel;
+        return $this->retiro;
     }
 }
