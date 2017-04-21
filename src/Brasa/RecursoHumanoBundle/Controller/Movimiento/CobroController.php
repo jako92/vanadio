@@ -171,13 +171,20 @@ class CobroController extends Controller
      */
     public function detalleEditarAction(Request $request, $codigoServicioCobrar, $codigoCobro) {
         $em = $this->getDoctrine()->getManager();        
-        $arServicioCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+        $arServicioCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();        
         $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($codigoServicioCobrar);
 
         $form = $this->createForm(RhuServicioCobrarType::class, $arServicioCobrar);       
         $form->handleRequest($request);
         if ($form->isValid()) {            
-            $arServicioCobrar = $form->getData();                           
+            $arServicioCobrar = $form->getData(); 
+            $neto = ($arServicioCobrar->getVrSalario() + $arServicioCobrar->getVrPrestacional() + $arServicioCobrar->getVrNoPrestacional() + $arServicioCobrar->getVrAuxilioTransporteCotizacion() + $arServicioCobrar->getVrRiesgos() + $arServicioCobrar->getVrPension() + $arServicioCobrar->getVrCaja() + $arServicioCobrar->getVrPrestaciones() + $arServicioCobrar->getVrVacaciones() + $arServicioCobrar->getVrAporteParafiscales());
+            if($arServicioCobrar->getAdministracionFijo()) {
+                $valorAdministracion = $arServicioCobrar->getValorAdministracionFijo();
+            } else {
+                $valorAdministracion = ($neto * $arServicioCobrar->getPorcentajeAdministracion()) / 100;
+            }
+            $arServicioCobrar->setVrAdministracion(round($valorAdministracion));
             $em->persist($arServicioCobrar);
             $em->flush();
             $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);

@@ -1431,7 +1431,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT pp FROM BrasaRecursoHumanoBundle:RhuProgramacionPago pp WHERE pp.estadoPagado = 1 and pp.servicioGenerado = 0 ";        
         
-        $dql .= " ORDER BY pp.codigoProgramacionPagoPk DESC";
+        $dql .= " ORDER BY pp.codigoProgramacionPagoPk ASC";
         return $dql;
     }
 

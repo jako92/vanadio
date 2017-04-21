@@ -250,6 +250,21 @@ class RhuServicioCobrar
     private $retiro;    
     
     /**
+     * @ORM\Column(name="porcentaje_administracion", type="float")
+     */
+    private $porcentajeAdministracion = 0;     
+    
+    /**
+     * @ORM\Column(name="valor_administracion_fijo", type="float")
+     */
+    private $valorAdministracionFijo = 0;    
+    
+    /**
+     * @ORM\Column(name="administracion_fijo", type="boolean")
+     */    
+    private $administracionFijo = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="serviciosCobrarCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
@@ -1588,5 +1603,77 @@ class RhuServicioCobrar
     public function getRetiro()
     {
         return $this->retiro;
+    }
+
+    /**
+     * Set porcentajeAdministracion
+     *
+     * @param float $porcentajeAdministracion
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeAdministracion($porcentajeAdministracion)
+    {
+        $this->porcentajeAdministracion = $porcentajeAdministracion;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeAdministracion
+     *
+     * @return float
+     */
+    public function getPorcentajeAdministracion()
+    {
+        return $this->porcentajeAdministracion;
+    }
+
+    /**
+     * Set valorAdministracionFijo
+     *
+     * @param float $valorAdministracionFijo
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setValorAdministracionFijo($valorAdministracionFijo)
+    {
+        $this->valorAdministracionFijo = $valorAdministracionFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get valorAdministracionFijo
+     *
+     * @return float
+     */
+    public function getValorAdministracionFijo()
+    {
+        return $this->valorAdministracionFijo;
+    }
+
+    /**
+     * Set administracionFijo
+     *
+     * @param boolean $administracionFijo
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setAdministracionFijo($administracionFijo)
+    {
+        $this->administracionFijo = $administracionFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get administracionFijo
+     *
+     * @return boolean
+     */
+    public function getAdministracionFijo()
+    {
+        return $this->administracionFijo;
     }
 }

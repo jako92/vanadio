@@ -170,7 +170,8 @@
                             <th>IDENTIFICACIÓN</th>
                             <th>EMPLEADO</th>
                             <th>DESDE</th>
-                            <th>HASTA</th>                
+                            <th>HASTA</th> 
+                            <th>SALARIO</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>                
                             <th>BASICO</th>                
@@ -188,6 +189,7 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Vacaciones">VACACIONES</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PARAFISCAL</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Valor de la administracion">ADMON</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Porcentaje administracion">%</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de ingreso">ING</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de retiro">RET</p></th>
                             <th></th>
@@ -201,6 +203,7 @@
                                 <td>{{ arServicioCobrar.empleadoRel.nombreCorto  }}</td>
                                 <td>{{ arServicioCobrar.fechaDesde |date("Y/m/d")  }}</td>
                                 <td>{{ arServicioCobrar.fechaHasta |date("Y/m/d")  }}</td>                    
+                                <td style="text-align: right">{{ arServicioCobrar.vrSalarioEmpleado | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrSalario | number_format(0, '.', ',') }}</td>
@@ -218,6 +221,7 @@
                                 <td style="text-align: right">{{ arServicioCobrar.vrVacaciones | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrAporteParafiscales | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>                                
+                                <td style="text-align: right">{{ arServicioCobrar.porcentajeAdministracion | number_format(1, '.', ',') }}</td>                                                                
                                 <td style="text-align: right">{{ arServicioCobrar.ingreso }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                
                                 <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                

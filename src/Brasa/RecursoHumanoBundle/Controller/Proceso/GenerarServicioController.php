@@ -114,7 +114,15 @@ class GenerarServicioController extends Controller
                             $neto = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
                             if ($arCentroCosto->getAplicaPorcentajeAdministracion() == true){
                                 $valorAdministracion = ($neto * $porcentajeAdministracion) / 100;
-                            }                            
+                                $arServicio->setAdministracionFijo(0);
+                                $arServicio->setValorAdministracionFijo(0);  
+                                $arServicio->setPorcentajeAdministracion($porcentajeAdministracion);
+                            } else {
+                                $valorAdministracion = $arCentroCosto->getValorAdministracion();
+                                $arServicio->setAdministracionFijo(1);
+                                $arServicio->setValorAdministracionFijo($valorAdministracion);                                 
+                            }         
+                            
                             $bruto = $neto + $valorAdministracion;                             
                             $totalCobrar = $neto + $valorAdministracion;         
                             $arServicio->setVrNeto($neto);

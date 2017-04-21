@@ -29,6 +29,7 @@ class RhuServicioCobrarType extends AbstractType
             ->add('vrVacaciones', NumberType::class, array('required' => false))
             ->add('vrAporteParafiscales', NumberType::class, array('required' => false))
             ->add('vrAdministracion', NumberType::class, array('required' => false))
+            ->add('porcentajeAdministracion', NumberType::class, array('required' => false))
             ->add('guardar', SubmitType::class);        
     }
  
