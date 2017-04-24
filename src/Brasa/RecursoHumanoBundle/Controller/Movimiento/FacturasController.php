@@ -225,8 +225,7 @@ class FacturasController extends Controller
     /**
      * @Route("/rhu/facturas/detalle/nuevo/servicio/{codigoFactura}", name="brs_rhu_facturas_detalle_nuevo_servicio")
      */
-    public function detalleNuevoServicioAction(Request $request, $codigoFactura) {
-        
+    public function detalleNuevoServicioAction(Request $request, $codigoFactura) {        
         $em = $this->getDoctrine()->getManager();
         $paginator  = $this->get('knp_paginator');
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);                
@@ -239,57 +238,12 @@ class FacturasController extends Controller
             if($form->get('BtnAgregar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoServicioCobrar) {
-                        $arServicioCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
-                        $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($codigoServicioCobrar);
-                        $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
-                        $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arServicioCobrar->getCodigoPagoFk());
-                        $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
-                        $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($arServicioCobrar->getCodigoCentroCostoFk());
-                        $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
-                        $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($arServicioCobrar->getCodigoProgramacionPagoFk());
-                        $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                        $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arServicioCobrar->getCodigoEmpleadoFk());
-                        if($arServicioCobrar->getEstadoCobrado() == 0) {
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
+                        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigo);
+                        if($arCobro->getEstadoCobrado() == 0) {
                             $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
-                            $arFacturaDetalle->setPagoRel($arPago);
-                            $arFacturaDetalle->setEmpleadoRel($arEmpleado);
-                            $arFacturaDetalle->setCentroCostoRel($arCentroCosto);
-                            $arFacturaDetalle->setProgramacionPagoRel($arProgramacionPago);
-                            $arFacturaDetalle->setFacturaRel($arFactura);
-                            $arFacturaDetalle->setServicioCobrarRel($arServicioCobrar);
-                            $arFacturaDetalle->setFechaDesde($arServicioCobrar->getFechaDesde());
-                            $arFacturaDetalle->setFechaHasta($arServicioCobrar->getFechaHasta());
-                            $arFacturaDetalle->setVrSalario($arServicioCobrar->getVrSalario());
-                            $arFacturaDetalle->setVrSalarioPeriodo($arServicioCobrar->getVrSalarioPeriodo());
-                            $arFacturaDetalle->setVrSalarioEmpleado($arServicioCobrar->getVrSalarioEmpleado());
-                            $arFacturaDetalle->setVrDevengado($arServicioCobrar->getVrDevengado());
-                            $arFacturaDetalle->setVrDeducciones($arServicioCobrar->getVrDeducciones());
-                            $arFacturaDetalle->setVrAdicionalTiempo($arServicioCobrar->getVrAdicionalTiempo());
-                            $arFacturaDetalle->setVrAdicionalValor($arServicioCobrar->getVrAdicionalValor());
-                            $arFacturaDetalle->setVrAuxilioTransporte($arServicioCobrar->getVrAuxilioTransporte());
-                            $arFacturaDetalle->setVrAuxilioTransporteCotizacion($arServicioCobrar->getVrAuxilioTransporteCotizacion());
-                            $arFacturaDetalle->setVrArp($arServicioCobrar->getVrArp());
-                            $arFacturaDetalle->setVrEps($arServicioCobrar->getVrEps());
-                            $arFacturaDetalle->setVrPension($arServicioCobrar->getVrPension());
-                            $arFacturaDetalle->setVrCaja($arServicioCobrar->getVrCaja());
-                            $arFacturaDetalle->setVrSena($arServicioCobrar->getVrSena());
-                            $arFacturaDetalle->setVrIcbf($arServicioCobrar->getVrIcbf());
-                            $arFacturaDetalle->setVrCesantias($arServicioCobrar->getVrCesantias());
-                            $arFacturaDetalle->setVrCesantiasIntereses($arServicioCobrar->getVrCesantiasIntereses());
-                            $arFacturaDetalle->setVrPrimas($arServicioCobrar->getVrPrimas());
-                            $arFacturaDetalle->setVrVacaciones($arServicioCobrar->getVrVacaciones());
-                            $arFacturaDetalle->setVrAporteParafiscales($arServicioCobrar->getVrAporteParafiscales());
-                            $arFacturaDetalle->setVrAdicionalPrestacional($arServicioCobrar->getVrAdicionalPrestacional());
-                            $arFacturaDetalle->setVrAdicionalNoPrestacional($arServicioCobrar->getVrAdicionalNoPrestacional());
-                            $arFacturaDetalle->setVrAdministracion($arServicioCobrar->getVrAdministracion());
-                            $arFacturaDetalle->setVrNeto($arServicioCobrar->getVrNeto());
-                            $arFacturaDetalle->setVrBruto($arServicioCobrar->getVrBruto());
-                            $arFacturaDetalle->setVrTotalCobrar($arServicioCobrar->getVrTotalCobrar());
-                            $arFacturaDetalle->setVrCosto($arServicioCobrar->getVrCosto());
-                            $arFacturaDetalle->setVrIngresoBaseCotizacion($arServicioCobrar->getVrIngresoBaseCotizacion());
-                            $arFacturaDetalle->setEstadoCobrado($arServicioCobrar->getEstadoCobrado());
-                            $arFacturaDetalle->setDiasPeriodo($arServicioCobrar->getDiasPeriodo());
+                            $arFacturaDetalle->setCobroRel($arPago);                            
                             $em->persist($arFacturaDetalle);                                                     
                             $arServicioCobrar->setEstadoCobrado(1);
                             $em->persist($arServicioCobrar);
@@ -302,10 +256,10 @@ class FacturasController extends Controller
                 }
             }
         }
-        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->pendienteCobrar($arFactura->getCodigoCentroCostoFk()));        
-        $arServiciosCobrar = $paginator->paginate($query, $request->query->get('page', 1), 50);                       
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->pendienteCobrar($arFactura->getCodigoClienteFk()));        
+        $arCobros = $paginator->paginate($query, $request->query->get('page', 1), 50);                       
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Facturas:detalleNuevoServicio.html.twig', array(
-            'arServiciosCobrar' => $arServiciosCobrar,
+            'arCobros' => $arCobros,
             'arFactura' => $arFactura,
             'form' => $form->createView()));
     }    
@@ -481,13 +435,9 @@ class FacturasController extends Controller
         $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);        
         $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleEliminarDetalleExamen = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleEliminarDetalleSeleccion = array('label' => 'Eliminar', 'disabled' => false);
         if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;                        
-            $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;            
-            $arrBotonDetalleEliminarDetalleExamen['disabled'] = true;
-            $arrBotonDetalleEliminarDetalleSeleccion['disabled'] = true;
+            $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;                        
             $arrBotonAnular['disabled'] = false; 
             if($ar->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
@@ -506,8 +456,6 @@ class FacturasController extends Controller
                     ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                    
                     ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)            
-                    ->add('BtnEliminarDetalleExamen', SubmitType::class, $arrBotonDetalleEliminarDetalleExamen)            
-                    ->add('BtnEliminarDetalleSeleccion', SubmitType::class, $arrBotonDetalleEliminarDetalleSeleccion)                    
                     ->getForm();                                 
         return $form;
     }

@@ -17,49 +17,50 @@
     <section class="content">        	        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}            
     <table class="table table-striped table-bordered table-condensed">
-        <tr>
-            <th>CÓDIGO</th>
-            <th>PERIODO</th>                    
-            <th>EMPLEADO</th>                    
-            <th style="text-align: right">BÁSICO</th>
-            <th style="text-align: right">T. A</th>
-            <th style="text-align: right">V. A</th>
-            <th style="text-align: right">AUX. TRANS</th>
-            <th style="text-align: right">ARP</th>
-            <th style="text-align: right">EPS</th>
-            <th style="text-align: right">PENSION</th>
-            <th style="text-align: right">CAJA</th>
-            <th style="text-align: right">CESANTIAS</th>
-            <th style="text-align: right">VACACIONES</th>
-            <th style="text-align: right">ADMON</th>
-            <th style="text-align: right">COSTO</th>
-            <th style="text-align: right">TOTAL</th>
-            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
-        </tr>
-
-        {% for arServiciosCobrar in arServiciosCobrar %}
-            <tr> 
-                <td><input type="hidden" name="LblCodigo[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}">{{ arServiciosCobrar.codigoServicioCobrarPk }}</td>  
-                <td>{{ arServiciosCobrar.programacionPagoRel.fechaDesde |date("Y/m/d")  }}-{{ arServiciosCobrar.programacionPagoRel.fechaHasta |date("Y/m/d")  }}</td>
-                <td>{{ arServiciosCobrar.empleadoRel.nombreCorto }}</td>                        
-                <td style="text-align: right">{{ arServiciosCobrar.VrSalario | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalTiempo | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalValor | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrArp | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrEps | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrPension | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCaja | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCesantias | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCosto | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrTotalCobrar | number_format(0, '.', ',') }}</td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}" /></td>
+            <tr>
+                <th>ID</th>                
+                <th style="text-align: right">BASICO</th>
+                <th style="text-align: right">PRE</th>
+                <th style="text-align: right">NO_PRE</th>
+                <th style="text-align: right">TTE</th>
+                <th style="text-align: right">PENSION</th>
+                <th style="text-align: right">SALUD</th>
+                <th style="text-align: right">RIESGOS</th>
+                <th style="text-align: right">CAJA</th>
+                <th style="text-align: right">SENA</th>
+                <th style="text-align: right">ICBF</th>
+                <th style="text-align: right">PRESTACIONES</th>
+                <th style="text-align: right">VACACIONES</th>
+                <th style="text-align: right">A_PARAF</th>
+                <th style="text-align: right">ADMON</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
-        {% endfor %}                                
+            {% for arCobros in arCobros %}
+                <tr>
+                    <td><input type="hidden" name="LblCodigo[]" value="{{ arCobros.codigoCobroPk }}">{{ arCobros.codigoCobroPk }} </td>                                    
+                    <td style="text-align: right">{{ arCobros.vrBasico | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrPrestacional | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrNoPrestacional | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrAuxilioTransporte | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrPension | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrSalud | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrRiesgos | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrCaja | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrSena | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrIcbf | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrPrestaciones | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrVacaciones | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrAporteParafiscales | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arCobros.vrAdministracion | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_cobro_nuevo', { 'codigoCobro':  arCobros.codigoCobroPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" title="Editar registro" width=20 height=20 title="Editar el registro"></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_cobro_detalle', { 'codigoCobro': arCobros.codigoCobroPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCobros.codigoCobroPk }}" /></td>
+                </tr>
+            {% endfor %}                               
     </table>
-    {{ knp_pagination_render(arServiciosCobrar) }}
+    {{ knp_pagination_render(arCobros) }}
     <div class="modal-footer">                
         {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
     </div> 

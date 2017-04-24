@@ -300,18 +300,6 @@ class RhuServicioCobrar
      */
     protected $programacionPagoRel;
     
-    /**
-     * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="servicioCobrarRel")
-     */
-    protected $facturasDetallesServicioCobrarRel;
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->facturasDetallesServicioCobrarRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get codigoServicioCobrarPk
@@ -1380,6 +1368,126 @@ class RhuServicioCobrar
     }
 
     /**
+     * Set ingreso
+     *
+     * @param string $ingreso
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setIngreso($ingreso)
+    {
+        $this->ingreso = $ingreso;
+
+        return $this;
+    }
+
+    /**
+     * Get ingreso
+     *
+     * @return string
+     */
+    public function getIngreso()
+    {
+        return $this->ingreso;
+    }
+
+    /**
+     * Set retiro
+     *
+     * @param string $retiro
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setRetiro($retiro)
+    {
+        $this->retiro = $retiro;
+
+        return $this;
+    }
+
+    /**
+     * Get retiro
+     *
+     * @return string
+     */
+    public function getRetiro()
+    {
+        return $this->retiro;
+    }
+
+    /**
+     * Set porcentajeAdministracion
+     *
+     * @param float $porcentajeAdministracion
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeAdministracion($porcentajeAdministracion)
+    {
+        $this->porcentajeAdministracion = $porcentajeAdministracion;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeAdministracion
+     *
+     * @return float
+     */
+    public function getPorcentajeAdministracion()
+    {
+        return $this->porcentajeAdministracion;
+    }
+
+    /**
+     * Set valorAdministracionFijo
+     *
+     * @param float $valorAdministracionFijo
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setValorAdministracionFijo($valorAdministracionFijo)
+    {
+        $this->valorAdministracionFijo = $valorAdministracionFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get valorAdministracionFijo
+     *
+     * @return float
+     */
+    public function getValorAdministracionFijo()
+    {
+        return $this->valorAdministracionFijo;
+    }
+
+    /**
+     * Set administracionFijo
+     *
+     * @param boolean $administracionFijo
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setAdministracionFijo($administracionFijo)
+    {
+        $this->administracionFijo = $administracionFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get administracionFijo
+     *
+     * @return boolean
+     */
+    public function getAdministracionFijo()
+    {
+        return $this->administracionFijo;
+    }
+
+    /**
      * Set cobroRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
@@ -1521,159 +1629,5 @@ class RhuServicioCobrar
     public function getProgramacionPagoRel()
     {
         return $this->programacionPagoRel;
-    }
-
-    /**
-     * Add facturasDetallesServicioCobrarRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesServicioCobrarRel
-     *
-     * @return RhuServicioCobrar
-     */
-    public function addFacturasDetallesServicioCobrarRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesServicioCobrarRel)
-    {
-        $this->facturasDetallesServicioCobrarRel[] = $facturasDetallesServicioCobrarRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasDetallesServicioCobrarRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesServicioCobrarRel
-     */
-    public function removeFacturasDetallesServicioCobrarRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesServicioCobrarRel)
-    {
-        $this->facturasDetallesServicioCobrarRel->removeElement($facturasDetallesServicioCobrarRel);
-    }
-
-    /**
-     * Get facturasDetallesServicioCobrarRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasDetallesServicioCobrarRel()
-    {
-        return $this->facturasDetallesServicioCobrarRel;
-    }
-
-    /**
-     * Set ingreso
-     *
-     * @param string $ingreso
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setIngreso($ingreso)
-    {
-        $this->ingreso = $ingreso;
-
-        return $this;
-    }
-
-    /**
-     * Get ingreso
-     *
-     * @return string
-     */
-    public function getIngreso()
-    {
-        return $this->ingreso;
-    }
-
-    /**
-     * Set retiro
-     *
-     * @param string $retiro
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setRetiro($retiro)
-    {
-        $this->retiro = $retiro;
-
-        return $this;
-    }
-
-    /**
-     * Get retiro
-     *
-     * @return string
-     */
-    public function getRetiro()
-    {
-        return $this->retiro;
-    }
-
-    /**
-     * Set porcentajeAdministracion
-     *
-     * @param float $porcentajeAdministracion
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setPorcentajeAdministracion($porcentajeAdministracion)
-    {
-        $this->porcentajeAdministracion = $porcentajeAdministracion;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeAdministracion
-     *
-     * @return float
-     */
-    public function getPorcentajeAdministracion()
-    {
-        return $this->porcentajeAdministracion;
-    }
-
-    /**
-     * Set valorAdministracionFijo
-     *
-     * @param float $valorAdministracionFijo
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setValorAdministracionFijo($valorAdministracionFijo)
-    {
-        $this->valorAdministracionFijo = $valorAdministracionFijo;
-
-        return $this;
-    }
-
-    /**
-     * Get valorAdministracionFijo
-     *
-     * @return float
-     */
-    public function getValorAdministracionFijo()
-    {
-        return $this->valorAdministracionFijo;
-    }
-
-    /**
-     * Set administracionFijo
-     *
-     * @param boolean $administracionFijo
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setAdministracionFijo($administracionFijo)
-    {
-        $this->administracionFijo = $administracionFijo;
-
-        return $this;
-    }
-
-    /**
-     * Get administracionFijo
-     *
-     * @return boolean
-     */
-    public function getAdministracionFijo()
-    {
-        return $this->administracionFijo;
     }
 }

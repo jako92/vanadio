@@ -75,4 +75,11 @@ class RhuCobroRepository extends EntityRepository {
         return true;
     }    
     
+    public function pendienteCobrar($codigoCliente) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCobro c WHERE c.estadoCobrado = 0 "
+                . " AND c.codigoClienteFk = " . $codigoCliente;
+        return $dql;
+    }    
+    
 }

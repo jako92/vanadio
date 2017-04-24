@@ -21,31 +21,16 @@ class RhuFacturaDetalle
      * @ORM\Column(name="codigo_factura_fk", type="integer", nullable=true)
      */    
     private $codigoFacturaFk;
+
+    /**
+     * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
+     */    
+    private $codigoCobroFk;    
     
     /**
      * @ORM\Column(name="codigo_servicio_cobrar_fk", type="integer", nullable=true)
      */    
-    private $codigoServicioCobrarFk;
-    
-    /**
-     * @ORM\Column(name="codigo_pago_fk", type="integer", nullable=true)
-     */    
-    private $codigoPagoFk;
-    
-    /**
-     * @ORM\Column(name="codigo_programacion_pago_fk", type="integer", nullable=true)
-     */    
-    private $codigoProgramacionPagoFk;
-    
-    /**
-     * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCentroCostoFk;
-    
-    /**
-     * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
-     */    
-    private $codigoEmpleadoFk;
+    private $codigoServicioCobrarFk;     
     
     /**
      * @ORM\Column(name="vr_salario", type="float")
@@ -65,10 +50,10 @@ class RhuFacturaDetalle
     protected $facturaRel;    
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuServicioCobrar", inversedBy="facturasDetallesServicioCobrarRel")
-     * @ORM\JoinColumn(name="codigo_servicio_cobrar_fk", referencedColumnName="codigo_servicio_cobrar_pk")
+     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="facturasDetallesCobroRel")
+     * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
-    protected $servicioCobrarRel;            
+    protected $cobroRel;            
     
 
     /**
@@ -106,6 +91,30 @@ class RhuFacturaDetalle
     }
 
     /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
+    }
+
+    /**
      * Set codigoServicioCobrarFk
      *
      * @param integer $codigoServicioCobrarFk
@@ -127,102 +136,6 @@ class RhuFacturaDetalle
     public function getCodigoServicioCobrarFk()
     {
         return $this->codigoServicioCobrarFk;
-    }
-
-    /**
-     * Set codigoPagoFk
-     *
-     * @param integer $codigoPagoFk
-     *
-     * @return RhuFacturaDetalle
-     */
-    public function setCodigoPagoFk($codigoPagoFk)
-    {
-        $this->codigoPagoFk = $codigoPagoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPagoFk
-     *
-     * @return integer
-     */
-    public function getCodigoPagoFk()
-    {
-        return $this->codigoPagoFk;
-    }
-
-    /**
-     * Set codigoProgramacionPagoFk
-     *
-     * @param integer $codigoProgramacionPagoFk
-     *
-     * @return RhuFacturaDetalle
-     */
-    public function setCodigoProgramacionPagoFk($codigoProgramacionPagoFk)
-    {
-        $this->codigoProgramacionPagoFk = $codigoProgramacionPagoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoProgramacionPagoFk
-     *
-     * @return integer
-     */
-    public function getCodigoProgramacionPagoFk()
-    {
-        return $this->codigoProgramacionPagoFk;
-    }
-
-    /**
-     * Set codigoCentroCostoFk
-     *
-     * @param integer $codigoCentroCostoFk
-     *
-     * @return RhuFacturaDetalle
-     */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
-        $this->codigoCentroCostoFk = $codigoCentroCostoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCentroCostoFk
-     *
-     * @return integer
-     */
-    public function getCodigoCentroCostoFk()
-    {
-        return $this->codigoCentroCostoFk;
-    }
-
-    /**
-     * Set codigoEmpleadoFk
-     *
-     * @param integer $codigoEmpleadoFk
-     *
-     * @return RhuFacturaDetalle
-     */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
-        $this->codigoEmpleadoFk = $codigoEmpleadoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoEmpleadoFk
-     *
-     * @return integer
-     */
-    public function getCodigoEmpleadoFk()
-    {
-        return $this->codigoEmpleadoFk;
     }
 
     /**
@@ -298,26 +211,26 @@ class RhuFacturaDetalle
     }
 
     /**
-     * Set servicioCobrarRel
+     * Set cobroRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $servicioCobrarRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
      *
      * @return RhuFacturaDetalle
      */
-    public function setServicioCobrarRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $servicioCobrarRel = null)
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
     {
-        $this->servicioCobrarRel = $servicioCobrarRel;
+        $this->cobroRel = $cobroRel;
 
         return $this;
     }
 
     /**
-     * Get servicioCobrarRel
+     * Get cobroRel
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
      */
-    public function getServicioCobrarRel()
+    public function getCobroRel()
     {
-        return $this->servicioCobrarRel;
+        return $this->cobroRel;
     }
 }
