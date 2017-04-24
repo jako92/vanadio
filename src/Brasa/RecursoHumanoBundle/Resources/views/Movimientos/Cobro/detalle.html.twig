@@ -147,9 +147,25 @@
                         <td></td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
+                        <td class="titulo">OPERACION:</td>
+                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrOperacion | number_format(0, '.', ',') }}</td>                   
+                    </tr>   
+                    <tr>
+                        <td class="titulo"></td>
+                        <td></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo">ADMINISTRACION:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAdministracion | number_format(0, '.', ',') }}</td>                   
-                    </tr>                                         
+                    </tr> 
+                    <tr>
+                        <td class="titulo"></td>
+                        <td></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL:</td>
+                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrTotalCobro | number_format(0, '.', ',') }}</td>                   
+                    </tr>                      
                     <tr>
                         <td class="titulo">COMENTARIOS:</td>
                         <td colspan="7"></td>
@@ -185,10 +201,12 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Aportes caja">CAJA</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Aportes sena">SENA</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Aportes icbf">ICBF</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Prestaciones sociales (cesantias, primas, intereses)">PRESTACIONES</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Vacaciones">VACACIONES</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PARAFISCAL</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Prestaciones sociales (cesantias, primas, intereses)">PRES</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Vacaciones">VAC</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PAR</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Cobro de la operacion">OPERACION</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Valor de la administracion">ADMON</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Total cobro">TOTAL</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Porcentaje administracion">%</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de ingreso">ING</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de retiro">RET</p></th>
@@ -220,7 +238,9 @@
                                 <td style="text-align: right">{{ arServicioCobrar.vrPrestaciones | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrVacaciones | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrAporteParafiscales | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arServicioCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>                                
+                                <td style="text-align: right">{{ arServicioCobrar.vrOperacion | number_format(0, '.', ',') }}</td>                                
+                                <td style="text-align: right">{{ arServicioCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>                           
+                                <td style="text-align: right">{{ arServicioCobrar.vrTotalCobro | number_format(0, '.', ',') }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.porcentajeAdministracion | number_format(1, '.', ',') }}</td>                                                                
                                 <td style="text-align: right">{{ arServicioCobrar.ingreso }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                

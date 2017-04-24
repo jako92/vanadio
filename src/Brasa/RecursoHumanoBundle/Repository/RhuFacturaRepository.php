@@ -46,21 +46,21 @@ class RhuFacturaRepository extends EntityRepository {
         $douAdministracion = 0;
         $douIngresoMision = 0;
         foreach ($arFacturaDetalles as $arFacturaDetalle) {
-            $douAdministracion += $arFacturaDetalle->getVrAdministracion();
-            $douIngresoMision += $arFacturaDetalle->getVrCosto();
-        }
-        $floTotalExamenes = 0;
-        $floTotalSelecciones = 0;
-        $arExamenes = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-        $arExamenes = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoFacturaFk' => $codigoFactura));                
-        foreach ($arExamenes as $arExamen) {
-            $floTotalExamenes += $arExamen->getVrTotal();
-        }
-        $arSelecciones = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
-        $arSelecciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->findBy(array('codigoFacturaFk' => $codigoFactura));                                
-        foreach ($arSelecciones as $arSeleccion) {
-            $floTotalSelecciones += $arSeleccion->getVrServicio();
-        }        
+            $arFacturaDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+            $arFacturaDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());            
+            $subtotalDetalle = $arFacturaDetalle->getVrPrecio() * $arFacturaDetalle->getCantidad();
+            $baseIvaDetalle = ($subtotalDetalle * $arFacturaDetalle->getPorBaseIva()) / 100;
+            $ivaDetalle = ($baseIvaDetalle * $arFacturaDetalle->getPorIva()) / 100;            
+            $totalDetalle = $subtotalDetalle + $ivaDetalle;   
+            $arFacturaDetalleAct->setOperacion($arFactura->getOperacion());
+            $arFacturaDetalleAct->setVrSubtotal($subtotalDetalle);
+            $arFacturaDetalleAct->setVrSubtotalOperado($subtotalDetalle * $arFacturaDetalleAct->getOperacion());
+
+            $arFacturaDetalleAct->setVrBaseIva($baseIvaDetalle);
+            $arFacturaDetalleAct->setVrIva($ivaDetalle);
+            $arFacturaDetalleAct->setVrTotal($totalDetalle);
+            $em->persist($arFacturaDetalleAct);            
+        }     
         
         $douTotalBruto = $douIngresoMision + $douAdministracion;
         $douBaseAIU = (($douTotalBruto)*10)/100;
@@ -68,11 +68,6 @@ class RhuFacturaRepository extends EntityRepository {
         $douRetencionCREE = ($douBaseAIU * $arConfiguraciones->getPorcentajeRetencionCREE()) / 100;
         $douIva = ($douBaseAIU * $arConfiguracionNomina->getPorcentajeIva()) / 100;
         $douRetencionIva = ($douIva * $arConfiguraciones->getPorcentajeRetencionIvaVentas()) / 100;        
-        /*if($arFactura->getTerceroRel()->getRetencionFuenteVentas() == 1) {
-            if ($douBaseAIU >= $arConfiguraciones->getBaseRetencionFuente()) {
-                $douRetencionFuente = ($douBaseAIU * $arConfiguraciones->getPorcentajeRetencionFuente()) / 100;
-            }            
-        }*/
         $arFactura->setVrBaseAIU($douBaseAIU);
         $arFactura->setVrIngresoMision($douIngresoMision);
         $arFactura->setVrTotalAdministracion($douAdministracion);
@@ -81,8 +76,6 @@ class RhuFacturaRepository extends EntityRepository {
         $arFactura->setVrRetencionCree($douRetencionCREE);
         $arFactura->setVrIva($douIva);
         $arFactura->setVrRetencionIva($douRetencionIva);    
-        $arFactura->setVrSeleccion($floTotalSelecciones);
-        $arFactura->setVrExamen($floTotalExamenes);
         $douRetenciones = $douRetencionIva + $douRetencionFuente;
         $arFactura->setVrNeto($douTotalBruto+$douIva-$douRetenciones);
         $em->persist($arFactura);

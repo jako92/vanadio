@@ -178,13 +178,16 @@ class CobroController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arServicioCobrar = $form->getData(); 
-            $neto = ($arServicioCobrar->getVrSalario() + $arServicioCobrar->getVrPrestacional() + $arServicioCobrar->getVrNoPrestacional() + $arServicioCobrar->getVrAuxilioTransporteCotizacion() + $arServicioCobrar->getVrRiesgos() + $arServicioCobrar->getVrPension() + $arServicioCobrar->getVrCaja() + $arServicioCobrar->getVrPrestaciones() + $arServicioCobrar->getVrVacaciones() + $arServicioCobrar->getVrAporteParafiscales());
+            $operacion = ($arServicioCobrar->getVrSalario() + $arServicioCobrar->getVrPrestacional() + $arServicioCobrar->getVrNoPrestacional() + $arServicioCobrar->getVrAuxilioTransporteCotizacion() + $arServicioCobrar->getVrRiesgos() + $arServicioCobrar->getVrPension() + $arServicioCobrar->getVrCaja() + $arServicioCobrar->getVrPrestaciones() + $arServicioCobrar->getVrVacaciones() + $arServicioCobrar->getVrAporteParafiscales());
             if($arServicioCobrar->getAdministracionFijo()) {
                 $valorAdministracion = $arServicioCobrar->getValorAdministracionFijo();
             } else {
-                $valorAdministracion = ($neto * $arServicioCobrar->getPorcentajeAdministracion()) / 100;
+                $valorAdministracion = ($operacion * $arServicioCobrar->getPorcentajeAdministracion()) / 100;
             }
+            $totalCobro = $operacion + $valorAdministracion;
+            $arServicioCobrar->setVrOperacion(round($operacion));
             $arServicioCobrar->setVrAdministracion(round($valorAdministracion));
+            $arServicioCobrar->setVrTotalCobro(round($totalCobro));
             $em->persist($arServicioCobrar);
             $em->flush();
             $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);

@@ -111,9 +111,9 @@ class GenerarServicioController extends Controller
                             $noPrestacional = $arPago->getVrAdicionalNoPrestacional();
                             $arServicio->setVrPrestacional($prestacional);
                             $arServicio->setVrNoPrestacional($noPrestacional);
-                            $neto = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
+                            $operacion = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
                             if ($arCentroCosto->getAplicaPorcentajeAdministracion() == true){
-                                $valorAdministracion = ($neto * $porcentajeAdministracion) / 100;
+                                $valorAdministracion = ($operacion * $porcentajeAdministracion) / 100;
                                 $arServicio->setAdministracionFijo(0);
                                 $arServicio->setValorAdministracionFijo(0);  
                                 $arServicio->setPorcentajeAdministracion($porcentajeAdministracion);
@@ -122,14 +122,11 @@ class GenerarServicioController extends Controller
                                 $arServicio->setAdministracionFijo(1);
                                 $arServicio->setValorAdministracionFijo($valorAdministracion);                                 
                             }         
-                            
-                            $bruto = $neto + $valorAdministracion;                             
-                            $totalCobrar = $neto + $valorAdministracion;         
-                            $arServicio->setVrNeto($neto);
-                            $arServicio->setVrBruto($bruto);
-                            $arServicio->setVrCosto($neto);
-                            $arServicio->setVrAdministracion($valorAdministracion);
-                            $arServicio->setVrTotalCobrar($totalCobrar);
+                                                        
+                            $totalCobro = $operacion + $valorAdministracion;         
+                            $arServicio->setVrOperacion($operacion);
+                            $arServicio->setVrAdministracion($valorAdministracion);                            
+                            $arServicio->setVrTotalCobro($totalCobro);
                             $arServicio->setDiasPeriodo($arPago->getDiasPeriodo());   
                             
                             //Horas de novedad

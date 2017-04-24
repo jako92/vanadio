@@ -111,11 +111,21 @@ class RhuCobro
      * @ORM\Column(name="vr_aporte_parafiscales", type="float")
      */
     private $vrAporteParafiscales = 0;
+
+    /**
+     * @ORM\Column(name="vr_operacion", type="float")
+     */
+    private $vrOperacion = 0;
     
     /**
      * @ORM\Column(name="vr_administracion", type="float")
      */
     private $vrAdministracion = 0;     
+    
+    /**
+     * @ORM\Column(name="vr_total_cobro", type="float")
+     */
+    private $vrTotalCobro = 0;     
     
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
@@ -153,6 +163,7 @@ class RhuCobro
      */
     protected $facturasDetallesCobroRel;    
     
+
     /**
      * Constructor
      */
@@ -629,6 +640,30 @@ class RhuCobro
     }
 
     /**
+     * Set vrOperacion
+     *
+     * @param float $vrOperacion
+     *
+     * @return RhuCobro
+     */
+    public function setVrOperacion($vrOperacion)
+    {
+        $this->vrOperacion = $vrOperacion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrOperacion
+     *
+     * @return float
+     */
+    public function getVrOperacion()
+    {
+        return $this->vrOperacion;
+    }
+
+    /**
      * Set vrAdministracion
      *
      * @param float $vrAdministracion
@@ -838,5 +873,29 @@ class RhuCobro
     public function getFacturasDetallesCobroRel()
     {
         return $this->facturasDetallesCobroRel;
+    }
+
+    /**
+     * Set vrTotalCobro
+     *
+     * @param float $vrTotalCobro
+     *
+     * @return RhuCobro
+     */
+    public function setVrTotalCobro($vrTotalCobro)
+    {
+        $this->vrTotalCobro = $vrTotalCobro;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalCobro
+     *
+     * @return float
+     */
+    public function getVrTotalCobro()
+    {
+        return $this->vrTotalCobro;
     }
 }

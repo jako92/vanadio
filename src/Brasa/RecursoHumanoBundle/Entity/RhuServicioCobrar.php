@@ -175,24 +175,14 @@ class RhuServicioCobrar
     private $vrAdministracion = 0;    
     
     /**
-     * @ORM\Column(name="vr_neto", type="float")
+     * @ORM\Column(name="vr_operacion", type="float")
      */
-    private $vrNeto = 0;    
+    private $vrOperacion = 0;             
     
     /**
-     * @ORM\Column(name="vr_bruto", type="float")
+     * @ORM\Column(name="vr_total_cobro", type="float")
      */
-    private $vrBruto = 0;                
-    
-    /**
-     * @ORM\Column(name="vr_total_cobrar", type="float")
-     */
-    private $vrTotalCobrar = 0;    
-
-    /**
-     * @ORM\Column(name="vr_costo", type="float")
-     */
-    private $vrCosto = 0;     
+    private $vrTotalCobro = 0;    
     
     /**
      * @ORM\Column(name="vr_ingreso_base_cotizacion", type="float")
@@ -300,6 +290,7 @@ class RhuServicioCobrar
      */
     protected $programacionPagoRel;
     
+
 
     /**
      * Get codigoServicioCobrarPk
@@ -1056,99 +1047,27 @@ class RhuServicioCobrar
     }
 
     /**
-     * Set vrNeto
+     * Set vrOperacion
      *
-     * @param float $vrNeto
+     * @param float $vrOperacion
      *
      * @return RhuServicioCobrar
      */
-    public function setVrNeto($vrNeto)
+    public function setVrOperacion($vrOperacion)
     {
-        $this->vrNeto = $vrNeto;
+        $this->vrOperacion = $vrOperacion;
 
         return $this;
     }
 
     /**
-     * Get vrNeto
+     * Get vrOperacion
      *
      * @return float
      */
-    public function getVrNeto()
+    public function getVrOperacion()
     {
-        return $this->vrNeto;
-    }
-
-    /**
-     * Set vrBruto
-     *
-     * @param float $vrBruto
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrBruto($vrBruto)
-    {
-        $this->vrBruto = $vrBruto;
-
-        return $this;
-    }
-
-    /**
-     * Get vrBruto
-     *
-     * @return float
-     */
-    public function getVrBruto()
-    {
-        return $this->vrBruto;
-    }
-
-    /**
-     * Set vrTotalCobrar
-     *
-     * @param float $vrTotalCobrar
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrTotalCobrar($vrTotalCobrar)
-    {
-        $this->vrTotalCobrar = $vrTotalCobrar;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalCobrar
-     *
-     * @return float
-     */
-    public function getVrTotalCobrar()
-    {
-        return $this->vrTotalCobrar;
-    }
-
-    /**
-     * Set vrCosto
-     *
-     * @param float $vrCosto
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrCosto($vrCosto)
-    {
-        $this->vrCosto = $vrCosto;
-
-        return $this;
-    }
-
-    /**
-     * Get vrCosto
-     *
-     * @return float
-     */
-    public function getVrCosto()
-    {
-        return $this->vrCosto;
+        return $this->vrOperacion;
     }
 
     /**
@@ -1629,5 +1548,29 @@ class RhuServicioCobrar
     public function getProgramacionPagoRel()
     {
         return $this->programacionPagoRel;
+    }
+
+    /**
+     * Set vrTotalCobro
+     *
+     * @param float $vrTotalCobro
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrTotalCobro($vrTotalCobro)
+    {
+        $this->vrTotalCobro = $vrTotalCobro;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalCobro
+     *
+     * @return float
+     */
+    public function getVrTotalCobro()
+    {
+        return $this->vrTotalCobro;
     }
 }

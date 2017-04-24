@@ -87,6 +87,7 @@ class FacturasController extends Controller
             $diasPlazo = $arCliente->getPlazoPago() - 1;
             $fechaVence = date('Y-m-d', strtotime('+'.$diasPlazo.' day')) ;  
             $arFactura->setFechaVence(new \DateTime($fechaVence));
+            $arFactura->setOperacion(1);
             $em->persist($arFactura);
             $em->flush();                            
             if($form->get('guardarnuevo')->isClicked()) {
@@ -135,46 +136,16 @@ class FacturasController extends Controller
                 if(count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigoFacturaDetalle) {
                         $arFacturaDetalleEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($codigoFacturaDetalle);
-                        $arServicioCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($arFacturaDetalleEliminar->getCodigoServicioCobrarFk());
-                        $arServicioCobrar->setEstadoCobrado(0);
-                        $em->persist($arServicioCobrar);
+                        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($arFacturaDetalleEliminar->getCodigoCobroFk());
+                        $arCobro->setEstadoCobrado(0);
+                        $em->persist($arCobro);
                         $em->remove($arFacturaDetalleEliminar);                        
                     }
                     $em->flush();  
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
                     return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));
                 }
-            }
-            if($form->get('BtnEliminarDetalleExamen')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionarExamen');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoExamen) {
-                        $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-                        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
-                        $arExamen->setEstadoCobrado(0);
-                        $arExamen->setFacturaRel(NULL);                                                                        
-                        $em->persist($arExamen);                       
-                    }
-                    $em->flush();  
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
-                    return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));
-                }
             }            
-            if($form->get('BtnEliminarDetalleSeleccion')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionarSeleccion');
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoSeleccion) {
-                        $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
-                        $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
-                        $arSeleccion->setEstadoCobrado(0);
-                        $arSeleccion->setFacturaRel(NULL);                                                                        
-                        $em->persist($arSeleccion);                       
-                    }
-                    $em->flush();  
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
-                    return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));
-                }
-            }             
             if($form->get('BtnImprimir')->isClicked()) {
                 $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->imprimir($codigoFactura);
                 if($strResultado != "") {
@@ -209,15 +180,9 @@ class FacturasController extends Controller
         }
         $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
         $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));        
-        $arExamenes = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-        $arExamenes = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoFacturaFk' => $codigoFactura));                
-        $arSelecciones = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
-        $arSelecciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->findBy(array('codigoFacturaFk' => $codigoFactura));                        
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Facturas:detalle.html.twig', array(
                     'arFactura' => $arFactura,
                     'arFacturaDetalles' => $arFacturaDetalles,
-                    'arExamenes' => $arExamenes,
-                    'arSelecciones' => $arSelecciones,
                     'form' => $form->createView(),
                     ));
     }
@@ -242,14 +207,25 @@ class FacturasController extends Controller
                         $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
                         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigo);
                         if($arCobro->getEstadoCobrado() == 0) {
-                            $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
-                            $arFacturaDetalle->setCobroRel($arPago);                            
+                            $arFacturaConcepto = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaConcepto();
+                            $arFacturaConcepto = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaConcepto')->find(1);
+                            $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();                            
+                            $arFacturaDetalle->setFacturaRel($arFactura);
+                            $arFacturaDetalle->setCobroRel($arCobro);   
+                            $arFacturaDetalle->setFacturaConceptoRel($arFacturaConcepto);
+                            $arFacturaDetalle->setCantidad($arCobro->getNumeroRegistros());
+                            $arFacturaDetalle->setVrOperacion($arCobro->getVrOperacion());
+                            $arFacturaDetalle->setVrAdministracion($arCobro->getVrAdministracion());
+                            $precio = $arCobro->getVrTotalCobro() / $arCobro->getNumeroRegistros();
+                            $arFacturaDetalle->setVrPrecio($precio);
+                            $arFacturaDetalle->setVrSubtotal($arCobro->getVrTotalCobro());
+                            $arFacturaDetalle->setPorIva($arFacturaConcepto->getPorIva());
+                            $arFacturaDetalle->setPorBaseIva($arFacturaConcepto->getPorBaseIva());
                             $em->persist($arFacturaDetalle);                                                     
-                            $arServicioCobrar->setEstadoCobrado(1);
-                            $em->persist($arServicioCobrar);
+                            $arCobro->setEstadoCobrado(1);
+                            $em->persist($arCobro);
                         }                        
                     }                    
-
                     $em->flush();                    
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";

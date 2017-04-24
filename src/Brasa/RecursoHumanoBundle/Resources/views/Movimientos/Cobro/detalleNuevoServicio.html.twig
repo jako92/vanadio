@@ -22,17 +22,18 @@
             <th>PERIODO</th>                    
             <th>EMPLEADO</th>                    
             <th style="text-align: right">BÁSICO</th>
-            <th style="text-align: right">T.A</th>
-            <th style="text-align: right">V.A</th>
-            <th style="text-align: right">AUX. TRANS</th>
+            <th style="text-align: right">PREST</th>
+            <th style="text-align: right">N_PREST</th>
+            <th style="text-align: right">AUX_TRANS</th>
             <th style="text-align: right">RIESGOS</th>
-            <th style="text-align: right">EPS</th>
+            <th style="text-align: right">SALUD</th>
             <th style="text-align: right">PENSION</th>
             <th style="text-align: right">CAJA</th>
-            <th style="text-align: right">CESANTIAS</th>
+            <th style="text-align: right">PRESTACIONES</th>
             <th style="text-align: right">VACACIONES</th>
+            <th style="text-align: right">A_PARAFISCALES</th>
+            <th style="text-align: right">OPERACION</th>
             <th style="text-align: right">ADMON</th>
-            <th style="text-align: right">COSTO</th>
             <th style="text-align: right">TOTAL</th>
             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
@@ -50,11 +51,12 @@
                 <td style="text-align: right">{{ arServiciosCobrar.VrSalud | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrPension | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrCaja | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCesantias | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrPrestaciones | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCosto | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrTotalCobrar | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAporteParafiscales | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
+                <td style="text-align: right">{{ arServiciosCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}" /></td>
             </tr>
         {% endfor %}                                

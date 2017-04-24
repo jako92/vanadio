@@ -88,6 +88,11 @@ class RhuFactura
     private $VrExamen = 0;     
     
     /**
+     * @ORM\Column(name="operacion", type="integer")
+     */
+    private $operacion = 0;    
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;    
@@ -498,6 +503,30 @@ class RhuFactura
     }
 
     /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return RhuFactura
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
+    }
+
+    /**
      * Set comentarios
      *
      * @param string $comentarios
@@ -567,6 +596,54 @@ class RhuFactura
     public function getCodigoClienteFk()
     {
         return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuFactura
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
+    }
+
+    /**
+     * Set estadoAutorizado
+     *
+     * @param boolean $estadoAutorizado
+     *
+     * @return RhuFactura
+     */
+    public function setEstadoAutorizado($estadoAutorizado)
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAutorizado
+     *
+     * @return boolean
+     */
+    public function getEstadoAutorizado()
+    {
+        return $this->estadoAutorizado;
     }
 
     /**
@@ -717,53 +794,5 @@ class RhuFactura
     public function getSeleccionesFacturaRel()
     {
         return $this->seleccionesFacturaRel;
-    }
-
-    /**
-     * Set estadoAnulado
-     *
-     * @param boolean $estadoAnulado
-     *
-     * @return RhuFactura
-     */
-    public function setEstadoAnulado($estadoAnulado)
-    {
-        $this->estadoAnulado = $estadoAnulado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAnulado
-     *
-     * @return boolean
-     */
-    public function getEstadoAnulado()
-    {
-        return $this->estadoAnulado;
-    }
-
-    /**
-     * Set estadoAutorizado
-     *
-     * @param boolean $estadoAutorizado
-     *
-     * @return RhuFactura
-     */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
-        $this->estadoAutorizado = $estadoAutorizado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAutorizado
-     *
-     * @return boolean
-     */
-    public function getEstadoAutorizado()
-    {
-        return $this->estadoAutorizado;
     }
 }
