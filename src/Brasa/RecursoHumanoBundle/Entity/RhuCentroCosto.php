@@ -320,12 +320,7 @@ class RhuCentroCosto
     /**
      * @ORM\OneToMany(targetEntity="RhuAccidenteTrabajo", mappedBy="centroCostoRel")
      */
-    protected $accidentesTrabajoCentroCostoRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="centroCostoRel")
-     */
-    protected $facturasDetallesCentroCostoRel;
+    protected $accidentesTrabajoCentroCostoRel;   
     
     /**
      * @ORM\OneToMany(targetEntity="RhuCredito", mappedBy="centroCostoRel")
@@ -373,10 +368,10 @@ class RhuCentroCosto
         $this->facturasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sedesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->liquidacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prestacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->vacacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dotacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->accidentesTrabajoCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->facturasDetallesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->creditosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->disciplinariosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->permisosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1236,6 +1231,150 @@ class RhuCentroCosto
     }
 
     /**
+     * Set porcentajeCesantias
+     *
+     * @param float $porcentajeCesantias
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeCesantias($porcentajeCesantias)
+    {
+        $this->porcentajeCesantias = $porcentajeCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeCesantias()
+    {
+        return $this->porcentajeCesantias;
+    }
+
+    /**
+     * Set porcentajeInteresesCesantias
+     *
+     * @param float $porcentajeInteresesCesantias
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeInteresesCesantias($porcentajeInteresesCesantias)
+    {
+        $this->porcentajeInteresesCesantias = $porcentajeInteresesCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeInteresesCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeInteresesCesantias()
+    {
+        return $this->porcentajeInteresesCesantias;
+    }
+
+    /**
+     * Set porcentajeVacaciones
+     *
+     * @param float $porcentajeVacaciones
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeVacaciones($porcentajeVacaciones)
+    {
+        $this->porcentajeVacaciones = $porcentajeVacaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeVacaciones
+     *
+     * @return float
+     */
+    public function getPorcentajeVacaciones()
+    {
+        return $this->porcentajeVacaciones;
+    }
+
+    /**
+     * Set porcentajePrimas
+     *
+     * @param float $porcentajePrimas
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajePrimas($porcentajePrimas)
+    {
+        $this->porcentajePrimas = $porcentajePrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajePrimas
+     *
+     * @return float
+     */
+    public function getPorcentajePrimas()
+    {
+        return $this->porcentajePrimas;
+    }
+
+    /**
+     * Set porcentajeCaja
+     *
+     * @param float $porcentajeCaja
+     *
+     * @return RhuCentroCosto
+     */
+    public function setPorcentajeCaja($porcentajeCaja)
+    {
+        $this->porcentajeCaja = $porcentajeCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCaja
+     *
+     * @return float
+     */
+    public function getPorcentajeCaja()
+    {
+        return $this->porcentajeCaja;
+    }
+
+    /**
+     * Set aplicaPorcentajeAdministracion
+     *
+     * @param boolean $aplicaPorcentajeAdministracion
+     *
+     * @return RhuCentroCosto
+     */
+    public function setAplicaPorcentajeAdministracion($aplicaPorcentajeAdministracion)
+    {
+        $this->aplicaPorcentajeAdministracion = $aplicaPorcentajeAdministracion;
+
+        return $this;
+    }
+
+    /**
+     * Get aplicaPorcentajeAdministracion
+     *
+     * @return boolean
+     */
+    public function getAplicaPorcentajeAdministracion()
+    {
+        return $this->aplicaPorcentajeAdministracion;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
@@ -1706,6 +1845,40 @@ class RhuCentroCosto
     }
 
     /**
+     * Add prestacionesCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addPrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
+    {
+        $this->prestacionesCentroCostoRel[] = $prestacionesCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove prestacionesCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
+     */
+    public function removePrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
+    {
+        $this->prestacionesCentroCostoRel->removeElement($prestacionesCentroCostoRel);
+    }
+
+    /**
+     * Get prestacionesCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrestacionesCentroCostoRel()
+    {
+        return $this->prestacionesCentroCostoRel;
+    }
+
+    /**
      * Add vacacionesCentroCostoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesCentroCostoRel
@@ -1805,40 +1978,6 @@ class RhuCentroCosto
     public function getAccidentesTrabajoCentroCostoRel()
     {
         return $this->accidentesTrabajoCentroCostoRel;
-    }
-
-    /**
-     * Add facturasDetallesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCentroCostoRel
-     *
-     * @return RhuCentroCosto
-     */
-    public function addFacturasDetallesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCentroCostoRel)
-    {
-        $this->facturasDetallesCentroCostoRel[] = $facturasDetallesCentroCostoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasDetallesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCentroCostoRel
-     */
-    public function removeFacturasDetallesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCentroCostoRel)
-    {
-        $this->facturasDetallesCentroCostoRel->removeElement($facturasDetallesCentroCostoRel);
-    }
-
-    /**
-     * Get facturasDetallesCentroCostoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasDetallesCentroCostoRel()
-    {
-        return $this->facturasDetallesCentroCostoRel;
     }
 
     /**
@@ -2043,183 +2182,5 @@ class RhuCentroCosto
     public function getTurSoportesPagosPeriodosCentroCostoRel()
     {
         return $this->turSoportesPagosPeriodosCentroCostoRel;
-    }
-
-    /**
-     * Add prestacionesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
-     *
-     * @return RhuCentroCosto
-     */
-    public function addPrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
-    {
-        $this->prestacionesCentroCostoRel[] = $prestacionesCentroCostoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove prestacionesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel
-     */
-    public function removePrestacionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesCentroCostoRel)
-    {
-        $this->prestacionesCentroCostoRel->removeElement($prestacionesCentroCostoRel);
-    }
-
-    /**
-     * Get prestacionesCentroCostoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPrestacionesCentroCostoRel()
-    {
-        return $this->prestacionesCentroCostoRel;
-    }
-
-    /**
-     * Set porcentajeCesantias
-     *
-     * @param float $porcentajeCesantias
-     *
-     * @return RhuCentroCosto
-     */
-    public function setPorcentajeCesantias($porcentajeCesantias)
-    {
-        $this->porcentajeCesantias = $porcentajeCesantias;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeCesantias
-     *
-     * @return float
-     */
-    public function getPorcentajeCesantias()
-    {
-        return $this->porcentajeCesantias;
-    }
-
-    /**
-     * Set porcentajeInteresesCesantias
-     *
-     * @param float $porcentajeInteresesCesantias
-     *
-     * @return RhuCentroCosto
-     */
-    public function setPorcentajeInteresesCesantias($porcentajeInteresesCesantias)
-    {
-        $this->porcentajeInteresesCesantias = $porcentajeInteresesCesantias;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeInteresesCesantias
-     *
-     * @return float
-     */
-    public function getPorcentajeInteresesCesantias()
-    {
-        return $this->porcentajeInteresesCesantias;
-    }
-
-    /**
-     * Set porcentajeVacaciones
-     *
-     * @param float $porcentajeVacaciones
-     *
-     * @return RhuCentroCosto
-     */
-    public function setPorcentajeVacaciones($porcentajeVacaciones)
-    {
-        $this->porcentajeVacaciones = $porcentajeVacaciones;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeVacaciones
-     *
-     * @return float
-     */
-    public function getPorcentajeVacaciones()
-    {
-        return $this->porcentajeVacaciones;
-    }
-
-    /**
-     * Set porcentajePrimas
-     *
-     * @param float $porcentajePrimas
-     *
-     * @return RhuCentroCosto
-     */
-    public function setPorcentajePrimas($porcentajePrimas)
-    {
-        $this->porcentajePrimas = $porcentajePrimas;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajePrimas
-     *
-     * @return float
-     */
-    public function getPorcentajePrimas()
-    {
-        return $this->porcentajePrimas;
-    }
-
-    /**
-     * Set porcentajeCaja
-     *
-     * @param float $porcentajeCaja
-     *
-     * @return RhuCentroCosto
-     */
-    public function setPorcentajeCaja($porcentajeCaja)
-    {
-        $this->porcentajeCaja = $porcentajeCaja;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeCaja
-     *
-     * @return float
-     */
-    public function getPorcentajeCaja()
-    {
-        return $this->porcentajeCaja;
-    }
-
-    /**
-     * Set aplicaPorcentajeAdministracion
-     *
-     * @param boolean $aplicaPorcentajeAdministracion
-     *
-     * @return RhuCentroCosto
-     */
-    public function setAplicaPorcentajeAdministracion($aplicaPorcentajeAdministracion)
-    {
-        $this->aplicaPorcentajeAdministracion = $aplicaPorcentajeAdministracion;
-
-        return $this;
-    }
-
-    /**
-     * Get aplicaPorcentajeAdministracion
-     *
-     * @return boolean
-     */
-    public function getAplicaPorcentajeAdministracion()
-    {
-        return $this->aplicaPorcentajeAdministracion;
     }
 }

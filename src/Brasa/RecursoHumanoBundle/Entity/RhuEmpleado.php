@@ -674,12 +674,7 @@ class RhuEmpleado
      /**
      * @ORM\OneToMany(targetEntity="RhuAccidenteTrabajo", mappedBy="empleadoRel")
      */
-    protected $accidentesTrabajoEmpleadoRel;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="empleadoRel")
-     */
-    protected $facturasDetallesEmpleadoRel;
+    protected $accidentesTrabajoEmpleadoRel;    
     
     /**
      * @ORM\OneToMany(targetEntity="RhuCambioSalario", mappedBy="empleadoRel")
@@ -788,7 +783,6 @@ class RhuEmpleado
     protected $turCostosDetallesEmpleadoRel; 
     
 
-
     /**
      * Constructor
      */
@@ -819,7 +813,6 @@ class RhuEmpleado
         $this->ssoAportesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dotacionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->accidentesTrabajoEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->facturasDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cambiosSalariosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ingresosBasesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->proyeccionesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -4076,40 +4069,6 @@ class RhuEmpleado
     public function getAccidentesTrabajoEmpleadoRel()
     {
         return $this->accidentesTrabajoEmpleadoRel;
-    }
-
-    /**
-     * Add facturasDetallesEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesEmpleadoRel
-     *
-     * @return RhuEmpleado
-     */
-    public function addFacturasDetallesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesEmpleadoRel)
-    {
-        $this->facturasDetallesEmpleadoRel[] = $facturasDetallesEmpleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasDetallesEmpleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesEmpleadoRel
-     */
-    public function removeFacturasDetallesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesEmpleadoRel)
-    {
-        $this->facturasDetallesEmpleadoRel->removeElement($facturasDetallesEmpleadoRel);
-    }
-
-    /**
-     * Get facturasDetallesEmpleadoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasDetallesEmpleadoRel()
-    {
-        return $this->facturasDetallesEmpleadoRel;
     }
 
     /**

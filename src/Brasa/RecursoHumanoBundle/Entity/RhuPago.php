@@ -289,12 +289,7 @@ class RhuPago
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="pagoRel")
      */
-    protected $serviciosCobrarPagoRel;     
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="pagoRel")
-     */
-    protected $facturasDetallesPagoRel;    
+    protected $serviciosCobrarPagoRel;            
     
     /**
      * @ORM\OneToMany(targetEntity="RhuCreditoPago", mappedBy="pagoRel")
@@ -306,7 +301,6 @@ class RhuPago
      */
     protected $pagosBancosDetallePagoRel;    
 
-
     /**
      * Constructor
      */
@@ -315,7 +309,6 @@ class RhuPago
         $this->pagosDetallesPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosDetallesSedesPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosCobrarPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->facturasDetallesPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->creditosPagosPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosBancosDetallePagoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -352,6 +345,30 @@ class RhuPago
     public function getCodigoPagoTipoFk()
     {
         return $this->codigoPagoTipoFk;
+    }
+
+    /**
+     * Set codigoPeriodoPagoFk
+     *
+     * @param integer $codigoPeriodoPagoFk
+     *
+     * @return RhuPago
+     */
+    public function setCodigoPeriodoPagoFk($codigoPeriodoPagoFk)
+    {
+        $this->codigoPeriodoPagoFk = $codigoPeriodoPagoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPeriodoPagoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPeriodoPagoFk()
+    {
+        return $this->codigoPeriodoPagoFk;
     }
 
     /**
@@ -1099,6 +1116,30 @@ class RhuPago
     }
 
     /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuPago
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
+    }
+
+    /**
      * Set comentarios
      *
      * @param string $comentarios
@@ -1243,6 +1284,78 @@ class RhuPago
     }
 
     /**
+     * Set vrExtra
+     *
+     * @param float $vrExtra
+     *
+     * @return RhuPago
+     */
+    public function setVrExtra($vrExtra)
+    {
+        $this->vrExtra = $vrExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get vrExtra
+     *
+     * @return float
+     */
+    public function getVrExtra()
+    {
+        return $this->vrExtra;
+    }
+
+    /**
+     * Set vrAdicionalPrestacional
+     *
+     * @param float $vrAdicionalPrestacional
+     *
+     * @return RhuPago
+     */
+    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
+    {
+        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalPrestacional()
+    {
+        return $this->vrAdicionalPrestacional;
+    }
+
+    /**
+     * Set vrAdicionalNoPrestacional
+     *
+     * @param float $vrAdicionalNoPrestacional
+     *
+     * @return RhuPago
+     */
+    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
+    {
+        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAdicionalNoPrestacional
+     *
+     * @return float
+     */
+    public function getVrAdicionalNoPrestacional()
+    {
+        return $this->vrAdicionalNoPrestacional;
+    }
+
+    /**
      * Set pagoTipoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoTipo $pagoTipoRel
@@ -1264,6 +1377,30 @@ class RhuPago
     public function getPagoTipoRel()
     {
         return $this->pagoTipoRel;
+    }
+
+    /**
+     * Set periodoPagoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel
+     *
+     * @return RhuPago
+     */
+    public function setPeriodoPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel = null)
+    {
+        $this->periodoPagoRel = $periodoPagoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get periodoPagoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago
+     */
+    public function getPeriodoPagoRel()
+    {
+        return $this->periodoPagoRel;
     }
 
     /**
@@ -1489,40 +1626,6 @@ class RhuPago
     }
 
     /**
-     * Add facturasDetallesPagoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesPagoRel
-     *
-     * @return RhuPago
-     */
-    public function addFacturasDetallesPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesPagoRel)
-    {
-        $this->facturasDetallesPagoRel[] = $facturasDetallesPagoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasDetallesPagoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesPagoRel
-     */
-    public function removeFacturasDetallesPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesPagoRel)
-    {
-        $this->facturasDetallesPagoRel->removeElement($facturasDetallesPagoRel);
-    }
-
-    /**
-     * Get facturasDetallesPagoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasDetallesPagoRel()
-    {
-        return $this->facturasDetallesPagoRel;
-    }
-
-    /**
      * Add creditosPagosPagoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCreditoPago $creditosPagosPagoRel
@@ -1588,149 +1691,5 @@ class RhuPago
     public function getPagosBancosDetallePagoRel()
     {
         return $this->pagosBancosDetallePagoRel;
-    }
-
-    /**
-     * Set estadoAnulado
-     *
-     * @param boolean $estadoAnulado
-     *
-     * @return RhuPago
-     */
-    public function setEstadoAnulado($estadoAnulado)
-    {
-        $this->estadoAnulado = $estadoAnulado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAnulado
-     *
-     * @return boolean
-     */
-    public function getEstadoAnulado()
-    {
-        return $this->estadoAnulado;
-    }
-
-    /**
-     * Set codigoPeriodoPagoFk
-     *
-     * @param integer $codigoPeriodoPagoFk
-     *
-     * @return RhuPago
-     */
-    public function setCodigoPeriodoPagoFk($codigoPeriodoPagoFk)
-    {
-        $this->codigoPeriodoPagoFk = $codigoPeriodoPagoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPeriodoPagoFk
-     *
-     * @return integer
-     */
-    public function getCodigoPeriodoPagoFk()
-    {
-        return $this->codigoPeriodoPagoFk;
-    }
-
-    /**
-     * Set periodoPagoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel
-     *
-     * @return RhuPago
-     */
-    public function setPeriodoPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago $periodoPagoRel = null)
-    {
-        $this->periodoPagoRel = $periodoPagoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get periodoPagoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPeriodoPago
-     */
-    public function getPeriodoPagoRel()
-    {
-        return $this->periodoPagoRel;
-    }
-
-    /**
-     * Set vrExtra
-     *
-     * @param float $vrExtra
-     *
-     * @return RhuPago
-     */
-    public function setVrExtra($vrExtra)
-    {
-        $this->vrExtra = $vrExtra;
-
-        return $this;
-    }
-
-    /**
-     * Get vrExtra
-     *
-     * @return float
-     */
-    public function getVrExtra()
-    {
-        return $this->vrExtra;
-    }
-
-    /**
-     * Set vrAdicionalPrestacional
-     *
-     * @param float $vrAdicionalPrestacional
-     *
-     * @return RhuPago
-     */
-    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
-    {
-        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalPrestacional
-     *
-     * @return float
-     */
-    public function getVrAdicionalPrestacional()
-    {
-        return $this->vrAdicionalPrestacional;
-    }
-
-    /**
-     * Set vrAdicionalNoPrestacional
-     *
-     * @param float $vrAdicionalNoPrestacional
-     *
-     * @return RhuPago
-     */
-    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
-    {
-        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalNoPrestacional
-     *
-     * @return float
-     */
-    public function getVrAdicionalNoPrestacional()
-    {
-        return $this->vrAdicionalNoPrestacional;
     }
 }

@@ -229,7 +229,7 @@ class CobroController extends Controller
             }
         }
         $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->pendienteCobrar($arCobro->getCodigoClienteFk()));        
-        $arServiciosCobrar = $paginator->paginate($query, $request->query->get('page', 1), 50);                       
+        $arServiciosCobrar = $paginator->paginate($query, $request->query->get('page', 1), 300);                       
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalleNuevoServicio.html.twig', array(
             'arServiciosCobrar' => $arServiciosCobrar,
             'arCobro' => $arCobro,
