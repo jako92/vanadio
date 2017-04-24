@@ -217,7 +217,7 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $douPagoDetalle = $intHorasProcesarLicencia * $vrHoraDevengadoPactado;
                     } 
                 }
-                
+                $douPagoDetalle = round($douPagoDetalle);
                 $douIngresoBasePrestacional += $douPagoDetalle;                                        
                 $douIngresoBaseCotizacion += $douPagoDetalle;
                 $arPagoDetalle->setVrIngresoBasePrestacion($douPagoDetalle);                                                                                                                        

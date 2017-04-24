@@ -30,7 +30,7 @@ class PagoController extends Controller
         $this->listar();
         if($form->isValid()) {
             if($form->get('BtnCorregirIbc')->isClicked()) {
-                /*set_time_limit(0);
+                set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                 $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findAll();
@@ -38,15 +38,16 @@ class PagoController extends Controller
                 foreach ($arPagos as $arPago) {     
                     $arPagoActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();                    
                     $arPagoActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arPago->getCodigoPagoPk());
-                    $vrExtraTotal = 0;
-                    $adicionalPrestacional = 0;
-                    $adicionalNoPrestacional = 0;
-                    $salario = 0;
-                    $ingresoBasePrestacion = 0;
+                    //$vrExtraTotal = 0;
+                    //$adicionalPrestacional = 0;
+                    //$adicionalNoPrestacional = 0;
+                    //$salario = 0;
+                    //$ingresoBasePrestacion = 0;
+                    $ingresoBaseCotizacion = 0;
                     $arPagosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                     $arPagosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));            
                     foreach ($arPagosDetalles as $arPagoDetalle) {                        
-                        $arPagoDetalleActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();                        
+                        /*$arPagoDetalleActualizar = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();                        
                         $arPagoDetalleActualizar = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->find($arPagoDetalle->getCodigoPagoDetallePk());
                         if($arPagoDetalle->getPagoConceptoRel()->getHoraExtra()) {
                             $vrHoraSalario = $arPago->getVrSalarioEmpleado() / 30 / 8;
@@ -70,17 +71,19 @@ class PagoController extends Controller
                             $salario +=$arPagoDetalle->getVrPago();
                         }   
                         $ingresoBasePrestacion += $arPagoDetalle->getVrIngresoBasePrestacion();
-                        $em->persist($arPagoDetalleActualizar);                            
+                        $em->persist($arPagoDetalleActualizar);*/   
+                        $ingresoBaseCotizacion += $arPagoDetalle->getVrIngresoBaseCotizacion();
                     }
-                    $arPagoActualizar->setVrExtra($vrExtraTotal);
-                    $arPagoActualizar->setVrAdicionalPrestacional($adicionalPrestacional);
-                    $arPagoActualizar->setVrAdicionalNoPrestacional($adicionalNoPrestacional); 
-                    $arPagoActualizar->setVrSalario($salario);
-                    $arPagoActualizar->setVrIngresoBasePrestacion($ingresoBasePrestacion);
+                    //$arPagoActualizar->setVrExtra($vrExtraTotal);
+                    //$arPagoActualizar->setVrAdicionalPrestacional($adicionalPrestacional);
+                    //$arPagoActualizar->setVrAdicionalNoPrestacional($adicionalNoPrestacional); 
+                    //$arPagoActualizar->setVrSalario($salario);
+                    //$arPagoActualizar->setVrIngresoBasePrestacion($ingresoBasePrestacion);
+                    $arPagoActualizar->setVrIngresoBaseCotizacion($ingresoBaseCotizacion);
                     $em->persist($arPagoActualizar);
                 }
                 $em->flush();   
-                */
+                
             }
             if($form->get('BtnExcel')->isClicked()) {                
                 $this->filtrarLista($form, $request);
@@ -303,7 +306,7 @@ class PagoController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => false))
             ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;
