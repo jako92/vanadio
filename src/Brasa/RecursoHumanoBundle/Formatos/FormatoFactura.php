@@ -15,8 +15,8 @@ class FormatoFactura extends \FPDF_FPDF {
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         $valor = round($arFactura->getVrNeto() + $arFactura->getVrBaseAIU());
-        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
-        self::$strLetras = $strLetras;
+        //$strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras(0);
+        self::$strLetras = "cero";
         ob_clean();
         
         $pdf = new FormatoFactura('P','mm', 'letter');
@@ -111,7 +111,7 @@ class FormatoFactura extends \FPDF_FPDF {
     public function EncabezadoDetalles() {
         $this->Ln(12);
         $this->SetX(15);
-        $header = array('DESCRIPCION', 'CANT', 'VR. COSTO' , 'VR. ADMON', 'VR. TOTAL');
+        $header = array('DESCRIPCION', 'ADMON', 'INGRESO', 'CANT', 'PRECIO', 'TOTAL');
         //$this->SetFillColor(236, 236, 236);
         //$this->SetTextColor(0);
         //$this->SetDrawColor(0, 0, 0);
@@ -119,7 +119,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetFont('', 'B', 7.5);
 
         //creamos la cabecera de la tabla.
-        $w = array(117, 8, 22, 22, 22);
+        $w = array(95, 22, 22, 8, 22, 22);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0)
                 $this->Cell($w[$i], 7, $header[$i], 1, 0, 'L',1);
@@ -133,107 +133,23 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->Ln(8);
     }
 
-    public function Body($pdf) {
-        
+    public function Body($pdf) {        
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find(self::$codigoFactura);
         $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
         $arFacturaDetalles = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => self::$codigoFactura));
-        
-        /*$pdf->SetX(15);        
-        $pdf->Cell(124, 4, utf8_decode($arFactura->getDescripcion()), 0, 0, 'L');
-        $pdf->SetFont('Arial', 'B', 8);
-        $pdf->Cell(10, 4, '', 0, 0, 'R');
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->Cell(30, 4, '', 0, 0, 'R');
-        $pdf->Cell(30, 4, '', 0, 0, 'R');*/
-        $pdf->Ln(0);
-        $pdf->SetFont('Arial', '', 8);
-        
-            
-                $dql   = "SELECT SUM(fd.vrCosto) as costo, SUM(fd.vrAdministracion) as administracion, COUNT(fd.codigoEmpleadoFk) as cantidad FROM BrasaRecursoHumanoBundle:RhuFacturaDetalle fd "
-                . "WHERE fd.codigoFacturaFk = " . self::$codigoFactura ;
-                $query = self::$em->createQuery($dql);
-                $arrayResultado = $query->getResult();
-                $vrCosto = $arrayResultado[0]['costo'];
-                $vrAdministracion = $arrayResultado[0]['administracion'];
-                $intCantidad = $arrayResultado[0]['cantidad'];
-                if($vrCosto == null) {
-                    $vrCosto = 0;
-                }
-                if($vrAdministracion == null) {
-                    $vrAdministracion = 0;
-                }
-                if($intCantidad == null) {
-                    $intCantidad = 0;
-                }
-                $totalCobro = $vrCosto + $vrAdministracion;
-                $pdf->SetX(15);
-                $pdf->SetFont('Arial', '', 7);
-                $pdf->Cell(117, 4, 'INGRESO POR TRABAJADORES EN MISION', 0, 0, 'L');
-                $pdf->SetFont('Arial', '', 8);                
-                $pdf->Cell(8, 4, $intCantidad, 0, 0, 'C');                
-                $pdf->Cell(22, 4, number_format($vrCosto, 0, '.', ','), 0, 0, 'R');
-                $pdf->Cell(22, 4, number_format($vrAdministracion, 0, '.', ','), 0, 0, 'R');
-                $pdf->Cell(22, 4, number_format($totalCobro, 0, '.', ','), 0, 0, 'R');
-                /*foreach ($results as $arFacturaDetalle) {
-                    $pdf->SetX(15);
-                    $pdf->Cell(10, 4, number_format($arFacturaDetalle['cantidad'], 0, '.', ','), 0, 0, 'C');
-                    $pdf->SetFont('Arial', 'B', 9);
-                    $pdf->Cell(124, 4, substr(utf8_decode($arFacturaDetalle['puesto']) . '-'  . $arFacturaDetalle['modalidadServicio'], 0, 61), 0, 0, 'L');
-                    $pdf->SetFont('Arial', '', 9);
-                    /*
-                    $pdf->Cell(28, 4, number_format($arFacturaDetalle['precio'], 0, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(28, 4, number_format($arFacturaDetalle['precio'], 0, '.', ','), 0, 0, 'R');
-                    $pdf->Ln();
-                    $pdf->SetX(15);
-                    $pdf->Cell(10, 4, '', 0, 0, 'R');
-                    $strCampo = $arFacturaDetalle['conceptoServicio'];
-                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
-                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
-                    $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Ln(2);
-                    $pdf->SetAutoPageBreak(true, 15);
-                }*/
-
-                /*$strSql = "SELECT tur_grupo_facturacion.nombre as puesto, tur_grupo_facturacion.concepto as conceptoServicio, SUM(cantidad)  AS cantidad, SUM(vr_precio) AS precio
-                            FROM
-                            tur_factura_detalle
-                            LEFT JOIN tur_puesto ON tur_factura_detalle.codigo_puesto_fk = tur_puesto.codigo_puesto_pk
-                            LEFT JOIN tur_modalidad_servicio ON tur_factura_detalle.codigo_modalidad_servicio_fk = tur_modalidad_servicio.codigo_modalidad_servicio_pk
-                            LEFT JOIN tur_concepto_servicio ON tur_factura_detalle.codigo_concepto_servicio_fk = tur_concepto_servicio.codigo_concepto_servicio_pk
-                            LEFT JOIN tur_grupo_facturacion ON tur_factura_detalle.codigo_grupo_facturacion_fk = tur_grupo_facturacion.codigo_grupo_facturacion_pk
-                            WHERE codigo_factura_fk = " . self::$codigoFactura . "  AND codigo_grupo_facturacion_fk IS NOT NULL
-                        GROUP BY tur_factura_detalle.codigo_grupo_facturacion_fk ";
-                $connection = self::$em->getConnection();
-                $statement = $connection->prepare($strSql);
-                $statement->execute();
-                $results = $statement->fetchAll();
-                foreach ($results as $arFacturaDetalle) {
-                    $pdf->SetX(15);
-                    $pdf->Cell(10, 4, number_format($arFacturaDetalle['cantidad'], 0, '.', ','), 0, 0, 'C');
-                    $pdf->SetFont('Arial', 'B', 9);
-                    $pdf->Cell(124, 4, substr(utf8_decode($arFacturaDetalle['puesto']), 0, 61), 0, 0, 'L');
-                    $pdf->SetFont('Arial', '', 9);
-                    if($arFacturaDetalle['cantidad'] > 0) {
-                        $precioUnitario = $arFacturaDetalle['precio'] / $arFacturaDetalle['cantidad'];
-                    }
-                    $pdf->Cell(28, 4, number_format($precioUnitario, 0, '.', ','), 0, 0, 'R');
-                    $pdf->Cell(28, 4, number_format($arFacturaDetalle['precio'], 0, '.', ','), 0, 0, 'R');
-                    $pdf->Ln();
-                    $pdf->SetX(15);
-                    $pdf->Cell(10, 4, '', 0, 0, 'R');
-                    $strCampo = $arFacturaDetalle['conceptoServicio'];
-                    $pdf->MultiCell(124, 4, $strCampo, 0, 'L');
-                    //$pdf->Cell(110, 4, $strCampo, 0, 0, 'L');
-                    $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Cell(28, 4, '', 0, 0, 'R');
-                    $pdf->Ln(2);
-                    $pdf->SetAutoPageBreak(true, 15);
-                }*/
-            
-        
+        foreach ($arFacturaDetalles as $arFacturaDetalle) {
+            $pdf->SetX(15);
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->Cell(95, 4, $arFacturaDetalle->getFacturaConceptoRel()->getNombre(), 0, 0, 'L');
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrAdministracion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrOperacion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');  
+            $pdf->Ln();
+            $pdf->SetAutoPageBreak(true, 15);
+        }                                   
 
     }
 
@@ -285,9 +201,10 @@ class FormatoFactura extends \FPDF_FPDF {
         $arFactura = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find(self::$codigoFactura);
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-        $this->Rect(15, 77, 117, 97);
-        $this->Rect(132, 77, 8, 97);
-        $this->Rect(140, 77, 22, 97);
+        $this->Rect(15, 77, 95, 97);
+        $this->Rect(110, 77, 22, 97);
+        $this->Rect(132, 77, 22, 97);
+        $this->Rect(154, 77, 8, 97);
         $this->Rect(162, 77, 22, 97);
         $this->Rect(184, 77, 22, 97);
         $this->SetFillColor(200, 200, 200);
