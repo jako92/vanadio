@@ -99,9 +99,9 @@ class GenerarServicioController extends Controller
                             $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
-                            $adicionalPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
+                            $prestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
                             //Valor de las horas extra y los adicionales prestacionales
-                            $prestacional = $adicionalPrestacional + $arPago->getVrExtra();
+                            $prestacional += $arPago->getVrExtra();
                             //Valor de los adicionales no prestacionales
                             $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                            
                             $arServicio->setVrPrestacional($prestacional);

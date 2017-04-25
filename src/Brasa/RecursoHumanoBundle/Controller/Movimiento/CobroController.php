@@ -372,21 +372,7 @@ class CobroController extends Controller
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         } 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO FACTURA')
-                    ->setCellValue('B1', 'NÚMERO')
-                    ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'FECHA VENCE')
-                    ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'CENTRO COSTO')
-                    ->setCellValue('G1', 'VR. BRUTO')
-                    ->setCellValue('H1', 'VR. NETO')
-                    ->setCellValue('I1', 'VR. RETENCION FUENTE')
-                    ->setCellValue('J1', 'VR. RETENCION CREE')
-                    ->setCellValue('K1', 'VR. RETENCION IVA')
-                    ->setCellValue('L1', 'VR. BASE AIU')
-                    ->setCellValue('M1', 'VR. TOTAL ADMNISTRACION')
-                    ->setCellValue('N1', 'VR. TOTAL INGRESO MISION')
-                    ->setCellValue('O1', 'COMENTARIOS');
+                    ->setCellValue('A1', 'ID');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -395,21 +381,7 @@ class CobroController extends Controller
         foreach ($arCobros as $arCobro) {
             
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arCobro->getCodigoCobroPk())
-                    ->setCellValue('B' . $i, $arCobro->getNumero())
-                    ->setCellValue('C' . $i, $arCobro->getFecha()->format('Y/m/d'))
-                    ->setCellValue('D' . $i, $arCobro->getFechaVence()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arCobro->getClienteRel()->getNombreCorto())
-                    ->setCellValue('F' . $i, $arCobro->getCentroCostoRel()->getNombre())
-                    ->setCellValue('G' . $i, $arCobro->getVrBruto())
-                    ->setCellValue('H' . $i, $arCobro->getVrNeto())
-                    ->setCellValue('I' . $i, $arCobro->getVrRetencionFuente())
-                    ->setCellValue('J' . $i, $arCobro->getVrRetencionCree())
-                    ->setCellValue('K' . $i, $arCobro->getVrRetencionIva())
-                    ->setCellValue('L' . $i, $arCobro->getVrBaseAIU())
-                    ->setCellValue('M' . $i, $arCobro->getVrTotalAdministracion())
-                    ->setCellValue('N' . $i, $arCobro->getVrIngresoMision())
-                    ->setCellValue('O' . $i, $arCobro->getComentarios());
+                    ->setCellValue('A' . $i, $arCobro->getCodigoCobroPk());
             $i++;
         }
 
@@ -456,58 +428,22 @@ class CobroController extends Controller
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'PAGO')
-                    ->setCellValue('C1', 'DOCUMENTO')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'BASICO')
-                    ->setCellValue('F1', 'VR ADICIONAL PREST')
-                    ->setCellValue('G1', 'VR ADICIONAL NO PREST')
-                    ->setCellValue('H1', 'AUX TRANSPORTE')
-                    ->setCellValue('I1', 'ARP')
-                    ->setCellValue('J1', 'EPS')
-                    ->setCellValue('K1', 'PENSION')
-                    ->setCellValue('L1', 'CAJA')
-                    ->setCellValue('M1', 'SENA')
-                    ->setCellValue('N1', 'ICBF')
-                    ->setCellValue('O1', 'CESANTIAS')
-                    ->setCellValue('P1', 'CESANTIAS INT')
-                    ->setCellValue('Q1', 'PRIMAS')
-                    ->setCellValue('R1', 'VACACIONES')
-                    ->setCellValue('S1', 'A. PARAFISCALES')
-                    ->setCellValue('T1', 'ADMON')
-                    ->setCellValue('U1', 'COSTO')
-                    ->setCellValue('V1', 'TOTAL COBRO');
+                    ->setCellValue('B1', 'DOCUMENTO')
+                    ->setCellValue('C1', 'EMPLEADO')
+                    ->setCellValue('D1', 'BASICO');
                     
         $i = 2;
         //$query = $em->createQuery($this->strSqlLista);
-        $arCobroDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroDetalle();
-        $arCobroDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobroDetalle')->findBy(array('codigoCobroFk' => $codigoCobro));
+        $arCobroDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+        $arCobroDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => $codigoCobro));
         //$arPagoBancos = $query->getResult();
         foreach ($arCobroDetalle as $arCobroDetalle) {
             
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arCobroDetalle->getCodigoCobroDetallePk())
-                    ->setCellValue('B' . $i, $arCobroDetalle->getCodigoPagoFk())
-                    ->setCellValue('C' . $i, $arCobroDetalle->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('D' . $i, $arCobroDetalle->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arCobroDetalle->getVrSalario())
-                    ->setCellValue('F' . $i, $arCobroDetalle->getVrAdicionalPrestacional())
-                    ->setCellValue('G' . $i, $arCobroDetalle->getVrAdicionalNoPrestacional())
-                    ->setCellValue('H' . $i, $arCobroDetalle->getVrAuxilioTransporte())
-                    ->setCellValue('I' . $i, $arCobroDetalle->getVrArp())
-                    ->setCellValue('J' . $i, $arCobroDetalle->getVrEps())
-                    ->setCellValue('K' . $i, $arCobroDetalle->getVrPension())
-                    ->setCellValue('L' . $i, $arCobroDetalle->getVrCaja())
-                    ->setCellValue('M' . $i, $arCobroDetalle->getVrSena())
-                    ->setCellValue('N' . $i, $arCobroDetalle->getVrIcbf())
-                    ->setCellValue('O' . $i, $arCobroDetalle->getVrCesantias())
-                    ->setCellValue('P' . $i, $arCobroDetalle->getVrCesantiasIntereses())
-                    ->setCellValue('Q' . $i, $arCobroDetalle->getVrPrimas())
-                    ->setCellValue('R' . $i, $arCobroDetalle->getVrVacaciones())
-                    ->setCellValue('S' . $i, $arCobroDetalle->getVrAporteParafiscales())
-                    ->setCellValue('T' . $i, $arCobroDetalle->getVrAdministracion())
-                    ->setCellValue('U' . $i, $arCobroDetalle->getVrCosto())
-                    ->setCellValue('V' . $i, $arCobroDetalle->getVrTotalCobrar());
+                    ->setCellValue('A' . $i, $arCobroDetalle->getCodigoServicioCobrarPk())
+                    ->setCellValue('B' . $i, $arCobroDetalle->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('C' . $i, $arCobroDetalle->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('D' . $i, $arCobroDetalle->getVrSalario());
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('CobroDetalles');

@@ -165,7 +165,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     public function adicionalNoPrestacional($codigoPago) {
         $em = $this->getEntityManager();
         $dql   = "SELECT SUM(pd.vrPago) as Pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
-                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.adicional = 1 AND pd.prestacional = 0";
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.adicional = 1 AND pd.prestacional = 0 AND pd.operacion = 1";
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         $adicionalNoPrestacional = $arrayResultado[0]['Pago'];
