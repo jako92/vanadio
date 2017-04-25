@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class RhuCobroType extends AbstractType
 {
@@ -19,7 +20,9 @@ class RhuCobroType extends AbstractType
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombreCorto', 'ASC');},
                 'choice_label' => 'nombreCorto',
-                'required' => true))          
+                'required' => true))  
+            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))            
+            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                            
             ->add('comentarios', TextareaType::class, array('required' => false))                                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));        
