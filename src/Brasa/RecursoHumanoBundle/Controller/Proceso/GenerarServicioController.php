@@ -91,9 +91,10 @@ class GenerarServicioController extends Controller
                             $primas = round(($ingresoBasePrestaciones * $porcentajePrimas) / 100);
                             $arServicio->setvrPrimas($primas);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
-                            $arServicio->setVrPrestaciones($totalPrestaciones);
+                            $arServicio->setVrPrestaciones($totalPrestaciones);                                                        
+                            $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                    
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
-                            $vacaciones = round((($arPago->getVrSalario() + $recargoNorturno) * $porcentajeVacaciones) / 100);
+                            $vacaciones = round((($arPago->getVrSalario() + $recargoNorturno + $salarioDescuento) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
                             $porcentajeRiesgos = $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje();
                             $riesgos = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeRiesgos) / 100);

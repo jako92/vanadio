@@ -444,4 +444,18 @@ class RhuPagoDetalleRepository extends EntityRepository {
         }
         return $numeroHoras;
     }    
+    
+    public function valorSalarioDescuento($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoConceptoRel pc "
+                . "WHERE pc.componeSalario = 1 AND pd.operacion = -1 AND pd.codigoPagoFk = " . $codigoPago;
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $pago = $arrayResultado[0]['pago'];
+        if($pago == null) {
+            $pago = 0;
+        }
+        return $pago;
+    }     
+    
 }
