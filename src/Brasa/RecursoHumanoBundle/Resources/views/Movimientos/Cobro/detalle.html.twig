@@ -183,13 +183,11 @@
                     <table class="table table-striped table-bordered table-condensed">
                         <tr>
                             <th>ID</th>
-                            <th>IDENTIFICACIÓN</th>
+                            <th>DOC</th>
                             <th>EMPLEADO</th>
-                            <th>DESDE</th>
-                            <th>HASTA</th> 
+                            <th>PERIODO</th>                            
                             <th>SALARIO</th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>                
+                            <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>                            
                             <th>BASICO</th>                
                             <th><p data-toggle="tooltip" data-placement="top" title="Horas extra y bonificaciones prestacionales">PRE</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Adicionales al pago no prestacionales">NO_PRE</p></th>
@@ -204,7 +202,7 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Prestaciones sociales (cesantias, primas, intereses)">PRES</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Vacaciones">VAC</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PAR</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Cobro de la operacion">OPERACION</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Cobro de la operacion">OPER</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Valor de la administracion">ADMON</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Total cobro">TOTAL</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Porcentaje administracion">%</p></th>
@@ -219,11 +217,9 @@
                                 <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }} </td>                                
                                 <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion  }}</td>
                                 <td>{{ arServicioCobrar.empleadoRel.nombreCorto  }}</td>
-                                <td>{{ arServicioCobrar.fechaDesde |date("Y/m/d")  }}</td>
-                                <td>{{ arServicioCobrar.fechaHasta |date("Y/m/d")  }}</td>                    
+                                <td>{{ arServicioCobrar.fechaDesde |date("Y/m/d")  }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d")  }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.vrSalarioEmpleado | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arServicioCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arServicioCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.vrSalario | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrPrestacional | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrNoPrestacional | number_format(0, '.', ',') }}</td>
