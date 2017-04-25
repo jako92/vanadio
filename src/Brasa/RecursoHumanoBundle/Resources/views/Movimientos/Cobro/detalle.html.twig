@@ -213,7 +213,7 @@
                         {% for arServicioCobrar in arServiciosCobrar %}
                             {% if intCodigoProgramacion != arServicioCobrar.codigoProgramacionPagoFk %}
                                 <tr>                        
-                                    <td id="suptipo" colspan="3"><b>{{ arServicioCobrar.fechaDesde |date("Y/m/d") }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d") }} Porcentaje admin: {{ arServicioCobrar.porcentajeAdministracion | number_format(1, '.', ',') }}</b></td>
+                                    <td id="suptipo" colspan="20"><b>{{ arServicioCobrar.fechaDesde |date("Y/m/d") }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d") }} Porcentaje admin: {{ arServicioCobrar.porcentajeAdministracion | number_format(1, '.', ',') }}</b></td>
                                 </tr>
                                 {% set intCodigoProgramacion = arServicioCobrar.codigoProgramacionPagoFk %}                                
                             {% endif %}                            
