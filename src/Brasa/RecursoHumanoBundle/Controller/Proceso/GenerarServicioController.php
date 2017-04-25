@@ -62,19 +62,13 @@ class GenerarServicioController extends Controller
                             $arServicio->setFechaHasta($arPago->getFechaHastaPago());
                             $arServicio->setVrSalario($arPago->getVrSalario());
                             $salarioBasico = $arPago->getVrSalario();
-                            $adicionalPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
-                            $adicionalNoPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                            
                             $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporteCotizacion();                            
-                            $arServicio->setVrAdicionalPrestacional($adicionalPrestacional);
-                            $arServicio->setVrAdicionalNoPrestacional($adicionalNoPrestacional);
                             $auxilioTransporte = $arPago->getVrAuxilioTransporte();
                             $arServicio->setVrAuxilioTransporte($auxilioTransporte);
                             $arServicio->setVrSalarioPeriodo($arPago->getVrSalarioPeriodo());
                             $arServicio->setVrSalarioEmpleado($arPago->getVrSalarioEmpleado());
                             $arServicio->setVrDevengado($arPago->getVrDevengado());
                             $arServicio->setVrDeducciones($arPago->getVrDeducciones());
-                            $arServicio->setVrAdicionalTiempo($arPago->getVrAdicionalTiempo());
-                            $arServicio->setVrAdicionalValor($arPago->getVrAdicionalValor());                            
                             $arServicio->setVrAuxilioTransporteCotizacion($arPago->getVrAuxilioTransporteCotizacion());
                             $arServicio->setVrIngresoBasePrestacion($ingresoBasePrestaciones);
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
@@ -105,14 +99,14 @@ class GenerarServicioController extends Controller
                             $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
-                            //Informacion adicional
+                            $adicionalPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
                             //Valor de las horas extra y los adicionales prestacionales
-                            $prestacional = $arPago->getVrAdicionalPrestacional() + $arPago->getVrExtra();
+                            $prestacional = $adicionalPrestacional + $arPago->getVrExtra();
                             //Valor de los adicionales no prestacionales
-                            $noPrestacional = $arPago->getVrAdicionalNoPrestacional();
+                            $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                            
                             $arServicio->setVrPrestacional($prestacional);
                             $arServicio->setVrNoPrestacional($noPrestacional);
-                            $operacion = ($salarioBasico + $adicionalPrestacional + $adicionalNoPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
+                            $operacion = ($salarioBasico + $prestacional + $noPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
                             if ($arCentroCosto->getAplicaPorcentajeAdministracion() == true){
                                 $valorAdministracion = ($operacion * $porcentajeAdministracion) / 100;
                                 $arServicio->setAdministracionFijo(0);

@@ -44,8 +44,8 @@
                 <td>{{ arServiciosCobrar.programacionPagoRel.fechaDesde |date("Y/m/d")  }}-{{ arServiciosCobrar.programacionPagoRel.fechaHasta |date("Y/m/d")  }}</td>
                 <td>{{ arServiciosCobrar.empleadoRel.nombreCorto }}</td>                        
                 <td style="text-align: right">{{ arServiciosCobrar.VrSalario | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalTiempo | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdicionalValor | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrPrestacional | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServiciosCobrar.VrNoPrestacional | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrRiesgos | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrSalud | number_format(0, '.', ',') }}</td>

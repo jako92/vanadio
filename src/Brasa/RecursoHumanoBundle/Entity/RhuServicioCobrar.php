@@ -78,26 +78,6 @@ class RhuServicioCobrar
      * @ORM\Column(name="vr_deducciones", type="float")
      */
     private $vrDeducciones = 0;    
-
-    /**
-     * @ORM\Column(name="vr_adicional_tiempo", type="float")
-     */
-    private $vrAdicionalTiempo = 0;     
-
-    /**
-     * @ORM\Column(name="vr_adicional_valor", type="float")
-     */
-    private $vrAdicionalValor = 0;
-
-    /**
-     * @ORM\Column(name="vr_adicional_prestacional", type="float")
-     */
-    private $vrAdicionalPrestacional = 0;
-    
-    /**
-     * @ORM\Column(name="vr_adicional_no_prestacional", type="float")
-     */
-    private $vrAdicionalNoPrestacional = 0;
     
     /**
      * @ORM\Column(name="vr_auxilio_transporte", type="float")
@@ -591,102 +571,6 @@ class RhuServicioCobrar
     }
 
     /**
-     * Set vrAdicionalTiempo
-     *
-     * @param float $vrAdicionalTiempo
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrAdicionalTiempo($vrAdicionalTiempo)
-    {
-        $this->vrAdicionalTiempo = $vrAdicionalTiempo;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalTiempo
-     *
-     * @return float
-     */
-    public function getVrAdicionalTiempo()
-    {
-        return $this->vrAdicionalTiempo;
-    }
-
-    /**
-     * Set vrAdicionalValor
-     *
-     * @param float $vrAdicionalValor
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrAdicionalValor($vrAdicionalValor)
-    {
-        $this->vrAdicionalValor = $vrAdicionalValor;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalValor
-     *
-     * @return float
-     */
-    public function getVrAdicionalValor()
-    {
-        return $this->vrAdicionalValor;
-    }
-
-    /**
-     * Set vrAdicionalPrestacional
-     *
-     * @param float $vrAdicionalPrestacional
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrAdicionalPrestacional($vrAdicionalPrestacional)
-    {
-        $this->vrAdicionalPrestacional = $vrAdicionalPrestacional;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalPrestacional
-     *
-     * @return float
-     */
-    public function getVrAdicionalPrestacional()
-    {
-        return $this->vrAdicionalPrestacional;
-    }
-
-    /**
-     * Set vrAdicionalNoPrestacional
-     *
-     * @param float $vrAdicionalNoPrestacional
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrAdicionalNoPrestacional($vrAdicionalNoPrestacional)
-    {
-        $this->vrAdicionalNoPrestacional = $vrAdicionalNoPrestacional;
-
-        return $this;
-    }
-
-    /**
-     * Get vrAdicionalNoPrestacional
-     *
-     * @return float
-     */
-    public function getVrAdicionalNoPrestacional()
-    {
-        return $this->vrAdicionalNoPrestacional;
-    }
-
-    /**
      * Set vrAuxilioTransporte
      *
      * @param float $vrAuxilioTransporte
@@ -1068,6 +952,30 @@ class RhuServicioCobrar
     public function getVrOperacion()
     {
         return $this->vrOperacion;
+    }
+
+    /**
+     * Set vrTotalCobro
+     *
+     * @param float $vrTotalCobro
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setVrTotalCobro($vrTotalCobro)
+    {
+        $this->vrTotalCobro = $vrTotalCobro;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalCobro
+     *
+     * @return float
+     */
+    public function getVrTotalCobro()
+    {
+        return $this->vrTotalCobro;
     }
 
     /**
@@ -1548,29 +1456,5 @@ class RhuServicioCobrar
     public function getProgramacionPagoRel()
     {
         return $this->programacionPagoRel;
-    }
-
-    /**
-     * Set vrTotalCobro
-     *
-     * @param float $vrTotalCobro
-     *
-     * @return RhuServicioCobrar
-     */
-    public function setVrTotalCobro($vrTotalCobro)
-    {
-        $this->vrTotalCobro = $vrTotalCobro;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalCobro
-     *
-     * @return float
-     */
-    public function getVrTotalCobro()
-    {
-        return $this->vrTotalCobro;
     }
 }
