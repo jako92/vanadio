@@ -1,10 +1,13 @@
 <?php
+
 namespace Brasa\CarteraBundle\Formatos;
+
 class EstadoCuenta extends \FPDF_FPDF {
-    public static $em;   
+
+    public static $em;
     public static $strWhere;
-    
-    public function Generar($em, $strWhere) {        
+
+    public function Generar($em, $strWhere) {
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
@@ -15,43 +18,55 @@ class EstadoCuenta extends \FPDF_FPDF {
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
 
-        $pdf->Output("EstadoCuenta.pdf", 'D');        
-        
-    } 
-    
+        $pdf->Output("EstadoCuenta.pdf", 'D');
+    }
+
     public function Header() {
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
-        $this->SetFillColor(200, 200, 200);        
-        $this->SetFont('Arial','B',10);
+        $this->SetFillColor(200, 200, 200);
+        $this->SetFont('Arial', 'B', 10);
         //Logo
         $this->SetXY(53, 10);
         $this->Image('imagenes/logos/logo.jpg', 12, 7, 35, 17);
         //INFORMACIÓN EMPRESA
         $this->Cell(150, 7, utf8_decode("ESTADO CUENTA"), 0, 0, 'C', 1);
         $this->SetXY(53, 18);
-        $this->SetFont('Arial','B',9);
+        $this->SetFont('Arial', 'B', 9);
         $this->Cell(20, 4, "EMPRESA:", 0, 0, 'L', 1);
         $this->Cell(100, 4, $arConfiguracion->getNombreEmpresa(), 0, 0, 'L', 0);
         $this->SetXY(53, 22);
         $this->Cell(20, 4, "NIT:", 0, 0, 'L', 1);
-        $this->Cell(100, 4, $arConfiguracion->getNitEmpresa()." - ". $arConfiguracion->getDigitoVerificacionEmpresa(), 0, 0, 'L', 0);
+        $this->Cell(100, 4, $arConfiguracion->getNitEmpresa() . " - " . $arConfiguracion->getDigitoVerificacionEmpresa(), 0, 0, 'L', 0);
         $this->SetXY(53, 26);
         $this->Cell(20, 4, utf8_decode("DIRECCIÓN:"), 0, 0, 'L', 1);
         $this->Cell(100, 4, $arConfiguracion->getDireccionEmpresa(), 0, 0, 'L', 0);
         $this->SetXY(53, 30);
         $this->Cell(20, 4, utf8_decode("TELÉFONO:"), 0, 0, 'L', 1);
-        $this->Cell(100, 4, $arConfiguracion->getTelefonoEmpresa(), 0, 0, 'L', 0);        
-        
-        $this->SetFillColor(236, 236, 236);        
-        $this->SetFont('Arial','B',10);                 
-        
+        $this->Cell(100, 4, $arConfiguracion->getTelefonoEmpresa(), 0, 0, 'L', 0);
+
+        $this->SetFillColor(236, 236, 236);
+        $this->SetFont('Arial', 'B', 10);
+
         $this->EncabezadoDetalles();
-        
     }
 
     public function EncabezadoDetalles() {
         $this->Ln(14);
+
+        $header = array('NIT', 'NOMBRE', 'CIUDAD', 'TELEFONO');
+        $this->SetFillColor(200, 200, 200);
+        $this->SetTextColor(0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->SetLineWidth(.2);
+        $this->SetFont('', 'B', 6.8);
+
+        $w = array(28, 73, 26, 30);
+        for ($i = 0; $i < count($header); $i++)
+            if ($i == 0 || $i == 1)
+                $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
+            else
+                $this->Cell($w[$i], 4, $header[$i], 1, 0, 'C', 1);
 
         //Restauración de colores y fuentes
         $this->SetFillColor(224, 235, 255);
@@ -71,7 +86,7 @@ class EstadoCuenta extends \FPDF_FPDF {
         $pdf->SetFont('Arial', 'B', 6);
 
         //creamos la cabecera de la tabla.
-        $w = array(23, 13, 15, 15, 45, 13, 13, 13, 13, 13, 13);
+        $w = array(28, 13, 15, 15, 30, 13, 13, 13, 17, 17, 17);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $pdf->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -88,34 +103,35 @@ class EstadoCuenta extends \FPDF_FPDF {
                             sql_car_cartera_edades.*
                     FROM
                             sql_car_cartera_edades                       
-                    WHERE 1 " . self::$strWhere;                    
-        $statement = $connection->prepare($strSql);        
+                    WHERE 1 " . self::$strWhere;
+        $statement = $connection->prepare($strSql);
         $statement->execute();
         $resultados = $statement->fetchAll();
-        
+
         foreach ($resultados as $resultado) {
-            $pdf->Cell(23, 4, $resultado['tipoCuentaCobrar'], 1, 0, 'L');                        
-            $pdf->Cell(13, 4, $resultado['numeroDocumento'], 1, 0, 'L');                        
-            $pdf->Cell(15, 4,$resultado['fecha'], 1, 0, 'L');                        
-            $pdf->Cell(15, 4, $resultado['fechaVence'], 1, 0, 'L');                        
-            $pdf->Cell(45, 4, $resultado['nombreAsesor'], 1, 0, 'L');                        
+            $pdf->Cell(28, 4, utf8_decode($resultado['tipoCuentaCobrar']), 1, 0, 'L');
+            $pdf->Cell(13, 4, $resultado['numeroDocumento'], 1, 0, 'L');
+            $pdf->Cell(15, 4, $resultado['fecha'], 1, 0, 'L');
+            $pdf->Cell(15, 4, $resultado['fechaVence'], 1, 0, 'L');
+            $pdf->Cell(30, 4, $resultado['nombreAsesor'], 1, 0, 'L');
             $pdf->Cell(13, 4, $resultado['plazo'], 1, 0, 'R');
             $pdf->Cell(13, 4, $resultado['diasVencida'], 1, 0, 'R');
             $pdf->Cell(13, 4, $resultado['rango'], 1, 0, 'L');
-            $pdf->Cell(13, 4, number_format($resultado['valorOriginal'], 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(13, 4, number_format($resultado['abono'], 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(13, 4, number_format($resultado['saldo'], 0, '.', ','), 1, 0, 'R');
-            
+            $pdf->Cell(17, 4, number_format($resultado['valorOriginal'], 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(17, 4, number_format($resultado['abono'], 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(17, 4, number_format($resultado['saldo'], 0, '.', ','), 1, 0, 'R');
+
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
-        }        
+        }
     }
 
     public function Footer() {
-        
-        $this->SetFont('Arial','', 8);  
+
+        $this->SetFont('Arial', '', 8);
         $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
-    }    
+    }
+
 }
 
 ?>

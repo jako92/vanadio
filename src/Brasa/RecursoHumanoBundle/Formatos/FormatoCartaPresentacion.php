@@ -122,7 +122,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         //$sustitucion13 = "no prestacinal";
         $sustitucion14 = $arContrato->getEntidadSaludRel()->getNombre();
         $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();
-        $sustitucion16 = $arEntidadRiesgos->getNombre();
+        $sustitucion16 = $arContrato->getEntidadPensionRel()->getNombre();
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $sustitucion18 = $usuarioCarta;
         $sustitucion19 = $usuarioCargo;

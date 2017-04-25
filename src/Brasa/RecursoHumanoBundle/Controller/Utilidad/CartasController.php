@@ -25,6 +25,7 @@ class CartasController extends Controller
         }
         $arUsuario = $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
         $arUsuario = $arUsuario->getUserName();
+        $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
             ->add('cartaTipoRel', EntityType::class,
@@ -59,7 +60,7 @@ class CartasController extends Controller
                         $fechaOpcional = $form->get('fechaOpcional')->getData();
                         //$codigoContrato = $arEmpleado->getCodigoContratoActivoFk();
                         $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                        $objFormatoCarta->Generar($this, $em, $arUsuario, $codigoCartaTipo, $fechaProceso, $fechaOpcional, $codigoContrato,"","","","","","");
+                        $objFormatoCarta->Generar($em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
                     /*}// else {
                         $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                     }*/
