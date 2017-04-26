@@ -1427,10 +1427,15 @@ class RhuProgramacionPagoRepository extends EntityRepository {
     }
     
     //listado de programaciones de pago pagadas para generar servicio por cobrar
-    public function pendientesGenerarServicioDql() {
+    public function pendientesGenerarServicioDql($codigoCliente, $codigoCentroCosto) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pp FROM BrasaRecursoHumanoBundle:RhuProgramacionPago pp WHERE pp.estadoPagado = 1 and pp.servicioGenerado = 0 ";        
-        
+        $dql   = "SELECT pp FROM BrasaRecursoHumanoBundle:RhuProgramacionPago pp JOIN pp.centroCostoRel cc WHERE pp.estadoPagado = 1 and pp.servicioGenerado = 0 ";        
+        if($codigoCliente != "" && $codigoCliente != 0) {
+            $dql .= " AND cc.codigoClienteFk =" . $codigoCliente;
+        }
+        if($codigoCentroCosto != "" && $codigoCentroCosto != 0) {
+            $dql .= " AND pp.codigoCentroCostoFk =" . $codigoCentroCosto;
+        }
         $dql .= " ORDER BY pp.codigoProgramacionPagoPk ASC";
         return $dql;
     }

@@ -235,6 +235,36 @@ class RhuServicioCobrar
     private $administracionFijo = 0;     
     
     /**
+     * @ORM\Column(name="porcentaje_cesantias", type="float")
+     */
+    private $porcentajeCesantias = 0;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_intereses_cesantias", type="float")
+     */
+    private $porcentajeInteresesCesantias = 0;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_primas", type="float")
+     */
+    private $porcentajePrimas = 0;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_prestaciones", type="float")
+     */
+    private $porcentajePrestaciones = 0;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_vacaciones", type="float")
+     */
+    private $porcentajeVacaciones = 0;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_caja", type="float")
+     */
+    private $porcentajeCaja = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="serviciosCobrarCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
@@ -1456,5 +1486,149 @@ class RhuServicioCobrar
     public function getProgramacionPagoRel()
     {
         return $this->programacionPagoRel;
+    }
+
+    /**
+     * Set porcentajeCesantias
+     *
+     * @param float $porcentajeCesantias
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeCesantias($porcentajeCesantias)
+    {
+        $this->porcentajeCesantias = $porcentajeCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeCesantias()
+    {
+        return $this->porcentajeCesantias;
+    }
+
+    /**
+     * Set porcentajeInteresesCesantias
+     *
+     * @param float $porcentajeInteresesCesantias
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeInteresesCesantias($porcentajeInteresesCesantias)
+    {
+        $this->porcentajeInteresesCesantias = $porcentajeInteresesCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeInteresesCesantias
+     *
+     * @return float
+     */
+    public function getPorcentajeInteresesCesantias()
+    {
+        return $this->porcentajeInteresesCesantias;
+    }
+
+    /**
+     * Set porcentajePrimas
+     *
+     * @param float $porcentajePrimas
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajePrimas($porcentajePrimas)
+    {
+        $this->porcentajePrimas = $porcentajePrimas;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajePrimas
+     *
+     * @return float
+     */
+    public function getPorcentajePrimas()
+    {
+        return $this->porcentajePrimas;
+    }
+
+    /**
+     * Set porcentajePrestaciones
+     *
+     * @param float $porcentajePrestaciones
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajePrestaciones($porcentajePrestaciones)
+    {
+        $this->porcentajePrestaciones = $porcentajePrestaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajePrestaciones
+     *
+     * @return float
+     */
+    public function getPorcentajePrestaciones()
+    {
+        return $this->porcentajePrestaciones;
+    }
+
+    /**
+     * Set porcentajeVacaciones
+     *
+     * @param float $porcentajeVacaciones
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeVacaciones($porcentajeVacaciones)
+    {
+        $this->porcentajeVacaciones = $porcentajeVacaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeVacaciones
+     *
+     * @return float
+     */
+    public function getPorcentajeVacaciones()
+    {
+        return $this->porcentajeVacaciones;
+    }
+
+    /**
+     * Set porcentajeCaja
+     *
+     * @param float $porcentajeCaja
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setPorcentajeCaja($porcentajeCaja)
+    {
+        $this->porcentajeCaja = $porcentajeCaja;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeCaja
+     *
+     * @return float
+     */
+    public function getPorcentajeCaja()
+    {
+        return $this->porcentajeCaja;
     }
 }

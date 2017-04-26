@@ -20,6 +20,7 @@
         <tr>
             <th>CÓDIGO</th>
             <th>PERIODO</th>                    
+            <th>GRUPO PAGO</th>
             <th>EMPLEADO</th>                    
             <th style="text-align: right">BÁSICO</th>
             <th style="text-align: right">PREST</th>
@@ -42,6 +43,7 @@
             <tr> 
                 <td><input type="hidden" name="LblCodigo[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}">{{ arServiciosCobrar.codigoServicioCobrarPk }}</td>  
                 <td>{{ arServiciosCobrar.programacionPagoRel.fechaDesde |date("Y/m/d")  }}-{{ arServiciosCobrar.programacionPagoRel.fechaHasta |date("Y/m/d")  }}</td>
+                <td>{{ arServiciosCobrar.centroCostoRel.nombre }}</td>                        
                 <td>{{ arServiciosCobrar.empleadoRel.nombreCorto }}</td>                        
                 <td style="text-align: right">{{ arServiciosCobrar.VrSalario | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServiciosCobrar.VrPrestacional | number_format(0, '.', ',') }}</td>

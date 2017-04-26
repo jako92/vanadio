@@ -456,6 +456,19 @@ class RhuPagoDetalleRepository extends EntityRepository {
             $pago = 0;
         }
         return $pago;
+    } 
+
+    public function valorPensionPago($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPago) as pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd "
+                . "WHERE pd.pension = 1 AND pd.codigoPagoFk = " . $codigoPago;
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $pago = $arrayResultado[0]['pago'];
+        if($pago == null) {
+            $pago = 0;
+        }
+        return $pago;
     }     
     
 }

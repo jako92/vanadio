@@ -74,28 +74,43 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
                             
                             //Aportes seguridad social
-                            $pension = round(($arPago->getVrIngresoBaseCotizacion() * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100);                            
+                            $ibc = $arPago->getVrIngresoBaseCotizacion();
+                            if($arContrato->getCodigoTipoTiempoFk() == 2) {
+                                $ibc = $arPago->getVrSalarioEmpleado();
+                                $pension = ($arPago->getVrSalarioEmpleado() * 16) / 100;                                
+                                $pensionEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorPensionPago($arPago->getCodigoPagoPk());                                    
+                                $pension -= $pensionEmpleado;
+                            } else {
+                                $pension = round(($ibc * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100);                                                            
+                            }                            
                             $arServicio->setVrPension($pension);                                                        
                             
                             //Calculo de prestaciones
                             $cesantias = round(($ingresoBasePrestaciones * $porcentajeCesantias) / 100);
                             $arServicio->setVrCesantias($cesantias);
+                            $arServicio->setPorcentajeCesantias($porcentajeCesantias);
                             $interesesCesantias = round(($ingresoBasePrestaciones * $porcentajeInteresesCesantias) / 100);
                             $arServicio->setVrCesantiasIntereses($interesesCesantias);
+                            $arServicio->setPorcentajeInteresesCesantias($porcentajeInteresesCesantias);
                             $primas = round(($ingresoBasePrestaciones * $porcentajePrimas) / 100);
                             $arServicio->setvrPrimas($primas);
+                            $arServicio->setPorcentajePrimas($porcentajePrimas);
+                            $porcentajePrestaciones = $porcentajeCesantias + $porcentajePrimas + $porcentajeInteresesCesantias;
+                            $arServicio->setPorcentajePrestaciones($porcentajePrestaciones);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);                                                        
                             $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                    
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
                             $vacaciones = round((($arPago->getVrSalario() + $recargoNorturno + $salarioDescuento) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
+                            $arServicio->setPorcentajeVacaciones($porcentajeVacaciones);
                             $porcentajeRiesgos = $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje();
-                            $riesgos = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeRiesgos) / 100);
+                            $riesgos = round(($ibc * $porcentajeRiesgos) / 100);
                             $arServicio->setPorcentajeRiesgos($porcentajeRiesgos);
                             $arServicio->setVrRiesgos($riesgos);                            
-                            $caja = round(($arPago->getVrIngresoBaseCotizacion() * $porcentajeCaja) / 100);
-                            $arServicio->setVrCaja($caja);                                                                                                                
+                            $caja = round(($ibc * $porcentajeCaja) / 100);
+                            $arServicio->setVrCaja($caja);  
+                            $arServicio->setPorcentajeCaja($porcentajeCaja);
                             $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
@@ -148,7 +163,11 @@ class GenerarServicioController extends Controller
                 }      
                 
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_generar_servicio'));            
-            }            
+            }  
+            if($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form, $request);
+                $this->listar();
+            }             
         }       
                 
         $arProgramacionPagos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);                               
@@ -158,17 +177,65 @@ class GenerarServicioController extends Controller
     }          
     
     private function formularioLista() {
-        $form = $this->createFormBuilder()                        
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');
+        $arrayPropiedadesCentroCosto = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCosto')) {
+            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
+        }   
+        $arrayPropiedadesCliente = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombreCorto', 'ASC');},
+                'choice_label' => 'nombreCorto',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroRhuCodigoCliente')) {
+            $arrayPropiedadesCliente['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCliente", $session->get('filtroRhuCodigoCliente'));
+        }         
+        $form = $this->createFormBuilder()   
+            ->add('clienteRel', EntityType::class, $arrayPropiedadesCliente)
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('BtnGenerar', SubmitType::class, array('label'  => 'Generar',))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
             ->getForm();        
         return $form;
     }      
     
     private function listar() {
+        $session = $this->get('session');
         $em = $this->getDoctrine()->getManager();                
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->pendientesGenerarServicioDql();  
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->pendientesGenerarServicioDql(
+                $session->get('filtroRhuCodigoCliente'),
+                $session->get('filtroCodigoCentroCosto'));  
     }         
     
-    
+    private function filtrarLista($form, Request $request) {
+        $session = $this->get('session'); 
+        $codigoCentroCosto = '';
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }       
+        $codigoCliente = '';
+        if($form->get('clienteRel')->getData()) {
+            $codigoCliente = $form->get('clienteRel')->getData()->getCodigoClientePk();
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);        
+        $session->set('filtroRhuCodigoCliente', $codigoCliente);                       
+    }     
     
 }
