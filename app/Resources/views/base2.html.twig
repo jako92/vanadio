@@ -5,7 +5,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <title>{% block title %}Soga App!{% endblock %}</title>
-        {% block stylesheets %}            
+        {% block stylesheets %}
+            <style>
+                    .flexy {
+                    display: block;
+                    width: 90%;
+                    border: 1px solid #eee;
+                    max-height: 520px;
+                    overflow: auto;                    
+                }
+             </style>   
             <!-- Bootstrap 3.3.6 -->
             <link rel="stylesheet" href="{{ asset('recursos/bootstrap/css/bootstrap.min.css') }}">            
             <!-- Font Awesome -->
@@ -46,7 +55,7 @@
                             <span class="logo-lg"><b>Sin empresa</b></span>
                         {% else %}
                             <span class="logo-lg"><b>{{ app.user.empresa|title }}</b></span>
-                        {% endif %}                        
+                                {% endif %}                        
                     </a>
                     <!-- Header Navbar: style can be found in header.less -->
                     {% include 'barraNavegacion.html.twig' %}
@@ -140,7 +149,7 @@
             <!-- AdminLTE for demo purposes -->
             <script src="{{ asset('recursos/dist/js/demo.js') }}"></script>             
             <!-- Funciones personales -->            
-            
+
         {% endblock %}              
     </body>
 </html>
