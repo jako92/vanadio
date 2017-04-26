@@ -162,8 +162,7 @@ class ContabilizarPagoController extends Controller
  
     /**
      * @Route("/rhu/proceso/descontabilizar/pago/", name="brs_rhu_proceso_descontabilizar_pago")
-     */
-    
+     */    
     public function descontabilizarPagoNominaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session; 

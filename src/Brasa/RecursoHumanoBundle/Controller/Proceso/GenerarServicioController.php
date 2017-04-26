@@ -176,6 +176,53 @@ class GenerarServicioController extends Controller
             'form' => $form->createView()));
     }          
     
+    /**
+     * @Route("/rhu/proceso/generar/servicio/desgenerar", name="brs_rhu_proceso_generar_servicio_desgenerar")
+     */    
+    public function desgenerarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session; 
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();       
+        $form = $this->createFormBuilder()
+            ->add('numero', NumberType::class, array('label'  => 'Numero'))
+            ->add('BtnDesgenerar', SubmitType::class, array('label'  => 'Desgenerar',))    
+            ->getForm();
+        $form->handleRequest($request);        
+        if ($form->isValid()) {             
+            if ($form->get('BtnDesgenerar')->isClicked()) {
+                $codigoProgramacionPago = $form->get('numero')->getData();
+                $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();
+                $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigoProgramacionPago);
+                if($arProgramacionPago) {
+                    if($arProgramacionPago->getServicioGenerado() == 1) {
+                        $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+                        $arServiciosCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago, 'estadoCobrado' => 1));
+                        if(!$arServiciosCobrar) {
+                            $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
+                            $arServiciosCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago));                            
+                            foreach ($arServiciosCobrar as $arServicioCobrar) {
+                                $arServicioCobrarEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->find($arServicioCobrar->getCodigoServicioCobrarPk());
+                                $em->remove($arServicioCobrarEliminar);
+                            }
+                            $arProgramacionPago->setServicioGenerado(0);
+                            $em->persist($arProgramacionPago);
+                            $em->flush();
+                            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                        } else {
+                           $objMensaje->Mensaje('error', 'Algunos de estos servicios ya tienen cobro y no se puede desgenerar la programacion', $this); 
+                        }                           
+                    } else {
+                        $objMensaje->Mensaje('error', 'La programacion de pago no esta generada', $this);
+                    }                 
+                } else {
+                    $objMensaje->Mensaje('error', 'La programacion de pago no existe', $this);
+                }                               
+            }
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Procesos/GenerarServicio:desgenerar.html.twig', array(
+            'form' => $form->createView()));
+    }    
+    
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
