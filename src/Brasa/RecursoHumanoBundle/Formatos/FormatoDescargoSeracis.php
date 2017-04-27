@@ -1,7 +1,7 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Formatos;
 
-class FormatoDescargo extends \FPDF_FPDF {
+class FormatoDescargoSeracis extends \FPDF_FPDF {
     public static $em;
     public static $codigoDescargo;
     
@@ -10,7 +10,7 @@ class FormatoDescargo extends \FPDF_FPDF {
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoDescargo = $codigoDescargo;
-        $pdf = new FormatoDescargo();
+        $pdf = new FormatoDescargoSeracis();
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
@@ -52,6 +52,7 @@ class FormatoDescargo extends \FPDF_FPDF {
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
         } else {
             $this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
+            //$this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
         }        
         $this->EncabezadoDetalles();         
     }
