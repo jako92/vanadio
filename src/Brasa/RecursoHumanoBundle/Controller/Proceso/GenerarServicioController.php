@@ -81,7 +81,7 @@ class GenerarServicioController extends Controller
                             $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                                                        
                             
                             
-                            $ibc = $arPago->getVrIngresoBaseCotizacion();
+                            $ibc = $arPago->getVrIngresoBasePrestacion();
                             if($arContrato->getCodigoTipoTiempoFk() == 2) {
                                 $ibc = $arPago->getVrSalarioEmpleado();
                             }

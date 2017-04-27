@@ -185,7 +185,8 @@
                             <th>ID</th>
                             <th>PAGO</th>
                             <th>DOC</th>
-                            <th>EMPLEADO</th>                            
+                            <th>EMPLEADO</th>
+                            <th>T</th>                            
                             <th>SALARIO</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base prestaciones">IBP</p></th>                            
                             <th><p data-toggle="tooltip" data-placement="top" title="Ingreso base cotizacion">IBC</p></th>                            
@@ -224,7 +225,8 @@
                                 <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }} </td>                                
                                 <td style="text-align: center"><a href="{{ path('brs_rhu_pagos_detalle', { 'codigoPago': arServicioCobrar.codigoPagoFk }) }}" target="_blanck">{{ arServicioCobrar.pagoRel.numero  }}</a></td>
                                 <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion  }}</td>
-                                <td>{{ arServicioCobrar.empleadoRel.nombreCorto  }}</td>                                
+                                <td>{{ arServicioCobrar.empleadoRel.nombreCorto  }}</td>
+                                <td>{{ arServicioCobrar.tipoTiempo  }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.vrSalarioEmpleado | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrIngresoBasePrestacion | number_format(0, '.', ',') }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.vrIngresoBaseCotizacion | number_format(0, '.', ',') }}</td>                                
