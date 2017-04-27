@@ -304,6 +304,7 @@ class TurFacturaRepository extends EntityRepository {
                 $arFactura->setFecha(new \DateTime('now'));
                 $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
                 $arFactura->setFechaVence($dateFechaVence);
+                $arFactura->getCodigoFacturaServicioFk();                
                 $arClienteTurno = new \Brasa\TurnoBundle\Entity\TurCliente();
                 $arClienteTurno = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arFactura->getCodigoClienteFk());
                 $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
@@ -348,6 +349,7 @@ class TurFacturaRepository extends EntityRepository {
                         $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
                         $arCuentaCobrar->setAbono(0);
                         $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
+                        $arCuentaCobrar->setServicioTipo($arFactura->getFacturaServicioRel()->getNombre());
                         if($arFactura->getProyectoRel()) {
                             $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
                         }

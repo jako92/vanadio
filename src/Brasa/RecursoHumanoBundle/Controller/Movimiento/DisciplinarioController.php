@@ -252,15 +252,15 @@ class DisciplinarioController extends Controller
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 if ($arConfiguracion->getCodigoFormatoDescargo() == 0){
                     $objFormatoDescargo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDescargo();
-                    $objFormatoDescargo->Generar($this, $codigoDescargo);
+                    $objFormatoDescargo->Generar($em, $codigoDescargo);
                 }
                 if ($arConfiguracion->getCodigoFormatoDescargo() == 1){
                     $objFormatoDescargo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDescargo();
-                    $objFormatoDescargo->Generar($this, $codigoDescargo);
+                    $objFormatoDescargo->Generar($em, $codigoDescargo);
                 }
                 if ($arConfiguracion->getCodigoFormatoDescargo() == 2){
                     $objFormatoDescargo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDescargoEstelar();
-                    $objFormatoDescargo->Generar($this, $codigoDescargo);
+                    $objFormatoDescargo->Generar($em, $codigoDescargo);
                 }
                 
                          

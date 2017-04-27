@@ -126,7 +126,12 @@ class CarCuentaCobrar
     /**
      * @ORM\Column(name="total_neto", type="float")
      */    
-    private $total_neto = 0;     
+    private $total_neto = 0;
+    
+    /**
+     * @ORM\Column(name="servicio_tipo", type="string", length=150)
+     */
+    private $servicio_tipo;   
     
     /**
      * @ORM\ManyToOne(targetEntity="CarCliente", inversedBy="cuentaCobrarClientesRel")
@@ -963,5 +968,29 @@ class CarCuentaCobrar
     public function getTotalNeto()
     {
         return $this->total_neto;
+    }
+
+    /**
+     * Set servicioTipo
+     *
+     * @param string $servicioTipo
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setServicioTipo($servicioTipo)
+    {
+        $this->servicio_tipo = $servicioTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get servicioTipo
+     *
+     * @return string
+     */
+    public function getServicioTipo()
+    {
+        return $this->servicio_tipo;
     }
 }

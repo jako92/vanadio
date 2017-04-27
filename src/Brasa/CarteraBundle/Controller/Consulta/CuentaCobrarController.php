@@ -225,8 +225,8 @@ class CuentaCobrarController extends Controller {
                 ->setCellValue('O1', 'DIAS')
                 ->setCellValue('P1', 'RANGO')
                 ->setCellValue('Q1', 'GRUPO')
-                ->setCellValue('R1', 'SUBGRUPO');
-
+                ->setCellValue('R1', 'SUBGRUPO')
+                ->setCellValue('S1', 'TIPO SERVICIO');
         $i = 2;
         $connection = $em->getConnection();
         $strSql = "SELECT  
@@ -256,7 +256,8 @@ class CuentaCobrarController extends Controller {
                     ->setCellValue('O' . $i, $arCuentasCobrar['diasVencida'])
                     ->setCellValue('P' . $i, $arCuentasCobrar['rango'])
                     ->setCellValue('Q' . $i, $arCuentasCobrar['grupo'])
-                    ->setCellValue('R' . $i, $arCuentasCobrar['subgrupo']);
+                    ->setCellValue('R' . $i, $arCuentasCobrar['subgrupo'])
+                    ->setCellValue('S' . $i, $arCuentasCobrar['servicioTipo']);
             $i++;
         }
 
