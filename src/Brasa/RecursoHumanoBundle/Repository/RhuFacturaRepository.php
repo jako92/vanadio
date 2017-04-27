@@ -11,15 +11,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuFacturaRepository extends EntityRepository {
     
-    public function listaDql($strCodigoCliente = "", $strCodigoCentroCosto = "", $strNumero = "", $strDesde = "", $strHasta = "") {        
+    public function listaDql($strCodigoCliente = "", $strNumero = "", $strDesde = "", $strHasta = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT f, t FROM BrasaRecursoHumanoBundle:RhuFactura f JOIN f.clienteRel t WHERE f.codigoFacturaPk <> 0";
         if($strCodigoCliente != "") {
             $dql .= " AND f.codigoClienteFk = " . $strCodigoCliente;
-        }
-        if($strCodigoCentroCosto != "") {
-            $dql .= " AND f.codigoCentroCostoFk = " . $strCodigoCentroCosto;
-        }           
+        }          
         if($strNumero != "" ) {
             $dql .= " AND f.numero = '" . $strNumero . "'";
         }

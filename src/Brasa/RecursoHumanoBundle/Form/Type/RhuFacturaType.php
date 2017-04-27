@@ -19,14 +19,7 @@ class RhuFacturaType extends AbstractType
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombreCorto', 'ASC');},
                 'choice_label' => 'nombreCorto',
-                'required' => true))
-            ->add('centroCostoRel', EntityType::class, array(
-            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('cc')
-                ->orderBy('cc.nombre', 'ASC');},
-            'choice_label' => 'nombre',
-            'required' => true))          
+                'required' => true))        
             ->add('comentarios', TextareaType::class, array('required' => false))                                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));        

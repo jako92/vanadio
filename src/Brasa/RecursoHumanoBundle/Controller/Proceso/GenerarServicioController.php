@@ -72,6 +72,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrAuxilioTransporteCotizacion($arPago->getVrAuxilioTransporteCotizacion());
                             $arServicio->setVrIngresoBasePrestacion($ingresoBasePrestaciones);
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
+                            $arServicio->setTipoTiempo($arContrato->getTipoTiempoRel()->getAbreviatura());
                             
                             $prestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
                             //Valor de las horas extra y los adicionales prestacionales
@@ -114,11 +115,13 @@ class GenerarServicioController extends Controller
                             //Vacaciones
                             $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                                                
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
+                            $licencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorLicenciaPago($arPago->getCodigoPagoPk());
                             //$salarioVacaciones = ($arPago->getVrSalarioEmpleado() / 30) * $arPago->getDiasPeriodo();                            
-                            $salarioVacaciones = ($arPago->getVrSalario() - $salarioDescuento);
+                            $salarioVacaciones = ($arPago->getVrSalario() + $licencias) - $salarioDescuento;
                             $vacaciones = round((($salarioVacaciones + $recargoNorturno) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
                             $arServicio->setPorcentajeVacaciones($porcentajeVacaciones);
+                            
                             //Riesgos
                             $porcentajeRiesgos = $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje();
                             $riesgos = round(($ibc * $porcentajeRiesgos) / 100);
@@ -130,10 +133,13 @@ class GenerarServicioController extends Controller
                             $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
-
+                            //Sena e ICBF
+                            $sena = 0;
+                            $icbf = 0;
+                            
                             $arServicio->setVrPrestacional($prestacional);
                             $arServicio->setVrNoPrestacional($noPrestacional);
-                            $operacion = ($salarioBasico + $prestacional + $noPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
+                            $operacion = ($salarioBasico + $prestacional + $noPrestacional + $auxilioTransporte + $pension +$salud + $riesgos + $caja + $sena + $icbf + $totalPrestaciones + $vacaciones + $aporteParafiscales);
                             if ($arCentroCosto->getAplicaPorcentajeAdministracion() == true){
                                 $valorAdministracion = ($operacion * $porcentajeAdministracion) / 100;
                                 $arServicio->setAdministracionFijo(0);

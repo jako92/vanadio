@@ -33,6 +33,11 @@ class RhuTipoTiempo
     private $factorHorasDia = 8;     
     
     /**
+     * @ORM\Column(name="abreviatura", type="string", length=1, nullable=true)
+     */    
+    private $abreviatura;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="tipoTiempoRel")
      */
     protected $contratosTipoTiempoRel;    
@@ -222,5 +227,29 @@ class RhuTipoTiempo
     public function getFactorHorasDia()
     {
         return $this->factorHorasDia;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return RhuTipoTiempo
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 }

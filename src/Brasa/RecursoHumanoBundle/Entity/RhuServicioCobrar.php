@@ -265,6 +265,11 @@ class RhuServicioCobrar
     private $porcentajeCaja = 0;     
     
     /**
+     * @ORM\Column(name="tipo_tiempo", type="string", length=1, nullable=true)
+     */    
+    private $tipoTiempo;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="serviciosCobrarCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
@@ -1630,5 +1635,29 @@ class RhuServicioCobrar
     public function getPorcentajeCaja()
     {
         return $this->porcentajeCaja;
+    }
+
+    /**
+     * Set tipoTiempo
+     *
+     * @param string $tipoTiempo
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setTipoTiempo($tipoTiempo)
+    {
+        $this->tipoTiempo = $tipoTiempo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoTiempo
+     *
+     * @return string
+     */
+    public function getTipoTiempo()
+    {
+        return $this->tipoTiempo;
     }
 }

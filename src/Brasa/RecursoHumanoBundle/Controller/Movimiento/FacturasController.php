@@ -325,7 +325,6 @@ class FacturasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->listaDql(
                     $session->get('filtroCodigoCliente'),
-                    $session->get('filtroCodigoCentroCosto'),
                     $session->get('filtroNumero'),
                     $session->get('filtroDesde'),
                     $session->get('filtroHasta')
@@ -360,20 +359,6 @@ class FacturasController extends Controller
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
-        $arrayPropiedadesCentroCosto = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
-            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
-        }
         
         $arrayPropiedadesClientes = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
@@ -391,8 +376,7 @@ class FacturasController extends Controller
         }
         
         $form = $this->createFormBuilder()
-            ->add('clienteRel', EntityType::class, $arrayPropiedadesClientes)
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
+            ->add('clienteRel', EntityType::class, $arrayPropiedadesClientes)            
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroNumero')))
             ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))

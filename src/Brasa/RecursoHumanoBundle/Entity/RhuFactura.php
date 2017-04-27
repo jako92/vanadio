@@ -98,11 +98,6 @@ class RhuFactura
     private $comentarios;    
 
     /**
-     * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCentroCostoFk;
-
-    /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
     private $codigoClienteFk;
@@ -138,7 +133,7 @@ class RhuFactura
      */
     protected $seleccionesFacturaRel;     
     
-    
+   
     /**
      * Constructor
      */
@@ -541,30 +536,6 @@ class RhuFactura
     public function getComentarios()
     {
         return $this->comentarios;
-    }
-
-    /**
-     * Set codigoCentroCostoFk
-     *
-     * @param integer $codigoCentroCostoFk
-     *
-     * @return RhuFactura
-     */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
-        $this->codigoCentroCostoFk = $codigoCentroCostoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCentroCostoFk
-     *
-     * @return integer
-     */
-    public function getCodigoCentroCostoFk()
-    {
-        return $this->codigoCentroCostoFk;
     }
 
     /**

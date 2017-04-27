@@ -159,7 +159,7 @@ class CobroController extends Controller
             }
         }
         $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->detalleCobro($codigoCobro);
-        $arServiciosCobrar = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 20);                        
+        $arServiciosCobrar = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);                        
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalle.html.twig', array(
                     'arCobro' => $arCobro,
                     'arServiciosCobrar' => $arServiciosCobrar,
@@ -179,7 +179,7 @@ class CobroController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {            
             $arServicioCobrar = $form->getData(); 
-            $operacion = ($arServicioCobrar->getVrSalario() + $arServicioCobrar->getVrPrestacional() + $arServicioCobrar->getVrNoPrestacional() + $arServicioCobrar->getVrAuxilioTransporteCotizacion() + $arServicioCobrar->getVrRiesgos() + $arServicioCobrar->getVrPension() + $arServicioCobrar->getVrCaja() + $arServicioCobrar->getVrPrestaciones() + $arServicioCobrar->getVrVacaciones() + $arServicioCobrar->getVrAporteParafiscales());
+            $operacion = ($arServicioCobrar->getVrSalario() + $arServicioCobrar->getVrPrestacional() + $arServicioCobrar->getVrNoPrestacional() + $arServicioCobrar->getVrAuxilioTransporte() + $arServicioCobrar->getVrPension() + $arServicioCobrar->getVrSalud() + $arServicioCobrar->getVrRiesgos() + $arServicioCobrar->getVrCaja() + $arServicioCobrar->getVrSena() + $arServicioCobrar->getVrIcbf() + $arServicioCobrar->getVrPrestaciones() + $arServicioCobrar->getVrVacaciones() + $arServicioCobrar->getVrAporteParafiscales());
             if($arServicioCobrar->getAdministracionFijo()) {
                 $valorAdministracion = $arServicioCobrar->getValorAdministracionFijo();
             } else {

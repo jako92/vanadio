@@ -205,6 +205,7 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Aporte parafiscales">A_PAR</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Cobro de la operacion">OPER</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Valor de la administracion">ADMON</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Porcentaje administracion">%</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Total cobro">TOTAL</p></th>                            
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de ingreso">ING</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de retiro">RET</p></th>
@@ -243,6 +244,7 @@
                                 <td style="text-align: right">{{ arServicioCobrar.vrAporteParafiscales | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioCobrar.vrOperacion | number_format(0, '.', ',') }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.vrAdministracion | number_format(0, '.', ',') }}</td>                           
+                                <td style="text-align: right">{{ arServicioCobrar.porcentajeAdministracion | number_format(1, '.', ',') }}</td>                           
                                 <td style="text-align: right">{{ arServicioCobrar.vrTotalCobro | number_format(0, '.', ',') }}</td>                                                                
                                 <td style="text-align: right">{{ arServicioCobrar.ingreso }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                
