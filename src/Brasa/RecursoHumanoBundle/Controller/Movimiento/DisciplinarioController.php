@@ -255,7 +255,7 @@ class DisciplinarioController extends Controller
                     $objFormatoDescargo->Generar($em, $codigoDescargo);
                 }
                 if ($arConfiguracion->getCodigoFormatoDescargoSeracis() == 1){
-                    $objFormatoDescargo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDescargo();
+                    $objFormatoDescargo = new \Brasa\RecursoHumanoBundle\Formatos\FormatoDescargoSeracis();
                     $objFormatoDescargo->Generar($em, $codigoDescargo);
                 }
                 if ($arConfiguracion->getCodigoFormatoDescargo() == 2){
