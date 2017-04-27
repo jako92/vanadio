@@ -436,6 +436,11 @@ class RhuConfiguracion
     private $auxilioTransporteNoPrestacional = false; 
 
     /**
+     * @ORM\Column(name="orden_nombre_empleado", type="integer")
+     */    
+    private $ordenNombreEmpleado = 0;     
+    
+    /**
      * Set codigoConfiguracionPk
      *
      * @param integer $codigoConfiguracionPk
@@ -2425,5 +2430,29 @@ class RhuConfiguracion
     public function getAuxilioTransporteNoPrestacional()
     {
         return $this->auxilioTransporteNoPrestacional;
+    }
+
+    /**
+     * Set ordenNombreEmpleado
+     *
+     * @param integer $ordenNombreEmpleado
+     *
+     * @return RhuConfiguracion
+     */
+    public function setOrdenNombreEmpleado($ordenNombreEmpleado)
+    {
+        $this->ordenNombreEmpleado = $ordenNombreEmpleado;
+
+        return $this;
+    }
+
+    /**
+     * Get ordenNombreEmpleado
+     *
+     * @return integer
+     */
+    public function getOrdenNombreEmpleado()
+    {
+        return $this->ordenNombreEmpleado;
     }
 }
