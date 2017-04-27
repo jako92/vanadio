@@ -73,17 +73,27 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrIngresoBasePrestacion($ingresoBasePrestaciones);
                             $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
                             
-                            //Aportes seguridad social
+                            $prestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
+                            //Valor de las horas extra y los adicionales prestacionales
+                            $prestacional += $arPago->getVrExtra();
+                            //Valor de los adicionales no prestacionales
+                            $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                                                        
+                            
+                            
                             $ibc = $arPago->getVrIngresoBaseCotizacion();
                             if($arContrato->getCodigoTipoTiempoFk() == 2) {
                                 $ibc = $arPago->getVrSalarioEmpleado();
-                                $pension = ($arPago->getVrSalarioEmpleado() * 16) / 100;                                
-                                $pensionEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorPensionPago($arPago->getCodigoPagoPk());                                    
-                                $pension -= $pensionEmpleado;
-                            } else {
-                                $pension = round(($ibc * $arPago->getContratoRel()->getTipoPensionRel()->getPorcentajeEmpleador()) / 100);                                                            
-                            }                            
+                            }
+                            //Pension
+                            $pensionEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorPensionPago($arPago->getCodigoPagoPk());                                    
+                            $pension = round((($ibc * 16) / 100) - $pensionEmpleado);                                                            
                             $arServicio->setVrPension($pension);                                                        
+                            
+                            //Salud
+                            $saludEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSaludPago($arPago->getCodigoPagoPk());                                    
+                            $salud = round((($ibc * 4) / 100) - $saludEmpleado);                                                                                                 
+                            $arServicio->setVrSalud($salud); 
+
                             
                             //Calculo de prestaciones
                             $cesantias = round(($ingresoBasePrestaciones * $porcentajeCesantias) / 100);
@@ -99,11 +109,15 @@ class GenerarServicioController extends Controller
                             $arServicio->setPorcentajePrestaciones($porcentajePrestaciones);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);                                                        
-                            $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                    
+                            //Vacaciones
+                            $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                                                
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
-                            $vacaciones = round((($arPago->getVrSalario() + $recargoNorturno + $salarioDescuento) * $porcentajeVacaciones) / 100);
+                            $salarioVacaciones = ($arPago->getVrSalarioEmpleado() / 30) * $arPago->getDiasPeriodo();
+                            $salarioVacaciones += $prestacional;
+                            $vacaciones = round((($salarioVacaciones + $recargoNorturno + $salarioDescuento) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
                             $arServicio->setPorcentajeVacaciones($porcentajeVacaciones);
+                            //Riesgos
                             $porcentajeRiesgos = $arPago->getContratoRel()->getClasificacionRiesgoRel()->getPorcentaje();
                             $riesgos = round(($ibc * $porcentajeRiesgos) / 100);
                             $arServicio->setPorcentajeRiesgos($porcentajeRiesgos);
@@ -114,11 +128,7 @@ class GenerarServicioController extends Controller
                             $aporteParafiscales = round(($vacaciones * 4) / 100);                            
                             $arServicio->setVrAporteParafiscales($aporteParafiscales);   
                             
-                            $prestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
-                            //Valor de las horas extra y los adicionales prestacionales
-                            $prestacional += $arPago->getVrExtra();
-                            //Valor de los adicionales no prestacionales
-                            $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                            
+
                             $arServicio->setVrPrestacional($prestacional);
                             $arServicio->setVrNoPrestacional($noPrestacional);
                             $operacion = ($salarioBasico + $prestacional + $noPrestacional + $auxilioTransporte + $riesgos + $pension + $caja + $cesantias + $interesesCesantias + $vacaciones + $primas + $aporteParafiscales);
