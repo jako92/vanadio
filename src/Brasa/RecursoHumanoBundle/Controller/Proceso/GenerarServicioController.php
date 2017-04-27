@@ -91,7 +91,8 @@ class GenerarServicioController extends Controller
                             
                             //Salud
                             $saludEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSaludPago($arPago->getCodigoPagoPk());                                    
-                            $salud = round((($ibc * 4) / 100) - $saludEmpleado);                                                                                                 
+                            $salud = round(($ibc * 4) / 100); 
+                            $salud -= $saludEmpleado;
                             $arServicio->setVrSalud($salud); 
 
                             
@@ -109,12 +110,13 @@ class GenerarServicioController extends Controller
                             $arServicio->setPorcentajePrestaciones($porcentajePrestaciones);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);                                                        
+                            
                             //Vacaciones
                             $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                                                
                             $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
-                            $salarioVacaciones = ($arPago->getVrSalarioEmpleado() / 30) * $arPago->getDiasPeriodo();
-                            $salarioVacaciones += $prestacional;
-                            $vacaciones = round((($salarioVacaciones + $recargoNorturno + $salarioDescuento) * $porcentajeVacaciones) / 100);
+                            //$salarioVacaciones = ($arPago->getVrSalarioEmpleado() / 30) * $arPago->getDiasPeriodo();                            
+                            $salarioVacaciones = ($arPago->getVrSalario() - $salarioDescuento);
+                            $vacaciones = round((($salarioVacaciones + $recargoNorturno) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
                             $arServicio->setPorcentajeVacaciones($porcentajeVacaciones);
                             //Riesgos

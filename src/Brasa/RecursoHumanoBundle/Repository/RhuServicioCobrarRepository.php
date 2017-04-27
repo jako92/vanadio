@@ -37,4 +37,10 @@ class RhuServicioCobrarRepository extends EntityRepository {
                 . " AND sc.codigoClienteFk = " . $codigoCliente;
         return $dql;
     }
+    
+    public function detalleCobro($codigoCobro) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT sc FROM BrasaRecursoHumanoBundle:RhuServicioCobrar sc WHERE sc.codigoCobroFk = " . $codigoCobro;
+        return $dql;
+    }    
 }

@@ -6,68 +6,74 @@
             Recurso humano
             <small>Cobro: detalle servicio nuevo</small>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cobro</a></li>
-            <li class="active">Detalle servicio nuevo</li>
-        </ol>
     </section>    
     <section class="content">        	        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}            
     <table class="table table-striped table-bordered table-condensed">
         <tr>
             <th>CÓDIGO</th>
-            <th>PERIODO</th>                    
-            <th>GRUPO PAGO</th>
+            <th>IENTIFICACION</th>                                
             <th>EMPLEADO</th>                    
             <th style="text-align: right">BÁSICO</th>
-            <th style="text-align: right">PREST</th>
-            <th style="text-align: right">N_PREST</th>
-            <th style="text-align: right">AUX_TRANS</th>
-            <th style="text-align: right">RIESGOS</th>
+            <th style="text-align: right">PRE</th>
+            <th style="text-align: right">N_PRE</th>
+            <th style="text-align: right">TTE</th>
+            <th style="text-align: right">RIESGO</th>
             <th style="text-align: right">SALUD</th>
             <th style="text-align: right">PENSION</th>
             <th style="text-align: right">CAJA</th>
-            <th style="text-align: right">PRESTACIONES</th>
-            <th style="text-align: right">VACACIONES</th>
-            <th style="text-align: right">A_PARAFISCALES</th>
-            <th style="text-align: right">OPERACION</th>
+            <th style="text-align: right">PRES</th>
+            <th style="text-align: right">VAC</th>
+            <th style="text-align: right">A_PAR</th>
+            <th style="text-align: right">OPE</th>
             <th style="text-align: right">ADMON</th>
             <th style="text-align: right">TOTAL</th>
             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
         </tr>
-
-        {% for arServiciosCobrar in arServiciosCobrar %}
+        {% set intCodigoProgramacion = '' %}
+        {% for arServicioCobrar in arServiciosCobrar %}
+            {% if intCodigoProgramacion != arServicioCobrar.codigoProgramacionPagoFk %}
+                <tr>                        
+                    <td id="suptipo" colspan="20"><b>Periodo: </b>{{ arServicioCobrar.fechaDesde |date("Y/m/d") }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d") }} <b>Gurpo pago:</b> {{ arServicioCobrar.centroCostoRel.nombre }}</td>
+                </tr>
+                {% set intCodigoProgramacion = arServicioCobrar.codigoProgramacionPagoFk %}                                
+            {% endif %}             
             <tr> 
-                <td><input type="hidden" name="LblCodigo[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}">{{ arServiciosCobrar.codigoServicioCobrarPk }}</td>  
-                <td>{{ arServiciosCobrar.programacionPagoRel.fechaDesde |date("Y/m/d")  }}-{{ arServiciosCobrar.programacionPagoRel.fechaHasta |date("Y/m/d")  }}</td>
-                <td>{{ arServiciosCobrar.centroCostoRel.nombre }}</td>                        
-                <td>{{ arServiciosCobrar.empleadoRel.nombreCorto }}</td>                        
-                <td style="text-align: right">{{ arServiciosCobrar.VrSalario | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrPrestacional | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrNoPrestacional | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrRiesgos | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrSalud | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrPension | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrCaja | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrPrestaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAporteParafiscales | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServiciosCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
-                <td style="text-align: right">{{ arServiciosCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServiciosCobrar.codigoServicioCobrarPk }}" /></td>
+                <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }}</td>                  
+                <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion }}</td>
+                <td>{{ arServicioCobrar.empleadoRel.nombreCorto }}</td>                        
+                <td style="text-align: right">{{ arServicioCobrar.VrSalario | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrPrestacional | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrNoPrestacional | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrRiesgos | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrSalud | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrPension | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrCaja | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrPrestaciones | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrAporteParafiscales | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ arServicioCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
+                <td style="text-align: right">{{ arServicioCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>
+                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
             </tr>
         {% endfor %}                                
     </table>
     {{ knp_pagination_render(arServiciosCobrar) }}
-    <div class="modal-footer">                
-        {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+    <div class="btn-toolbar" style="float: left">
+        <!-- Botones Menu Items -->
+        <div class="btn-group">
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arServiciosCobrar.getTotalItemCount }}</span></div>                        
+        </div>
     </div> 
-    <br />
+    <div class="btn-toolbar" style="float: right">
+        <!-- Botones Menu Items -->
+        <div class="btn-group">
+            {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>
+    </div>            
+   
     {{ form_end(form) }}
     <br/><br/><br/><br/>
 </section>

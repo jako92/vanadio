@@ -61,7 +61,7 @@ class CobroController extends Controller
                 $this->generarExcel();
             }            
         }                      
-        $arCobros = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);                
+        $arCobros = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);                
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:lista.html.twig', array(
             'arCobros' => $arCobros, 
             'form' => $form->createView()));
@@ -102,6 +102,7 @@ class CobroController extends Controller
      */
     public function detalleAction(Request $request, $codigoCobro) {
         $em = $this->getDoctrine()->getManager();
+        $paginator  = $this->get('knp_paginator');
         $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
         $form = $this->formularioDetalle($arCobro);                               
@@ -157,8 +158,8 @@ class CobroController extends Controller
                 $this->generarDetalleExcel($codigoCobro);
             }
         }
-        $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
-        $arServiciosCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => $codigoCobro));        
+        $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->detalleCobro($codigoCobro);
+        $arServiciosCobrar = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 20);                        
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalle.html.twig', array(
                     'arCobro' => $arCobro,
                     'arServiciosCobrar' => $arServiciosCobrar,
@@ -208,7 +209,7 @@ class CobroController extends Controller
         $paginator  = $this->get('knp_paginator');
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);                
         $form = $this->createFormBuilder()
-            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Agregar',))
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Guardar',))
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()) {            

@@ -115,13 +115,7 @@ class RhuFactura
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
-    private $estadoAutorizado = 0;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="facturasCentroCostoRel")
-     * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
-     */
-    protected $centroCostoRel; 
+    private $estadoAutorizado = 0;   
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="facturasClienteRel")
@@ -143,7 +137,6 @@ class RhuFactura
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="facturaRel")
      */
     protected $seleccionesFacturaRel;     
-    
     
     
     /**
@@ -644,30 +637,6 @@ class RhuFactura
     public function getEstadoAutorizado()
     {
         return $this->estadoAutorizado;
-    }
-
-    /**
-     * Set centroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel
-     *
-     * @return RhuFactura
-     */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
-    {
-        $this->centroCostoRel = $centroCostoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get centroCostoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
-     */
-    public function getCentroCostoRel()
-    {
-        return $this->centroCostoRel;
     }
 
     /**
