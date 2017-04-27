@@ -62,7 +62,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setFechaHasta($arPago->getFechaHastaPago());
                             $arServicio->setVrSalario($arPago->getVrSalario());
                             $salarioBasico = $arPago->getVrSalario();
-                            $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporteCotizacion();                            
+                            $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporteCotizacion();                                                        
                             $auxilioTransporte = $arPago->getVrAuxilioTransporte();
                             $arServicio->setVrAuxilioTransporte($auxilioTransporte);
                             $arServicio->setVrSalarioPeriodo($arPago->getVrSalarioPeriodo());
