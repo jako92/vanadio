@@ -122,6 +122,16 @@ class RhuCliente
      */
     private $cobroExamen;    
     
+    /**     
+     * @ORM\Column(name="autoretenedor", type="boolean")
+     */    
+    private $autoretenedor = false;     
+    
+    /**     
+     * @ORM\Column(name="regimen_simplificado", type="boolean")
+     */    
+    private $regimenSimplificado = false;     
+    
     /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
      */    
@@ -704,6 +714,30 @@ class RhuCliente
     }
 
     /**
+     * Set autoretenedor
+     *
+     * @param boolean $autoretenedor
+     *
+     * @return RhuCliente
+     */
+    public function setAutoretenedor($autoretenedor)
+    {
+        $this->autoretenedor = $autoretenedor;
+
+        return $this;
+    }
+
+    /**
+     * Get autoretenedor
+     *
+     * @return boolean
+     */
+    public function getAutoretenedor()
+    {
+        return $this->autoretenedor;
+    }
+
+    /**
      * Set comentarios
      *
      * @param string $comentarios
@@ -1011,5 +1045,29 @@ class RhuCliente
     public function getServiciosCobrarClienteRel()
     {
         return $this->serviciosCobrarClienteRel;
+    }
+
+    /**
+     * Set regimenSimplificado
+     *
+     * @param boolean $regimenSimplificado
+     *
+     * @return RhuCliente
+     */
+    public function setRegimenSimplificado($regimenSimplificado)
+    {
+        $this->regimenSimplificado = $regimenSimplificado;
+
+        return $this;
+    }
+
+    /**
+     * Get regimenSimplificado
+     *
+     * @return boolean
+     */
+    public function getRegimenSimplificado()
+    {
+        return $this->regimenSimplificado;
     }
 }

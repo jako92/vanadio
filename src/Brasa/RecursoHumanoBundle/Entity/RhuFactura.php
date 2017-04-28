@@ -18,6 +18,21 @@ class RhuFactura
     private $codigoFacturaPk;
     
     /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteFk;    
+    
+    /**
+     * @ORM\Column(name="codigo_factura_tipo_fk", type="integer", nullable=true)
+     */    
+    private $codigoFacturaTipoFk;    
+
+    /**
+     * @ORM\Column(name="codigo_factura_servicio_fk", type="integer", nullable=true)
+     */    
+    private $codigoFacturaServicioFk;
+    
+    /**
      * @ORM\Column(name="numero", type="integer")
      */
     private $numero = 0;    
@@ -63,6 +78,11 @@ class RhuFactura
     private $VrBaseAIU = 0;    
     
     /**
+     * @ORM\Column(name="vr_subtotal", type="float")
+     */
+    private $VrSubtotal = 0;     
+    
+    /**
      * @ORM\Column(name="vr_total_administracion", type="float")
      */
     private $VrTotalAdministracion = 0;    
@@ -98,11 +118,6 @@ class RhuFactura
     private $comentarios;    
 
     /**
-     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
-    private $codigoClienteFk;
-
-    /**
      * @ORM\Column(name="estado_anulado", type="boolean")
      */    
     private $estadoAnulado = 0;
@@ -117,6 +132,18 @@ class RhuFactura
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuFacturaTipo", inversedBy="facturasFacturaTipoRel")
+     * @ORM\JoinColumn(name="codigo_factura_tipo_fk", referencedColumnName="codigo_factura_tipo_pk")
+     */
+    protected $facturaTipoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuFacturaServicio", inversedBy="facturasFacturaServicioRel")
+     * @ORM\JoinColumn(name="codigo_factura_servicio_fk", referencedColumnName="codigo_factura_servicio_pk")
+     */
+    protected $facturaServicioRel;    
     
     /**
      * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="facturaRel")
@@ -134,6 +161,7 @@ class RhuFactura
     protected $seleccionesFacturaRel;     
     
    
+
     /**
      * Constructor
      */
@@ -152,6 +180,78 @@ class RhuFactura
     public function getCodigoFacturaPk()
     {
         return $this->codigoFacturaPk;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuFactura
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set codigoFacturaTipoFk
+     *
+     * @param integer $codigoFacturaTipoFk
+     *
+     * @return RhuFactura
+     */
+    public function setCodigoFacturaTipoFk($codigoFacturaTipoFk)
+    {
+        $this->codigoFacturaTipoFk = $codigoFacturaTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFacturaTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoFacturaTipoFk()
+    {
+        return $this->codigoFacturaTipoFk;
+    }
+
+    /**
+     * Set codigoFacturaServicioFk
+     *
+     * @param integer $codigoFacturaServicioFk
+     *
+     * @return RhuFactura
+     */
+    public function setCodigoFacturaServicioFk($codigoFacturaServicioFk)
+    {
+        $this->codigoFacturaServicioFk = $codigoFacturaServicioFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFacturaServicioFk
+     *
+     * @return integer
+     */
+    public function getCodigoFacturaServicioFk()
+    {
+        return $this->codigoFacturaServicioFk;
     }
 
     /**
@@ -371,6 +471,30 @@ class RhuFactura
     }
 
     /**
+     * Set vrSubtotal
+     *
+     * @param float $vrSubtotal
+     *
+     * @return RhuFactura
+     */
+    public function setVrSubtotal($vrSubtotal)
+    {
+        $this->VrSubtotal = $vrSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotal
+     *
+     * @return float
+     */
+    public function getVrSubtotal()
+    {
+        return $this->VrSubtotal;
+    }
+
+    /**
      * Set vrTotalAdministracion
      *
      * @param float $vrTotalAdministracion
@@ -539,30 +663,6 @@ class RhuFactura
     }
 
     /**
-     * Set codigoClienteFk
-     *
-     * @param integer $codigoClienteFk
-     *
-     * @return RhuFactura
-     */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
-        $this->codigoClienteFk = $codigoClienteFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoClienteFk
-     *
-     * @return integer
-     */
-    public function getCodigoClienteFk()
-    {
-        return $this->codigoClienteFk;
-    }
-
-    /**
      * Set estadoAnulado
      *
      * @param boolean $estadoAnulado
@@ -632,6 +732,54 @@ class RhuFactura
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Set facturaTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaTipo $facturaTipoRel
+     *
+     * @return RhuFactura
+     */
+    public function setFacturaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaTipo $facturaTipoRel = null)
+    {
+        $this->facturaTipoRel = $facturaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get facturaTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuFacturaTipo
+     */
+    public function getFacturaTipoRel()
+    {
+        return $this->facturaTipoRel;
+    }
+
+    /**
+     * Set facturaServicioRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaServicio $facturaServicioRel
+     *
+     * @return RhuFactura
+     */
+    public function setFacturaServicioRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaServicio $facturaServicioRel = null)
+    {
+        $this->facturaServicioRel = $facturaServicioRel;
+
+        return $this;
+    }
+
+    /**
+     * Get facturaServicioRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuFacturaServicio
+     */
+    public function getFacturaServicioRel()
+    {
+        return $this->facturaServicioRel;
     }
 
     /**

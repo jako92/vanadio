@@ -238,7 +238,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetXY(15,210);        
         $this->Cell(147, 6, substr(strtoupper(self::$strLetras), 0, 96), 1, 0, 'L',1);
         $this->Cell(22, 6, 'TOTAL', 1, 0, 'L',1);
-        $this->Cell(22, 6, number_format($arFactura->getVrNeto() + $arFactura->getVrBaseAIU(), 0, '.', ','), 1, 0, 'R',1);
+        $this->Cell(22, 6, number_format($arFactura->getVrNeto(), 0, '.', ','), 1, 0, 'R',1);
         $this->SetXY(15,216);        
         $this->Cell(64, 6, 'RECIBIDO POR', 1, 0, 'L');
         $this->Cell(64, 6, 'ACEPTADO POR', 1, 0, 'L');

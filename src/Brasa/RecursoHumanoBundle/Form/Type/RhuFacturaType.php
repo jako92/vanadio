@@ -12,7 +12,21 @@ class RhuFacturaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder                          
+        $builder  
+            ->add('facturaTipoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuFacturaTipo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ft')
+                    ->orderBy('ft.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                 
+            ->add('facturaServicioRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuFacturaServicio',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('fs')
+                    ->orderBy('fs.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                                             
             ->add('clienteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                 'query_builder' => function (EntityRepository $er) {

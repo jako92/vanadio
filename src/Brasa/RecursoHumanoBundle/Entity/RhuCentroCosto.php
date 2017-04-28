@@ -285,12 +285,7 @@ class RhuCentroCosto
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="centroCostoRel")
      */
-    protected $serviciosCobrarCentroCostoRel;     
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="centroCostoRel")
-     */
-    protected $facturasCentroCostoRel;    
+    protected $serviciosCobrarCentroCostoRel;            
     
     /**
      * @ORM\OneToMany(targetEntity="RhuSede", mappedBy="centroCostoRel")
@@ -352,6 +347,7 @@ class RhuCentroCosto
      */
     protected $turSoportesPagosPeriodosCentroCostoRel;     
        
+
     /**
      * Constructor
      */
@@ -365,7 +361,6 @@ class RhuCentroCosto
         $this->licenciasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosCobrarCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->facturasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sedesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->liquidacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prestacionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1740,40 +1735,6 @@ class RhuCentroCosto
     public function getServiciosCobrarCentroCostoRel()
     {
         return $this->serviciosCobrarCentroCostoRel;
-    }
-
-    /**
-     * Add facturasCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasCentroCostoRel
-     *
-     * @return RhuCentroCosto
-     */
-    public function addFacturasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasCentroCostoRel)
-    {
-        $this->facturasCentroCostoRel[] = $facturasCentroCostoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasCentroCostoRel
-     */
-    public function removeFacturasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasCentroCostoRel)
-    {
-        $this->facturasCentroCostoRel->removeElement($facturasCentroCostoRel);
-    }
-
-    /**
-     * Get facturasCentroCostoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasCentroCostoRel()
-    {
-        return $this->facturasCentroCostoRel;
     }
 
     /**

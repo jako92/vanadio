@@ -32,8 +32,8 @@ class RhuFacturaRepository extends EntityRepository {
     
     public function liquidar($codigoFactura) {        
         $em = $this->getEntityManager();
-        $arConfiguraciones = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-        $arConfiguraciones = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
@@ -42,6 +42,14 @@ class RhuFacturaRepository extends EntityRepository {
         $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
         $douAdministracion = 0;
         $douIngresoMision = 0;
+        $subtotal = 0;
+        $baseIva = 0;
+        $retencionFuente = 0;
+        $retencionIva = 0;
+        $iva = 0;
+        $total = 0;
+        $ingresoMision = 0;
+        $administracion = 0;
         foreach ($arFacturaDetalles as $arFacturaDetalle) {
             $arFacturaDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
             $arFacturaDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());            
@@ -56,25 +64,60 @@ class RhuFacturaRepository extends EntityRepository {
             $arFacturaDetalleAct->setVrBaseIva($baseIvaDetalle);
             $arFacturaDetalleAct->setVrIva($ivaDetalle);
             $arFacturaDetalleAct->setVrTotal($totalDetalle);
-            $em->persist($arFacturaDetalleAct);            
+            $em->persist($arFacturaDetalleAct); 
+            
+            $subtotal += $subtotalDetalle;
+            $baseIva += $baseIvaDetalle;
+            $iva += $ivaDetalle;
+            $total += $totalDetalle;
+            $ingresoMision += $arFacturaDetalle->getVrOperacion();
+            $administracion += $arFacturaDetalle->getVrAdministracion();
         }     
+        $subtotal = round($subtotal);
+        $iva = round($iva);
+        $total = round($total);               
         
-        $douTotalBruto = $douIngresoMision + $douAdministracion;
-        $douBaseAIU = (($douTotalBruto)*10)/100;
-        $douRetencionFuente = 0;
-        $douRetencionCREE = ($douBaseAIU * $arConfiguraciones->getPorcentajeRetencionCREE()) / 100;
-        $douIva = ($douBaseAIU * $arConfiguracionNomina->getPorcentajeIva()) / 100;
-        $douRetencionIva = ($douIva * $arConfiguraciones->getPorcentajeRetencionIvaVentas()) / 100;        
-        $arFactura->setVrBaseAIU($douBaseAIU);
-        $arFactura->setVrIngresoMision($douIngresoMision);
-        $arFactura->setVrTotalAdministracion($douAdministracion);
-        $arFactura->setVrBruto($douTotalBruto);        
-        $arFactura->setVrRetencionFuente($douRetencionFuente);
-        $arFactura->setVrRetencionCree($douRetencionCREE);
-        $arFactura->setVrIva($douIva);
-        $arFactura->setVrRetencionIva($douRetencionIva);    
-        $douRetenciones = $douRetencionIva + $douRetencionFuente;
-        $arFactura->setVrNeto($douTotalBruto+$douIva-$douRetenciones);
+        $topeRetencionFuente = 0;
+        if($arFactura->getFacturaServicioRel()->getTipoRetencionFuente() == 1) {
+            $topeRetencionFuente = $arConfiguracion->getBaseRetencionFuente();
+        }
+        if($arFactura->getFacturaServicioRel()->getTipoRetencionFuente() == 2) {
+            $topeRetencionFuente = $arConfiguracion->getBaseRetencionFuenteCompras();
+        }
+        if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
+            if($arConfiguracion->getAplicarTopeRetencionFuenteNotasCredito() == 0) {
+                $topeRetencionFuente = 0;
+            }         
+        }            
+        $porRetencionFuente = $arFactura->getFacturaServicioRel()->getPorRetencionFuente();
+        $porBaseRetencionFuente = $arFactura->getFacturaServicioRel()->getPorBaseRetencionFuente();
+        $baseRetencionFuente = ($subtotal * $porBaseRetencionFuente) / 100;
+        $baseRetencionFuente = $baseRetencionFuente;
+        if($baseRetencionFuente >= $topeRetencionFuente) {
+            if($arFactura->getClienteRel()->getRegimenSimplificado() == 0) {
+                $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
+                $retencionFuente = round($retencionFuente);
+            }            
+        }        
+        if($arFactura->getClienteRel()->getAutoretenedor()) {
+            if($iva > 0) {
+                $retencionIva = ($iva * 15) / 100;
+                $retencionIva = round($retencionIva);
+            }                
+        }         
+        $totalNeto = $subtotal + $iva - $retencionFuente - $retencionIva;
+        $arFactura->setVrSubtotal($subtotal);
+        $arFactura->setVrBaseAIU($baseIva);
+        $arFactura->setVrRetencionFuente($retencionFuente);
+        $arFactura->setVrIva($iva);
+        $arFactura->setVrRetencionIva($retencionIva);    
+        $arFactura->setVrNeto($totalNeto);
+        $arFactura->setVrBruto($total);        
+        $arFactura->setVrIngresoMision($ingresoMision);
+        $arFactura->setVrTotalAdministracion($administracion);
+                
+        //$arFactura->setVrRetencionCree($douRetencionCREE);
+        
         $em->persist($arFactura);
         $em->flush();
         return true;

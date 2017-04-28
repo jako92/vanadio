@@ -32,7 +32,9 @@ class GenerarServicioController extends Controller
                 set_time_limit(0);
                 ini_set("memory_limit", -1);                
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if(count($arrSeleccionados) > 0) {                                        
+                if(count($arrSeleccionados) > 0) {
+                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                     
+                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     foreach ($arrSeleccionados AS $codigo) {                                       
                         $arProgramacionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPago();            
                         $arProgramacionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPago')->find($codigo);
@@ -63,6 +65,9 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrSalario($arPago->getVrSalario());
                             $salarioBasico = $arPago->getVrSalario();
                             $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporteCotizacion();                                                        
+                            if($arContrato->getCodigoTipoTiempoFk() == 3) {
+                                $ingresoBasePrestaciones = $arPago->getVrIngresoBasePrestacion() + $arPago->getVrAuxilioTransporte();                                                        
+                            }                            
                             $auxilioTransporte = $arPago->getVrAuxilioTransporte();
                             $arServicio->setVrAuxilioTransporte($auxilioTransporte);
                             $arServicio->setVrSalarioPeriodo($arPago->getVrSalarioPeriodo());
@@ -71,7 +76,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setVrDeducciones($arPago->getVrDeducciones());
                             $arServicio->setVrAuxilioTransporteCotizacion($arPago->getVrAuxilioTransporteCotizacion());
                             $arServicio->setVrIngresoBasePrestacion($ingresoBasePrestaciones);
-                            $arServicio->setVrIngresoBaseCotizacion($arPago->getVrIngresoBaseCotizacion());
+                            
                             $arServicio->setTipoTiempo($arContrato->getTipoTiempoRel()->getAbreviatura());
                             
                             $prestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalPrestacional($arPago->getCodigoPagoPk());
@@ -80,11 +85,20 @@ class GenerarServicioController extends Controller
                             //Valor de los adicionales no prestacionales
                             $noPrestacional = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->adicionalNoPrestacional($arPago->getCodigoPagoPk());                                                        
                             
-                            
                             $ibc = $arPago->getVrIngresoBasePrestacion();
                             if($arContrato->getCodigoTipoTiempoFk() == 2) {
-                                $ibc = $arPago->getVrSalarioEmpleado();
+                                $diaSalarioMinimo = $arConfiguracion->getVrSalario() / 30;
+                                $diaSalario = $arContrato->getVrSalarioPago() / 30;
+                                if($diaSalario < $diaSalarioMinimo) {
+                                    $diaSalario = $diaSalarioMinimo;
+                                }
+                                $ibc = $arPago->getDiasPeriodo() * $diaSalario;
                             }
+                            if($arContrato->getCodigoTipoTiempoFk() == 3) {
+                                $diaSalario = $arPago->getVrSalarioEmpleado() / 30;
+                                $ibc = $arPago->getDiasPeriodo() * $diaSalario;
+                            }
+                            $arServicio->setVrIngresoBaseCotizacion($ibc);
                             //Pension
                             $pensionEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorPensionPago($arPago->getCodigoPagoPk());                                    
                             $pension = round((($ibc * 16) / 100) - $pensionEmpleado);                                                            
