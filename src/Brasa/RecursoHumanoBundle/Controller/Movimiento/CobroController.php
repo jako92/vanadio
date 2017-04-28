@@ -76,12 +76,15 @@ class CobroController extends Controller
         if ($codigoCobro != 0) {
             $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
         } else {
-           $arCobro->setFecha(new \DateTime('now'));           
+            $arCobro->setFecha(new \DateTime('now'));
+            $arCobro->setFechaDesde(new \DateTime('now'));           
+            $arCobro->setFechaHasta(new \DateTime('now'));           
         }
         $form = $this->createForm(RhuCobroType::class, $arCobro);       
         $form->handleRequest($request);
         if ($form->isValid()) {            
-            $arCobro = $form->getData();                           
+            $arCobro = $form->getData();
+            $arCobro->setClienteRel($arCobro->getCentroCostoRel()->getClienteRel());
             $em->persist($arCobro);
             $em->flush();                            
             if($form->get('guardarnuevo')->isClicked()) {

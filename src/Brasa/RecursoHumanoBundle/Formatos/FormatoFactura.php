@@ -139,9 +139,13 @@ class FormatoFactura extends \FPDF_FPDF {
         $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
         $arFacturaDetalles = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => self::$codigoFactura));
         foreach ($arFacturaDetalles as $arFacturaDetalle) {
+            $concepto = $arFacturaDetalle->getFacturaConceptoRel()->getNombre();
+            if($arFacturaDetalle->getCodigoCobroFk()) {
+               $concepto .=  "[ Servicios del periodo: " . $arFacturaDetalle->getCobroRel()->getFechaDesde()->format('Y-m-d') . " hasta " . $arFacturaDetalle->getCobroRel()->getFechaHasta()->format('Y-m-d') . "]";
+            }
             $pdf->SetX(15);
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(95, 4, $arFacturaDetalle->getFacturaConceptoRel()->getNombre(), 0, 0, 'L');
+            $pdf->Cell(95, 4, utf8_decode($concepto), 0, 0, 'L');
             $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrAdministracion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrOperacion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');            
             $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                
@@ -213,7 +217,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->Cell(40, 6, 'OBSERVACIONES:', 1, 0, 'L');        
         $this->Cell(107, 6, '', 1, 0, 'L');        
         $this->Cell(22, 6, 'SUBTOTAL:', 1, 0, 'L');
-        $this->Cell(22, 6, number_format($arFactura->getVrBruto(), 0, '.', ','), 1, 0, 'R');
+        $this->Cell(22, 6, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(15,181);
         //$this->Cell(147, 36, '', 1, 0, 'L');
         $this->SetFont('Arial', 'B', 7);
@@ -256,30 +260,12 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->MultiCell(191, 3.9, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 1, 'C');
         $this->SetXY(15,258);
-        $this->SetFont('Arial', '', 8);
-        $this->MultiCell(191, 3.5, 'Autorizo a la entidad SOGERCOL SERVICIOS TEMPORALES o a quien represente la calidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información referente a mi comportamiento comercial.', 1, 'L');
-        /*
-        $this->Text(20, 201, "Recibi conforme:");
-        $this->Text(20, 206, "Fecha y Nombre:");
-        $this->Text(20, 211, "Sello:");
-        $this->Text(20, 221, "Actividad Comercial");
-        $this->Text(60, 221, "Sector comercial");
-        //$this->Text(60, 221, utf8_decode($arFactura->getClienteRel()->getSectorComercialRel()->getNombre()));
-        $this->Text(90, 221, "Estrato =");
-        $this->Ln(4);
-        $this->SetFont('Arial', '', 8);
-        //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoFactura());
-        $this->SetXY(30,228);
-        $this->MultiCell(110, 5, $arConfiguracion->getInformacionPagoFactura(), 0, 'L');
-        $this->Ln();
-        $this->SetFont('Arial', 'B', 8);
-        $this->Text(30, 241, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
-        //$this->MultiCell(100, 5, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable", 0, 'L');
-        $this->SetFont('Arial', '', 7);
-        $this->Text(50, 251, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
-
+        //$this->SetFont('Arial', '', 8);
+        //$this->MultiCell(191, 3.5, 'Autorizo a la entidad SOGERCOL SERVICIOS TEMPORALES o a quien represente la calidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información referente a mi comportamiento comercial.', 1, 'L');        
+        $this->SetFont('Arial', 'B', 7);
+        $this->Text(15, 273, utf8_decode('Nuestra compañia, en favor del medio ambiente.'));        
         //Número de página
-        //$this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');*/
+        $this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');
     }
 
     public function GenerarEncabezadoFactura($em) {

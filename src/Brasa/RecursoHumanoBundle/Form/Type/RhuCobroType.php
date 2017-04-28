@@ -14,13 +14,13 @@ class RhuCobroType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                          
-            ->add('clienteRel', EntityType::class, array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
+            ->add('centroCostoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                    ->orderBy('c.nombreCorto', 'ASC');},
-                'choice_label' => 'nombreCorto',
-                'required' => true))  
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                              
             ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))            
             ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                            
             ->add('comentarios', TextareaType::class, array('required' => false))                                

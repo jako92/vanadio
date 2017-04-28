@@ -347,6 +347,10 @@ class RhuCentroCosto
      */
     protected $turSoportesPagosPeriodosCentroCostoRel;     
        
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="centroCostoRel")
+     */
+    protected $cobrosCentroCostoRel;    
 
     /**
      * Constructor
@@ -2143,5 +2147,39 @@ class RhuCentroCosto
     public function getTurSoportesPagosPeriodosCentroCostoRel()
     {
         return $this->turSoportesPagosPeriodosCentroCostoRel;
+    }
+
+    /**
+     * Add cobrosCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addCobrosCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroCostoRel)
+    {
+        $this->cobrosCentroCostoRel[] = $cobrosCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove cobrosCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroCostoRel
+     */
+    public function removeCobrosCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroCostoRel)
+    {
+        $this->cobrosCentroCostoRel->removeElement($cobrosCentroCostoRel);
+    }
+
+    /**
+     * Get cobrosCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCobrosCentroCostoRel()
+    {
+        return $this->cobrosCentroCostoRel;
     }
 }
