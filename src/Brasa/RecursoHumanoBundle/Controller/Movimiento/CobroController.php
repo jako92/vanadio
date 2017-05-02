@@ -140,7 +140,21 @@ class CobroController extends Controller
                     $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
                 }
-            }           
+            }
+            if($form->get('BtnEliminarDetalleExamen')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionarExamen');
+                if(count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigo) {                        
+                        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigo);                                                
+                        $arExamen->setEstadoCobrado(0);
+                        $arExamen->setCobroRel(null);
+                        $em->persist($arExamen);                        
+                    }
+                    $em->flush();  
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                }
+            }
             if($form->get('BtnImprimir')->isClicked()) {                                
                 $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\Cobro();
                 $objCobro->Generar($em, $codigoCobro);                                                                                    
@@ -233,7 +247,47 @@ class CobroController extends Controller
             'arServiciosCobrar' => $arServiciosCobrar,
             'arCobro' => $arCobro,
             'form' => $form->createView()));
-    }                  
+    }
+    
+    /**
+     * @Route("/rhu/cobro/detalle/nuevo/examen/{codigoCobro}", name="brs_rhu_cobro_detalle_nuevo_examen")
+     */
+    public function detalleNuevoExamenAction(Request $request, $codigoCobro) {        
+        $em = $this->getDoctrine()->getManager();
+        $paginator  = $this->get('knp_paginator');
+        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);                
+        $form = $this->createFormBuilder()
+            ->add('BtnAgregar', SubmitType::class, array('label'  => 'Guardar',))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isValid()) {            
+            if($form->get('BtnAgregar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if(count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigoExamen) {
+                        $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
+                        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
+                        if(!$arExamen->getCodigoCobroFk()) {
+                            $arExamen->setEstadoCobrado(1);
+                            $arExamen->setCobroRel($arCobro);
+                            $em->persist($arExamen);
+                        }
+                    }                    
+                    $em->flush();                    
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
+            }
+        }
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->pendienteCobrarCobro($arCobro->getCodigoClienteFk()));        
+        $arExamenes = $paginator->paginate($query, $request->query->get('page', 1), 300);                       
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalleNuevoExamen.html.twig', array(
+            'arExamenes' => $arExamenes,
+            'arCobro' => $arCobro,
+            'form' => $form->createView()));
+    }
+    
+    
     
     private function lista() {
         $session = new session;
@@ -341,7 +395,8 @@ class CobroController extends Controller
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                    
                     ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)                    
                     ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                    
-                    ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)                               
+                    ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)
+                    ->add('BtnEliminarDetalleExamen', SubmitType::class, $arrBotonDetalleEliminarDetalleExamen)                               
                     ->getForm();                                 
         return $form;
     }
