@@ -128,6 +128,11 @@ class RhuFactura
     private $estadoAutorizado = 0;   
     
     /**
+     * @ORM\Column(name="plazo_pago", type="integer")
+     */
+    private $plazoPago = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="facturasClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -882,5 +887,29 @@ class RhuFactura
     public function getSeleccionesFacturaRel()
     {
         return $this->seleccionesFacturaRel;
+    }
+
+    /**
+     * Set plazoPago
+     *
+     * @param integer $plazoPago
+     *
+     * @return RhuFactura
+     */
+    public function setPlazoPago($plazoPago)
+    {
+        $this->plazoPago = $plazoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get plazoPago
+     *
+     * @return integer
+     */
+    public function getPlazoPago()
+    {
+        return $this->plazoPago;
     }
 }

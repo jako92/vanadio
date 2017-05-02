@@ -133,15 +133,15 @@ class RhuFacturaRepository extends EntityRepository {
             //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
 
                 // Validar valor pendiente
-                /*$dql   = "SELECT fd.codigoPedidoDetalleFk, SUM(fd.subtotalOperado) as vrPrecio FROM BrasaTurnoBundle:TurFacturaDetalle fd "
+                /*$dql   = "SELECT fd.codigoPedidoDetalleFk, SUM(fd.subtotalOperado) as vrPrecio FROM BrasaRecursoHumanoBundle:RhuFacturaDetalle fd "
                         . "WHERE fd.codigoFacturaFk = " . $codigoFactura . " "
                         . "GROUP BY fd.codigoPedidoDetalleFk";
                 $query = $em->createQuery($dql);
                 $arrFacturaDetalles = $query->getResult();*/
                 /*foreach ($arrFacturaDetalles as $arrFacturaDetalle) {
                     if($arrFacturaDetalle['codigoPedidoDetalleFk']) {
-                        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
-                        $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arrFacturaDetalle['codigoPedidoDetalleFk']);
+                        $arPedidoDetalle = new \Brasa\RecursoHumanoBundle\Entity\TurPedidoDetalle();
+                        $arPedidoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:TurPedidoDetalle')->find($arrFacturaDetalle['codigoPedidoDetalleFk']);
                         $floPrecio = $arrFacturaDetalle['vrPrecio'];
                         if(round($arPedidoDetalle->getVrTotalDetallePendiente()) < round($floPrecio)) {
                             $strResultado .= "Para el detalle de pedido " . $arrFacturaDetalle['codigoPedidoDetalleFk'] . " no puede facturar mas de lo pendiente valor a facturar = " . $floPrecio . " valor pendiente = " . $arPedidoDetalle->getVrTotalDetallePendiente();
@@ -151,12 +151,12 @@ class RhuFacturaRepository extends EntityRepository {
             //}
 
             /*if($strResultado == "") {                                
-                $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-                $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+                $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+                $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
                 foreach ($arFacturaDetalles as $arFacturaDetalle) {
                     if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
 
-                            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
+                            $arPedidoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
                             $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() - $arFacturaDetalle->getSubtotalOperado();
                             $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);                            
                             $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() + $arFacturaDetalle->getSubtotalOperado();
@@ -185,11 +185,11 @@ class RhuFacturaRepository extends EntityRepository {
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         $strResultado = "";
         if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() == 0) {            
-            /*$arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-            $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+            /*$arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+            $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
             foreach ($arFacturaDetalles as $arFacturaDetalle) {
                 if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {                    
-                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());                        
+                    $arPedidoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());                        
                     $floValorTotalPendiente = $arPedidoDetalle->getVrTotalDetallePendiente() + $arFacturaDetalle->getSubtotalOperado();
                     $arPedidoDetalle->setVrTotalDetallePendiente($floValorTotalPendiente);
                     $floValorTotalAfectado = $arPedidoDetalle->getVrTotalDetalleAfectado() - $arFacturaDetalle->getSubtotalOperado();
@@ -209,36 +209,35 @@ class RhuFacturaRepository extends EntityRepository {
 
     public function imprimir($codigoFactura) {
         $em = $this->getEntityManager();
-
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();        
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();            
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         if($arFactura->getEstadoAutorizado() == 1) {
-            /*if($arFactura->getNumero() == 0) {
-                $intNumero = $em->getRepository('BrasaTurnoBundle:TurFacturaTipo')->consecutivo($arFactura->getCodigoFacturaTipoFk());
+            if($arFactura->getNumero() == 0) {
+                $intNumero = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaTipo')->consecutivo($arFactura->getCodigoFacturaTipoFk());
                 $arFactura->setNumero($intNumero);
                 $arFactura->setFecha(new \DateTime('now'));
                 $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
-                $arFactura->setFechaVence($dateFechaVence);
-                $arClienteTurno = new \Brasa\TurnoBundle\Entity\TurCliente();
-                $arClienteTurno = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arFactura->getCodigoClienteFk());
+                $arFactura->setFechaVence($dateFechaVence);                                
+                $arClienteRecursoHumano = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();                
+                $arClienteRecursoHumano = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($arFactura->getCodigoClienteFk());
                 $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
-                $arClienteCartera = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $arClienteTurno->getNit()));
+                $arClienteCartera = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $arClienteRecursoHumano->getNit()));
                 if ($arClienteCartera == null){
                     $arClienteCartera = new \Brasa\CarteraBundle\Entity\CarCliente();
-                    $arClienteCartera->setAsesorRel($arClienteTurno->getAsesorRel());
-                    $arClienteCartera->setFormaPagoRel($arClienteTurno->getFormaPagoRel());
-                    $arClienteCartera->setCiudadRel($arClienteTurno->getCiudadRel());
-                    $arClienteCartera->setNit($arClienteTurno->getNit());
-                    $arClienteCartera->setDigitoVerificacion($arClienteTurno->getDigitoVerificacion());
-                    $arClienteCartera->setNombreCorto($arClienteTurno->getNombreCorto());
-                    $arClienteCartera->setPlazoPago($arClienteTurno->getPlazoPago());
-                    $arClienteCartera->setDireccion($arClienteTurno->getDireccion());
-                    $arClienteCartera->setTelefono($arClienteTurno->getTelefono());
-                    $arClienteCartera->setCelular($arClienteTurno->getCelular());
-                    $arClienteCartera->setFax($arClienteTurno->getFax());
-                    $arClienteCartera->setEmail($arClienteTurno->getEmail());
+                    $arClienteCartera->setAsesorRel($arClienteRecursoHumano->getAsesorRel());
+                    $arClienteCartera->setFormaPagoRel($arClienteRecursoHumano->getFormaPagoRel());
+                    $arClienteCartera->setCiudadRel($arClienteRecursoHumano->getCiudadRel());
+                    $arClienteCartera->setNit($arClienteRecursoHumano->getNit());
+                    $arClienteCartera->setDigitoVerificacion($arClienteRecursoHumano->getDigitoVerificacion());
+                    $arClienteCartera->setNombreCorto($arClienteRecursoHumano->getNombreCorto());
+                    $arClienteCartera->setPlazoPago($arClienteRecursoHumano->getPlazoPago());
+                    $arClienteCartera->setDireccion($arClienteRecursoHumano->getDireccion());
+                    $arClienteCartera->setTelefono($arClienteRecursoHumano->getTelefono());
+                    $arClienteCartera->setCelular($arClienteRecursoHumano->getCelular());
+                    $arClienteCartera->setFax($arClienteRecursoHumano->getFax());
+                    $arClienteCartera->setEmail($arClienteRecursoHumano->getEmail());
                     $arClienteCartera->setUsuario($arFactura->getUsuario());
                     $em->persist($arClienteCartera);
                 }                    
@@ -246,7 +245,7 @@ class RhuFacturaRepository extends EntityRepository {
                     if($arCuentaCobrarTipo) {
                         $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
                         $arCuentaCobrar->setClienteRel($arClienteCartera);
-                        $arCuentaCobrar->setAsesorRel($arClienteTurno->getAsesorRel());
+                        $arCuentaCobrar->setAsesorRel($arClienteRecursoHumano->getAsesorRel());
                         $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
                         $arCuentaCobrar->setFecha($arFactura->getFecha());
                         $arCuentaCobrar->setFechaVence($arFactura->getFechaVence());
@@ -254,17 +253,24 @@ class RhuFacturaRepository extends EntityRepository {
                         $arCuentaCobrar->setSoporte($arFactura->getSoporte());
                         $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
                         $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
-                        $saldo = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
-                        $arCuentaCobrar->setSaldo($saldo);
+                        $saldoOperado = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
+                        $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
+                        $arCuentaCobrar->setSaldoOperado($saldoOperado);                        
+                        $arCuentaCobrar->setSubtotal($arFactura->getVrSubtotal());                                                
+                        $arCuentaCobrar->setRetencionFuente($arFactura->getVrRetencionFuente());
+                        $arCuentaCobrar->setRetencionIva($arFactura->getVrRetencionIva());
+                        $arCuentaCobrar->setRetencionIca(0);
+                        $arCuentaCobrar->setTotalNeto($arFactura->getVrTotalNeto());
                         $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
                         $arCuentaCobrar->setAbono(0);
                         $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
+                        $arCuentaCobrar->setServicioTipo($arFactura->getFacturaServicioRel()->getNombre());
                         if($arFactura->getProyectoRel()) {
                             $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
                         }
                         $em->persist($arCuentaCobrar);                        
                     }
-            }*/
+            }
             $em->persist($arFactura);
             $em->flush();
         } else {
@@ -275,19 +281,19 @@ class RhuFacturaRepository extends EntityRepository {
 
     public function anular($codigoFactura) {
         $em = $this->getEntityManager();
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();        
-        $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();        
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         
         $strResultado = "";
         if($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() != 0 && $arFactura->getEstadoContabilizado() == 0) {
             $boolAnular = TRUE;
-            $arFacturaDetalles = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-            $arFacturaDetalles = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+            $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+            $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
             //Devolver saldo a los pedidos
             foreach ($arFacturaDetalles as $arFacturaDetalle) {
                 if($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
-                    $arPedidoDetalleAct = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
-                    $arPedidoDetalleAct = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
+                    $arPedidoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\TurPedidoDetalle();
+                    $arPedidoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
                     $floValorTotalPendiente = $arPedidoDetalleAct->getVrTotalDetallePendiente() + $arFacturaDetalle->getVrPrecio();
                     $arPedidoDetalleAct->setVrTotalDetallePendiente($floValorTotalPendiente);
                     $arPedidoDetalleAct->setEstadoFacturado(0);
@@ -296,8 +302,8 @@ class RhuFacturaRepository extends EntityRepository {
             }
             //Actualizar los detalles de la factura a cero
             foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                $arFacturaDetalleAct = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
-                $arFacturaDetalleAct = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());
+                $arFacturaDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+                $arFacturaDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());
                 $arFacturaDetalle->setVrPrecio(0);
                 $arFacturaDetalle->setCantidad(0);
                 $arFacturaDetalle->setSubtotal(0);

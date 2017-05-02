@@ -91,7 +91,8 @@
             <div class="btn-group">
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
             </div>            
-            <div class="btn-group">                
+            <div class="btn-group">            
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_facturas_nuevo_nota_credito', {'codigoFactura': 0}) }}">Nueva nota credito</a>                                                                
                 <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_facturas_nuevo', { 'codigoFactura': 0 }) }}" style="float:left">Nuevo</a>                                                                                
             </div>
             <div class="btn-group">                

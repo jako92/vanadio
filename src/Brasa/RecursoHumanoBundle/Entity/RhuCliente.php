@@ -43,6 +43,11 @@ class RhuCliente
     private $codigoFormaPagoFk;     
     
     /**
+     * @ORM\Column(name="codigo_asesor_fk", type="integer", nullable=true)
+     */    
+    private $codigoAsesorFk;    
+    
+    /**
      * @ORM\Column(name="direccion", type="string", length=120, nullable=true)
      */
     private $direccion;
@@ -149,6 +154,12 @@ class RhuCliente
      */
     protected $ciudadRel;         
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenAsesor", inversedBy="rhuClientesAsesorRel")
+     * @ORM\JoinColumn(name="codigo_asesor_fk", referencedColumnName="codigo_asesor_pk")
+     */
+    protected $asesorRel;    
+    
     /**
      * @ORM\OneToMany(targetEntity="RhuCentroCosto", mappedBy="clienteRel")
      */
@@ -1069,5 +1080,53 @@ class RhuCliente
     public function getRegimenSimplificado()
     {
         return $this->regimenSimplificado;
+    }
+
+    /**
+     * Set codigoAsesorFk
+     *
+     * @param integer $codigoAsesorFk
+     *
+     * @return RhuCliente
+     */
+    public function setCodigoAsesorFk($codigoAsesorFk)
+    {
+        $this->codigoAsesorFk = $codigoAsesorFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAsesorFk
+     *
+     * @return integer
+     */
+    public function getCodigoAsesorFk()
+    {
+        return $this->codigoAsesorFk;
+    }
+
+    /**
+     * Set asesorRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenAsesor $asesorRel
+     *
+     * @return RhuCliente
+     */
+    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
+    {
+        $this->asesorRel = $asesorRel;
+
+        return $this;
+    }
+
+    /**
+     * Get asesorRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenAsesor
+     */
+    public function getAsesorRel()
+    {
+        return $this->asesorRel;
     }
 }

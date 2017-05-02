@@ -73,6 +73,10 @@ class GenAsesor
      */
     protected $carAnticiposAsesorRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuCliente", mappedBy="asesorRel")
+     */
+    protected $rhuClientesAsesorRel;    
 
     
     /**
@@ -85,6 +89,7 @@ class GenAsesor
         $this->carRecibosAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turClientesAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->carAnticiposAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rhuClientesAsesorRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -409,5 +414,39 @@ class GenAsesor
     public function getCarAnticiposAsesorRel()
     {
         return $this->carAnticiposAsesorRel;
+    }
+
+    /**
+     * Add rhuClientesAsesorRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesAsesorRel
+     *
+     * @return GenAsesor
+     */
+    public function addRhuClientesAsesorRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesAsesorRel)
+    {
+        $this->rhuClientesAsesorRel[] = $rhuClientesAsesorRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhuClientesAsesorRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesAsesorRel
+     */
+    public function removeRhuClientesAsesorRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesAsesorRel)
+    {
+        $this->rhuClientesAsesorRel->removeElement($rhuClientesAsesorRel);
+    }
+
+    /**
+     * Get rhuClientesAsesorRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhuClientesAsesorRel()
+    {
+        return $this->rhuClientesAsesorRel;
     }
 }

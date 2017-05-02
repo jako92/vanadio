@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuFacturaType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuNotaCreditoType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -104,6 +105,44 @@ class FacturasController extends Controller
     }    
     
     /**
+     * @Route("/rhu/facturas/nuevo/nota/credito/{codigoFactura}", name="brs_rhu_facturas_nuevo_nota_credito")
+     */
+    public function nuevoNotaCreditoAction(Request $request, $codigoFactura) {
+        $em = $this->getDoctrine()->getManager();
+        
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
+        if ($codigoFactura != 0) {
+            $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
+        }
+        else {
+           $arFactura->setFecha(new \DateTime('now'));           
+        }
+        $form = $this->createForm(RhuNotaCreditoType::class, $arFactura);       
+        $form->handleRequest($request);
+        if ($form->isValid()) {            
+            $arFactura = $form->getData(); 
+            $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
+            $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($form->get('clienteRel')->getData());
+            $diasPlazo = $arCliente->getPlazoPago() - 1;
+            $fechaVence = date('Y-m-d', strtotime('+'.$diasPlazo.' day')) ;  
+            $arFactura->setFechaVence(new \DateTime($fechaVence));
+            $arFactura->setOperacion(1);
+            $em->persist($arFactura);
+            $em->flush();                            
+            if($form->get('guardarnuevo')->isClicked()) {
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_nuevo', array('codigoFactura' => 0)));
+            } else {
+                return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $arFactura->getCodigoFacturaPk())));
+            }    
+            
+        }                
+
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Facturas:nuevoNotaCredito.html.twig', array(
+            'arFactura' => $arFactura,
+            'form' => $form->createView()));
+    }     
+    
+    /**
      * @Route("/rhu/facturas/detalle/{codigoFactura}", name="brs_rhu_facturas_detalle")
      */
     public function detalleAction(Request $request, $codigoFactura) {
@@ -151,14 +190,8 @@ class FacturasController extends Controller
                 if($strResultado != "") {
                     $objMensaje->Mensaje("error", $strResultado);
                 } else {
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                    //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
-                        if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
-                            $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
-                            $objFactura->Generar($em, $codigoFactura);                            
-                        }                        
-                    //}                                         
+                    $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
+                    $objFactura->Generar($em, $codigoFactura);                            
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
             }

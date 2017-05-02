@@ -10,5 +10,15 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class RhuFacturaTipoRepository extends EntityRepository {
-    
+    public function consecutivo($codigoFacturaTipo) {
+        $em = $this->getEntityManager();
+        $intNumero = 0;
+        $arFacturaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaTipo();
+        $arFacturaTipo = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaTipo')->find($codigoFacturaTipo);     
+        $intNumero = $arFacturaTipo->getConsecutivo();
+        $arFacturaTipo->setConsecutivo($intNumero + 1);
+        $em->persist($arFacturaTipo);
+        $em->flush();
+        return $intNumero;
+    }      
 }
