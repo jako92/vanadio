@@ -211,7 +211,7 @@ class RhuFacturaRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();            
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();       
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         if($arFactura->getEstadoAutorizado() == 1) {
             if($arFactura->getNumero() == 0) {
@@ -252,22 +252,19 @@ class RhuFacturaRepository extends EntityRepository {
                         $arCuentaCobrar->setCodigoFactura($arFactura->getCodigoFacturaPk());
                         $arCuentaCobrar->setSoporte($arFactura->getSoporte());
                         $arCuentaCobrar->setNumeroDocumento($arFactura->getNumero());
-                        $arCuentaCobrar->setValorOriginal($arFactura->getVrTotalNeto());
-                        $saldoOperado = $arFactura->getVrTotalNeto() * $arCuentaCobrarTipo->getOperacion();
-                        $arCuentaCobrar->setSaldo($arFactura->getVrTotalNeto());
+                        $arCuentaCobrar->setValorOriginal($arFactura->getVrNeto());
+                        $saldoOperado = $arFactura->getVrNeto() * $arCuentaCobrarTipo->getOperacion();
+                        $arCuentaCobrar->setSaldo($arFactura->getVrNeto());
                         $arCuentaCobrar->setSaldoOperado($saldoOperado);                        
                         $arCuentaCobrar->setSubtotal($arFactura->getVrSubtotal());                                                
                         $arCuentaCobrar->setRetencionFuente($arFactura->getVrRetencionFuente());
                         $arCuentaCobrar->setRetencionIva($arFactura->getVrRetencionIva());
                         $arCuentaCobrar->setRetencionIca(0);
-                        $arCuentaCobrar->setTotalNeto($arFactura->getVrTotalNeto());
+                        $arCuentaCobrar->setTotalNeto($arFactura->getVrNeto());
                         $arCuentaCobrar->setPlazo($arFactura->getPlazoPago());
                         $arCuentaCobrar->setAbono(0);
                         $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
                         $arCuentaCobrar->setServicioTipo($arFactura->getFacturaServicioRel()->getNombre());
-                        if($arFactura->getProyectoRel()) {
-                            $arCuentaCobrar->setGrupo($arFactura->getProyectoRel()->getNombre());
-                        }
                         $em->persist($arCuentaCobrar);                        
                     }
             }
