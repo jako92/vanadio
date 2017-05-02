@@ -194,6 +194,7 @@ class RhuCobro {
      * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="examenRel")
      */
     protected $examenesCobroRel;
+    
 
     /**
      * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="cobroRel")
