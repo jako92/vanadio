@@ -157,7 +157,16 @@
                         </div>
                         <div class="btn-group">
                             {% if arFactura.estadoAutorizado == 0 %}
-                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_servicio', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo servicio</a>
+                                {% if arFactura.facturaTipoRel.tipo == 1 %}
+                                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_facturas_detalle_nuevo_servicio', {'codigoFactura': arFactura.codigoFacturaPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo</a>
+                                {% endif %}
+                                {% if arFactura.facturaTipoRel.tipo == 2 %}
+                                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_factura_detalle_factura_nuevo', {'codigoFactura': arFactura.codigoFacturaPk, 'tipoCruce': 1}) }}', 'nuevoDetalleFactura', 600, 1000)" >Nuevo</a>
+                                {% endif %}
+                                {% if arFactura.facturaTipoRel.tipo == 3 %}                                    
+                                    
+                                {% endif %}                                 
+                                
                             {% endif %}    
                         </div>
                         <div class="btn-group">

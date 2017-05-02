@@ -76,6 +76,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();
         $arConfiguracionAporte = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);                    
         $arEntidadRiesgos = new \Brasa\RecursoHumanoBundle\Entity\RhuEntidadRiesgoProfesional();
+        $prueba = $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales();
         if($arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()) {
             $arEntidadRiesgos = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->findOneBy(array('codigoInterface' => $arConfiguracionAporte->getCodigoEntidadRiesgosProfesionales()));
         }
@@ -122,7 +123,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         //$sustitucion13 = "no prestacinal";
         $sustitucion14 = $arContrato->getEntidadSaludRel()->getNombre();
         $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();
-        $sustitucion16 = $arContrato->getEntidadPensionRel()->getNombre();
+        $sustitucion16 = $arEntidadRiesgos->getNombre();
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $sustitucion18 = $usuarioCarta;
         $sustitucion19 = $usuarioCargo;

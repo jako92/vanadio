@@ -19,4 +19,17 @@ class RhuFacturaDetalleRepository extends EntityRepository {
         return $douNumeroFacturasDetalle;
     } 
     
+    public function listaCliente($codigoCliente, $codigoFactura = "", $tipo = "") {
+        $dql   = "SELECT fd FROM BrasaRecursoHumanoBundle:RhuFacturaDetalle fd JOIN fd.facturaRel f JOIN f.facturaTipoRel ft WHERE f.codigoClienteFk =  " . $codigoCliente . " ";
+        
+        if($codigoFactura != '') {
+            $dql .= "AND fd.codigoFacturaFk = " . $codigoFactura . " ";  
+        }    
+        if($tipo != '') {
+            $dql .= "AND ft.tipo = " . $tipo . " ";  
+        }        
+        $dql .= " ORDER BY fd.codigoFacturaDetallePk DESC";
+        return $dql;
+    }     
+    
 }

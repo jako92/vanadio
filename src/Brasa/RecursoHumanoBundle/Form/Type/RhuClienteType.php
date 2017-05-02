@@ -31,7 +31,13 @@ class RhuClienteType extends AbstractType
                     ->orderBy('fp.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))                              
-                            
+            ->add('asesorRel', EntityType::class, array(
+                'class' => 'BrasaGeneralBundle:GenAsesor',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('a')
+                    ->orderBy('a.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                            
             ->add('nit', NumberType::class, array('required' => true))
             ->add('digitoVerificacion', TextType::class, array('required' => false))  
             ->add('nombreCorto', TextType::class, array('required' => true))              

@@ -133,6 +133,16 @@ class RhuFactura
     private $plazoPago = 0;     
     
     /**
+     * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
+     */    
+    private $usuario;     
+    
+    /**
+     * @ORM\Column(name="soporte", type="string", length=30, nullable=true)
+     */
+    private $soporte;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="facturasClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -911,5 +921,53 @@ class RhuFactura
     public function getPlazoPago()
     {
         return $this->plazoPago;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return RhuFactura
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set soporte
+     *
+     * @param string $soporte
+     *
+     * @return RhuFactura
+     */
+    public function setSoporte($soporte)
+    {
+        $this->soporte = $soporte;
+
+        return $this;
+    }
+
+    /**
+     * Get soporte
+     *
+     * @return string
+     */
+    public function getSoporte()
+    {
+        return $this->soporte;
     }
 }

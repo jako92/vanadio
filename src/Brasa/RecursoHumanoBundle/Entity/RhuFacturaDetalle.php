@@ -33,6 +33,11 @@ class RhuFacturaDetalle
     private $codigoCobroFk;            
     
     /**
+     * @ORM\Column(name="codigo_factura_detalle_fk", type="integer", nullable=true)
+     */    
+    private $codigoFacturaDetalleFk;     
+    
+    /**
      * @ORM\Column(name="cantidad", type="float")
      */
     private $cantidad = 0;    
@@ -115,7 +120,25 @@ class RhuFacturaDetalle
      */
     protected $facturaConceptoRel; 
 
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuFacturaDetalle", inversedBy="facturasDetallesFacturaDetalleRel")
+     * @ORM\JoinColumn(name="codigo_factura_detalle_fk", referencedColumnName="codigo_factura_detalle_pk")
+     */
+    protected $facturaDetalleRel; 
 
+    /**
+     * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="facturaDetalleRel")
+     */
+    protected $facturasDetallesFacturaDetalleRel; 
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->facturasDetallesFacturaDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get codigoFacturaDetallePk
@@ -197,6 +220,30 @@ class RhuFacturaDetalle
     public function getCodigoCobroFk()
     {
         return $this->codigoCobroFk;
+    }
+
+    /**
+     * Set codigoFacturaDetalleFk
+     *
+     * @param integer $codigoFacturaDetalleFk
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setCodigoFacturaDetalleFk($codigoFacturaDetalleFk)
+    {
+        $this->codigoFacturaDetalleFk = $codigoFacturaDetalleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFacturaDetalleFk
+     *
+     * @return integer
+     */
+    public function getCodigoFacturaDetalleFk()
+    {
+        return $this->codigoFacturaDetalleFk;
     }
 
     /**
@@ -581,5 +628,63 @@ class RhuFacturaDetalle
     public function getFacturaConceptoRel()
     {
         return $this->facturaConceptoRel;
+    }
+
+    /**
+     * Set facturaDetalleRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturaDetalleRel
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setFacturaDetalleRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturaDetalleRel = null)
+    {
+        $this->facturaDetalleRel = $facturaDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Get facturaDetalleRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle
+     */
+    public function getFacturaDetalleRel()
+    {
+        return $this->facturaDetalleRel;
+    }
+
+    /**
+     * Add facturasDetallesFacturaDetalleRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesFacturaDetalleRel
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function addFacturasDetallesFacturaDetalleRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesFacturaDetalleRel)
+    {
+        $this->facturasDetallesFacturaDetalleRel[] = $facturasDetallesFacturaDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove facturasDetallesFacturaDetalleRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesFacturaDetalleRel
+     */
+    public function removeFacturasDetallesFacturaDetalleRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesFacturaDetalleRel)
+    {
+        $this->facturasDetallesFacturaDetalleRel->removeElement($facturasDetallesFacturaDetalleRel);
+    }
+
+    /**
+     * Get facturasDetallesFacturaDetalleRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFacturasDetallesFacturaDetalleRel()
+    {
+        return $this->facturasDetallesFacturaDetalleRel;
     }
 }
