@@ -87,8 +87,8 @@
                         <td class="td-in-well">{% if arSeleccion.estadoAprobado == 1%}SI{% else %}NO{% endif %}</td>
                     </tr>
                     <tr>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">CLIENTE</td>
+                        <td class="td-in-well">{{ arSeleccion.clienteRel.nombreCorto | default('')}}</td>
                         <td class="titulo">MOTIVO CIERRE:</td>
                         <td class="td-in-well">{{ arSeleccion.motivoCierreSeleccionRel.nombre | default('')}}</td>
                         <td class="titulo">ESTADO CERRADO:</td>

@@ -195,6 +195,11 @@ class RhuCliente
      */ 
     protected $serviciosCobrarClienteRel; 
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="clienteRel") 
+     */ 
+    protected $seleccionesClienteRel; 
+    
 
     /**
      * Constructor
@@ -1128,5 +1133,39 @@ class RhuCliente
     public function getAsesorRel()
     {
         return $this->asesorRel;
+    }
+
+    /**
+     * Add seleccionesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel)
+    {
+        $this->seleccionesClienteRel[] = $seleccionesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove seleccionesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel
+     */
+    public function removeSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel)
+    {
+        $this->seleccionesClienteRel->removeElement($seleccionesClienteRel);
+    }
+
+    /**
+     * Get seleccionesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeleccionesClienteRel()
+    {
+        return $this->seleccionesClienteRel;
     }
 }

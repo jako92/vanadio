@@ -101,7 +101,8 @@ class SeleccionController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arSeleccion = $form->getData();
             $arSeleccion->setNombreCorto($arSeleccion->getNombre1() . " " . $arSeleccion->getNombre2() . " " .$arSeleccion->getApellido1() . " " . $arSeleccion->getApellido2());
-            $arSeleccion->setFecha(new \DateTime('now'));
+            $arSeleccion->setFecha(new \DateTime('now'));            
+            $arSeleccion->setClienteRel($arSeleccion->getCentroCostoRel()->getClienteRel());
             if($codigoSeleccion == 0) {
                 $arSeleccion->setCodigoUsuario($arUsuario->getUserName());
             }
