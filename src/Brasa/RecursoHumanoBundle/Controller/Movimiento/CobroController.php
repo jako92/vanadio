@@ -151,10 +151,13 @@ class CobroController extends Controller
             }
         }
         $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->detalleCobro($codigoCobro);
-        $arServiciosCobrar = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);                        
+        $arServiciosCobrar = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);
+        $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->detalleCobro($codigoCobro);
+        $arExamenes = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalle.html.twig', array(
                     'arCobro' => $arCobro,
                     'arServiciosCobrar' => $arServiciosCobrar,
+                    'arExamenes' => $arExamenes,
                     'form' => $form->createView(),
                     ));
     }

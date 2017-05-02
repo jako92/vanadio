@@ -189,6 +189,11 @@ class RhuCobro {
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="cobroRel")
      */
     protected $serviciosCobrarCobroRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="examenRel")
+     */
+    protected $examenesCobroRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="cobroRel")
@@ -1003,5 +1008,39 @@ class RhuCobro {
     public function getCobroTipoRel()
     {
         return $this->cobroTipoRel;
+    }
+
+    /**
+     * Add examenesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCobroRel
+     *
+     * @return RhuCobro
+     */
+    public function addExamenesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCobroRel)
+    {
+        $this->examenesCobroRel[] = $examenesCobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove examenesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCobroRel
+     */
+    public function removeExamenesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCobroRel)
+    {
+        $this->examenesCobroRel->removeElement($examenesCobroRel);
+    }
+
+    /**
+     * Get examenesCobroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExamenesCobroRel()
+    {
+        return $this->examenesCobroRel;
     }
 }

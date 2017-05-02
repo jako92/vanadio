@@ -142,5 +142,11 @@ class RhuExamenRepository extends EntityRepository {
         $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.estadoPagado = 0 ";
         return $dql;
     }
+    
+    public function detalleCobro($codigoCobro) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.codigoCobroFk = " . $codigoCobro;
+        return $dql;
+    } 
         
 }

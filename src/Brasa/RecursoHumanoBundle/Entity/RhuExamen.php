@@ -36,16 +36,22 @@ class RhuExamen
      * @ORM\Column(name="codigo_factura_fk", type="integer", nullable=true)
      */    
     private $codigoFacturaFk;
+    
+    /**
+     * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
+     */    
+    private $codigoCobroFk;
 
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
-    private $codigoClienteFk;    
+    private $codigoClienteFk; 
     
     /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
      */    
     private $codigoCargoFk;
+    
     
     /**
      * @ORM\Column(name="fecha", type="date")
@@ -178,7 +184,13 @@ class RhuExamen
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="examenesClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
-    protected $clienteRel;    
+    protected $clienteRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="examenesCobroRel")
+     * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
+     */
+    protected $cobroRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuExamenDetalle", mappedBy="examenRel")
@@ -1059,5 +1071,53 @@ class RhuExamen
     public function getExamenesExamenRestriccionMedicaRel()
     {
         return $this->examenesExamenRestriccionMedicaRel;
+    }
+
+    /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuExamen
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
+    }
+
+    /**
+     * Set cobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
+     *
+     * @return RhuExamen
+     */
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
+    {
+        $this->cobroRel = $cobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
+     */
+    public function getCobroRel()
+    {
+        return $this->cobroRel;
     }
 }
