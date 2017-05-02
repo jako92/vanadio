@@ -141,20 +141,9 @@ class CobroController extends Controller
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
                 }
             }           
-            if($form->get('BtnImprimir')->isClicked()) {
-                $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->imprimir($codigoCobro);
-                if($strResultado != "") {
-                    $objMensaje->Mensaje("error", $strResultado);
-                } else {
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                    //if($arCobro->getCobroTipoRel()->getTipo() == 1) {
-                        if($arConfiguracion->getCodigoFormatoCobro() <= 1) {
-                            $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCobro();
-                            $objCobro->Generar($em, $codigoCobro);                            
-                        }                        
-                    //}                                         
-                }
+            if($form->get('BtnImprimir')->isClicked()) {                                
+                $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\Cobro();
+                $objCobro->Generar($em, $codigoCobro);                                                                                    
                 return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));                                                
             }           
             if ($form->get('BtnDetalleExcel')->isClicked()) {                
@@ -340,7 +329,7 @@ class CobroController extends Controller
             }            
         } else {
             $arrBotonDesAutorizar['disabled'] = true;            
-            $arrBotonImprimir['disabled'] = true;
+            //$arrBotonImprimir['disabled'] = true;
         }
  
         $form = $this->createFormBuilder()
