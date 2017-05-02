@@ -8,105 +8,110 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_cobro")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuCobroRepository")
  */
-class RhuCobro
-{
+class RhuCobro {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_cobro_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoCobroPk;    
-    
+    private $codigoCobroPk;
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
-    private $codigoClienteFk;         
-    
+     */
+    private $codigoClienteFk;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCentroCostoFk;     
-    
+     */
+    private $codigoCentroCostoFk;
+
+    /**
+     * @ORM\Column(name="codigo_cobro_tipo_fk", type="string", length=1, nullable=true)
+     */
+    private $codigoCobroTipoFk;
+
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
-     */    
-    private $fecha;       
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
-     */    
-    private $fechaDesde;    
-    
+     */
+    private $fechaDesde;
+
     /**
      * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
-     */    
-    private $fechaHasta;    
-    
+     */
+    private $fechaHasta;
+
     /**
      * @ORM\Column(name="vr_basico", type="float")
      */
-    private $vrBasico = 0;     
+    private $vrBasico = 0;
 
     /**
      * @ORM\Column(name="vr_prestacional", type="float")
      */
     private $vrPrestacional = 0;
-    
+
     /**
      * @ORM\Column(name="vr_no_prestacional", type="float")
      */
-    private $vrNoPrestacional = 0;     
-    
+    private $vrNoPrestacional = 0;
+
     /**
      * @ORM\Column(name="vr_auxilio_transporte", type="float")
      */
-    private $vrAuxilioTransporte = 0;    
-    
+    private $vrAuxilioTransporte = 0;
+
     /**
      * @ORM\Column(name="vr_auxilio_transporte_cotizacion", type="float")
      */
-    private $vrAuxilioTransporteCotizacion = 0;    
-    
+    private $vrAuxilioTransporteCotizacion = 0;
+
     /**
      * @ORM\Column(name="vr_riesgos", type="float")
      */
-    private $vrRiesgos = 0;    
-    
+    private $vrRiesgos = 0;
+
     /**
      * @ORM\Column(name="vr_salud", type="float")
      */
-    private $vrSalud = 0;    
-    
+    private $vrSalud = 0;
+
     /**
      * @ORM\Column(name="vr_pension", type="float")
      */
-    private $vrPension = 0;    
-    
+    private $vrPension = 0;
+
     /**
      * @ORM\Column(name="vr_caja", type="float")
      */
-    private $vrCaja = 0;    
-    
+    private $vrCaja = 0;
+
     /**
      * @ORM\Column(name="vr_sena", type="float")
      */
-    private $vrSena = 0;    
-    
+    private $vrSena = 0;
+
     /**
      * @ORM\Column(name="vr_icbf", type="float")
      */
-    private $vrIcbf = 0;    
-    
+    private $vrIcbf = 0;
+
     /**
      * @ORM\Column(name="vr_cesantias", type="float")
      */
     private $vrCesantias = 0;
-    
+
     /**
      * @ORM\Column(name="vr_cesantias_intereses", type="float")
      */
-    private $vrCesantiasIntereses = 0;    
-    
+    private $vrCesantiasIntereses = 0;
+
     /**
      * @ORM\Column(name="vr_primas", type="float")
      */
@@ -116,7 +121,7 @@ class RhuCobro
      * @ORM\Column(name="vr_prestaciones", type="float")
      */
     private $vrPrestaciones = 0;
-    
+
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
      */
@@ -131,37 +136,37 @@ class RhuCobro
      * @ORM\Column(name="vr_operacion", type="float")
      */
     private $vrOperacion = 0;
-    
+
     /**
      * @ORM\Column(name="vr_administracion", type="float")
      */
-    private $vrAdministracion = 0;     
-    
+    private $vrAdministracion = 0;
+
     /**
      * @ORM\Column(name="vr_total_cobro", type="float")
      */
-    private $vrTotalCobro = 0;     
-    
+    private $vrTotalCobro = 0;
+
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
-     */    
-    private $estadoAutorizado = 0;    
-    
+     */
+    private $estadoAutorizado = 0;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
-     */    
-    private $comentarios;     
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\Column(name="numero_registros", type="integer")
      */
-    private $numeroRegistros = 0;    
-    
+    private $numeroRegistros = 0;
+
     /**
      * @ORM\Column(name="estado_cobrado", type="boolean")
-     */    
-    private $estadoCobrado = 0;    
-    
+     */
+    private $estadoCobrado = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="cobrosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
@@ -173,23 +178,27 @@ class RhuCobro
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCobroTipo", inversedBy="cobrosCobroTipoRel")
+     * @ORM\JoinColumn(name="codigo_cobro_tipo_fk", referencedColumnName="codigo_cobro_tipo_pk")
+     */
+    protected $cobroTipoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="cobroRel")
      */
-    protected $serviciosCobrarCobroRel;    
-    
+    protected $serviciosCobrarCobroRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuFacturaDetalle", mappedBy="cobroRel")
      */
-    protected $facturasDetallesCobroRel;    
-    
+    protected $facturasDetallesCobroRel;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->serviciosCobrarCobroRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasDetallesCobroRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -199,8 +208,7 @@ class RhuCobro
      *
      * @return integer
      */
-    public function getCodigoCobroPk()
-    {
+    public function getCodigoCobroPk() {
         return $this->codigoCobroPk;
     }
 
@@ -211,8 +219,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
+    public function setCodigoClienteFk($codigoClienteFk) {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -223,8 +230,7 @@ class RhuCobro
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
-    {
+    public function getCodigoClienteFk() {
         return $this->codigoClienteFk;
     }
 
@@ -235,8 +241,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -247,8 +252,7 @@ class RhuCobro
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -259,8 +263,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrBasico($vrBasico)
-    {
+    public function setVrBasico($vrBasico) {
         $this->vrBasico = $vrBasico;
 
         return $this;
@@ -271,8 +274,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrBasico()
-    {
+    public function getVrBasico() {
         return $this->vrBasico;
     }
 
@@ -283,8 +285,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrPrestacional($vrPrestacional)
-    {
+    public function setVrPrestacional($vrPrestacional) {
         $this->vrPrestacional = $vrPrestacional;
 
         return $this;
@@ -295,8 +296,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrPrestacional()
-    {
+    public function getVrPrestacional() {
         return $this->vrPrestacional;
     }
 
@@ -307,8 +307,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrNoPrestacional($vrNoPrestacional)
-    {
+    public function setVrNoPrestacional($vrNoPrestacional) {
         $this->vrNoPrestacional = $vrNoPrestacional;
 
         return $this;
@@ -319,8 +318,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrNoPrestacional()
-    {
+    public function getVrNoPrestacional() {
         return $this->vrNoPrestacional;
     }
 
@@ -331,8 +329,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrAuxilioTransporte($vrAuxilioTransporte)
-    {
+    public function setVrAuxilioTransporte($vrAuxilioTransporte) {
         $this->vrAuxilioTransporte = $vrAuxilioTransporte;
 
         return $this;
@@ -343,8 +340,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrAuxilioTransporte()
-    {
+    public function getVrAuxilioTransporte() {
         return $this->vrAuxilioTransporte;
     }
 
@@ -355,8 +351,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrAuxilioTransporteCotizacion($vrAuxilioTransporteCotizacion)
-    {
+    public function setVrAuxilioTransporteCotizacion($vrAuxilioTransporteCotizacion) {
         $this->vrAuxilioTransporteCotizacion = $vrAuxilioTransporteCotizacion;
 
         return $this;
@@ -367,8 +362,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrAuxilioTransporteCotizacion()
-    {
+    public function getVrAuxilioTransporteCotizacion() {
         return $this->vrAuxilioTransporteCotizacion;
     }
 
@@ -379,8 +373,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrRiesgos($vrRiesgos)
-    {
+    public function setVrRiesgos($vrRiesgos) {
         $this->vrRiesgos = $vrRiesgos;
 
         return $this;
@@ -391,8 +384,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrRiesgos()
-    {
+    public function getVrRiesgos() {
         return $this->vrRiesgos;
     }
 
@@ -403,8 +395,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrSalud($vrSalud)
-    {
+    public function setVrSalud($vrSalud) {
         $this->vrSalud = $vrSalud;
 
         return $this;
@@ -415,8 +406,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrSalud()
-    {
+    public function getVrSalud() {
         return $this->vrSalud;
     }
 
@@ -427,8 +417,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrPension($vrPension)
-    {
+    public function setVrPension($vrPension) {
         $this->vrPension = $vrPension;
 
         return $this;
@@ -439,8 +428,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrPension()
-    {
+    public function getVrPension() {
         return $this->vrPension;
     }
 
@@ -451,8 +439,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrCaja($vrCaja)
-    {
+    public function setVrCaja($vrCaja) {
         $this->vrCaja = $vrCaja;
 
         return $this;
@@ -463,8 +450,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrCaja()
-    {
+    public function getVrCaja() {
         return $this->vrCaja;
     }
 
@@ -475,8 +461,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrSena($vrSena)
-    {
+    public function setVrSena($vrSena) {
         $this->vrSena = $vrSena;
 
         return $this;
@@ -487,8 +472,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrSena()
-    {
+    public function getVrSena() {
         return $this->vrSena;
     }
 
@@ -499,8 +483,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrIcbf($vrIcbf)
-    {
+    public function setVrIcbf($vrIcbf) {
         $this->vrIcbf = $vrIcbf;
 
         return $this;
@@ -511,8 +494,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrIcbf()
-    {
+    public function getVrIcbf() {
         return $this->vrIcbf;
     }
 
@@ -523,8 +505,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrCesantias($vrCesantias)
-    {
+    public function setVrCesantias($vrCesantias) {
         $this->vrCesantias = $vrCesantias;
 
         return $this;
@@ -535,8 +516,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrCesantias()
-    {
+    public function getVrCesantias() {
         return $this->vrCesantias;
     }
 
@@ -547,8 +527,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrCesantiasIntereses($vrCesantiasIntereses)
-    {
+    public function setVrCesantiasIntereses($vrCesantiasIntereses) {
         $this->vrCesantiasIntereses = $vrCesantiasIntereses;
 
         return $this;
@@ -559,8 +538,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrCesantiasIntereses()
-    {
+    public function getVrCesantiasIntereses() {
         return $this->vrCesantiasIntereses;
     }
 
@@ -571,8 +549,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrPrimas($vrPrimas)
-    {
+    public function setVrPrimas($vrPrimas) {
         $this->vrPrimas = $vrPrimas;
 
         return $this;
@@ -583,8 +560,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrPrimas()
-    {
+    public function getVrPrimas() {
         return $this->vrPrimas;
     }
 
@@ -595,8 +571,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrPrestaciones($vrPrestaciones)
-    {
+    public function setVrPrestaciones($vrPrestaciones) {
         $this->vrPrestaciones = $vrPrestaciones;
 
         return $this;
@@ -607,8 +582,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrPrestaciones()
-    {
+    public function getVrPrestaciones() {
         return $this->vrPrestaciones;
     }
 
@@ -619,8 +593,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrVacaciones($vrVacaciones)
-    {
+    public function setVrVacaciones($vrVacaciones) {
         $this->vrVacaciones = $vrVacaciones;
 
         return $this;
@@ -631,8 +604,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrVacaciones()
-    {
+    public function getVrVacaciones() {
         return $this->vrVacaciones;
     }
 
@@ -643,8 +615,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrAporteParafiscales($vrAporteParafiscales)
-    {
+    public function setVrAporteParafiscales($vrAporteParafiscales) {
         $this->vrAporteParafiscales = $vrAporteParafiscales;
 
         return $this;
@@ -655,8 +626,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrAporteParafiscales()
-    {
+    public function getVrAporteParafiscales() {
         return $this->vrAporteParafiscales;
     }
 
@@ -667,8 +637,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrOperacion($vrOperacion)
-    {
+    public function setVrOperacion($vrOperacion) {
         $this->vrOperacion = $vrOperacion;
 
         return $this;
@@ -679,8 +648,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrOperacion()
-    {
+    public function getVrOperacion() {
         return $this->vrOperacion;
     }
 
@@ -691,8 +659,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrAdministracion($vrAdministracion)
-    {
+    public function setVrAdministracion($vrAdministracion) {
         $this->vrAdministracion = $vrAdministracion;
 
         return $this;
@@ -703,8 +670,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrAdministracion()
-    {
+    public function getVrAdministracion() {
         return $this->vrAdministracion;
     }
 
@@ -715,8 +681,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
+    public function setEstadoAutorizado($estadoAutorizado) {
         $this->estadoAutorizado = $estadoAutorizado;
 
         return $this;
@@ -727,8 +692,7 @@ class RhuCobro
      *
      * @return boolean
      */
-    public function getEstadoAutorizado()
-    {
+    public function getEstadoAutorizado() {
         return $this->estadoAutorizado;
     }
 
@@ -739,8 +703,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -751,8 +714,7 @@ class RhuCobro
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -763,8 +725,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setNumeroRegistros($numeroRegistros)
-    {
+    public function setNumeroRegistros($numeroRegistros) {
         $this->numeroRegistros = $numeroRegistros;
 
         return $this;
@@ -775,8 +736,7 @@ class RhuCobro
      *
      * @return integer
      */
-    public function getNumeroRegistros()
-    {
+    public function getNumeroRegistros() {
         return $this->numeroRegistros;
     }
 
@@ -787,8 +747,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setEstadoCobrado($estadoCobrado)
-    {
+    public function setEstadoCobrado($estadoCobrado) {
         $this->estadoCobrado = $estadoCobrado;
 
         return $this;
@@ -799,8 +758,7 @@ class RhuCobro
      *
      * @return boolean
      */
-    public function getEstadoCobrado()
-    {
+    public function getEstadoCobrado() {
         return $this->estadoCobrado;
     }
 
@@ -811,8 +769,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null) {
         $this->clienteRel = $clienteRel;
 
         return $this;
@@ -823,8 +780,7 @@ class RhuCobro
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
      */
-    public function getClienteRel()
-    {
+    public function getClienteRel() {
         return $this->clienteRel;
     }
 
@@ -835,8 +791,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function addServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel)
-    {
+    public function addServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel) {
         $this->serviciosCobrarCobroRel[] = $serviciosCobrarCobroRel;
 
         return $this;
@@ -847,8 +802,7 @@ class RhuCobro
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel
      */
-    public function removeServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel)
-    {
+    public function removeServiciosCobrarCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCobroRel) {
         $this->serviciosCobrarCobroRel->removeElement($serviciosCobrarCobroRel);
     }
 
@@ -857,8 +811,7 @@ class RhuCobro
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServiciosCobrarCobroRel()
-    {
+    public function getServiciosCobrarCobroRel() {
         return $this->serviciosCobrarCobroRel;
     }
 
@@ -869,8 +822,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function addFacturasDetallesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCobroRel)
-    {
+    public function addFacturasDetallesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCobroRel) {
         $this->facturasDetallesCobroRel[] = $facturasDetallesCobroRel;
 
         return $this;
@@ -881,8 +833,7 @@ class RhuCobro
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCobroRel
      */
-    public function removeFacturasDetallesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCobroRel)
-    {
+    public function removeFacturasDetallesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle $facturasDetallesCobroRel) {
         $this->facturasDetallesCobroRel->removeElement($facturasDetallesCobroRel);
     }
 
@@ -891,8 +842,7 @@ class RhuCobro
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFacturasDetallesCobroRel()
-    {
+    public function getFacturasDetallesCobroRel() {
         return $this->facturasDetallesCobroRel;
     }
 
@@ -903,8 +853,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setVrTotalCobro($vrTotalCobro)
-    {
+    public function setVrTotalCobro($vrTotalCobro) {
         $this->vrTotalCobro = $vrTotalCobro;
 
         return $this;
@@ -915,8 +864,7 @@ class RhuCobro
      *
      * @return float
      */
-    public function getVrTotalCobro()
-    {
+    public function getVrTotalCobro() {
         return $this->vrTotalCobro;
     }
 
@@ -927,8 +875,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setFechaDesde($fechaDesde)
-    {
+    public function setFechaDesde($fechaDesde) {
         $this->fechaDesde = $fechaDesde;
 
         return $this;
@@ -939,8 +886,7 @@ class RhuCobro
      *
      * @return \DateTime
      */
-    public function getFechaDesde()
-    {
+    public function getFechaDesde() {
         return $this->fechaDesde;
     }
 
@@ -951,8 +897,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setFechaHasta($fechaHasta)
-    {
+    public function setFechaHasta($fechaHasta) {
         $this->fechaHasta = $fechaHasta;
 
         return $this;
@@ -963,8 +908,7 @@ class RhuCobro
      *
      * @return \DateTime
      */
-    public function getFechaHasta()
-    {
+    public function getFechaHasta() {
         return $this->fechaHasta;
     }
 
@@ -975,8 +919,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
+    public function setCodigoCentroCostoFk($codigoCentroCostoFk) {
         $this->codigoCentroCostoFk = $codigoCentroCostoFk;
 
         return $this;
@@ -987,8 +930,7 @@ class RhuCobro
      *
      * @return integer
      */
-    public function getCodigoCentroCostoFk()
-    {
+    public function getCodigoCentroCostoFk() {
         return $this->codigoCentroCostoFk;
     }
 
@@ -999,8 +941,7 @@ class RhuCobro
      *
      * @return RhuCobro
      */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
-    {
+    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null) {
         $this->centroCostoRel = $centroCostoRel;
 
         return $this;
@@ -1011,8 +952,56 @@ class RhuCobro
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
      */
-    public function getCentroCostoRel()
-    {
+    public function getCentroCostoRel() {
         return $this->centroCostoRel;
+    }
+
+
+    /**
+     * Set codigoCobroTipoFk
+     *
+     * @param string $codigoCobroTipoFk
+     *
+     * @return RhuCobro
+     */
+    public function setCodigoCobroTipoFk($codigoCobroTipoFk)
+    {
+        $this->codigoCobroTipoFk = $codigoCobroTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroTipoFk
+     *
+     * @return string
+     */
+    public function getCodigoCobroTipoFk()
+    {
+        return $this->codigoCobroTipoFk;
+    }
+
+    /**
+     * Set cobroTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo $cobroTipoRel
+     *
+     * @return RhuCobro
+     */
+    public function setCobroTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo $cobroTipoRel = null)
+    {
+        $this->cobroTipoRel = $cobroTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo
+     */
+    public function getCobroTipoRel()
+    {
+        return $this->cobroTipoRel;
     }
 }

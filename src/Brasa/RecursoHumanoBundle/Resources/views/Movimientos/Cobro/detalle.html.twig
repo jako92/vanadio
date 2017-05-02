@@ -47,32 +47,32 @@
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrBasico | number_format(0, '.', ',') }}</td>                   
                     </tr>                    
                     <tr>
-                        <td class="titulo">CLIENTE:</td>
-                        <td>{{ arCobro.clienteRel.nombreCorto }}</td>
+                        <td class="titulo">TIPO COBRO:</td>
+                        {% if (arCobro.codigoCobroTipoFk is null) %}<td></td>{% else %}<td>{{ arCobro.cobroTipoRel.nombre }}</td>{% endif %}
                         <td class="titulo">SERVICIOS:</td>
                         <td class="td-in-well">{{ arCobro.numeroRegistros}}</td>
                         <td class="titulo">PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>                     
                     <tr>
-                        <td class="titulo">DESDE:</td>
-                        <td>{{ arCobro.fechaDesde |date('Y-m-d') }}</td>
+                        <td class="titulo">CLIENTE:</td>
+                        <td>{{ arCobro.clienteRel.nombreCorto }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">NO PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrNoPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>      
                     <tr>
-                        <td class="titulo">HASTA:</td>
-                        <td>{{ arCobro.fechaHasta |date('Y-m-d') }}</td>
+                        <td class="titulo">DESDE:</td>
+                        <td>{{ arCobro.fechaDesde |date('Y-m-d') }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">AUXILIO TTE:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAuxilioTransporte| number_format(0, '.', ',') }}</td>                   
                     </tr>   
                     <tr>
-                        <td class="titulo"></td>
-                        <td></td>
+                        <td class="titulo">HASTA:</td>
+                        <td>{{ arCobro.fechaHasta |date('Y-m-d') }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">PENSION:</td>

@@ -58,6 +58,7 @@
                 <th>ID</th>
                 <th>DESDE</th>
                 <th>HASTA</th>
+                <th>T_COBRO</th>
                 <th>CLIENTE</th>
                 <th>BASICO</th>
                 <th>PRE</th>
@@ -82,6 +83,7 @@
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arCobros.codigoCobroPk }}">{{ arCobros.codigoCobroPk }} </td>                
                     <td>{{ arCobros.fechaDesde | date('Y-m-d') }}</td>
                     <td>{{ arCobros.fechaHasta | date('Y-m-d') }}</td>
+                    {% if (arCobros.codigoCobroTipoFk is null) %}<td></td>{% else %}<td>{{ arCobros.cobroTipoRel.nombre }}</td>{% endif %}
                     <td>{{ arCobros.clienteRel.nombreCorto }}</td>
                     <td style="text-align: right">{{ arCobros.vrBasico | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCobros.vrPrestacional | number_format(2, '.', ',') }}</td>
