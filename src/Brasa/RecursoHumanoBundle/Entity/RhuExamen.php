@@ -51,11 +51,6 @@ class RhuExamen
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
      */    
     private $codigoCargoFk;
-    
-    /**
-     * @ORM\Column(name="codigo_seleccion_fk", type="integer", nullable=true)
-     */    
-    private $codigoSeleccionFk;
 
     /**
      * @ORM\Column(name="fecha", type="date")

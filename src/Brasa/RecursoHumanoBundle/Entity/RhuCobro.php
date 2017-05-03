@@ -191,9 +191,14 @@ class RhuCobro {
     protected $serviciosCobrarCobroRel;
     
     /**
-     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="examenRel")
+     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="cobroRel")
      */
     protected $examenesCobroRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="cobroRel")
+     */
+    protected $seleccionesCobroRel;
     
 
     /**
@@ -1043,5 +1048,39 @@ class RhuCobro {
     public function getExamenesCobroRel()
     {
         return $this->examenesCobroRel;
+    }
+
+    /**
+     * Add seleccionesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCobroRel
+     *
+     * @return RhuCobro
+     */
+    public function addSeleccionesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCobroRel)
+    {
+        $this->seleccionesCobroRel[] = $seleccionesCobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove seleccionesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCobroRel
+     */
+    public function removeSeleccionesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCobroRel)
+    {
+        $this->seleccionesCobroRel->removeElement($seleccionesCobroRel);
+    }
+
+    /**
+     * Get seleccionesCobroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeleccionesCobroRel()
+    {
+        return $this->seleccionesCobroRel;
     }
 }

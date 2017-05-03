@@ -207,4 +207,17 @@ class RhuSeleccionRepository extends EntityRepository {
                 . " AND s.codigoCentroCostoFk = " . $codigoCentroCosto;
         return $dql;
     }
+    
+     public function pendienteCobrarCobro($codigoCliente) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT s FROM BrasaRecursoHumanoBundle:RhuSeleccion s WHERE s.estadoCobrado = 0 "
+                . " AND s.codigoClienteFk = " . $codigoCliente;
+        return $dql;
+    }
+    
+    public function detalleCobro($codigoCobro) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT s FROM BrasaRecursoHumanoBundle:RhuSeleccion s WHERE s.codigoCobroFk = " . $codigoCobro;
+        return $dql;
+    }
 }
