@@ -60,8 +60,8 @@
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arFactura.clienteRel.nombreCorto }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">PLAZO:</td>
+                        <td>{{ arFactura.plazoPago | number_format(0, '.', ',') }}</td>                        
                         <td class="titulo">IVA:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arFactura.vrIva | number_format(0, '.', ',') }}</td>                        
                     </tr>    

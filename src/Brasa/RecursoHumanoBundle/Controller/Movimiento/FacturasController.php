@@ -72,7 +72,7 @@ class FacturasController extends Controller
      */
     public function nuevoAction(Request $request, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
-        
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         if ($codigoFactura != 0) {
             $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
@@ -86,12 +86,17 @@ class FacturasController extends Controller
             $arFactura = $form->getData(); 
             $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
             $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($form->get('clienteRel')->getData());
-            $diasPlazo = $arCliente->getPlazoPago() - 1;
-            $fechaVence = date('Y-m-d', strtotime('+'.$diasPlazo.' day')) ;  
-            $arFactura->setFechaVence(new \DateTime($fechaVence));
             $arUsuario = $this->getUser();
             $arFactura->setUsuario($arUsuario->getUserName());
             $arFactura->setOperacion($arFactura->getFacturaTipoRel()->getOperacion());            
+            if ($codigoFactura == 0) {                
+                if ($arFactura->getPlazoPago() <= 0) {
+                    $arFactura->setPlazoPago($arCliente->getPlazoPago());
+                }
+            }       
+            $dateFechaVence = $objFunciones->sumarDiasFecha($arFactura->getPlazoPago(), $arFactura->getFecha());
+            $arFactura->setFechaVence($dateFechaVence);                        
+            
             $em->persist($arFactura);
             $em->flush();                            
             if($form->get('guardarnuevo')->isClicked()) {
@@ -150,6 +155,7 @@ class FacturasController extends Controller
      */
     public function detalleAction(Request $request, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
         $form = $this->formularioDetalle($arFactura);                               

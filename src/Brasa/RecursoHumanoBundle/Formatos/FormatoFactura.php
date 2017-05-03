@@ -14,9 +14,9 @@ class FormatoFactura extends \FPDF_FPDF {
         self::$codigoFactura = $codigoFactura;
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
-        $valor = round($arFactura->getVrNeto() + $arFactura->getVrBaseAIU());
-        //$strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras(0);
-        self::$strLetras = "cero";
+        $valor = round($arFactura->getVrNeto());
+        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
+        self::$strLetras = $strLetras;
         ob_clean();
         
         $pdf = new FormatoFactura('P','mm', 'letter');
@@ -146,8 +146,8 @@ class FormatoFactura extends \FPDF_FPDF {
             $pdf->SetX(15);
             $pdf->SetFont('Arial', '', 7);
             $pdf->Cell(95, 4, utf8_decode($concepto), 0, 0, 'L');
-            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrAdministracion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrOperacion()/$arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrAdministracion(), 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrOperacion(), 0, '.', ','), 0, 0, 'R');            
             $pdf->Cell(8, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                
             $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');            
             $pdf->Cell(22, 4, number_format($arFacturaDetalle->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');  
