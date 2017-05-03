@@ -228,6 +228,11 @@ class FacturasController extends Controller
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
             }
+                if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                    $arrControles = $request->request->All();
+                    $this->actualizarDetalle($arrControles, $codigoFactura);
+                    return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
+                }            
             if ($form->get('BtnDetalleExcel')->isClicked()) {                
                 $this->generarDetalleExcel($codigoFactura);
             }
@@ -452,6 +457,7 @@ class FacturasController extends Controller
         $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);        
         $arrBotonVistaPrevia = array('label' => 'Vista previa', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
         if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;                        
             $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;                        
@@ -459,7 +465,8 @@ class FacturasController extends Controller
             if($ar->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonAnular['disabled'] = true;
-            }            
+            }    
+            $arrBotonDetalleActualizar['disabled'] = true;
         } else {
             $arrBotonDesAutorizar['disabled'] = true;            
             $arrBotonImprimir['disabled'] = true;
@@ -471,7 +478,8 @@ class FacturasController extends Controller
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                    
                     ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
                     ->add('BtnVistaPrevia', SubmitType::class, $arrBotonVistaPrevia)
-                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)                                    
+                    ->add('BtnAnular', SubmitType::class, $arrBotonAnular)      
+                    ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
                     ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)            
                     ->getForm();                                 
         return $form;
@@ -654,4 +662,21 @@ class FacturasController extends Controller
         $objWriter->save('php://output');
         exit;
     }
+    
+    private function actualizarDetalle($arrControles, $codigoFactura) {
+        $em = $this->getDoctrine()->getManager();
+        $intIndice = 0;
+        if (isset($arrControles['LblCodigo'])) {
+            foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+                $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($intCodigo);
+                $arFacturaDetalle->setCantidad($arrControles['TxtCantidad' . $intCodigo]);
+                $arFacturaDetalle->setVrPrecio($arrControles['TxtPrecio' . $intCodigo]);                
+                $em->persist($arFacturaDetalle);
+            }
+            $em->flush();
+            $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
+        }
+    }    
+    
 }

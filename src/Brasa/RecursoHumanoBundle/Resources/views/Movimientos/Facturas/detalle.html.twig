@@ -141,8 +141,13 @@
                                 <td>{{ arFacturaDetalles.facturaConceptoRel.nombre | default('') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrOperacion | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrAdministracion | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arFacturaDetalles.cantidad | number_format(0, '.', ',') }}</td>
-                                <td style="text-align: right">{{ arFacturaDetalles.VrPrecio | number_format(0, '.', ',') }}</td>
+                                {% if arFactura.estadoAutorizado == 0 %}
+                                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtCantidad{{ arFacturaDetalles.codigoFacturaDetallePk }}" value="{{ arFacturaDetalles.cantidad  }}" size="20" style="width:120px; text-align: right" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                    
+                                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtPrecio{{ arFacturaDetalles.codigoFacturaDetallePk }}" value="{{ arFacturaDetalles.vrPrecio  }}" size="20" style="width:120px; text-align: right" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                    
+                                {% else %}
+                                    <td style="text-align: right">{{ arFacturaDetalles.cantidad | number_format(0, '.', ',') }}</td>                                    
+                                    <td style="text-align: right">{{ arFacturaDetalles.vrPrecio | number_format(0, '.', ',') }}</td>                                                                        
+                                {% endif %}                                                                                                
                                 <td style="text-align: right">{{ arFacturaDetalles.porIva | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrIva | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arFacturaDetalles.VrSubtotal | number_format(0, '.', ',') }}</td>
@@ -170,6 +175,9 @@
                                 
                             {% endif %}    
                         </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnDetalleActualizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                        </div>                        
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarDetalleServicio, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
                         </div>
