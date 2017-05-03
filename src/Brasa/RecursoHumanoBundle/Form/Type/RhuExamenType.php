@@ -57,7 +57,6 @@ class RhuExamenType extends AbstractType {
                 ->add('guardar', SubmitType::class)
                 ->add('guardarnuevo', SubmitType::class, array('label' => 'Guardar y Nuevo'));
     }
-
     public function getBlockPrefix() {
         return 'form';
     }
