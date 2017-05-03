@@ -122,6 +122,20 @@ class RhuExamenRepository extends EntityRepository {
         return $strRespuesta;
     }
 
+    public function cerrarExamen($codigoExamen) {        
+        $em = $this->getEntityManager(); 
+        $strRespuesta = '';
+        $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
+        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);        
+        if($arExamen->getEstadoAutorizado() == 1 && $arExamen->getEstadoCerrado() == 0) {
+            $arExamen->setEstadoCerrado(1);
+            $em->persist($arExamen);
+        } else {
+            $strRespuesta = "El examen ya esta cerrado o no esta autorizado";
+        }
+        return $strRespuesta;
+    }    
+    
     public function devuelveNumeroDetalleExamen($codigoSeleccionGrupo) {
         $em = $this->getEntityManager();
         $dql   = "SELECT COUNT(s.codigoExamenDetallePk) FROM BrasaRecursoHumanoBundle:RhuExamenDetalle s WHERE s.codigoExamenFk = " . $codigoSeleccionGrupo;

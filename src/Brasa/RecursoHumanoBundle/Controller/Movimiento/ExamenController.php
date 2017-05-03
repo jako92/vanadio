@@ -73,12 +73,12 @@ class ExamenController extends Controller
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arExamen = $form->getData();
             $arExamen->setClienteRel($arExamen->getCentroCostoRel()->getClienteRel());
-            if($arExamen->getClienteRel()) {
-                $arExamen->setCobro($arExamen->getClienteRel()->getCobroExamen());
-            } else {
-                $arExamen->setCobro('N');
-            }
             if($codigoExamen == 0) {
+                if($arExamen->getClienteRel()) {
+                    $arExamen->setCobro($arExamen->getClienteRel()->getCobroExamen());
+                } else {
+                    $arExamen->setCobro('N');
+                }                
                 $arExamen->setCodigoUsuario($arUsuario->getUserName());
                 if($arExamen->getExamenClaseRel()->getCodigoExamenClasePk() == 1 && $codigoExamen == 0) {
                     $arExamenTipos = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenTipo();
@@ -223,6 +223,16 @@ class ExamenController extends Controller
                }
             }
 
+            if ($form->get('BtnCerrar')->isClicked()) {               
+                $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->cerrarExamen($codigoExamen);
+                if($strRespuesta == ''){
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_examen_detalle', array('codigoExamen' => $codigoExamen)));
+                }else {
+                  $objMensaje->Mensaje('error', $strRespuesta, $this);
+                }               
+            }            
+            
             if($form->get('BtnImprimir')->isClicked()) {
                 if($arExamen->getEstadoAutorizado() == 1) {
                     $objExamen = new \Brasa\RecursoHumanoBundle\Formatos\FormatoExamen();
@@ -592,6 +602,7 @@ class ExamenController extends Controller
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonAprobar = array('label' => 'Aprobar', 'disabled' => false);
+        $arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonEliminarDetalle = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonActualizarDetalle = array('label' => 'Actualizar', 'disabled' => false);
@@ -607,6 +618,7 @@ class ExamenController extends Controller
             $arrBotonAprobarDetalle['disabled'] = true;
             $arrBotonImprimir['disabled'] = true;
             $arrBotonAprobar['disabled'] = true;
+            $arrBotonCerrar['disabled'] = true;
             $arrBotonEliminarRestriccion['disabled'] = true;
         }
         if($ar->getEstadoAprobado() == 1) {
@@ -616,10 +628,19 @@ class ExamenController extends Controller
             $arrBotonCerrarDetalle['disabled'] = false;
             $arrBotonEliminarRestriccion['disabled'] = true;
         }
+        if($ar->getEstadoCerrado() == 1) {
+            $arrBotonDesAutorizar['disabled'] = true;
+            $arrBotonAprobarDetalle['disabled'] = true;
+            $arrBotonAprobar['disabled'] = true;
+            $arrBotonCerrar['disabled'] = true;
+            $arrBotonCerrarDetalle['disabled'] = true;
+            $arrBotonEliminarRestriccion['disabled'] = true;            
+        }
         $form = $this->createFormBuilder()
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
                     ->add('BtnAprobar', SubmitType::class, $arrBotonAprobar)
+                    ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                     ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)
                     ->add('BtnActualizarDetalle', SubmitType::class, $arrBotonActualizarDetalle)
