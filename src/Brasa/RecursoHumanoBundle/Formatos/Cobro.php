@@ -9,7 +9,7 @@ class Cobro extends \FPDF_FPDF {
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoCobro = $codigoCobro;
-        $pdf = new Cobro();
+        $pdf = new Cobro('L');
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
@@ -23,11 +23,10 @@ class Cobro extends \FPDF_FPDF {
         $this->SetFillColor(200, 200, 200);        
         $this->SetFont('Arial','B',10);
         //Logo
-        
         $this->Image('imagenes/logos/logo.jpg', 12, 13, 35, 17);
         //INFORMACIÓN EMPRESA
         $this->SetXY(50, 10);
-        $this->Cell(150, 7, utf8_decode("COBRO"), 0, 0, 'C', 1);
+        $this->Cell(205, 7, utf8_decode("RELACION COBRO"), 0, 0, 'C', 1);
         $this->SetXY(50, 18);
         $this->SetFont('Arial','B',9);
         $this->Cell(20, 4, "EMPRESA:", 0, 0, 'L', 1);
@@ -50,46 +49,46 @@ class Cobro extends \FPDF_FPDF {
         $this->SetXY(10, 40);
         $this->SetFillColor(200, 200, 200); 
         $this->SetFont('Arial','B',8);
-        $this->Cell(30, 6, utf8_decode("CÓDIGO:") , 1, 0, 'L', 1);
+        $this->Cell(40, 6, utf8_decode("CÓDIGO CLIENTE:") , 1, 0, 'L', 1);
         $this->SetFillColor(272, 272, 272); 
         $this->SetFont('Arial','',8);
-        $this->Cell(30, 6, $arCobro->getCodigoCobroPk(), 1, 0, 'R', 1);
+        $this->Cell(40, 6, $arCobro->getCodigoClienteFk(), 1, 0, 'R', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 6, "BANCO:" , 1, 0, 'L', 1);
+        $this->Cell(50, 6, "CLIENTE:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 6, utf8_decode($arCobro->getCodigoCobroPk()), 1, 0, 'L', 1);
+        $this->Cell(115, 6, utf8_decode($arCobro->getClienteRel()->getNombreCorto()), 1, 0, 'L', 1);
         //linea 2
         $this->SetXY(10, 45);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, utf8_decode("REGISTROS:") , 1, 0, 'L', 1);
+        $this->Cell(40, 5, utf8_decode("DESDE:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272);
-        $this->Cell(30, 5, $arCobro->getCodigoCobroPk() , 1, 0, 'R', 1);
+        $this->Cell(40, 5, utf8_decode($arCobro->getFechaDesde()->format('Y/m/d')) , 1, 0, 'R', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, "DESCRIPCION:" , 1, 0, 'L', 1);
+        $this->Cell(50, 5, "HASTA:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 5, $arCobro->getCodigoCobroPk() , 1, 0, 'L', 1);
+        $this->Cell(115, 5, $arCobro->getFechaHasta()->format('Y/m/d') , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         
         //linea 3
         $this->SetXY(10, 50);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, utf8_decode("TIPO:") , 1, 0, 'L', 1);
+        $this->Cell(40, 5, utf8_decode("% ADMIN:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272);
-        $this->Cell(30, 5, $arCobro->getCodigoCobroPk() , 1, 0, 'L', 1);
+        $this->Cell(40, 5, 0 , 1, 0, 'R', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, "TOTAL:" , 1, 0, 'R', 1);
+        $this->Cell(50, 5, "REGISTROS:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 5, number_format(1, 0, '.', ',') , 1, 0, 'R', 1);
+        $this->Cell(115, 5, number_format($arCobro->getNumeroRegistros(), 0, '.', ',') , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',6);
         $this->EncabezadoDetalles();
         
@@ -97,7 +96,7 @@ class Cobro extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(12);
-        $header = array('DOC', 'NOMBRE', 'BASICO', 'PRE', 'N_PRE', 'TTE', 'PEN', 'SAL', 'RIESGO', 'CAJA', 'SENA', 'ICBF', 'PRES', 'VAC', 'A_PAR', 'ADMON');
+        $header = array('DOC', 'NOMBRE','F.INGRESO','F.RETIRO','CARGO', 'BASICO', 'PRE', 'N_PRE', 'TTE', 'AFP', 'EPS', 'RIESGO', 'CAJA', 'SENA', 'ICBF', 'PRES', 'VAC', 'A_PAR', 'ADMON','TOTAL');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -105,7 +104,7 @@ class Cobro extends \FPDF_FPDF {
         $this->SetFont('', 'B', 6);
 
         //creamos la cabecera de la tabla.
-        $w = array(12, 30, 10, 10, 10, 10, 10, 10, 10, 10, 8, 8, 10, 10, 8, 10);
+        $w = array(12, 30,12,12,30, 10, 10, 10, 10, 10, 10, 10, 10, 8, 8, 10, 10, 8, 10,15);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -128,7 +127,10 @@ class Cobro extends \FPDF_FPDF {
         $var = 0;
         foreach ($arServiciosCobrar as $arServicioCobrar) {                        
             $pdf->Cell(12, 4,$arServicioCobrar->getEmpleadoRel()->getNumeroIdentificacion(), 1, 0, 'L');
-            $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getNombreCorto()), 0, 25) , 1, 0, 'L');           
+            $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getNombreCorto()), 0, 25) , 1, 0, 'L');
+            $pdf->Cell(12, 4, $arServicioCobrar->getEmpleadoRel()->getFechaContrato()->format('Y/m/d') , 1, 0, 'L');
+            $pdf->Cell(12, 4, $arServicioCobrar->getEmpleadoRel()->getFechaFinalizaContrato()->format('Y/m/d') , 1, 0, 'L');
+            $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getCargoDescripcion()), 0, 25) , 1, 0, 'L');
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrSalario(), 0, '.', ','), 1, 0, 'R');            
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPrestacional(), 0, '.', ','), 1, 0, 'R');            
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrNoPrestacional(), 0, '.', ','), 1, 0, 'R');            
@@ -142,15 +144,16 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPrestaciones(), 0, '.', ','), 1, 0, 'R');                        
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrVacaciones(), 0, '.', ','), 1, 0, 'R');                        
             $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrAporteParafiscales(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAdministracion(), 0, '.', ','), 1, 0, 'R');            
+            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAdministracion(), 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(15, 4, number_format($arServicioCobrar->getVrTotalCobro(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
-            
+            $var = ($arServicioCobrar->getVrTotalCobro() + $var);
         }
             $pdf->SetFont('Arial', 'B', 7);
-            $pdf->Cell(178, 5, "TOTAL: ", 1, 0, 'R');
+            $pdf->Cell(230, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(15, 5, number_format(9000,0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(15, 5, number_format($var,0, '.', ','), 1, 0, 'R');
         
     }
 
