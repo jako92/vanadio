@@ -56,8 +56,7 @@ class RhuExamen
      * @ORM\Column(name="codigo_seleccion_fk", type="integer", nullable=true)
      */    
     private $codigoSeleccionFk;
-    
-    
+
     /**
      * @ORM\Column(name="fecha", type="date")
      */    
@@ -207,12 +206,6 @@ class RhuExamen
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuSeleccion", inversedBy="examenesSeleccionRel")
-     * @ORM\JoinColumn(name="codigo_seleccion_fk", referencedColumnName="codigo_seleccion_pk")
-     */
-    protected $seleccionRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuExamenDetalle", mappedBy="examenRel")

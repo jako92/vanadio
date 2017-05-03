@@ -250,35 +250,18 @@ class SeleccionController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                 }
             }
-
-            if ($form->get('BtnEliminarExamen')->isClicked()) {
-                if ($arSeleccion->getEstadoAutorizado() == 0) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionarExamen');
-                    if (count($arrSeleccionados) > 0) {
-                        foreach ($arrSeleccionados AS $codigo) {
-                            $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigo);
-                            $arExamen->setSeleccionRel(null);
-                            $em->persist($arExamen);
-                        }
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
-                    }
-                }
-            }
         }
 
         $arSeleccionReferencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionReferencia')->findBy(array('codigoSeleccionFk' => $codigoSeleccion));
         $arSeleccionPruebas = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionPrueba')->findBy(array('codigoSeleccionFk' => $codigoSeleccion));
         $arSeleccionVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionVisita')->findBy(array('codigoSeleccionFk' => $codigoSeleccion));
         $arSeleccionEntrevista = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevista')->findBy(array('codigoSeleccionFk' => $codigoSeleccion));
-        $arSeleccionExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoSeleccionFk' => $codigoSeleccion));
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Seleccion:detalle.html.twig', array(
                     'arSeleccion' => $arSeleccion,
                     'arSeleccionReferencias' => $arSeleccionReferencias,
                     'arSeleccionPruebas' => $arSeleccionPruebas,
                     'arSeleccionVisita' => $arSeleccionVisita,
                     'arSeleccionEntrevista' => $arSeleccionEntrevista,
-                    'arSeleccionExamen' => $arSeleccionExamen,
                     'form' => $form->createView()
         ));
     }
@@ -435,42 +418,6 @@ class SeleccionController extends Controller {
     }
 
     /**
-     * @Route("/rhu/seleccion/agregar/examen/{codigoSeleccion}", name="brs_rhu_seleccion_agregar_examen")
-     */
-    public function agregarExamenAction(Request $request, $codigoSeleccion) {
-        $em = $this->getDoctrine()->getManager();
-        $paginator = $this->get('knp_paginator');
-        $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->find($codigoSeleccion);
-        $form = $this->createFormBuilder()
-                ->add('BtnAgregar', SubmitType::class, array('label' => 'Guardar',))
-                ->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            if ($form->get('BtnAgregar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if (count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoExamen) {
-                        $arExamen = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-                        $arExamen = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->find($codigoExamen);
-                        if (!$arExamen->getCodigoSeleccionFk()) {
-                            $arExamen->setSeleccionRel($arSeleccion);
-                            $em->persist($arExamen);
-                        }
-                    }
-                    $em->flush();
-                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
-                }
-            }
-        }
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoSeleccionFk' => null));
-        $arExamenes = $paginator->paginate($query, $request->query->get('page', 1), 300);
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Seleccion:agregarExamen.html.twig', array(
-                    'arExamenes' => $arExamenes,
-                    'arSeleccion' => $arSeleccion,
-                    'form' => $form->createView()));
-    }
-
-    /**
      * @Route("/rhu/seleccion/cerrar/{codigoSeleccion}", name="brs_rhu_seleccion_cerrar")
      */
     public function cerrarAction(Request $request, $codigoSeleccion) {
@@ -596,7 +543,6 @@ class SeleccionController extends Controller {
         $arrBotonEliminarPrueba = array('label' => 'Eliminar prueba', 'disabled' => false);
         $arrBotonEliminarVisita = array('label' => 'Eliminar visita', 'disabled' => false);
         $arrBotonEliminarEntrevista = array('label' => 'Eliminar entrevista', 'disabled' => false);
-        $arrBotonEliminarExamen = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleVerificarReferencia = array('label' => 'Verificar', 'disabled' => false);
         $arrBotonAprobar = array('label' => 'Aprobar', 'disabled' => false);
         //$arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => false);
@@ -631,7 +577,6 @@ class SeleccionController extends Controller {
                 ->add('BtnEliminarPrueba', SubmitType::class, $arrBotonEliminarPrueba)
                 ->add('BtnEliminarVisita', SubmitType::class, $arrBotonEliminarVisita)
                 ->add('BtnEliminarEntrevista', SubmitType::class, $arrBotonEliminarEntrevista)
-                ->add('BtnEliminarExamen', SubmitType::class, $arrBotonEliminarExamen)
                 ->getForm();
         return $form;
     }

@@ -321,15 +321,8 @@ class RhuSeleccion
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccionEntrevista", mappedBy="seleccionRel")
      */
-    protected $seleccionesEntrevistasSeleccionRel;
+    protected $seleccionesEntrevistasSeleccionRel;  
     
-    /**
-     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="seleccionRel")
-     */
-    protected $seleccionesExamenRel;
-    
-    
-
     /**
      * Constructor
      */
