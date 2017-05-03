@@ -142,10 +142,14 @@
         <div class="panel-heading">Informacion comercial</div>
         <div class="panel-body">                                                                  
             <div class="form-group form-group-sm">
-                <label for="form_cobroExamen" class="col-sm-3 control-label">Cobro examen medico:</label>
-                <div class="col-sm-9">
+                <label for="form_cobroExamen" class="col-sm-2 control-label">Cobro examen medico:</label>
+                <div class="col-sm-4">
                     {{ form_widget(form.cobroExamen, { 'attr': {'class': 'form-control'} }) }}                        
-                </div>                
+                </div>
+                <label for="form_vrPrecioSeleccion" class="col-sm-2 control-label">Valor precio seleccion:</label>
+                <div class="col-sm-4">
+                    {{ form_widget(form.vrPrecioSeleccion, { 'attr': {'class': 'form-control'} }) }}                        
+                </div> 
             </div>                                
         </div>
     </div>                 

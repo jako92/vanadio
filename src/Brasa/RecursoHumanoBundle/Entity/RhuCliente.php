@@ -135,12 +135,17 @@ class RhuCliente
     /**     
      * @ORM\Column(name="regimen_simplificado", type="boolean")
      */    
-    private $regimenSimplificado = false;     
+    private $regimenSimplificado = false;
+    
+     /**
+     * @ORM\Column(name="vr_precio_seleccion", type="float")
+     */
+    private $vrPrecioSeleccion = 0;
     
     /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
      */    
-    private $comentarios;                            
+    private $comentarios;          
     
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="rhuClientesFormaPagoRel")
@@ -1167,5 +1172,29 @@ class RhuCliente
     public function getSeleccionesClienteRel()
     {
         return $this->seleccionesClienteRel;
+    }
+
+    /**
+     * Set vrPrecioSeleccion
+     *
+     * @param float $vrPrecioSeleccion
+     *
+     * @return RhuCliente
+     */
+    public function setVrPrecioSeleccion($vrPrecioSeleccion)
+    {
+        $this->vrPrecioSeleccion = $vrPrecioSeleccion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrecioSeleccion
+     *
+     * @return float
+     */
+    public function getVrPrecioSeleccion()
+    {
+        return $this->vrPrecioSeleccion;
     }
 }
