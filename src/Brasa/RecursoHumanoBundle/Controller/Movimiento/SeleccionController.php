@@ -250,7 +250,7 @@ class SeleccionController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_seleccion_detalle', array('codigoSeleccion' => $codigoSeleccion)));
                 }
             }
-            
+
             if ($form->get('BtnEliminarExamen')->isClicked()) {
                 if ($arSeleccion->getEstadoAutorizado() == 0) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionarExamen');
@@ -462,8 +462,8 @@ class SeleccionController extends Controller {
                 }
             }
         }
-        
-        $arExamenes = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoSeleccionFk' => null));
+        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoSeleccionFk' => null));
+        $arExamenes = $paginator->paginate($query, $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Seleccion:agregarExamen.html.twig', array(
                     'arExamenes' => $arExamenes,
                     'arSeleccion' => $arSeleccion,
