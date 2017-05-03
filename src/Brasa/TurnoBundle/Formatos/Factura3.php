@@ -44,7 +44,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetXY(15, 43);
         $this->Cell(25, 5, "CLIENTE:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 7.7);
-        $this->Cell(115, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 1);
+        $this->Cell(115, 5, utf8_decode($arFactura->getClienteRel()->getNombreCorto()), 0, 0, 'L', 1);
         $this->SetXY(156, 43);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "FECHA EMISION:", 0, 0, 'C', 1);
@@ -53,7 +53,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "NIT:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(115, 5, $arFactura->getClienteRel()->getNit(), 0, 0, 'L', 1);
+        $this->Cell(115, 5, utf8_decode($arFactura->getClienteRel()->getNit()), 0, 0, 'L', 1);
         $this->SetXY(156, 48);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, $arFactura->getFecha()->format('Y-m-d'), 0, 0, 'C', 1);
@@ -62,7 +62,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "DIRECCION:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(115, 5, $arFactura->getClienteRel()->getDireccion(), 0, 0, 'L', 1);
+        $this->Cell(115, 5, utf8_decode($arFactura->getClienteRel()->getDireccion()), 0, 0, 'L', 1);
         $this->SetXY(156, 53);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, utf8_decode("PEDIDO N°"), 0, 0, 'L', 1);
@@ -76,7 +76,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(20, 5, "CIUDAD:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(45, 5, $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 1);
+        $this->Cell(45, 5, utf8_decode($arFactura->getClienteRel()->getCiudadRel()->getNombre()), 0, 0, 'L', 1);
         $this->SetXY(156, 58);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "FORMA PAGO", 0, 0, 'L', 1);
