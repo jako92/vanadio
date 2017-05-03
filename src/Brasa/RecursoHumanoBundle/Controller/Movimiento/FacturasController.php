@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuFacturaType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuNotaCreditoType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuFacturaDetalleNuevoType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -194,8 +195,14 @@ class FacturasController extends Controller
                 if($strResultado != "") {
                     $objMensaje->Mensaje("error", $strResultado);
                 } else {
-                    $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
-                    $objFactura->Generar($em, $codigoFactura);                            
+                    if ($arFactura->getFacturaTipoRel()->getTipo() == 1) {
+                        $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
+                        $objFactura->Generar($em, $codigoFactura);                                                    
+                    }
+                    if ($arFactura->getFacturaTipoRel()->getTipo() == 2) {
+                        $objNotaCredito = new \Brasa\RecursoHumanoBundle\Formatos\NotaCredito1();
+                        $objNotaCredito->Generar($em, $codigoFactura);  
+                    }
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
             }
@@ -203,12 +210,16 @@ class FacturasController extends Controller
             if($form->get('BtnVistaPrevia')->isClicked()) {          
                 $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                //if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
+                if($arFactura->getFacturaTipoRel()->getTipo() == 1) {
                     if($arConfiguracion->getCodigoFormatoFactura() <= 1) {
                         $objFactura = new \Brasa\RecursoHumanoBundle\Formatos\FormatoFactura();
                         $objFactura->Generar($em, $codigoFactura);                            
                     }                    
-                //}                                 
+                }                                 
+                if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
+                    $objNotaCredito = new \Brasa\RecursoHumanoBundle\Formatos\NotaCredito1();
+                    $objNotaCredito->Generar($em, $codigoFactura);                     
+                }
                 return $this->redirect($this->generateUrl('brs_rhu_facturas_detalle', array('codigoFactura' => $codigoFactura)));                                                
             }
             if ($form->get('BtnDetalleExcel')->isClicked()) {                
@@ -223,6 +234,39 @@ class FacturasController extends Controller
                     'form' => $form->createView(),
                     ));
     }
+    
+    /**
+     * @Route("/rhu/movimiento/factura/detalle/nuevo/{codigoFactura}/{codigoFacturaDetalle}", name="brs_rhu_movimiento_factura_detalle_nuevo")
+     */
+    public function detalleNuevoAction(Request $request, $codigoFactura, $codigoFacturaDetalle = 0) {
+        $em = $this->getDoctrine()->getManager();
+        $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
+        $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
+        $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+        if ($codigoFacturaDetalle != 0) {
+            $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($codigoFacturaDetalle);
+        } else {
+            $arFacturaDetalle->setFacturaRel($arFactura);
+        }
+        $form = $this->createForm(RhuFacturaDetalleNuevoType::class, $arFacturaDetalle);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $arFacturaDetalle = $form->getData();
+                $arConceptoFactura = $form->get('facturaConceptoRel')->getData();
+                $arFacturaDetalle->setPorIva($arConceptoFactura->getPorIva());
+                $arFacturaDetalle->setPorBaseIva($arConceptoFactura->getPorBaseIva());                
+                $arFacturaDetalle->setOperacion($arFactura->getOperacion());
+                $em->persist($arFacturaDetalle);
+                $em->flush();
+                $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->liquidar($codigoFactura);
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Facturas:detalleNuevo.html.twig', array(
+                    'arFactura' => $arFactura,
+                    'form' => $form->createView()));
+    }    
     
     /**
      * @Route("/rhu/facturas/detalle/nuevo/servicio/{codigoFactura}", name="brs_rhu_facturas_detalle_nuevo_servicio")

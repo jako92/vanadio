@@ -1,0 +1,41 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Pedido detalle nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Factura: nuevo concepto</small>
+        </h1>
+    </section>    
+    <section class="content"> 
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion general</div>
+            <div class="panel-body"> 
+                <div class="form-group form-group-sm">
+                    <label for="form_facturaConceptoRel" class="col-sm-3 control-label">Concepto:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.facturaConceptoRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>                             
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Cantidad:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.cantidad, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>                
+                </div>                
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Precio:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.vrPrecio, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>                
+                </div>                               
+            </div>
+        </div>               
+        <div class="modal-footer">        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
+        </div>
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
