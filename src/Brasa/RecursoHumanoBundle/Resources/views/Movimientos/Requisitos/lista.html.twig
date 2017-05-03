@@ -48,6 +48,7 @@
                 <th>CERRADO</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             {% for arRequisitos in arRequisitos %}
                 <tr>
@@ -57,6 +58,12 @@
                     <td>{{ arRequisitos.nombreCorto }}</a></td>
                     <td>{{ arRequisitos.cargoRel.nombre }}</a></td>
                     <td>{%if arRequisitos.estadoCerrado == 1%} SI {%else%} NO {%endif%}</td>
+                    {% if arRequisitos.estadoCerrado == 0 %} 
+                        <td style="text-align: center"><a href="{{ path('brs_rhu_requisito_nuevo', {'codigoRequisito': arRequisitos.codigoRequisitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                            {% else %}  
+                                <td style="text-align: center">
+                                </td>
+                            {% endif %}  
                     <td style="text-align: center"><a href="{{ path('brs_rhu_requisito_detalle', { 'codigoRequisito': arRequisitos.codigoRequisitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>                
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arRequisitos.codigoRequisitoPk }}" /></td>
                 </tr>
