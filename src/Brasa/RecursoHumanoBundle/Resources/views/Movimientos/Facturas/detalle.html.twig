@@ -66,8 +66,8 @@
                         <td class="td-in-well-numerico" align="right">$ {{ arFactura.vrIva | number_format(0, '.', ',') }}</td>                        
                     </tr>    
                     <tr>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">SERVICIO:</td>
+                        <td class="td-in-well">{{ arFactura.facturaServicioRel.nombre }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well-numerico" align="right"></td>
                         <td class="titulo">RETENCION IVA:</td>

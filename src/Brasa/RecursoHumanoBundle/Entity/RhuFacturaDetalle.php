@@ -55,12 +55,7 @@ class RhuFacturaDetalle
     /**
      * @ORM\Column(name="vr_subtotal_operado", type="float")
      */
-    private $vrSubtotalOperado = 0;    
-    
-    /**
-     * @ORM\Column(name="porcentaje_iva", type="float")
-     */
-    private $porcentajeIva = 0;    
+    private $vrSubtotalOperado = 0;           
     
     /**
      * @ORM\Column(name="vr_iva", type="float")
@@ -340,30 +335,6 @@ class RhuFacturaDetalle
     public function getVrSubtotalOperado()
     {
         return $this->vrSubtotalOperado;
-    }
-
-    /**
-     * Set porcentajeIva
-     *
-     * @param float $porcentajeIva
-     *
-     * @return RhuFacturaDetalle
-     */
-    public function setPorcentajeIva($porcentajeIva)
-    {
-        $this->porcentajeIva = $porcentajeIva;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeIva
-     *
-     * @return float
-     */
-    public function getPorcentajeIva()
-    {
-        return $this->porcentajeIva;
     }
 
     /**

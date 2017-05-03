@@ -177,9 +177,11 @@ class FacturasController extends Controller
                 if(count($arrSeleccionados) > 0) {
                     foreach ($arrSeleccionados AS $codigoFacturaDetalle) {
                         $arFacturaDetalleEliminar = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($codigoFacturaDetalle);
-                        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($arFacturaDetalleEliminar->getCodigoCobroFk());
-                        $arCobro->setEstadoCobrado(0);
-                        $em->persist($arCobro);
+                        if($arFacturaDetalleEliminar->getCodigoCobroFk()) {
+                            $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($arFacturaDetalleEliminar->getCodigoCobroFk());
+                            $arCobro->setEstadoCobrado(0);
+                            $em->persist($arCobro);                            
+                        }
                         $em->remove($arFacturaDetalleEliminar);                        
                     }
                     $em->flush();  
@@ -294,16 +296,16 @@ class FacturasController extends Controller
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     if (count($arrSeleccionados) > 0) {
                         foreach ($arrSeleccionados AS $codigo) {
-                            $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+                            $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();                            
                             $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($codigo);
                             $arFacturaDetalleNueva = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
                             $arFacturaDetalleNueva->setFacturaRel($arFactura);
-                            $arFacturaDetalleNueva->setConceptoServicioRel($arFacturaDetalle->getConceptoServicioRel());                                                                                    
+                            $arFacturaDetalleNueva->setFacturaConceptoRel($arFacturaDetalle->getFacturaConceptoRel());                                                                                    
                             $arFacturaDetalleNueva->setFacturaDetalleRel($arFacturaDetalle);
                             $arFacturaDetalleNueva->setCantidad($arFacturaDetalle->getCantidad());
                             $arFacturaDetalleNueva->setVrPrecio($arFacturaDetalle->getVrPrecio());
-                            $arFacturaDetalleNueva->setPorIva($arFacturaDetalle->getConceptoServicioRel()->getPorIva());
-                            $arFacturaDetalleNueva->setPorBaseIva($arFacturaDetalle->getConceptoServicioRel()->getPorBaseIva());
+                            $arFacturaDetalleNueva->setPorIva($arFacturaDetalle->getPorIva());                            
+                            $arFacturaDetalleNueva->setPorBaseIva($arFacturaDetalle->getFacturaConceptoRel()->getPorBaseIva());
                             $arFacturaDetalleNueva->setOperacion($arFactura->getOperacion());
                             $em->persist($arFacturaDetalleNueva);
                         }

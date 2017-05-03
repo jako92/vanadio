@@ -20,7 +20,14 @@ class RhuNotaCreditoType extends AbstractType
                     ->where('ft.tipo = 2')  
                     ->orderBy('ft.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                                                              
+                'required' => true))  
+            ->add('facturaServicioRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuFacturaServicio',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('fs')
+                    ->orderBy('fs.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                              
             ->add('clienteRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                 'query_builder' => function (EntityRepository $er) {
