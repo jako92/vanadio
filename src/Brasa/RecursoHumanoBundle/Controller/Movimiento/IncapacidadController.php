@@ -144,7 +144,7 @@ class IncapacidadController extends Controller {
                                                 $douVrDiaSalarioMinimo = $arConfiguracion->getVrSalario() / 30;
                                                 $douPorcentajePago = $arIncapacidad->getIncapacidadTipoRel()->getPagoConceptoRel()->getPorPorcentaje();
                                                 $arIncapacidad->setPorcentajePago($douPorcentajePago);
-                                                if ($arIncapacidad->getIncapacidadTipoRel()->getCodigoIncapacidadTipoPk() == 1) {
+                                                if ($arIncapacidad->getIncapacidadTipoRel()->getTipo() == 1) {
                                                     if ($arEmpleado->getVrSalario() <= $arConfiguracion->getVrSalario()) {
                                                         $floVrIncapacidad = $intDiasCobro * $douVrDia;
                                                     }
@@ -157,7 +157,7 @@ class IncapacidadController extends Controller {
                                                     }
                                                 } else {
                                                     $floVrIncapacidad = $intDiasCobro * $douVrDia;
-                                                    $floVrIncapacidad = ($floVrIncapacidad * $douPorcentajePago) / 100;
+                                                    $floVrIncapacidad = ($floVrIncapacidad * $douPorcentajePago) / 100;                                                    
                                                 }
                                                 $arIncapacidad->setVrCobro($floVrIncapacidad);
                                                 $arIncapacidad->setVrIncapacidad($floVrIncapacidad);
