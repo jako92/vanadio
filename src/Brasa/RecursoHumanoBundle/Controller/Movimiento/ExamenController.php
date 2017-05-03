@@ -72,6 +72,7 @@ class ExamenController extends Controller
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arExamen = $form->getData();
+            $arExamen->setClienteRel($arExamen->getCentroCostoRel()->getClienteRel());
             if($arExamen->getClienteRel()) {
                 $arExamen->setCobro($arExamen->getClienteRel()->getCobroExamen());
             } else {

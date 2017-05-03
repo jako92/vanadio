@@ -18,14 +18,13 @@ class RhuExamenType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('clienteRel', EntityType::class, array('class' => 'BrasaRecursoHumanoBundle:RhuCliente',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('c')
-                                ->orderBy('c.nombreCorto', 'ASC');
-                    },
-                    'choice_label' => 'nombreCorto',
-                    'required' => false
-                ))
+                ->add('centroCostoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
                 ->add('examenClaseRel', EntityType::class, array(
                     'class' => 'BrasaRecursoHumanoBundle:RhuExamenClase',
                     'choice_label' => 'nombre',
