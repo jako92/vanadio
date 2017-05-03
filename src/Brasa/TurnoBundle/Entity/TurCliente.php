@@ -38,7 +38,7 @@ class TurCliente
     private $nombreCorto;                         
     
     /**
-     * @ORM\Column(name="nombre_completo", type="string", length=200, nullable=true)
+     * @ORM\Column(name="nombre_completo", type="string", length=500, nullable=true)
      */
     private $nombreCompleto;    
     
