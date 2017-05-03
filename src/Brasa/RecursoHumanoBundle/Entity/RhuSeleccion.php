@@ -323,6 +323,11 @@ class RhuSeleccion
      */
     protected $seleccionesEntrevistasSeleccionRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="seleccionRel")
+     */
+    protected $seleccionesExamenRel;
+    
     
 
     /**
@@ -1776,5 +1781,39 @@ class RhuSeleccion
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Add seleccionesExamenRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel
+     *
+     * @return RhuSeleccion
+     */
+    public function addSeleccionesExamenRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel)
+    {
+        $this->seleccionesExamenRel[] = $seleccionesExamenRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove seleccionesExamenRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel
+     */
+    public function removeSeleccionesExamenRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel)
+    {
+        $this->seleccionesExamenRel->removeElement($seleccionesExamenRel);
+    }
+
+    /**
+     * Get seleccionesExamenRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeleccionesExamenRel()
+    {
+        return $this->seleccionesExamenRel;
     }
 }

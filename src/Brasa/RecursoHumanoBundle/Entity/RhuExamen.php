@@ -52,6 +52,11 @@ class RhuExamen
      */    
     private $codigoCargoFk;
     
+    /**
+     * @ORM\Column(name="codigo_seleccion_fk", type="integer", nullable=true)
+     */    
+    private $codigoSeleccionFk;
+    
     
     /**
      * @ORM\Column(name="fecha", type="date")
@@ -191,6 +196,12 @@ class RhuExamen
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuSeleccion", inversedBy="examenesSeleccionRel")
+     * @ORM\JoinColumn(name="codigo_seleccion_fk", referencedColumnName="codigo_seleccion_pk")
+     */
+    protected $seleccionRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuExamenDetalle", mappedBy="examenRel")
@@ -1119,5 +1130,53 @@ class RhuExamen
     public function getCobroRel()
     {
         return $this->cobroRel;
+    }
+
+    /**
+     * Set codigoSeleccionFk
+     *
+     * @param integer $codigoSeleccionFk
+     *
+     * @return RhuExamen
+     */
+    public function setCodigoSeleccionFk($codigoSeleccionFk)
+    {
+        $this->codigoSeleccionFk = $codigoSeleccionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSeleccionFk
+     *
+     * @return integer
+     */
+    public function getCodigoSeleccionFk()
+    {
+        return $this->codigoSeleccionFk;
+    }
+
+    /**
+     * Set seleccionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionRel
+     *
+     * @return RhuExamen
+     */
+    public function setSeleccionRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionRel = null)
+    {
+        $this->seleccionRel = $seleccionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get seleccionRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion
+     */
+    public function getSeleccionRel()
+    {
+        return $this->seleccionRel;
     }
 }
