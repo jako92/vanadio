@@ -172,7 +172,7 @@ class Factura3 extends \FPDF_FPDF {
                     $pdf->Ln(-1);
                     $pdf->SetAutoPageBreak(true, 88);
                 }
-            } /*else {
+            } else {
                 $strSql = "SELECT tur_puesto.nombre AS puesto, tur_modalidad_servicio.nombre AS modalidadServicio, tur_concepto_servicio.nombre_facturacion AS conceptoServicio, cantidad  AS cantidad, vr_precio AS precio
                             FROM
                             tur_factura_detalle
@@ -240,8 +240,8 @@ class Factura3 extends \FPDF_FPDF {
                     $pdf->Ln(2);
                     $pdf->SetAutoPageBreak(true, 15);
                 }
-            }*/
-        } /*else {
+            }
+        } else {
                 $pdf->SetX(15);
                 $pdf->Cell(10, 4, number_format(1, 0, '.', ','), 0, 0, 'C');
                 $pdf->SetFont('Arial', 'B', 9);
@@ -257,7 +257,7 @@ class Factura3 extends \FPDF_FPDF {
                 $pdf->Cell(28, 4, '', 0, 0, 'R');
                 $pdf->Cell(28, 4, '', 0, 0, 'R');
                 $pdf->Ln(2);
-        }*/
+        }
 
     }
 
