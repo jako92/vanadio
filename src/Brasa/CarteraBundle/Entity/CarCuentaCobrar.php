@@ -129,9 +129,9 @@ class CarCuentaCobrar
     private $total_neto = 0;
     
     /**
-     * @ORM\Column(name="servicio_tipo", type="string", length=150)
+     * @ORM\Column(name="servicio_tipo", type="string", length=150, nullable=true)
      */
-    private $servicio_tipo;   
+    private $servicioTipo;   
     
     /**
      * @ORM\ManyToOne(targetEntity="CarCliente", inversedBy="cuentaCobrarClientesRel")
@@ -176,9 +176,7 @@ class CarCuentaCobrar
      */
     protected $anticiposDetallesCuentaCobrarRel;
 
-   
-    
-   
+
     /**
      * Constructor
      */
@@ -187,6 +185,7 @@ class CarCuentaCobrar
         $this->notasCreditosDetallesCuentaCobrarRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notasDebitosDetallesCuentaCobrarRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->recibosDetallesCuentaCobrarRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recibosDetallesCuentaCobrarAplicacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->anticiposDetallesCuentaCobrarRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -489,6 +488,30 @@ class CarCuentaCobrar
     }
 
     /**
+     * Set saldoOperado
+     *
+     * @param float $saldoOperado
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setSaldoOperado($saldoOperado)
+    {
+        $this->saldoOperado = $saldoOperado;
+
+        return $this;
+    }
+
+    /**
+     * Get saldoOperado
+     *
+     * @return float
+     */
+    public function getSaldoOperado()
+    {
+        return $this->saldoOperado;
+    }
+
+    /**
      * Set grupo
      *
      * @param string $grupo
@@ -558,6 +581,174 @@ class CarCuentaCobrar
     public function getAfiliacion()
     {
         return $this->afiliacion;
+    }
+
+    /**
+     * Set operacion
+     *
+     * @param integer $operacion
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setOperacion($operacion)
+    {
+        $this->operacion = $operacion;
+
+        return $this;
+    }
+
+    /**
+     * Get operacion
+     *
+     * @return integer
+     */
+    public function getOperacion()
+    {
+        return $this->operacion;
+    }
+
+    /**
+     * Set subtotal
+     *
+     * @param float $subtotal
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setSubtotal($subtotal)
+    {
+        $this->subtotal = $subtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get subtotal
+     *
+     * @return float
+     */
+    public function getSubtotal()
+    {
+        return $this->subtotal;
+    }
+
+    /**
+     * Set retencionFuente
+     *
+     * @param float $retencionFuente
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionFuente($retencionFuente)
+    {
+        $this->retencion_fuente = $retencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionFuente
+     *
+     * @return float
+     */
+    public function getRetencionFuente()
+    {
+        return $this->retencion_fuente;
+    }
+
+    /**
+     * Set retencionIva
+     *
+     * @param float $retencionIva
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionIva($retencionIva)
+    {
+        $this->retencion_iva = $retencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIva
+     *
+     * @return float
+     */
+    public function getRetencionIva()
+    {
+        return $this->retencion_iva;
+    }
+
+    /**
+     * Set retencionIca
+     *
+     * @param float $retencionIca
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setRetencionIca($retencionIca)
+    {
+        $this->retencion_ica = $retencionIca;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIca
+     *
+     * @return float
+     */
+    public function getRetencionIca()
+    {
+        return $this->retencion_ica;
+    }
+
+    /**
+     * Set totalNeto
+     *
+     * @param float $totalNeto
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setTotalNeto($totalNeto)
+    {
+        $this->total_neto = $totalNeto;
+
+        return $this;
+    }
+
+    /**
+     * Get totalNeto
+     *
+     * @return float
+     */
+    public function getTotalNeto()
+    {
+        return $this->total_neto;
+    }
+
+    /**
+     * Set servicioTipo
+     *
+     * @param string $servicioTipo
+     *
+     * @return CarCuentaCobrar
+     */
+    public function setServicioTipo($servicioTipo)
+    {
+        $this->servicioTipo = $servicioTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get servicioTipo
+     *
+     * @return string
+     */
+    public function getServicioTipo()
+    {
+        return $this->servicioTipo;
     }
 
     /**
@@ -735,88 +926,6 @@ class CarCuentaCobrar
     }
 
     /**
-     * Add anticiposDetallesCuentaCobrarRel
-     *
-     * @param \Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel
-     *
-     * @return CarCuentaCobrar
-     */
-    public function addAnticiposDetallesCuentaCobrarRel(\Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel)
-    {
-        $this->anticiposDetallesCuentaCobrarRel[] = $anticiposDetallesCuentaCobrarRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove anticiposDetallesCuentaCobrarRel
-     *
-     * @param \Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel
-     */
-    public function removeAnticiposDetallesCuentaCobrarRel(\Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel)
-    {
-        $this->anticiposDetallesCuentaCobrarRel->removeElement($anticiposDetallesCuentaCobrarRel);
-    }
-
-    /**
-     * Get anticiposDetallesCuentaCobrarRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAnticiposDetallesCuentaCobrarRel()
-    {
-        return $this->anticiposDetallesCuentaCobrarRel;
-    }
-
-    /**
-     * Set operacion
-     *
-     * @param integer $operacion
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setOperacion($operacion)
-    {
-        $this->operacion = $operacion;
-
-        return $this;
-    }
-
-    /**
-     * Get operacion
-     *
-     * @return integer
-     */
-    public function getOperacion()
-    {
-        return $this->operacion;
-    }
-
-    /**
-     * Set saldoOperado
-     *
-     * @param float $saldoOperado
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setSaldoOperado($saldoOperado)
-    {
-        $this->saldoOperado = $saldoOperado;
-
-        return $this;
-    }
-
-    /**
-     * Get saldoOperado
-     *
-     * @return float
-     */
-    public function getSaldoOperado()
-    {
-        return $this->saldoOperado;
-    }
-
-    /**
      * Add recibosDetallesCuentaCobrarAplicacionRel
      *
      * @param \Brasa\CarteraBundle\Entity\CarReciboDetalle $recibosDetallesCuentaCobrarAplicacionRel
@@ -851,146 +960,36 @@ class CarCuentaCobrar
     }
 
     /**
-     * Set subtotal
+     * Add anticiposDetallesCuentaCobrarRel
      *
-     * @param float $subtotal
+     * @param \Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel
      *
      * @return CarCuentaCobrar
      */
-    public function setSubtotal($subtotal)
+    public function addAnticiposDetallesCuentaCobrarRel(\Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel)
     {
-        $this->subtotal = $subtotal;
+        $this->anticiposDetallesCuentaCobrarRel[] = $anticiposDetallesCuentaCobrarRel;
 
         return $this;
     }
 
     /**
-     * Get subtotal
+     * Remove anticiposDetallesCuentaCobrarRel
      *
-     * @return float
+     * @param \Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel
      */
-    public function getSubtotal()
+    public function removeAnticiposDetallesCuentaCobrarRel(\Brasa\CarteraBundle\Entity\CarAnticipoDetalle $anticiposDetallesCuentaCobrarRel)
     {
-        return $this->subtotal;
+        $this->anticiposDetallesCuentaCobrarRel->removeElement($anticiposDetallesCuentaCobrarRel);
     }
 
     /**
-     * Set retencionFuente
+     * Get anticiposDetallesCuentaCobrarRel
      *
-     * @param float $retencionFuente
-     *
-     * @return CarCuentaCobrar
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setRetencionFuente($retencionFuente)
+    public function getAnticiposDetallesCuentaCobrarRel()
     {
-        $this->retencion_fuente = $retencionFuente;
-
-        return $this;
-    }
-
-    /**
-     * Get retencionFuente
-     *
-     * @return float
-     */
-    public function getRetencionFuente()
-    {
-        return $this->retencion_fuente;
-    }
-
-    /**
-     * Set retencionIva
-     *
-     * @param float $retencionIva
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setRetencionIva($retencionIva)
-    {
-        $this->retencion_iva = $retencionIva;
-
-        return $this;
-    }
-
-    /**
-     * Get retencionIva
-     *
-     * @return float
-     */
-    public function getRetencionIva()
-    {
-        return $this->retencion_iva;
-    }
-
-    /**
-     * Set retencionIca
-     *
-     * @param float $retencionIca
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setRetencionIca($retencionIca)
-    {
-        $this->retencion_ica = $retencionIca;
-
-        return $this;
-    }
-
-    /**
-     * Get retencionIca
-     *
-     * @return float
-     */
-    public function getRetencionIca()
-    {
-        return $this->retencion_ica;
-    }
-
-    /**
-     * Set totalNeto
-     *
-     * @param float $totalNeto
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setTotalNeto($totalNeto)
-    {
-        $this->total_neto = $totalNeto;
-
-        return $this;
-    }
-
-    /**
-     * Get totalNeto
-     *
-     * @return float
-     */
-    public function getTotalNeto()
-    {
-        return $this->total_neto;
-    }
-
-    /**
-     * Set servicioTipo
-     *
-     * @param string $servicioTipo
-     *
-     * @return CarCuentaCobrar
-     */
-    public function setServicioTipo($servicioTipo)
-    {
-        $this->servicio_tipo = $servicioTipo;
-
-        return $this;
-    }
-
-    /**
-     * Get servicioTipo
-     *
-     * @return string
-     */
-    public function getServicioTipo()
-    {
-        return $this->servicio_tipo;
+        return $this->anticiposDetallesCuentaCobrarRel;
     }
 }
