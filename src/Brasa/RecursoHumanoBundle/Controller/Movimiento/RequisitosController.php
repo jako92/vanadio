@@ -267,31 +267,32 @@ class RequisitosController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-            $arRequisito = $form->getData();
-            $arRequisito->setCodigoUsuario($arUsuario->getUserName());
+            $arRequisito = $form->getData();                        
+            if($codigoRequisito == 0) {
+                $arRequisito->setCodigoUsuario($arUsuario->getUserName());
+                $arRequisitosConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoConcepto();
+                $arRequisitosConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoConcepto')->findBy(array('general' => 1));
+                foreach ($arRequisitosConceptos as $arRequisitoConcepto) {
+                    $arRequisitoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
+                    $arRequisitoDetalle->setRequisitoRel($arRequisito);
+                    $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoConcepto);
+                    $arRequisitoDetalle->setTipo('GENERAL');
+                    $arRequisitoDetalle->setCantidad(1);
+                    $em->persist($arRequisitoDetalle);
+                }
+
+                $arRequisitosCargos = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoCargo();
+                $arRequisitosCargos = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoCargo')->findBy(array('codigoCargoFk' => $form->get('cargoRel')->getData()));
+                foreach ($arRequisitosCargos as $arRequisitoCargo) {
+                    $arRequisitoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
+                    $arRequisitoDetalle->setRequisitoRel($arRequisito);
+                    $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoCargo->getRequisitoConceptoRel());
+                    $arRequisitoDetalle->setTipo('CARGO');
+                    $arRequisitoDetalle->setCantidad(1);
+                    $em->persist($arRequisitoDetalle);
+                }                
+            }
             $em->persist($arRequisito);
-            $arRequisitosConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoConcepto();
-            $arRequisitosConceptos = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoConcepto')->findBy(array('general' => 1));
-            foreach ($arRequisitosConceptos as $arRequisitoConcepto) {
-                $arRequisitoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
-                $arRequisitoDetalle->setRequisitoRel($arRequisito);
-                $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoConcepto);
-                $arRequisitoDetalle->setTipo('GENERAL');
-                $arRequisitoDetalle->setCantidad(1);
-                $em->persist($arRequisitoDetalle);
-            }
-
-            $arRequisitosCargos = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoCargo();
-            $arRequisitosCargos = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisitoCargo')->findBy(array('codigoCargoFk' => $form->get('cargoRel')->getData()));
-            foreach ($arRequisitosCargos as $arRequisitoCargo) {
-                $arRequisitoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle();
-                $arRequisitoDetalle->setRequisitoRel($arRequisito);
-                $arRequisitoDetalle->setRequisitoConceptoRel($arRequisitoCargo->getRequisitoConceptoRel());
-                $arRequisitoDetalle->setTipo('CARGO');
-                $arRequisitoDetalle->setCantidad(1);
-                $em->persist($arRequisitoDetalle);
-            }
-
             $em->flush();
             return $this->redirect($this->generateUrl('brs_rhu_requisito_detalle', array('codigoRequisito' => $arRequisito->getCodigoRequisitoPk())));
             //echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
