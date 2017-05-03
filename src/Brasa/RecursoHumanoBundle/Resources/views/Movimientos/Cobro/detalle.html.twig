@@ -272,7 +272,7 @@
                             {{ form_widget(form.BtnDetalleExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                        
                         </div>
                         <div class="btn-group">
-                            {% if arCobro.estadoAutorizado == 0 %}
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'N' %}
                                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_servicio', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleServicio', 600, 1000)" >Nuevo</a>
                             {% endif %}    
                         </div>
@@ -315,7 +315,7 @@
                     <!-- Fin Botones Menu Items -->
                     <div class="btn-toolbar" style="float:right">
                         <div class="btn-group">
-                            {% if arCobro.estadoAutorizado == 0 %}
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'E' %}
                                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_examen', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
                             {% endif %}
                         </div>
@@ -358,7 +358,7 @@
                     <!-- Fin Botones Menu Items -->
                     <div class="btn-toolbar" style="float:right">
                         <div class="btn-group">
-                            {% if arCobro.estadoAutorizado == 0 %}
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'S' %}
                                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_seleccion', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
                             {% endif %}
                         </div>
