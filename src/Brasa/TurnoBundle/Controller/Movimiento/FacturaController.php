@@ -466,7 +466,7 @@ class FacturaController extends Controller {
                 }
             }
         }
-        $arPedidoDetalles = $paginator->paginate($em->createQuery($this->listaDetalleNuevo($arFactura->getCodigoClienteFk())), $request->query->get('page', 1), 100);
+        $arPedidoDetalles = $paginator->paginate($em->createQuery($this->listaDetalleNuevo($arFactura->getCodigoClienteFk())), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Movimientos/Factura:detalleNuevoPedido.html.twig', array(
                     'arFactura' => $arFactura,
                     'arPedidoDetalles' => $arPedidoDetalles,
