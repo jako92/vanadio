@@ -43,19 +43,20 @@ class CartaLaboralController extends Controller
                 $codigoCartaTipo = 6; 
                 $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                if ($arConfiguracion->getCodigoFormatoCarta() == 0){
+                $codigoCartaTipo = $arConfiguracion->getCodigoFormatoCarta();
+                if ($codigoCartaTipo == 0){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
                     $objFormatoCarta->Generar($this, $em, $arUsuario,  '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
-                if ($arConfiguracion->getCodigoFormatoCarta() == 1){
+                if ($codigoCartaTipo == 1){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
                     $objFormatoCarta->Generar($this, $em, $arUsuario,  '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
-                if ($arConfiguracion->getCodigoFormatoCarta() == 2){
+                if ($codigoCartaTipo == 2){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPlazas();
                     $objFormatoCarta->Generar($this, $em, $arUsuario,  '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
-                if ($arConfiguracion->getCodigoFormatoCarta() == 3){
+                if ($codigoCartaTipo == 3){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaEurovic();
                     $objFormatoCarta->Generar($this, $em, $arUsuario,  '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }

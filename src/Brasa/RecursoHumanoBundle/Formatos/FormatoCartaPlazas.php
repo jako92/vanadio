@@ -6,7 +6,7 @@ class FormatoCartaPlazas extends \FPDF_FPDF {
     public static $em;
     public static $arUsuario;
     public static $request;
-    public static $codigoTipoCarta;
+    public static $codigoCartaTipo;
     public static $fechaProceso;
     public static $fechaOpcional;
     public static $codigoContrato;
@@ -17,14 +17,14 @@ class FormatoCartaPlazas extends \FPDF_FPDF {
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
     
-    public function Generar($miThis, $em, $arUsuario, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    public function Generar($miThis, $em, $arUsuario,$usuarioCarta, $codigoCartaTipo,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
         //$arUsuario = $miThis->get('security.context')->getToken()->getUser();
         self::$arUsuario = $arUsuario;
         self::$em = $em;
-        self::$codigoTipoCarta = $codigoTipoCarta;
+        self::$codigoCartaTipo = $codigoCartaTipo;
         self::$fechaProceso = $fechaProceso;
         self::$fechaOpcional = $fechaOpcional;
         self::$codigoContrato = $codigoContrato;
@@ -47,7 +47,7 @@ class FormatoCartaPlazas extends \FPDF_FPDF {
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial','B',10);
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
-        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);
+        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoCartaTipo);
         $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
         $arContenidoFormatoA = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
         $arContenidoFormatoA = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());        
@@ -128,7 +128,7 @@ class FormatoCartaPlazas extends \FPDF_FPDF {
         $floNoPrestacional = $arNoPrestacional;
         //fin promedio mensual
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
-        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);
+        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoCartaTipo);
         $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
         $codigoContenidoFormato = $arCartaTipo->getCodigoContenidoFormatoFk();
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
@@ -228,7 +228,7 @@ class FormatoCartaPlazas extends \FPDF_FPDF {
         $patron20 = '/#k/';
         $patron21 = '/#l/';
         $patron22 = '/#m/';
-        if (self::$codigoTipoCarta == 5){
+        if (self::$codigoCartaTipo == 5){
             //salario
             if (self::$booleamSalario == FALSE && self::$salarioSugerido == null){
                 $sustitucion9 == $sustitucion9;
