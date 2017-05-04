@@ -103,6 +103,9 @@ class SeleccionController extends Controller {
             $arSeleccion = $form->getData();
             $arSeleccion->setNombreCorto($arSeleccion->getNombre1() . " " . $arSeleccion->getNombre2() . " " . $arSeleccion->getApellido1() . " " . $arSeleccion->getApellido2());
             $arSeleccion->setFecha(new \DateTime('now'));
+            if ($arSeleccion->getCodigoSeleccionTipoFk() == 1) {
+                $arSeleccion->setVrServicio($arSeleccion->getClienteRel()->getVrPrecioSeleccion());
+            }
             if ($codigoSeleccion == 0) {
                 $arSeleccion->setCodigoUsuario($arUsuario->getUserName());
             }
