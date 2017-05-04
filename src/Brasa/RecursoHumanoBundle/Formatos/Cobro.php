@@ -121,10 +121,10 @@ class Cobro extends \FPDF_FPDF {
     public function Body($pdf) {
         $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
         $arServiciosCobrar = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => self::$codigoCobro));
-        
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 5);
         $var = 0;
+        $totalCobro =0;
         foreach ($arServiciosCobrar as $arServicioCobrar) {                        
             $pdf->Cell(12, 4,$arServicioCobrar->getEmpleadoRel()->getNumeroIdentificacion(), 1, 0, 'L');
             $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getNombreCorto()), 0, 25) , 1, 0, 'L');
@@ -149,12 +149,12 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(15, 4, number_format($arServicioCobrar->getVrTotalCobro(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
-            $var = ($arServicioCobrar->getVrTotalCobro() + $var);
+            $totalCobro += $arServicioCobrar->getVrTotalCobro();
         }
             $pdf->SetFont('Arial', 'B', 7);
             $pdf->Cell(240, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(15, 5, number_format($var,0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(15, 5, number_format($totalCobro,0, '.', ','), 1, 0, 'R');
         
     }
 
