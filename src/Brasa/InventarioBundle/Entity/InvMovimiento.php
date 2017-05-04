@@ -84,6 +84,11 @@ class InvMovimiento
     private $codigoFormaPagoFk;    
     
     /**
+     * @ORM\Column(name="codigo_area_fk", type="integer", nullable=true)
+     */    
+    private $codigoAreaFk;    
+    
+    /**
      * @ORM\Column(name="soporte", type="string", length=50, nullable=true)
      */    
     private $soporte;     
@@ -229,6 +234,12 @@ class InvMovimiento
     protected $facturaTipoRel;    
     
     /**
+     * @ORM\ManyToOne(targetEntity="InvArea", inversedBy="movimientosAreaRel")
+     * @ORM\JoinColumn(name="codigo_area_fk", referencedColumnName="codigo_area_pk")
+     */
+    protected $areaRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="InvMovimientoDetalle", mappedBy="movimientoRel")
      */
     protected $movimientosDetallesMovimientoRel;    
@@ -328,6 +339,30 @@ class InvMovimiento
     public function getCodigoDocumentoClaseFk()
     {
         return $this->codigoDocumentoClaseFk;
+    }
+
+    /**
+     * Set codigoFacturaTipoFk
+     *
+     * @param integer $codigoFacturaTipoFk
+     *
+     * @return InvMovimiento
+     */
+    public function setCodigoFacturaTipoFk($codigoFacturaTipoFk)
+    {
+        $this->codigoFacturaTipoFk = $codigoFacturaTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFacturaTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoFacturaTipoFk()
+    {
+        return $this->codigoFacturaTipoFk;
     }
 
     /**
@@ -544,6 +579,30 @@ class InvMovimiento
     public function getCodigoFormaPagoFk()
     {
         return $this->codigoFormaPagoFk;
+    }
+
+    /**
+     * Set codigoAreaFk
+     *
+     * @param integer $codigoAreaFk
+     *
+     * @return InvMovimiento
+     */
+    public function setCodigoAreaFk($codigoAreaFk)
+    {
+        $this->codigoAreaFk = $codigoAreaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAreaFk
+     *
+     * @return integer
+     */
+    public function getCodigoAreaFk()
+    {
+        return $this->codigoAreaFk;
     }
 
     /**
@@ -784,6 +843,30 @@ class InvMovimiento
     public function getVrRetencionFuente()
     {
         return $this->vrRetencionFuente;
+    }
+
+    /**
+     * Set vrRetencionIva
+     *
+     * @param float $vrRetencionIva
+     *
+     * @return InvMovimiento
+     */
+    public function setVrRetencionIva($vrRetencionIva)
+    {
+        $this->vrRetencionIva = $vrRetencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get vrRetencionIva
+     *
+     * @return float
+     */
+    public function getVrRetencionIva()
+    {
+        return $this->vrRetencionIva;
     }
 
     /**
@@ -1171,6 +1254,54 @@ class InvMovimiento
     }
 
     /**
+     * Set facturaTipoRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel
+     *
+     * @return InvMovimiento
+     */
+    public function setFacturaTipoRel(\Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel = null)
+    {
+        $this->facturaTipoRel = $facturaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get facturaTipoRel
+     *
+     * @return \Brasa\InventarioBundle\Entity\InvFacturaTipo
+     */
+    public function getFacturaTipoRel()
+    {
+        return $this->facturaTipoRel;
+    }
+
+    /**
+     * Set areaRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvArea $areaRel
+     *
+     * @return InvMovimiento
+     */
+    public function setAreaRel(\Brasa\InventarioBundle\Entity\InvArea $areaRel = null)
+    {
+        $this->areaRel = $areaRel;
+
+        return $this;
+    }
+
+    /**
+     * Get areaRel
+     *
+     * @return \Brasa\InventarioBundle\Entity\InvArea
+     */
+    public function getAreaRel()
+    {
+        return $this->areaRel;
+    }
+
+    /**
      * Add movimientosDetallesMovimientoRel
      *
      * @param \Brasa\InventarioBundle\Entity\InvMovimientoDetalle $movimientosDetallesMovimientoRel
@@ -1236,77 +1367,5 @@ class InvMovimiento
     public function getMovimientosDescuentosFinancierosMovimientoRel()
     {
         return $this->movimientosDescuentosFinancierosMovimientoRel;
-    }
-
-    /**
-     * Set vrRetencionIva
-     *
-     * @param float $vrRetencionIva
-     *
-     * @return InvMovimiento
-     */
-    public function setVrRetencionIva($vrRetencionIva)
-    {
-        $this->vrRetencionIva = $vrRetencionIva;
-
-        return $this;
-    }
-
-    /**
-     * Get vrRetencionIva
-     *
-     * @return float
-     */
-    public function getVrRetencionIva()
-    {
-        return $this->vrRetencionIva;
-    }
-
-    /**
-     * Set codigoFacturaTipoFk
-     *
-     * @param integer $codigoFacturaTipoFk
-     *
-     * @return InvMovimiento
-     */
-    public function setCodigoFacturaTipoFk($codigoFacturaTipoFk)
-    {
-        $this->codigoFacturaTipoFk = $codigoFacturaTipoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoFacturaTipoFk
-     *
-     * @return integer
-     */
-    public function getCodigoFacturaTipoFk()
-    {
-        return $this->codigoFacturaTipoFk;
-    }
-
-    /**
-     * Set facturaTipoRel
-     *
-     * @param \Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel
-     *
-     * @return InvMovimiento
-     */
-    public function setFacturaTipoRel(\Brasa\InventarioBundle\Entity\InvFacturaTipo $facturaTipoRel = null)
-    {
-        $this->facturaTipoRel = $facturaTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get facturaTipoRel
-     *
-     * @return \Brasa\InventarioBundle\Entity\InvFacturaTipo
-     */
-    public function getFacturaTipoRel()
-    {
-        return $this->facturaTipoRel;
     }
 }
