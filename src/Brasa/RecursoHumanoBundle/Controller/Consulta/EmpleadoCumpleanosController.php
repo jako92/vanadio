@@ -96,7 +96,8 @@ class EmpleadoCumpleanosController extends Controller {
                 ->setCellValue('A1', 'CÓDIGO')
                 ->setCellValue('B1', 'CEDULA')
                 ->setCellValue('C1', 'NOMBRE EMPLEADO')
-                ->setCellValue('D1', 'FECHA NACIMIENTO');
+                ->setCellValue('D1', 'FECHA NACIMIENTO')
+                ->setCellValue('E1', 'GRUPO PAGO');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
@@ -109,7 +110,8 @@ class EmpleadoCumpleanosController extends Controller {
                         ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                         ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
                         ->setCellValue('C' . $i, $arEmpleado->getNombreCorto())
-                        ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("Y/m/d"));
+                        ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("Y/m/d"))
+                        ->setCellValue('E' . $i, $arEmpleado->getCentroCostoRel()->getNombre());
                   
                 $i++;
             }
