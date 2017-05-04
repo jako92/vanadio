@@ -41,13 +41,12 @@ class RhuSeleccionType extends AbstractType
                     ->orderBy('ti.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))
-            ->add('centroCostoRel', EntityType::class, array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            ->add('clienteRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => true))
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombreCorto', 'ASC');},
+                'choice_label' => 'nombreCorto'))
             ->add('estadoCivilRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
                 'choice_label' => 'nombre',

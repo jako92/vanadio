@@ -103,7 +103,6 @@ class SeleccionController extends Controller {
             $arSeleccion = $form->getData();
             $arSeleccion->setNombreCorto($arSeleccion->getNombre1() . " " . $arSeleccion->getNombre2() . " " . $arSeleccion->getApellido1() . " " . $arSeleccion->getApellido2());
             $arSeleccion->setFecha(new \DateTime('now'));
-            $arSeleccion->setClienteRel($arSeleccion->getCentroCostoRel()->getClienteRel());
             if ($codigoSeleccion == 0) {
                 $arSeleccion->setCodigoUsuario($arUsuario->getUserName());
             }
@@ -484,7 +483,7 @@ class SeleccionController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $session->set('dqlSeleccionLista', $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->listaDQL(
-                        $session->get('filtroNombreSeleccion'), $session->get('filtroIdentificacionSeleccion'), $session->get('filtroAbiertoSeleccion'), $session->get('filtroAprobadoSeleccion'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroCodigoRequisicion')
+                        $session->get('filtroNombreSeleccion'), $session->get('filtroIdentificacionSeleccion'), $session->get('filtroAbiertoSeleccion'), $session->get('filtroAprobadoSeleccion'), $session->get('filtroCodigoCliente'), $session->get('filtroCodigoRequisicion')
         ));
     }
 
@@ -492,12 +491,12 @@ class SeleccionController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $arrayPropiedades = array(
-            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'class' => 'BrasaRecursoHumanoBundle:RhuCliente',
             'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('cc')
-                                ->orderBy('cc.nombre', 'ASC');
+                return $er->createQueryBuilder('c')
+                                ->orderBy('c.nombreCorto', 'ASC');
             },
-            'choice_label' => 'nombre',
+            'choice_label' => 'nombreCorto',
             'required' => false,
             'empty_data' => "",
             'placeholder' => "TODOS",
@@ -516,14 +515,14 @@ class SeleccionController extends Controller {
             'placeholder' => "TODOS",
             'data' => ""
         );
-        if ($session->get('filtroCodigoCentroCosto')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
+        if ($session->get('filtroCodigoCliente')) {
+            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCliente", $session->get('filtroCodigoCliente'));
         }
         if ($session->get('filtroCodigoRequisicion')) {
             $arrayPropiedadesRequisicion['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuSeleccionRequisito", $session->get('filtroCodigoRequisicion'));
         }
         $form = $this->createFormBuilder()
-                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('clienteRel', EntityType::class, $arrayPropiedades)
                 ->add('requisicionRel', EntityType::class, $arrayPropiedadesRequisicion)
                 ->add('estadoAprobado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAprobadoSeleccion')))
                 ->add('estadoCerrado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroAbiertoSeleccion')))
@@ -583,15 +582,15 @@ class SeleccionController extends Controller {
 
     private function filtrar($form) {
         $session = new session;
-        $codigoCentroCosto = '';
-        if ($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        $codigoCliente = '';
+        if ($form->get('clienteRel')->getData()) {
+            $codigoCliente = $form->get('clienteRel')->getData()->getCodigoClientePk();
         }
         $codigoRequisicion = '';
         if ($form->get('requisicionRel')->getData()) {
             $codigoRequisicion = $form->get('requisicionRel')->getData()->getCodigoSeleccionRequisitoPk();
         }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $session->set('filtroCodigoCliente', $codigoCliente);
         $session->set('filtroCodigoRequisicion', $codigoRequisicion);
         $session->set('filtroNombreSeleccion', $form->get('TxtNombre')->getData());
         $session->set('filtroIdentificacionSeleccion', $form->get('TxtIdentificacion')->getData());
@@ -637,7 +636,7 @@ class SeleccionController extends Controller {
                 ->setCellValue('C1', 'REQUISICIÓN')
                 ->setCellValue('D1', 'IDENTIFICACION')
                 ->setCellValue('E1', 'NOMBRE')
-                ->setCellValue('F1', 'CENTRO COSTOS')
+                ->setCellValue('F1', 'CLIENTE')
                 ->setCellValue('G1', 'CARGO')
                 ->setCellValue('H1', 'TELEFONO')
                 ->setCellValue('I1', 'CELULAR')
@@ -669,7 +668,7 @@ class SeleccionController extends Controller {
                     ->setCellValue('C' . $i, $seleccionRequisito)
                     ->setCellValue('D' . $i, $arSelecciones->getNumeroIdentificacion())
                     ->setCellValue('E' . $i, $arSelecciones->getNombreCorto())
-                    ->setCellValue('F' . $i, $arSelecciones->getCentroCostoRel()->getNombre())
+                    ->setCellValue('F' . $i, $arSelecciones->getClienteRel()->getNombreCorto())
                     ->setCellValue('G' . $i, $arSelecciones->getCargoRel()->getNombre())
                     ->setCellValue('H' . $i, $arSelecciones->getTelefono())
                     ->setCellValue('I' . $i, $arSelecciones->getCelular())

@@ -255,12 +255,7 @@ class RhuCentroCosto
     /**
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="centroCostoRel")
      */
-    protected $empleadosCentroCostoRel;    
-    
-    /**
-     * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="centroCostoRel")
-     */
-    protected $seleccionesCentroCostoRel;
+    protected $empleadosCentroCostoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="centroCostoRel")

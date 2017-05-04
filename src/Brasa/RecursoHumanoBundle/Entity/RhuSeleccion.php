@@ -240,12 +240,6 @@ class RhuSeleccion
      * @ORM\JoinColumn(name="codigo_estado_civil_fk", referencedColumnName="codigo_estado_civil_pk")
      */
     protected $estadoCivilRel;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="seleccionesCentroCostoRel")
-     * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
-     */
-    protected $centroCostoRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="seleccionesClienteRel")
