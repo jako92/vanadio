@@ -15,11 +15,18 @@ services:
         arguments: [~, Brasa\InventarioBundle\Entity\InvMarca, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Marca }
+            
     admin.inventario.item:
         class: Brasa\InventarioBundle\Admin\InventarioItemAdmin
         arguments: [~, Brasa\InventarioBundle\Entity\InvItem, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Item }     
+            
+    admin.inventario.area:
+        class: Brasa\InventarioBundle\Admin\InventarioAreaAdmin
+        arguments: [~, Brasa\InventarioBundle\Entity\InvArea, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Area }      
             
     admin.recursohumano.incapacidadtipo:
         class: Brasa\RecursoHumanoBundle\Admin\IncapacidadTipoAdmin

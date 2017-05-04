@@ -119,7 +119,8 @@ sonata_admin:
                 label_catalogue: Brasa\InventarioBundle
                 items:
                     - admin.inventario.marca 
-                    - admin.inventario.item 
+                    - admin.inventario.item
+                    - admin.inventario.area
                     
             app.admin.group.recursohumano:
                 label: Recurso humano
