@@ -149,12 +149,11 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(15, 4, number_format($arServicioCobrar->getVrTotalCobro(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
-            $var = ($arServicioCobrar->getVrTotalCobro() + $var);
         }
             $pdf->SetFont('Arial', 'B', 7);
             $pdf->Cell(240, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(15, 5, number_format($var,0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(15, 5, number_format($arServicioCobrar->getVrTotalCobro(),0, '.', ','), 1, 0, 'R');
         
     }
 
