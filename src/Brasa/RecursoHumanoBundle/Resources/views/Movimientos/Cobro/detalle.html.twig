@@ -50,23 +50,23 @@
                         <td class="titulo">TIPO COBRO:</td>
                         {% if (arCobro.codigoCobroTipoFk is null) %}<td></td>{% else %}<td>{{ arCobro.cobroTipoRel.nombre }}</td>{% endif %}
                         <td class="titulo">SERVICIOS:</td>
-                        <td class="td-in-well">{{ arCobro.numeroRegistros}}</td>
+                        <td class="td-in-well">{% if (arCobro.vrAdministracion !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
                         <td class="titulo">PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>                     
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td>{{ arCobro.clienteRel.nombreCorto }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">EXAMENES</td>
+                        <td class="td-in-well">{% if (arCobro.vrExamen !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
                         <td class="titulo">NO PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrNoPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>      
                     <tr>
                         <td class="titulo">DESDE:</td>
                         <td>{{ arCobro.fechaDesde |date('Y-m-d') }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">SELECCIONES</td>
+                        <td class="td-in-well">{% if (arCobro.vrSeleccion !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
                         <td class="titulo">AUXILIO TTE:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAuxilioTransporte| number_format(0, '.', ',') }}</td>                   
                     </tr>   

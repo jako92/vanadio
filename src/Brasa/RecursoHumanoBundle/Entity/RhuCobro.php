@@ -141,6 +141,16 @@ class RhuCobro {
      * @ORM\Column(name="vr_administracion", type="float")
      */
     private $vrAdministracion = 0;
+    
+    /**
+     * @ORM\Column(name="vr_examen", type="float")
+     */
+    private $vrExamen = 0;
+    
+    /**
+     * @ORM\Column(name="vr_seleccion", type="float")
+     */
+    private $vrSeleccion = 0;
 
     /**
      * @ORM\Column(name="vr_total_cobro", type="float")
@@ -1082,5 +1092,53 @@ class RhuCobro {
     public function getSeleccionesCobroRel()
     {
         return $this->seleccionesCobroRel;
+    }
+
+    /**
+     * Set vrExamen
+     *
+     * @param float $vrExamen
+     *
+     * @return RhuCobro
+     */
+    public function setVrExamen($vrExamen)
+    {
+        $this->vrExamen = $vrExamen;
+
+        return $this;
+    }
+
+    /**
+     * Get vrExamen
+     *
+     * @return float
+     */
+    public function getVrExamen()
+    {
+        return $this->vrExamen;
+    }
+
+    /**
+     * Set vrSeleccion
+     *
+     * @param float $vrSeleccion
+     *
+     * @return RhuCobro
+     */
+    public function setVrSeleccion($vrSeleccion)
+    {
+        $this->vrSeleccion = $vrSeleccion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSeleccion
+     *
+     * @return float
+     */
+    public function getVrSeleccion()
+    {
+        return $this->vrSeleccion;
     }
 }
