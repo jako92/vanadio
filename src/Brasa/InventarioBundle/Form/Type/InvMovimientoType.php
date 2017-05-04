@@ -21,7 +21,7 @@ class InvMovimientoType extends AbstractType
                     return $er->createQueryBuilder('a')
                     ->orderBy('a.codigoAreaPk', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                
+                'required' => false))                
             ->add('soporte', TextType::class, array('required' => false))                                
             ->add('comentarios', TextareaType::class, array('required' => false))                                
             ->add('guardar', SubmitType::class)            
