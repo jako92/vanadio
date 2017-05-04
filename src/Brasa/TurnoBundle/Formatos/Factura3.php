@@ -243,12 +243,12 @@ class Factura3 extends \FPDF_FPDF {
             }
         } else {
                 $pdf->SetX(15);
-                $pdf->Cell(10, 4, number_format(1, 0, '.', ','), 0, 0, 'C');
                 $pdf->SetFont('Arial', 'B', 9);
                 $pdf->Cell(124, 4, utf8_decode($arFactura->getTituloRelacion()), 0, 0, 'L');
                 $pdf->SetFont('Arial', '', 9);
-                $pdf->Cell(28, 4, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
-                $pdf->Cell(28, 4, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
+                $pdf->Cell(22, 4, number_format(1, 0, '.', ','), 0, 0, 'R');
+                $pdf->Cell(22, 4, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
+                $pdf->Cell(22, 4, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
                 $pdf->Ln();
                 $pdf->SetX(15);
                 $pdf->Cell(10, 4, '', 0, 0, 'R');
