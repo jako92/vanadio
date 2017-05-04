@@ -106,12 +106,17 @@ class EmpleadoCumpleanosController extends Controller {
 
         foreach ($arEmpleados as $arEmpleado) {
             if ($arEmpleado->getFechaNacimiento()->format('n') == $session->get('filtroMes')) {
+                if($arEmpleado->getCentroCostoRel() == null){
+                 $centroCosto = "";           
+                }else{
+                    $centroCosto = $arEmpleado->getCentroCostoRel()->getNombre();
+                }
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                         ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
                         ->setCellValue('C' . $i, $arEmpleado->getNombreCorto())
                         ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("Y/m/d"))
-                        ->setCellValue('E' . $i, $arEmpleado->getCentroCostoRel()->getNombre());
+                        ->setCellValue('E' . $i, $centroCosto);
                   
                 $i++;
             }
