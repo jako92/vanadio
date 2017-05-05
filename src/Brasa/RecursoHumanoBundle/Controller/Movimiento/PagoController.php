@@ -41,10 +41,10 @@ class PagoController extends Controller
                     //$vrExtraTotal = 0;
                     //$adicionalPrestacional = 0;
                     //$adicionalNoPrestacional = 0;
-                    //$salario = 0;
+                    $salario = 0;
                     //$ingresoBasePrestacion = 0;
                     //$ingresoBaseCotizacion = 0;
-                    $auxilioTransporte = 0;
+                    //$auxilioTransporte = 0;
                     $arPagosDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
                     $arPagosDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $arPago->getCodigoPagoPk()));            
                     foreach ($arPagosDetalles as $arPagoDetalle) {                        
@@ -68,13 +68,13 @@ class PagoController extends Controller
                                 }                                                    
                             }
                         } */
-                        //if($arPagoDetalle->getPagoConceptoRel()->getComponeSalario() == 1) {
-                        //    $salario +=$arPagoDetalle->getVrPagoOperado();
-                        //}
+                        if($arPagoDetalle->getPagoConceptoRel()->getComponeSalario() == 1) {
+                            $salario +=$arPagoDetalle->getVrPagoOperado();
+                        }
                         
-                        if($arPagoDetalle->getPagoConceptoRel()->getConceptoAuxilioTransporte() == 1) {
-                            $auxilioTransporte +=$arPagoDetalle->getVrPago();
-                        }      
+                        //if($arPagoDetalle->getPagoConceptoRel()->getConceptoAuxilioTransporte() == 1) {
+                        //    $auxilioTransporte +=$arPagoDetalle->getVrPago();
+                        //}      
                         
                         //$ingresoBasePrestacion += $arPagoDetalle->getVrIngresoBasePrestacion();
                         //$em->persist($arPagoDetalleActualizar);   
@@ -83,10 +83,10 @@ class PagoController extends Controller
                     //$arPagoActualizar->setVrExtra($vrExtraTotal);
                     //$arPagoActualizar->setVrAdicionalPrestacional($adicionalPrestacional);
                     //$arPagoActualizar->setVrAdicionalNoPrestacional($adicionalNoPrestacional); 
-                    //$arPagoActualizar->setVrSalario($salario);
+                    $arPagoActualizar->setVrSalario($salario);
                     //$arPagoActualizar->setVrIngresoBasePrestacion($ingresoBasePrestacion);
                     //$arPagoActualizar->setVrIngresoBaseCotizacion($ingresoBaseCotizacion);
-                    $arPagoActualizar->setVrAuxilioTransporte($auxilioTransporte);
+                    //$arPagoActualizar->setVrAuxilioTransporte($auxilioTransporte);
                     $em->persist($arPagoActualizar);
                 }
                 $em->flush();   
@@ -313,7 +313,7 @@ class PagoController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => false))
             ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;

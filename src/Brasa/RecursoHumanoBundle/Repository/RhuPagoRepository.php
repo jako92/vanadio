@@ -109,7 +109,7 @@ class RhuPagoRepository extends EntityRepository {
                 $douDeducciones = $douDeducciones + $arPagoDetalle->getVrPago();
             }
             if($arPagoDetalle->getPagoConceptoRel()->getComponeSalario() == 1) {
-                $douSalario = $douSalario + $arPagoDetalle->getVrPago();
+                $douSalario = $douSalario + $arPagoDetalle->getVrPagoOperado();
             }            
             if($arPagoDetalle->getPagoConceptoRel()->getConceptoAuxilioTransporte() == 1) {
                 $douAuxilioTransporte = $douAuxilioTransporte + $arPagoDetalle->getVrPago();
