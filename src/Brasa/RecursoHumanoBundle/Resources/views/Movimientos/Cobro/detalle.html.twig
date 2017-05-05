@@ -212,6 +212,7 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Total cobro">TOTAL</p></th>                            
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de ingreso">ING</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Novedad de retiro">RET</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Novedad de retiro">HI</p></th>
                             <th></th>
                             <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarServicio[]');"/></th>
                         </tr>
@@ -252,6 +253,7 @@
                                 <td style="text-align: right">{{ arServicioCobrar.vrTotalCobro | number_format(0, '.', ',') }}</td>                                                                
                                 <td style="text-align: right">{{ arServicioCobrar.ingreso }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                
+                                <td style="text-align: right">{{ arServicioCobrar.horasIncapacidad }}</td>                                
                                 <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
                                 <td><input type="checkbox" name="ChkSeleccionarServicio[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
                             </tr>
