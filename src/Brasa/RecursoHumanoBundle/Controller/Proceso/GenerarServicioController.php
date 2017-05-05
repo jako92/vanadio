@@ -125,13 +125,13 @@ class GenerarServicioController extends Controller
                             $arServicio->setPorcentajePrestaciones($porcentajePrestaciones);
                             $totalPrestaciones = $cesantias + $interesesCesantias + $primas;
                             $arServicio->setVrPrestaciones($totalPrestaciones);                                                        
-                            
-                            //Vacaciones
-                            $salarioDescuento = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioDescuento($arPago->getCodigoPagoPk());                                                                
-                            $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());
+                            //Vacaciones                            
+                            $recargoNorturno = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargoNocturnoPago($arPago->getCodigoPagoPk());                            
                             $licencias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorLicenciaPago($arPago->getCodigoPagoPk());
+                            $incapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorIncapacidadPago($arPago->getCodigoPagoPk());
+                            $salario = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->valorSalarioPago($arPago->getCodigoPagoPk());                            
                             //$salarioVacaciones = ($arPago->getVrSalarioEmpleado() / 30) * $arPago->getDiasPeriodo();                            
-                            $salarioVacaciones = ($arPago->getVrSalario() + $licencias) - $salarioDescuento;
+                            $salarioVacaciones = $licencias + $incapacidades + $salario;
                             $vacaciones = round((($salarioVacaciones + $recargoNorturno) * $porcentajeVacaciones) / 100);
                             $arServicio->setVrVacaciones($vacaciones);
                             $arServicio->setPorcentajeVacaciones($porcentajeVacaciones);

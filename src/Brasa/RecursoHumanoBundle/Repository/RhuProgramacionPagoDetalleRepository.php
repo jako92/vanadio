@@ -610,10 +610,11 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
                         $arPagoDetalle->setVrPagoOperado($douPagoDetalle * $arPagoConcepto->getOperacion());
                         $arPagoDetalle->setProgramacionPagoDetalleRel($arProgramacionPagoDetalle);
                         $em->persist($arPagoDetalle);
-                        $douAuxilioTransporteCotizacion = round($arProgramacionPagoDetalle->getDiasReales() * ($arConfiguracion->getVrAuxilioTransporte() / 30));
-                        $arPago->setVrAuxilioTransporteCotizacion($douAuxilioTransporteCotizacion);                        
                     }
-                }                            
+                }
+                //Dejar aqui porque aunque no tenga dias de transporte, debe calcular transporte para GrTemporales
+                $douAuxilioTransporteCotizacion = round($arProgramacionPagoDetalle->getDiasReales() * ($arConfiguracion->getVrAuxilioTransporte() / 30));
+                $arPago->setVrAuxilioTransporteCotizacion($douAuxilioTransporteCotizacion);                        
             }
             
             //Embargos

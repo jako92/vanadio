@@ -445,6 +445,8 @@ class RhuPagoDetalleRepository extends EntityRepository {
         return $numeroHoras;
     }    
     
+    
+    // Metodos que no se usan, quemados para detallado de factura GrTemporales, sin estandar
     public function valorSalarioDescuento($codigoPago) {
         $em = $this->getEntityManager();
         $dql   = "SELECT SUM(pd.vrPago) as pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoConceptoRel pc "
@@ -496,5 +498,33 @@ class RhuPagoDetalleRepository extends EntityRepository {
         }
         return $pago;
     }     
+    
+    public function valorIncapacidadPago($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrIngresoBasePrestacion) as pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd "
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.codigoIncapacidadFk IS NOT NULL";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $pago = $arrayResultado[0]['pago'];
+        if($pago == null) {
+            $pago = 0;
+        }
+        return $pago;
+    }         
+    
+    public function valorSalarioPago($codigoPago) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(pd.vrPagoOperado) as pago FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd "
+                . "WHERE pd.codigoPagoFk = " . $codigoPago . " AND pd.codigoPagoConceptoFk = 1";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $pago = $arrayResultado[0]['pago'];
+        if($pago == null) {
+            $pago = 0;
+        }
+        return $pago;
+    }    
+    
+    // No tocar
     
 }
