@@ -313,7 +313,7 @@ class PagoController extends Controller
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnPdf', SubmitType::class, array('label'  => 'PDF',))
             ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => false))
+            ->add('BtnCorregirIbc', SubmitType::class, array('label'  => 'Corregir ibc', 'disabled' => true))
             ->add('BtnExcelDetalle', SubmitType::class, array('label'  => 'Excel detalle',))            
             ->getForm();        
         return $form;
