@@ -637,14 +637,18 @@ class VacacionesController extends Controller
                     } else {
                         $Estado = "NO";
                     }
-
+                    if ($arVacacion->getCodigoCentroCostoFk() == null) {
+                    $centroCosto = "";
+                    } else {
+                    $centroCosto = $arVacacion->getCentroCostoRel()->getNombre();
+                    }
                     $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $i, $arVacacion->getCodigoVacacionPk())
                             ->setCellValue('B' . $i, $arVacacion->getFecha()->format('Y/m/d'))                            
                             ->setCellValue('C' . $i, $arVacacion->getCodigoEmpleadoFk())
                             ->setCellValue('D' . $i, $arVacacion->getEmpleadoRel()->getNumeroIdentificacion())
                             ->setCellValue('E' . $i, $arVacacion->getEmpleadoRel()->getNombreCorto())
-                            ->setCellValue('F' . $i, $arVacacion->getCentroCostoRel()->getNombre())
+                            ->setCellValue('F' . $i, $centroCosto)
                             ->setCellValue('G' . $i, $arVacacion->getDiasDisfrutados())
                             ->setCellValue('H' . $i, $arVacacion->getDiasDisfrutadosReales())
                             ->setCellValue('I' . $i, $arVacacion->getDiasPagados())
