@@ -9,6 +9,7 @@ use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -127,9 +128,13 @@ class IntercambioDatosController extends Controller {
 
     private function filtrar($form, Request $request) {
         $session = $this->get('session');
+        $codigoComprobante = '';
+        if ($form->get('comprobanteRel')->getData()) {
+            $codigoComprobante = $form->get('comprobanteRel')->getData()->getCodigoComprobantePk();
+        }
         $session->set('filtroCtbNumeroDesde', $form->get('TxtNumeroDesde')->getData());
         $session->set('filtroCtbNumeroHasta', $form->get('TxtNumeroHasta')->getData());
-        $session->set('filtroCtbCodigoComprobante', $form->get('TxtComprobante')->getData());
+        $session->set('filtroCtbCodigoComprobante', $codigoComprobante);
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroCtbRegistroFechaDesde', $dateFechaDesde->format('Y/m/d'));
@@ -156,9 +161,17 @@ class IntercambioDatosController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('TxtNumeroDesde', TextType::class, array('data' => $session->get('filtroCtbNumeroDesde')))
                 ->add('TxtNumeroHasta', TextType::class, array('data' => $session->get('filtroCtbNumeroHasta')))
-                ->add('TxtComprobante', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbCodigoComprobante')))
-                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
-                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('comprobanteRel', EntityType::class, array(
+                'class' => 'BrasaContabilidadBundle:CtbComprobante',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                    ->orderBy('c.nombre', 'ASC');},
+                'label' => 'Codigo',
+                'data' => $session->get('filtroCtbCodigoComprobante'),
+                'choice_label' => 'nombre',
+                'required' => true))
+                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroCtbRegistroFiltrarFecha')))
                 ->add('BtnGenerarOfimatica', SubmitType::class, array('label' => 'Ofimatica',))
                 ->add('BtnGenerarIlimitada', SubmitType::class, array('label' => 'Ilimitada',))
