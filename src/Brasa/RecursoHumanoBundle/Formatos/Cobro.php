@@ -134,7 +134,7 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAuxilioTransporte(), 0, '.', ','), 1, 0, 'R');            
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPension(), 0, '.', ','), 1, 0, 'R');                        
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrSalud(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getPorcentajeRiesgos(), 0, '.', ','), 1, 0, 'R'); 
+            $pdf->Cell(10, 4, number_format($arServicioCobrar->getPorcentajeRiesgos(), 3, '.', ','), 1, 0, 'R'); 
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrRiesgos(), 0, '.', ','), 1, 0, 'R');    
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrCaja(), 0, '.', ','), 1, 0, 'R');                        
             $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrSena(), 0, '.', ','), 1, 0, 'R');                        
