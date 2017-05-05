@@ -100,15 +100,15 @@ class ExamenesVencimientoController extends Controller
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
-        $arEmpleadosExamanes = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleadoEstudio();
+        $arEmpleadosExamanes = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
         $arEmpleadosExamanes = $query->getResult();
         foreach ($arEmpleadosExamanes as $arEmpleadoExamen) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arEmpleadoExamen->getCodigoEmpleadoExamenPk())
-                    ->setCellValue('B' . $i, $arEmpleadoExamen->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('C' . $i, $arEmpleadoExamen->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('A' . $i, $arEmpleadoExamen->getCodigoExamenDetallePk())
+                    ->setCellValue('B' . $i, $arEmpleadoExamen->getExamenRel()->getIdentificacion())
+                    ->setCellValue('C' . $i, $arEmpleadoExamen->getExamenRel()->getNombreCorto())
                     ->setCellValue('D' . $i, $arEmpleadoExamen->getExamenTipoRel()->getNombre())                    
-                    ->setCellValue('E' . $i, $arEmpleadoExamen->getFechaVencimiento()->format('Y-m-d'));
+                    ->setCellValue('E' . $i, $arEmpleadoExamen->getFechaVence()->format('Y-m-d'));
             $i++;
         }
 
