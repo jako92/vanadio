@@ -104,7 +104,8 @@
 
 
         </div>                   
-        <div class="modal-footer">              
+        <div class="modal-footer">
+            {{ form_widget(formCertificado.BtnGenerarExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}   
             {{ form_widget(formCertificado.BtnGenerar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
         </div>    
         {{ form_end(formCertificado) }}
