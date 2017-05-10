@@ -96,7 +96,7 @@ class Cobro extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(12);
-        $header = array('DOC', 'NOMBRE', 'BASICO', 'PRE', 'N_PRE', 'TTE', 'AFP', 'EPS','%ARL', 'RIESGO', 'CAJA', 'SENA', 'ICBF', 'PRES', 'VAC', 'A_PAR', 'ADMON','F.INGRESO','F.RETIRO','CARGO','TOTAL');
+        $header = array('DOC', 'NOMBRE', 'BASICO', 'PRE', 'N_PRE', 'TTE', 'AFP', 'EPS','%ARL', 'RIESGO', 'CAJA', 'SENA', 'ICBF', 'PRES', 'VAC', 'A_PAR', 'ADMON','F.INGRESO','F.RETIRO','CARGO','SUBTOTAL');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
