@@ -80,7 +80,9 @@
                 <th>TIPO</th>
                 <th>FECHA</th>                
                 <th>DOCUMENTO</th>                
-                <th>EMPLEADO</th>                
+                <th>EMPLEADO</th>
+                <th>FECHA NACIMIENTO</th>
+                <th>SEXO</th>  
                 <th>GRUPO PAGO</th>
                 <th>HASTA</th>
                 <th>MOTIVO</th>
@@ -96,6 +98,8 @@
                     <td>{{ arContrato.fecha |date("Y/m/d")  }}</td>                
                     <td>{{ arContrato.empleadoRel.numeroIdentificacion  }}</td>
                     <td>{{ arContrato.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arContrato.empleadoRel.fechaNacimiento |date("Y/m/d") }}</td>
+                    <td>{{ arContrato.empleadoRel.codigoSexoFk}}</td>             
                     <td>{{ arContrato.centroCostoRel.nombre |default('value')  }}</td>                
                     <td>{{ arContrato.fechaHasta |date("Y/m/d")  }}</td>
                     <td>{{ arContrato.terminacionContratoRel.motivo  |default('')}}</td>
