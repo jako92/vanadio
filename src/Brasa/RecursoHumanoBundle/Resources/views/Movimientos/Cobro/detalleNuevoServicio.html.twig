@@ -13,18 +13,8 @@
         <tr>
             <th>CÓDIGO</th>
             <th>IENTIFICACION</th>                                
-            <th>EMPLEADO</th>                    
-            <th style="text-align: right">BÁSICO</th>
-            <th style="text-align: right">PRE</th>
-            <th style="text-align: right">N_PRE</th>
-            <th style="text-align: right">TTE</th>
-            <th style="text-align: right">RIESGO</th>
-            <th style="text-align: right">SALUD</th>
-            <th style="text-align: right">PENSION</th>
-            <th style="text-align: right">CAJA</th>
-            <th style="text-align: right">PRES</th>
-            <th style="text-align: right">VAC</th>
-            <th style="text-align: right">A_PAR</th>
+            <th>EMPLEADO</th>
+            <th>C_TRABAJO</th>
             <th style="text-align: right">OPE</th>
             <th style="text-align: right">ADMON</th>
             <th style="text-align: right">TOTAL</th>
@@ -41,18 +31,8 @@
             <tr> 
                 <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }}</td>                  
                 <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion }}</td>
-                <td>{{ arServicioCobrar.empleadoRel.nombreCorto }}</td>                        
-                <td style="text-align: right">{{ arServicioCobrar.VrSalario | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrPrestacional | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrNoPrestacional | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrAuxilioTransporte | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrRiesgos | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrSalud | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrPension | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrCaja | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrPrestaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrVacaciones | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrAporteParafiscales | number_format(0, '.', ',') }}</td>
+                <td>{{ arServicioCobrar.empleadoRel.nombreCorto }}</td>
+                <td>{{ arServicioCobrar.centroTrabajoRel.nombre | default('') }}</td>
                 <td style="text-align: right">{{ arServicioCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
                 <td style="text-align: right">{{ arServicioCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
                 <td style="text-align: right">{{ arServicioCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>

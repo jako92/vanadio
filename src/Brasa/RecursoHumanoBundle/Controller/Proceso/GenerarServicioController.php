@@ -60,6 +60,7 @@ class GenerarServicioController extends Controller
                             $arServicio->setClienteRel($arCentroCosto->getClienteRel());
                             $arServicio->setEmpleadoRel($arEmpleado);
                             $arServicio->setProgramacionPagoRel($arProgramacionPago);
+                            $arServicio->setCentroTrabajoRel($arContrato->getCentroTrabajoRel());
                             $arServicio->setFechaDesde($arPago->getFechaDesdePago());
                             $arServicio->setFechaHasta($arPago->getFechaHastaPago());
                             $arServicio->setVrSalario($arPago->getVrSalario());

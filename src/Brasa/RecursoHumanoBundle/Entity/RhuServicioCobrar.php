@@ -43,6 +43,11 @@ class RhuServicioCobrar
     private $codigoClienteFk;     
     
     /**
+     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroTrabajoFk;    
+    
+    /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
      */    
     private $fechaDesde;    
@@ -305,7 +310,11 @@ class RhuServicioCobrar
      */
     protected $programacionPagoRel;
     
-
+     /**
+     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="serviciosCobrarCentroTrabajoRel")
+     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
+     */
+    protected $centroTrabajoRel; 
 
     /**
      * Get codigoServicioCobrarPk
@@ -1659,5 +1668,53 @@ class RhuServicioCobrar
     public function getTipoTiempo()
     {
         return $this->tipoTiempo;
+    }
+
+    /**
+     * Set codigoCentroTrabajoFk
+     *
+     * @param integer $codigoCentroTrabajoFk
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
+    {
+        $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroTrabajoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroTrabajoFk()
+    {
+        return $this->codigoCentroTrabajoFk;
+    }
+
+    /**
+     * Set centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     *
+     * @return RhuServicioCobrar
+     */
+    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
+    {
+        $this->centroTrabajoRel = $centroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroTrabajoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
+     */
+    public function getCentroTrabajoRel()
+    {
+        return $this->centroTrabajoRel;
     }
 }

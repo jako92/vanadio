@@ -35,23 +35,22 @@ class RhuCentroTrabajo {
     private $estadoActivo = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="RhuSucursal", inversedBy="centroTrabajoRel")
-     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
-     */
-    protected $sucursalRel;
-
-    /**
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
      */
     protected $contratoRel;
 
-   
+    /**
+     * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="centroTrabajoRel")
+     */
+    protected $serviciosCobrarCentroTrabajoRel;    
+       
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->contratoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->serviciosCobrarCentroTrabajoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -137,30 +136,6 @@ class RhuCentroTrabajo {
     }
 
     /**
-     * Set sucursalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel
-     *
-     * @return RhuCentroTrabajo
-     */
-    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel = null)
-    {
-        $this->sucursalRel = $sucursalRel;
-
-        return $this;
-    }
-
-    /**
-     * Get sucursalRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSucursal
-     */
-    public function getSucursalRel()
-    {
-        return $this->sucursalRel;
-    }
-
-    /**
      * Add contratoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel
@@ -192,5 +167,39 @@ class RhuCentroTrabajo {
     public function getContratoRel()
     {
         return $this->contratoRel;
+    }
+
+    /**
+     * Add serviciosCobrarCentroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCentroTrabajoRel
+     *
+     * @return RhuCentroTrabajo
+     */
+    public function addServiciosCobrarCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCentroTrabajoRel)
+    {
+        $this->serviciosCobrarCentroTrabajoRel[] = $serviciosCobrarCentroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove serviciosCobrarCentroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCentroTrabajoRel
+     */
+    public function removeServiciosCobrarCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarCentroTrabajoRel)
+    {
+        $this->serviciosCobrarCentroTrabajoRel->removeElement($serviciosCobrarCentroTrabajoRel);
+    }
+
+    /**
+     * Get serviciosCobrarCentroTrabajoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosCobrarCentroTrabajoRel()
+    {
+        return $this->serviciosCobrarCentroTrabajoRel;
     }
 }
