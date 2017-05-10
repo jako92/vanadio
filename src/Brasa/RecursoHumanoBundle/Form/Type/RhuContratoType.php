@@ -33,16 +33,20 @@ class RhuContratoType extends AbstractType {
                 ))
                 ->add('centroCostoRel', EntityType::class, array(
                     'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                    'choice_label' => 'nombre',
-                ))
-                ->add('centroCostoRel', EntityType::class, array(
-                    'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('cc')
                                 ->orderBy('cc.nombre', 'ASC');
                     },
                     'choice_label' => 'nombre',
                     'required' => true))
+                ->add('centroTrabajoRel', EntityType::class, array(
+                    'class' => 'BrasaRecursoHumanoBundle:RhuCentroTrabajo',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('ct')
+                                ->orderBy('ct.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => false))                            
                 ->add('tipoTiempoRel', EntityType::class, array(
                     'class' => 'BrasaRecursoHumanoBundle:RhuTipoTiempo',
                     'choice_label' => 'nombre',

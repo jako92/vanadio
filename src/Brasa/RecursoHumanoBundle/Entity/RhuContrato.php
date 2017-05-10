@@ -429,13 +429,7 @@ class RhuContrato
      * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
      * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
      */
-    protected $centroTrabajoRel;   
-    
-      /**
-     * @ORM\ManyToOne(targetEntity="RhuSucursal", inversedBy="contratoRel")
-     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
-     */
-    protected $sucursalRel;  
+    protected $centroTrabajoRel;        
     
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="contratoRel")
@@ -548,6 +542,7 @@ class RhuContrato
     protected $contratosAdicionalesContratoRel;
   
     
+
     /**
      * Constructor
      */
@@ -1908,6 +1903,30 @@ class RhuContrato
     }
 
     /**
+     * Set auxilioTransporte
+     *
+     * @param boolean $auxilioTransporte
+     *
+     * @return RhuContrato
+     */
+    public function setAuxilioTransporte($auxilioTransporte)
+    {
+        $this->auxilioTransporte = $auxilioTransporte;
+
+        return $this;
+    }
+
+    /**
+     * Get auxilioTransporte
+     *
+     * @return boolean
+     */
+    public function getAuxilioTransporte()
+    {
+        return $this->auxilioTransporte;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
@@ -2433,30 +2452,6 @@ class RhuContrato
     public function getCentroTrabajoRel()
     {
         return $this->centroTrabajoRel;
-    }
-
-    /**
-     * Set sucursalRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel
-     *
-     * @return RhuContrato
-     */
-    public function setSucursalRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalRel = null)
-    {
-        $this->sucursalRel = $sucursalRel;
-
-        return $this;
-    }
-
-    /**
-     * Get sucursalRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSucursal
-     */
-    public function getSucursalRel()
-    {
-        return $this->sucursalRel;
     }
 
     /**
@@ -3205,29 +3200,5 @@ class RhuContrato
     public function getContratosAdicionalesContratoRel()
     {
         return $this->contratosAdicionalesContratoRel;
-    }
-
-    /**
-     * Set auxilioTransporte
-     *
-     * @param boolean $auxilioTransporte
-     *
-     * @return RhuContrato
-     */
-    public function setAuxilioTransporte($auxilioTransporte)
-    {
-        $this->auxilioTransporte = $auxilioTransporte;
-
-        return $this;
-    }
-
-    /**
-     * Get auxilioTransporte
-     *
-     * @return boolean
-     */
-    public function getAuxilioTransporte()
-    {
-        return $this->auxilioTransporte;
     }
 }
