@@ -323,22 +323,22 @@
                         <td>{{ arProgramacionPagoHoraExtra.empleadoRel.apellido1 }}</td>
                         <td>{{ arProgramacionPagoHoraExtra.empleadoRel.apellido2 }}</td>
                         <td>{{ arProgramacionPagoHoraExtra.empleadoRel.numeroIdentificacion | default('')}}</td> 
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.empleadoRel.vrSalario | number_format(2, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasNocturnas | number_format(0, '.', ',') }}</td> 
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasFestivasDiurnas | number_format(0, '.', ',') }}</td>                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasFestivasNocturnas | number_format(0, '.', ',') }}</td>                                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasOrdinariasDiurnas | number_format(0, '.', ',') }}</td>                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasOrdinariasNocturnas | number_format(0, '.', ',') }}</td>                                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasFestivasDiurnas | number_format(0, '.', ',') }}</td>                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasFestivasNocturnas | number_format(0, '.', ',') }}</td>                                                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturno | number_format(0, '.', ',') }}</td>                                                                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoFestivoDiurno | number_format(0, '.', ',') }}</td>                                                                                               
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoFestivoNocturno | number_format(0, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoNoCompensado | number_format(0, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoCompensado | number_format(0, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoCompensado | number_format(0, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoNoCompensado | number_format(0, '.', ',') }}</td>
-                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtraDominicalDiurna | number_format(0, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.empleadoRel.vrSalario | number_format(0, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasNocturnas | number_format(1, '.', ',') }}</td> 
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasFestivasDiurnas | number_format(1, '.', ',') }}</td>                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasFestivasNocturnas | number_format(1, '.', ',') }}</td>                                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasOrdinariasDiurnas | number_format(1, '.', ',') }}</td>                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasOrdinariasNocturnas | number_format(1, '.', ',') }}</td>                                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasFestivasDiurnas | number_format(1, '.', ',') }}</td>                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtrasFestivasNocturnas | number_format(1, '.', ',') }}</td>                                                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturno | number_format(1, '.', ',') }}</td>                                                                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoFestivoDiurno | number_format(1, '.', ',') }}</td>                                                                                               
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoFestivoNocturno | number_format(1, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoNoCompensado | number_format(1, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasDomingoCompensado | number_format(1, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoCompensado | number_format(1, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasRecargoNocturnoFestivoNoCompensado | number_format(1, '.', ',') }}</td>
+                        <td style="text-align: right">{{ arProgramacionPagoHoraExtra.horasExtraDominicalDiurna | number_format(1, '.', ',') }}</td>
                         </tr>
                     {% endfor %}
                 </table>

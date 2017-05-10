@@ -233,7 +233,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
                 $pdf->Cell(77, 4, utf8_decode($arPagoDetalle->getPagoConceptoRel()->getNombre()), 1, 0, 'L');
                 $pdf->SetFont('Arial', '', 5.5);            
                 $pdf->SetFont('Arial', '', 7);
-                $pdf->Cell(10, 4, number_format($arPagoDetalle->getNumeroHoras(), 0, '.', ','), 1, 0, 'R');
+                $pdf->Cell(10, 4, number_format($arPagoDetalle->getNumeroHoras(), 1, '.', ','), 1, 0, 'R');
                 $pdf->Cell(10, 4, number_format($arPagoDetalle->getNumeroDias(), 0, '.', ','), 1, 0, 'R');
                 $pdf->Cell(22, 4, number_format($arPagoDetalle->getVrHora(), 0, '.', ','), 1, 0, 'R');
                 $pdf->Cell(7, 4, number_format($arPagoDetalle->getPorcentajeAplicado(), 0, '.', ','), 1, 0, 'R');
