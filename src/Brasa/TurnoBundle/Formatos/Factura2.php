@@ -288,7 +288,7 @@ class Factura2 extends \FPDF_FPDF {
         $this->Cell(50, 21, '', 1, 0, 'R');        
         $this->Cell(84, 21, '', 1, 0, 'R'); 
         $this->SetXY(15,217);
-        $this->Cell(134, 7, '', 1, 0, 'R');        
+        $this->Cell(134, 14, '', 1, 0, 'R');        
         $this->SetXY(149,196);
         $this->Cell(28, 7, 'SUB TOTAL', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrSubtotal(), 0, '.', ','), 1, 0, 'R');
@@ -298,8 +298,11 @@ class Factura2 extends \FPDF_FPDF {
         $porcentajeIva = $arFactura->getFacturaServicioRel()->getPorcentajeIva();
         $this->SetXY(149,210);
         $this->Cell(28, 7, 'IVA ' . $porcentajeIva . '% (BASE)', 1, 0, 'L');        
-        $this->Cell(28, 7, number_format($arFactura->getVrIva(), 0, '.', ','), 1, 0, 'R'); 
+        $this->Cell(28, 7, number_format($arFactura->getVrIva(), 0, '.', ','), 1, 0, 'R');
         $this->SetXY(149,217);
+        $this->Cell(28, 7, 'RTE FUENTE', 1, 0, 'L');        
+        $this->Cell(28, 7, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R');
+        $this->SetXY(149,224);
         $this->Cell(28, 7, 'TOTAL', 1, 0, 'L');        
         $this->Cell(28, 7, number_format($arFactura->getVrTotal(), 0, '.', ','), 1, 0, 'R');                    
         $this->SetFont('Arial', '', 8);
@@ -318,14 +321,14 @@ class Factura2 extends \FPDF_FPDF {
         $this->Ln(4);
         $this->SetFont('Arial', '', 8);
         //$this->Text(20, $this->GetY($this->SetY(244)), $arConfiguracion->getInformacionPagoFactura());
-        $this->SetXY(30,228);
+        $this->SetXY(30,239);
         $this->MultiCell(110, 5, $arConfiguracion->getInformacionPagoFactura(), 0, 'L');                
         $this->Ln();
         $this->SetFont('Arial', 'B', 8);        
-        $this->Text(30, 241, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
+        $this->Text(30, 254, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable");
         //$this->MultiCell(100, 5, "Observacion: Si efectura retencion en la fuente, favor aplicar tarifa del 2% Sobre Base Gravable", 0, 'L');                
         $this->SetFont('Arial', '', 7);
-        $this->Text(50, 251, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
+        $this->Text(50, 264, "Favor remitir copia de la consignacion a los correos a.mona@seracis.com y d.mejia@seracis.com");
 
         //Número de página
         //$this->Text(188, 273, 'Pagina ' . $this->PageNo() . ' de {nb}');
