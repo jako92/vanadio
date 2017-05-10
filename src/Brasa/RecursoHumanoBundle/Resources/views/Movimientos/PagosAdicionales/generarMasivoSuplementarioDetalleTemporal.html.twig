@@ -55,6 +55,7 @@
                         <th>{{ knp_pagination_sortable(arProgramacionPagoHoraExtra, 'APELLIDO2', 'e.apellido2') }}</th> 
                         <th>DEPARTAMENTO E.</th>
                         <th>SALARIO</th>
+                        <th><p data-toggle="tooltip" data-placement="top" title="Horas diurnas">H.D</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas nocturas">H.N</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas festivas diurnas">H.F.D</p></th>
                         <th><p data-toggle="tooltip" data-placement="top" title="Horas festivas nocturas">H.F.N</p></th>
@@ -83,6 +84,7 @@
                         <td>{{ arProgramacionPagoHoraExtra.departamentoEmpresaRel.nombre | default('')}}</td>
                         <td style="text-align: right">{{ arProgramacionPagoHoraExtra.empleadoRel.vrSalario | number_format(2, '.', ',') }}</td>
                         {% if arProgramacionPago.estadoPagado == 0 %}
+                            <td style="text-align: right"><input class="input-grid" type="text" name="TxtHN{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasDiurnas }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHN{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasNocturnas }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHFD{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasFestivasDiurnas }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             <td style="text-align: right"><input class="input-grid" type="text" name="TxtHFN{{ arProgramacionPagoHoraExtra.codigoProgramacionPagoHoraExtraPk }}" value="{{ arProgramacionPagoHoraExtra.horasFestivasNocturnas }}" size="5" style="text-align: right; width:40px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
