@@ -304,7 +304,12 @@ class RhuSsoPeriodoEmpleadoRepository extends EntityRepository {
                 $arPeriodoEmpleadoDetalle->setVacaciones(1);
                 $porcentaje = $arContrato->getTipoPensionRel()->getPorcentajeEmpleador() + 4;
                 $arPeriodoEmpleadoDetalle->setTarifaPension($porcentaje);                            
-                $arPeriodoEmpleadoDetalle->setTarifaSalud(4);                            
+                if($arContrato->getSalarioIntegral()) {
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud(12.5);    
+                } else {
+                    $arPeriodoEmpleadoDetalle->setTarifaSalud(4);
+                }
+                                            
                 $arPeriodoEmpleadoDetalle->setTarifaCaja(4);                   
                 $arPeriodoEmpleadoDetalle->setFechaDesde(date_create($arrVacacion['fechaDesdeNovedad']));
                 $arPeriodoEmpleadoDetalle->setFechaHasta(date_create($arrVacacion['fechaHastaNovedad']));
