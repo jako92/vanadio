@@ -350,7 +350,7 @@ class Factura3 extends \FPDF_FPDF {
         $this->SetXY(15,246);
         $this->SetFont('Arial', 'B', 8);
         $this->MultiCell(191, 3.9, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 1, 'C');
-        $this->SetXY(15,258);
+        $this->SetXY(15,261.5);
         $this->SetFont('Arial', '', 8);
         $this->MultiCell(191, 3.5, 'Autorizo a la entidad 1 TEG SEGURIDAD LTDA o a quien represente la calidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información referente a mi comportamiento comercial.', 1, 'L');
         /*
