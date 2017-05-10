@@ -369,9 +369,7 @@ class CertificadoIngresoRetencionController extends Controller {
 
         $i = 2;
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->createQueryBuilder('c')
-                ->Where('c.fechaDesde LIKE :fechaDesde')
-                ->andWhere('c.fechaHasta LIKE :fechaHasta')
-                ->setParameter('fechaDesde', '%' . $controles['fechaCertificado'] . '%')
+                ->Where('c.fechaHasta LIKE :fechaHasta')
                 ->setParameter('fechaHasta', '%' . $controles['fechaCertificado'] . '%')
                 ->getQuery();
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
