@@ -202,6 +202,11 @@ class InvMovimiento
      * @ORM\Column(name="operacion_inventario", type="bigint")
      */    
     private $operacionInventario = 0;    
+
+    /**
+     * @ORM\Column(name="operacion_comercial", type="bigint")
+     */    
+    private $operacionComercial = 0;
     
     /**
      * @ORM\ManyToOne(targetEntity="InvDocumento", inversedBy="movimientosDocumentoRel")
@@ -1367,5 +1372,29 @@ class InvMovimiento
     public function getMovimientosDescuentosFinancierosMovimientoRel()
     {
         return $this->movimientosDescuentosFinancierosMovimientoRel;
+    }
+
+    /**
+     * Set operacionComercial
+     *
+     * @param integer $operacionComercial
+     *
+     * @return InvMovimiento
+     */
+    public function setOperacionComercial($operacionComercial)
+    {
+        $this->operacionComercial = $operacionComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get operacionComercial
+     *
+     * @return integer
+     */
+    public function getOperacionComercial()
+    {
+        return $this->operacionComercial;
     }
 }

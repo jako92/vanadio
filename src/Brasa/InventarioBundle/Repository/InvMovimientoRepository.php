@@ -103,7 +103,7 @@ class InvMovimientoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $respuesta = "";
         if($respuesta == "") {
-            $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
+            $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();           
             $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
             if($arMovimiento->getNumero() <= 0) {
                 if($arMovimiento->getDocumentoRel()->getAsignarConsecutivoImpresion()) {
@@ -149,6 +149,7 @@ class InvMovimientoRepository extends EntityRepository {
                 $arCuentaCobrar->setValorOriginal($arMovimiento->getVrNetoPagar());
                 $arCuentaCobrar->setSaldo($arMovimiento->getVrNetoPagar());
                 $arCuentaCobrar->setPlazo($arClienteCartera->getPlazoPago());                
+                $arCuentaCobrar->setOperacion($arMovimiento->getOperacionComercial());
                 $arCuentaCobrar->setAbono(0);
                 $em->persist($arCuentaCobrar);
             }                                                   

@@ -120,6 +120,7 @@ class MovimientoController extends Controller {
                         $arMovimiento->setTerceroRel($arTercero);
                         $arMovimiento->setFormaPagoRel($arTercero->getFormaPagoRel());
                         $arMovimiento->setDocumentoRel($arDocumento);
+                        $arMovimiento->setOperacionComercial($arDocumento->getOperacionComercial());
                         $arMovimiento->setOperacionInventario($arDocumento->getOperacionInventario());
                         $arMovimiento->setCodigoDocumentoClaseFk($arDocumento->getCodigoDocumentoClaseFk());
                         $dateFechaVence = $objFunciones->sumarDiasFecha($arTercero->getPlazoPagoCliente(), $arMovimiento->getFecha());
