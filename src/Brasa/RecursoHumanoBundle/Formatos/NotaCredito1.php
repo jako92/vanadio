@@ -119,7 +119,7 @@ class NotaCredito1 extends \FPDF_FPDF {
             $pdf->SetFont('Arial', '', 9);
             $pdf->Cell(110, 4, $arFacturaDetalle->getFacturaConceptoRel()->getNombre(), 0, 0, 'L');                        
             $pdf->SetFont('Arial', '', 9);
-            $pdf->Cell(15, 4, number_format($arFacturaDetalle->getCodigoFacturaDetallePk(), 0, '.', ','), 0, 0, 'C');
+            $pdf->Cell(15, 4, number_format($arFacturaDetalle->getFacturaDetalleRel()->getFacturaRel()->getNumero(), 0, '.', ','), 0, 0, 'C');
             $pdf->Cell(28, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(28, 4, number_format($arFacturaDetalle->getVrSubtotal(), 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
