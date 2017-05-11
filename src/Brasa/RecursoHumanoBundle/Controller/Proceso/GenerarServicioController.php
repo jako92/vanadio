@@ -93,11 +93,11 @@ class GenerarServicioController extends Controller
                                 if($diaSalario < $diaSalarioMinimo) {
                                     $diaSalario = $diaSalarioMinimo;
                                 }
-                                $ibc = $arPago->getDiasPeriodo() * $diaSalario;
+                                $ibc = ($arPago->getDiasPeriodo() * $diaSalario) + $prestacional;
                             }
                             if($arContrato->getCodigoTipoTiempoFk() == 3) {
                                 $diaSalario = $arPago->getVrSalarioEmpleado() / 30;
-                                $ibc = $arPago->getDiasPeriodo() * $diaSalario;
+                                $ibc = ($arPago->getDiasPeriodo() * $diaSalario) + $prestacional;
                             }
                             $arServicio->setVrIngresoBaseCotizacion($ibc);
                             //Pension
