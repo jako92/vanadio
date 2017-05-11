@@ -734,6 +734,11 @@ class ContratosController extends Controller {
                     'choice_label' => 'nombre',
                     'data' => $arContrato->getEntidadCajaRel(),
                 ))
+                ->add('centroTrabajoRel', EntityType::class, array(
+                    'class' => 'BrasaRecursoHumanoBundle:RhuCentroTrabajo',
+                    'choice_label' => 'nombre',
+                    'data' => $arContrato->getCentroTrabajoRel(),
+                ))
                 ->add('terminacionContratoRel', EntityType::class, array(
                     'class' => 'BrasaRecursoHumanoBundle:RhuMotivoTerminacionContrato',
                     'choice_label' => 'motivo',
@@ -781,6 +786,7 @@ class ContratosController extends Controller {
                 $arContrato->setEntidadPensionRel($formActualizar->get('pensionRel')->getData());
                 $arContrato->setEntidadSaludRel($formActualizar->get('saludRel')->getData());
                 $arContrato->setEntidadCajaRel($formActualizar->get('cajaRel')->getData());
+                $arContrato->setCentroTrabajoRel($formActualizar->get('centroTrabajoRel')->getData());
                 $arContrato->setFechaHasta($formActualizar->get('fechaHasta')->getData());
                 $arContrato->setSsoTipoCotizanteRel($formActualizar->get('ssoTipoCotizanteRel')->getData());
                 $arContrato->setSsoSubtipoCotizanteRel($formActualizar->get('ssoSubtipoCotizanteRel')->getData());
