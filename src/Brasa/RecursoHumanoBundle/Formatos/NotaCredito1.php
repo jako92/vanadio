@@ -220,7 +220,8 @@ class NotaCredito1 extends \FPDF_FPDF {
         $this->SetFont('Arial', '', 8);
         $plazoPago = $arFactura->getClienteRel()->getPlazoPago();
         $this->Text(20, 200, substr(strtoupper(self::$strLetras), 0, 96), 1, 0, 'L');
-        $this->Text(20, 212, "NOTA:");
+        $this->SetXY(19, 207);        
+        $this->MultiCell(120, 3, "NOTA: ". utf8_decode($arFactura->getComentarios()), 0, 'L');
         $this->Text(20, 236, "FIRMA Y SELLO");
         $this->SetFont('Arial', '', 9);
         $this->Ln(4);
