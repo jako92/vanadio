@@ -366,22 +366,26 @@ class CertificadoIngresoRetencionController extends Controller {
                 ->setCellValue('T1', 'Aportes Obligatorios a fondos de pensiones y solidaridad pensional')
                 ->setCellValue('U1', 'Aportes Voluntarios a fondos de pensiones cuentas AFC')
                 ->setCellValue('V1', 'Valores de las retenciones en la fuente por pago al empleado');
-
         $i = 2;
-        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->createQueryBuilder('c')
-                ->Where('c.fechaHasta LIKE :fechaHasta')
-                ->setParameter('fechaHasta', '%' . $controles['fechaCertificado'] . '%')
+        $strFechaCertificado = $controles['fechaCertificado'];
+        $datFechaCertificadoInicio = $strFechaCertificado . "-01-01";
+        $datFechaCertificadoFin = $strFechaCertificado . "-12-31";
+        $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->createQueryBuilder('p')
+                ->addSelect('p')
+                ->where('p.fechaDesde >= :fechaDesde')
+                ->andWhere('p.fechaDesde <= :fechaHasta')
+                ->setParameter('fechaDesde', '' . $datFechaCertificadoInicio .'')
+                ->setParameter('fechaHasta', '' . $datFechaCertificadoFin . '')
+                ->groupBy('p.codigoEmpleadoFk')
                 ->getQuery();
-        $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+        //$query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->certificadoIngresoRetencion($datFechaCertificadoInicio,$datFechaCertificadoFin);
+        $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arContrato = $query->getResult();
         $arCiudad = $em->getRepository('BrasaGeneralBundle:GenCiudad')->find($controles['LugarExpedicion']);
         foreach ($arContrato as $arContrato) {
             $codigoEmpleado = $arContrato->getCodigoEmpleadoFk();
             $strFechaExpedicion = $formCertificado->get('fechaExpedicion')->getData();
-            $strFechaCertificado = $controles['fechaCertificado'];
             $strAfc = $controles['afc'];
-            $datFechaCertificadoInicio = $strFechaCertificado . "-01-01";
-            $datFechaCertificadoFin = $strFechaCertificado . "-12-30";
             $arrayCostos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->devuelveCostosFechaCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arAcumulado = new \Brasa\RecursoHumanoBundle\Entity\RhuCertificadoIngresoAcumulado();
             $arAcumulado = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado));
@@ -454,7 +458,6 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('I' . $i, $strFechaExpedicion)
                     ->setCellValue('J' . $i, substr($arCiudad->getCodigoInterface(), 0, 2))
                     ->setCellValue('K' . $i, substr($arCiudad->getCodigoInterface(), 2, 8))
-                    ->setCellValue('L' . $i, '1')
                     ->setCellValue('M' . $i, round($totalPrestacional + $ibp))
                     ->setCellValue('N' . $i, round($totalCesantiaseIntereses))
                     ->setCellValue('O' . $i, round($duoGestosRepresentacion))
