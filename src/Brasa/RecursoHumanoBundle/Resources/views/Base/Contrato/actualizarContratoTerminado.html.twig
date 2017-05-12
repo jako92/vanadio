@@ -13,77 +13,65 @@
         <div class="panel-heading">Información general</div>
         <div class="panel-body">  
             <div class="form-group form-group-sm">
-                <label  class="col-sm-3 control-label">Tipo:</label>
-                <div class="col-sm-9">
+                <label  class="col-sm-2 control-label">Tipo:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.contratoTipoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>            
-            <div class="form-group form-group-sm">
-                <label  class="col-sm-3 control-label">Tipo salario:</label>
-                <div class="col-sm-9">
+                <label  class="col-sm-2 control-label">Tipo salario:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.salarioTipoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>                
+            </div>                       
             <div class="form-group form-group-sm">
-                <label for="form_clasificacionRiesgoRel" class="col-sm-3 control-label">Clasificación riesgo:</label>
-                <div class="col-sm-9">
+                <label for="form_clasificacionRiesgoRel" class="col-sm-2 control-label">Clasificación riesgo:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.clasificacionRiesgoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label for="form_pensionRel" class="col-sm-3 control-label">Pension:</label>
-                <div class="col-sm-9">
+                <label for="form_pensionRel" class="col-sm-2 control-label">Pension:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.pensionRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>
             <div class="form-group form-group-sm">
-                <label for="form_saludRel" class="col-sm-3 control-label">Salud:</label>
-                <div class="col-sm-9">
+                <label for="form_saludRel" class="col-sm-2 control-label">Salud:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.saludRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label for="form_cajaRel" class="col-sm-3 control-label">Caja:</label>
-                <div class="col-sm-9">
+                <label for="form_cajaRel" class="col-sm-2 control-label">Caja:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.cajaRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>
             <div class="form-group form-group-sm">
-                <label for="form_centroTrabajoRel" class="col-sm-3 control-label">Centro trabajo:</label>
-                <div class="col-sm-9">
+                <label for="form_centroTrabajoRel" class="col-sm-2 control-label">Centro trabajo:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.centroTrabajoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                </div>
+                <label for="form_terminacionContratoRel" class="col-sm-2 control-label">Motivo terminación contrato:</label>
+                <div class="col-sm-4">
+                    {{ form_widget(formActualizar.terminacionContratoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div>    
             <div class="form-group form-group-sm">
-                <label for="form_terminacionContratoRel" class="col-sm-3 control-label">Motivo terminación contrato:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(formActualizar.terminacionContratoRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
-                </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label for="form_fechaHasta" class="col-sm-3 control-label">Fecha terminación contrato:</label>
-                <div class="col-sm-9">
+                <label for="form_fechaHasta" class="col-sm-2 control-label">Fecha terminación contrato:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.fechaHasta, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <label class="col-sm-2 control-label">Tipo cotizante:</label>
+                <div class="col-sm-4">
+                    {{ form_widget(formActualizar.ssoTipoCotizanteRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
             </div> 
             <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Tipo cotizante:</label>
-                <div class="col-sm-9">
-                    {{ form_widget(formActualizar.ssoTipoCotizanteRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
-                </div>
-            </div>  
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Subtipo cotizante:</label>
-                <div class="col-sm-9">
+                <label class="col-sm-2 control-label">Subtipo cotizante:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.ssoSubtipoCotizanteRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">Auxilio transporte:</label>
-                <div class="col-sm-9">
+                <label class="col-sm-2 control-label">Auxilio transporte:</label>
+                <div class="col-sm-4">
                     {{ form_widget(formActualizar.auxilioTransporte) }}
                 </div>
-            </div>                 
+            </div>             
         </div>
     </div>       
     <div class="panel panel-default">
