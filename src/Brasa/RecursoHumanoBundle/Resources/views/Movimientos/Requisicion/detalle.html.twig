@@ -186,7 +186,7 @@
                             <th>TIPO</th>
                             <th>IDENTIFICACION</th>
                             <th>NOMBRE</th>
-                            <th>GRUPO PAGO</th>
+                            <th>CLIENTE</th>
                             <th>PRUEBAS</th>
                             <th>TELEFONO</th>
                             <th>CELULAR</th>
@@ -202,7 +202,7 @@
                                 <td>{{ arSeleccion.seleccionTipoRel.nombre  }}</td>
                                 <td>{{ arSeleccion.numeroIdentificacion  }}</td>
                                 <td>{{ arSeleccion.nombreCorto  }}</td>
-                                <td>{{ arSeleccion.centroCostoRel.nombre  }}</td>
+                                <td>{{ arSeleccion.clienteRel.nombre |default('') }}</td>
                                 <td>{{ arSeleccion.fechaPruebas |date("Y/m/d H:i")  }}</td>
                                 <td>{{ arSeleccion.telefono }}</td>
                                 <td>{{ arSeleccion.celular }}</td>

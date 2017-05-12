@@ -81,8 +81,7 @@ class RhuSeleccionRequisicionAspiranteRepository extends EntityRepository {
                     
                     $arSeleccion = new \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion();
                     $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->findBy(array('codigoSeleccionRequisitoFk' => $codigoRequisicion, 'numeroIdentificacion' => $numeroIdentificacion));
-                    if ($arSeleccion){
-                        
+                    if ($arSeleccion){                        
                         foreach ($arSeleccion as $arSeleccion){
                             if ($arSeleccion->getEstadoCerrado() == 1 || $arSeleccion->getEstadoAprobado() == 1){
                                 $mensaje = "El proceso de seleccion esta aprobado y/o cerrado, no se puede desaprobar";
@@ -90,11 +89,9 @@ class RhuSeleccionRequisicionAspiranteRepository extends EntityRepository {
                               if ($em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevista')->findBy(array('codigoSeleccionFk' => $arSeleccion)) || $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionPrueba')->findBy(array('codigoSeleccionFk' => $arSeleccion)) || $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionReferencia')->findBy(array('codigoSeleccionFk' => $arSeleccion)) || $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccionEntrevista')->findBy(array('codigoSeleccionFk' => $arSeleccion))){
                                 $mensaje = "El proceso de seleccion tiene detalles asociados, no se puede desaprobar";   
                               } else {
-                                  $em->remove($arSeleccion);
-                                  
+                                  $em->remove($arSeleccion);                                  
                               }  
                             }
-
                         }
                     $arRequisicionDetalle->setEstadoAprobado(0);
                     $em->persist($arRequisicionDetalle);
