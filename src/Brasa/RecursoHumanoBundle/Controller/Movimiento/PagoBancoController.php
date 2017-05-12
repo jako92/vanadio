@@ -269,8 +269,23 @@ class PagoBancoController extends Controller
             );
         if($session->get('filtroRhuCodigoBanco')) {
             $arrayPropiedadesBanco['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuBanco", $session->get('filtroRhuCodigoBanco'));
+        }    
+        $arrayPropiedadesCentroCosto = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCosto')) {
+            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }        
         $form = $this->createFormBuilder()
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('bancoRel', EntityType::class, $arrayPropiedadesBanco)                
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar',))
             ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
@@ -609,7 +624,8 @@ class PagoBancoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $this->dqlListaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientePagoBancoDql(                
                 $session->get('filtroRhuCodigoBanco'),
-                $codigoPagoTipo);        
+                $codigoPagoTipo,
+                $session->get('filtroCodigoCentroCosto'));        
     }     
     
     private function filtrar ($form ) { 
@@ -634,6 +650,12 @@ class PagoBancoController extends Controller
             $session->set('filtroRhuCodigoBanco', $arBanco->getCodigoBancoPk());
         } else {
             $session->set('filtroRhuCodigoBanco', null);
+        }        
+        $arCentroCosto = $form->get('centroCostoRel')->getData();
+        if($arCentroCosto) {
+            $session->set('filtroCodigoCentroCosto', $arCentroCosto->getCodigoCentroCostoPk());
+        } else {
+            $session->set('filtroCodigoCentroCosto', null);
         }        
     }    
     

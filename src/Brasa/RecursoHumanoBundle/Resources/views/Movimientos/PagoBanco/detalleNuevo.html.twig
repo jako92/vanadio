@@ -23,8 +23,9 @@
                         <div class="panel-heading">Filtros de busqueda</div>
                         <div class="panel-body">                                   
                             <div class="form-group form-group-sm">  
-                                <label class="col-sm-2 control-label"></label>
-                                <div class="col-sm-4">                                
+                                <label class="col-sm-2 control-label">Grupo pago:</label>
+                                <div class="col-sm-4">    
+                                    {{ form_widget(form.centroCostoRel, { 'attr': {'class': 'form-control'} }) }}
                                 </div>
                                 <label class="col-sm-2 control-label">Banco:</label>
                                 <div class="col-sm-4">                  
@@ -106,7 +107,12 @@
                 </blockquote>                     
             </div>                        
         </div>       
-
+        <div class="btn-toolbar" style="float: left">
+            <!-- Botones Menu Items -->
+            <div class="btn-group">
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPagos.getTotalItemCount }}</span></div>                        
+            </div>
+        </div>                    
         <div class="btn-toolbar" style="float: right">
             <div class="btn-group">                                
                 {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
