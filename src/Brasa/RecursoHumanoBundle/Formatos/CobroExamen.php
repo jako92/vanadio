@@ -1,6 +1,6 @@
 <?php
 namespace Brasa\RecursoHumanoBundle\Formatos;
-class Cobro extends \FPDF_FPDF {
+class CobroExamen extends \FPDF_FPDF {
     public static $em;
     public static $codigoCobro;
     
@@ -9,12 +9,12 @@ class Cobro extends \FPDF_FPDF {
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoCobro = $codigoCobro;
-        $pdf = new Cobro('L');
+        $pdf = new CobroExamen('L');
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
-        $pdf->Output("Cobro$codigoCobro.pdf", 'D');                
+        $pdf->Output("CobroExamen$codigoCobro.pdf", 'D');                
     } 
     
     public function Header() {
@@ -95,7 +95,7 @@ class Cobro extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(12);
-        $header = array('DOC', 'NOMBRE', 'BASICO', 'PRE', 'N_PRE', 'TTE', 'AFP', 'EPS','%ARL', 'RIESGO', 'CAJA', 'SENA', 'ICBF', 'PRES', 'VAC', 'A_PAR', 'ADMON','F.INGRESO','F.RETIRO','CARGO','SUBTOTAL');
+        $header = array('ITEM', 'NRO EXAMEN', 'DOCUMENTO', 'EMPLEADO', 'F. EXAMEN', 'VALOR EXAMEN');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -103,7 +103,7 @@ class Cobro extends \FPDF_FPDF {
         $this->SetFont('', 'B', 6);
 
         //creamos la cabecera de la tabla.
-        $w = array(12, 30, 10, 10, 10, 10, 10, 10,10, 10, 10, 8, 8, 10, 10, 8, 10,12,12,30,15);
+        $w = array(10, 20, 40, 145, 20, 20);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -120,58 +120,26 @@ class Cobro extends \FPDF_FPDF {
     public function Body($pdf) {
         $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
         $arCobro = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find(self::$codigoCobro);
-        $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
-        $arServiciosCobrar = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => self::$codigoCobro));
+        $arExamenes = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
+        $arExamenes = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->findBy(array('codigoCobroFk' => self::$codigoCobro));
         $pdf->SetX(10);
-        $pdf->SetFont('Arial', '', 5);
-        $var = 0;
-        foreach ($arServiciosCobrar as $arServicioCobrar) {                        
-            $pdf->Cell(12, 4,$arServicioCobrar->getEmpleadoRel()->getNumeroIdentificacion(), 1, 0, 'L');
-            $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getNombreCorto()), 0, 25) , 1, 0, 'L');
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrSalario(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPrestacional(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrNoPrestacional(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAuxilioTransporte(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPension(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrSalud(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getPorcentajeRiesgos(), 3, '.', ','), 1, 0, 'R'); 
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrRiesgos(), 0, '.', ','), 1, 0, 'R');    
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrCaja(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrSena(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrIcbf(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrPrestaciones(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrVacaciones(), 0, '.', ','), 1, 0, 'R');                        
-            $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrAporteParafiscales(), 0, '.', ','), 1, 0, 'R');            
-            $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAdministracion(), 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(12, 4, $arServicioCobrar->getIngreso() , 1, 0, 'L');
-            $pdf->Cell(12, 4, $arServicioCobrar->getIngreso() , 1, 0, 'L');
-            $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getCargoDescripcion()), 0, 25) , 1, 0, 'L');
-            $pdf->Cell(15, 4, number_format($arServicioCobrar->getVrTotalCobro(), 0, '.', ','), 1, 0, 'R');
+        $pdf->SetFont('Arial', '', 7);
+        $var = 1;
+        foreach ($arExamenes as $arExamen) {                        
+            $pdf->Cell(10, 6, $var, 1, 0, 'C');
+            $pdf->Cell(20, 6, $arExamen->getCodigoExamenPk(), 1, 0, 'C');
+            $pdf->Cell(40, 6, $arExamen->getIdentificacion(), 1, 0, 'C');
+            $pdf->Cell(145, 6, utf8_decode($arExamen->getNombreCorto()), 1, 0, 'L');
+            $pdf->Cell(20, 6, $arExamen->getFecha()->format("Y/m/d"), 1, 0, 'C');
+            $pdf->Cell(20, 6, number_format($arExamen->getVrTotal(),0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
+            $var++;
         }   
             $pdf->SetFont('Arial', 'B', 7);
-            $pdf->Cell(42, 5, "TOTAL: ", 1, 0, 'R');
-            $pdf->SetFont('Arial', '', 6);
-            $pdf->Cell(10, 5, number_format($arCobro->getVrBasico(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrPrestacional(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrNoPrestacional(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrAuxilioTransporte(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrPension(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrSalud(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, "", 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrRiesgos(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrCaja(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(8, 5, number_format($arCobro->getVrSena(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(8, 5, number_format($arCobro->getVrIcbf(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrPrestaciones(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrVacaciones(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(8, 5, number_format($arCobro->getVrAporteParafiscales(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(10, 5, number_format($arCobro->getVrAdministracion(),0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(54, 5, "TOTAL: ", 1, 0, 'R');
+            $pdf->Cell(235, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(15, 5, number_format($arCobro->getVrTotalCobro(),0, '.', ','), 1, 0, 'R');
-        
+            $pdf->Cell(20, 5, number_format($arCobro->getVrTotalCobro(),0, '.', ','), 1, 0, 'R');        
     }
 
     public function Footer() {

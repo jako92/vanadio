@@ -168,9 +168,16 @@ class CobroController extends Controller {
                 }
             }
             if ($form->get('BtnImprimir')->isClicked()) {
-                $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\Cobro();
-                $objCobro->Generar($em, $codigoCobro);
-                return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                if ($arCobro->getCodigoCobroTipoFk() == "N") {
+                    $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\Cobro();
+                    $objCobro->Generar($em, $codigoCobro);
+                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                }
+                if ($arCobro->getCodigoCobroTipoFk() == "E") {
+                    $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\CobroExamen();
+                    $objCobro->Generar($em, $codigoCobro);
+                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                }
             }
             if ($form->get('BtnDetalleExcel')->isClicked()) {
                 $this->generarDetalleExcel($codigoCobro);
@@ -300,7 +307,7 @@ class CobroController extends Controller {
                     'arCobro' => $arCobro,
                     'form' => $form->createView()));
     }
-    
+
     /**
      * @Route("/rhu/cobro/detalle/nuevo/seleccion/{codigoCobro}", name="brs_rhu_cobro_detalle_nuevo_seleccion")
      */
@@ -449,7 +456,7 @@ class CobroController extends Controller {
                 ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
                 ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)
                 ->add('BtnEliminarDetalleExamen', SubmitType::class, $arrBotonDetalleEliminarDetalleExamen)
-                ->add('BtnEliminarDetalleSeleccion', SubmitType::class,$arrBotonDetalleEliminarDetalleSeleccion)
+                ->add('BtnEliminarDetalleSeleccion', SubmitType::class, $arrBotonDetalleEliminarDetalleSeleccion)
                 ->getForm();
         return $form;
     }
