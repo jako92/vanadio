@@ -46,9 +46,9 @@
                     </tr>
                     <tr>
                         <td class="titulo">GRUPO PAGO:</td>
-                        <td class="td-in-well">{{ arExamen.centroCostoRel.nombre }}</td>
+                        <td class="td-in-well">{% if arExamen.centroCostoRel == null %} SIN CONTRATO {% else %} {{ arExamen.centroCostoRel.nombre }}{% endif %}</td>
                         <td class="titulo">CLIENTE:</td>
-                        <td class="td-in-well">{{ arExamen.clienteRel.nombreCorto}}</td>
+                        <td class="td-in-well">{% if arExamen.clienteRel == null %} SIN CONTRATO {% else %} {{ arExamen.clienteRel.nombreCorto}} {%endif %}</td>
                     </tr>
                     <tr>
                         <td class="titulo">IDENTIFICACION:</td>
