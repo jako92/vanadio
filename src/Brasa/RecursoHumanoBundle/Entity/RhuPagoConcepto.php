@@ -100,7 +100,12 @@ class RhuPagoConcepto
     /**
      * @ORM\Column(name="concepto_comision", type="boolean")
      */    
-    private $conceptoComision = false;     
+    private $conceptoComision = false;   
+    
+    /**
+     * @ORM\Column(name="concepto_cesantia", type="boolean")
+     */    
+    private $conceptoCesantia = false;
     
     /**
      * @ORM\Column(name="codigo_cuenta_fk", type="string", length=20, nullable=true)
@@ -1463,5 +1468,53 @@ class RhuPagoConcepto
     public function getContratoAdicionRel()
     {
         return $this->contratoAdicionRel;
+    }
+
+    /**
+     * Set conceptoCesantias
+     *
+     * @param boolean $conceptoCesantias
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoCesantias($conceptoCesantias)
+    {
+        $this->conceptoCesantias = $conceptoCesantias;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoCesantias
+     *
+     * @return boolean
+     */
+    public function getConceptoCesantias()
+    {
+        return $this->conceptoCesantias;
+    }
+
+    /**
+     * Set conceptoCesantia
+     *
+     * @param boolean $conceptoCesantia
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoCesantia($conceptoCesantia)
+    {
+        $this->conceptoCesantia = $conceptoCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoCesantia
+     *
+     * @return boolean
+     */
+    public function getConceptoCesantia()
+    {
+        return $this->conceptoCesantia;
     }
 }

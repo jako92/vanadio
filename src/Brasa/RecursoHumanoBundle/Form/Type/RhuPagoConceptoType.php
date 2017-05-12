@@ -37,7 +37,8 @@ class RhuPagoConceptoType extends AbstractType
             ->add('provisionVacacion', CheckboxType::class, array('required'  => false))
             ->add('recargoNocturno', CheckboxType::class, array('required'  => false))
             ->add('horaExtra', CheckboxType::class, array('required'  => false))
-            ->add('conceptoFondoSolidaridadPensional', CheckboxType::class, array('required'  => false))            
+            ->add('conceptoFondoSolidaridadPensional', CheckboxType::class, array('required'  => false))
+            ->add('conceptoCesantia', CheckboxType::class, array('required'  => false)) 
             ->add('tipoAdicional', ChoiceType::class, array('choices' => array('BONIFICACION' => '1', 'DESCUENTO' => '2', 'NO APLICA' => '0')))                                
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
