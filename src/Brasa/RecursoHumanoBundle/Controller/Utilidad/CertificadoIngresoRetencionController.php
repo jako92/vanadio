@@ -371,7 +371,7 @@ class CertificadoIngresoRetencionController extends Controller {
         $datFechaCertificadoInicio = $strFechaCertificado . "-01-01";
         $datFechaCertificadoFin = $strFechaCertificado . "-12-31";
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->createQueryBuilder('p')
-                ->addSelect('p')
+                ->select('p')
                 ->where('p.fechaDesde >= :fechaDesde')
                 ->andWhere('p.fechaDesde <= :fechaHasta')
                 ->setParameter('fechaDesde', '' . $datFechaCertificadoInicio . '')

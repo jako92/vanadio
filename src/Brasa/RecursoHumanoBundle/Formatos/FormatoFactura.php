@@ -44,7 +44,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetXY(15, 50);
         $this->Cell(25, 5, "CLIENTE:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 7.7);
-        $this->Cell(115, 5, $arFactura->getClienteRel()->getNombreCorto(), 0, 0, 'L', 1);
+        $this->Cell(115, 5, utf8_decode($arFactura->getClienteRel()->getNombreCorto()), 0, 0, 'L', 1);
         $this->SetXY(156, 50);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "FECHA EMISION:", 0, 0, 'C', 1);
@@ -61,7 +61,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetXY(15, 60);
         $this->Cell(25, 5, "CIUDAD:", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(95, 5, $arFactura->getClienteRel()->getCiudadRel()->getNombre(), 0, 0, 'L', 1);
+        $this->Cell(95, 5, utf8_decode($arFactura->getClienteRel()->getCiudadRel()->getNombre()), 0, 0, 'L', 1);
         $this->SetFont('Arial', 'B', 8);        
         $this->Cell(20, 5, "", 0, 0, 'L', 1);        
         $this->SetFont('Arial', '', 8);
@@ -90,7 +90,7 @@ class FormatoFactura extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "FORMA PAGO", 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, $arFactura->getClienteRel()->getFormaPagoRel()->getNombre(), 0, 0, 'L', 1);
+        $this->Cell(25, 5, utf8_decode($arFactura->getClienteRel()->getFormaPagoRel()->getNombre()), 0, 0, 'L', 1);
         //$this->Text(45, 70, utf8_decode($arFactura->getClienteRel()->getNombreCompleto()));
         /*$this->SetXY(44, 68);
         $this->MultiCell(90, 4, $arFactura->getClienteRel()->getNombreCompleto(), 0, 'L');

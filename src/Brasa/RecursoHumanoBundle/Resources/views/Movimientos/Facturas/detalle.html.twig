@@ -74,8 +74,8 @@
                         <td class="td-in-well-numerico" align="right">$ {{ arFactura.vrRetencionIva | number_format(0, '.', ',') }}</td>
                     </tr>                 
                     <tr>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">TIPO FACTURA:</td>
+                        <td class="td-in-well">{{ arFactura.facturaTipoRel.nombre }}</td>
                         <td class="titulo">ADMINISTRACION:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arFactura.vrTotalAdministracion | number_format(0, '.', ',') }}</td>
                         <td class="titulo">RETENCION FUENTE:</td>

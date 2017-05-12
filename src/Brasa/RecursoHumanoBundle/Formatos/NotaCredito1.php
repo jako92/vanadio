@@ -48,7 +48,7 @@ class NotaCredito1 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "Cliente:");
         $this->SetFont('Arial', '', 8);
-        $this->Cell(30, 5, $arFactura->getClienteRel()->getNombreCorto());
+        $this->Cell(30, 5, utf8_decode($arFactura->getClienteRel()->getNombreCorto()));
         $this->SetXY(25, 60);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 5, "Direccion:");
@@ -117,7 +117,7 @@ class NotaCredito1 extends \FPDF_FPDF {
             $pdf->SetX(15);
             $pdf->Cell(10, 4, number_format($arFacturaDetalle->getCantidad(), 0, '.', ','), 0, 0, 'C');                        
             $pdf->SetFont('Arial', '', 9);
-            $pdf->Cell(110, 4, $arFacturaDetalle->getFacturaConceptoRel()->getNombre(), 0, 0, 'L');                        
+            $pdf->Cell(110, 4, utf8_decode($arFacturaDetalle->getFacturaConceptoRel()->getNombre()), 0, 0, 'L');                        
             $pdf->SetFont('Arial', '', 9);
             $pdf->Cell(15, 4, number_format($arFacturaDetalle->getFacturaDetalleRel()->getFacturaRel()->getNumero(), 0, '.', ','), 0, 0, 'C');
             $pdf->Cell(28, 4, number_format($arFacturaDetalle->getVrPrecio(), 0, '.', ','), 0, 0, 'R');
