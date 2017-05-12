@@ -54,7 +54,7 @@ class CarNotaDebitoRepository extends EntityRepository {
         $em = $this->getEntityManager();  
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         $strResultado = "";
-        $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();        
+        $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();                        
         $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigo);        
         if($arNotaDebito->getEstadoAutorizado() == 1) {
            if($arNotaDebito->getNumero() == 0) {            
@@ -62,6 +62,31 @@ class CarNotaDebitoRepository extends EntityRepository {
                 $arNotaDebito->setNumero($intNumero);
                 $arNotaDebito->setEstadoImpreso(1);
                 $em->persist($arNotaDebito);
+                $arCuentaCobrarTipo = new \Brasa\CarteraBundle\Entity\CarCuentaCobrarTipo();
+                $arCuentaCobrarTipo = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->find(7);                
+                $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+                $arCuentaCobrar->setClienteRel($arNotaDebito->getClienteRel());
+                $arCuentaCobrar->setAsesorRel($arNotaDebito->getClienteRel()->getAsesorRel());
+                $arCuentaCobrar->setCuentaCobrarTipoRel($arCuentaCobrarTipo);
+                $arCuentaCobrar->setFecha($arNotaDebito->getFecha());
+                $arCuentaCobrar->setFechaVence($arNotaDebito->getFecha());
+                $arCuentaCobrar->setCodigoFactura(0);
+                $arCuentaCobrar->setSoporte(0);
+                $arCuentaCobrar->setNumeroDocumento($intNumero);
+                $arCuentaCobrar->setValorOriginal($arNotaDebito->getValor());
+                $saldoOperado = $arNotaDebito->getValor() * $arCuentaCobrarTipo->getOperacion();
+                $arCuentaCobrar->setSaldo($arNotaDebito->getValor());
+                $arCuentaCobrar->setSaldoOperado($saldoOperado);                        
+                $arCuentaCobrar->setSubtotal(0);                                                
+                $arCuentaCobrar->setRetencionFuente(0);
+                $arCuentaCobrar->setRetencionIva(0);
+                $arCuentaCobrar->setRetencionIca(0);
+                $arCuentaCobrar->setTotalNeto($arNotaDebito->getValor());
+                $arCuentaCobrar->setPlazo(0);
+                $arCuentaCobrar->setAbono(0);
+                $arCuentaCobrar->setOperacion($arCuentaCobrarTipo->getOperacion());
+                $arCuentaCobrar->setServicioTipo('');
+                $em->persist($arCuentaCobrar);                                 
                 $em->flush();
             } 
         } else {

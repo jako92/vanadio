@@ -23,7 +23,7 @@ class NotaDebitoController extends Controller {
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
-        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 117, 1)) {
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 118, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');
@@ -33,7 +33,7 @@ class NotaDebitoController extends Controller {
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 if ($form->get('BtnEliminar')->isClicked()) {
-                    if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 117, 4)) {
+                    if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 118, 4)) {
                         return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
                     }
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -150,36 +150,10 @@ class NotaDebitoController extends Controller {
                     }
                     $arrControles = $request->request->All();
                     if ($arNotaDebito->getEstadoAutorizado() == 0) {
-                        $this->actualizarDetalle($arrControles, $codigoNotaDebito);
-                        $arInconsistencias = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito, 'estadoInconsistencia' => 1));
-                        if ($arInconsistencias == null) {
-                            if ($arNotaDebito->getEstadoAutorizado() == 0) {
-                                if ($em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito))) {
-                                    if ($em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->numeroRegistros($codigoNotaDebito) > 0) {
-                                        $arNotaDebito->setEstadoAutorizado(1);
-                                        $arDetallesNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito));
-                                        foreach ($arDetallesNotaDebito AS $arDetalleNotaDebito) {
-                                            $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-                                            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaDebito->getCodigoCuentaCobrarFk());
-                                            $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() + $arDetalleNotaDebito->getVrPago());
-                                            $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() - $arDetalleNotaDebito->getVrPago());
-                                            $em->persist($arCuentaCobrar);
-                                        }
-                                        $em->persist($arNotaDebito);
-                                        $em->flush();
-                                    } else {
-                                        $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja');
-                                    }
-                                } else {
-                                    $arNotaDebito->setEstadoAutorizado(1);
-                                    $em->persist($arNotaDebito);
-                                    $em->flush();
-                                }
-                            }
-                        } else {
-                            $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
-                        }
-
+                        $this->actualizarDetalle($arrControles, $codigoNotaDebito);                                                                            
+                        $arNotaDebito->setEstadoAutorizado(1);
+                        $em->persist($arNotaDebito);
+                        $em->flush();                                                   
                         return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));
                     } else {
                         $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado');
@@ -190,15 +164,7 @@ class NotaDebitoController extends Controller {
                         return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
                     }
                     if ($arNotaDebito->getEstadoAutorizado() == 1 && $arNotaDebito->getEstadoImpreso() == 0) {
-                        $arNotaDebito->setEstadoAutorizado(0);
-                        $arDetallesNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito));
-                        foreach ($arDetallesNotaDebito AS $arDetalleNotaDebito) {
-                            $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-                            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaDebito->getCodigoCuentaCobrarFk());
-                            $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleNotaDebito->getVrPago());
-                            $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleNotaDebito->getVrPago());
-                            $em->persist($arCuentaCobrar);
-                        }
+                        $arNotaDebito->setEstadoAutorizado(0);                        
                         $em->persist($arNotaDebito);
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_cartera_movimiento_notadebito_detalle', array('codigoNotaDebito' => $codigoNotaDebito)));
@@ -215,14 +181,7 @@ class NotaDebitoController extends Controller {
                         $arNotaDebito->setValor(0);
                         $arDetallesNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito));
                         foreach ($arDetallesNotaDebito AS $arDetalleNotaDebito) {
-                            $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-                            $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->find($arDetalleNotaDebito->getCodigoCuentaCobrarFk());
-                            $arCuentaCobrar->setSaldo($arCuentaCobrar->getSaldo() - $arDetalleNotaDebito->getVrPago());
-                            $arCuentaCobrar->setAbono($arCuentaCobrar->getAbono() + $arDetalleNotaDebito->getVrPago());
-                            $arDetalleNotaDebitoAnulado = new \Brasa\CarteraBundle\Entity\CarNotaDebitoDetalle();
-                            $arDetalleNotaDebitoAnulado = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->find($arDetalleNotaDebito->getCodigoNotaDebitoDetallePk());
-                            $arDetalleNotaDebitoAnulado->setValor(0);
-                            $em->persist($arCuentaCobrar);
+                            $arDetalleNotaDebitoAnulado->setValor(0);                            
                             $em->persist($arDetalleNotaDebitoAnulado);
                         }
                         $em->persist($arNotaDebito);
@@ -250,7 +209,7 @@ class NotaDebitoController extends Controller {
                     }
                 }
                 if ($form->get('BtnImprimir')->isClicked()) {
-                    if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 118, 10)) {
+                    if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 117, 10)) {
                         return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
                     }
                     if ($arNotaDebito->getEstadoAutorizado() == 1) {
