@@ -56,10 +56,15 @@ class ContratosController extends Controller {
                         foreach ($arrSeleccionados AS $codigo) {
                             $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                             $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findOneBy(array('codigoContratoFk' => $codigo));
-                            if ($arPagos == null) {
+                            if ($arPagos == null) {                                
                                 $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                                 $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigo);
                                 if ($arContrato->getEstadoActivo() == 1 && $arContrato->getEstadoTerminado() == 0) {
+                                    $arPrestaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion();
+                                    $arPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->findBy(array('codigoContratoFk' => $codigo));                                    
+                                    foreach ($arPrestaciones as $arPrestacion) {
+                                        $em->remove($arPrestacion);                                      
+                                    }
                                     $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                                     $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arContrato->getCodigoEmpleadoFk());
                                     $arEmpleado->setCodigoCentroCostoFk(NULL);
