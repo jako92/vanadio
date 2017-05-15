@@ -144,7 +144,7 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(8, 4, number_format($arServicioCobrar->getVrAporteParafiscales(), 0, '.', ','), 1, 0, 'R');            
             $pdf->Cell(10, 4, number_format($arServicioCobrar->getVrAdministracion(), 0, '.', ','), 1, 0, 'R');
             $pdf->Cell(12, 4, $arServicioCobrar->getIngreso() , 1, 0, 'L');
-            $pdf->Cell(12, 4, $arServicioCobrar->getIngreso() , 1, 0, 'L');
+            $pdf->Cell(12, 4, $arServicioCobrar->getRetiro() , 1, 0, 'L');
             $pdf->Cell(30, 4, substr(utf8_decode($arServicioCobrar->getEmpleadoRel()->getCargoDescripcion()), 0, 25) , 1, 0, 'L');
             $pdf->Cell(15, 4, number_format($arServicioCobrar->getVrTotalCobro(), 0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
