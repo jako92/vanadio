@@ -399,7 +399,7 @@ class ContratosController extends Controller {
                                     $em->flush();
                                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                                 } else {
-                                    echo "La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d');
+                                    $objMensaje->Mensaje("error", "La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d'));
                                 }
                             } else {
                                 $objMensaje->Mensaje('error', "El salario integral debe ser mayor a 13 salarios minimos");
@@ -408,7 +408,7 @@ class ContratosController extends Controller {
                             $objMensaje->Mensaje("error", "Los contratos de practicante/aprendizaje del sena (lectiva-productiva) la salud va a cargo del empleador");
                         }
                     } else {
-                        echo "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social";
+                        $objMensaje->Mensaje("error", "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social");
                     }
                 }
             } else {
@@ -470,10 +470,10 @@ class ContratosController extends Controller {
                             $em->flush();
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                         } else {
-                            echo "La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d');
+                            $objMensaje->Mensaje("error","La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d'));
                         }
                     } else {
-                        echo "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social";
+                        $objMensaje->Mensaje("error", "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social");
                     }
                 }
             }
