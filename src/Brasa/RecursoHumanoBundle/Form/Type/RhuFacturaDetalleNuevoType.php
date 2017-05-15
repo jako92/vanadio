@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RhuFacturaDetalleNuevoType extends AbstractType
@@ -22,7 +23,8 @@ class RhuFacturaDetalleNuevoType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))  
             ->add('cantidad', NumberType::class)                            
-            ->add('vrPrecio', NumberType::class)                            
+            ->add('vrPrecio', NumberType::class)
+            ->add('detalle', TextareaType::class) 
             ->add('guardar', SubmitType::class);
     }
 

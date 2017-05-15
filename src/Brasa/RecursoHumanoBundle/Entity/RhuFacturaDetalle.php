@@ -95,7 +95,12 @@ class RhuFacturaDetalle
     /**
      * @ORM\Column(name="operacion", type="integer")
      */
-    private $operacion = 0;      
+    private $operacion = 0;
+    
+    /**
+     * @ORM\Column(name="detalle", type="string", length=100)
+     */
+    private $detalle;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuFactura", inversedBy="facturasDetallesFacturaRel")
@@ -657,5 +662,29 @@ class RhuFacturaDetalle
     public function getFacturasDetallesFacturaDetalleRel()
     {
         return $this->facturasDetallesFacturaDetalleRel;
+    }
+
+    /**
+     * Set detalle
+     *
+     * @param string $detalle
+     *
+     * @return RhuFacturaDetalle
+     */
+    public function setDetalle($detalle)
+    {
+        $this->detalle = $detalle;
+
+        return $this;
+    }
+
+    /**
+     * Get detalle
+     *
+     * @return string
+     */
+    public function getDetalle()
+    {
+        return $this->detalle;
     }
 }
