@@ -621,11 +621,8 @@ class RhuPagoRepository extends EntityRepository {
     
     public function certificadoIngresoRetencion($fechaDesde, $fechaHasta) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT DISTINCT (p.codigoEmpleadoFk), p FROM BrasaRecursoHumanoBundle:RhuPago p "
-                . "WHERE p.fechaDesde >= '" . $fechaDesde . "' AND p.fechaDesde <= '" . $fechaHasta . "'";
-        $query = $em->createQuery($dql);
-        $arrayResultado = $query->getResult();
-        $arPago = $arrayResultado[0];
-        return $arPago;
+        $dql   = "SELECT DISTINCT (p.codigoEmpleadoFk), p.codigoEmpleadoFk FROM BrasaRecursoHumanoBundle:RhuPago p "
+                ."WHERE p.fechaDesde >= '" . $fechaDesde . "' AND p.fechaDesde <= '" . $fechaHasta . "'";
+        return $dql;
     }
 }
