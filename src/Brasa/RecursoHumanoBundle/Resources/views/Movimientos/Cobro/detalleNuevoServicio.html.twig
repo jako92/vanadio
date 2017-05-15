@@ -8,53 +8,69 @@
         </h1>
     </section>    
     <section class="content">        	        
-        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}            
-    <table class="table table-striped table-bordered table-condensed">
-        <tr>
-            <th>CÓDIGO</th>
-            <th>IENTIFICACION</th>                                
-            <th>EMPLEADO</th>
-            <th>C_TRABAJO</th>
-            <th style="text-align: right">OPE</th>
-            <th style="text-align: right">ADMON</th>
-            <th style="text-align: right">TOTAL</th>
-            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
-        </tr>
-        {% set intCodigoProgramacion = '' %}
-        {% for arServicioCobrar in arServiciosCobrar %}
-            {% if intCodigoProgramacion != arServicioCobrar.codigoProgramacionPagoFk %}
-                <tr>                        
-                    <td id="suptipo" colspan="20"><b>Periodo: </b>{{ arServicioCobrar.fechaDesde |date("Y/m/d") }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d") }} <b>Gurpo pago:</b> {{ arServicioCobrar.centroCostoRel.nombre }}</td>
-                </tr>
-                {% set intCodigoProgramacion = arServicioCobrar.codigoProgramacionPagoFk %}                                
-            {% endif %}             
-            <tr> 
-                <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }}</td>                  
-                <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion }}</td>
-                <td>{{ arServicioCobrar.empleadoRel.nombreCorto }}</td>
-                <td>{{ arServicioCobrar.centroTrabajoRel.nombre | default('') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ arServicioCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
-                <td style="text-align: right">{{ arServicioCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>
-                <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">                
+                <div class="form-group form-group-sm"> 
+                    <label for="form_centroTrabajoRel" class="col-sm-2 control-label">Centro de trabajo:</label>
+                    <div class="col-sm-8">                  
+                        {{ form_widget(form.centroTrabajoRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>  
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th>CÓDIGO</th>
+                <th>IENTIFICACION</th>                                
+                <th>EMPLEADO</th>
+                <th>C_TRABAJO</th>
+                <th style="text-align: right">OPE</th>
+                <th style="text-align: right">ADMON</th>
+                <th style="text-align: right">TOTAL</th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>
-        {% endfor %}                                
-    </table>
-    {{ knp_pagination_render(arServiciosCobrar) }}
-    <div class="btn-toolbar" style="float: left">
-        <!-- Botones Menu Items -->
-        <div class="btn-group">
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arServiciosCobrar.getTotalItemCount }}</span></div>                        
-        </div>
-    </div> 
-    <div class="btn-toolbar" style="float: right">
-        <!-- Botones Menu Items -->
-        <div class="btn-group">
-            {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-        </div>
-    </div>            
-   
-    {{ form_end(form) }}
-    <br/><br/><br/><br/>
-</section>
+            {% set intCodigoProgramacion = '' %}
+            {% for arServicioCobrar in arServiciosCobrar %}
+                {% if intCodigoProgramacion != arServicioCobrar.codigoProgramacionPagoFk %}
+                    <tr>                        
+                        <td id="suptipo" colspan="20"><b>Periodo: </b>{{ arServicioCobrar.fechaDesde |date("Y/m/d") }} - {{ arServicioCobrar.fechaHasta |date("Y/m/d") }} <b>Gurpo pago:</b> {{ arServicioCobrar.centroCostoRel.nombre }}</td>
+                    </tr>
+                    {% set intCodigoProgramacion = arServicioCobrar.codigoProgramacionPagoFk %}                                
+                {% endif %}             
+                <tr> 
+                    <td><input type="hidden" name="LblCodigo[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}">{{ arServicioCobrar.codigoServicioCobrarPk }}</td>                  
+                    <td>{{ arServicioCobrar.empleadoRel.numeroIdentificacion }}</td>
+                    <td>{{ arServicioCobrar.empleadoRel.nombreCorto }}</td>
+                    <td>{{ arServicioCobrar.centroTrabajoRel.nombre | default('') }}</td>
+                    <td style="text-align: right">{{ arServicioCobrar.VrOperacion | number_format(0, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arServicioCobrar.VrAdministracion | number_format(0, '.', ',') }}</td>                
+                    <td style="text-align: right">{{ arServicioCobrar.VrTotalCobro | number_format(0, '.', ',') }}</td>
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
+                </tr>
+            {% endfor %}                                
+        </table>
+        {{ knp_pagination_render(arServiciosCobrar) }}
+        <div class="btn-toolbar" style="float: left">
+            <!-- Botones Menu Items -->
+            <div class="btn-group">
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arServiciosCobrar.getTotalItemCount }}</span></div>                        
+            </div>
+        </div> 
+        <div class="btn-toolbar" style="float: right">
+            <!-- Botones Menu Items -->
+            <div class="btn-group">
+                {{ form_widget(form.BtnAgregar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+            </div>
+        </div>            
+
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
 {% endblock %}

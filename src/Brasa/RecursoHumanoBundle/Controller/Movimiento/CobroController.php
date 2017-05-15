@@ -51,12 +51,12 @@ class CobroController extends Controller {
             }
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
-                $this->listar();
+                $this->lista();
             }
 
             if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrar($form);
-                $this->listar();
+                $this->lista();
                 $this->generarExcel();
             }
         }
@@ -235,14 +235,18 @@ class CobroController extends Controller {
      * @Route("/rhu/cobro/detalle/nuevo/servicio/{codigoCobro}", name="brs_rhu_cobro_detalle_nuevo_servicio")
      */
     public function detalleNuevoServicioAction(Request $request, $codigoCobro) {
+        $session = new session;
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
-        $form = $this->createFormBuilder()
-                ->add('BtnAgregar', SubmitType::class, array('label' => 'Guardar',))
-                ->getForm();
+        $form = $this->formularioFiltroServicioCobrar($arCobro);
         $form->handleRequest($request);
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->pendienteCobrar($arCobro->getCodigoClienteFk()));
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarServicioCobrar($form);
+                $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->pendienteCobrar($arCobro->getCodigoClienteFk(), $session->get('filtroCodigoCentroTrabajo')));
+            }
             if ($form->get('BtnAgregar')->isClicked()) {
                 //$arrControles = $request->request->All();
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -262,7 +266,6 @@ class CobroController extends Controller {
                 }
             }
         }
-        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->pendienteCobrar($arCobro->getCodigoClienteFk()));
         $arServiciosCobrar = $paginator->paginate($query, $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalleNuevoServicio.html.twig', array(
                     'arServiciosCobrar' => $arServiciosCobrar,
@@ -423,6 +426,44 @@ class CobroController extends Controller {
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->getForm();
+        return $form;
+    }
+    
+    private function filtrarServicioCobrar($form) {
+        $session = new session;
+        $codigoCentroTrabajo = '';
+        if ($form->get('centroTrabajoRel')->getData()) {
+            $codigoCentroTrabajo = $form->get('centroTrabajoRel')->getData()->getCodigoCentroTrabajoPk();
+        }
+        $session->set('filtroCodigoCentroTrabajo', $codigoCentroTrabajo);
+    }
+
+    private function formularioFiltroServicioCobrar() {
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;
+        $arrayPropiedadesCentroTrabajo = array(
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroTrabajo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('ct')
+                                ->orderBy('ct.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+
+        if ($session->get('filtroCodigoCentroTrabajo')) {
+            $arrayPropiedadesCentroTrabajo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroTrabajo", $session->get('filtroCodigoCentroTrabajo'));
+        }
+
+        $form = $this->createFormBuilder()
+                ->add('centroTrabajoRel', EntityType::class, $arrayPropiedadesCentroTrabajo)
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar',))
+                ->add('BtnAgregar', SubmitType::class, array('label' => 'Guardar',))
+                ->getForm();
+
         return $form;
     }
 
