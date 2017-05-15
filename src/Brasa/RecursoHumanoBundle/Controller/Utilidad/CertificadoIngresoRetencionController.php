@@ -415,7 +415,7 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('C' . $i, $arPago->getEmpleadoRel()->getApellido1())
                     ->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getApellido2())
                     ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getNombre1())
-                    ->setCellValue('F' . $i, $arPago->getEmpleadoRel()->getApellido2())
+                    ->setCellValue('F' . $i, $arPago->getEmpleadoRel()->getNombre2())
                     ->setCellValue('G' . $i, $controles['fechaCertificado'] . '-01-01')
                     ->setCellValue('H' . $i, $controles['fechaCertificado'] . '-12-30')
                     ->setCellValue('I' . $i, $strFechaExpedicion)
