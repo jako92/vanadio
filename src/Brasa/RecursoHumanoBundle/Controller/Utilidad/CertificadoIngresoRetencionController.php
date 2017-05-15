@@ -384,26 +384,30 @@ class CertificadoIngresoRetencionController extends Controller {
         foreach ($arPagos as $arPago) {
             $codigoEmpleado = $arPago->getCodigoEmpleadoFk();
             $strFechaExpedicion = $formCertificado->get('fechaExpedicion')->getData();
-            $salud = 0;
-            $pension = 0;
-            $floSalud = 0;
+            $totalSalud = 0;
             $arConceptosSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoSalud' => 1));
             foreach ($arConceptosSalud as $arConceptosSalud) {
                 $codigoConcepto = $arConceptosSalud->getCodigoPagoConceptoPk();
                 $ValorSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
-                $floSalud += $ValorSalud;
+                $totalSalud += $ValorSalud;
             }
-            $floPension = 0;
+            $totalPension = 0;
             $arConceptosPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoPension' => 1));
             foreach ($arConceptosPension as $arConceptosPension) {
                 $codigoConcepto = $arConceptosPension->getCodigoPagoConceptoPk();
                 $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
-                $floPension += $ValorPension;
+                $totalPension += $ValorPension;
             }
             $pagoCesantia = 0;
-            $pagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $totalPagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $otroIngreso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->noPrestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
-            $ingresoBruto = $pagoEmpleado + $otroIngreso;
+            $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
+            if ($arAcumuladoIngresos){
+            $totalPagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
+            $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
+            $totalPension += $arAcumuladoIngresos->getAcumuladoPension();
+            }   
+            $ingresoBruto = $totalPagoEmpleado + $otroIngreso;
 
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPago->getEmpleadoRel()->getCodigoTipoIdentificacionFk())
@@ -417,14 +421,14 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('I' . $i, $strFechaExpedicion)
                     ->setCellValue('J' . $i, substr($arCiudad->getCodigoInterface(), 0, 2))
                     ->setCellValue('K' . $i, substr($arCiudad->getCodigoInterface(), 2, 8))
-                    ->setCellValue('M' . $i, round($pagoEmpleado))
+                    ->setCellValue('M' . $i, round($totalPagoEmpleado))
                     ->setCellValue('N' . $i, round($pagoCesantia))
                     ->setCellValue('O' . $i, round(0))
                     ->setCellValue('P' . $i, round(0))
                     ->setCellValue('Q' . $i, round($otroIngreso))
                     ->setCellValue('R' . $i, round($ingresoBruto))
-                    ->setCellValue('S' . $i, round($floSalud + $salud))
-                    ->setCellValue('T' . $i, round($floPension + $pension))
+                    ->setCellValue('S' . $i, round($totalSalud))
+                    ->setCellValue('T' . $i, round($totalPension))
                     ->setCellValue('U' . $i, round(0))
                     ->setCellValue('V' . $i, round(0));
             $i++;
