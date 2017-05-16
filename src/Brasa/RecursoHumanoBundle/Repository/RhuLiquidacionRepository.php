@@ -502,6 +502,20 @@ class RhuLiquidacionRepository extends EntityRepository {
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         return $arrayResultado;
+    }
+    
+    public function pagoLiquidacionCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT SUM(l.VrTotal) as total FROM BrasaRecursoHumanoBundle:RhuLiquidacion l "
+                . "WHERE l.codigoEmpleadoFk = " . $codigoEmpleado 
+                . "AND l.fechaDesde >= '" . $fechaDesde . "' AND l.fechaDesde <= '" . $fechaHasta . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $totalLiquidacion = $arrayResultado[0]['total'];
+        if ($totalLiquidacion == null) {
+            $totalLiquidacion = 0;
+        }
+        return $totalLiquidacion;
     } 
     
     public function diasPrestaciones($dateFechaDesde, $dateFechaHasta) {

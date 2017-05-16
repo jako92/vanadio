@@ -201,7 +201,6 @@ class CertificadoIngresoRetencionController extends Controller {
                             //$strRutaGeneral = "C:\p";
                             //$strRuta = "C:\p";
                             if ($floPrestacional > 0) {
-
                                 $objFormatoCertificadoIngreso = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCertificadoIngreso();
                                 $objFormatoCertificadoIngreso->Generar($em, $codigoEmpleado, $strFechaExpedicion, $strLugarExpedicion, $strFechaCertificado, $strAfc, $stCertifico1, $stCertifico2, $stCertifico3, $stCertifico4, $stCertifico5, $stCertifico6, $totalPrestacional, $floPension, $floSalud, $datFechaInicio, $datFechaFin, $totalCesantiaseIntereses, $douRetencion, $duoGestosRepresentacion, $douOtrosIngresos, $duoTotalIngresos, $strRuta);
                             }
@@ -371,18 +370,19 @@ class CertificadoIngresoRetencionController extends Controller {
         $datFechaCertificadoInicio = $strFechaCertificado . "-01-01";
         $datFechaCertificadoFin = $strFechaCertificado . "-12-31";
         $query = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->createQueryBuilder('p')
-                ->select('p')
+                ->select('p.codigoEmpleadoFk')
                 ->where('p.fechaDesde >= :fechaDesde')
                 ->andWhere('p.fechaDesde <= :fechaHasta')
                 ->setParameter('fechaDesde', '' . $datFechaCertificadoInicio . '')
                 ->setParameter('fechaHasta', '' . $datFechaCertificadoFin . '')
                 ->groupBy('p.codigoEmpleadoFk')
                 ->getQuery();
-        $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
         $arPagos = $query->getResult();
         $arCiudad = $em->getRepository('BrasaGeneralBundle:GenCiudad')->find($controles['LugarExpedicion']);
         foreach ($arPagos as $arPago) {
-            $codigoEmpleado = $arPago->getCodigoEmpleadoFk();
+            $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arPago['codigoEmpleadoFk']);
+            $codigoEmpleado = $arEmpleado->getCodigoEmpleadoPk();
             $strFechaExpedicion = $formCertificado->get('fechaExpedicion')->getData();
             $totalSalud = 0;
             $arConceptosSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoSalud' => 1));
@@ -398,31 +398,45 @@ class CertificadoIngresoRetencionController extends Controller {
                 $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
                 $totalPension += $ValorPension;
             }
-            $pagoCesantia = 0;
-            $totalPagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $douRetencion = 0;
+            $arConceptosRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoFondoSolidaridadPensional' => 1));
+            foreach ($arConceptosRetencion as $arConceptosRetencion) {
+                $codigoConcepto = $arConceptosRetencion->getCodigoPagoConceptoPk();
+                $ValorRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
+                $douRetencion += $ValorRetencion;
+            }
+            $pagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $otroIngreso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->noPrestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
-            if ($arAcumuladoIngresos){
-            $totalPagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
-            $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
-            $totalPension += $arAcumuladoIngresos->getAcumuladoPension();
-            }   
+            if ($arAcumuladoIngresos) {
+                $pagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
+                $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
+                $totalPension += $arAcumuladoIngresos->getAcumuladoPension();
+            }
+            $arrayPagosPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->pagosPrestacionesCertificadoIngreso($codigoEmpleado, $strFechaCertificado);
+            $valorCesantias = (float) $arrayPagosPrestaciones[0]['cesantias'];
+            $valorInteresesCesantias = (float) $arrayPagosPrestaciones[0]['interesesCesantias'];
+            $valorVacacaciones = (float) $arrayPagosPrestaciones[0]['vacaciones'];
+            $valorPrima = (float) $arrayPagosPrestaciones[0]['prima'];
+            $totalPagoLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagoLiquidacionCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $totalpagoCesantiaseIntereses = $valorCesantias + $valorInteresesCesantias;
+            $totalPagoEmpleado = $pagoEmpleado + $valorVacacaciones + $valorPrima + $totalPagoLiquidacion;
             $ingresoBruto = $totalPagoEmpleado + $otroIngreso;
 
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arPago->getEmpleadoRel()->getCodigoTipoIdentificacionFk())
-                    ->setCellValue('B' . $i, $arPago->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('C' . $i, $arPago->getEmpleadoRel()->getApellido1())
-                    ->setCellValue('D' . $i, $arPago->getEmpleadoRel()->getApellido2())
-                    ->setCellValue('E' . $i, $arPago->getEmpleadoRel()->getNombre1())
-                    ->setCellValue('F' . $i, $arPago->getEmpleadoRel()->getNombre2())
+                    ->setCellValue('A' . $i, $arEmpleado->getCodigoTipoIdentificacionFk())
+                    ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
+                    ->setCellValue('C' . $i, $arEmpleado->getApellido1())
+                    ->setCellValue('D' . $i, $arEmpleado->getApellido2())
+                    ->setCellValue('E' . $i, $arEmpleado->getNombre1())
+                    ->setCellValue('F' . $i, $arEmpleado->getNombre2())
                     ->setCellValue('G' . $i, $controles['fechaCertificado'] . '-01-01')
                     ->setCellValue('H' . $i, $controles['fechaCertificado'] . '-12-30')
                     ->setCellValue('I' . $i, $strFechaExpedicion)
                     ->setCellValue('J' . $i, substr($arCiudad->getCodigoInterface(), 0, 2))
                     ->setCellValue('K' . $i, substr($arCiudad->getCodigoInterface(), 2, 8))
                     ->setCellValue('M' . $i, round($totalPagoEmpleado))
-                    ->setCellValue('N' . $i, round($pagoCesantia))
+                    ->setCellValue('N' . $i, round($totalpagoCesantiaseIntereses))
                     ->setCellValue('O' . $i, round(0))
                     ->setCellValue('P' . $i, round(0))
                     ->setCellValue('Q' . $i, round($otroIngreso))
@@ -430,7 +444,7 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('S' . $i, round($totalSalud))
                     ->setCellValue('T' . $i, round($totalPension))
                     ->setCellValue('U' . $i, round(0))
-                    ->setCellValue('V' . $i, round(0));
+                    ->setCellValue('V' . $i, round($douRetencion));
             $i++;
         }
 

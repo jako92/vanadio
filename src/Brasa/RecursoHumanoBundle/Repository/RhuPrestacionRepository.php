@@ -194,5 +194,18 @@ class RhuPrestacionRepository extends EntityRepository {
                              'totalIntereses' => $douInteresesCesantias,
                              'fechaDesde' => $dateFechaDesde);
         return $arrCesantia;
-    }    
+    }
+    
+    public function pagosPrestacionesCertificadoIngreso($codigoEmpleado, $strFechaCertificado) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT SUM(p.VrCesantias) AS cesantias, SUM(p.VrInteresesCesantias) AS interesesCesantias, SUM(p.VrVacaciones) AS vacaciones, "
+                . " SUM(p.VrPrima) AS prima FROM BrasaRecursoHumanoBundle:RhuPrestacion p"
+                . " WHERE p.codigoEmpleadoFk =  '" . $codigoEmpleado . "' AND p.anio <= '" . $strFechaCertificado . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        /*if($arrayResultado == null){
+            $arrayResultado = array("0"=>array('cesantias'=>0, 'interesesCesantias','vacaciones'=>0,'prima'=>0));
+        }*/
+        return $arrayResultado;
+    }
 }

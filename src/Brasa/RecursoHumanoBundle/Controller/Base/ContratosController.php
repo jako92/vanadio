@@ -283,7 +283,7 @@ class ContratosController extends Controller {
                 $boolValidarTipoContrato = FALSE;
             }
 
-            if ($arContrato->getContratoTipoRel()->getCodigoContratoClaseFk() == 5 && ($arContrato->getSsoTipoCotizanteRel()->getCodigoTipoCotizantePk() != 23 || $arContrato->getSsoSubtipoCotizanteRel()->getCodigoSubtipoCotizantePk() != 0)) {
+            if (($arContrato->getContratoTipoRel()->getCodigoContratoClaseFk() == 5 && ($arContrato->getSsoTipoCotizanteRel()->getCodigoTipoCotizantePk() != 23 && $arContrato->getSsoTipoCotizanteRel()->getCodigoTipoCotizantePk() != 20 || $arContrato->getSsoSubtipoCotizanteRel()->getCodigoSubtipoCotizantePk() != 0))) {
                 $boolValidarTipoContrato = FALSE;
             }
             if ($arContrato->getSalarioIntegral() == true) {
