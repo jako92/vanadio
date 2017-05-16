@@ -46,7 +46,7 @@ class CartaLaboralController extends Controller
                 $codigoCartaTipo = $arConfiguracion->getCodigoFormatoCarta();
                 if ($codigoCartaTipo == 0){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
                 }
                 if ($codigoCartaTipo == 1){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
