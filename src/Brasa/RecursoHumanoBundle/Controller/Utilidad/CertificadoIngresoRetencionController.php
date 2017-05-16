@@ -404,8 +404,6 @@ class CertificadoIngresoRetencionController extends Controller {
             $totalRetencionFuente = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->retencionFuenteCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arrayPrestacionesSociales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->devuelvePrestacionesSocialesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $floCesantiaseInteresesLiquidadas = (float) $arrayPrestacionesSociales[0]['Cesantias'] + $arrayPrestacionesSociales[0]['InteresesCesantias'] + $arrayPrestacionesSociales[0]['CesantiasAnterior'] + $arrayPrestacionesSociales[0]['InteresesCesantiasAnterior'];
-            $valorPrimaLiquidadas = (float) $arrayPrestacionesSociales[0]['Prima'];
-            $floVacacionesLiquidadas = (float) $arrayPrestacionesSociales[0]['Vacaciones'];
             //Consultar si tiene acumulado de meses anteriores.
             $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
             if ($arAcumuladoIngresos) {
@@ -416,7 +414,7 @@ class CertificadoIngresoRetencionController extends Controller {
             $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $valorVacacaciones = (float) $arrayVacaciones[0]['Vacaciones'];
             $totalPagoLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagoLiquidacionCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
-            $totalPagoEmpleado = $pagoEmpleado + $valorVacacaciones + $valorPrimasPagadas + $valorPrimaLiquidadas + $totalPagoLiquidacion + $floVacacionesLiquidadas;
+            $totalPagoEmpleado = $pagoEmpleado + $valorVacacaciones + $valorPrimasPagadas + $totalPagoLiquidacion ;
             $ingresoBruto = $totalPagoEmpleado + $otroIngreso;
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoTipoIdentificacionFk())
