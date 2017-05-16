@@ -108,6 +108,11 @@ class RhuPagoConcepto
     private $conceptoCesantia = false;
     
     /**
+     * @ORM\Column(name="concepto_retencion", type="boolean")
+     */    
+    private $conceptoRetencion = false;
+    
+    /**
      * @ORM\Column(name="codigo_cuenta_fk", type="string", length=20, nullable=true)
      */     
     private $codigoCuentaFk;     
@@ -1516,5 +1521,29 @@ class RhuPagoConcepto
     public function getConceptoCesantia()
     {
         return $this->conceptoCesantia;
+    }
+
+    /**
+     * Set conceptoRetencion
+     *
+     * @param boolean $conceptoRetencion
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoRetencion($conceptoRetencion)
+    {
+        $this->conceptoRetencion = $conceptoRetencion;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoRetencion
+     *
+     * @return boolean
+     */
+    public function getConceptoRetencion()
+    {
+        return $this->conceptoRetencion;
     }
 }

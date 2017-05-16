@@ -398,16 +398,11 @@ class CertificadoIngresoRetencionController extends Controller {
                 $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
                 $totalPension += $ValorPension;
             }
-            $douRetencion = 0;
-            $arConceptosRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConcepto')->findBy(array('conceptoFondoSolidaridadPensional' => 1));
-            foreach ($arConceptosRetencion as $arConceptosRetencion) {
-                $codigoConcepto = $arConceptosRetencion->getCodigoPagoConceptoPk();
-                $ValorRetencion = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->devuelveRetencionFuenteEmpleadoFecha($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
-                $douRetencion += $ValorRetencion;
-            }
             $pagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $otroIngreso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->noPrestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $totalRetencionFuente = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->retencionFuenteCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
+            
             if ($arAcumuladoIngresos) {
                 $pagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
                 $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
@@ -444,7 +439,7 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('S' . $i, round($totalSalud))
                     ->setCellValue('T' . $i, round($totalPension))
                     ->setCellValue('U' . $i, round(0))
-                    ->setCellValue('V' . $i, round($douRetencion));
+                    ->setCellValue('V' . $i, round($totalRetencionFuente));
             $i++;
         }
 

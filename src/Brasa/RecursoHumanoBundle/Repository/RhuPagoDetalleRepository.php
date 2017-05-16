@@ -308,6 +308,20 @@ class RhuPagoDetalleRepository extends EntityRepository {
         return $vrPension;
     }
     
+    public function retencionFuenteCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT SUM(pd.vrPago) as retencion FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN pd.pagoConceptoRel pc "
+                . "WHERE p.estadoPagado = 1 AND pc.conceptoRetencion = 1 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $vrRetencion = $arrayResultado[0]['retencion'];
+        if ($vrRetencion == null) {
+            $vrRetencion = 0;
+        }
+        return $vrRetencion;
+    }
+    
     public function prestacionalCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
         $em = $this->getEntityManager();
         $dql = "SELECT SUM(pd.vrPago) as prestacional FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN pd.pagoConceptoRel pc "
