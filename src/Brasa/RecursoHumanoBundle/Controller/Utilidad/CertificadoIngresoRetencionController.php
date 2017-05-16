@@ -402,16 +402,17 @@ class CertificadoIngresoRetencionController extends Controller {
             $otroIngreso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->noPrestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $totalRetencionFuente = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->retencionFuenteCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
-            
+            //Consultar si tiene acumulado de meses anteriores.
             if ($arAcumuladoIngresos) {
                 $pagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
                 $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
                 $totalPension += $arAcumuladoIngresos->getAcumuladoPension();
             }
+            $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $arrayPagosPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->pagosPrestacionesCertificadoIngreso($codigoEmpleado, $strFechaCertificado);
             $valorCesantias = (float) $arrayPagosPrestaciones[0]['cesantias'];
             $valorInteresesCesantias = (float) $arrayPagosPrestaciones[0]['interesesCesantias'];
-            $valorVacacaciones = (float) $arrayPagosPrestaciones[0]['vacaciones'];
+            $valorVacacaciones = (float) $arrayVacaciones[0]['Vacaciones'];
             $valorPrima = (float) $arrayPagosPrestaciones[0]['prima'];
             $totalPagoLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagoLiquidacionCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $totalpagoCesantiaseIntereses = $valorCesantias + $valorInteresesCesantias;
