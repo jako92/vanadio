@@ -379,7 +379,9 @@ class AcreditacionController extends Controller
                     ->setCellValue('M1', 'ACREDITADO')
                     ->setCellValue('N1', 'FECHA')
                     ->setCellValue('O1', 'VENCE')
-                    ->setCellValue('P1', 'CONTRATO ACTIVO');
+                    ->setCellValue('P1', 'CONTRATO ACTIVO')
+                    ->setCellValue('Q1', 'ZONA')
+                    ->setCellValue('R1', 'SUBZONA');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -398,7 +400,9 @@ class AcreditacionController extends Controller
                     ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoValidado()))
                     ->setCellValue('K' . $i, $arAcreditacion->getNumeroValidacion())                    
                     ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoAcreditado()))
-                    ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEmpleadoRel()->getEstadoContratoActivo()));
+                    ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEmpleadoRel()->getEstadoContratoActivo()))
+                    ->setCellValue('Q' . $i, $arAcreditacion->getEmpleadoRel()->getZonaRel()->getNombre())
+                    ->setCellValue('R' . $i, $arAcreditacion->getEmpleadoRel()->getSubzonaRel()->getNombre());
             if($arAcreditacion->getCodigoAcreditacionRechazoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arAcreditacion->getAcreditacionRechazoRel()->getNombre());
             }

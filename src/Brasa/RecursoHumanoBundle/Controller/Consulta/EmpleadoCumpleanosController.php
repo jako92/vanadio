@@ -35,11 +35,10 @@ class EmpleadoCumpleanosController extends Controller {
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnExcel')->isClicked()) {
-               
+
                 $this->filtrarLista($form);
                 $this->listar();
                 $this->generarExcel();
-                
             }
         }
         //$arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
@@ -59,7 +58,7 @@ class EmpleadoCumpleanosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $form = $this->createFormBuilder()
-                ->add('Mes', TextType::class, array('label' => 'Mes','attr' => array('require' => 'true')))
+                ->add('Mes', TextType::class, array('label' => 'Mes', 'attr' => array('require' => 'true')))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
         return $form;
@@ -97,7 +96,9 @@ class EmpleadoCumpleanosController extends Controller {
                 ->setCellValue('B1', 'CEDULA')
                 ->setCellValue('C1', 'NOMBRE EMPLEADO')
                 ->setCellValue('D1', 'FECHA NACIMIENTO')
-                ->setCellValue('E1', 'GRUPO PAGO');
+                ->setCellValue('E1', 'GRUPO PAGO')
+                ->setCellValue('F1', 'ZONA')
+                ->setCellValue('G1', 'SUBZONA');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
@@ -106,18 +107,28 @@ class EmpleadoCumpleanosController extends Controller {
 
         foreach ($arEmpleados as $arEmpleado) {
             if ($arEmpleado->getFechaNacimiento()->format('n') == $session->get('filtroMes')) {
-                if($arEmpleado->getCentroCostoRel() == null){
-                 $centroCosto = "";           
-                }else{
+                if ($arEmpleado->getCentroCostoRel() == null) {
+                    $centroCosto = "";
+                } else {
                     $centroCosto = $arEmpleado->getCentroCostoRel()->getNombre();
+                }
+                $zona = "";
+                if ($arEmpleado->getCodigoZonaFk() != null) {
+                    $zona = $arEmpleado->getZonaRel()->getNombre();
+                }
+                $subZona = "";
+                if ($arEmpleado->getCodigoSubzonaFk() != null) {
+                    $subZona = $arEmpleado->getSubzonaRel()->getNombre();
                 }
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                         ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
                         ->setCellValue('C' . $i, $arEmpleado->getNombreCorto())
                         ->setCellValue('D' . $i, $arEmpleado->getFechaNacimiento()->format("Y/m/d"))
-                        ->setCellValue('E' . $i, $centroCosto);
-                  
+                        ->setCellValue('E' . $i, $centroCosto)
+                        ->setCellValue('F' . $i, $zona)
+                        ->setCellValue('G' . $i, $subZona);
+
                 $i++;
             }
         }

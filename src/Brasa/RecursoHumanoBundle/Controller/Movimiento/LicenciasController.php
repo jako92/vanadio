@@ -252,7 +252,9 @@ class LicenciasController extends Controller {
                 ->setCellValue('E1', 'LICENCIA')
                 ->setCellValue('F1', 'DESDE')
                 ->setCellValue('G1', 'HASTA')
-                ->setCellValue('H1', 'DÍAS');
+                ->setCellValue('H1', 'DÍAS')
+                ->setCellValue('I1', 'ZONA')
+                ->setCellValue('J1', 'SUBZONA');
 
         $i = 2;
         $arLicencias = new \Brasa\RecursoHumanoBundle\Entity\RhuLicencia();
@@ -263,6 +265,14 @@ class LicenciasController extends Controller {
             if ($arLicencia->getCodigoCentroCostoFk() != null) {
                 $centroCosto = $arLicencia->getCentroCostoRel()->getNombre();
             }
+            $zona = "";
+            if($arLicencia->getEmpleadoRel()->getCodigoZonaFk() != null){
+                $zona = $arLicencia->getEmpleadoRel()->getZonaRel()->getNombre();
+            }
+            $subZona = "";
+            if($arLicencia->getEmpleadoRel()->getCodigoSubzonaFk() != null){
+                $subZona = $arLicencia->getEmpleadoRel()->getSubzonaRel()->getNombre();
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arLicencia->getCodigoLicenciaPk())
                     ->setCellValue('B' . $i, $arLicencia->getEmpleadoRel()->getnumeroIdentificacion())
@@ -271,7 +281,9 @@ class LicenciasController extends Controller {
                     ->setCellValue('E' . $i, $arLicencia->getLicenciaTipoRel()->getNombre())
                     ->setCellValue('F' . $i, $arLicencia->getFechaDesde()->format('Y-m-d'))
                     ->setCellValue('G' . $i, $arLicencia->getFechaHasta()->format('Y-m-d'))
-                    ->setCellValue('H' . $i, $arLicencia->getCantidad());
+                    ->setCellValue('H' . $i, $arLicencia->getCantidad())
+                    ->setCellValue('I' . $i, $zona)
+                    ->setCellValue('J' . $i, $subZona);
             $i++;
         }
 
