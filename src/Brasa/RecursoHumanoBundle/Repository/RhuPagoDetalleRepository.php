@@ -339,7 +339,7 @@ class RhuPagoDetalleRepository extends EntityRepository {
     public function noPrestacionalCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
         $em = $this->getEntityManager();
         $dql = "SELECT SUM(pd.vrPago) as noPrestacional FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN pd.pagoConceptoRel pc "
-                . "WHERE p.estadoPagado = 1 AND pd.operacion = '1' AND pc.conceptoCesantia = 0 AND pc.prestacional= 0 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "WHERE p.estadoPagado = 1 AND pd.operacion = '1' AND pc.conceptoCesantia = 0 AND pc.prestacional= 0 AND p.codigoPagoTipoFk != 2 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
@@ -348,6 +348,20 @@ class RhuPagoDetalleRepository extends EntityRepository {
             $vrPagoNoPrestacional = 0;
         }
         return $vrPagoNoPrestacional;
+    }
+    
+    public function primaPagadasCertificadoIngreso($codigoEmpleado, $fechaDesde, $fechaHasta) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT SUM(pd.vrPago) as prima FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p JOIN pd.pagoConceptoRel pc "
+                . "WHERE p.estadoPagado = 1 AND p.codigoPagoTipoFk = 2 AND p.codigoEmpleadoFk = " . $codigoEmpleado . " "
+                . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "'";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        $vrPrimaPagadas = $arrayResultado[0]['prima'];
+        if ($vrPrimaPagadas == null) {
+            $vrPrimaPagadas = 0;
+        }
+        return $vrPrimaPagadas;
     }
 
     //Este no incluye concepto de auxilio transporte

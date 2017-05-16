@@ -400,25 +400,24 @@ class CertificadoIngresoRetencionController extends Controller {
             }
             $pagoEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->prestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $otroIngreso = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->noPrestacionalCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $valorPrimasPagadas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->primaPagadasCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
             $totalRetencionFuente = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->retencionFuenteCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
-            $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
+            $arrayPrestacionesSociales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->devuelvePrestacionesSocialesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
+            $floCesantiaseInteresesLiquidadas = (float) $arrayPrestacionesSociales[0]['Cesantias'] + $arrayPrestacionesSociales[0]['InteresesCesantias'] + $arrayPrestacionesSociales[0]['CesantiasAnterior'] + $arrayPrestacionesSociales[0]['InteresesCesantiasAnterior'];
+            $valorPrimaLiquidadas = (float) $arrayPrestacionesSociales[0]['Prima'];
+            $floVacacionesLiquidadas = (float) $arrayPrestacionesSociales[0]['Vacaciones'];
             //Consultar si tiene acumulado de meses anteriores.
+            $arAcumuladoIngresos = $em->getRepository('BrasaRecursoHumanoBundle:RhuCertificadoIngresoAcumulado')->findOneBy(array('codigoEmpleadoFk' => $codigoEmpleado, 'periodo' => $strFechaCertificado));
             if ($arAcumuladoIngresos) {
                 $pagoEmpleado += $arAcumuladoIngresos->getAcumuladoIbp();
                 $totalSalud += $arAcumuladoIngresos->getAcumuladoSalud();
                 $totalPension += $arAcumuladoIngresos->getAcumuladoPension();
             }
             $arrayVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->devuelveVacacionesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
-            $arrayPagosPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->pagosPrestacionesCertificadoIngreso($codigoEmpleado, $strFechaCertificado);
-            $valorCesantias = (float) $arrayPagosPrestaciones[0]['cesantias'];
-            $valorInteresesCesantias = (float) $arrayPagosPrestaciones[0]['interesesCesantias'];
             $valorVacacaciones = (float) $arrayVacaciones[0]['Vacaciones'];
-            $valorPrima = (float) $arrayPagosPrestaciones[0]['prima'];
             $totalPagoLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagoLiquidacionCertificadoIngreso($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
-            $totalpagoCesantiaseIntereses = $valorCesantias + $valorInteresesCesantias;
-            $totalPagoEmpleado = $pagoEmpleado + $valorVacacaciones + $valorPrima + $totalPagoLiquidacion;
+            $totalPagoEmpleado = $pagoEmpleado + $valorVacacaciones + $valorPrimasPagadas + $valorPrimaLiquidadas + $totalPagoLiquidacion + $floVacacionesLiquidadas;
             $ingresoBruto = $totalPagoEmpleado + $otroIngreso;
-
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoTipoIdentificacionFk())
                     ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
@@ -432,7 +431,7 @@ class CertificadoIngresoRetencionController extends Controller {
                     ->setCellValue('J' . $i, substr($arCiudad->getCodigoInterface(), 0, 2))
                     ->setCellValue('K' . $i, substr($arCiudad->getCodigoInterface(), 2, 8))
                     ->setCellValue('M' . $i, round($totalPagoEmpleado))
-                    ->setCellValue('N' . $i, round($totalpagoCesantiaseIntereses))
+                    ->setCellValue('N' . $i, round($floCesantiaseInteresesLiquidadas))
                     ->setCellValue('O' . $i, round(0))
                     ->setCellValue('P' . $i, round(0))
                     ->setCellValue('Q' . $i, round($otroIngreso))
