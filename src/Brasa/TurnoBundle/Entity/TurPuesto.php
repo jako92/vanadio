@@ -23,7 +23,7 @@ class TurPuesto
     private $nombre;      
             
     /**
-     * @ORM\Column(name="direccion", type="string", length=80, nullable=true)
+     * @ORM\Column(name="direccion", type="string", length=300, nullable=true)
      */
     private $direccion;    
     
