@@ -211,7 +211,7 @@ class TurServicioRepository extends EntityRepository {
                 $subTotalDetalle = $floVrServicio;
                 $baseAiuDetalle = $subTotalDetalle*10/100;
                 $baseAiuDetalle = $baseAiuDetalle;
-                $ivaDetalle = $baseAiuDetalle*16/100;
+                $ivaDetalle = $baseAiuDetalle*19/100;
                 $ivaDetalle = $ivaDetalle;
                 $totalDetalle = $subTotalDetalle + $ivaDetalle;
                 $totalDetalle = $totalDetalle;
