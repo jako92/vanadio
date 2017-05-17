@@ -388,6 +388,8 @@ class AcreditacionController extends Controller
         $arAcreditaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacion();
         $arAcreditaciones = $query->getResult();
         foreach ($arAcreditaciones as $arAcreditacion) {
+            if($arAcreditacion->getEmpleadoRel()->getZonaRel()){$zonaEmpleado = $arAcreditacion->getEmpleadoRel()->getZonaRel()->getNombre();}else {$zonaEmpleado = "";}
+            if($arAcreditacion->getEmpleadoRel()->getSubzonaRel()){$subZonaEmpleado = $arAcreditacion->getEmpleadoRel()->getSubzonaRel()->getNombre();}else {$subZonaEmpleado = "";}
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arAcreditacion->getCodigoAcreditacionPk())
                     ->setCellValue('B' . $i, $arAcreditacion->getEmpleadoRel()->getnumeroIdentificacion())
@@ -401,8 +403,8 @@ class AcreditacionController extends Controller
                     ->setCellValue('K' . $i, $arAcreditacion->getNumeroValidacion())                    
                     ->setCellValue('M' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEstadoAcreditado()))
                     ->setCellValue('P' . $i, $objFunciones->devuelveBoolean($arAcreditacion->getEmpleadoRel()->getEstadoContratoActivo()))
-                    ->setCellValue('Q' . $i, $arAcreditacion->getEmpleadoRel()->getZonaRel()->getNombre())
-                    ->setCellValue('R' . $i, $arAcreditacion->getEmpleadoRel()->getSubzonaRel()->getNombre());
+                    ->setCellValue('Q' . $i, $zonaEmpleado)
+                    ->setCellValue('R' . $i, $subZonaEmpleado);
             if($arAcreditacion->getCodigoAcreditacionRechazoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arAcreditacion->getAcreditacionRechazoRel()->getNombre());
             }
