@@ -337,7 +337,15 @@
                         </tr>
                     {% endfor %}
                 </table> 
-                <div class="btn-toolbar" style="float: right">                              
+                <div class="btn-toolbar" style="float: left">
+                    <div class="btn-group" style="float: left">
+                        <div class="btn btn-default btn-sm">Recursos <span class="badge">{{ arServicioDetalleRecursos.getTotalItemCount }}</span></div>                        
+                    </div>
+                    <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+                        {{ knp_pagination_render(arServicioDetalleRecursos) }}       
+                    </div>
+                </div>  
+                <div class="btn-toolbar" style="float: right">
                     <div class="btn-group">
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_recurso_nuevo', {'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>                        
                     </div>
