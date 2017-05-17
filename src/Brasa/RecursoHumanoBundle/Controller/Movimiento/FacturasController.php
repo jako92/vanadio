@@ -399,14 +399,8 @@ class FacturasController extends Controller
         if($form->get('clienteRel')->getData()) {
             $codigoCliente = $form->get('clienteRel')->getData()->getCodigoClientePk();
         }        
-        $session->set('filtroCodigoCliente', $codigoCliente);
-        $codigoCentroCosto = '';
-        if($form->get('centroCostoRel')->getData()) {
-            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
-        }
-        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto); 
+        $session->set('filtroCodigoCliente', $codigoCliente); 
         $session->set('filtroNumero', $form->get('TxtNumero')->getData());
-               
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         if ($form->get('fechaDesde')->getData() == null || $form->get('fechaHasta')->getData() == null){
