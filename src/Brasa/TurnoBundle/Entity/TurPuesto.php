@@ -18,12 +18,12 @@ class TurPuesto
     private $codigoPuestoPk;        
     
     /**
-     * @ORM\Column(name="nombre", type="string", length=65)
+     * @ORM\Column(name="nombre", type="string", length=300)
      */
     private $nombre;      
             
     /**
-     * @ORM\Column(name="direccion", type="string", length=300, nullable=true)
+     * @ORM\Column(name="direccion", type="string", length=80, nullable=true)
      */
     private $direccion;    
     
