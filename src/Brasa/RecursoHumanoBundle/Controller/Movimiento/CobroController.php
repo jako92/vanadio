@@ -38,12 +38,17 @@ class CobroController extends Controller {
                     foreach ($arrSeleccionados AS $codigoCobro) {
                         $arSelecciones = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
                         $arSelecciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
-                        $arCobrosDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobroDetalle')->devuelveNumeroCobrosDetalle($codigoCobro);
-                        if ($arCobrosDetalle == 0) {
-                            $em->remove($arSelecciones);
-                            $em->flush();
+                        $arCobrosDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->findBy(array('codigoCobroPk'=>$codigoCobro,'numeroRegistros'=>0));
+                        $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoCobroFk'=>$codigoCobro));
+                        if ($arCobrosDetalle) {
+                            if($arFacturaDetalle == null){
+                                $em->remove($arSelecciones);
+                                $em->flush();
+                            }else{
+                                $objMensaje->Mensaje("error", "No se puede eliminar el cobro, tiene facturas generadas");
+                            }
                         } else {
-                            $objMensaje->Mensaje("error", "No se puede eliminar la cobro, tiene registros liquidados");
+                            $objMensaje->Mensaje("error", "No se puede eliminar el cobro, tiene registros liquidados");
                         }
                     }
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_lista'));
