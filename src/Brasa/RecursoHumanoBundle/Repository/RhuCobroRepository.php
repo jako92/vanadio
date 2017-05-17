@@ -11,8 +11,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuCobroRepository extends EntityRepository {
 
-    public function listaDql() {
+    public function listaDql($strCodigoCliente="",$strCodigoCentroCosto="",$strDesde = "",$strHasta = "") {
         $dql = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCobro c WHERE c.codigoCobroPk <> 0";
+        if($strCodigoCliente != "") {
+            $dql .= " AND c.codigoClienteFk = " . $strCodigoCliente;
+        }
+        if($strCodigoCentroCosto != "") {
+            $dql .= " AND c.codigoCentroCostoFk = " . $strCodigoCentroCosto;
+        }
+        if ($strDesde != ""){
+            $dql .= " AND c.fecha >='" . $strDesde . "'";
+        }
+        if($strHasta != "") {
+            $dql .= " AND c.fecha <='" . $strHasta . "'";
+        }
         $dql .= " ORDER BY c.codigoCobroPk DESC";
         return $dql;
     }

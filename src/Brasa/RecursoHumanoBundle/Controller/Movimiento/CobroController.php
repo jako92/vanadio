@@ -360,7 +360,12 @@ class CobroController extends Controller {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->listaDql(
-        );
+                $session->get('filtroCodigoCliente'),
+                $session->get('filtroCodigoCentroCosto'),
+                $session->get('filtroNumero'),
+                $session->get('filtroDesde'),
+                $session->get('filtroHasta')
+                );
     }
 
     private function filtrar($form) {
@@ -375,7 +380,6 @@ class CobroController extends Controller {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
-        $session->set('filtroNumero', $form->get('TxtNumero')->getData());
 
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -426,7 +430,6 @@ class CobroController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('clienteRel', EntityType::class, $arrayPropiedadesClientes)
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
-                ->add('TxtNumero', TextType::class, array('label' => 'Numero', 'data' => $session->get('filtroNumero')))
                 ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
