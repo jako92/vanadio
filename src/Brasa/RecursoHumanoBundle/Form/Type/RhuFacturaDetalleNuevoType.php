@@ -21,10 +21,12 @@ class RhuFacturaDetalleNuevoType extends AbstractType
                     return $er->createQueryBuilder('fc')                    
                     ->orderBy('fc.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))  
+                'required' => true))
             ->add('cantidad', NumberType::class)                            
             ->add('vrPrecio', NumberType::class)
-            ->add('detalle', TextareaType::class) 
+            ->add('VrOperacion', NumberType::class)
+            ->add('VrAdministracion', NumberType::class)
+            ->add('detalle', TextareaType::class,array('required'=>false)) 
             ->add('guardar', SubmitType::class);
     }
 

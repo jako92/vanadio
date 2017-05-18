@@ -664,6 +664,8 @@ class FacturasController extends Controller
             foreach ($arrControles['LblCodigo'] as $intCodigo) {
                 $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
                 $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($intCodigo);
+                $arFacturaDetalle->setVrOperacion($arrControles['TxtOperacion' . $intCodigo]);
+                $arFacturaDetalle->setVrAdministracion($arrControles['TxtAdministracion' . $intCodigo]); 
                 $arFacturaDetalle->setCantidad($arrControles['TxtCantidad' . $intCodigo]);
                 $arFacturaDetalle->setVrPrecio($arrControles['TxtPrecio' . $intCodigo]);                
                 $em->persist($arFacturaDetalle);
