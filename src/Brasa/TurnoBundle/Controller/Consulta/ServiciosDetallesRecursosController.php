@@ -62,7 +62,7 @@ class ServiciosDetallesRecursosController extends Controller {
 
     private function filtrar($form) {
         $session = new session;
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
         $session->set('filtroCodigoRecurso', $form->get('TxtCodigoRecurso')->getData());
     }
 
@@ -70,17 +70,13 @@ class ServiciosDetallesRecursosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
         }
         $strNombreRecurso = "";
         if ($session->get('filtroCodigoRecurso')) {
@@ -92,7 +88,7 @@ class ServiciosDetallesRecursosController extends Controller {
             }
         }
         $form = $this->createFormBuilder()
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('TxtCodigoRecurso', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoRecurso')))
                 ->add('TxtNombreRecurso', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreRecurso))

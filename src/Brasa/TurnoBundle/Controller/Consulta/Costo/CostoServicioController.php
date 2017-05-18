@@ -84,7 +84,7 @@ class CostoServicioController extends Controller {
 
     private function filtrar($form) {
         $session = new session;
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
         $session->set('filtroCodigoPuesto', $form->get('TxtCodigoPuesto')->getData());
         $session->set('filtroTurMes', $form->get('TxtMes')->getData());
         $session->set('filtroTurAnio', $form->get('TxtAnio')->getData());
@@ -94,17 +94,13 @@ class CostoServicioController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
         }
         $strNombrePuesto = "";
         if ($session->get('filtroCodigoPuesto')) {
@@ -116,7 +112,7 @@ class CostoServicioController extends Controller {
             }
         }
         $form = $this->createFormBuilder()
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('TxtCodigoPuesto', TextType::class, array('data' => $session->get('filtroCodigoPuesto')), 'required')
                 ->add('TxtNombrePuesto', TextType::class, array('data' => $strNombrePuesto))

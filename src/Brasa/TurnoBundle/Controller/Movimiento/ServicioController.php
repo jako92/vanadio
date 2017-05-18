@@ -71,6 +71,7 @@ class ServicioController extends Controller {
      */
     public function nuevoAction(Request $request, $codigoServicio) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();
         if ($codigoServicio != 0) {
             $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
@@ -83,7 +84,7 @@ class ServicioController extends Controller {
                 $arrControles = $request->request->All();
                 if ($arrControles['txtNit'] != '') {
                     $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));
+                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
                         $fecha = date('Y/m/j');
                         $nuevafecha = strtotime('-1 month', strtotime($fecha));
@@ -627,7 +628,7 @@ class ServicioController extends Controller {
         $session->set('filtroServicioCodigo', $form->get('TxtCodigo')->getData());
         $session->set('filtroServicioEstadoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroServicioEstadoCerrado', $form->get('estadoCerrado')->getData());
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
     }
 
     private function filtrarRecurso($form) {
@@ -640,20 +641,16 @@ class ServicioController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
         }
         $form = $this->createFormBuilder()
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroServicioCodigo')))
                 ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroServicioEstadoAutorizado')))

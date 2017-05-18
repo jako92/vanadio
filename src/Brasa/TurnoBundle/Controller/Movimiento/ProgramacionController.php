@@ -81,7 +81,7 @@ class ProgramacionController extends Controller {
                 $arrControles = $request->request->All();
                 if ($arrControles['txtNit'] != '') {
                     $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));
+                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
                         $arProgramacion->setClienteRel($arCliente);
                         $arUsuario = $this->getUser();
@@ -492,7 +492,7 @@ class ProgramacionController extends Controller {
         $session->set('filtroProgramacionCodigo', $form->get('TxtCodigo')->getData());
         $session->set('filtroProgramacionEstadoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroProgramacionEstadoAnulado', $form->get('estadoAnulado')->getData());
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroProgramacionFechaDesde', $dateFechaDesde->format('Y/m/d'));
@@ -504,17 +504,13 @@ class ProgramacionController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
         }
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
@@ -529,7 +525,7 @@ class ProgramacionController extends Controller {
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroProgramacionCodigo')))
                 ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroProgramacionEstadoAutorizado')))

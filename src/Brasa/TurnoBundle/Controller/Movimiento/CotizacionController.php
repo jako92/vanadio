@@ -82,7 +82,7 @@ class CotizacionController extends Controller {
                 $arrControles = $request->request->All();
                 $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
                 if ($arrControles['txtNit'] != '') {
-                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));
+                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
                         $arCotizacion->setClienteRel($arCliente);
                     }
@@ -284,29 +284,25 @@ class CotizacionController extends Controller {
         $session = new session;
         $session->set('filtroCotizacionNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroCotizacionEstadoAutorizado', $form->get('estadoAutorizado')->getData());
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
         }
 
         $form = $this->createFormBuilder()
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCotizacionNumero')))
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroCotizacionEstadoAutorizado')))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))

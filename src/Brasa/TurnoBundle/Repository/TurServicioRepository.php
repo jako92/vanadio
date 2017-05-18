@@ -30,7 +30,7 @@ class TurServicioRepository extends EntityRepository {
         if($fechaGeneracion != '') {
             $dql .= " AND s.fechaGeneracion < '" . $fechaGeneracion . "'";
         }
-        $dql .= " ORDER BY s.codigoServicioPk";
+        $dql .= " ORDER BY s.codigoServicioPk DESC";
         return $dql;
     }
 
