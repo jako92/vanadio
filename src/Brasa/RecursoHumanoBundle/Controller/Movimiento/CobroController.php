@@ -362,7 +362,6 @@ class CobroController extends Controller {
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->listaDql(
                 $session->get('filtroCodigoCliente'),
                 $session->get('filtroCodigoCentroCosto'),
-                $session->get('filtroNumero'),
                 $session->get('filtroDesde'),
                 $session->get('filtroHasta')
                 );
