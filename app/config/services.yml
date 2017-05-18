@@ -33,3 +33,9 @@ services:
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Incapacidad tipo }            
+            
+    admin.recursohumano.facturaconcepto:
+        class: Brasa\RecursoHumanoBundle\Admin\FacturaConceptoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuFacturaConcepto, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Factura concepto }             
