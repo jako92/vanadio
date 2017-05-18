@@ -35,7 +35,17 @@ class TurContrato
     /**
      * @ORM\Column(name="valor", type="float")
      */
-    private $valor = 0;    
+    private $valor = 0;
+    
+    /**
+     * @ORM\Column(name="fecha_desde", type="date", nullable=true)
+     */    
+    private $fechaDesde;
+    
+    /**
+     * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
+     */    
+    private $fechaHasta;
     
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
@@ -202,5 +212,53 @@ class TurContrato
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set fechaDesde
+     *
+     * @param \DateTime $fechaDesde
+     *
+     * @return TurContrato
+     */
+    public function setFechaDesde($fechaDesde)
+    {
+        $this->fechaDesde = $fechaDesde;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesde
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesde()
+    {
+        return $this->fechaDesde;
+    }
+
+    /**
+     * Set fechaHasta
+     *
+     * @param \DateTime $fechaHasta
+     *
+     * @return TurContrato
+     */
+    public function setFechaHasta($fechaHasta)
+    {
+        $this->fechaHasta = $fechaHasta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHasta
+     *
+     * @return \DateTime
+     */
+    public function getFechaHasta()
+    {
+        return $this->fechaHasta;
     }
 }

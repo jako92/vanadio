@@ -292,6 +292,8 @@ class ClienteController extends Controller {
         $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
         $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($codigoCliente);
         $arContrato = new \Brasa\TurnoBundle\Entity\TurContrato();
+        $arContrato->setFechaDesde(new \DateTime('now'));
+        $arContrato->setFechaHasta(new \DateTime('now'));
         if ($codigoContrato != '' && $codigoContrato != '0') {
             $arContrato = $em->getRepository('BrasaTurnoBundle:TurContrato')->find($codigoContrato);
         }

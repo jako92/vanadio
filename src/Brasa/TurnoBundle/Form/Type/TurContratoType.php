@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class TurContratoType extends AbstractType
 {
@@ -17,7 +18,9 @@ class TurContratoType extends AbstractType
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('soporte', TextType::class, array('required'  => false))
             ->add('valor', NumberType::class) 
-            ->add('comentarios', TextareaType::class, array('required' => false))                
+            ->add('comentarios', TextareaType::class, array('required' => false))
+            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

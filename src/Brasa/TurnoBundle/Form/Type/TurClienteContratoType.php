@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class TurClienteContratoType extends AbstractType
 {
@@ -16,7 +17,9 @@ class TurClienteContratoType extends AbstractType
         $builder                
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('soporte', TextType::class, array('required'  => false))
-            ->add('valor', NumberType::class) 
+            ->add('valor', NumberType::class)
+            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('comentarios', TextareaType::class, array('required' => false))                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

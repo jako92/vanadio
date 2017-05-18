@@ -59,10 +59,11 @@ class ContratoController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arContrato = new \Brasa\TurnoBundle\Entity\TurContrato();
+        $arContrato->setFechaDesde(new \DateTime('now'));
+        $arContrato->setFechaHasta(new \DateTime('now'));
         if ($codigoContrato != '' && $codigoContrato != '0') {
             $arContrato = $em->getRepository('BrasaTurnoBundle:TurContrato')->find($codigoContrato);
         }
-
         $form = $this->createForm(TurContratoType::class, $arContrato);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
