@@ -88,6 +88,16 @@ class CobroExamen extends \FPDF_FPDF {
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272); 
         $this->Cell(125, 5, number_format($arCobro->getNumeroRegistros(), 0, '.', ',') , 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',8);
+        //linea 4
+        $this->SetXY(10, 50);
+        $this->SetFont('Arial','B',8);
+        $this->SetFillColor(200, 200, 200);
+        $this->Cell(40, 5, utf8_decode("CENTRO TRABAJO:") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);
+        $this->SetFillColor(272, 272, 272);
+        if ($arCobro->getCentroTrabajoRel()){$centroTrabajo = $arCobro->getCentroTrabajoRel()->getNombre();}else{$centroTrabajo = "";}
+        $this->Cell(215, 5, utf8_decode($centroTrabajo) , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',6);
         $this->EncabezadoDetalles();
         
