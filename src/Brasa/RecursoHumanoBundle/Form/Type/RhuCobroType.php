@@ -30,6 +30,14 @@ class RhuCobroType extends AbstractType {
                     },
                     'choice_label' => 'nombre',
                     'required' => true))
+                ->add('centroTrabajoRel', EntityType::class, array(
+                    'class' => 'BrasaRecursoHumanoBundle:RhuCentroTrabajo',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('ct')
+                                ->orderBy('ct.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => false))
                 ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('comentarios', TextareaType::class, array('required' => false))

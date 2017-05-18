@@ -83,6 +83,7 @@ class CobroController extends Controller {
             $arCobro->setFecha(new \DateTime('now'));
             $arCobro->setFechaDesde(new \DateTime('now'));
             $arCobro->setFechaHasta(new \DateTime('now'));
+            $arCobro->setCentroTrabajoRel(null);
         }
         $form = $this->createForm(RhuCobroType::class, $arCobro);
         $form->handleRequest($request);

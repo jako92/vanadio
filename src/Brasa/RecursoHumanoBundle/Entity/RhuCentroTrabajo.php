@@ -38,6 +38,11 @@ class RhuCentroTrabajo {
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="centroTrabajoRel")
      */
     protected $contratoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="centroTrabajoRel")
+     */
+    protected $cobrosCentroTrabajoRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="centroTrabajoRel")
@@ -201,5 +206,39 @@ class RhuCentroTrabajo {
     public function getServiciosCobrarCentroTrabajoRel()
     {
         return $this->serviciosCobrarCentroTrabajoRel;
+    }
+
+    /**
+     * Add cobrosCentroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroTrabajoRel
+     *
+     * @return RhuCentroTrabajo
+     */
+    public function addCobrosCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroTrabajoRel)
+    {
+        $this->cobrosCentroTrabajoRel[] = $cobrosCentroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove cobrosCentroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroTrabajoRel
+     */
+    public function removeCobrosCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosCentroTrabajoRel)
+    {
+        $this->cobrosCentroTrabajoRel->removeElement($cobrosCentroTrabajoRel);
+    }
+
+    /**
+     * Get cobrosCentroTrabajoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCobrosCentroTrabajoRel()
+    {
+        return $this->cobrosCentroTrabajoRel;
     }
 }

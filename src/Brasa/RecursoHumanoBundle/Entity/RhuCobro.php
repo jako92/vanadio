@@ -31,6 +31,11 @@ class RhuCobro {
      * @ORM\Column(name="codigo_cobro_tipo_fk", type="string", length=1, nullable=true)
      */
     private $codigoCobroTipoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroTrabajoFk;
 
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
@@ -194,6 +199,12 @@ class RhuCobro {
      * @ORM\JoinColumn(name="codigo_cobro_tipo_fk", referencedColumnName="codigo_cobro_tipo_pk")
      */
     protected $cobroTipoRel;
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="cobrosCentroTrabajoRel")
+     * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
+     */
+    protected $centroTrabajoRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="cobroRel")
@@ -1140,5 +1151,53 @@ class RhuCobro {
     public function getVrSeleccion()
     {
         return $this->vrSeleccion;
+    }
+
+    /**
+     * Set codigoCentroTrabajoFk
+     *
+     * @param integer $codigoCentroTrabajoFk
+     *
+     * @return RhuCobro
+     */
+    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
+    {
+        $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroTrabajoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroTrabajoFk()
+    {
+        return $this->codigoCentroTrabajoFk;
+    }
+
+    /**
+     * Set centroTrabajoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel
+     *
+     * @return RhuCobro
+     */
+    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
+    {
+        $this->centroTrabajoRel = $centroTrabajoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroTrabajoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
+     */
+    public function getCentroTrabajoRel()
+    {
+        return $this->centroTrabajoRel;
     }
 }
