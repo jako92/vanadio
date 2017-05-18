@@ -18,7 +18,7 @@ class RhuCliente
     private $codigoClientePk;    
     
     /**
-     * @ORM\Column(name="nit", type="string", length=15, nullable=false, unique=true)
+     * @ORM\Column(name="nit", type="string", length=15, nullable=false)
      */
     private $nit;        
     
