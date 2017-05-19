@@ -312,5 +312,18 @@ class RhuIncapacidadRepository extends EntityRepository {
                 . "OR (incapacidad.fechaDesde >= '$strFechaDesde' AND incapacidad.fechaDesde <= '$strFechaHasta') "
                 . "OR (incapacidad.fechaHasta >= '$strFechaHasta' AND incapacidad.fechaDesde <= '$strFechaDesde')) ";
         return $dql;
-    }         
+    }
+    
+    public function pendienteCobrarCobro($codigoCliente) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuIncapacidad e WHERE e.estadoCobrado = 0 "
+                . " AND e.codigoClienteFk = " . $codigoCliente;
+        return $dql;
+    }
+    
+    public function detalleCobro($codigoCobro) {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuIncapacidad e WHERE e.codigoCobroFk = " . $codigoCobro;
+        return $dql;
+    }
 }

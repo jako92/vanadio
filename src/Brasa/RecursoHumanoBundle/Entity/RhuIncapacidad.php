@@ -132,10 +132,20 @@ class RhuIncapacidad
      */    
     private $codigoUsuario;
     
+    /**
+     * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
+     */    
+    private $codigoCobroFk;
+    
     /**     
      * @ORM\Column(name="estado_legalizado", type="boolean")
      */    
-    private $estadoLegalizado = false;    
+    private $estadoLegalizado = false;
+    
+    /**
+     * @ORM\Column(name="estado_cobrado", type="boolean")
+     */
+    private $estadoCobrado = 0;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuIncapacidadTipo", inversedBy="incapacidadesIncapacidadTipoRel")
@@ -171,7 +181,13 @@ class RhuIncapacidad
      * @ORM\ManyToOne(targetEntity="RhuIncapacidadDiagnostico", inversedBy="incapacidadesIncapacidadDiagnosticoRel")
      * @ORM\JoinColumn(name="codigo_incapacidad_diagnostico_fk", referencedColumnName="codigo_incapacidad_diagnostico_pk")
      */
-    protected $incapacidadDiagnosticoRel; 
+    protected $incapacidadDiagnosticoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="incapacidadesCobroRel")
+     * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
+     */
+    protected $cobroRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuIncapacidadPagoDetalle", mappedBy="incapacidadRel")
@@ -181,8 +197,8 @@ class RhuIncapacidad
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="incapacidadRel")
      */
-    protected $pagosDetallesIncapacidadRel;     
-    
+    protected $pagosDetallesIncapacidadRel;
+
     /**
      * Constructor
      */
@@ -1012,5 +1028,77 @@ class RhuIncapacidad
     public function getVrCobro()
     {
         return $this->vrCobro;
+    }
+
+    /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuIncapacidad
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
+    }
+
+    /**
+     * Set estadoCobrado
+     *
+     * @param boolean $estadoCobrado
+     *
+     * @return RhuIncapacidad
+     */
+    public function setEstadoCobrado($estadoCobrado)
+    {
+        $this->estadoCobrado = $estadoCobrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCobrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCobrado()
+    {
+        return $this->estadoCobrado;
+    }
+
+    /**
+     * Set cobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
+     *
+     * @return RhuIncapacidad
+     */
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
+    {
+        $this->cobroRel = $cobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
+     */
+    public function getCobroRel()
+    {
+        return $this->cobroRel;
     }
 }

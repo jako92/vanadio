@@ -49,6 +49,7 @@ class RhuCobroRepository extends EntityRepository {
         $administracion = 0;
         $totalExamen = 0;
         $totalSeleccion = 0;
+        $totalIncapacidad = 0;
         $totalCobro = 0;
         $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
         $arServiciosCobrar = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => $codigoCobro));
@@ -85,6 +86,13 @@ class RhuCobroRepository extends EntityRepository {
             $totalCobro += $arSeleccion->getVrServicio();
             $numeroRegistros++;
         }
+        $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
+        $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->findBy(array('codigoCobroFk' => $codigoCobro));
+        foreach ($arIncapacidades as $arIncapacidad){
+            $totalIncapacidad += $arIncapacidad->getVrCobro();
+            $totalCobro += $arIncapacidad->getVrIncapacidad();
+            $numeroRegistros++;
+        }
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
         $arCobro->setVrBasico($basico);
         $arCobro->setVrPrestacional($prestacional);
@@ -101,9 +109,10 @@ class RhuCobroRepository extends EntityRepository {
         $arCobro->setVrAporteParafiscales($aporteParafiscales);
         $arCobro->setVrOperacion($operacion);
         $arCobro->setVrAdministracion($administracion);
-        $arCobro->setvrExamen($totalExamen);
-        $arCobro->setvrSeleccion($totalSeleccion);
-        $arCobro->setvrTotalCobro($totalCobro);
+        $arCobro->setVrExamen($totalExamen);
+        $arCobro->setVrSeleccion($totalSeleccion);
+        $arCobro->setVrIncapacidad(round($totalIncapacidad));
+        $arCobro->setvrTotalCobro(round($totalCobro));
         $arCobro->setNumeroRegistros($numeroRegistros);
         $em->persist($arCobro);
         $em->flush();

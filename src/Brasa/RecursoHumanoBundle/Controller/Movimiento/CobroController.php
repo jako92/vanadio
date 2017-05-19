@@ -173,6 +173,20 @@ class CobroController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
                 }
             }
+            if ($form->get('BtnEliminarDetalleIncapacidad')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionarIncapacidad');
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arSeleccion = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($codigo);
+                        $arSeleccion->setEstadoCobrado(0);
+                        $arSeleccion->setCobroRel(null);
+                        $em->persist($arSeleccion);
+                    }
+                    $em->flush();
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                }
+            }
             if ($form->get('BtnImprimir')->isClicked()) {
                 if ($arCobro->getCodigoCobroTipoFk() == "N") {
                     $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\Cobro();
@@ -195,11 +209,14 @@ class CobroController extends Controller {
         $arExamenes = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);
         $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuSeleccion')->detalleCobro($codigoCobro);
         $arSelecciones = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);
+        $strDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->detalleCobro($codigoCobro);
+        $arIncapacidades = $paginator->paginate($em->createQuery($strDql), $request->query->get('page', 1), 500);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalle.html.twig', array(
                     'arCobro' => $arCobro,
                     'arServiciosCobrar' => $arServiciosCobrar,
                     'arExamenes' => $arExamenes,
                     'arSelecciones' => $arSelecciones,
+                    'arIncapacidades' => $arIncapacidades,
                     'form' => $form->createView(),
         ));
     }
@@ -356,6 +373,44 @@ class CobroController extends Controller {
                     'arCobro' => $arCobro,
                     'form' => $form->createView()));
     }
+    
+    /**
+     * @Route("/rhu/cobro/detalle/nuevo/incapacidad/{codigoCobro}", name="brs_rhu_cobro_detalle_nuevo_incapacidad")
+     */
+    public function detalleNuevoIncapacidadAction(Request $request, $codigoCobro) {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
+        $form = $this->createFormBuilder()
+                ->add('BtnAgregar', SubmitType::class, array('label' => 'Guardar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnAgregar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigoIncapacidad) {
+                        $arIncapacidad = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
+                        $arIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($codigoIncapacidad);
+                        if (!$arIncapacidad->getCodigoCobroFk()) {
+                            $arIncapacidad->setEstadoCobrado(1);
+                            $arIncapacidad->setCobroRel($arCobro);
+                            $em->persist($arIncapacidad);
+                        }
+                    }
+                    $em->flush();
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
+            }
+        }
+        $query = $em->createQuery($em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->pendienteCobrarCobro($arCobro->getCodigoClienteFk()));
+        $arIncapacidades = $paginator->paginate($query, $request->query->get('page', 1), 300);
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Cobro:detalleNuevoIncapacidad.html.twig', array(
+                    'arIncapacidades' => $arIncapacidades,
+                    'arCobro' => $arCobro,
+                    'form' => $form->createView()));
+    }
 
     private function lista() {
         $session = new session;
@@ -486,12 +541,14 @@ class CobroController extends Controller {
         $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleExamen = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleSeleccion = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonDetalleEliminarDetalleIncapacidad = array('label' => 'Eliminar', 'disabled' => false);
         if ($arCobro->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;
             $arrBotonAnular['disabled'] = false;
             $arrBotonDetalleEliminarDetalleExamen['disabled'] = true;
             $arrBotonDetalleEliminarDetalleSeleccion['disabled'] = true;
+            $arrBotonDetalleEliminarDetalleIncapacidad['disabled'] = true;
             /*if ($arCobro->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonAnular['disabled'] = true;
@@ -510,6 +567,7 @@ class CobroController extends Controller {
                 ->add('BtnEliminarDetalleServicio', SubmitType::class, $arrBotonDetalleEliminarDetalleServicio)
                 ->add('BtnEliminarDetalleExamen', SubmitType::class, $arrBotonDetalleEliminarDetalleExamen)
                 ->add('BtnEliminarDetalleSeleccion', SubmitType::class, $arrBotonDetalleEliminarDetalleSeleccion)
+                ->add('BtnEliminarDetalleIncapacidad', SubmitType::class, $arrBotonDetalleEliminarDetalleIncapacidad)
                 ->getForm();
         return $form;
     }
@@ -621,7 +679,6 @@ class CobroController extends Controller {
         $arCobroDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuServicioCobrar')->findBy(array('codigoCobroFk' => $codigoCobro));
         //$arPagoBancos = $query->getResult();
         foreach ($arCobroDetalle as $arCobroDetalle) {
-
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arCobroDetalle->getCodigoServicioCobrarPk())
                     ->setCellValue('B' . $i, $arCobroDetalle->getEmpleadoRel()->getNumeroIdentificacion())

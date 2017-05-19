@@ -156,6 +156,11 @@ class RhuCobro {
      * @ORM\Column(name="vr_seleccion", type="float")
      */
     private $vrSeleccion = 0;
+    
+    /**
+     * @ORM\Column(name="vr_incapacidad", type="float")
+     */
+    private $vrIncapacidad = 0;
 
     /**
      * @ORM\Column(name="vr_total_cobro", type="float")
@@ -220,6 +225,11 @@ class RhuCobro {
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="cobroRel")
      */
     protected $seleccionesCobroRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuIncapacidad", mappedBy="cobroRel")
+     */
+    protected $incapacidadesCobroRel;
     
 
     /**
@@ -1199,5 +1209,63 @@ class RhuCobro {
     public function getCentroTrabajoRel()
     {
         return $this->centroTrabajoRel;
+    }
+
+    /**
+     * Add incapacidadesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesCobroRel
+     *
+     * @return RhuCobro
+     */
+    public function addIncapacidadesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesCobroRel)
+    {
+        $this->incapacidadesCobroRel[] = $incapacidadesCobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove incapacidadesCobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesCobroRel
+     */
+    public function removeIncapacidadesCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesCobroRel)
+    {
+        $this->incapacidadesCobroRel->removeElement($incapacidadesCobroRel);
+    }
+
+    /**
+     * Get incapacidadesCobroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncapacidadesCobroRel()
+    {
+        return $this->incapacidadesCobroRel;
+    }
+
+    /**
+     * Set vrIncapacidad
+     *
+     * @param float $vrIncapacidad
+     *
+     * @return RhuCobro
+     */
+    public function setVrIncapacidad($vrIncapacidad)
+    {
+        $this->vrIncapacidad = $vrIncapacidad;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIncapacidad
+     *
+     * @return float
+     */
+    public function getVrIncapacidad()
+    {
+        return $this->vrIncapacidad;
     }
 }
