@@ -26,7 +26,7 @@ class RhuProgramacionPagoType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuPagoTipo',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('pt')
-                    ->orderBy('pt.nombre', 'ASC');},
+                    ->orderBy('pt.codigoPagoTipoPk', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))                                         
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd'))                
