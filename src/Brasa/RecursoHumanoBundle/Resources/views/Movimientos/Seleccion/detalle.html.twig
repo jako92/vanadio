@@ -94,6 +94,14 @@
                         <td class="titulo">ESTADO CERRADO:</td>
                         <td class="td-in-well">{% if arSeleccion.estadoCerrado == 1%}SI{% else %}NO{% endif %}</td>
                     <tr>
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">VALOR DEL SERVICIO:</td>
+                        <td class="td-in-well">{{arSeleccion.vrServicio | number_format(0, '.', ',')}}</td>
+                    <tr>
                         <td class="titulo" colspan="8">COMENTARIOS: {{ arSeleccion.comentarios }}</td>
                     </tr>
                 </table>
