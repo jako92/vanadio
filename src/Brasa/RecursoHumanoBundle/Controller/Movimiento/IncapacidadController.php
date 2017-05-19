@@ -163,6 +163,7 @@ class IncapacidadController extends Controller {
                                                 $arIncapacidad->setVrIncapacidad($floVrIncapacidad);
                                                 $arIncapacidad->setVrSaldo($floVrIncapacidad);
                                                 $arIncapacidad->setCentroCostoRel($arEmpleado->getCentroCostoRel());
+                                                $arIncapacidad->setClienteRel($arIncapacidad->getCentroCostoRel()->getClienteRel());
                                                 if ($codigoIncapacidad == 0) {
                                                     $arIncapacidad->setCodigoUsuario($arUsuario->getUserName());
                                                     $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
