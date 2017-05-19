@@ -1112,4 +1112,52 @@ class RhuIncapacidad
     {
         return $this->cobroRel;
     }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuIncapacidad
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuIncapacidad
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
+    }
 }

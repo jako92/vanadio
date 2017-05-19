@@ -1202,4 +1202,38 @@ class RhuCliente
     {
         return $this->vrPrecioSeleccion;
     }
+
+    /**
+     * Add incapacidadesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
+    {
+        $this->incapacidadesClienteRel[] = $incapacidadesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove incapacidadesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
+     */
+    public function removeIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
+    {
+        $this->incapacidadesClienteRel->removeElement($incapacidadesClienteRel);
+    }
+
+    /**
+     * Get incapacidadesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncapacidadesClienteRel()
+    {
+        return $this->incapacidadesClienteRel;
+    }
 }
