@@ -253,8 +253,11 @@
                                 <td style="text-align: right">{{ arServicioCobrar.vrTotalCobro | number_format(0, '.', ',') }}</td>                                                                
                                 <td style="text-align: right">{{ arServicioCobrar.ingreso }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                
-                                <td style="text-align: right">{{ arServicioCobrar.horasIncapacidad }}</td>                                
-                                <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
+                                <td style="text-align: right">{{ arServicioCobrar.horasIncapacidad }}</td>  
+                                {% if arCobro. estadoAutorizado == 0 %}
+                                <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                                {% else %} <td></td>
+                                {% endif %}
                                 <td><input type="checkbox" name="ChkSeleccionarServicio[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
                             </tr>
                         {% endfor %} 

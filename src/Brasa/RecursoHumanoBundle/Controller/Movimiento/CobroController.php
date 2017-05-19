@@ -477,7 +477,7 @@ class CobroController extends Controller {
         return $form;
     }
 
-    private function formularioDetalle($ar) {
+    private function formularioDetalle($arCobro) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
@@ -486,17 +486,19 @@ class CobroController extends Controller {
         $arrBotonDetalleEliminarDetalleServicio = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleExamen = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDetalleEliminarDetalleSeleccion = array('label' => 'Eliminar', 'disabled' => false);
-        if ($ar->getEstadoAutorizado() == 1) {
+        if ($arCobro->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonDetalleEliminarDetalleServicio['disabled'] = true;
             $arrBotonAnular['disabled'] = false;
-            if ($ar->getEstadoAnulado() == 1) {
+            $arrBotonDetalleEliminarDetalleExamen['disabled'] = true;
+            $arrBotonDetalleEliminarDetalleSeleccion['disabled'] = true;
+            /*if ($arCobro->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonAnular['disabled'] = true;
-            }
+            }*/
         } else {
             $arrBotonDesAutorizar['disabled'] = true;
-            //$arrBotonImprimir['disabled'] = true;
+            $arrBotonImprimir['disabled'] = true;
         }
 
         $form = $this->createFormBuilder()

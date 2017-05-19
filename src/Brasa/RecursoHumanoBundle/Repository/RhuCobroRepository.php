@@ -116,5 +116,34 @@ class RhuCobroRepository extends EntityRepository {
                 . " AND c.codigoClienteFk = " . $codigoCliente;
         return $dql;
     }
+    
+    public function autorizar($codigoCobro) {
+        $em = $this->getEntityManager();
+        $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
+        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
+        $strResultado = "";
+        if($arCobro->getEstadoAutorizado() == 0) {
+                $arCobro->setEstadoAutorizado(1);
+                $em->persist($arCobro);
+                $em->flush();
+        } else {
+            $strResultado = "Ya esta autorizado";
+        }
+        return $strResultado;
+    }
+    
+    public function desAutorizar($codigoCobro) {
+        $em = $this->getEntityManager();
+        $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
+        $strResultado = "";
+        if($arCobro->getEstadoAutorizado() == 1) {                     
+            $arCobro->setEstadoAutorizado(0);
+            $em->persist($arCobro);
+            $em->flush();
+        } else {
+            $strResultado = "La relacion de cobro debe estas autorizada y no puede estar anulada o impresa";
+        }
+        return $strResultado;
+    }
 
 }
