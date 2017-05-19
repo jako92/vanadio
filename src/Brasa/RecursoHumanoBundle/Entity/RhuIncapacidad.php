@@ -75,7 +75,12 @@ class RhuIncapacidad
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
      */    
-    private $codigoCentroCostoFk;         
+    private $codigoCentroCostoFk;  
+    
+    /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */    
+    private $codigoClienteFk;    
     
     /**
      * @ORM\Column(name="codigo_incapacidad_diagnostico_fk", type="integer", nullable=true)
@@ -158,6 +163,12 @@ class RhuIncapacidad
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="incapacidadesClienteRel")
+     * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
+     */
+    protected $clienteRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="incapacidadesEntidadSaludRel")

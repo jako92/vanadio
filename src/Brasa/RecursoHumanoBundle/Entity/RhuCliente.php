@@ -176,6 +176,11 @@ class RhuCliente
     protected $contratosClienteRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="RhuIncapacidad", mappedBy="clienteRel")
+     */
+    protected $incapacidadesClienteRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="clienteRel")
      */
     protected $facturasClienteRel;
