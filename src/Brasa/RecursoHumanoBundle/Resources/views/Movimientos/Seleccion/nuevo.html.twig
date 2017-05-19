@@ -144,7 +144,18 @@
                     </div>
                 </div>                
             </div>
-        </div>               
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion Comercial</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="form_vrServicio" class="col-sm-2 control-label">Valor del servicio:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.vrServicio, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div> 
+            </div>                
+        </div>
         <div class="modal-footer">
             <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_seleccion_lista') }}">Cancelar</a>
             {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
