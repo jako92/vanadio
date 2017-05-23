@@ -382,6 +382,7 @@ class IntercambioDatosController extends Controller {
         $strSecuencia = 1;
         foreach ($arRegistro AS $arRegistro) {
             //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
+            
             $identificacion = "";
             if($arRegistro->getCodigoTerceroFk()) {
                 $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
