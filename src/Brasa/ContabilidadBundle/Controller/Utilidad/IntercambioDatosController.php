@@ -397,11 +397,22 @@ class IntercambioDatosController extends Controller {
             $naturalezaMovimiento = '';
             if($arRegistro->getDebito() != 0){
                 $naturalezaMovimiento = 'CNO';
-            }
-            else{
+            }else{
                 $naturalezaMovimiento = 'DNO';
             }
-            $array = array($anio,"!",$mes,"!",'0000'. $arRegistro->getCodigoComprobanteFk(),"!","00000","!",'00000'. '00000'.'000'. $arRegistro->getCodigoComprobanteFk(). $arRegistro->getNumero() ,"!",$arRegistro->getFecha()->Format('m/d/Y'),"!","00000","!",$arRegistro->getCodigoCuentaFk(),"!", $centroCosto,"!","000","!", "!", "!" , $arRegistro->getTerceroRel()->getNumeroIdentificacion()."-".$arRegistro->getTerceroRel()->getDigitoVerificacion(),"!","000","!", $arRegistro->getTerceroRel()->getNumeroIdentificacion()."-".$arRegistro->getTerceroRel()->getDigitoVerificacion() ,"!","00000","!",'000000000000000',"!", $arRegistro->getDescripcionContable(),"!", "0000000000".$vrMovimiento,"!",$baseMovimiento,"!","0","!", $naturalezaMovimiento, "!","PRI","!","000000000000000","!","!","!","A","!");
+            $centroCosto = '';
+            if($arRegistro->getCodigoCentroCostoFk() == 0){
+                $centroCosto = '000';
+            }else{
+                $centroCosto = "00".$arRegistro->getCodigoCentroCostoFk();
+            }
+            $tercero = '';
+            if($arRegistro->getCuentaRel()->getExigeNit() == 1){
+                $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion()."-".$arRegistro->getTerceroRel()->getDigitoVerificacion();
+            }else{
+                $tercero = "0000000000";
+            }
+            $array = array($anio,"!",$mes,"!",'0000'. $arRegistro->getCodigoComprobanteFk(),"!","00000","!",'00000'. '00000'.'000'. $arRegistro->getCodigoComprobanteFk(). $arRegistro->getNumero() ,"!",$arRegistro->getFecha()->Format('m/d/Y'),"!", str_pad($strSecuencia, 5, '0', STR_PAD_LEFT) ,"!",$arRegistro->getCodigoCuentaFk(),"!", $centroCosto,"!","000","!", "!", "!" , $tercero,"!","000","!", $tercero ,"!","00000","!",'000000000000000',"!", $arRegistro->getDescripcionContable(),"!", str_pad($vrMovimiento, 15, '0', STR_PAD_LEFT),"!",str_pad($arRegistro->getBase(), 15, '0', STR_PAD_LEFT),"!","000000000000000","!", $naturalezaMovimiento, "!","PRI","!","000000000000000","!","!","!","A","!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
