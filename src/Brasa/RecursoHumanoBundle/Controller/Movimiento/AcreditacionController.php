@@ -418,9 +418,6 @@ class AcreditacionController extends Controller
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('Acreditaciones');
-        $objPHPExcel->setActiveSheetIndex(0);
-
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Acreditaciones.xlsx"');
@@ -482,7 +479,7 @@ class AcreditacionController extends Controller
                             ->setCellValue('T1', 'Departamento')
                             ->setCellValue('U1', 'Ciudad')
                             ->setCellValue('V1', 'EducacionBM')
-                            ->setCellValue('W1', 'EducacionSuperior')
+                            ->setCellValue('W1', 'EducacionS')
                             ->setCellValue('X1', 'Discapacidad');
 
                 $i = 2;
@@ -561,11 +558,49 @@ class AcreditacionController extends Controller
                             ->setCellValue('X' . $i, "Ninguna");
                     $i++;
                 }
-
+                
                 $nombreArchivo = "APO".$arConfiguracion->getNitEmpresa().$arConfiguracion->getDigitoVerificacionEmpresa()."".date('Ymd')."01";
-                $objPHPExcel->getActiveSheet()->setTitle('EstudiosInforme');
+                $objPHPExcel->getActiveSheet()->setTitle('ApoDatos');
+                
+                //Hoja de retiros
+                $objPHPExcel->createSheet(1)->setTitle('Retiros')
+                    ->setCellValue('A1', 'Nit')
+                    ->setCellValue('B1', 'RazonSocial')
+                    ->setCellValue('C1', 'TipoDocumento')
+                    ->setCellValue('D1', 'NoDocumento')
+                    ->setCellValue('E1', 'FechaRetiro');
+                $i = 2;
+        $arContratos = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
+        $arContratos = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findBy(array('estadoTerminado'=>1));
+        foreach ($arContratos as $arContrato) {
+            
+            //tipo identificacion
+                    $tipoIdentificacion = 1;
+                    if ($arContrato->getEmpleadoRel()->getCodigoTipoIdentificacionFk() == 13){
+                        $tipoIdentificacion = 1;
+                    }
+                    if ($arContrato->getEmpleadoRel()->getCodigoTipoIdentificacionFk() == 12){
+                        $tipoIdentificacion = 1;
+                    }
+                    if ($arContrato->getEmpleadoRel()->getCodigoTipoIdentificacionFk() == 21){
+                        $tipoIdentificacion = 3;
+                    }
+                    if ($arContrato->getEmpleadoRel()->getCodigoTipoIdentificacionFk() == 22){
+                        $tipoIdentificacion = 3;
+                    }
+                    if ($arContrato->getEmpleadoRel()->getCodigoTipoIdentificacionFk() == 41){
+                        $tipoIdentificacion = 6;
+                    }
+                $objPHPExcel->setActiveSheetIndex(1)
+                    ->setCellValue('A2', $arConfiguracion->getNitEmpresa().$arConfiguracion->getDigitoVerificacionEmpresa())
+                    ->setCellValue('B2', strtoupper($arConfiguracion->getNombreEmpresa()))
+                    ->setCellValue('C2', $tipoIdentificacion)
+                    ->setCellValue('D2', $arContrato->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('E2', $arContrato->getFechaHasta());
+        }
+                
                 $objPHPExcel->setActiveSheetIndex(0);
-
+                
                 // Redirect output to a client’s web browser (Excel2007)
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment;filename="'.$nombreArchivo.'.xlsx"');
