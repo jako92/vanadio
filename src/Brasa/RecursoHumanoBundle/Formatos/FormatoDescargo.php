@@ -80,8 +80,7 @@ class FormatoDescargo extends \FPDF_FPDF {
         $sustitucion1 = $arDescargo->getEmpleadoRel()->getNombreCorto();
         $sustitucion2 = $arDescargo->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion3 = $arDescargo->getDescargo();
-        $sustitucion4 = $arDescargo->getDisciplinarioRel()->getAsunto();
-        
+        $sustitucion4 = $arDescargo->getDisciplinarioRel()->getAsunto();        
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
