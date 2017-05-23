@@ -14,7 +14,8 @@ class TurFacturaTipoType extends AbstractType
     {
         $builder                      
             ->add('nombre', TextType::class, array('required' => true)) 
-            ->add('consecutivo', NumberType::class)                
+            ->add('consecutivo', NumberType::class)
+            ->add('abreviatura', TextType::class, array('required' => true))                
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
