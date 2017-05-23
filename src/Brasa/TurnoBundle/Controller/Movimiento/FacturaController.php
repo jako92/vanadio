@@ -183,7 +183,7 @@ class FacturaController extends Controller {
                 $arrControles = $request->request->All();
                 if ($arrControles['txtNit'] != '') {
                     $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
-                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $arrControles['txtNit']));
+                    $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
                         $arFactura->setClienteRel($arCliente);
                         $arClienteDireccion = new \Brasa\TurnoBundle\Entity\TurClienteDireccion();
