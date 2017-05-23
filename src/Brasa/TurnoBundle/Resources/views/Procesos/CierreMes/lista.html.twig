@@ -15,11 +15,6 @@
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
 
@@ -28,7 +23,8 @@
                 <th>CODIGO</th>
                 <th>ANIO</th>
                 <th>MES</th>
-                <th></th>                
+                <th>COMERCIAL</th>                
+                <th>COSTOS</th>                
                 <th></th>
                 <th></th>
             </tr>
@@ -37,18 +33,17 @@
                     <td>{{ arCierreMes.codigoCierreMesPk  }}</td>
                     <td>{{ arCierreMes.anio  }}</td>
                     <td>{{ arCierreMes.mes }}</td>                
-                    {% if arCierreMes.estadoGenerado == 0 %}
-                        <td><button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arCierreMes.codigoCierreMesPk }}">Generar</button></td>
-                        <td></td>                                        
+                    {% if arCierreMes.estadoGeneradoComercial == 0 %}
+                        <td><button class="btn btn-default btn-xs" type="submit" name="OpGenerarComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Generar</button></td>                        
                     {% else %}
-                        {% if arCierreMes.estadoCerrado == 0 %}
-                            <td><button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button></td>
-                            <td><button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button></td>                        
-                        {% else %}
-                            <td></td>                                        
-                            <td></td>                                        
-                        {% endif %}                                                                       
+                        <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacerComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>                                                                                                                                                                       
                     {% endif %}
+                    {% if arCierreMes.estadoGenerado == 0 %}
+                        <td><button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arCierreMes.codigoCierreMesPk }}">Generar</button></td>                        
+                    {% else %}
+                        <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>                                                                                                                                                                       
+                    {% endif %}                    
+                    <td>{% if arCierreMes.estadoGenerado == 1 and arCierreMes.estadoGeneradoComercial == 1 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% endif %}</td>                        
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCierreMes.codigoCierreMesPk }}" /></td>
                 </tr>
             {% endfor %}

@@ -375,7 +375,12 @@ class TurPedidoDetalle
      * @ORM\OneToMany(targetEntity="TurCostoDetalle", mappedBy="pedidoDetalleRel")
      */
     protected $costosDetallesPedidoDetalleRel;     
-       
+
+    /**
+     * @ORM\OneToMany(targetEntity="TurIngresoPendiente", mappedBy="pedidoDetalleRel")
+     */
+    protected $ingresosPendientesPedidoDetalleRel;     
+    
     /**
      * Constructor
      */
@@ -389,6 +394,7 @@ class TurPedidoDetalle
         $this->costosServiciosPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pedidosDevolucionesDetallesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosDetallesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ingresosPendientesPedidoDetalleRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -2159,5 +2165,39 @@ class TurPedidoDetalle
     public function getCostosDetallesPedidoDetalleRel()
     {
         return $this->costosDetallesPedidoDetalleRel;
+    }
+
+    /**
+     * Add ingresosPendientesPedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesPedidoDetalleRel
+     *
+     * @return TurPedidoDetalle
+     */
+    public function addIngresosPendientesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesPedidoDetalleRel)
+    {
+        $this->ingresosPendientesPedidoDetalleRel[] = $ingresosPendientesPedidoDetalleRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove ingresosPendientesPedidoDetalleRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesPedidoDetalleRel
+     */
+    public function removeIngresosPendientesPedidoDetalleRel(\Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesPedidoDetalleRel)
+    {
+        $this->ingresosPendientesPedidoDetalleRel->removeElement($ingresosPendientesPedidoDetalleRel);
+    }
+
+    /**
+     * Get ingresosPendientesPedidoDetalleRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIngresosPendientesPedidoDetalleRel()
+    {
+        return $this->ingresosPendientesPedidoDetalleRel;
     }
 }

@@ -22,6 +22,35 @@ class TurCierreMesRepository extends EntityRepository {
             }
             $em->flush();
         }
-    }     
-
+    }    
+    
+    public function generarCierreMesComercial($codigoCierreMes) {
+        $em = $this->getEntityManager();
+        $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+        $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
+        $strDql = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->listaConsultaPendienteFacturarDql(
+               "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                "");        
+        $query = $em->createQuery($strDql);
+        $arPedidoDetalles = $query->getResult();
+        foreach ($arPedidoDetalles as $arPedidoDetalle) {
+            $arIngresoPendiente = new \Brasa\TurnoBundle\Entity\TurIngresoPendiente();
+            $arIngresoPendiente->setCodigoCierreMesFk($arCierreMes->getCodigoCierreMesPk());
+            $arIngresoPendiente->setAnio($arCierreMes->getAnio());
+            $arIngresoPendiente->setMes($arCierreMes->getMes());
+            $arIngresoPendiente->setPedidoDetalleRel($arPedidoDetalle);
+            $arIngresoPendiente->setClienteRel($arPedidoDetalle->getPedidoRel()->getClienteRel());
+            $arIngresoPendiente->setVrSubtotal($arPedidoDetalle->getVrTotalDetallePendiente());
+            $em->persist($arIngresoPendiente);
+        }
+        $arCierreMes->setEstadoGeneradoComercial(1);
+        $em->persist($arCierreMes);
+        $em->flush();
+    }
 }

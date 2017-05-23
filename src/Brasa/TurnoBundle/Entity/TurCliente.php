@@ -374,7 +374,12 @@ class TurCliente
      */
     protected $costosDetallesClienteRel;     
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="TurIngresoPendiente", mappedBy="clienteRel")
+     */
+    protected $ingresosPendientesClienteRel;
+    
+    
     /**
      * Constructor
      */
@@ -396,6 +401,7 @@ class TurCliente
         $this->puestosDotacionesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->programacionesAlternasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costosDetallesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ingresosPendientesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1369,6 +1375,30 @@ class TurCliente
     }
 
     /**
+     * Set autorretenedor
+     *
+     * @param boolean $autorretenedor
+     *
+     * @return TurCliente
+     */
+    public function setAutorretenedor($autorretenedor)
+    {
+        $this->autorretenedor = $autorretenedor;
+
+        return $this;
+    }
+
+    /**
+     * Get autorretenedor
+     *
+     * @return boolean
+     */
+    public function getAutorretenedor()
+    {
+        return $this->autorretenedor;
+    }
+
+    /**
      * Set sectorRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurSector $sectorRel
@@ -2201,26 +2231,36 @@ class TurCliente
     }
 
     /**
-     * Set autorretenedor
+     * Add ingresosPendientesClienteRel
      *
-     * @param boolean $autorretenedor
+     * @param \Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesClienteRel
      *
      * @return TurCliente
      */
-    public function setAutorretenedor($autorretenedor)
+    public function addIngresosPendientesClienteRel(\Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesClienteRel)
     {
-        $this->autorretenedor = $autorretenedor;
+        $this->ingresosPendientesClienteRel[] = $ingresosPendientesClienteRel;
 
         return $this;
     }
 
     /**
-     * Get autorretenedor
+     * Remove ingresosPendientesClienteRel
      *
-     * @return boolean
+     * @param \Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesClienteRel
      */
-    public function getAutorretenedor()
+    public function removeIngresosPendientesClienteRel(\Brasa\TurnoBundle\Entity\TurIngresoPendiente $ingresosPendientesClienteRel)
     {
-        return $this->autorretenedor;
+        $this->ingresosPendientesClienteRel->removeElement($ingresosPendientesClienteRel);
+    }
+
+    /**
+     * Get ingresosPendientesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIngresosPendientesClienteRel()
+    {
+        return $this->ingresosPendientesClienteRel;
     }
 }

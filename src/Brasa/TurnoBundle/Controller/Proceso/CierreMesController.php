@@ -25,7 +25,7 @@ class CierreMesController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                if ($request->request->get('OpGenerar')) {
+                if($request->request->get('OpGenerar')) {
                     set_time_limit(0);
                     ini_set("memory_limit", -1);
                     $codigoCierreMes = $request->request->get('OpGenerar');
@@ -353,8 +353,14 @@ class CierreMesController extends Controller {
 
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
-
-                if ($request->request->get('OpDeshacer')) {
+                if($request->request->get('OpGenerarComercial')) {
+                    set_time_limit(0);
+                    ini_set("memory_limit", -1);
+                    $codigoCierreMes = $request->request->get('OpGenerarComercial');
+                    $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->generarCierreMesComercial($codigoCierreMes);
+                    return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
+                }
+                if($request->request->get('OpDeshacer')) {
                     $codigoCierreMes = $request->request->get('OpDeshacer');
                     $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
                     $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
@@ -375,6 +381,27 @@ class CierreMesController extends Controller {
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
+                if($request->request->get('OpDeshacerComercial')) {
+                    $codigoCierreMes = $request->request->get('OpDeshacerComercial');
+                    $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+                    $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
+
+                    $strSql = "DELETE FROM tur_ingreso_pendiente WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
+                    $em->getConnection()->executeQuery($strSql);
+                    /*$strSql = "DELETE FROM tur_costo_detalle WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
+                    $em->getConnection()->executeQuery($strSql);
+                    $strSql = "DELETE FROM tur_costo_servicio WHERE codigo_cierre_mes_fk = " . $codigoCierreMes;
+                    $em->getConnection()->executeQuery($strSql);
+                    $strSql = "DELETE FROM tur_recurso_puesto WHERE anio = " . $arCierreMes->getAnio() . " AND mes = " . $arCierreMes->getMes();
+                    $em->getConnection()->executeQuery($strSql);
+                    $strSql = "DELETE FROM rhu_empleado_centro_costo WHERE anio = " . $arCierreMes->getAnio() . " AND mes = " . $arCierreMes->getMes();
+                    $em->getConnection()->executeQuery($strSql);
+                    */
+                    $arCierreMes->setEstadoGeneradoComercial(0);
+                    $em->persist($arCierreMes);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
+                }                
                 if($request->request->get('OpCerrar')) {
                     set_time_limit(0);
                     ini_set("memory_limit", -1);                    
@@ -396,7 +423,7 @@ class CierreMesController extends Controller {
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
-                if ($form->get('BtnEliminar')->isClicked()) {
+                if($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurCierreMes')->eliminar($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
