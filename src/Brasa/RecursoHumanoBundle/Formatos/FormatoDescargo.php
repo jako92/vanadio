@@ -52,7 +52,7 @@ class FormatoDescargo extends \FPDF_FPDF {
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
         } else {
             $this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
-            $this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
+            //$this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
         }        
         $this->EncabezadoDetalles();         
     }
@@ -80,14 +80,17 @@ class FormatoDescargo extends \FPDF_FPDF {
         $sustitucion1 = $arDescargo->getEmpleadoRel()->getNombreCorto();
         $sustitucion2 = $arDescargo->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion3 = $arDescargo->getDescargo();
+        $sustitucion4 = $arDescargo->getDisciplinarioRel()->getAsunto();
         
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
         $patron3 = '/#3/';
+        $patron4 = '/#4/';
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron4, $sustitucion4, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);        
    
     }
