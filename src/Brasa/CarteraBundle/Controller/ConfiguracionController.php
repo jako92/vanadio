@@ -31,10 +31,10 @@ class ConfiguracionController extends Controller {
                 //->add('informacionContactoFactura', 'textarea', array('data' => $arConfiguracion->getInformacionContactoFactura(), 'required' => false)) 
                 //->add('informacionResolucionDianFactura', 'textarea', array('data' => $arConfiguracion->getInformacionResolucionDianFactura(), 'required' => false)) 
                 //->add('informacionResolucionSupervigilanciaFactura', 'textarea', array('data' => $arConfiguracion->getInformacionResolucionSupervigilanciaFactura(), 'required' => false)) 
-                ->add('guardar', SubmitType::CLASS, array('label' => 'Actualizar'))
+                ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))
                 ->getForm();
         $formConfiguracion->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($formConfiguracion->isSubmitted()) {
             if ($formConfiguracion->isValid()) {
                 $controles = $request->request->get('form');
                 /* $strInformacionLegalFactura = $controles['informacionLegalFactura'];
