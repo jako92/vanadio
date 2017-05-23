@@ -163,25 +163,26 @@ class RetencionIcaController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'G'; $col++) {
+        for ($col = 'A'; $col !== 'M'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        for ($col = 'H'; $col !== 'Z'; $col++) {
+        for ($col = 'I'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'TIPO')
-                ->setCellValue('B1', 'NUMERO')
-                ->setCellValue('C1', 'NIT')
-                ->setCellValue('D1', 'CLIENTE')
-                ->setCellValue('E1', 'C_COSTO')
-                ->setCellValue('F1', 'FECHA')
-                ->setCellValue('G1', 'CIUDAD')
-                ->setCellValue('H1', '% ICA')
-                ->setCellValue('I1', 'SUBTOTAL')
-                ->setCellValue('J1', 'IVA')
-                ->setCellValue('K1', 'TOTAL');
+                ->setCellValue('A1', 'ID')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'NUMERO')
+                ->setCellValue('D1', 'NIT')
+                ->setCellValue('E1', 'CLIENTE')
+                ->setCellValue('F1', 'C_COSTO')
+                ->setCellValue('G1', 'FECHA')
+                ->setCellValue('H1', 'CIUDAD')
+                ->setCellValue('I1', '% ICA')
+                ->setCellValue('J1', 'SUBTOTAL')
+                ->setCellValue('K1', 'IVA')
+                ->setCellValue('L1', 'TOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -189,21 +190,22 @@ class RetencionIcaController extends Controller {
         $arFacturaDetalles = $query->getResult();
         foreach ($arFacturaDetalles as $arFacturaDetalle) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arFacturaDetalle->getFacturaRel()->getFacturaTipoRel()->getNombre())
-                    ->setCellValue('B' . $i, $arFacturaDetalle->getFacturaRel()->getNumero())
-                    ->setCellValue('C' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNit())
-                    ->setCellValue('D' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arFacturaDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
-                    ->setCellValue('F' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m'))
-                    ->setCellValue('I' . $i, $arFacturaDetalle->getSubtotal())
-                    ->setCellValue('J' . $i, $arFacturaDetalle->getIva())
-                    ->setCellValue('K' . $i, $arFacturaDetalle->getTotal());
+                    ->setCellValue('A' . $i, $arFacturaDetalle->getCodigoFacturaDetallePk())
+                    ->setCellValue('B' . $i, $arFacturaDetalle->getFacturaRel()->getFacturaTipoRel()->getNombre())
+                    ->setCellValue('C' . $i, $arFacturaDetalle->getFacturaRel()->getNumero())
+                    ->setCellValue('D' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNit())
+                    ->setCellValue('E' . $i, $arFacturaDetalle->getFacturaRel()->getClienteRel()->getNombreCorto())
+                    ->setCellValue('F' . $i, $arFacturaDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
+                    ->setCellValue('G' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m'))
+                    ->setCellValue('J' . $i, $arFacturaDetalle->getSubtotal())
+                    ->setCellValue('K' . $i, $arFacturaDetalle->getIva())
+                    ->setCellValue('L' . $i, $arFacturaDetalle->getTotal());
 
             if ($arFacturaDetalle->getCodigoCiudadFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G' . $i, $arFacturaDetalle->getCiudadRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H' . $i, $arFacturaDetalle->getCiudadRel()->getNombre());
             }
             if ($arFacturaDetalle->getCodigoCiudadFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H' . $i, $arFacturaDetalle->getCiudadRel()->getPorcentajeRetencionIca());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arFacturaDetalle->getCiudadRel()->getPorcentajeRetencionIca());
             }
             $i++;
         }

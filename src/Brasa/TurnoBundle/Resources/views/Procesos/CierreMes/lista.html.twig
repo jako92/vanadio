@@ -43,7 +43,7 @@
                     {% else %}
                         <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>                                                                                                                                                                       
                     {% endif %}                    
-                    <td>{% if arCierreMes.estadoGenerado == 1 and arCierreMes.estadoGeneradoComercial == 1 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% endif %}</td>                        
+                    <td>{% if arCierreMes.estadoGenerado == 1 and arCierreMes.estadoGeneradoComercial == 1 and arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% endif %}</td>                        
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCierreMes.codigoCierreMesPk }}" /></td>
                 </tr>
             {% endfor %}
