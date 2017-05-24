@@ -198,6 +198,11 @@ class CobroController extends Controller {
                     $objCobro->Generar($em, $codigoCobro);
                     return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
                 }
+                if ($arCobro->getCodigoCobroTipoFk() == "I") {
+                    $objCobro = new \Brasa\RecursoHumanoBundle\Formatos\CobroIncapacidad();
+                    $objCobro->Generar($em, $codigoCobro);
+                    return $this->redirect($this->generateUrl('brs_rhu_cobro_detalle', array('codigoCobro' => $codigoCobro)));
+                }
             }
             if ($form->get('BtnDetalleExcel')->isClicked()) {
                 $this->generarDetalleExcel($codigoCobro);
