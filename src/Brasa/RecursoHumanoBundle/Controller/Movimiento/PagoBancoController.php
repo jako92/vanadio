@@ -158,6 +158,12 @@ class PagoBancoController extends Controller
                                 $arPago->setEstadoPagadoBanco(0);
                                 $em->persist($arPago);                                
                             }
+                            if($arPagoBancoDetalle->getCodigoLiquidacionFk()) {
+                                $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
+                                $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($arPagoBancoDetalle->getCodigoLiquidacionFk());
+                                $arLiquidacion->setEstadoPagoBanco(0);
+                                $em->persist($arLiquidacion);                                
+                            }
                             if($arPagoBancoDetalle->getCodigoVacacionFk()) {
                                 $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
                                 $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($arPagoBancoDetalle->getCodigoVacacionFk());
