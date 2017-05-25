@@ -76,7 +76,7 @@ class FormatoCartaGr extends \FPDF_FPDF {
         } else {            
             $this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
             //$this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
-            $this->Image('imagenes/logos/firma.jpg' , 10 ,175, 50 , 30,'JPG');
+            $this->Image('imagenes/logos/firmawalter.png' , 10 ,175, 50 , 30,'PNG');
         }
         
         $this->EncabezadoDetalles();        
