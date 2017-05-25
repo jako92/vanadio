@@ -325,7 +325,7 @@ class SegUsuariosController extends Controller
             ->add('anular', CheckboxType::class, array('required'  => false))            
             ->add('imprimir', CheckboxType::class, array('required'  => false))
             ->add('desanular', CheckboxType::class, array('required'  => false))
-            ->add('modulo', EntityType::class, array(
+            /*->add('modulo', EntityType::class, array(
             'class' => 'BrasaSeguridadBundle:SegDocumento',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('sd')
@@ -335,7 +335,7 @@ class SegUsuariosController extends Controller
             'required' => false,
             'empty_data' => "",
             'placeholder' => "TODOS",
-            'data' => ""))
+            'data' => ""))*/
             ->add('BtnFiltrar', SubmitType::class, array('label' => 'filtrar'))
             ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
