@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SegUsuariosController extends Controller
 {
@@ -323,7 +324,19 @@ class SegUsuariosController extends Controller
             ->add('desaprobar', CheckboxType::class, array('required'  => false))
             ->add('anular', CheckboxType::class, array('required'  => false))            
             ->add('imprimir', CheckboxType::class, array('required'  => false))
-            ->add('desanular', CheckboxType::class, array('required'  => false))            
+            ->add('desanular', CheckboxType::class, array('required'  => false))
+            ->add('modulo', EntityType::class, array(
+            'class' => 'BrasaSeguridadBundle:SegDocumento',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('sd')
+                                ->orderBy('sd.modulo', 'ASC');
+            },
+            'choice_label' => 'modulo',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""))
+            ->add('BtnFiltrar', SubmitType::class, array('label' => 'filtrar'))
             ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
             ->getForm();
         $form->handleRequest($request);
