@@ -123,10 +123,10 @@ class FormatoCartaGr extends \FPDF_FPDF {
         //fin promedio mensual
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
         $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoCartaTipo);
-        //$codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
-        //$codigoContenidoFormato = $arCartaTipo->getCodigoContenidoFormatoFk();
+        $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
+        $codigoContenidoFormato = $arCartaTipo->getCodigoContenidoFormatoFk();
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        /*if ($codigoCartaTipo == null){
+        if ($codigoCartaTipo == null){
            $cadena = "La carta no tiene asociado un formato tipo carta"; 
         } else {
            if ($codigoContenidoFormato == null){
@@ -135,7 +135,7 @@ class FormatoCartaGr extends \FPDF_FPDF {
                $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
                $cadena = $arContenidoFormato->getContenido();
              }
-          }*/            
+        }        
         //se reemplaza el contenido de la tabla tipo de proceso disciplinario
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
