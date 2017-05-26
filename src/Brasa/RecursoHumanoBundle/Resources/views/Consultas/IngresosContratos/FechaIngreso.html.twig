@@ -104,9 +104,11 @@
         </table>
         <div class="btn-toolbar" style="float: left">
             <div class="btn-group">
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arIngresosContratos.getTotalItemCount }}</span></div>        
+            </div>
+            <div class="btn-group">
                 {{ knp_pagination_render(arIngresosContratos) }} 
             </div>
-
         </div>                
         <div class="btn-toolbar" style="float: right">                 
             <div class="btn-group">
