@@ -11,5 +11,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class SegDocumentoRepository extends EntityRepository {
     
+    public function listaDql($strTipo = "", $strModulo = "") {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT s FROM BrasaSeguridadBundle:SegDocumento s WHERE s.codigoDocumentoPk <> 0";
+        
+        if($strTipo != "") {
+            $dql .= " AND s.tipo LIKE '%" . $strTipo . "%'";
+        }
+        if ($strModulo != ""){
+            $dql .= " AND s.modulo LIKE '%" . $strModulo . "%'";
+        }
+        $dql .= " ORDER BY s.tipo ASC";
+        
+        return $dql;
+    }
     
 }
