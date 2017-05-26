@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuAcreditacionAcreditarType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -127,17 +128,36 @@ class AcreditacionController extends Controller
         $arAcreditacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacion')->find($codigoAcreditacion);
         $form = $this->formularioDetalle($arAcreditacion);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-
-            }            
+        if ($form->isSubmitted() && $form->isValid()) {           
         }
 
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Acreditacion:detalle.html.twig', array(
                     'arAcreditacion' => $arAcreditacion,
                     'form' => $form->createView()
         ));
-    }    
+    }
+    
+    /**
+     * @Route("/rhu/movimiento/acreditacion/detalle/acreditar/{codigoAcreditacion}", name="brs_rhu_movimiento_acreditacion_detalle_acreditar")
+     */
+    public function acreditarAction(Request $request, $codigoAcreditacion) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arAcreditacion = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacion();
+        $arAcreditacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacion')->find($codigoAcreditacion);
+        $form = $this->createForm(RhuAcreditacionAcreditarType::class, $arAcreditacion);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arAcreditacion = $form->getData();
+            $em->persist($arAcreditacion);
+            $em->flush();
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Acreditacion:acreditar.html.twig', array(
+                    'arAcreditacion' => $arAcreditacion,
+                    'form' => $form->createView()
+        ));
+    } 
     
     /**
      * @Route("/rhu/movimiento/acreditacion/cargar/validacion/", name="brs_rhu_movimiento_acreditacion_cargar_validacion")
@@ -309,7 +329,7 @@ class AcreditacionController extends Controller
         $form = $this->createFormBuilder()
                 ->getForm();
         return $form;
-    }    
+    }
     
     private function listar() {
         $em = $this->getDoctrine()->getManager();

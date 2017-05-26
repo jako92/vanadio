@@ -20,6 +20,7 @@
         {{ form_errors(form) }}
         <div class="btn-group">
             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 21,  'numero': arAcreditacion.codigoAcreditacionPk }) }}', 'Archivos', 500, 800)" >Archivos</a>                                    
+            {% if arAcreditacion.estadoValidado == 1 %}<a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_acreditacion_detalle_acreditar', { 'codigoAcreditacion': arAcreditacion.codigoAcreditacionPk }) }}', 'Acreditar', 500, 800)" >Acreditar</a> {% endif %}                                   
         </div>
         <br /> <br />
         <div class="panel panel-default">
