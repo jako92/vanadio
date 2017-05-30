@@ -146,10 +146,11 @@ class InvMovimientoRepository extends EntityRepository {
                 $arCuentaCobrar->setNumeroDocumento($arMovimiento->getNumero());
                 $arCuentaCobrar->setCodigoFactura($arMovimiento->getCodigoMovimientoPk());
                 $arCuentaCobrar->setSoporte($arMovimiento->getSoporte());
-                $arCuentaCobrar->setValorOriginal($arMovimiento->getVrNetoPagar());
-                $arCuentaCobrar->setSaldo($arMovimiento->getVrNetoPagar());
+                $arCuentaCobrar->setValorOriginal($arMovimiento->getVrNeto());
+                $arCuentaCobrar->setSaldo($arMovimiento->getVrNeto());
                 $arCuentaCobrar->setPlazo($arClienteCartera->getPlazoPago());                
                 $arCuentaCobrar->setOperacion($arMovimiento->getOperacionComercial());
+                $arCuentaCobrar->setSubtotal($arMovimiento->getVrSubtotal());
                 $arCuentaCobrar->setAbono(0);
                 $em->persist($arCuentaCobrar);
             }                                                   
@@ -282,16 +283,15 @@ class InvMovimientoRepository extends EntityRepository {
         $iva = round($iva);       
         $retencionFuente = round($retencionFuente); 
         $retencionIva = round($retencionIva);
-        $totalNeto = $subtotal + $iva;        
-        $totalNetoPagar = $subtotal + $iva - $retencionFuente - $retencionIva;        
+        $totalBruto = $subtotal + $iva;          
+        $totalNeto = $subtotal + $iva - $retencionFuente - $retencionIva;        
         $arMovimiento->setVrSubtotal($subtotal);
         $arMovimiento->setVrSubtotalOperado($subtotal * $arMovimiento->getOperacionInventario());       
         $arMovimiento->setVrRetencionFuente($retencionFuente);
         $arMovimiento->setVrRetencionIva($retencionIva);
         $arMovimiento->setVrIva($iva);
-        $arMovimiento->setvrBruto($subtotal);
-        $arMovimiento->setVrNeto($totalNeto);        
-        $arMovimiento->setvrNetoPagar($totalNetoPagar);
+        $arMovimiento->setvrBruto($totalBruto);
+        $arMovimiento->setVrNeto($totalNeto);                
         $em->persist($arMovimiento);
         $em->flush();
         return true;
