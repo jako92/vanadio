@@ -244,12 +244,12 @@ class CobroController extends Controller {
             } else {
                 $valorAdministracion = ($operacion * $arServicioCobrar->getPorcentajeAdministracion()) / 100;
             }
-            $valorRiesgo = ($arServicioCobrar->getVrSalario() * $arServicioCobrar->getPorcentajeRiesgos()) / 100;
+            //$valorRiesgo = ($arServicioCobrar->getVrSalario() * $arServicioCobrar->getPorcentajeRiesgos()) / 100;
             $totalCobro = $operacion + $valorAdministracion;
             $arServicioCobrar->setVrOperacion(round($operacion));
             $arServicioCobrar->setVrAdministracion(round($valorAdministracion));
             $arServicioCobrar->setVrTotalCobro(round($totalCobro));
-            $arServicioCobrar->setVrRiesgos(round($valorRiesgo));
+            //$arServicioCobrar->setVrRiesgos(round($valorRiesgo));
             $em->persist($arServicioCobrar);
             $em->flush();
             $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->liquidar($codigoCobro);
