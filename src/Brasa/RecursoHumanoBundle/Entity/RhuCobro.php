@@ -166,6 +166,11 @@ class RhuCobro {
      * @ORM\Column(name="vr_total_cobro", type="float")
      */
     private $vrTotalCobro = 0;
+    
+    /**
+     * @ORM\Column(name="vr_ajuste", type="float")
+     */
+    private $vrAjuste = 0;
 
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
@@ -186,6 +191,8 @@ class RhuCobro {
      * @ORM\Column(name="estado_cobrado", type="boolean")
      */
     private $estadoCobrado = 0;
+    
+    
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="cobrosClienteRel")
@@ -1267,5 +1274,29 @@ class RhuCobro {
     public function getVrIncapacidad()
     {
         return $this->vrIncapacidad;
+    }
+
+    /**
+     * Set vrAjuste
+     *
+     * @param float $vrAjuste
+     *
+     * @return RhuCobro
+     */
+    public function setVrAjuste($vrAjuste)
+    {
+        $this->vrAjuste = $vrAjuste;
+
+        return $this;
+    }
+
+    /**
+     * Get vrAjuste
+     *
+     * @return float
+     */
+    public function getVrAjuste()
+    {
+        return $this->vrAjuste;
     }
 }
