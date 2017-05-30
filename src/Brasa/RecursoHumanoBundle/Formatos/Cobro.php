@@ -186,7 +186,7 @@ class Cobro extends \FPDF_FPDF {
             $pdf->Cell(10, 5, number_format($arCobro->getVrAdministracion(),0, '.', ','), 1, 0, 'R');
             $pdf->Cell(54, 5, "TOTAL: ", 1, 0, 'R');
             $pdf->SetFont('Arial', '', 7);
-            $pdf->Cell(15, 5, number_format($arCobro->getVrTotalCobro() + $arCobro->getVrAjuste(),0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(15, 5, number_format($arCobro->getVrTotalCobro(),0, '.', ','), 1, 0, 'R');
         
     }
 

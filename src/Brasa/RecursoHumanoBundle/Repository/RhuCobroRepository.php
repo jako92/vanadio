@@ -112,6 +112,7 @@ class RhuCobroRepository extends EntityRepository {
         $arCobro->setVrExamen($totalExamen);
         $arCobro->setVrSeleccion($totalSeleccion);
         $arCobro->setVrIncapacidad(round($totalIncapacidad));
+        $totalCobro += $arCobro->getVrAjuste();
         $arCobro->setvrTotalCobro(round($totalCobro));
         $arCobro->setNumeroRegistros($numeroRegistros);
         $em->persist($arCobro);

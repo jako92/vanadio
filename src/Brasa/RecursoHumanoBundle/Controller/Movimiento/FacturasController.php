@@ -306,7 +306,8 @@ class FacturasController extends Controller
                             $arFacturaDetalle->setCobroRel($arCobro);   
                             $arFacturaDetalle->setFacturaConceptoRel($arFacturaConcepto);
                             $arFacturaDetalle->setCantidad($arCobro->getNumeroRegistros());
-                            $arFacturaDetalle->setVrOperacion($arCobro->getVrOperacion());
+                            $operacion = $arCobro->getVrOperacion() + $arCobro->getVrAjuste();
+                            $arFacturaDetalle->setVrOperacion($operacion);
                             $arFacturaDetalle->setVrAdministracion($arCobro->getVrAdministracion());
                             $precio = $arCobro->getVrTotalCobro() / $arCobro->getNumeroRegistros();
                             $arFacturaDetalle->setVrPrecio($precio);
