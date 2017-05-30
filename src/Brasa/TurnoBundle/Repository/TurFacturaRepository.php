@@ -156,13 +156,13 @@ class TurFacturaRepository extends EntityRepository {
         $baseRetencionFuente = ($subtotal * $porBaseRetencionFuente) / 100;
         $baseRetencionFuente = $baseRetencionFuente;
         if($baseRetencionFuente >= $topeRetencionFuente) {
-            if($arFactura->getClienteRel()->getRegimenSimplificado() == 0) {
+            if($arFactura->getClienteRel()->getRetencionFuente()) {
                 $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
                 $retencionFuente = round($retencionFuente);
             }            
         }
         $retencionIva = 0;
-        if($arFactura->getClienteRel()->getAutorretenedor()) {
+        if($arFactura->getClienteRel()->getRetencionIva()) {
             if($iva > 0) {
                 $retencionIva = ($iva * 15) / 100;
                 $retencionIva = round($retencionIva);

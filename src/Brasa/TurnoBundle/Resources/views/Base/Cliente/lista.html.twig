@@ -1,4 +1,5 @@
 {% extends '::base2.html.twig' %}
+{% block title %}Clientes - Soga App{% endblock %}
 {% block content %}
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -15,11 +16,6 @@
         </ol>
     </section>   
     <section class="content"> 
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">

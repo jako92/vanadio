@@ -1,4 +1,5 @@
 {% extends '::base2.html.twig' %}
+{% block title %}Cliente nuevo - Soga App{% endblock %}
 {% block content %}
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -159,7 +160,17 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.telefonoContacto, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>    
-                </div>                                
+                </div>        
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <label for="form_regimenSimplificado"  class="control-label">Regimen simplificado {{ form_widget(form.regimenSimplificado) }}</label>
+                        <label for="form_regimenComun"  class="control-label">Regimen comun {{ form_widget(form.regimenComun) }}</label>
+                        <label for="form_autorretenedor"  class="control-label">Autoretenedor {{ form_widget(form.autorretenedor) }}</label>
+                        <label for="form_retencionIva"  class="control-label">Retiene Iva {{ form_widget(form.retencionIva) }}</label>
+                        <label for="form_retencionFuente"  class="control-label">Retiene Fuente {{ form_widget(form.retencionFuente) }}</label>
+                    </div>
+                </div>                    
                 <div class="form-group form-group-sm">
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-9">
@@ -173,21 +184,6 @@
                     </div>
                 </div>                 
             </div>                
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Informacion legal</div>
-            <div class="panel-body">   
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-1 control-label"></label>
-                    <div class="col-sm-2">
-                        Regimen simplificado {{ form_widget(form.regimenSimplificado) }}                        
-                    </div>
-                    <label class="col-sm-1 control-label"></label>
-                    <div class="col-sm-2">
-                        Autorretenedor {{ form_widget(form.autorretenedor) }}                        
-                    </div>        
-                </div>                                                         
-            </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">Clasificacion</div>

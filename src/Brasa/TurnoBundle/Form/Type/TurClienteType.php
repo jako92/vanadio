@@ -100,7 +100,7 @@ class TurClienteType extends AbstractType
                     ->orderBy('lp.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))                             
-            ->add('nit', NumberType::class, array('required' => true))
+            ->add('nit', TextType::class, array('required' => true))
             ->add('digitoVerificacion', TextType::class, array('required' => false))  
             ->add('nombreCorto', TextType::class, array('required' => true)) 
             ->add('nombreCompleto', TextType::class, array('required' => true))
@@ -125,7 +125,10 @@ class TurClienteType extends AbstractType
             ->add('telefonoContacto', TextType::class, array('required' => false))
             ->add('facturaAgrupada', CheckboxType::class, array('required'  => false))                            
             ->add('regimenSimplificado', CheckboxType::class, array('required'  => false))
+            ->add('regimenComun', CheckboxType::class, array('required'  => false))
             ->add('autorretenedor', CheckboxType::class, array('required'  => false))
+            ->add('retencionIva', CheckboxType::class, array('required'  => false))
+            ->add('retencionFuente', CheckboxType::class, array('required'  => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

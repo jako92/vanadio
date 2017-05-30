@@ -216,11 +216,26 @@ class TurCliente
      * @ORM\Column(name="regimen_simplificado", type="boolean")
      */    
     private $regimenSimplificado = false;      
+
+    /**     
+     * @ORM\Column(name="regimen_comun", type="boolean")
+     */    
+    private $regimenComun = false; 
     
     /**     
      * @ORM\Column(name="autorretenedor", type="boolean")
      */    
     private $autorretenedor = false;    
+
+    /**     
+     * @ORM\Column(name="retencion_iva", type="boolean")
+     */    
+    private $retencionIva = false;
+
+    /**     
+     * @ORM\Column(name="retencion_fuente", type="boolean")
+     */    
+    private $retencionFuente = false;
     
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
@@ -1375,6 +1390,30 @@ class TurCliente
     }
 
     /**
+     * Set regimenComun
+     *
+     * @param boolean $regimenComun
+     *
+     * @return TurCliente
+     */
+    public function setRegimenComun($regimenComun)
+    {
+        $this->regimenComun = $regimenComun;
+
+        return $this;
+    }
+
+    /**
+     * Get regimenComun
+     *
+     * @return boolean
+     */
+    public function getRegimenComun()
+    {
+        return $this->regimenComun;
+    }
+
+    /**
      * Set autorretenedor
      *
      * @param boolean $autorretenedor
@@ -1396,6 +1435,54 @@ class TurCliente
     public function getAutorretenedor()
     {
         return $this->autorretenedor;
+    }
+
+    /**
+     * Set retencionIva
+     *
+     * @param boolean $retencionIva
+     *
+     * @return TurCliente
+     */
+    public function setRetencionIva($retencionIva)
+    {
+        $this->retencionIva = $retencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIva
+     *
+     * @return boolean
+     */
+    public function getRetencionIva()
+    {
+        return $this->retencionIva;
+    }
+
+    /**
+     * Set retencionFuente
+     *
+     * @param boolean $retencionFuente
+     *
+     * @return TurCliente
+     */
+    public function setRetencionFuente($retencionFuente)
+    {
+        $this->retencionFuente = $retencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionFuente
+     *
+     * @return boolean
+     */
+    public function getRetencionFuente()
+    {
+        return $this->retencionFuente;
     }
 
     /**
