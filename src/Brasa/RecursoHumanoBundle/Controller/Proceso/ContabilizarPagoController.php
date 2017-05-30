@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -76,6 +77,10 @@ class ContabilizarPagoController extends Controller
                     }                   
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_pago'));
+            }   
+            if($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form, $request);
+                $this->listar();
             }            
         }       
                 
@@ -83,19 +88,84 @@ class ContabilizarPagoController extends Controller
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:pago.html.twig', array(
             'arPagos' => $arPagos,
             'form' => $form->createView()));
-    }          
+    }              
+    
+    private function listar() {
+        $em = $this->getDoctrine()->getManager(); 
+        $session = $this->get('session');
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientesContabilizarDql(
+                    $session->get('filtroPagoNumero'),
+                    $session->get('filtroCodigoCentroCosto'),
+                    $session->get('filtroIdentificacion'),                    
+                    $session->get('filtroDesde'),
+                    $session->get('filtroHasta')
+                );  
+    }         
+    
+    private function filtrarLista($form, Request $request) {
+        $session = $this->get('session'); 
+        $codigoCentroCosto = '';
+        if($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);                
+        $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroPagoNumero', $form->get('TxtNumero')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        if ($form->get('fechaHasta')->getData() == null){
+            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
+            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        } else {
+            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+        }
+    }     
     
     private function formularioLista() {
+        $em = $this->getDoctrine()->getManager();        
+        $session = $this->get('session');
+        $arrayPropiedadesCentroCosto = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoCentroCosto')) {
+            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
+        }
+
+        $strNombreEmpleado = "";
+        if($session->get('filtroIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
+            if($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            }  else {
+                $session->set('filtroIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }
+        
         $form = $this->createFormBuilder()                        
+            ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)            
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                            
+            ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroPagoNumero')))                                                   
+            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
             ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();        
         return $form;
-    }      
-    
-    private function listar() {
-        $em = $this->getDoctrine()->getManager();                
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientesContabilizarDql();  
-    }         
+    }    
     
     private function contabilizarPagoNomina($codigo,$arComprobanteContable,$arCentroCosto,$arTercero,$arPago, $arConfiguracionNomina) {
         $em = $this->getDoctrine()->getManager();
@@ -116,6 +186,28 @@ class ContabilizarPagoController extends Controller
                         }                
                         $arRegistro->setCuentaRel($arCuenta);
                         $arRegistro->setTerceroRel($arTercero);
+                        // Cuando el detalle es de salud y pension se lleva al nit de la entidad 
+                        if($arPagoDetalle->getSalud()) {
+                            $arTerceroSalud = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arPago->getEntidadSaludRel()->getNit()));
+                            if($arTerceroSalud) {
+                                $arRegistro->setTerceroRel($arTerceroSalud);        
+                            }
+                            else {    
+                                $respuesta = "La entidad de salud " . $arPago->getEntidadSaludRel()->getNit(). "-" . $arPago->getEntidadSaludRel()->getNombre() . " del pago " . $arPago->getNumero() . " no existe en contabilidad";
+                                break;                                
+                            }
+                        }
+                        if($arPagoDetalle->getPension()) {
+                            $arTerceroPension = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arPago->getEntidadPensionRel()->getNit()));
+                            if($arTerceroPension) {                               
+                                $arRegistro->setTerceroRel($arTerceroPension);        
+                            }
+                            else {
+                                $respuesta = "La entidad de pension " . $arPago->getEntidadPensionRel()->getNombre() . " del pago " . $arPago->getNumero() . " no existe en contabilidad";
+                                break;                                
+                            }
+                        }
+                        
                         $arRegistro->setNumero($arPago->getNumero());
                         $arRegistro->setNumeroReferencia($arPago->getNumero());
                         $arRegistro->setFecha($arPago->getFechaHasta());

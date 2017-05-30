@@ -295,8 +295,23 @@ class RhuPagoRepository extends EntityRepository {
         return $arrayResultado;
     } 
     
-    public function pendientesContabilizarDql() {        
-        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuPago p WHERE p.estadoContabilizado = 0 AND p.estadoPagado = 1 AND p.vrNeto >= 0";       
+    public function pendientesContabilizarDql($intNumero = 0, $strCodigoCentroCosto = "", $strIdentificacion = "", $strDesde = "", $strHasta = "") {        
+        $dql   = "SELECT p, e FROM BrasaRecursoHumanoBundle:RhuPago p JOIN p.empleadoRel e WHERE p.estadoContabilizado = 0 AND p.estadoPagado = 1 AND p.vrNeto >= 0";       
+        if($intNumero != "" && $intNumero != 0) {
+            $dql .= " AND p.numero = " . $intNumero;
+        }
+        if($strCodigoCentroCosto != "") {
+            $dql .= " AND p.codigoCentroCostoFk = " . $strCodigoCentroCosto;
+        }          
+        if($strIdentificacion != "" ) {
+            $dql .= " AND e.numeroIdentificacion = '" . $strIdentificacion . "'";
+        }
+        if($strDesde != "" || $strDesde != 0){
+            $dql .= " AND p.fechaDesde >='" . $strDesde . "'";
+        }
+        if($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND p.fechaHasta <='" . $strHasta . "'";
+        }        
         $dql .= " ORDER BY p.codigoPagoPk DESC";
         return $dql;
     } 
