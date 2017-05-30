@@ -68,6 +68,8 @@
                 <th>VACACIONES</th>
                 <th>A_PARAF</th>
                 <th>ADMON</th>
+                <th>AUT</th>
+                <th>FAC</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -93,6 +95,8 @@
                     <td style="text-align: right">{{ arCobros.vrVacaciones | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCobros.vrAporteParafiscales | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arCobros.vrAdministracion | number_format(2, '.', ',') }}</td>
+                    <td>{% if arCobros.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td></td>
                     <td style="text-align: center"><a href="{{ path('brs_rhu_cobro_nuevo', { 'codigoCobro':  arCobros.codigoCobroPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" title="Editar registro" width=20 height=20 title="Editar el registro"></a></td>
                     <td style="text-align: center"><a href="{{ path('brs_rhu_cobro_detalle', { 'codigoCobro': arCobros.codigoCobroPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCobros.codigoCobroPk }}" /></td>
