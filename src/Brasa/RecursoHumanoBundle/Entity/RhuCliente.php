@@ -136,6 +136,11 @@ class RhuCliente
      * @ORM\Column(name="regimen_simplificado", type="boolean")
      */    
     private $regimenSimplificado = false;
+
+    /**     
+     * @ORM\Column(name="retencion_iva", type="boolean")
+     */    
+    private $retencionIva = false;
     
      /**
      * @ORM\Column(name="vr_precio_seleccion", type="float")
@@ -1235,5 +1240,29 @@ class RhuCliente
     public function getIncapacidadesClienteRel()
     {
         return $this->incapacidadesClienteRel;
+    }
+
+    /**
+     * Set retencionIva
+     *
+     * @param boolean $retencionIva
+     *
+     * @return RhuCliente
+     */
+    public function setRetencionIva($retencionIva)
+    {
+        $this->retencionIva = $retencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIva
+     *
+     * @return boolean
+     */
+    public function getRetencionIva()
+    {
+        return $this->retencionIva;
     }
 }

@@ -45,6 +45,8 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPago->setCodigoUsuario($arProgramacionPagoProcesar->getCodigoUsuario());
             $arPago->setComentarios($arProgramacionPagoDetalle->getComentarios());
             $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk());
+            $arPago->setEntidadPensionRel($arContrato->getEntidadPensionRel());
+            $arPago->setEntidadSaludRel($arContrato->getEntidadSaludRel());
             //Parametros generales
             $intHorasLaboradas = $arProgramacionPagoDetalle->getHorasPeriodoReales();      
             $horasDiurnas = $arProgramacionPagoDetalle->getHorasDiurnas();
@@ -697,7 +699,9 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPago->setDiasPeriodo($arProgramacionPagoDetalle->getDias());
             $arPago->setCodigoUsuario($arProgramacionPagoProcesar->getCodigoUsuario());
             $arPago->setComentarios($arProgramacionPagoDetalle->getComentarios());
-            $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk());                                   
+            $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk()); 
+            $arPago->setEntidadPensionRel($arContrato->getEntidadPensionRel());
+            $arPago->setEntidadSaludRel($arContrato->getEntidadSaludRel());            
             $em->persist($arPago);
             
             //Prima
@@ -841,7 +845,9 @@ class RhuProgramacionPagoDetalleRepository extends EntityRepository {
             $arPago->setDiasPeriodo($arProgramacionPagoDetalle->getDias());
             $arPago->setCodigoUsuario($arProgramacionPagoProcesar->getCodigoUsuario());
             $arPago->setComentarios($arProgramacionPagoDetalle->getComentarios());
-            $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk());                                   
+            $arPago->setCodigoSoportePagoFk($arProgramacionPagoDetalle->getCodigoSoportePagoFk());    
+            $arPago->setEntidadPensionRel($arContrato->getEntidadPensionRel());
+            $arPago->setEntidadSaludRel($arContrato->getEntidadSaludRel());            
             $em->persist($arPago);
             
             //Cesantia                                           

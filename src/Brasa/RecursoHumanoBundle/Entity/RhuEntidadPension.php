@@ -62,7 +62,10 @@ class RhuEntidadPension
      */
     protected $trasladosPensionesEntidadPensionNuevaRel;
 
-        
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="entidadPensionRel")
+     */
+    protected $pagosEntidadPensionRel;        
 
     /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadPensionRel")
@@ -79,6 +82,7 @@ class RhuEntidadPension
         $this->contratosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pagosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoAportesEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -346,6 +350,40 @@ class RhuEntidadPension
     public function getTrasladosPensionesEntidadPensionNuevaRel()
     {
         return $this->trasladosPensionesEntidadPensionNuevaRel;
+    }
+
+    /**
+     * Add pagosEntidadPensionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadPensionRel
+     *
+     * @return RhuEntidadPension
+     */
+    public function addPagosEntidadPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadPensionRel)
+    {
+        $this->pagosEntidadPensionRel[] = $pagosEntidadPensionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosEntidadPensionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadPensionRel
+     */
+    public function removePagosEntidadPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadPensionRel)
+    {
+        $this->pagosEntidadPensionRel->removeElement($pagosEntidadPensionRel);
+    }
+
+    /**
+     * Get pagosEntidadPensionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosEntidadPensionRel()
+    {
+        return $this->pagosEntidadPensionRel;
     }
 
     /**

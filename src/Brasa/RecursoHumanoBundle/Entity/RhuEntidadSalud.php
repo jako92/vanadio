@@ -77,7 +77,10 @@ class RhuEntidadSalud
      */
     protected $trasladosSaludEntidadSaludNuevaRel;
 
-        
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="entidadSaludRel")
+     */
+    protected $pagosEntidadSaludRel;     
 
     /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadSaludRel")
@@ -85,6 +88,7 @@ class RhuEntidadSalud
     protected $ssoAportesEntidadSaludRel;    
     
     
+
     /**
      * Constructor
      */
@@ -97,6 +101,7 @@ class RhuEntidadSalud
         $this->incapacidadesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pagosEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoAportesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -466,6 +471,40 @@ class RhuEntidadSalud
     public function getTrasladosSaludEntidadSaludNuevaRel()
     {
         return $this->trasladosSaludEntidadSaludNuevaRel;
+    }
+
+    /**
+     * Add pagosEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadSaludRel
+     *
+     * @return RhuEntidadSalud
+     */
+    public function addPagosEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadSaludRel)
+    {
+        $this->pagosEntidadSaludRel[] = $pagosEntidadSaludRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pagosEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadSaludRel
+     */
+    public function removePagosEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosEntidadSaludRel)
+    {
+        $this->pagosEntidadSaludRel->removeElement($pagosEntidadSaludRel);
+    }
+
+    /**
+     * Get pagosEntidadSaludRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPagosEntidadSaludRel()
+    {
+        return $this->pagosEntidadSaludRel;
     }
 
     /**

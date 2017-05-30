@@ -235,6 +235,16 @@ class RhuPago
     private $vrAdicionalNoPrestacional= 0;    
     
     /**
+     * @ORM\Column(name="codigo_entidad_salud_fk", type="integer", nullable=true)
+     */    
+    private $codigoEntidadSaludFk;    
+
+    /**
+     * @ORM\Column(name="codigo_entidad_pension_fk", type="integer", nullable=true)
+     */    
+    private $codigoEntidadPensionFk;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuPagoTipo", inversedBy="pagosPagoTipoRel")
      * @ORM\JoinColumn(name="codigo_pago_tipo_fk", referencedColumnName="codigo_pago_tipo_pk")
      */
@@ -277,6 +287,18 @@ class RhuPago
     protected $programacionPagoDetalleRel;     
     
     /**
+     * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="pagosEntidadSaludRel")
+     * @ORM\JoinColumn(name="codigo_entidad_salud_fk", referencedColumnName="codigo_entidad_salud_pk")
+     */
+    protected $entidadSaludRel;     
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuEntidadPension", inversedBy="pagosEntidadPensionRel")
+     * @ORM\JoinColumn(name="codigo_entidad_pension_fk", referencedColumnName="codigo_entidad_pension_pk")
+     */
+    protected $entidadPensionRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="pagoRel")
      */
     protected $pagosDetallesPagoRel;    
@@ -300,6 +322,7 @@ class RhuPago
      * @ORM\OneToMany(targetEntity="RhuPagoBancoDetalle", mappedBy="pagoRel")
      */
     protected $pagosBancosDetallePagoRel;    
+
 
     /**
      * Constructor
@@ -1356,6 +1379,54 @@ class RhuPago
     }
 
     /**
+     * Set codigoEntidadSaludFk
+     *
+     * @param integer $codigoEntidadSaludFk
+     *
+     * @return RhuPago
+     */
+    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk)
+    {
+        $this->codigoEntidadSaludFk = $codigoEntidadSaludFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEntidadSaludFk
+     *
+     * @return integer
+     */
+    public function getCodigoEntidadSaludFk()
+    {
+        return $this->codigoEntidadSaludFk;
+    }
+
+    /**
+     * Set codigoEntidadPensionFk
+     *
+     * @param integer $codigoEntidadPensionFk
+     *
+     * @return RhuPago
+     */
+    public function setCodigoEntidadPensionFk($codigoEntidadPensionFk)
+    {
+        $this->codigoEntidadPensionFk = $codigoEntidadPensionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEntidadPensionFk
+     *
+     * @return integer
+     */
+    public function getCodigoEntidadPensionFk()
+    {
+        return $this->codigoEntidadPensionFk;
+    }
+
+    /**
      * Set pagoTipoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoTipo $pagoTipoRel
@@ -1521,6 +1592,54 @@ class RhuPago
     public function getProgramacionPagoDetalleRel()
     {
         return $this->programacionPagoDetalleRel;
+    }
+
+    /**
+     * Set entidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel
+     *
+     * @return RhuPago
+     */
+    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null)
+    {
+        $this->entidadSaludRel = $entidadSaludRel;
+
+        return $this;
+    }
+
+    /**
+     * Get entidadSaludRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud
+     */
+    public function getEntidadSaludRel()
+    {
+        return $this->entidadSaludRel;
+    }
+
+    /**
+     * Set entidadPensionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension $entidadPensionRel
+     *
+     * @return RhuPago
+     */
+    public function setEntidadPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension $entidadPensionRel = null)
+    {
+        $this->entidadPensionRel = $entidadPensionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get entidadPensionRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension
+     */
+    public function getEntidadPensionRel()
+    {
+        return $this->entidadPensionRel;
     }
 
     /**
