@@ -25,8 +25,13 @@
         {{ form_errors(form) }}        
         <div class="btn-group">
             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_aplicar', {'codigoAspirante': arAspirante.codigoAspirantePk }) }}', 'Archivos', 500, 700)" >Aplicar</a>
-            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 18,  'numero': arAspirante.codigoAspirantePk }) }}', 'Archivos', 500, 800)" >Archivos</a>        
-        </div>
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 18,  'numero': arAspirante.codigoAspirantePk }) }}', 'Archivos', 500, 800)" >Archivos</a>
+            {% if arAspirante.bloqueado == 0 %}
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_bloquear', { 'codigoAspirante': arAspirante.codigoAspirantePk }) }}', 'Bloquear', 500, 800)" >Bloquear</a>
+        {% else %}
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_desbloquear', { 'codigoAspirante': arAspirante.codigoAspirantePk }) }}', 'Desbloquear', 500, 800)" >Desbloquear</a>
+        {% endif %}
+            </div>
         <br /> <br />
         <!-- Encabezado Movimiento -->
         <div class="panel panel-default">
