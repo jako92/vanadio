@@ -162,10 +162,18 @@
                         <td class="titulo"></td>
                         <td></td>
                         <td class="titulo"></td>
+                        <td class="td-in-well"></td>  
+                        <td class="titulo">AJUSTE:</td>
+                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAjuste | number_format(0, '.', ',') }}</td>                 
+                    </tr>
+<tr>
+                        <td class="titulo"></td>
+                        <td></td>
+                        <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo">TOTAL:</td>
-                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrTotalCobro | number_format(0, '.', ',') }}</td>                   
-                    </tr>                      
+                        <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrTotalCobro | number_format(0, '.', ',') }}</td>                  
+                    </tr>                     
                     <tr>
                         <td class="titulo">COMENTARIOS:</td>
                         <td colspan="7"></td>
