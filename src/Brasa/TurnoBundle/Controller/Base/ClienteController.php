@@ -363,6 +363,7 @@ class ClienteController extends Controller {
     }
 
     private function generarExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
@@ -377,7 +378,7 @@ class ClienteController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'AZ'; $col++) {
+        for ($col = 'A'; $col !== 'AC'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
@@ -407,7 +408,10 @@ class ClienteController extends Controller {
                 ->setCellValue('V1', 'ORIGEN CAPITAL')
                 ->setCellValue('W1', 'ORIGEN JUDICIAL')
                 ->setCellValue('X1', 'SECTOR ECONÓMICO')
-                ->setCellValue('Y1', 'REGIMEN SIMPLIFICADO');
+                ->setCellValue('Y1', 'REG_SIM')
+                ->setCellValue('Z1', 'REG_COM')
+                ->setCellValue('AA1', 'RET_FTE')
+                ->setCellValue('AB1', 'RET_IVA');
 
         $i = 2;
 
@@ -436,7 +440,10 @@ class ClienteController extends Controller {
                     ->setCellValue('Q' . $i, $arCliente->getCelularGerente())
                     ->setCellValue('R' . $i, $arCliente->getFacturaAgrupada())
                     ->setCellValue('S' . $i, $arCliente->getCodigoInterface())
-                    ->setCellValue('Y' . $i, $arCliente->getRegimenSimplificado());
+                    ->setCellValue('Y' . $i, $arCliente->getRegimenSimplificado())
+                    ->setCellValue('Z' . $i, $arCliente->getRegimenComun())
+                    ->setCellValue('AA' . $i, $objFunciones->devuelveBoolean($arCliente->getRetencionFuente()))
+                    ->setCellValue('AB' . $i, $objFunciones->devuelveBoolean($arCliente->getRetencionIva()));
             if ($arCliente->getCodigoCoberturaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T' . $i, $arCliente->getCoberturaRel()->getNombre());
             }
