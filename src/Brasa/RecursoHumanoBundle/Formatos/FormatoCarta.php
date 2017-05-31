@@ -207,7 +207,7 @@ class FormatoCarta extends \FPDF_FPDF {
           } */
         $sustitucion16 = $entidadRiesgoProfesional;
         $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
-        $sustitucion18 = self::$arUsuario;
+        $sustitucion18 = self::$usuario;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();
         $sustitucion20 = $arConfiguracion->getDigitoVerificacionEmpresa();
         $motivoTerminacionContrato = '';

@@ -116,7 +116,7 @@ class CartaLaboralController extends Controller
            
         if ($form->isValid()) {
             $usuarioCarta = $usuarioCarta = $this->get('security.token_storage')->getToken()->getUser();
-            $usuarioCarta = $usuarioCarta->getUserName();
+            $usuarioCarta = $usuarioCarta->getNombreCorto();
             $arUsuario = $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arUsuario = $arUsuario->getUserName();
             $codigoCartaTipo = 5;
