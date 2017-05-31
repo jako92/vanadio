@@ -1,8 +1,11 @@
 <?php
+
 namespace Brasa\RecursoHumanoBundle\Formatos;
+
 use Symfony\Component\HttpFoundation\Request;
 
 class FormatoCarta extends \FPDF_FPDF {
+
     public static $em;
     public static $arUsuario;
     public static $usuario;
@@ -18,9 +21,8 @@ class FormatoCarta extends \FPDF_FPDF {
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
     public static $destinatario;
-    
-    
-    public function Generar($miThis, $em, $arUsuario, $usuarioCarta, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario) {        
+
+    public function Generar($miThis, $em, $arUsuario, $usuarioCarta, $codigoTipoCarta, $fechaProceso, $fechaOpcional, $codigoContrato, $booleamSalario, $booleamPromedioIbp, $booleamPromedioNoPrestacional, $salarioSugerido, $promedioIbpSugerido, $promedioNoPrestacionalSugerido, $destinatario) {
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
@@ -40,34 +42,33 @@ class FormatoCarta extends \FPDF_FPDF {
         self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
         self::$destinatario = $destinatario; //Destinatario de la carta
         $pdf = new FormatoCarta();
-        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);        
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());        
+        $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
         #Establecemos los márgenes izquierda, arriba y derecha: 
-        $pdf->SetMargins($arContenidoFormato->getMargenIzquierda(), 25 , $arContenidoFormato->getMargenDerecha());        
+        $pdf->SetMargins($arContenidoFormato->getMargenIzquierda(), 25, $arContenidoFormato->getMargenDerecha());
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 12);
         $this->Body($pdf);
-        $pdf->Output("Carta$codigoContrato.pdf", 'D');        
-        
-    } 
-    
+        $pdf->Output("Carta$codigoContrato.pdf", 'D');
+    }
+
     public function Header() {
         $this->SetFillColor(272, 272, 272);
-        $this->SetFont('Arial','B',10);
+        $this->SetFont('Arial', 'B', 10);
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
         $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);
         $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
         $arContenidoFormatoA = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormatoA = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());        
-        if ($arContenidoFormatoA->getRequiereFormatoIso() == 1){
+        $arContenidoFormatoA = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
+        if ($arContenidoFormatoA->getRequiereFormatoIso() == 1) {
             $this->SetFillColor(272, 272, 272);
-            $this->SetFont('Arial','B',10);
+            $this->SetFont('Arial', 'B', 10);
             $this->SetXY(10, 10);
             $this->Line(10, 10, 60, 10);
             $this->Line(10, 10, 10, 50);
             $this->Line(10, 50, 60, 50);
-            $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg' , 15 ,20, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
+            $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg', 15, 20, 40, 20, 'JPG'), 0, 0, 'C', 0); //cuadro para el logo
             $this->SetXY(60, 10);
             $this->Cell(90, 10, utf8_decode("PROCESO GESTIÓN HUMANA"), 1, 0, 'C', 1); //cuadro mitad arriba
             $this->SetXY(60, 20);
@@ -81,23 +82,23 @@ class FormatoCarta extends \FPDF_FPDF {
             $this->SetXY(150, 20);
             $this->Cell(50, 20, utf8_decode($arContenidoFormatoA->getCodigoFormatoIso()), 1, 0, 'C', 1); //cuadro derecho mitad 1
             $this->SetXY(150, 40);
-            $this->Cell(50, 5, utf8_decode("Versión ". $arContenidoFormatoA->getVersion() .""), 1, 0, 'C', 1); //cuadro derecho abajo 1
+            $this->Cell(50, 5, utf8_decode("Versión " . $arContenidoFormatoA->getVersion() . ""), 1, 0, 'C', 1); //cuadro derecho abajo 1
             $this->SetXY(150, 45);
             $this->Cell(50, 5, $arContenidoFormatoA->getFechaVersion()->format('Y-m-d'), 1, 0, 'C', 1); //cuadro derecho abajo 2
-        } else {            
+        } else {
             //$this->Image('imagenes/logos/logo.jpg' , 10 ,5, 50 , 30,'JPG');
             //$this->Image('imagenes/logos/encabezado.jpg' , 115 ,5, 90 , 40,'JPG');
             //$this->Image('imagenes/logos/piedepagina.jpg' , 10 ,260, 190 , 40,'JPG'); //x,y,largo,ancho
             //$this->Image('imagenes/logos/firma.jpg' , 10 ,175, 50 , 30,'JPG');
         }
-        
-        $this->EncabezadoDetalles();        
+
+        $this->EncabezadoDetalles();
     }
 
     public function EncabezadoDetalles() {
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);        
-        $this->SetFont('Arial','','9');
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $this->SetFont('Arial', '', '9');
         //$this->Text(10, 55, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). " ". self::$fechaProceso);
         $this->Ln(20);
     }
@@ -106,34 +107,34 @@ class FormatoCarta extends \FPDF_FPDF {
         //$pdf->SetXY(10, 65);
         $pdf->SetFont('Arial', '', 10);
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);        
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         //$pdf->Text(10, 55, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). " ". self::$fechaProceso);
         $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-        $arConfiguracionNomina = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);        
+        $arConfiguracionNomina = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
-        
+        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
+
         //Inicio promedio mensual
         $intPeriodo = 0;
         $strPeriodo = $arContrato->getCentroCostoRel()->getPeriodoPagoRel()->getNombre();
-        if ($strPeriodo == "SEMANAL"){
+        if ($strPeriodo == "SEMANAL") {
             $intPeriodo = 4;
         }
-        if ($strPeriodo == "DECADAL"){
+        if ($strPeriodo == "DECADAL") {
             $intPeriodo = 3;
         }
-        if ($strPeriodo == "CATORCENAL"){
+        if ($strPeriodo == "CATORCENAL") {
             $intPeriodo = 2;
         }
-        if ($strPeriodo == "QUINCENAL"){
+        if ($strPeriodo == "QUINCENAL") {
             $intPeriodo = 2;
         }
-        if ($strPeriodo == "MENSUAL"){
+        if ($strPeriodo == "MENSUAL") {
             $intPeriodo = 1;
         }
-        $arSuplementario = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->tiempoSuplementarioCartaLaboral($intPeriodo, $arContrato->getCodigoContratoPk());            
+        $arSuplementario = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->tiempoSuplementarioCartaLaboral($intPeriodo, $arContrato->getCodigoContratoPk());
         $floPromedioSalario = $arSuplementario;
-        $arNoPrestacional = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->noPrestacionalCartaLaboral($intPeriodo, $arContrato->getCodigoContratoPk());            
+        $arNoPrestacional = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->noPrestacionalCartaLaboral($intPeriodo, $arContrato->getCodigoContratoPk());
         $floNoPrestacional = $arNoPrestacional;
         //fin promedio mensual
         $arCartaTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCartaTipo();
@@ -141,81 +142,86 @@ class FormatoCarta extends \FPDF_FPDF {
         $codigoCartaTipo = $arCartaTipo->getCodigoCartaTipoPk();
         $codigoContenidoFormato = $arCartaTipo->getCodigoContenidoFormatoFk();
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        if ($codigoCartaTipo == null){
-           $cadena = "La carta no tiene asociado un formato tipo carta"; 
+        if ($codigoCartaTipo == null) {
+            $cadena = "La carta no tiene asociado un formato tipo carta";
         } else {
-           if ($codigoContenidoFormato == null){
-               $cadena = "La carta no tiene un formato creado en el sistema";
-           } else {
-               $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
-               $cadena = $arContenidoFormato->getContenido();
-             }
-          }
+            if ($codigoContenidoFormato == null) {
+                $cadena = "La carta no tiene un formato creado en el sistema";
+            } else {
+                $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());
+                $cadena = $arContenidoFormato->getContenido();
+            }
+        }
         //se reemplaza el contenido de la tabla tipo de proceso disciplinario
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
         $sustitucion3 = $arContrato->getCargoRel()->getNombre();
-        /*if ($arContrato->getFechaProrrogaInicio() == null){
-            $sustitucion4 = $arContrato->getFechaDesde()->format('Y-m-d');
-            $sustitucion7 = $arContrato->getFechaHasta()->format('Y-m-d');
-            $feci = $arContrato->getFechaDesde();
-            $fecf = $arContrato->getFechaHasta();
-        } else {
-            $sustitucion4 = $arContrato->getFechaProrrogaInicio()->format('Y-m-d');
-            $sustitucion7 = $arContrato->getFechaProrrogaFinal()->format('Y-m-d');
-            $feci = $arContrato->getFechaProrrogaInicio();
-            $fecf = $arContrato->getFechaProrrogaFinal();
-        }*/
+        /* if ($arContrato->getFechaProrrogaInicio() == null){
+          $sustitucion4 = $arContrato->getFechaDesde()->format('Y-m-d');
+          $sustitucion7 = $arContrato->getFechaHasta()->format('Y-m-d');
+          $feci = $arContrato->getFechaDesde();
+          $fecf = $arContrato->getFechaHasta();
+          } else {
+          $sustitucion4 = $arContrato->getFechaProrrogaInicio()->format('Y-m-d');
+          $sustitucion7 = $arContrato->getFechaProrrogaFinal()->format('Y-m-d');
+          $feci = $arContrato->getFechaProrrogaInicio();
+          $fecf = $arContrato->getFechaProrrogaFinal();
+          } */
         $sustitucion4 = $arContrato->getFechaDesde()->format('Y-m-d');
         $sustitucion7 = $arContrato->getFechaHasta()->format('Y-m-d');
         $feci = $arContrato->getFechaDesde();
         $fecf = $arContrato->getFechaHasta();
-        $sustitucion4 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion4));
+        $sustitucion4 = strftime("%d de " . $this->MesesEspañol($feci->format('m')) . " de %Y", strtotime($sustitucion4));
         $sustitucion5 = $arConfiguracion->getNombreEmpresa();
-        if (self::$fechaOpcional == null ){
+        if (self::$fechaOpcional == null) {
             $sustitucion6 = "";
         } else {
             $sustitucion6 = self::$fechaOpcional;
-            $sustitucion6 = strftime("%d de ". $this->MesesEspañol($sustitucion6->format('m')) ." de %Y", strtotime($sustitucion6->format('Y-m-d')));
+            $sustitucion6 = strftime("%d de " . $this->MesesEspañol($sustitucion6->format('m')) . " de %Y", strtotime($sustitucion6->format('Y-m-d')));
         }
-        $sustitucion7 = strftime("%d de ". $this->MesesEspañol($fecf->format('m')) ." de %Y", strtotime($sustitucion7));
+        $sustitucion7 = strftime("%d de " . $this->MesesEspañol($fecf->format('m')) . " de %Y", strtotime($sustitucion7));
         $sustitucion8 = $arContrato->getContratoTipoRel()->getNombre();
         $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras($arContrato->getVrSalario());
-        $sustitucion9 = $salarioLetras." $(";
-        $sustitucion9 .= number_format($arContrato->getVrSalario(), 2,'.',',');
+        $sustitucion9 = $salarioLetras . " $(";
+        $sustitucion9 .= number_format($arContrato->getVrSalario(), 2, '.', ',');
         $sustitucion9 .= ")";
         $sustitucion10 = self::$fechaProceso;
-        $dato = substr($sustitucion10, 5,2);
-        $sustitucion10 = strftime("%d de ". $this->MesesEspañol($dato) ." de %Y", strtotime($sustitucion10));
+        $dato = substr($sustitucion10, 5, 2);
+        $sustitucion10 = strftime("%d de " . $this->MesesEspañol($dato) . " de %Y", strtotime($sustitucion10));
         $promedioSalarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras($floPromedioSalario);
-        $sustitucion11 = $promedioSalarioLetras." $(";
-        $sustitucion11 .= number_format($floPromedioSalario, 2,'.',',');
+        $sustitucion11 = $promedioSalarioLetras . " $(";
+        $sustitucion11 .= number_format($floPromedioSalario, 2, '.', ',');
         $sustitucion11 .= ")";
         $floNoPrestacionalLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras($floNoPrestacional);
-        $sustitucion13 = $floNoPrestacionalLetras." $(";
-        $sustitucion13 .= number_format($floNoPrestacional, 2,'.',',');
+        $sustitucion13 = $floNoPrestacionalLetras . " $(";
+        $sustitucion13 .= number_format($floNoPrestacional, 2, '.', ',');
         $sustitucion13 .= ")";
         $sustitucion12 = $arContrato->getEmpleadoRel()->getCiudadExpedicionRel()->getNombre();
         $sustitucion14 = $arContrato->getEntidadSaludRel()->getNombre();
-        $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();        
+        $sustitucion15 = $arContrato->getEntidadPensionRel()->getNombre();
         //$sustitucion16 = $arConfiguracionNomina->getEntidadRiesgoProfesionalRel()->getNombre();
         //$arEntidadRiesgoProfesional = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuEntidadRiesgoProfesional')->find();
         $entidadRiesgoProfesional = '';
-        /*if ($arEntidadRiesgoProfesional){
-            $entidadRiesgoProfesional = $arEntidadRiesgoProfesional->getNombre();
-        }*/
+        /* if ($arEntidadRiesgoProfesional){
+          $entidadRiesgoProfesional = $arEntidadRiesgoProfesional->getNombre();
+          } */
         $sustitucion16 = $entidadRiesgoProfesional;
-        $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();         
+        $sustitucion17 = $arContrato->getEntidadCajaRel()->getNombre();
         $sustitucion18 = self::$arUsuario;
         $sustitucion19 = $arConfiguracion->getNitEmpresa();
         $sustitucion20 = $arConfiguracion->getDigitoVerificacionEmpresa();
         $motivoTerminacionContrato = '';
-        if ($arContrato->getCodigoMotivoTerminacionContratoFk() != null){
+        if ($arContrato->getCodigoMotivoTerminacionContratoFk() != null) {
             $motivoTerminacionContrato = $arContrato->getTerminacionContratoRel()->getMotivo();
-        } 
+        }
         $sustitucion21 = $motivoTerminacionContrato;
         $sustitucion22 = $arContrato->getCiudadContratoRel()->getNombre();
-        $sustitucion23 = self::$destinatario;
+        //Validacion si el campo destinatario tiene registro de lo contrario mostrar mensaje.
+        if (self::$destinatario == null) {
+            $sustitucion23 = "A quien pueda interesar";
+        } else {
+            $sustitucion23 = self::$destinatario;
+        }
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -240,71 +246,70 @@ class FormatoCarta extends \FPDF_FPDF {
         $patron21 = '/#l/';
         $patron22 = '/#m/';
         $patron23 = '/#n/';
-        if (self::$codigoTipoCarta == 5){
+        if (self::$codigoTipoCarta == 5) {
             //salario
-            if (self::$booleamSalario == FALSE && self::$salarioSugerido == null){
+            if (self::$booleamSalario == FALSE && self::$salarioSugerido == null) {
                 $sustitucion9 == $sustitucion9;
             }
-            if (self::$booleamSalario == TRUE && self::$salarioSugerido == null){
+            if (self::$booleamSalario == TRUE && self::$salarioSugerido == null) {
                 $sustitucion9 == $sustitucion9;
             }
-            if (self::$booleamSalario == FALSE && self::$salarioSugerido != null){
+            if (self::$booleamSalario == FALSE && self::$salarioSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$salarioSugerido);
-                $sustitucion9 = $salarioLetras." $(";
-                $sustitucion9 .= number_format(self::$salarioSugerido, 2,'.',',');
+                $sustitucion9 = $salarioLetras . " $(";
+                $sustitucion9 .= number_format(self::$salarioSugerido, 2, '.', ',');
                 $sustitucion9 .= ")";
             }
-            if (self::$booleamSalario == TRUE && self::$salarioSugerido != null){
+            if (self::$booleamSalario == TRUE && self::$salarioSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$salarioSugerido);
-                $sustitucion9 = $salarioLetras." $(";
-                $sustitucion9 .= number_format(self::$salarioSugerido, 2,'.',',');
+                $sustitucion9 = $salarioLetras . " $(";
+                $sustitucion9 .= number_format(self::$salarioSugerido, 2, '.', ',');
                 $sustitucion9 .= ")";
             }
             //promedio ibc
-            if (self::$booleamPromedioIbp == FALSE && self::$promedioIbpSugerido == null){
+            if (self::$booleamPromedioIbp == FALSE && self::$promedioIbpSugerido == null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(0);
-                $sustitucion11 = $salarioLetras." $(";
-                $sustitucion11 .= number_format(0, 2,'.',',');
+                $sustitucion11 = $salarioLetras . " $(";
+                $sustitucion11 .= number_format(0, 2, '.', ',');
                 $sustitucion11 .= ")";
             }
-            if (self::$booleamPromedioIbp == TRUE && self::$promedioIbpSugerido == null){
+            if (self::$booleamPromedioIbp == TRUE && self::$promedioIbpSugerido == null) {
                 $sustitucion11 == $sustitucion11;
             }
-            if (self::$booleamPromedioIbp == FALSE && self::$promedioIbpSugerido != null){
+            if (self::$booleamPromedioIbp == FALSE && self::$promedioIbpSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$promedioIbpSugerido);
-                $sustitucion11 = $salarioLetras." $(";
-                $sustitucion11 .= number_format(self::$promedioIbpSugerido, 2,'.',',');
+                $sustitucion11 = $salarioLetras . " $(";
+                $sustitucion11 .= number_format(self::$promedioIbpSugerido, 2, '.', ',');
                 $sustitucion11 .= ")";
             }
-            if (self::$booleamPromedioIbp == TRUE && self::$promedioIbpSugerido != null){
+            if (self::$booleamPromedioIbp == TRUE && self::$promedioIbpSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$promedioIbpSugerido);
-                $sustitucion11 = $salarioLetras." $(";
-                $sustitucion11 .= number_format(self::$promedioIbpSugerido, 2,'.',',');
+                $sustitucion11 = $salarioLetras . " $(";
+                $sustitucion11 .= number_format(self::$promedioIbpSugerido, 2, '.', ',');
                 $sustitucion11 .= ")";
             }
             //promedio no prestacional
-            if (self::$booleamPromedioNoPrestacional == FALSE && self::$promedioNoPrestacionalSugerido == null){
+            if (self::$booleamPromedioNoPrestacional == FALSE && self::$promedioNoPrestacionalSugerido == null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(0);
-                $sustitucion13 = $salarioLetras." $(";
-                $sustitucion13 .= number_format(0, 2,'.',',');
+                $sustitucion13 = $salarioLetras . " $(";
+                $sustitucion13 .= number_format(0, 2, '.', ',');
                 $sustitucion13 .= ")";
             }
-            if (self::$booleamPromedioNoPrestacional == TRUE && self::$promedioNoPrestacionalSugerido == null){
+            if (self::$booleamPromedioNoPrestacional == TRUE && self::$promedioNoPrestacionalSugerido == null) {
                 $sustitucion13 == $sustitucion13;
             }
-            if (self::$booleamPromedioNoPrestacional == FALSE && self::$promedioNoPrestacionalSugerido != null){
+            if (self::$booleamPromedioNoPrestacional == FALSE && self::$promedioNoPrestacionalSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$promedioNoPrestacionalSugerido);
-                $sustitucion13 = $salarioLetras." $(";
-                $sustitucion13 .= number_format(self::$promedioNoPrestacionalSugerido, 2,'.',',');
+                $sustitucion13 = $salarioLetras . " $(";
+                $sustitucion13 .= number_format(self::$promedioNoPrestacionalSugerido, 2, '.', ',');
                 $sustitucion13 .= ")";
             }
-            if (self::$booleamPromedioNoPrestacional == TRUE && self::$promedioNoPrestacionalSugerido != null){
+            if (self::$booleamPromedioNoPrestacional == TRUE && self::$promedioNoPrestacionalSugerido != null) {
                 $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras(self::$promedioNoPrestacionalSugerido);
-                $sustitucion13 = $salarioLetras." $(";
-                $sustitucion13 .= number_format(self::$promedioNoPrestacionalSugerido, 2,'.',',');
+                $sustitucion13 = $salarioLetras . " $(";
+                $sustitucion13 .= number_format(self::$promedioNoPrestacionalSugerido, 2, '.', ',');
                 $sustitucion13 .= ")";
             }
-            
         }
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
@@ -329,55 +334,55 @@ class FormatoCarta extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron21, $sustitucion21, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron22, $sustitucion22, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron23, $sustitucion23, $cadenaCambiada);
-        $pdf->MultiCell(0,5, $cadenaCambiada);
+        $pdf->MultiCell(0, 5, $cadenaCambiada);
     }
 
     public function Footer() {
         //$this->Cell(0,10,'Página '.$this->PageNo(),0,0,'C');
-        
-    }  
-    
+    }
+
     public static function MesesEspañol($mes) {
-        
-        if ($mes == '01'){
+
+        if ($mes == '01') {
             $mesEspañol = "Enero";
         }
-        if ($mes == '02'){
+        if ($mes == '02') {
             $mesEspañol = "Febrero";
         }
-        if ($mes == '03'){
+        if ($mes == '03') {
             $mesEspañol = "Marzo";
         }
-        if ($mes == '04'){
+        if ($mes == '04') {
             $mesEspañol = "Abril";
         }
-        if ($mes == '05'){
+        if ($mes == '05') {
             $mesEspañol = "Mayo";
         }
-        if ($mes == '06'){
+        if ($mes == '06') {
             $mesEspañol = "Junio";
         }
-        if ($mes == '07'){
+        if ($mes == '07') {
             $mesEspañol = "Julio";
         }
-        if ($mes == '08'){
+        if ($mes == '08') {
             $mesEspañol = "Agosto";
         }
-        if ($mes == '09'){
+        if ($mes == '09') {
             $mesEspañol = "Septiembre";
         }
-        if ($mes == '10'){
+        if ($mes == '10') {
             $mesEspañol = "Octubre";
         }
-        if ($mes == '11'){
+        if ($mes == '11') {
             $mesEspañol = "Noviembre";
         }
-        if ($mes == '12'){
+        if ($mes == '12') {
             $mesEspañol = "Diciembre";
         }
 
         return $mesEspañol;
     }
+
 }
 
 ?>
