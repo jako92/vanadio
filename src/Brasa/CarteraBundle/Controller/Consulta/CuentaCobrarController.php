@@ -226,7 +226,9 @@ class CuentaCobrarController extends Controller {
                 ->setCellValue('P1', 'DIAS')
                 ->setCellValue('Q1', 'RANGO')
                 ->setCellValue('R1', 'GRUPO')
-                ->setCellValue('S1', 'SUBGRUPO');                
+                ->setCellValue('S1', 'SUBGRUPO')
+                ->setCellValue('T1', 'CONTACTO')
+                ->setCellValue('U1', 'TELEFONO');                
         $i = 2;
         $connection = $em->getConnection();
         $strSql = "SELECT  
@@ -257,7 +259,9 @@ class CuentaCobrarController extends Controller {
                     ->setCellValue('P' . $i, $arCuentasCobrar['diasVencida'])
                     ->setCellValue('Q' . $i, $arCuentasCobrar['rango'])
                     ->setCellValue('R' . $i, $arCuentasCobrar['grupo'])
-                    ->setCellValue('S' . $i, $arCuentasCobrar['subgrupo']);
+                    ->setCellValue('S' . $i, $arCuentasCobrar['subgrupo'])
+                    ->setCellValue('T' . $i, $arCuentasCobrar['contacto'])
+                    ->setCellValue('U' . $i, $arCuentasCobrar['contactoTelefono']);
             $i++;
         }
 
@@ -305,23 +309,24 @@ class CuentaCobrarController extends Controller {
                 ->setCellValue('A1', 'CÓDIGO')
                 ->setCellValue('B1', 'NUMERO')
                 ->setCellValue('C1', 'TIPO')
-                ->setCellValue('D1', 'FECHA')
-                ->setCellValue('E1', 'VENCE')
-                ->setCellValue('F1', 'SOPORTE')
-                ->setCellValue('G1', 'NIT')
-                ->setCellValue('H1', 'CLIENTE')
-                ->setCellValue('I1', 'ASESOR')
-                ->setCellValue('J1', 'VALOR')
-                ->setCellValue('K1', 'SALDO')
-                ->setCellValue('L1', 'ABONO')
-                ->setCellValue('M1', 'PLAZO')
-                ->setCellValue('N1', 'VENCIMIENTO')
-                ->setCellValue('O1', 'DIAS')
-                ->setCellValue('P1', 'RANGO')
-                ->setCellValue('Q1', 'GRUPO')
-                ->setCellValue('R1', 'SUBGRUPO')
-                ->setCellValue('S1', 'CONTACTO')
-                ->setCellValue('T1', 'TELEFONO');
+                ->setCellValue('D1', 'TIPO SERVICIO')
+                ->setCellValue('E1', 'FECHA')
+                ->setCellValue('F1', 'VENCE')
+                ->setCellValue('G1', 'SOPORTE')
+                ->setCellValue('H1', 'NIT')
+                ->setCellValue('I1', 'CLIENTE')
+                ->setCellValue('J1', 'ASESOR')
+                ->setCellValue('K1', 'VALOR')
+                ->setCellValue('L1', 'SALDO')
+                ->setCellValue('M1', 'ABONO')
+                ->setCellValue('N1', 'PLAZO')
+                ->setCellValue('O1', 'VENCIMIENTO')
+                ->setCellValue('P1', 'DIAS')
+                ->setCellValue('Q1', 'RANGO')
+                ->setCellValue('R1', 'GRUPO')
+                ->setCellValue('S1', 'SUBGRUPO')
+                ->setCellValue('T1', 'CONTACTO')
+                ->setCellValue('U1', 'TELEFONO');
 
         $i = 2;
         $connection = $em->getConnection();
@@ -338,23 +343,24 @@ class CuentaCobrarController extends Controller {
                     ->setCellValue('A' . $i, $arCuentasCobrar['codigoCuentaCobrarPk'])
                     ->setCellValue('B' . $i, $arCuentasCobrar['numeroDocumento'])
                     ->setCellValue('C' . $i, $arCuentasCobrar['tipoCuentaCobrar'])
-                    ->setCellValue('D' . $i, $arCuentasCobrar['fecha'])
-                    ->setCellValue('E' . $i, $arCuentasCobrar['fechaVence'])
-                    ->setCellValue('F' . $i, $arCuentasCobrar['soporte'])
-                    ->setCellValue('G' . $i, $arCuentasCobrar['nitCliente'])
-                    ->setCellValue('H' . $i, $arCuentasCobrar['nombreCliente'])
-                    ->setCellValue('I' . $i, $arCuentasCobrar['nombreAsesor'])
-                    ->setCellValue('J' . $i, $arCuentasCobrar['valorOriginal'])
-                    ->setCellValue('K' . $i, $arCuentasCobrar['saldo'])
-                    ->setCellValue('L' . $i, $arCuentasCobrar['abono'])
-                    ->setCellValue('M' . $i, $arCuentasCobrar['plazo'])
-                    ->setCellValue('N' . $i, $arCuentasCobrar['tipoVencimiento'])
-                    ->setCellValue('O' . $i, $arCuentasCobrar['diasVencida'])
-                    ->setCellValue('P' . $i, $arCuentasCobrar['rango'])
-                    ->setCellValue('Q' . $i, $arCuentasCobrar['grupo'])
-                    ->setCellValue('R' . $i, $arCuentasCobrar['subgrupo'])
-                    ->setCellValue('S' . $i, $arCuentasCobrar['contacto'])
-                    ->setCellValue('T' . $i, $arCuentasCobrar['contactoTelefono']);
+                    ->setCellValue('D' . $i, $arCuentasCobrar['servicioTipo'])
+                    ->setCellValue('E' . $i, $arCuentasCobrar['fecha'])
+                    ->setCellValue('F' . $i, $arCuentasCobrar['fechaVence'])
+                    ->setCellValue('G' . $i, $arCuentasCobrar['soporte'])
+                    ->setCellValue('H' . $i, $arCuentasCobrar['nitCliente'])
+                    ->setCellValue('I' . $i, $arCuentasCobrar['nombreCliente'])
+                    ->setCellValue('J' . $i, $arCuentasCobrar['nombreAsesor'])
+                    ->setCellValue('K' . $i, $arCuentasCobrar['valorOriginal'])
+                    ->setCellValue('L' . $i, $arCuentasCobrar['saldo'])
+                    ->setCellValue('M' . $i, $arCuentasCobrar['abono'])
+                    ->setCellValue('N' . $i, $arCuentasCobrar['plazo'])
+                    ->setCellValue('O' . $i, $arCuentasCobrar['tipoVencimiento'])
+                    ->setCellValue('P' . $i, $arCuentasCobrar['diasVencida'])
+                    ->setCellValue('Q' . $i, $arCuentasCobrar['rango'])
+                    ->setCellValue('R' . $i, $arCuentasCobrar['grupo'])
+                    ->setCellValue('S' . $i, $arCuentasCobrar['subgrupo'])
+                    ->setCellValue('T' . $i, $arCuentasCobrar['contacto'])
+                    ->setCellValue('U' . $i, $arCuentasCobrar['contactoTelefono']);
             $i++;
         }
 
