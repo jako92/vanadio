@@ -319,6 +319,7 @@ class RhuFacturaRepository extends EntityRepository {
             $arFactura->setEstadoAnulado(1);
             $em->persist($arFactura);
 
+            
             //Anular cuenta por cobrar
             /*$arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
             $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => 2, 'numeroDocumento' => $arFactura->getNumero()));
