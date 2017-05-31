@@ -183,11 +183,12 @@
 
         {{ form_rest(form) }}
         {{ form_end(form) }}
+        <script src="{{ asset('js/jquery-1.10.2.min.js') }}"></script>
         <script src="{{ asset('js/jquery.stickytableheaders.js') }}"></script>
 
         <script>
-                            var offset = $('.navbar').height();
-                            $("html:not(.legacy) table").stickyTableHeaders({fixedOffset: offset});
+                        var offset = $('.navbar').height();
+                        $("html:not(.legacy) table").stickyTableHeaders({fixedOffset: offset});
         </script>  
         <br/><br/><br/><br/>
     </section>
