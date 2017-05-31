@@ -1,56 +1,106 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Inicio
-            <small>SogaApp V.2.0</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>            
-        </ol>
-    </section>
+<!-- row -->
+      <div class="row" style="margin-right: 0px; margin-left: 0px">
+        <div class="col-md-12">
+          <!-- The time line -->
+          <ul class="timeline">
+            <!-- timeline time label -->
+            <li class="time-label">
+                  <span class="bg-red">31 May. 2017</span>
+            </li>
+            <!-- /.timeline-label -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-envelope bg-blue"></i>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="jumbotron">
-            <h2>16/05/2017 No se ha perdido el norte!</h2>
-            <p>
-                Queremos agradecerles por el apoyo y la constante ayuda en este semestre de tantos retos que no hubiésemos superado sin nuestros clientes: reforma tributaria, nuevas resoluciones de seguridad social, cambio de ubicación física de la compañía, dificultades con proveedores de telecomunicaciones, otros cambios internos. Estamos reorganizándonos y fortaleciendo nuestro equipo que va redundar en beneficios para nuestros clientes. Los mantendremos informados.                 
-                <br />
-                Mario Estrada – Jefe de investigación y desarrollo<br />
-            </p>
-            <p><a class="btn btn-primary btn-lg" role="button">Leer mas</a></p>
-            <br />            
-            <h2>22/03/2017 Corregimos un Opppsss!</h2>
-            <p>
-                El 21 de marzo corregimos un error estructural, el auxilio de transporte estaba ligado al empleado, pero cuando este tenía más 
-                de un contrato en un periodo de pago el sistema tomaba el parametro general para los dos contratos, para corregir este inconveniente
-                se trasladó el auxilio de transporte para el contrato, le sugerimos exportar los contratos y verificar esta información.                 
-                <br />
-                Nuestro compromiso es mejorar día a día<br />
-            </p>
-            <p><a class="btn btn-primary btn-lg" role="button">Leer mas</a></p>
-            <br />            
-            <h2>22/02/2017 Recta final Res. 2388 Seguridad Social</h2>
-            <p>
-                En la semana del 20 al 28 de febrero estamos en la recta final de la implementación de la resolución 2388 de seguridad social. Queremos estar preparados para este cambio ya que sabemos la situación de inestabilidad que generan todos los manejos de información administrados por el estado asi que en estas fechas vamos a estar atendiendo solo los casos mas críticos de soporte y solicitamos de su colaboración para clasificar estas necesidades mas urgentes.                 
-                <br />
-                Con su ayuda vamos ha cumplir con un buen y correcto aporte de la seguridad social. <br />
-            </p>
-            <p><a class="btn btn-primary btn-lg" role="button">Leer mas</a></p>
-            <br />
-            <h2>01/02/2017 Actualizacion V2.0 - En esto estabamos trabajando, gracias por su paciencia!</h2>
-            <p>
-                Esta version mejora la experiencia de navegacion, sabemos que no todos somos amarillos o naranjas, muchos quizas un arco iris de opciones, le damos la libertad de escoger lo que mas te guste en los
-                colores de la aplicacion. Menu de acceso rapido y elementemos que mejoran la forma uso para hacerlo mas sencillo, mas practico, mas legible. 
-                Nuevas herramientas de comunicacion usuario-app, usuario-usuario, usuario-equipo_trabajo, velocidad de carga de las paginas aumentada, documentacion.
-                <br /><br />
-                Nuestro equipo de trabajo crece en talentos, valores, metas, retos realizados y nuevos. <br />
-                Para nuestros clientes: el producto de hacer lo que mas nos gusta como trabajo. <br />
-            </p>
-            <p><a class="btn btn-primary btn-lg" role="button">Leer mas</a></p>
-        </div>      
-    </section>
-    <!-- /.content -->
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 18:11</span>
+
+                <h3 class="timeline-header"><a href="#">Equipo de soporte</a> informacion de contacto</h3>
+
+                <div class="timeline-body">
+                  El equipo de soporte esta completo y tenemos los medios tecnológicos para prestar
+                  el servicio de forma optima, le agradecemos su paciencia en estos días de acondicionamiento
+                  y la tolerancia para la resolución de casos. <br />
+                  Telefono: 3220771 <br />
+                  Email: 
+                    <ul>
+                        <li type="circle">Soporte - Sebastian: soporte1@appsoga.com</li>
+                        <li type="circle">Soporte - Felipe: soporte2@appsoga.com</li>
+                        <li type="circle">Desarrollo - Equipo desarrollo: desarrollo@appsoga.com</li>
+                        <li type="circle">Deje desarrollo - Mario: jefedesarrollo@appsoga.com</li>
+                        <li type="circle">Gerencia: gerencia@appsoga.com</li>
+                    </ul>                  
+                </div>
+                <div class="timeline-footer">
+                  <a class="btn btn-primary btn-xs">Leer mas</a>
+                </div>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-user bg-aqua"></i>
+
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 5 mins may</span>
+
+                <h3 class="timeline-header no-border"><a href="#">Equido de soporte</a> esta habilitada la pagina www.appsoga.com</h3>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-comments bg-yellow"></i>
+
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 27 mins may</span>
+
+                <h3 class="timeline-header"><a href="#">Mario Estrada </a> Reporte de casos</h3>
+
+                <div class="timeline-body">
+                    Con el fin de ejercer un control sobre los casos reportados por los clientes
+                    le solicito notificar cualquier novedad (error, mejora, desarrollo, soporte)
+                    directamente por la pagina www.appsoga.com en el menu contáctenos, de esta forma
+                    queda registrada toda la información para realizar un mejor seguimiento.
+                </div>
+                <div class="timeline-footer">
+                  <a class="btn btn-warning btn-flat btn-xs">Ver comentario</a>
+                </div>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline time label -->
+            <li class="time-label">
+                  <span class="bg-green">
+                    30 Mayo. 2017
+                  </span>
+            </li>
+            <!-- /.timeline-label -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-camera bg-purple"></i>
+
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 2 days may</span>
+
+                <h3 class="timeline-header"><a href="#">App Soga S.A.S</a> Estamos atentos a sus necesidades.</h3>
+
+                <div class="timeline-body">
+                  <img src="{{ asset('imagenes/default/soga2.jpg') }}" alt="..." class="margin">
+                </div>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <li>
+              <i class="fa fa-clock-o bg-gray"></i>
+            </li>
+          </ul>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <br /> <br />
+            
 {% endblock %}
