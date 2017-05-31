@@ -202,7 +202,7 @@ class RhuFacturaRepository extends EntityRepository {
             $em->persist($arFactura);
             $em->flush();
         } else {
-            $strResultado = "La factura debe estas autorizada y no puede estar anulada o impresa";
+            $strResultado = "No se puede des-autorizar la factura si esta impresa o anulada";
         }
         return $strResultado;
     }

@@ -192,6 +192,11 @@ class RhuCobro {
      */
     private $estadoCobrado = 0;
     
+    /**
+     * @ORM\Column(name="estado_facturado", type="boolean")
+     */
+    private $estadoFacturado = 0;
+    
     
 
     /**
@@ -1298,5 +1303,29 @@ class RhuCobro {
     public function getVrAjuste()
     {
         return $this->vrAjuste;
+    }
+
+    /**
+     * Set estadoFacturado
+     *
+     * @param boolean $estadoFacturado
+     *
+     * @return RhuCobro
+     */
+    public function setEstadoFacturado($estadoFacturado)
+    {
+        $this->estadoFacturado = $estadoFacturado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoFacturado
+     *
+     * @return boolean
+     */
+    public function getEstadoFacturado()
+    {
+        return $this->estadoFacturado;
     }
 }

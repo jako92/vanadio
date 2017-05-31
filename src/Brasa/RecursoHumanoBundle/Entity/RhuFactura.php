@@ -125,8 +125,8 @@ class RhuFactura
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
-    private $estadoAutorizado = 0;   
-    
+    private $estadoAutorizado = 0;
+            
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
      */
@@ -726,6 +726,78 @@ class RhuFactura
     }
 
     /**
+     * Set plazoPago
+     *
+     * @param integer $plazoPago
+     *
+     * @return RhuFactura
+     */
+    public function setPlazoPago($plazoPago)
+    {
+        $this->plazoPago = $plazoPago;
+
+        return $this;
+    }
+
+    /**
+     * Get plazoPago
+     *
+     * @return integer
+     */
+    public function getPlazoPago()
+    {
+        return $this->plazoPago;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return RhuFactura
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set soporte
+     *
+     * @param string $soporte
+     *
+     * @return RhuFactura
+     */
+    public function setSoporte($soporte)
+    {
+        $this->soporte = $soporte;
+
+        return $this;
+    }
+
+    /**
+     * Get soporte
+     *
+     * @return string
+     */
+    public function getSoporte()
+    {
+        return $this->soporte;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
@@ -897,77 +969,5 @@ class RhuFactura
     public function getSeleccionesFacturaRel()
     {
         return $this->seleccionesFacturaRel;
-    }
-
-    /**
-     * Set plazoPago
-     *
-     * @param integer $plazoPago
-     *
-     * @return RhuFactura
-     */
-    public function setPlazoPago($plazoPago)
-    {
-        $this->plazoPago = $plazoPago;
-
-        return $this;
-    }
-
-    /**
-     * Get plazoPago
-     *
-     * @return integer
-     */
-    public function getPlazoPago()
-    {
-        return $this->plazoPago;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param string $usuario
-     *
-     * @return RhuFactura
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return string
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set soporte
-     *
-     * @param string $soporte
-     *
-     * @return RhuFactura
-     */
-    public function setSoporte($soporte)
-    {
-        $this->soporte = $soporte;
-
-        return $this;
-    }
-
-    /**
-     * Get soporte
-     *
-     * @return string
-     */
-    public function getSoporte()
-    {
-        return $this->soporte;
     }
 }
