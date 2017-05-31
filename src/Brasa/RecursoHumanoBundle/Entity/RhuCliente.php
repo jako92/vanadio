@@ -128,19 +128,29 @@ class RhuCliente
     private $cobroExamen;    
     
     /**     
-     * @ORM\Column(name="autoretenedor", type="boolean")
-     */    
-    private $autoretenedor = false;     
-    
-    /**     
      * @ORM\Column(name="regimen_simplificado", type="boolean")
      */    
-    private $regimenSimplificado = false;
+    private $regimenSimplificado = false;      
+
+    /**     
+     * @ORM\Column(name="regimen_comun", type="boolean")
+     */    
+    private $regimenComun = false; 
+    
+    /**     
+     * @ORM\Column(name="autorretenedor", type="boolean")
+     */    
+    private $autorretenedor = false;    
 
     /**     
      * @ORM\Column(name="retencion_iva", type="boolean")
      */    
     private $retencionIva = false;
+
+    /**     
+     * @ORM\Column(name="retencion_fuente", type="boolean")
+     */    
+    private $retencionFuente = false;
     
      /**
      * @ORM\Column(name="vr_precio_seleccion", type="float")
@@ -216,6 +226,7 @@ class RhuCliente
     protected $seleccionesClienteRel; 
     
 
+
     /**
      * Constructor
      */
@@ -223,11 +234,13 @@ class RhuCliente
     {
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incapacidadesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sucursalClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->examenesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cobrosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosCobrarClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seleccionesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -358,6 +371,30 @@ class RhuCliente
     public function getCodigoFormaPagoFk()
     {
         return $this->codigoFormaPagoFk;
+    }
+
+    /**
+     * Set codigoAsesorFk
+     *
+     * @param integer $codigoAsesorFk
+     *
+     * @return RhuCliente
+     */
+    public function setCodigoAsesorFk($codigoAsesorFk)
+    {
+        $this->codigoAsesorFk = $codigoAsesorFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAsesorFk
+     *
+     * @return integer
+     */
+    public function getCodigoAsesorFk()
+    {
+        return $this->codigoAsesorFk;
     }
 
     /**
@@ -745,27 +782,147 @@ class RhuCliente
     }
 
     /**
-     * Set autoretenedor
+     * Set regimenSimplificado
      *
-     * @param boolean $autoretenedor
+     * @param boolean $regimenSimplificado
      *
      * @return RhuCliente
      */
-    public function setAutoretenedor($autoretenedor)
+    public function setRegimenSimplificado($regimenSimplificado)
     {
-        $this->autoretenedor = $autoretenedor;
+        $this->regimenSimplificado = $regimenSimplificado;
 
         return $this;
     }
 
     /**
-     * Get autoretenedor
+     * Get regimenSimplificado
      *
      * @return boolean
      */
-    public function getAutoretenedor()
+    public function getRegimenSimplificado()
     {
-        return $this->autoretenedor;
+        return $this->regimenSimplificado;
+    }
+
+    /**
+     * Set regimenComun
+     *
+     * @param boolean $regimenComun
+     *
+     * @return RhuCliente
+     */
+    public function setRegimenComun($regimenComun)
+    {
+        $this->regimenComun = $regimenComun;
+
+        return $this;
+    }
+
+    /**
+     * Get regimenComun
+     *
+     * @return boolean
+     */
+    public function getRegimenComun()
+    {
+        return $this->regimenComun;
+    }
+
+    /**
+     * Set autorretenedor
+     *
+     * @param boolean $autorretenedor
+     *
+     * @return RhuCliente
+     */
+    public function setAutorretenedor($autorretenedor)
+    {
+        $this->autorretenedor = $autorretenedor;
+
+        return $this;
+    }
+
+    /**
+     * Get autorretenedor
+     *
+     * @return boolean
+     */
+    public function getAutorretenedor()
+    {
+        return $this->autorretenedor;
+    }
+
+    /**
+     * Set retencionIva
+     *
+     * @param boolean $retencionIva
+     *
+     * @return RhuCliente
+     */
+    public function setRetencionIva($retencionIva)
+    {
+        $this->retencionIva = $retencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIva
+     *
+     * @return boolean
+     */
+    public function getRetencionIva()
+    {
+        return $this->retencionIva;
+    }
+
+    /**
+     * Set retencionFuente
+     *
+     * @param boolean $retencionFuente
+     *
+     * @return RhuCliente
+     */
+    public function setRetencionFuente($retencionFuente)
+    {
+        $this->retencionFuente = $retencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionFuente
+     *
+     * @return boolean
+     */
+    public function getRetencionFuente()
+    {
+        return $this->retencionFuente;
+    }
+
+    /**
+     * Set vrPrecioSeleccion
+     *
+     * @param float $vrPrecioSeleccion
+     *
+     * @return RhuCliente
+     */
+    public function setVrPrecioSeleccion($vrPrecioSeleccion)
+    {
+        $this->vrPrecioSeleccion = $vrPrecioSeleccion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrPrecioSeleccion
+     *
+     * @return float
+     */
+    public function getVrPrecioSeleccion()
+    {
+        return $this->vrPrecioSeleccion;
     }
 
     /**
@@ -841,6 +998,30 @@ class RhuCliente
     }
 
     /**
+     * Set asesorRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenAsesor $asesorRel
+     *
+     * @return RhuCliente
+     */
+    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
+    {
+        $this->asesorRel = $asesorRel;
+
+        return $this;
+    }
+
+    /**
+     * Get asesorRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenAsesor
+     */
+    public function getAsesorRel()
+    {
+        return $this->asesorRel;
+    }
+
+    /**
      * Add centrosCostosClienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel
@@ -906,6 +1087,40 @@ class RhuCliente
     public function getContratosClienteRel()
     {
         return $this->contratosClienteRel;
+    }
+
+    /**
+     * Add incapacidadesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
+    {
+        $this->incapacidadesClienteRel[] = $incapacidadesClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove incapacidadesClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
+     */
+    public function removeIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
+    {
+        $this->incapacidadesClienteRel->removeElement($incapacidadesClienteRel);
+    }
+
+    /**
+     * Get incapacidadesClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncapacidadesClienteRel()
+    {
+        return $this->incapacidadesClienteRel;
     }
 
     /**
@@ -1079,78 +1294,6 @@ class RhuCliente
     }
 
     /**
-     * Set regimenSimplificado
-     *
-     * @param boolean $regimenSimplificado
-     *
-     * @return RhuCliente
-     */
-    public function setRegimenSimplificado($regimenSimplificado)
-    {
-        $this->regimenSimplificado = $regimenSimplificado;
-
-        return $this;
-    }
-
-    /**
-     * Get regimenSimplificado
-     *
-     * @return boolean
-     */
-    public function getRegimenSimplificado()
-    {
-        return $this->regimenSimplificado;
-    }
-
-    /**
-     * Set codigoAsesorFk
-     *
-     * @param integer $codigoAsesorFk
-     *
-     * @return RhuCliente
-     */
-    public function setCodigoAsesorFk($codigoAsesorFk)
-    {
-        $this->codigoAsesorFk = $codigoAsesorFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoAsesorFk
-     *
-     * @return integer
-     */
-    public function getCodigoAsesorFk()
-    {
-        return $this->codigoAsesorFk;
-    }
-
-    /**
-     * Set asesorRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenAsesor $asesorRel
-     *
-     * @return RhuCliente
-     */
-    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
-    {
-        $this->asesorRel = $asesorRel;
-
-        return $this;
-    }
-
-    /**
-     * Get asesorRel
-     *
-     * @return \Brasa\GeneralBundle\Entity\GenAsesor
-     */
-    public function getAsesorRel()
-    {
-        return $this->asesorRel;
-    }
-
-    /**
      * Add seleccionesClienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel
@@ -1182,87 +1325,5 @@ class RhuCliente
     public function getSeleccionesClienteRel()
     {
         return $this->seleccionesClienteRel;
-    }
-
-    /**
-     * Set vrPrecioSeleccion
-     *
-     * @param float $vrPrecioSeleccion
-     *
-     * @return RhuCliente
-     */
-    public function setVrPrecioSeleccion($vrPrecioSeleccion)
-    {
-        $this->vrPrecioSeleccion = $vrPrecioSeleccion;
-
-        return $this;
-    }
-
-    /**
-     * Get vrPrecioSeleccion
-     *
-     * @return float
-     */
-    public function getVrPrecioSeleccion()
-    {
-        return $this->vrPrecioSeleccion;
-    }
-
-    /**
-     * Add incapacidadesClienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
-     *
-     * @return RhuCliente
-     */
-    public function addIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
-    {
-        $this->incapacidadesClienteRel[] = $incapacidadesClienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove incapacidadesClienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
-     */
-    public function removeIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
-    {
-        $this->incapacidadesClienteRel->removeElement($incapacidadesClienteRel);
-    }
-
-    /**
-     * Get incapacidadesClienteRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIncapacidadesClienteRel()
-    {
-        return $this->incapacidadesClienteRel;
-    }
-
-    /**
-     * Set retencionIva
-     *
-     * @param boolean $retencionIva
-     *
-     * @return RhuCliente
-     */
-    public function setRetencionIva($retencionIva)
-    {
-        $this->retencionIva = $retencionIva;
-
-        return $this;
-    }
-
-    /**
-     * Get retencionIva
-     *
-     * @return boolean
-     */
-    public function getRetencionIva()
-    {
-        return $this->retencionIva;
     }
 }

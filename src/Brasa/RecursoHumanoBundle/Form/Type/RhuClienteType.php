@@ -57,8 +57,11 @@ class RhuClienteType extends AbstractType
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('cobroExamen', ChoiceType::class, array('choices' => array('CLIENTE' => 'C', 'EMPLEADO' => 'E', 'NO COBRAR' => 'N')))                                            
             ->add('vrPrecioSeleccion', NumberType::class, array('required' => false)) 
-            ->add('autoretenedor', CheckboxType::class, array('required'  => false))
             ->add('regimenSimplificado', CheckboxType::class, array('required'  => false))
+            ->add('regimenComun', CheckboxType::class, array('required'  => false))
+            ->add('autorretenedor', CheckboxType::class, array('required'  => false))
+            ->add('retencionIva', CheckboxType::class, array('required'  => false))
+            ->add('retencionFuente', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

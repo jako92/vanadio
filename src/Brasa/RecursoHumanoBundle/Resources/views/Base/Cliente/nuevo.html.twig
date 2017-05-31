@@ -119,16 +119,16 @@
                     {{ form_widget(form.telefonoContacto, { 'attr': {'class': 'form-control'} }) }}                        
                 </div>                 
             </div>
-            <div class="form-group form-group-sm">
-                <label for="form_autoretenedor" class="col-sm-2 control-label">Autoretenedor:</label>
-                <div class="col-sm-4">
-                    {{ form_widget(form.autoretenedor) }}                        
-                </div>  
-                <label for="form_regimenSimplificado" class="col-sm-2 control-label">Regimen simplificado:</label>
-                <div class="col-sm-4">
-                    {{ form_widget(form.regimenSimplificado) }}                        
-                </div>                  
-            </div>                
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <label for="form_regimenSimplificado"  class="control-label">Regimen simplificado {{ form_widget(form.regimenSimplificado) }}</label>
+                        <label for="form_regimenComun"  class="control-label">Regimen comun {{ form_widget(form.regimenComun) }}</label>
+                        <label for="form_autorretenedor"  class="control-label">Autoretenedor {{ form_widget(form.autorretenedor) }}</label>
+                        <label for="form_retencionIva"  class="control-label">Retiene Iva {{ form_widget(form.retencionIva) }}</label>
+                        <label for="form_retencionFuente"  class="control-label">Retiene Fuente {{ form_widget(form.retencionFuente) }}</label>
+                    </div>
+                </div>                 
             <div class="form-group">
                 <label for="form_comentarios" class="col-sm-2 control-label">Comentarios:</label>
                 <div class="col-sm-10">
