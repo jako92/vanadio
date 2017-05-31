@@ -17,8 +17,10 @@ class FormatoCarta extends \FPDF_FPDF {
     public static $salarioSugerido; //carta laboral
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
+    public static $destinatario;
     
-    public function Generar($miThis, $em, $arUsuario, $usuarioCarta, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    
+    public function Generar($miThis, $em, $arUsuario, $usuarioCarta, $codigoTipoCarta,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario) {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
@@ -36,6 +38,7 @@ class FormatoCarta extends \FPDF_FPDF {
         self::$salarioSugerido = $salarioSugerido; //carta laboral        
         self::$promedioIbpSugerido = $promedioIbpSugerido; //carta laboral
         self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
+        self::$destinatario = $destinatario; //Destinatario de la carta
         $pdf = new FormatoCarta();
         $arCartaTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuCartaTipo')->find(self::$codigoTipoCarta);        
         $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arCartaTipo->getCodigoContenidoFormatoFk());        
@@ -212,6 +215,7 @@ class FormatoCarta extends \FPDF_FPDF {
         } 
         $sustitucion21 = $motivoTerminacionContrato;
         $sustitucion22 = $arContrato->getCiudadContratoRel()->getNombre();
+        $sustitucion23 = self::$destinatario;
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -235,6 +239,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $patron20 = '/#k/';
         $patron21 = '/#l/';
         $patron22 = '/#m/';
+        $patron23 = '/#n/';
         if (self::$codigoTipoCarta == 5){
             //salario
             if (self::$booleamSalario == FALSE && self::$salarioSugerido == null){
@@ -323,6 +328,7 @@ class FormatoCarta extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron20, $sustitucion20, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron21, $sustitucion21, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron22, $sustitucion22, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron23, $sustitucion23, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
 

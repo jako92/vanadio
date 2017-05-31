@@ -46,7 +46,13 @@
                     <div class="col-sm-4"> 
                         {{ form_widget(form.promedioNoPrestacionalSugerido, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-            </div>        
+            </div>
+            <div class="form-group form-group-sm">            
+                <label for="form_destinatario" class="col-sm-6 control-label">Destinatario:</label>
+                    <div class="col-sm-4"> 
+                        {{ form_widget(form.destinatario, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>        

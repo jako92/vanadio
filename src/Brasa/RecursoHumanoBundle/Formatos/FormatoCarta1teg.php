@@ -14,8 +14,9 @@ class FormatoCarta1teg extends \FPDF_FPDF {
     public static $salarioSugerido; //carta laboral
     public static $promedioIbpSugerido; //carta laboral
     public static $promedioNoPrestacionalSugerido; //carta laboral
+    public static $destinatario;
     
-    public function Generar($miThis, $em, $arUsuario,$usuarioCarta, $codigoCartaTipo,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido) {        
+    public function Generar($miThis, $em, $arUsuario,$usuarioCarta, $codigoCartaTipo,$fechaProceso,$fechaOpcional,$codigoContrato,$booleamSalario,$booleamPromedioIbp,$booleamPromedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario) {        
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         //$request = $miThis->getRequest();
@@ -32,6 +33,7 @@ class FormatoCarta1teg extends \FPDF_FPDF {
         self::$salarioSugerido = $salarioSugerido; //carta laboral        
         self::$promedioIbpSugerido = $promedioIbpSugerido; //carta laboral
         self::$promedioNoPrestacionalSugerido = $promedioNoPrestacionalSugerido; //carta laboral
+        self::$destinatario = $destinatario; //Destinatario de la carta
         $pdf = new FormatoCarta1teg();
         $pdf->AliasNbPages();
         $pdf->AddPage();

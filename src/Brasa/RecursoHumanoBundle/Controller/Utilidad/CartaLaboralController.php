@@ -40,23 +40,23 @@ class CartaLaboralController extends Controller
                 $codigoCartaTipo = $arConfiguracion->getCodigoFormatoCarta();
                 if ($codigoCartaTipo == 0){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 1){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 2){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPlazas();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 3){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaEurovic();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 4){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaGr();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
             }
             if($form->get('BtnFiltrar')->isClicked()) {
@@ -108,7 +108,8 @@ class CartaLaboralController extends Controller
             ->add('promedioNoPrestacional', CheckboxType::class, array('required'  => false, 'data' => false))                 
             ->add('salarioSugerido', TextType::class, array('required' => false))
             ->add('promedioIbpSugerido', TextType::class, array('required' => false))
-            ->add('promedioNoPrestacionalSugerido', TextType::class, array('required' => false))    
+            ->add('promedioNoPrestacionalSugerido', TextType::class, array('required' => false))
+            ->add('destinatario', TextType::class, array('required' => false))
             ->add('BtnImprimir', SubmitType::class, array('label'  => 'Imprimir'))
             ->getForm();
         $form->handleRequest($request);
@@ -124,24 +125,25 @@ class CartaLaboralController extends Controller
             $promedioNoPrestacional = $form->get('promedioNoPrestacional')->getData();
             $salarioSugerido = $form->get('salarioSugerido')->getData();
             $promedioIbpSugerido = $form->get('promedioIbpSugerido')->getData();
-            $promedioNoPrestacionalSugerido = $form->get('promedioNoPrestacionalSugerido')->getData();            
+            $promedioNoPrestacionalSugerido = $form->get('promedioNoPrestacionalSugerido')->getData();
+            $destinatario = $form->get('destinatario')->getData();  
             $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
             if ($arConfiguracion->getCodigoFormatoCarta() == 0){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta,  $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta,  $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario);
             }
             if ($arConfiguracion->getCodigoFormatoCarta() == 1){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
-                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta, $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario);
             }
             if ($arConfiguracion->getCodigoFormatoCarta() == 3){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaEurovic();
-                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta,  $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta,  $codigoCartaTipo, date('Y-m-d'), "", $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario);
             }
             if ($arConfiguracion->getCodigoFormatoCarta() == 4){
                 $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaGr();
-                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta, $codigoCartaTipo, date('Y-m-d'), "",  $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido);
+                $objFormatoCarta->Generar($this, $em, $arUsuario, $usuarioCarta, $codigoCartaTipo, date('Y-m-d'), "",  $codigoContrato,$salario,$promedioIbp,$promedioNoPrestacional,$salarioSugerido,$promedioIbpSugerido,$promedioNoPrestacionalSugerido,$destinatario);
             }
             //return $this->redirect($this->generateUrl('brs_rhu_utilidades_carta_laboral'));
             
