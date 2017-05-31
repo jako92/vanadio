@@ -12,7 +12,7 @@ class DefaultController extends Controller
      * @Route("/", name="brasa_general_inicio")
      */
     public function indexAction() {
-        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        /*$objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();   
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();        
         $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $dias = $diff->format('%r%a');
         if($dias <= 3 ) {
             $objMensaje->Mensaje("error", "El servicio de soporte, mantenimiento y actualizacion vence en " . $dias . " dias, si el contrato es de tipo arrendamiento se suspende totalmente el acceso");
-        }
+        }*/
         return $this->render('BrasaGeneralBundle:Default:index.html.twig');
     }                     
     
