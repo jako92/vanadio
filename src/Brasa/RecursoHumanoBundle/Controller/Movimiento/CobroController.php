@@ -9,9 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuCobroType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuServicioCobrarType;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CobroController extends Controller {
@@ -110,6 +111,7 @@ class CobroController extends Controller {
     public function detalleAction(Request $request, $codigoCobro) {
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
+        $objMensaje = $this->get('mensajes_brasa');
         $arCobro = new \Brasa\RecursoHumanoBundle\Entity\RhuCobro();
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
         $form = $this->formularioDetalle($arCobro);
@@ -424,7 +426,9 @@ class CobroController extends Controller {
                 $session->get('filtroCodigoCliente'),
                 $session->get('filtroCodigoCentroCosto'),
                 $session->get('filtroDesde'),
-                $session->get('filtroHasta')
+                $session->get('filtroHasta'),
+                $session->get('filtroEstadoAutorizado'),
+                $session->get('filtroEstadoFacturado')
                 );
     }
 
@@ -450,6 +454,8 @@ class CobroController extends Controller {
             $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
             $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
         }
+        $session->set('filtroEstadoAutorizado', $form->get('estadoAutorizado')->getData());
+        $session->set('filtroEstadoFacturado', $form->get('estadoFacturado')->getData());
     }
 
     private function formularioFiltro() {
@@ -492,6 +498,8 @@ class CobroController extends Controller {
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
                 ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroEstadoAutorizado')))
+                ->add('estadoFacturado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroEstadoFacturado')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))

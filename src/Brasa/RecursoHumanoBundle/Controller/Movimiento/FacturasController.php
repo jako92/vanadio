@@ -316,6 +316,7 @@ class FacturasController extends Controller
                             $arFacturaDetalle->setPorBaseIva($arFacturaConcepto->getPorBaseIva());
                             $em->persist($arFacturaDetalle);                                                     
                             $arCobro->setEstadoCobrado(1);
+                            $arCobro->setEstadoFacturado(1);
                             $em->persist($arCobro);
                         }                        
                     }                    

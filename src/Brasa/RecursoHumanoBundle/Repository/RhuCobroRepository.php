@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuCobroRepository extends EntityRepository {
 
-    public function listaDql($strCodigoCliente="",$strCodigoCentroCosto="",$strDesde = "",$strHasta = "") {
+    public function listaDql($strCodigoCliente="",$strCodigoCentroCosto="",$strDesde = "",$strHasta = "", $boolEstadoAutorizado = "", $boolEstadoFacturado = "") {
         $dql = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCobro c WHERE c.codigoCobroPk <> 0";
         if($strCodigoCliente != "") {
             $dql .= " AND c.codigoClienteFk = " . $strCodigoCliente;
@@ -25,6 +25,18 @@ class RhuCobroRepository extends EntityRepository {
         if($strHasta != "") {
             $dql .= " AND c.fecha <='" . $strHasta . "'";
         }
+        if($boolEstadoAutorizado == 1 ) {
+            $dql .= " AND c.estadoAutorizado = 1";
+        }
+        if($boolEstadoAutorizado == 0) {
+            $dql .= " AND c.estadoAutorizado = 0";
+        }
+        if($boolEstadoFacturado == 1 ) {
+            $dql .= " AND c.estadoFacturado = 1";
+        }
+        if($boolEstadoFacturado == 0) {
+            $dql .= " AND c.estadoFacturado = 0";
+        }   
         $dql .= " ORDER BY c.codigoCobroPk DESC";
         return $dql;
     }
@@ -146,10 +158,14 @@ class RhuCobroRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arCobro = $em->getRepository('BrasaRecursoHumanoBundle:RhuCobro')->find($codigoCobro);
         $strResultado = "";
-        if($arCobro->getEstadoAutorizado() == 1) {                     
+        if($arCobro->getEstadoAutorizado() == 1) {
+            if($arCobro->getEstadoFacturado() == 1){
+               $strResultado = "La relacion de cobro ya se encuentra facturada"; 
+            }
+            else{
             $arCobro->setEstadoAutorizado(0);
             $em->persist($arCobro);
-            $em->flush();
+            $em->flush();}
         } else {
             $strResultado = "La relacion de cobro debe estas autorizada y no puede estar anulada o impresa";
         }

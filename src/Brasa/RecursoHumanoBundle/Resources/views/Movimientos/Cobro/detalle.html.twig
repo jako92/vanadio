@@ -32,6 +32,9 @@
         <div style="float:right">
             {% if arCobro.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}                        
         </div>
+        <div style="float:right">
+            {% if arCobro.estadoFacturado == 1 %}<span class="label label-warning">Facturado</span>{% endif %}                        
+        </div>
         <br /><br />
         <!-- Encabezado Movimiento -->
         <div class="panel panel-default">
