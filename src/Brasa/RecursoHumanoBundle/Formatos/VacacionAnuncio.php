@@ -16,6 +16,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
+        $this->Body2($pdf);
         $pdf->Output("CartaAnuncioVacacion$codigoVacacion.pdf", 'D');        
     } 
     
@@ -68,6 +69,50 @@ class VacacionAnuncio extends \FPDF_FPDF {
 
     public function Body($pdf) {
         $pdf->SetXY(10, 60);
+        $pdf->SetFont('Arial', '', 10);  
+        $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
+        $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
+        $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenido')->find(1);
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+        $arConfiguracionNomina = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+        setlocale(LC_ALL,"es_ES@euro","es_ES","esp");
+        //$pdf->Text(10, 60, utf8_decode($arConfiguracion->getCiudadRel()->getNombre()). ", ". strftime("%d de %B de %Y", strtotime(date('Y-m-d'))));
+        $usuarioCarta = self::$usuario;
+        $usuarioCarta = $usuarioCarta->getNombreCorto();
+        //se reemplaza el contenido de la tabla contenido formato
+        $sustitucion1 = $arVacacion->getEmpleadoRel()->getNombreCorto();
+        $sustitucion2 = date('Y/m/d');
+        $sustitucion3 = $arVacacion->getFechaDesdeDisfrute()->format('Y/m/d');
+        $disfruteDesde = $arVacacion->getFechaDesdeDisfrute();
+        $disfruteDesde = strftime("%d de ". $this->MesesEspañol($disfruteDesde->format('m')) ." de %Y", strtotime($sustitucion3));
+        $sustitucion3 = $disfruteDesde;
+        $sustitucion4 = $arVacacion->getFechaHastaDisfrute()->format('Y/m/d');
+        $disfruteHasta = $arVacacion->getFechaHastaDisfrute();
+        $disfruteHasta = strftime("%d de ". $this->MesesEspañol($disfruteHasta->format('m')) ." de %Y", strtotime($sustitucion4));
+        $sustitucion4 = $disfruteHasta;
+        $sustitucion5 = $arVacacion->getFechaInicioLabor()->format('Y/m/d');
+        $disfruteInicioLabor = $arVacacion->getFechaInicioLabor();
+        $disfruteInicioLabor = strftime("%d de ". $this->MesesEspañol($disfruteInicioLabor->format('m')) ." de %Y", strtotime($sustitucion5));
+        $sustitucion5 = $disfruteInicioLabor;
+        $cadena = $arContenidoFormato->getContenido();
+        $patron1 = '/#a/';
+        $patron2 = '/#b/';
+        $patron3 = '/#c/';
+        $patron4 = '/#d/';
+        $patron5 = '/#e/';
+        $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
+        $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron3, $sustitucion3, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron4, $sustitucion4, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron5, $sustitucion5, $cadenaCambiada);
+        $pdf->MultiCell(0,5, $cadenaCambiada);
+    }
+    
+    public function Body2($pdf) {        
+        $pdf->SetXY(10, 180);
         $pdf->SetFont('Arial', '', 10);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
