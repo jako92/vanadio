@@ -41,9 +41,9 @@
                     </div>
                 </div>                
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Fecha vence desde:</label>
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Fecha vence desde:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.fechaDesde) }}
+                        {{ form_widget(form.fechaDesde, {'attr': {'class': 'form-control'} }) }} 
                     </div>
                     <label class="col-sm-2 control-label">Rechazado:</label>
                     <div class="col-sm-4">                  
@@ -51,9 +51,9 @@
                     </div>                    
                 </div>
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Fecha vence hasta</label>
+                    <label for="form_fechaHasta" class="col-sm-2 control-label">Fecha vence hasta:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.fechaHasta) }}
+                        {{ form_widget(form.fechaHasta, {'attr': {'class': 'form-control'} }) }} 
                     </div>
                     <label class="col-sm-2 control-label">Validado:</label>
                     <div class="col-sm-4">                  
