@@ -121,9 +121,29 @@ class RhuSeleccionRequisito
     private $codigoLicenciaMotoFk;
     
     /**
-     * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
+     * @ORM\Column(name="comentarios", type="string", length=300, nullable=true)
      */    
     private $comentarios;
+    
+    /**
+     * @ORM\Column(name="cliente_referencia", type="string", length=100, nullable=true)
+     */    
+    private $clienteReferencia;
+    
+    /**
+     * @ORM\Column(name="vr_salario", type="float")
+     */
+    private $VrSalario = 0;    
+    
+    /**     
+     * @ORM\Column(name="salario_fijo", type="boolean")
+     */    
+    private $salarioFijo= false; 
+
+    /**     
+     * @ORM\Column(name="salario_variable", type="boolean")
+     */    
+    private $salarioVariable= false;       
     
     /**
      * @ORM\Column(name="codigo_zona_fk", type="integer", nullable=true)
@@ -711,6 +731,102 @@ class RhuSeleccionRequisito
     public function getComentarios()
     {
         return $this->comentarios;
+    }
+
+    /**
+     * Set clienteReferencia
+     *
+     * @param string $clienteReferencia
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setClienteReferencia($clienteReferencia)
+    {
+        $this->clienteReferencia = $clienteReferencia;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteReferencia
+     *
+     * @return string
+     */
+    public function getClienteReferencia()
+    {
+        return $this->clienteReferencia;
+    }
+
+    /**
+     * Set vrSalario
+     *
+     * @param float $vrSalario
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setVrSalario($vrSalario)
+    {
+        $this->VrSalario = $vrSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalario
+     *
+     * @return float
+     */
+    public function getVrSalario()
+    {
+        return $this->VrSalario;
+    }
+
+    /**
+     * Set salarioFijo
+     *
+     * @param boolean $salarioFijo
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setSalarioFijo($salarioFijo)
+    {
+        $this->salarioFijo = $salarioFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get salarioFijo
+     *
+     * @return boolean
+     */
+    public function getSalarioFijo()
+    {
+        return $this->salarioFijo;
+    }
+
+    /**
+     * Set salarioVariable
+     *
+     * @param boolean $salarioVariable
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setSalarioVariable($salarioVariable)
+    {
+        $this->salarioVariable = $salarioVariable;
+
+        return $this;
+    }
+
+    /**
+     * Get salarioVariable
+     *
+     * @return boolean
+     */
+    public function getSalarioVariable()
+    {
+        return $this->salarioVariable;
     }
 
     /**

@@ -123,8 +123,29 @@ class FormatoSeleccionRequisito extends \FPDF_FPDF {
         $this->Cell(22, 6, "NRO HIJOS:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
         $this->Cell(50, 6, $arSeleccionRequisito->getNumeroHijos() , 1, 0, 'L', 1);
-        //linea 4
+        //linea 5
+        $salarioTipo = "";
+        if($arSeleccionRequisito->getSalarioFijo() == "1"){
+            $salarioTipo = "FIJO";
+        }
+        if($arSeleccionRequisito->getSalarioVariable() == "1"){
+            $salarioTipo = "VARIABLE";
+        }
         $this->SetXY(10, 60);
+        $this->SetFont('Arial','B',7);
+        $this->Cell(24, 6, utf8_decode("CLIENTE REF:") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(50, 6, $arSeleccionRequisito->getClienteReferencia() , 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',7);
+        $this->Cell(25, 6, "SALARIO:" , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(22, 6, $arSeleccionRequisito->getVrSalario() , 1, 0, 'L', 1);
+        $this->SetFont('Arial','B',7);
+        $this->Cell(22, 6, "TIPO SALARIO:" , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',7);
+        $this->Cell(50, 6, $salarioTipo , 1, 0, 'L', 1);
+        //linea 6
+        $this->SetXY(10, 65);
         $this->SetFont('Arial','B',7);
         $this->Cell(24, 6, utf8_decode("COMENTARIOS:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);

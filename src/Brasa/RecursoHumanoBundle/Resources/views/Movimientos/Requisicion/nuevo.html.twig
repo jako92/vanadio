@@ -39,7 +39,28 @@
                         {{ form_widget(form.cantidadSolicitada, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-
+                <div class="form-group form-group-sm">
+                    <label for="form_vrSalario" class="col-sm-2 control-label">Salario:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.vrSalario, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label for="form_clienteReferencia" class="col-sm-2 control-label">Cliente referencia:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.clienteReferencia, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_salarioFijo" class="col-sm-2 control-label">Salario fijo</label>
+                    <div class="col-sm-1">
+                        {{ form_widget(form.salarioFijo) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_salarioVaribale" class="col-sm-2 control-label">Salario variable</label>
+                    <div class="col-sm-1">
+                        {{ form_widget(form.salarioVariable) }}
+                    </div>
+                </div>
                 <div class="form-group form-group-sm">
                     <label for="form_edadMinima" class="col-sm-2 control-label">Edad minima:</label>
                     <div class="col-sm-4">
@@ -50,7 +71,6 @@
                         {{ form_widget(form.edadMaxima, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-
                 <div class="form-group form-group-sm">
                     <label for="form_ciudadRel" class="col-sm-2 control-label">Ciudad residencia:</label>
                     <div class="col-sm-4">

@@ -56,6 +56,19 @@
                         <td class="td-in-well">{{ arRequisicion.cargoRel().nombre|default('') }}</td>
                     </tr>
                     <tr>
+                        <td class="titulo">CLIENTE REFERENCIA:</td>
+                        <td class="td-in-well">{{ arRequisicion.clienteReferencia|default('') }}</td>
+                        <td class="titulo">SALARIO:</td>
+                        <td class="td-in-well">{{ arRequisicion.vrSalario }}</td>
+                        <td class="titulo">TIPO SALARIO:</td>
+                        {% if arRequisicion.salarioFijo == 1 %}
+                        <td class="td-in-well">FIJO</td>
+                        {% endif%}
+                        {% if arRequisicion.salarioVariable == 1 %}
+                        <td class="td-in-well">VARIABLE</td>
+                        {% endif%}
+                    </tr>
+                    <tr>
                         <td class="titulo">CANTIDAD SOLICITADA:</td>
                         <td class="td-in-well">{{ arRequisicion.cantidadSolicitada }}</td>
                         <td class="titulo">ESTADO CIVIL:</td>

@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -72,6 +73,10 @@ class RhuSeleccionRequisitoType extends AbstractType
             ->add('edadMaxima', TextType::class, array('required' => false))
             ->add('codigoReligionFk', ChoiceType::class, array('choices'   => array('CATOLICO' => '1', 'CRISTIANO' => '1', 'PROTESTANTE' => '3', 'INDIFERENTE' => '4')))
             ->add('cantidadSolicitada', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
+            ->add('vrSalario', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
+            ->add('salarioFijo', CheckboxType::class, array('required'  => false))
+            ->add('salarioVariable', CheckboxType::class, array('required'  => false))
+            ->add('clienteReferencia', TextType::class, array('required' => true))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
