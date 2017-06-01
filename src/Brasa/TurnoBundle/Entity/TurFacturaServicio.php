@@ -50,7 +50,12 @@ class TurFacturaServicio
     /**
      * @ORM\Column(name="codigo_cuenta_retencion_fuente_fk", type="string", length=20, nullable=true)
      */     
-    private $codigoCuentaRetencionFuenteFk;  
+    private $codigoCuentaRetencionFuenteFk;
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_iva_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoCuentaRetencionIvaFk;
     
     /**
      * @ORM\Column(name="codigo_cuenta_iva_fk", type="string", length=20, nullable=true)
@@ -392,5 +397,29 @@ class TurFacturaServicio
     public function getPorcentajeIva()
     {
         return $this->porcentajeIva;
+    }
+
+    /**
+     * Set codigoCuentaRetencionIvaFk
+     *
+     * @param string $codigoCuentaRetencionIvaFk
+     *
+     * @return TurFacturaServicio
+     */
+    public function setCodigoCuentaRetencionIvaFk($codigoCuentaRetencionIvaFk)
+    {
+        $this->codigoCuentaRetencionIvaFk = $codigoCuentaRetencionIvaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionIvaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionIvaFk()
+    {
+        return $this->codigoCuentaRetencionIvaFk;
     }
 }

@@ -66,6 +66,11 @@ class TurFacturaTipo
      * @ORM\Column(name="tipo_cuenta_retencion_fuente", type="bigint")
      */     
     private $tipoCuentaRetencionFuente = 1;
+    
+    /**
+     * @ORM\Column(name="tipo_cuenta_retencion_iva", type="bigint")
+     */     
+    private $tipoCuentaRetencionIva = 1;
 
     /**
      * @ORM\Column(name="tipo_cuenta_iva", type="bigint")
@@ -450,5 +455,29 @@ class TurFacturaTipo
     public function getFacturasFacturaTipoRel()
     {
         return $this->facturasFacturaTipoRel;
+    }
+
+    /**
+     * Set tipoCuentaRetencionIva
+     *
+     * @param integer $tipoCuentaRetencionIva
+     *
+     * @return TurFacturaTipo
+     */
+    public function setTipoCuentaRetencionIva($tipoCuentaRetencionIva)
+    {
+        $this->tipoCuentaRetencionIva = $tipoCuentaRetencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaRetencionIva
+     *
+     * @return integer
+     */
+    public function getTipoCuentaRetencionIva()
+    {
+        return $this->tipoCuentaRetencionIva;
     }
 }

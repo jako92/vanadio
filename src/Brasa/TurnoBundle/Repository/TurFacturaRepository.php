@@ -489,7 +489,27 @@ class TurFacturaRepository extends EntityRepository {
                             }   
                             $arRegistro->setDescripcionContable('FACTURACION ' . $this->MesesEspañol($arFactura->getFecha()->format('m')));
                             $em->persist($arRegistro);                         
-                        }                   
+                        }
+                        
+                        //Retencion iva
+                        if($arFactura->getVrRetencionIva() > 0) {
+                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro(); 
+                            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaRetencionIvaFk());                                        
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                    
+                            $arRegistro->setBase($arFactura->getVrIva());
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaRetencionIva() == 1) {
+                                 $arRegistro->setDebito($arFactura->getVrRetencionIva());
+                            } else {
+                                 $arRegistro->setCredito($arFactura->getVrRetencionIva());
+                            }   
+                            $arRegistro->setDescripcionContable('FACTURACION ' . $this->MesesEspañol($arFactura->getFecha()->format('m')));
+                            $em->persist($arRegistro);                         
+                        }
 
                         //Iva
                         if($arFactura->getVrIva() > 0) {

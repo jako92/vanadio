@@ -96,7 +96,7 @@
                     <td>{{ arRegistros.numero }}</td>
                     <td>{{ arRegistros.numeroReferencia }}</td>
                     <td>{{ arRegistros.fecha |date("Y/m/d")  }}</td>
-                    <td>{{ arRegistros.comprobanteRel.nombre  }}</td>
+                    <td>{{ arRegistros.codigoComprobanteFk  }} - {{ arRegistros.comprobanteRel.nombre  }}</td>
                     <td>{{ arRegistros.codigoCuentaFk  }}</td>
                     <td>{{ arRegistros.codigoCentroCostoFk |default('') }}</td>
                     <td>{{ arRegistros.terceroRel.nombreCorto |default('') }}</td>                
