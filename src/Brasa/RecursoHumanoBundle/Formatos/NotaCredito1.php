@@ -211,7 +211,7 @@ class NotaCredito1 extends \FPDF_FPDF {
         $this->SetFont('Arial', 'B', 9);
         $this->Cell(28, 7, 'Rete Iva', 1, 0, 'L');
         $this->SetFont('Arial', '', 9);
-        $this->Cell(28, 7, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 1, 0, 'R'); 
+        $this->Cell(28, 7, number_format($arFactura->getVrRetencionIva(), 0, '.', ','), 1, 0, 'R'); 
         $this->SetXY(149,224);
         $this->SetFont('Arial', 'B', 9);
         $this->Cell(28, 7, 'Rete Fuente', 1, 0, 'L');
