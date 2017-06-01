@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AcreditacionController extends Controller
 {
@@ -137,6 +138,38 @@ class AcreditacionController extends Controller
         ));
     }
     
+    /**
+     * @Route("/rhu/movimiento/acreditacion/detalle/validar/{codigoAcreditacion}", name="brs_rhu_movimiento_acreditacion_detalle_validar")
+     */
+    public function validarAction(Request $request, $codigoAcreditacion) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arAcreditacion = new \Brasa\RecursoHumanoBundle\Entity\RhuAcreditacion();
+        $arAcreditacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacion')->find($codigoAcreditacion);
+        $form = $this->createFormBuilder()
+            ->add('numero', TextType::class, array('required' => true))
+            ->add('fecha', DateType::class, array('data'=> new \DateTime('now'), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('detalle', TextareaType::class, array('required' => true))
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $numero = $form->get('numero')->getData();
+            $fecha = $form->get('fecha')->getData();
+            $detalle = $form->get('detalle')->getData();
+            $arAcreditacion->setNumeroValidacion($numero);
+            $arAcreditacion->setFechaValidacion($fecha);
+            $arAcreditacion->setEstadoValidado(1);
+            $arAcreditacion->setDetalleValidacion($detalle);
+            $em->persist($arAcreditacion);
+            $em->flush();
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Acreditacion:validar.html.twig', array(
+                    'arAcreditacion' => $arAcreditacion,
+                    'form' => $form->createView()
+        ));
+    }
     /**
      * @Route("/rhu/movimiento/acreditacion/detalle/acreditar/{codigoAcreditacion}", name="brs_rhu_movimiento_acreditacion_detalle_acreditar")
      */
