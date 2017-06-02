@@ -15,7 +15,7 @@ class RhuHorarioAcceso
      * @ORM\Column(name="codigo_horario_acceso_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoHorarioAccesoPk;                         
+    private $codigoHorarioAccesoPk;
 
     /**
      * @ORM\Column(name="codigo_horario_periodo_fk", type="integer")
@@ -133,13 +133,6 @@ class RhuHorarioAcceso
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
     protected $empleadoRel;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="RhuTurno", inversedBy="horariosAccesosTurnoRel")
-     * @ORM\JoinColumn(name="codigo_turno_fk", referencedColumnName="codigo_turno_pk")
-     */
-    protected $turnoRel;
-        
 
     /**
      * Get codigoHorarioAccesoPk
@@ -269,6 +262,54 @@ class RhuHorarioAcceso
     public function getFechaSalida()
     {
         return $this->fechaSalida;
+    }
+
+    /**
+     * Set fechaEntradaPago
+     *
+     * @param \DateTime $fechaEntradaPago
+     *
+     * @return RhuHorarioAcceso
+     */
+    public function setFechaEntradaPago($fechaEntradaPago)
+    {
+        $this->fechaEntradaPago = $fechaEntradaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEntradaPago
+     *
+     * @return \DateTime
+     */
+    public function getFechaEntradaPago()
+    {
+        return $this->fechaEntradaPago;
+    }
+
+    /**
+     * Set fechaSalidaPago
+     *
+     * @param \DateTime $fechaSalidaPago
+     *
+     * @return RhuHorarioAcceso
+     */
+    public function setFechaSalidaPago($fechaSalidaPago)
+    {
+        $this->fechaSalidaPago = $fechaSalidaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaSalidaPago
+     *
+     * @return \DateTime
+     */
+    public function getFechaSalidaPago()
+    {
+        return $this->fechaSalidaPago;
     }
 
     /**
@@ -584,6 +625,30 @@ class RhuHorarioAcceso
     }
 
     /**
+     * Set generaHoraExtra
+     *
+     * @param boolean $generaHoraExtra
+     *
+     * @return RhuHorarioAcceso
+     */
+    public function setGeneraHoraExtra($generaHoraExtra)
+    {
+        $this->generaHoraExtra = $generaHoraExtra;
+
+        return $this;
+    }
+
+    /**
+     * Get generaHoraExtra
+     *
+     * @return boolean
+     */
+    public function getGeneraHoraExtra()
+    {
+        return $this->generaHoraExtra;
+    }
+
+    /**
      * Set horarioPeriodoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuHorarioPeriodo $horarioPeriodoRel
@@ -629,101 +694,5 @@ class RhuHorarioAcceso
     public function getEmpleadoRel()
     {
         return $this->empleadoRel;
-    }
-
-    /**
-     * Set turnoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuTurno $turnoRel
-     *
-     * @return RhuHorarioAcceso
-     */
-    public function setTurnoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTurno $turnoRel = null)
-    {
-        $this->turnoRel = $turnoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get turnoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuTurno
-     */
-    public function getTurnoRel()
-    {
-        return $this->turnoRel;
-    }
-
-    /**
-     * Set fechaEntradaPago
-     *
-     * @param \DateTime $fechaEntradaPago
-     *
-     * @return RhuHorarioAcceso
-     */
-    public function setFechaEntradaPago($fechaEntradaPago)
-    {
-        $this->fechaEntradaPago = $fechaEntradaPago;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaEntradaPago
-     *
-     * @return \DateTime
-     */
-    public function getFechaEntradaPago()
-    {
-        return $this->fechaEntradaPago;
-    }
-
-    /**
-     * Set fechaSalidaPago
-     *
-     * @param \DateTime $fechaSalidaPago
-     *
-     * @return RhuHorarioAcceso
-     */
-    public function setFechaSalidaPago($fechaSalidaPago)
-    {
-        $this->fechaSalidaPago = $fechaSalidaPago;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaSalidaPago
-     *
-     * @return \DateTime
-     */
-    public function getFechaSalidaPago()
-    {
-        return $this->fechaSalidaPago;
-    }
-
-    /**
-     * Set generaHoraExtra
-     *
-     * @param boolean $generaHoraExtra
-     *
-     * @return RhuHorarioAcceso
-     */
-    public function setGeneraHoraExtra($generaHoraExtra)
-    {
-        $this->generaHoraExtra = $generaHoraExtra;
-
-        return $this;
-    }
-
-    /**
-     * Get generaHoraExtra
-     *
-     * @return boolean
-     */
-    public function getGeneraHoraExtra()
-    {
-        return $this->generaHoraExtra;
     }
 }
