@@ -186,11 +186,14 @@ class Factura5 extends \FPDF_FPDF {
         $this->Cell(21, 5, number_format($arFactura->getVrIva(), 0, '.', ','), 0, 0, 'R');        
         $this->SetXY(148,180);        
         $this->Cell(42, 5, 'TOTAL:', 0, 0, 'L');               
-        $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 0, 0, 'R'); 
+        $this->Cell(21, 5, number_format($arFactura->getVrTotal(), 0, '.', ','), 0, 0, 'R');
         $this->SetXY(148,185);        
+        $this->Cell(42, 5, 'RTE IVA:', 0, 0, 'L',0);               
+        $this->Cell(21, 5, number_format($arFactura->getVrRetencionIva(), 0, '.', ','), 0, 0, 'R',0);
+        $this->SetXY(148,190);        
         $this->Cell(42, 5, 'RTE FUENTE:', 0, 0, 'L',0);               
         $this->Cell(21, 5, number_format($arFactura->getVrRetencionFuente(), 0, '.', ','), 0, 0, 'R',0);
-        $this->SetXY(148,190);        
+        $this->SetXY(148,195);        
         $this->Cell(42, 5, 'TOTAL A CANCELAR', 0, 0, 'L',0);               
         $this->Cell(21, 5, number_format($arFactura->getVrTotalNeto(), 0, '.', ','), 0, 0, 'R',0);
         
@@ -198,13 +201,13 @@ class Factura5 extends \FPDF_FPDF {
         //$this->Rect(10, 192, 138, 30);
         
         //$this->MultiCell(137, 3, utf8_decode($arConfiguracion->getInformacionPagoFactura()), 0, 'L');        
-        $this->SetXY(14,195);        
+        $this->SetXY(14,200);        
         $this->MultiCell(137, 3, "OBSERVACION: ". utf8_decode($arFactura->getComentarios()), 0, 'L');
         $this->Text(14, 210, "_______________________________________________________________________________________________________________________________");
         $this->SetXY(14,219);        
         $this->MultiCell(118, 3, $arConfiguracion->getInformacionLegalFactura(), 0, 'L');
         $this->SetXY(14,238);        
-        $this->MultiCell(118, 3, "IMPRESO EN COMPUTADOR POR JG EFECTIVOS NIT 900456778-3 PARA GALAXIA SEGURIDAD LTDA AÑO 2017 NIT 811017575-1", 0, 'L');
+        $this->MultiCell(118, 3, "IMPRESO EN COMPUTADOR POR APP SOGA S.A.S NIT 901042085-4 PARA GALAXIA SEGURIDAD LTDA AÑO 2017 NIT 811017575-1", 0, 'L');
         //$this->Rect(10, 222, 201, 40);
         $this->Text(149, 214, "ACEPTADA Y RECIBIDA POR:");
         $this->Text(149, 220, "NOMBRE LEGIBLE: __________________________");
