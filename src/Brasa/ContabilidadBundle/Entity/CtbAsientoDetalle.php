@@ -39,7 +39,7 @@ class CtbAsientoDetalle
     private $valorBase = 0;    
     
     /**    
-     * @ORM\Column(name="codigo_cuenta_fk", type="string", length=40)
+     * @ORM\Column(name="codigo_cuenta_fk", type="string", length=20)
      */ 
     private $codigo_cuenta_fk;
     
@@ -101,6 +101,12 @@ class CtbAsientoDetalle
      * @ORM\JoinColumn(name="codigo_asiento_tipo_fk", referencedColumnName="codigo_asiento_tipo_pk")
      */
     protected $asientoTipoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="CtbCuenta", inversedBy="asientosDetallesCuentaRel")
+     * @ORM\JoinColumn(name="codigo_cuenta_fk", referencedColumnName="codigo_cuenta_pk")
+     */
+    private $cuentaRel;
     
 
     /**
@@ -495,5 +501,29 @@ class CtbAsientoDetalle
     public function getAsientoTipoRel()
     {
         return $this->asientoTipoRel;
+    }
+
+    /**
+     * Set cuentaRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbCuenta $cuentaRel
+     *
+     * @return CtbAsientoDetalle
+     */
+    public function setCuentaRel(\Brasa\ContabilidadBundle\Entity\CtbCuenta $cuentaRel = null)
+    {
+        $this->cuentaRel = $cuentaRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaRel
+     *
+     * @return \Brasa\ContabilidadBundle\Entity\CtbCuenta
+     */
+    public function getCuentaRel()
+    {
+        return $this->cuentaRel;
     }
 }
