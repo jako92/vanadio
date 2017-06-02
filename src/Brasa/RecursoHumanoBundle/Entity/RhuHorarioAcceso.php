@@ -28,7 +28,7 @@ class RhuHorarioAcceso
     private $codigoEmpleadoFk;
     
     /**
-     * @ORM\Column(name="codigo_turno_fk",  type="string", length=250, nullable=true)
+     * @ORM\Column(name="codigo_turno_fk",  type="string", length=5, nullable=true)
      */    
     private $codigoTurnoFk;
     
@@ -133,6 +133,13 @@ class RhuHorarioAcceso
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
     protected $empleadoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuTurno", inversedBy="horariosAccesosTurnoRel")
+     * @ORM\JoinColumn(name="codigo_turno_fk", referencedColumnName="codigo_turno_pk")
+     */
+    protected $turnoRel;
+    
 
     /**
      * Get codigoHorarioAccesoPk
@@ -694,5 +701,29 @@ class RhuHorarioAcceso
     public function getEmpleadoRel()
     {
         return $this->empleadoRel;
+    }
+
+    /**
+     * Set turnoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuTurno $turnoRel
+     *
+     * @return RhuHorarioAcceso
+     */
+    public function setTurnoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTurno $turnoRel = null)
+    {
+        $this->turnoRel = $turnoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get turnoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuTurno
+     */
+    public function getTurnoRel()
+    {
+        return $this->turnoRel;
     }
 }
