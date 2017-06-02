@@ -2393,9 +2393,7 @@ class ConsultasController extends Controller {
                 ->setCellValue('G1', 'ELEMENTO DOTACIÓN')
                 ->setCellValue('H1', 'CANTIDAD SOLICITADA')
                 ->setCellValue('I1', 'CANTIDAD PENDIENTE')
-                ->setCellValue('J1', 'NÚMERO INTERNO REFERENCIA')
-                ->setCellValue('K1', 'SERIE')
-                ->setCellValue('L1', 'LOTE');
+                ->setCellValue('J1', 'NÚMERO INTERNO REFERENCIA');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlDotacionesPendientesLista);
@@ -2416,12 +2414,10 @@ class ConsultasController extends Controller {
                     ->setCellValue('D' . $i, $arDotacionPendiente->getDotacionRel()->getCentroCostoRel()->getNombre())
                     ->setCellValue('E' . $i, $arDotacionPendiente->getDotacionRel()->getEmpleadoRel()->getNumeroIdentificacion())
                     ->setCellValue('F' . $i, $arDotacionPendiente->getDotacionRel()->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('G' . $i, $arDotacionPendiente->getDotacionElementoRel()->getDotacion())
+                    ->setCellValue('G' . $i, $arDotacionPendiente->getDotacionElementoRel()->getNombre())
                     ->setCellValue('H' . $i, $arDotacionPendiente->getCantidadAsignada())
                     ->setCellValue('I' . $i, $arDotacionPendiente->getCantidadAsignada() - $arDotacionPendiente->getCantidadDevuelta())
-                    ->setCellValue('J' . $i, $arDotacionPendiente->getDotacionRel()->getCodigoInternoReferencia())
-                    ->setCellValue('K' . $i, $arDotacionPendiente->getSerie())
-                    ->setCellValue('L' . $i, $arDotacionPendiente->getLote());
+                    ->setCellValue('J' . $i, $arDotacionPendiente->getDotacionRel()->getCodigoInternoReferencia());
             $i++;
         }
 

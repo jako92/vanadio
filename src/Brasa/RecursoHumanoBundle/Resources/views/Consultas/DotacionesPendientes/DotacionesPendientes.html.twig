@@ -67,9 +67,7 @@
                 <th>ELEMENTO DOTACIÓN</th>
                 <th>CANTIDAD SOLICITADA</th>
                 <th>CANTIDAD PENDIENTE</th>
-                <th>NÚMERO INTERNO REFERENCIA</th>
-                <th>SERIE</th>
-                <th>LOTE</th>
+                <th>NÚMERO INTERNO REFERENCIA</th>     
             </tr>
             {% for arDotacionesPendientes in arDotacionesPendientes %}
                 <tr>
@@ -83,8 +81,6 @@
                     <td style="text-align: right">{{ arDotacionesPendientes.cantidadAsignada }}</td>
                     <td style="text-align: right">{{ arDotacionesPendientes.cantidadAsignada - arDotacionesPendientes.cantidadDevuelta}}</td>
                     <td style="text-align: right">{{ arDotacionesPendientes.dotacionRel.codigoInternoReferencia }}</td>
-                    <td style="text-align: right">{{ arDotacionesPendientes.serie }}</td>
-                    <td style="text-align: right">{{ arDotacionesPendientes.lote }}</td>
                 </tr>
             {% endfor %}
         </table>
