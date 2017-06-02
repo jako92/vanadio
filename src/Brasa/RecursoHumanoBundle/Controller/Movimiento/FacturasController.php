@@ -503,21 +503,20 @@ class FacturasController extends Controller
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         } 
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO FACTURA')
+                    ->setCellValue('A1', 'ID')
                     ->setCellValue('B1', 'NÚMERO')
                     ->setCellValue('C1', 'FECHA')
-                    ->setCellValue('D1', 'FECHA VENCE')
+                    ->setCellValue('D1', 'VENCE')
                     ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'CENTRO COSTO')
-                    ->setCellValue('G1', 'VR. BRUTO')
-                    ->setCellValue('H1', 'VR. NETO')
-                    ->setCellValue('I1', 'VR. RETENCION FUENTE')
-                    ->setCellValue('J1', 'VR. RETENCION CREE')
-                    ->setCellValue('K1', 'VR. RETENCION IVA')
-                    ->setCellValue('L1', 'VR. BASE AIU')
-                    ->setCellValue('M1', 'VR. TOTAL ADMNISTRACION')
-                    ->setCellValue('N1', 'VR. TOTAL INGRESO MISION')
-                    ->setCellValue('O1', 'COMENTARIOS');
+                    ->setCellValue('F1', 'SERVICIO')
+                    ->setCellValue('G1', 'VR_BRUTO')
+                    ->setCellValue('H1', 'VR_NETO')
+                    ->setCellValue('I1', 'VR_RET_FTE')
+                    ->setCellValue('J1', 'VR_RET_CREE')
+                    ->setCellValue('K1', 'VR_RET_IVA')
+                    ->setCellValue('L1', 'VR_BASE AIU')
+                    ->setCellValue('M1', 'VR_TOTAL_ADMON')
+                    ->setCellValue('N1', 'VR_TOTAL_MISION');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -531,7 +530,7 @@ class FacturasController extends Controller
                     ->setCellValue('C' . $i, $arFactura->getFecha()->format('Y/m/d'))
                     ->setCellValue('D' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
                     ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNombreCorto())
-                    ->setCellValue('F' . $i, $arFactura->getCentroCostoRel()->getNombre())
+                    ->setCellValue('F' . $i, $arFactura->getFacturaServicioRel()->getNombre())
                     ->setCellValue('G' . $i, $arFactura->getVrBruto())
                     ->setCellValue('H' . $i, $arFactura->getVrNeto())
                     ->setCellValue('I' . $i, $arFactura->getVrRetencionFuente())
@@ -539,8 +538,7 @@ class FacturasController extends Controller
                     ->setCellValue('K' . $i, $arFactura->getVrRetencionIva())
                     ->setCellValue('L' . $i, $arFactura->getVrBaseAIU())
                     ->setCellValue('M' . $i, $arFactura->getVrTotalAdministracion())
-                    ->setCellValue('N' . $i, $arFactura->getVrIngresoMision())
-                    ->setCellValue('O' . $i, $arFactura->getComentarios());
+                    ->setCellValue('N' . $i, $arFactura->getVrIngresoMision());
             $i++;
         }
 
@@ -561,103 +559,7 @@ class FacturasController extends Controller
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }
-    
-    private function generarDetalleExcel($codigoFactura = '') {
-        ob_clean();
-        set_time_limit(0);
-        ini_set("memory_limit", -1);
-        $em = $this->getDoctrine()->getManager();        
-        $objPHPExcel = new \PHPExcel();
-        // Set document properties
-        $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
-        for($col = 'A'; $col !== 'W'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
-        } 
-        for($col = 'E'; $col !== 'W'; $col++) {            
-            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
-        }          
-        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'PAGO')
-                    ->setCellValue('C1', 'DOCUMENTO')
-                    ->setCellValue('D1', 'EMPLEADO')
-                    ->setCellValue('E1', 'BASICO')
-                    ->setCellValue('F1', 'VR ADICIONAL PREST')
-                    ->setCellValue('G1', 'VR ADICIONAL NO PREST')
-                    ->setCellValue('H1', 'AUX TRANSPORTE')
-                    ->setCellValue('I1', 'ARP')
-                    ->setCellValue('J1', 'EPS')
-                    ->setCellValue('K1', 'PENSION')
-                    ->setCellValue('L1', 'CAJA')
-                    ->setCellValue('M1', 'SENA')
-                    ->setCellValue('N1', 'ICBF')
-                    ->setCellValue('O1', 'CESANTIAS')
-                    ->setCellValue('P1', 'CESANTIAS INT')
-                    ->setCellValue('Q1', 'PRIMAS')
-                    ->setCellValue('R1', 'VACACIONES')
-                    ->setCellValue('S1', 'A. PARAFISCALES')
-                    ->setCellValue('T1', 'ADMON')
-                    ->setCellValue('U1', 'COSTO')
-                    ->setCellValue('V1', 'TOTAL COBRO');
-                    
-        $i = 2;
-        //$query = $em->createQuery($this->strSqlLista);
-        $arFacturaDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
-        $arFacturaDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
-        //$arPagoBancos = $query->getResult();
-        foreach ($arFacturaDetalle as $arFacturaDetalle) {
-            
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arFacturaDetalle->getCodigoFacturaDetallePk())
-                    ->setCellValue('B' . $i, $arFacturaDetalle->getCodigoPagoFk())
-                    ->setCellValue('C' . $i, $arFacturaDetalle->getEmpleadoRel()->getNumeroIdentificacion())
-                    ->setCellValue('D' . $i, $arFacturaDetalle->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $arFacturaDetalle->getVrSalario())
-                    ->setCellValue('F' . $i, $arFacturaDetalle->getVrAdicionalPrestacional())
-                    ->setCellValue('G' . $i, $arFacturaDetalle->getVrAdicionalNoPrestacional())
-                    ->setCellValue('H' . $i, $arFacturaDetalle->getVrAuxilioTransporte())
-                    ->setCellValue('I' . $i, $arFacturaDetalle->getVrArp())
-                    ->setCellValue('J' . $i, $arFacturaDetalle->getVrEps())
-                    ->setCellValue('K' . $i, $arFacturaDetalle->getVrPension())
-                    ->setCellValue('L' . $i, $arFacturaDetalle->getVrCaja())
-                    ->setCellValue('M' . $i, $arFacturaDetalle->getVrSena())
-                    ->setCellValue('N' . $i, $arFacturaDetalle->getVrIcbf())
-                    ->setCellValue('O' . $i, $arFacturaDetalle->getVrCesantias())
-                    ->setCellValue('P' . $i, $arFacturaDetalle->getVrCesantiasIntereses())
-                    ->setCellValue('Q' . $i, $arFacturaDetalle->getVrPrimas())
-                    ->setCellValue('R' . $i, $arFacturaDetalle->getVrVacaciones())
-                    ->setCellValue('S' . $i, $arFacturaDetalle->getVrAporteParafiscales())
-                    ->setCellValue('T' . $i, $arFacturaDetalle->getVrAdministracion())
-                    ->setCellValue('U' . $i, $arFacturaDetalle->getVrCosto())
-                    ->setCellValue('V' . $i, $arFacturaDetalle->getVrTotalCobrar());
-            $i++;
-        }
-        $objPHPExcel->getActiveSheet()->setTitle('FacturaDetalles');
-        $objPHPExcel->setActiveSheetIndex(0);
-        // Redirect output to a client’s web browser (Excel2007)
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="FacturaDetalles.xlsx"');
-        header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
-        header('Cache-Control: max-age=1');
-        // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
-        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-        $objWriter->save('php://output');
-        exit;
-    }
+    }    
     
     private function actualizarDetalle($arrControles, $codigoFactura) {
         $em = $this->getDoctrine()->getManager();
