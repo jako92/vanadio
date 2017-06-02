@@ -16,10 +16,11 @@ class CierreMesController extends Controller {
      * @Route("/tur/proceso/cierre/mes", name="brs_tur_proceso_cierre_mes")
      */
     public function listaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();      
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 8)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioGenerar();
         $form->handleRequest($request);
@@ -357,7 +358,10 @@ class CierreMesController extends Controller {
                     set_time_limit(0);
                     ini_set("memory_limit", -1);
                     $codigoCierreMes = $request->request->get('OpGenerarComercial');
-                    $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->generarCierreMesComercial($codigoCierreMes);
+                    $strRespuesta = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->generarCierreMesComercial($codigoCierreMes);
+                    if($strRespuesta != "") {
+                        $objMensaje->Mensaje("error", $strRespuesta);   
+                    }
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
                 if($request->request->get('OpDeshacer')) {

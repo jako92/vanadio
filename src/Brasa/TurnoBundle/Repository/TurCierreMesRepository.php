@@ -26,31 +26,37 @@ class TurCierreMesRepository extends EntityRepository {
     
     public function generarCierreMesComercial($codigoCierreMes) {
         $em = $this->getEntityManager();
+        $strRespuesta = "";
         $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
         $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);
-        $strDql = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->listaConsultaPendienteFacturarDql(
-               "", 
-                "", 
-                "", 
-                "", 
-                "", 
-                "", 
-                "", 
-                "");        
+        $ultimoDiaMes = date("d",(mktime(0,0,0,$arCierreMes->getMes()+1,1,$arCierreMes->getAnio())-1));
+        $fechaDesde = $arCierreMes->getAnio() . "/" . $arCierreMes->getMes() . "/01";        
+        $fechaHasta = $arCierreMes->getAnio() . "/" . $arCierreMes->getMes() . "/" . $ultimoDiaMes;
+        $strDql   = "SELECT count(p.codigoPedidoPk) numero FROM BrasaTurnoBundle:TurPedido p WHERE p.codigoPedidoPk <> 0 AND p.estadoAutorizado = 0 "
+                . " AND p.fechaProgramacion >= '" . $fechaDesde . "' AND p.fechaProgramacion <= '" . $fechaHasta. "'";                                     
         $query = $em->createQuery($strDql);
-        $arPedidoDetalles = $query->getResult();
-        foreach ($arPedidoDetalles as $arPedidoDetalle) {
-            $arIngresoPendiente = new \Brasa\TurnoBundle\Entity\TurIngresoPendiente();
-            $arIngresoPendiente->setCodigoCierreMesFk($arCierreMes->getCodigoCierreMesPk());
-            $arIngresoPendiente->setAnio($arCierreMes->getAnio());
-            $arIngresoPendiente->setMes($arCierreMes->getMes());
-            $arIngresoPendiente->setPedidoDetalleRel($arPedidoDetalle);
-            $arIngresoPendiente->setClienteRel($arPedidoDetalle->getPedidoRel()->getClienteRel());
-            $arIngresoPendiente->setVrSubtotal($arPedidoDetalle->getVrTotalDetallePendiente());
-            $em->persist($arIngresoPendiente);
+        $arPedidos = $query->getSingleResult();
+        $numeroPedidos = $arPedidos['numero'];
+        if($numeroPedidos <= 0) {
+            $strDql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p WHERE pd.vrTotalDetallePendiente > 0 AND pd.mes = " . $arCierreMes->getMes() . " AND pd.anio= " . $arCierreMes->getAnio() . " ORDER BY p.codigoClienteFk, pd.codigoGrupoFacturacionFk, pd.codigoPuestoFk";    
+            $query = $em->createQuery($strDql);
+            $arPedidoDetalles = $query->getResult();
+            foreach ($arPedidoDetalles as $arPedidoDetalle) {
+                $arIngresoPendiente = new \Brasa\TurnoBundle\Entity\TurIngresoPendiente();
+                $arIngresoPendiente->setCodigoCierreMesFk($arCierreMes->getCodigoCierreMesPk());
+                $arIngresoPendiente->setAnio($arCierreMes->getAnio());
+                $arIngresoPendiente->setMes($arCierreMes->getMes());
+                $arIngresoPendiente->setPedidoDetalleRel($arPedidoDetalle);
+                $arIngresoPendiente->setClienteRel($arPedidoDetalle->getPedidoRel()->getClienteRel());
+                $arIngresoPendiente->setVrSubtotal($arPedidoDetalle->getVrTotalDetallePendiente());
+                $em->persist($arIngresoPendiente);
+            }
+            $arCierreMes->setEstadoGeneradoComercial(1);
+            $em->persist($arCierreMes);
+            $em->flush();            
+        } else {
+            $strRespuesta = "Existen pedidos sin autorizar dentro del periodo de cierre, debe autorizarlos para cerrar el mes";
         }
-        $arCierreMes->setEstadoGeneradoComercial(1);
-        $em->persist($arCierreMes);
-        $em->flush();
+        return $strRespuesta;
     }
 }

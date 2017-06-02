@@ -122,7 +122,6 @@ class TurPedido
      */
     private $vrTotalServicio = 0; 
     
-
     /**
      * @ORM\Column(name="vr_subtotal", type="float")
      */
@@ -157,6 +156,11 @@ class TurPedido
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;         
+    
+    /**     
+     * @ORM\Column(name="estado_cierre_mes", type="boolean")
+     */    
+    private $estadoCierreMes = false;    
     
     /**
      * @ORM\ManyToOne(targetEntity="TurPedidoTipo", inversedBy="pedidosPedidoTipoRel")
@@ -1015,5 +1019,29 @@ class TurPedido
     public function getPedidosDetallesConceptosPedidoRel()
     {
         return $this->pedidosDetallesConceptosPedidoRel;
+    }
+
+    /**
+     * Set estadoCierreMes
+     *
+     * @param boolean $estadoCierreMes
+     *
+     * @return TurPedido
+     */
+    public function setEstadoCierreMes($estadoCierreMes)
+    {
+        $this->estadoCierreMes = $estadoCierreMes;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCierreMes
+     *
+     * @return boolean
+     */
+    public function getEstadoCierreMes()
+    {
+        return $this->estadoCierreMes;
     }
 }
