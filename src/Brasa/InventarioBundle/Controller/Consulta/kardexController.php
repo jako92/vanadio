@@ -106,7 +106,8 @@ class kardexController extends Controller {
                 ->setCellValue('A1', 'CODIGO')
                 ->setCellValue('B1', 'ITEM')
                 ->setCellValue('C1', 'CANTIDAD')
-                ->setCellValue('D1', 'PRECIO');
+                ->setCellValue('D1', 'BODEGA')
+                ->setCellValue('E1', 'PRECIO');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -115,9 +116,10 @@ class kardexController extends Controller {
         foreach ($arkardex as $arkardex) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arkardex->getCodigoDetalleMovimientoPk())
-                    ->setCellValue('B' . $i, $arkardex->getItemRel()->getNombre())
+                    ->setCellValue('B' . $i, $arkardex->getItemRel()->getNombre())                   
                     ->setCellValue('C' . $i, $arkardex->getCantidad())
-                    ->setCellValue('D' . $i, $arkardex->getVrPrecio());
+                    ->setCellValue('D' . $i, $arkardex->getCodigoBodegaFk())
+                    ->setCellValue('E' . $i, $arkardex->getValor());
             $i++;
         }
 

@@ -53,6 +53,7 @@
                 <th>CODIGO</th>
                 <th>ITEM</th>
                 <th>LOTE</th>
+                <th>BODEGA</th>
                 <th>EXISTENCIA</th>
                 <th>REMISION</th>
                 <th>DISPONIBLE</th>
@@ -63,6 +64,7 @@
                     <td>{{ arLotes.codigoItemFk| default('')  }}</td>
                     <td>{{ arLotes.itemRel.nombre | default('')  }}</td>                       
                     <td>{{ arLotes.LoteFk  }}</td>
+                    <td>{{ arLotes.bodegaRel.nombre  }}</td>
                     <td align="Right">{{ arLotes.cantidadExistencia  }}</td>
                     <td align="Right">{{ arLotes.cantidadRemisionada  }}</td>
                     <td align="Right">{{ arLotes.cantidadDisponible  }}</td>

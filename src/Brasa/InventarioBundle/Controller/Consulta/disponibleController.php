@@ -103,10 +103,11 @@ class disponibleController extends Controller {
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'ITEM')
                 ->setCellValue('B1', 'LOTE')
-                ->setCellValue('C1', 'EXISTENCIA')
-                ->setCellValue('D1', 'CANT REMISIONADA')
-                ->setCellValue('E1', 'CANT DISPONIBLE')
-                ->setCellValue('F1', 'FECHA VEN');
+                ->setCellValue('C1', 'BODEGA')
+                ->setCellValue('D1', 'EXISTENCIA')
+                ->setCellValue('E1', 'CANT REMISIONADA')
+                ->setCellValue('F1', 'CANT DISPONIBLE')
+                ->setCellValue('G1', 'FECHA VEN');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -116,10 +117,11 @@ class disponibleController extends Controller {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arLotes->getItemRel()->getNombre())
                     ->setCellValue('B' . $i, $arLotes->getLoteFk())
-                    ->setCellValue('C' . $i, $arLotes->getCantidadExistencia())
-                    ->setCellValue('D' . $i, $arLotes->getCantidadRemisionada())
-                    ->setCellValue('E' . $i, $arLotes->getCantidadDisponible())
-                    ->setCellValue('F' . $i, $arLotes->getFechaVencimiento()->format('Y/m/d'));
+                    ->setCellValue('C' . $i, $arLotes->getBodegaRel()->getNombre())
+                    ->setCellValue('D' . $i, $arLotes->getCantidadExistencia())
+                    ->setCellValue('E' . $i, $arLotes->getCantidadRemisionada())
+                    ->setCellValue('F' . $i, $arLotes->getCantidadDisponible())
+                    ->setCellValue('G' . $i, $arLotes->getFechaVencimiento()->format('Y/m/d'));
             $i++;
         }
         //$objPHPExcel->getActiveSheet()->getStyle('A1:AL1')->getFont()->setBold(true);        
