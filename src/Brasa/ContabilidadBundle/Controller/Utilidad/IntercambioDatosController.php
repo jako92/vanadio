@@ -104,6 +104,11 @@ class IntercambioDatosController extends Controller {
                     $this->listar();
                     $this->generarSoftland();
                 }
+                if ($form->get('BtnGenerarSeven')->isClicked()) {
+                    $this->filtrar($form, $request);
+                    $this->listar();
+                    $this->generarExcelInterfaceSeven();
+                }                
             }
         }
         return $this->render('BrasaContabilidadBundle:Utilidad/IntercambioDatos:exportar.html.twig', array(
@@ -176,6 +181,7 @@ class IntercambioDatosController extends Controller {
                 ->add('BtnGenerarOfimatica', SubmitType::class, array('label' => 'Ofimatica',))
                 ->add('BtnGenerarIlimitada', SubmitType::class, array('label' => 'Ilimitada',))
                 ->add('BtnGenerarSoftland', SubmitType::class, array('label' => 'Softland',))
+                ->add('BtnGenerarSeven', SubmitType::class, array('label' => 'Seven',))
                 ->getForm();
         return $form;
     }
@@ -434,5 +440,90 @@ class IntercambioDatosController extends Controller {
         readfile($strArchivo);
         exit;
     }
+    
+    private function generarExcelInterfaceSeven() {
+        $em = $this->getDoctrine()->getManager();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $session = new Session;
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'CODIGO_EMPRESA')
+                ->setCellValue('B1', 'TIPO_OPERACION')
+                ->setCellValue('C1', 'NUMERO_CUENTA')
+                ->setCellValue('D1', 'FECHA')
+                ->setCellValue('E1', 'SUCURSAL')
+                ->setCellValue('F1', 'PROVEEDOR')
+                ->setCellValue('G1', 'DETALLE_PROVEEDOR')
+                ->setCellValue('H1', 'TIPO')
+                ->setCellValue('I1', 'NUMERO_FACTURA')
+                ->setCellValue('J1', 'PREFIJO_FACTURA')
+                ->setCellValue('K1', 'CUENTA_CONTABLE')
+                ->setCellValue('L1', 'MONEDA')
+                ->setCellValue('M1', 'FECHA_TASA')
+                ->setCellValue('N1', 'VALOR_TASA')
+                ->setCellValue('O1', 'FECHA_VENCIMIENTO')
+                ->setCellValue('P1', 'VALOR_TOTAL_CUENTA_PAGAR')
+                ->setCellValue('Q1', 'DIAS_GRACIA_INTERES_CORRIENTE')
+                ->setCellValue('R1', 'DIAS_GRACIA_INTERES_MORA')
+                ->setCellValue('S1', 'PORCENTAJE_INTERES_CORRIENTE')
+                ->setCellValue('T1', 'PORCENTAJE_INTERES_MORA')
+                ->setCellValue('U1', 'DESCRIPCION')
+                ->setCellValue('V1', 'CENTRO_COSTO')
+                ->setCellValue('W1', 'PROYECTO')
+                ->setCellValue('X1', 'AREA_NEGOCIO')
+                ->setCellValue('Y1', 'PORCENTAJE_DISTRIBUCION');
+        $i = 2;
+        $query = $em->createQuery($this->strDqlLista);
+        $arRegistros = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+        $arRegistros = $query->getResult();
+        foreach ($arRegistros as $arRegistro) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arRegistro->getBase())
+                    ->setCellValue('B' . $i, $arRegistro->getNumeroReferencia())
+                    ->setCellValue('C' . $i, $arRegistro->getCodigoCentroCostoFk())
+                    ->setCellValue('D' . $i, $this->RellenarNr($arRegistro->getCodigoComprobanteFk(), "0", 2))
+                    ->setCellValue('E' . $i, $arRegistro->getCodigoCuentaFk())
+                    ->setCellValue('F' . $i, $arRegistro->getCredito())
+                    ->setCellValue('G' . $i, $arRegistro->getNumero())
+                    ->setCellValue('H' . $i, $arRegistro->getDebito())
+                    ->setCellValue('I' . $i, $arRegistro->getDescripcionContable())
+                    ->setCellValue('J' . $i, $arRegistro->getDescripcionContable())
+                    ->setCellValue('K' . $i, $arRegistro->getFecha()->format('Y/m/d'))
+                    ->setCellValue('K' . $i, PHPExcel_Shared_Date::PHPToExcel(gmmktime(0, 0, 0, $arRegistro->getFecha()->format('m'), $arRegistro->getFecha()->format('d'), $arRegistro->getFecha()->format('Y'))));
+            if ($arRegistro->getCodigoTerceroFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion() . "-" . $arRegistro->getTerceroRel()->getDigitoVerificacion());
+            }
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('registros');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="MovimientoContable.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }    
 
 }

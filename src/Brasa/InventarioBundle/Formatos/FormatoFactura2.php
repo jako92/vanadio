@@ -14,8 +14,12 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         self::$codigoMovimiento = $codigoMovimiento;
         $arMovimiento = new \Brasa\InventarioBundle\Entity\InvMovimiento();
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
-        $valor = round($arMovimiento->getVrNetoPagar());
-        $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
+        $valor = round($arMovimiento->getVrNeto());
+        $strLetras = "";
+        if($valor > 0) {
+            $strLetras = \Brasa\GeneralBundle\MisClases\Funciones::devolverNumeroLetras($valor);
+        }
+        
         self::$strLetras = $strLetras;
         ob_clean();
         //$pdf = new Movimiento3(); //jg
@@ -171,7 +175,7 @@ class FormatoFactura2 extends \FPDF_FPDF { //jg
         $this->Cell(147, 6, substr(strtoupper(self::$strLetras), 0, 96), 1, 0, 'L',1);        
         $this->SetXY(162,216);                
         $this->Cell(22, 6, 'NETO PAGAR', 1, 0, 'L',1);
-        $this->Cell(22, 6, number_format($arMovimiento->getVrNetoPagar(), 0, '.', ','), 1, 0, 'R',1);        
+        $this->Cell(22, 6, number_format($arMovimiento->getVrNeto(), 0, '.', ','), 1, 0, 'R',1);        
         
         $this->SetXY(15,222);        
         $this->Cell(64, 6, 'RECIBIDO POR', 1, 0, 'L');
