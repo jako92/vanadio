@@ -88,13 +88,7 @@ class CtbAsientoDetalle
      * @ORM\ManyToOne(targetEntity="CtbAsiento", inversedBy="asientosDetallesAsientoRel")
      * @ORM\JoinColumn(name="codigo_asiento_fk", referencedColumnName="codigo_asiento_pk")
      */
-    protected $asientoRel; 
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CtbCuenta", inversedBy="asientosDetallesCuentaRel")
-     * @ORM\JoinColumn(name="codigo_cuenta_fk", referencedColumnName="codigo_cuenta_pk")
-     */
-    private $cuentaRel; 
+    protected $asientoRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="CtbTercero", inversedBy="asientosDetallesTerceroRel")
@@ -108,8 +102,6 @@ class CtbAsientoDetalle
      */
     protected $asientoTipoRel;
     
-    
-
 
     /**
      * Get codigoAsientoDetallePk
@@ -455,30 +447,6 @@ class CtbAsientoDetalle
     public function getAsientoRel()
     {
         return $this->asientoRel;
-    }
-
-    /**
-     * Set cuentaRel
-     *
-     * @param \Brasa\ContabilidadBundle\Entity\CtbCuenta $cuentaRel
-     *
-     * @return CtbAsientoDetalle
-     */
-    public function setCuentaRel(\Brasa\ContabilidadBundle\Entity\CtbCuenta $cuentaRel = null)
-    {
-        $this->cuentaRel = $cuentaRel;
-
-        return $this;
-    }
-
-    /**
-     * Get cuentaRel
-     *
-     * @return \Brasa\ContabilidadBundle\Entity\CtbCuenta
-     */
-    public function getCuentaRel()
-    {
-        return $this->cuentaRel;
     }
 
     /**
