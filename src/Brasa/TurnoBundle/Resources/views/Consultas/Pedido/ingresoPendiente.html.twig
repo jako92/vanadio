@@ -63,7 +63,8 @@
                 <th><p data-toggle="tooltip" data-placement="top" title="Numero del pedido detalle">P.D</p></th>
                 <th>AÑO</th>                
                 <th>MES</th>
-                <th>CLIENTE</th>                
+                <th>CLIENTE</th>
+                <th>CONCEPTO</th>                
                 <th>SUBTOTAL</th>
             </tr>            
             {% for arIngresoPendiente in arIngresoPendiente %}
@@ -73,6 +74,7 @@
                     <td>{{ arIngresoPendiente.anio }}</td>
                     <td>{{ arIngresoPendiente.mes }}</td>
                     <td>{{ arIngresoPendiente.clienteRel.nombreCorto |default('') }}</td>
+                    <td>{{ arIngresoPendiente.pedidoDetalleRel.conceptoServicioRel.nombre |default('') }}</td>
                     <td style="text-align: right">{{ arIngresoPendiente.vrSubtotal | number_format(0, '.', ',') }}</td>                     
 
                 </tr>

@@ -109,7 +109,7 @@ class IngresoPendienteController extends Controller {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
-        for ($col = 'G'; $col !== 'H'; $col++) {
+        for ($col = 'H'; $col !== 'I'; $col++) {
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('right');
         }
@@ -119,8 +119,9 @@ class IngresoPendienteController extends Controller {
                 ->setCellValue('C1', 'PED')
                 ->setCellValue('D1', 'PED_DET')
                 ->setCellValue('E1', 'NIT')
-                ->setCellValue('F1', 'CLIENTE')                                
-                ->setCellValue('G1', 'SUBTOTAL');
+                ->setCellValue('F1', 'CLIENTE')
+                ->setCellValue('G1', 'SERVICIO')
+                ->setCellValue('H1', 'SUBTOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -134,7 +135,8 @@ class IngresoPendienteController extends Controller {
                     ->setCellValue('D' . $i, $arIngresoPendiente->getCodigoPedidoDetalleFk())
                     ->setCellValue('E' . $i, $arIngresoPendiente->getClienteRel()->getNit())
                     ->setCellValue('F' . $i, $arIngresoPendiente->getClienteRel()->getNombreCorto())
-                    ->setCellValue('G' . $i, $arIngresoPendiente->getVrSubtotal());
+                    ->setCellValue('G' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getConceptoServicioRel()->getNombre())
+                    ->setCellValue('H' . $i, $arIngresoPendiente->getVrSubtotal());
             $i++;
         }
 
