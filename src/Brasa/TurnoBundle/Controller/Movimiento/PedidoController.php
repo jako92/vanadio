@@ -174,11 +174,15 @@ class PedidoController extends Controller {
 
                 if ($form->get('BtnDesAutorizar')->isClicked()) {
                     if ($arPedido->getEstadoAutorizado() == 1) {
-                        $arPedido->setEstadoAutorizado(0);
-                        $em->persist($arPedido);
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
+                        if ($arPedido->getEstadoCierreMes() == 0) {
+                            $arPedido->setEstadoAutorizado(0);
+                            $em->persist($arPedido);
+                            $em->flush();                            
+                        } else {
+                            $objMensaje->Mensaje("error","El pedido ya esta en un cierre de mes, no puede ser modificado");
+                        }                        
                     }
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $codigoPedido)));
                 }
                 if ($form->get('BtnProgramar')->isClicked()) {
                     if ($arPedido->getEstadoProgramado() == 0 && $arPedido->getEstadoAutorizado() == 1) {

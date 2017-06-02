@@ -53,7 +53,9 @@ class TurCierreMesRepository extends EntityRepository {
             }
             $arCierreMes->setEstadoGeneradoComercial(1);
             $em->persist($arCierreMes);
-            $em->flush();            
+            $em->flush();         
+            $strSql = "UPDATE tur_pedido SET estado_cierre_mes = 1 WHERE fecha_programacion >= '" . $fechaDesde . "' AND fecha_programacion <= '" . $fechaHasta. "'";           
+            $em->getConnection()->executeQuery($strSql);            
         } else {
             $strRespuesta = "Existen pedidos sin autorizar dentro del periodo de cierre, debe autorizarlos para cerrar el mes";
         }

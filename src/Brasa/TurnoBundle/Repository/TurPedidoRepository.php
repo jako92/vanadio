@@ -387,7 +387,7 @@ class TurPedidoRepository extends EntityRepository {
         $em = $this->getEntityManager();                
         $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);            
         $strResultado = "";        
-        if($arPedido->getEstadoAutorizado() == 1 && $arPedido->getEstadoAnulado() == 0) {
+        if($arPedido->getEstadoAutorizado() == 1 && $arPedido->getEstadoAnulado() == 0 && $arPedido->getEstadoCierreMes() == 0) {
             $boolAnular = TRUE;
             $arPedidoDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
             $arPedidoDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->findBy(array('codigoPedidoFk' => $codigoPedido));                
@@ -432,7 +432,7 @@ class TurPedidoRepository extends EntityRepository {
                 $strResultado = "Hay programaciones que dependen de este pedido, por lo tanto no se puede anular";
             }                            
         } else {
-            $strResultado = "El pedido debe estar autorizado y no puede estar previamente anulado";
+            $strResultado = "El pedido debe estar autorizado, no puede estar cerrado el mes, no puede estar previamente anulado";
         }        
         return $strResultado;
     }    

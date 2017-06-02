@@ -33,10 +33,12 @@
             </div>            
         </div>
         <div style="float:right">
+            
             {% if arPedido.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}
             {% if arPedido.estadoProgramado == 1 %}<span class="label label-warning">Programado</span>{% endif %}
             {% if arPedido.estadoFacturado == 1 %}<span class="label label-warning">Facturado</span>{% endif %}
             {% if arPedido.estadoAnulado == 1 %}<span class="label label-danger">Anulado</span>{% endif %}
+            {% if arPedido.estadoCierreMes == 1 %}<span class="label label-warning">Cierre mes</span>{% endif %}
         </div>
         <br /><br />
         <!-- Encabezado Movimiento -->
