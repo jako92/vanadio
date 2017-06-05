@@ -4,11 +4,10 @@
 
 namespace Brasa\GeneralBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class GenFormaPago extends AbstractFixture implements OrderedFixtureInterface
+class GenFormaPago implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -26,11 +25,6 @@ class GenFormaPago extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($arFormaPago);                
         }
         $manager->flush();
-    }
-
-    public function getOrder()
-    {
-        return 4; // el orden en el cual serán cargados los accesorios
     }
 }
 

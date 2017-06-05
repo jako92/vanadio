@@ -4,11 +4,10 @@
 
 namespace Brasa\GeneralBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class GenSectorEconomico extends AbstractFixture implements OrderedFixtureInterface
+class GenSectorEconomico implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -76,10 +75,6 @@ class GenSectorEconomico extends AbstractFixture implements OrderedFixtureInterf
         }
         $manager->flush();
     }
-
-    public function getOrder()
-    {
-        return 5; // el orden en el cual serán cargados los accesorios
-    }
+    
 }
 
