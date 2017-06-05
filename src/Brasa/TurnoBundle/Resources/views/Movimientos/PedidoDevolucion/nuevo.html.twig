@@ -21,8 +21,8 @@
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">             
                 <div class="form-group form-group-sm">
-                    <label for="txtNit" class="col-sm-3 control-label">Cliente:</label>
-                    <div class="col-sm-9">
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                    <div class="col-sm-10">
                         <div class="row">
                             <div class="col-lg-2">
                                 <div class="input-group">
@@ -40,15 +40,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Concepto:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.pedidoDevolucionConceptoRel, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">Tipo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.pedidoDevolucionTipoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>                           
+                    <label class="col-sm-2 control-label">Concepto:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.pedidoDevolucionConceptoRel, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>       
+                </div>                     
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Comentarios:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Comentarios:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                     </div>
                 </div>                 

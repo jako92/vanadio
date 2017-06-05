@@ -930,7 +930,9 @@ class PedidoController extends Controller {
         $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
         $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));
         $arPedidoDevolucionDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
-        $arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));
+        $q = $em->createQuery("select pdd from BrasaTurnoBundle:TurPedidoDevolucionDetalle pdd JOIN pdd.pedidoDevolucionRel pd WHERE pdd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " AND pd.estadoAutorizado = 1");
+        $arPedidoDevolucionDetalles = $q->getResult();        
+        //$arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle));
         $arServicio = null;
         if ($arPedidoDetalle->getCodigoServicioDetalleFk()) {
             $arServicio = $arPedidoDetalle->getServicioDetalleRel()->getServicioRel();

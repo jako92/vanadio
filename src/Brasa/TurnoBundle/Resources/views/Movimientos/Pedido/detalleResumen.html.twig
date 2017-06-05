@@ -100,11 +100,12 @@
             {% endfor %}
         </table>
         <br />
-        <h4>Devoluciones</h4>
+        <h4>Devoluciones / Adiciones</h4>
         <table class="table table-striped table-bordered table-condensed">
             <tr>
                 <th>ID</th>
                 <th>NUMERO</th>
+                <th>TIPO</th> 
                 <th>FECHA</th>
                 <th>VALOR</th>
             </tr>
@@ -112,6 +113,7 @@
                 <tr>
                     <td>{{ arPedidoDevolucionDetalles.codigoPedidoDevolucionDetallePk }}</td>
                     <td>{{ arPedidoDevolucionDetalles.codigoPedidoDevolucionFk }}</td>
+                    <td>{{ arPedidoDevolucionDetalles.pedidoDevolucionRel.pedidoDevolucionTipoRel.nombre }}</td>
                     <td>{{ arPedidoDevolucionDetalles.pedidoDevolucionRel.fecha | date('Y/m/d') }}</td>
                     <td style="text-align: right">{{ arPedidoDevolucionDetalles.vrPrecio | number_format(0, '.', ',') }}</td>
                 </tr>

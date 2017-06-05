@@ -56,8 +56,29 @@ class TurPedidoDevolucionRepository extends EntityRepository {
         $em = $this->getEntityManager();        
         $arPedidoDevolucion = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucion();            
         $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);                                
-        $arPedidoDevolucion->setEstadoAutorizado(1);
+        $arPedidoDevolucion->setEstadoAutorizado(1);                
         $em->persist($arPedidoDevolucion);
+        
+        $arPedidoDevolucionDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
+        $arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDevolucionFk' => $codigoPedidoDevolucion));                                
+        foreach ($arPedidoDevolucionDetalles as $arPedidoDevolucionDetalle) {
+            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arPedidoDevolucionDetalle->getCodigoPedidoDetalleFk());                        
+            if($arPedidoDevolucion->getCodigoPedidoDevolucionTipoFk() == 'DEV') {
+                $devolucion = $arPedidoDetalle->getVrTotalDetalleDevolucion() + $arPedidoDevolucionDetalle->getVrPrecio();
+                $arPedidoDetalle->setVrTotalDetalleDevolucion($devolucion);
+                $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion() - $arPedidoDetalle->getVrTotalDetalleAdicion());
+                $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+                $em->persist($arPedidoDetalle);                            
+            }
+            if($arPedidoDevolucion->getCodigoPedidoDevolucionTipoFk() == 'ADI') {                                
+                $adicion = $arPedidoDetalle->getVrTotalDetalleAdicion() + $arPedidoDevolucionDetalle->getVrPrecio();
+                $arPedidoDetalle->setVrTotalDetalleAdicion($adicion);
+                $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion() - $arPedidoDetalle->getVrTotalDetalleAdicion());
+                $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+                $em->persist($arPedidoDetalle);                            
+            }            
+        }
         $em->flush();
         return "";
     }  
@@ -68,6 +89,26 @@ class TurPedidoDevolucionRepository extends EntityRepository {
         $arPedidoDevolucion = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->find($codigoPedidoDevolucion);                                
         $arPedidoDevolucion->setEstadoAutorizado(0);
         $em->persist($arPedidoDevolucion);
+        $arPedidoDevolucionDetalles = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
+        $arPedidoDevolucionDetalles = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->findBy(array('codigoPedidoDevolucionFk' => $codigoPedidoDevolucion));                                
+        foreach ($arPedidoDevolucionDetalles as $arPedidoDevolucionDetalle) {
+            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arPedidoDevolucionDetalle->getCodigoPedidoDetalleFk());                        
+            if($arPedidoDevolucion->getCodigoPedidoDevolucionTipoFk() == 'DEV') {
+                $devolucion = $arPedidoDetalle->getVrTotalDetalleDevolucion() - $arPedidoDevolucionDetalle->getVrPrecio();
+                $arPedidoDetalle->setVrTotalDetalleDevolucion($devolucion);
+                $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion() - $arPedidoDetalle->getVrTotalDetalleAdicion());
+                $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+                $em->persist($arPedidoDetalle);                            
+            }
+            if($arPedidoDevolucion->getCodigoPedidoDevolucionTipoFk() == 'ADI') {                                
+                $adicion = $arPedidoDetalle->getVrTotalDetalleAdicion() - $arPedidoDevolucionDetalle->getVrPrecio();
+                $arPedidoDetalle->setVrTotalDetalleAdicion($adicion);
+                $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion() - $arPedidoDetalle->getVrTotalDetalleAdicion());
+                $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
+                $em->persist($arPedidoDetalle);                            
+            }            
+        }        
         $em->flush();
         return "";
     }     

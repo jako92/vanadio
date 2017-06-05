@@ -33,6 +33,11 @@ class TurPedidoDevolucion
     private $codigoClienteFk;                     
 
     /**
+     * @ORM\Column(name="codigo_pedido_devolucion_tipo_fk", type="string", length=3, nullable=true)
+     */    
+    private $codigoPedidoDevolucionTipoFk;    
+    
+    /**
      * @ORM\Column(name="codigo_pedido_devolucion_concepto_fk", type="integer", nullable=true)
      */    
     private $codigoPedidoDevolucionConceptoFk;
@@ -73,6 +78,12 @@ class TurPedidoDevolucion
      */
     protected $clienteRel;     
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TurPedidoDevolucionTipo", inversedBy="pedidosDevolucionesPedidoDevolucionTipoRel")
+     * @ORM\JoinColumn(name="codigo_pedido_devolucion_tipo_fk", referencedColumnName="codigo_pedido_devolucion_tipo_pk")
+     */
+    protected $pedidoDevolucionTipoRel;     
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurPedidoDevolucionConcepto", inversedBy="pedidosDevolucionesPedidoDevolucionConceptoRel")
      * @ORM\JoinColumn(name="codigo_pedido_devolucion_concepto_fk", referencedColumnName="codigo_pedido_devolucion_concepto_pk")
@@ -173,6 +184,54 @@ class TurPedidoDevolucion
     public function getCodigoClienteFk()
     {
         return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set codigoPedidoDevolucionTipoFk
+     *
+     * @param string $codigoPedidoDevolucionTipoFk
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setCodigoPedidoDevolucionTipoFk($codigoPedidoDevolucionTipoFk)
+    {
+        $this->codigoPedidoDevolucionTipoFk = $codigoPedidoDevolucionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDevolucionTipoFk
+     *
+     * @return string
+     */
+    public function getCodigoPedidoDevolucionTipoFk()
+    {
+        return $this->codigoPedidoDevolucionTipoFk;
+    }
+
+    /**
+     * Set codigoPedidoDevolucionConceptoFk
+     *
+     * @param integer $codigoPedidoDevolucionConceptoFk
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setCodigoPedidoDevolucionConceptoFk($codigoPedidoDevolucionConceptoFk)
+    {
+        $this->codigoPedidoDevolucionConceptoFk = $codigoPedidoDevolucionConceptoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDevolucionConceptoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPedidoDevolucionConceptoFk()
+    {
+        return $this->codigoPedidoDevolucionConceptoFk;
     }
 
     /**
@@ -344,6 +403,54 @@ class TurPedidoDevolucion
     }
 
     /**
+     * Set pedidoDevolucionTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionTipo $pedidoDevolucionTipoRel
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setPedidoDevolucionTipoRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionTipo $pedidoDevolucionTipoRel = null)
+    {
+        $this->pedidoDevolucionTipoRel = $pedidoDevolucionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoDevolucionTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPedidoDevolucionTipo
+     */
+    public function getPedidoDevolucionTipoRel()
+    {
+        return $this->pedidoDevolucionTipoRel;
+    }
+
+    /**
+     * Set pedidoDevolucionConceptoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setPedidoDevolucionConceptoRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel = null)
+    {
+        $this->pedidoDevolucionConceptoRel = $pedidoDevolucionConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoDevolucionConceptoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto
+     */
+    public function getPedidoDevolucionConceptoRel()
+    {
+        return $this->pedidoDevolucionConceptoRel;
+    }
+
+    /**
      * Add pedidosDevolucionesDetallesPedidoDevolucionRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle $pedidosDevolucionesDetallesPedidoDevolucionRel
@@ -375,53 +482,5 @@ class TurPedidoDevolucion
     public function getPedidosDevolucionesDetallesPedidoDevolucionRel()
     {
         return $this->pedidosDevolucionesDetallesPedidoDevolucionRel;
-    }
-
-    /**
-     * Set codigoPedidoDevolucionConceptoFk
-     *
-     * @param integer $codigoPedidoDevolucionConceptoFk
-     *
-     * @return TurPedidoDevolucion
-     */
-    public function setCodigoPedidoDevolucionConceptoFk($codigoPedidoDevolucionConceptoFk)
-    {
-        $this->codigoPedidoDevolucionConceptoFk = $codigoPedidoDevolucionConceptoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPedidoDevolucionConceptoFk
-     *
-     * @return integer
-     */
-    public function getCodigoPedidoDevolucionConceptoFk()
-    {
-        return $this->codigoPedidoDevolucionConceptoFk;
-    }
-
-    /**
-     * Set pedidoDevolucionConceptoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel
-     *
-     * @return TurPedidoDevolucion
-     */
-    public function setPedidoDevolucionConceptoRel(\Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto $pedidoDevolucionConceptoRel = null)
-    {
-        $this->pedidoDevolucionConceptoRel = $pedidoDevolucionConceptoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get pedidoDevolucionConceptoRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurPedidoDevolucionConcepto
-     */
-    public function getPedidoDevolucionConceptoRel()
-    {
-        return $this->pedidoDevolucionConceptoRel;
     }
 }

@@ -23,6 +23,11 @@ class TurPedidoDevolucionDetalle
     private $codigoPedidoDevolucionFk;     
     
     /**
+     * @ORM\Column(name="codigo_pedido_devolucion_tipo_fk", type="string", length=3, nullable=true)
+     */    
+    private $codigoPedidoDevolucionTipoFk;    
+    
+    /**
      * @ORM\Column(name="codigo_pedido_detalle_fk", type="integer", nullable=true)
      */    
     private $codigoPedidoDetalleFk;    
@@ -174,5 +179,29 @@ class TurPedidoDevolucionDetalle
     public function getPedidoDetalleRel()
     {
         return $this->pedidoDetalleRel;
+    }
+
+    /**
+     * Set codigoPedidoDevolucionTipoFk
+     *
+     * @param string $codigoPedidoDevolucionTipoFk
+     *
+     * @return TurPedidoDevolucionDetalle
+     */
+    public function setCodigoPedidoDevolucionTipoFk($codigoPedidoDevolucionTipoFk)
+    {
+        $this->codigoPedidoDevolucionTipoFk = $codigoPedidoDevolucionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDevolucionTipoFk
+     *
+     * @return string
+     */
+    public function getCodigoPedidoDevolucionTipoFk()
+    {
+        return $this->codigoPedidoDevolucionTipoFk;
     }
 }

@@ -141,11 +141,12 @@ class PedidoDevolucionController extends Controller {
 
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     if ($arPedidoDevolucion->getEstadoAutorizado() == 0) {
-                        $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
-                    }
+                        $arrControles = $request->request->All();
+                        $this->actualizarDetalle($arrControles, $codigoPedidoDevolucion);                        
+                    }    
+
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));
                 }
-
                 if ($form->get('BtnDetalleEliminar')->isClicked()) {
                     if ($arPedidoDevolucion->getEstadoAutorizado() == 0) {
                         $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -156,13 +157,14 @@ class PedidoDevolucionController extends Controller {
                 }
 
                 if ($form->get('BtnImprimir')->isClicked()) {
-                    if ($arPedido->getEstadoAutorizado() == 1) {
+                    /*if ($arPedido->getEstadoAutorizado() == 1) {
                         $objPedido = new \Brasa\TurnoBundle\Formatos\FormatoPedido();
-                        $objPedido->Generar($em, $codigoPedido);
+                        $objPedido->Generar($em, $codigoPedidoDevolucion);
                     } else {
                         $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
-                    }
+                    }*/
                 }
+                
             }
         }
         $dql = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->listaDql($codigoPedidoDevolucion);
@@ -194,14 +196,10 @@ class PedidoDevolucionController extends Controller {
                             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigo);
                             $arPedidoDevolucionDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
                             $arPedidoDevolucionDetalle->setPedidoDevolucionRel($arPedidoDevolucion);
-                            $arPedidoDevolucionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+                            $arPedidoDevolucionDetalle->setPedidoDetalleRel($arPedidoDetalle);                            
                             $arPedidoDevolucionDetalle->setVrPrecio($arPedidoDetalle->getVrTotalDetallePendiente());
+                            $arPedidoDevolucionDetalle->setCodigoPedidoDevolucionTipoFk($arPedidoDevolucion->getCodigoPedidoDevolucionTipoFk());
                             $em->persist($arPedidoDevolucionDetalle);
-                            $devolucion = $arPedidoDetalle->getVrTotalDetalleDevolucion() + $arPedidoDevolucionDetalle->getVrPrecio();
-                            $arPedidoDetalle->setVrTotalDetalleDevolucion($devolucion);
-                            $pendiente = $arPedidoDetalle->getVrSubtotal() - ($arPedidoDetalle->getVrTotalDetalleAfectado() + $arPedidoDetalle->getVrTotalDetalleDevolucion());
-                            $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
-                            $em->persist($arPedidoDetalle);
                         }
                     }
                     $em->flush();
@@ -396,5 +394,22 @@ class PedidoDevolucionController extends Controller {
         $objWriter->save('php://output');
         exit;
     }
+    
+    private function actualizarDetalle($arrControles, $codigoPedidoDevolucion) {
+        $em = $this->getDoctrine()->getManager();
+        $intIndice = 0;
+        if (isset($arrControles['LblCodigo'])) {
+            foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                $arPedidoDevolucionDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDevolucionDetalle();
+                $arPedidoDevolucionDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionDetalle')->find($intCodigo);                
+                if ($arrControles['TxtValor' . $intCodigo] != '') {
+                    $arPedidoDevolucionDetalle->setVrPrecio($arrControles['TxtValor' . $intCodigo]);
+                }               
+                $em->persist($arPedidoDevolucionDetalle);
+            }
+            $em->flush();
+        }
+        $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->liquidar($codigoPedidoDevolucion);
+    }    
 
 }

@@ -477,7 +477,7 @@ class TurPedidoDetalleRepository extends EntityRepository {
         
         $totalDevolucion = 0;
         $dql   = "SELECT SUM(pdd.vrPrecio) as valor FROM BrasaTurnoBundle:TurPedidoDevolucionDetalle pdd "
-                . "WHERE pdd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle;
+                . "WHERE pdd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " AND pdd.codigoPedidoDevolucionTipoFk = 'DEV'";
         $query = $em->createQuery($dql);
         $arrPedidoDevolucionDetalle = $query->getSingleResult();         
         if($arrPedidoDevolucionDetalle) {
@@ -485,10 +485,22 @@ class TurPedidoDetalleRepository extends EntityRepository {
                 $totalDevolucion = $arrPedidoDevolucionDetalle['valor'];
             }            
         }                   
+        
+        $totalAdicion = 0;
+        $dql   = "SELECT SUM(pdd.vrPrecio) as valor FROM BrasaTurnoBundle:TurPedidoDevolucionDetalle pdd "
+                . "WHERE pdd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " AND pdd.codigoPedidoDevolucionTipoFk = 'ADI'";
+        $query = $em->createQuery($dql);
+        $arrPedidoDevolucionDetalle = $query->getSingleResult();         
+        if($arrPedidoDevolucionDetalle) {
+            if($arrPedidoDevolucionDetalle['valor']) {
+                $totalAdicion = $arrPedidoDevolucionDetalle['valor'];
+            }            
+        }        
 
         $arPedidoDetalle->setVrTotalDetalleAfectado($totalAfectado);
         $arPedidoDetalle->setVrTotalDetalleDevolucion($totalDevolucion);
-        $pendiente = $arPedidoDetalle->getVrSubtotal() - ($totalAfectado + $totalDevolucion);
+        $arPedidoDetalle->setVrTotalDetalleAdicion($totalAdicion);
+        $pendiente = $arPedidoDetalle->getVrSubtotal() - ($totalAfectado + $totalDevolucion - $totalAdicion);
         $arPedidoDetalle->setVrTotalDetallePendiente($pendiente);
         $em->persist($arPedidoDetalle);
             
