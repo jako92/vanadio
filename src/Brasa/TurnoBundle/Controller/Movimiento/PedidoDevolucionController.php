@@ -130,11 +130,13 @@ class PedidoDevolucionController extends Controller {
                 }
 
                 if ($form->get('BtnDesAutorizar')->isClicked()) {
-                    if ($arPedidoDevolucion->getEstadoAutorizado() == 1) {
+                    if ($arPedidoDevolucion->getEstadoAutorizado() == 1 && $arPedidoDevolucion->getEstadoCierreMes() == 0) {
                         $strResultado = $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucion')->desautorizar($codigoPedidoDevolucion);
                         if ($strResultado != "") {
                             $objMensaje->Mensaje("error", $strResultado);
                         }
+                    } else {
+                        $objMensaje->Mensaje("error", "La devolucion / adicion pedido no se puede desautorizar porque el cierre comercial esta generado");
                     }
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_devolucion_detalle', array('codigoPedidoDevolucion' => $codigoPedidoDevolucion)));
                 }
@@ -348,19 +350,20 @@ class PedidoDevolucionController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'E'; $col++) {
+        for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        for ($col = 'D'; $col !== 'E'; $col++) {
+        for ($col = 'E'; $col !== 'F'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
 
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CÓDIG0')
-                ->setCellValue('B1', 'FECHA')
-                ->setCellValue('C1', 'CLIENTE')
-                ->setCellValue('D1', 'TOTAL');
+                ->setCellValue('A1', 'NUMERO')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'CLIENTE')
+                ->setCellValue('E1', 'TOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -370,9 +373,10 @@ class PedidoDevolucionController extends Controller {
         foreach ($arPedidosDevoluciones as $arPedidoDevolucion) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPedidoDevolucion->getCodigoPedidoDevolucionPk())
-                    ->setCellValue('B' . $i, $arPedidoDevolucion->getFecha()->format('Y/m/d'))
-                    ->setCellValue('C' . $i, $arPedidoDevolucion->getClienteRel()->getNombreCorto())
-                    ->setCellValue('D' . $i, $arPedidoDevolucion->getVrTotal());
+                    ->setCellValue('B' . $i, $arPedidoDevolucion->getPedidoDevolucionTipoRel()->getNombre())
+                    ->setCellValue('C' . $i, $arPedidoDevolucion->getFecha()->format('Y/m/d'))
+                    ->setCellValue('D' . $i, $arPedidoDevolucion->getClienteRel()->getNombreCorto())
+                    ->setCellValue('E' . $i, $arPedidoDevolucion->getVrTotal());
 
             $i++;
         }

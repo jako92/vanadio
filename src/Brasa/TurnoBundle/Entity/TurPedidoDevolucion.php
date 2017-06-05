@@ -57,6 +57,11 @@ class TurPedidoDevolucion
      */    
     private $estadoCerrado = false;    
     
+    /**     
+     * @ORM\Column(name="estado_cierre_mes", type="boolean")
+     */    
+    private $estadoCierreMes = false;     
+    
     /**
      * @ORM\Column(name="vr_total", type="float")
      */
@@ -482,5 +487,29 @@ class TurPedidoDevolucion
     public function getPedidosDevolucionesDetallesPedidoDevolucionRel()
     {
         return $this->pedidosDevolucionesDetallesPedidoDevolucionRel;
+    }
+
+    /**
+     * Set estadoCierreMes
+     *
+     * @param boolean $estadoCierreMes
+     *
+     * @return TurPedidoDevolucion
+     */
+    public function setEstadoCierreMes($estadoCierreMes)
+    {
+        $this->estadoCierreMes = $estadoCierreMes;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCierreMes
+     *
+     * @return boolean
+     */
+    public function getEstadoCierreMes()
+    {
+        return $this->estadoCierreMes;
     }
 }

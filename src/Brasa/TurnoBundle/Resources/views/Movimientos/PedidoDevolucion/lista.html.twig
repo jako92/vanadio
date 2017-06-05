@@ -97,6 +97,7 @@
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
                 <th>{{ knp_pagination_sortable(arPedidosDevolucion, 'CÓDIGO', 'p.codigoPedidoDevolucionPk') }}</th>                                
+                <th>TIPO</th>
                 <th>FECHA</th>
                 <th>CLIENTE</th>
                 <th>CONCEPTO</th>
@@ -109,6 +110,7 @@
             {% for arPedidosDevolucion in arPedidosDevolucion %}
                 <tr>                
                     <td>{{ arPedidosDevolucion.codigoPedidoDevolucionPk  }}</td>                                  
+                    <td>{{ arPedidosDevolucion.pedidoDevolucionTipoRel.nombre  }}</td>                                  
                     <td>{{ arPedidosDevolucion.fecha |date("Y/m/d")  }}</td>                                
                     <td>{{ arPedidosDevolucion.clienteRel.nombreCorto |default('') }}</td>  
                     <td>{{ arPedidosDevolucion.pedidoDevolucionConceptoRel.nombre |default('') }}</td> 
