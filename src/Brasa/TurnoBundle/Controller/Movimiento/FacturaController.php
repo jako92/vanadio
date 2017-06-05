@@ -446,7 +446,7 @@ class FacturaController extends Controller {
                                 $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrSubtotal());
                             } else {
                                 $arFacturaDetalle->setCantidad($arPedidoDetalle->getCantidad());
-                                $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrPrecio());
+                                $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrTotalDetallePendiente());
                             }
                             $arFacturaDetalle->setPorIva($arPedidoDetalle->getConceptoServicioRel()->getPorIva());
                             $arFacturaDetalle->setPorBaseIva($arPedidoDetalle->getConceptoServicioRel()->getPorBaseIva());
