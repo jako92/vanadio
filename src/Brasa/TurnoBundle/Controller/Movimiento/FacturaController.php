@@ -443,7 +443,7 @@ class FacturaController extends Controller {
                             $arFacturaDetalle->setPedidoDetalleRel($arPedidoDetalle);
                             if ($arPedidoDetalle->getCompuesto()) {
                                 $arFacturaDetalle->setCantidad(1);
-                                $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrSubtotal());
+                                $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrTotalDetallePendiente());
                             } else {
                                 $arFacturaDetalle->setCantidad($arPedidoDetalle->getCantidad());
                                 $arFacturaDetalle->setVrPrecio($arPedidoDetalle->getVrTotalDetallePendiente());
