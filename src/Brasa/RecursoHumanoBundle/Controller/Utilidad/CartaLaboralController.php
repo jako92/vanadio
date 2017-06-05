@@ -33,6 +33,8 @@ class CartaLaboralController extends Controller
                 $codigoContrato = $request->request->get('OpImprimir');
                 $arUsuario = $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $arUsuario = $arUsuario->getUserName();
+                $usuarioCarta = $usuarioCarta = $this->get('security.token_storage')->getToken()->getUser();
+                $usuarioCarta = $usuarioCarta->getNombreCorto();
                 $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                 $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigoContrato);
                 $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
@@ -40,23 +42,23 @@ class CartaLaboralController extends Controller
                 $codigoCartaTipo = $arConfiguracion->getCodigoFormatoCarta();
                 if ($codigoCartaTipo == 0){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  $usuarioCarta, 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 1){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCarta1teg();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  $usuarioCarta, 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 2){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaPlazas();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  $usuarioCarta, 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 3){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaEurovic();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  $usuarioCarta, 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
                 if ($codigoCartaTipo == 4){
                     $objFormatoCarta = new \Brasa\RecursoHumanoBundle\Formatos\FormatoCartaGr();
-                    $objFormatoCarta->Generar($this, $em, $arUsuario,  '', 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
+                    $objFormatoCarta->Generar($this, $em, $arUsuario,  $usuarioCarta, 6, date('Y-m-d'), "", $codigoContrato,"","","","","","","");
                 }
             }
             if($form->get('BtnFiltrar')->isClicked()) {
