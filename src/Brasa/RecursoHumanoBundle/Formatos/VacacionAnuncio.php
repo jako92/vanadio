@@ -15,8 +15,8 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 12);
-        $this->Body($pdf);
-        $this->Body2($pdf);
+        $this->Body($pdf);//Contenido de la carta al principio de la hoja
+        $this->Body2($pdf);//Mitad de la hoja se repite el contenido 
         $pdf->Output("CartaAnuncioVacacion$codigoVacacion.pdf", 'D');        
     } 
     
@@ -27,26 +27,26 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $this->SetFont('Arial','B',10);
         $this->SetXY(10, 10);
         $this->Line(10, 10, 60, 10);
-        $this->Line(10, 10, 10, 50);
-        $this->Line(10, 50, 60, 50);
-        $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg' , 15 ,20, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
+        $this->Line(10, 10, 10, 40);
+        $this->Line(10, 40, 60, 40);
+        $this->Cell(0, 0, $this->Image('imagenes/logos/logo.jpg' , 15 ,15, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
         $this->SetXY(60, 10);
         $this->Cell(90, 10, utf8_decode(""), 1, 0, 'C', 1); //cuardo mitad arriba
         $this->SetXY(60, 20);
         $this->SetFillColor(236, 236, 236);
         $this->SetFont('Arial','B',11);
-        $this->Cell(90, 20, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
+        $this->Cell(90, 10, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial','B',10); 
-        $this->SetXY(60, 40);
+        $this->SetXY(60, 30);
         $this->Cell(90, 10, utf8_decode(" "), 1, 0, 'C', 1); //cuardo mitad abajo
         $this->SetXY(150, 10);
         $this->Cell(50, 10, utf8_decode('Página ') . $this->PageNo() . ' de {nb}', 1, 0, 'C', 1); //cuadro derecho arriba
         $this->SetXY(150, 20);
-        $this->Cell(50, 20, utf8_decode("Código: "). $arContenidoFormato->getCodigoFormatoIso(), 1, 0, 'C', 1); //cuadro derecho mitad 1
-        $this->SetXY(150, 40);
+        $this->Cell(50, 10, utf8_decode("Código: "). $arContenidoFormato->getCodigoFormatoIso(), 1, 0, 'C', 1); //cuadro derecho mitad 1
+        $this->SetXY(150, 30);
         $this->Cell(50, 5, utf8_decode("Versión: "). $arContenidoFormato->getVersion(), 1, 0, 'C', 1); //cuadro derecho abajo 1
-        $this->SetXY(150, 45);
+        $this->SetXY(150, 35);
         $fechaVerson = "";
         if ($arContenidoFormato->getFechaVersion() != null){ 
             $fechaVerson = $arContenidoFormato->getFechaVersion()->format('Y-m-d');    
@@ -68,7 +68,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
     }
 
     public function Body($pdf) {
-        $pdf->SetXY(10, 60);
+        $pdf->SetXY(10, 45);
         $pdf->SetFont('Arial', '', 10);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
@@ -111,8 +111,41 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $pdf->MultiCell(0,5, $cadenaCambiada);
     }
     
-    public function Body2($pdf) {        
-        $pdf->SetXY(10, 180);
+    public function Body2($pdf) {
+        //Encabezado del contenido desde la mitad de la hoja------------------------------------------------------------------------
+        $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenido')->find(1);    
+        $pdf->SetFillColor(272, 272, 272);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->SetXY(10, 145);
+        $pdf->Line(10, 145, 195, 145);
+        $pdf->Line(10, 145, 10, 175);
+        $pdf->Line(10, 175, 195, 175);
+        $pdf->Cell(0, 0, $pdf->Image('imagenes/logos/logo.jpg' , 15 ,150, 40 , 20,'JPG'), 0, 0, 'C', 0); //cuadro para el logo
+        $pdf->SetXY(60, 145);
+        $pdf->Cell(90, 10, utf8_decode(""), 1, 0, 'C', 1); //cuardo mitad arriba
+        $pdf->SetXY(60, 155);
+        $pdf->SetFillColor(236, 236, 236);
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(90, 10, utf8_decode("COMUNICACION INTERNA Y EXTERNA"), 1, 0, 'C', 1); //cuardo mitad medio
+        $pdf->SetFillColor(272, 272, 272);
+        $pdf->SetFont('Arial','B',10); 
+        $pdf->SetXY(60, 165);
+        $pdf->Cell(90, 10, utf8_decode(" "), 1, 0, 'C', 1); //cuardo mitad abajo
+        $pdf->SetXY(150, 145);
+        $pdf->Cell(50, 10, utf8_decode('Página ') . $this->PageNo() . ' de {nb}', 1, 0, 'C', 1); //cuadro derecho arriba
+        $pdf->SetXY(150, 155);
+        $pdf->Cell(50, 10, utf8_decode("Código: "). $arContenidoFormato->getCodigoFormatoIso(), 1, 0, 'C', 1); //cuadro derecho mitad 1
+        $pdf->SetXY(150, 165);
+        $pdf->Cell(50, 5, utf8_decode("Versión: "). $arContenidoFormato->getVersion(), 1, 0, 'C', 1); //cuadro derecho abajo 1
+        $pdf->SetXY(150, 170);
+        $fechaVerson = "";
+        if ($arContenidoFormato->getFechaVersion() != null){ 
+            $fechaVerson = $arContenidoFormato->getFechaVersion()->format('Y-m-d');    
+        }
+        $pdf->Cell(50, 5, "Fecha: ". $fechaVerson, 1, 0, 'C', 1); //cuadro derecho abajo 2
+        //Contenido de la carta desde la mitad de la hoja------------------------------------------------------------------------------------
+        $pdf->SetXY(10, 181);
         $pdf->SetFont('Arial', '', 10);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
