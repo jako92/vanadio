@@ -51,9 +51,7 @@ class GenTipoIdentificacion
     /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCliente", mappedBy="tipoIdentificacionRel")
      */
-    protected $turClientesTipoIdentificacionRel;    
-    
-    
+    protected $turClientesTipoIdentificacionRel;
     
     /**
      * Constructor
