@@ -43,6 +43,11 @@ class TurServicioDetalle
     private $codigoConceptoServicioFk;    
     
     /**
+     * @ORM\Column(name="codigo_concepto_servicio_facturacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoConceptoServicioFacturacionFk;     
+    
+    /**
      * @ORM\Column(name="codigo_modalidad_servicio_fk", type="integer")
      */    
     private $codigoModalidadServicioFk;           
@@ -243,6 +248,12 @@ class TurServicioDetalle
     protected $conceptoServicioRel;      
 
     /**
+     * @ORM\ManyToOne(targetEntity="TurConceptoServicio", inversedBy="serviciosDetallesConceptoServicioFacturacionRel")
+     * @ORM\JoinColumn(name="codigo_concepto_servicio_facturacion_fk", referencedColumnName="codigo_concepto_servicio_pk")
+     */
+    protected $conceptoServicioFacturacionRel;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurModalidadServicio", inversedBy="serviciosDetallesModalidadServicioRel")
      * @ORM\JoinColumn(name="codigo_modalidad_servicio_fk", referencedColumnName="codigo_modalidad_servicio_pk")
      */
@@ -279,6 +290,7 @@ class TurServicioDetalle
      * @ORM\OneToMany(targetEntity="TurServicioDetalleCompuesto", mappedBy="servicioDetalleRel")
      */
     protected $serviciosDetallesCompuestosServicioDetalleRel;     
+
 
     /**
      * Constructor
@@ -419,6 +431,30 @@ class TurServicioDetalle
     public function getCodigoConceptoServicioFk()
     {
         return $this->codigoConceptoServicioFk;
+    }
+
+    /**
+     * Set codigoConceptoServicioFacturacionFk
+     *
+     * @param integer $codigoConceptoServicioFacturacionFk
+     *
+     * @return TurServicioDetalle
+     */
+    public function setCodigoConceptoServicioFacturacionFk($codigoConceptoServicioFacturacionFk)
+    {
+        $this->codigoConceptoServicioFacturacionFk = $codigoConceptoServicioFacturacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoConceptoServicioFacturacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoConceptoServicioFacturacionFk()
+    {
+        return $this->codigoConceptoServicioFacturacionFk;
     }
 
     /**
@@ -1355,6 +1391,30 @@ class TurServicioDetalle
     public function getConceptoServicioRel()
     {
         return $this->conceptoServicioRel;
+    }
+
+    /**
+     * Set conceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel
+     *
+     * @return TurServicioDetalle
+     */
+    public function setConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel = null)
+    {
+        $this->conceptoServicioFacturacionRel = $conceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoServicioFacturacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurConceptoServicio
+     */
+    public function getConceptoServicioFacturacionRel()
+    {
+        return $this->conceptoServicioFacturacionRel;
     }
 
     /**

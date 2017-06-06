@@ -43,6 +43,11 @@ class TurPedidoDetalle
     private $codigoConceptoServicioFk;    
     
     /**
+     * @ORM\Column(name="codigo_concepto_servicio_facturacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoConceptoServicioFacturacionFk;     
+    
+    /**
      * @ORM\Column(name="codigo_modalidad_servicio_fk", type="integer")
      */    
     private $codigoModalidadServicioFk;           
@@ -318,6 +323,12 @@ class TurPedidoDetalle
     protected $conceptoServicioRel;      
 
     /**
+     * @ORM\ManyToOne(targetEntity="TurConceptoServicio", inversedBy="pedidosDetallesConceptoServicioFacturacionRel")
+     * @ORM\JoinColumn(name="codigo_concepto_servicio_facturacion_fk", referencedColumnName="codigo_concepto_servicio_pk")
+     */
+    protected $conceptoServicioFacturacionRel;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurModalidadServicio", inversedBy="pedidosDetallesModalidadServicioRel")
      * @ORM\JoinColumn(name="codigo_modalidad_servicio_fk", referencedColumnName="codigo_modalidad_servicio_pk")
      */
@@ -386,6 +397,7 @@ class TurPedidoDetalle
      */
     protected $ingresosPendientesPedidoDetalleRel;     
     
+
     /**
      * Constructor
      */
@@ -530,6 +542,30 @@ class TurPedidoDetalle
     public function getCodigoConceptoServicioFk()
     {
         return $this->codigoConceptoServicioFk;
+    }
+
+    /**
+     * Set codigoConceptoServicioFacturacionFk
+     *
+     * @param integer $codigoConceptoServicioFacturacionFk
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setCodigoConceptoServicioFacturacionFk($codigoConceptoServicioFacturacionFk)
+    {
+        $this->codigoConceptoServicioFacturacionFk = $codigoConceptoServicioFacturacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoConceptoServicioFacturacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoConceptoServicioFacturacionFk()
+    {
+        return $this->codigoConceptoServicioFacturacionFk;
     }
 
     /**
@@ -1277,6 +1313,30 @@ class TurPedidoDetalle
     }
 
     /**
+     * Set vrTotalDetalleAdicion
+     *
+     * @param float $vrTotalDetalleAdicion
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setVrTotalDetalleAdicion($vrTotalDetalleAdicion)
+    {
+        $this->vrTotalDetalleAdicion = $vrTotalDetalleAdicion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalDetalleAdicion
+     *
+     * @return float
+     */
+    public function getVrTotalDetalleAdicion()
+    {
+        return $this->vrTotalDetalleAdicion;
+    }
+
+    /**
      * Set lunes
      *
      * @param boolean $lunes
@@ -1805,6 +1865,30 @@ class TurPedidoDetalle
     }
 
     /**
+     * Set conceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel = null)
+    {
+        $this->conceptoServicioFacturacionRel = $conceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoServicioFacturacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurConceptoServicio
+     */
+    public function getConceptoServicioFacturacionRel()
+    {
+        return $this->conceptoServicioFacturacionRel;
+    }
+
+    /**
      * Set modalidadServicioRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurModalidadServicio $modalidadServicioRel
@@ -2204,29 +2288,5 @@ class TurPedidoDetalle
     public function getIngresosPendientesPedidoDetalleRel()
     {
         return $this->ingresosPendientesPedidoDetalleRel;
-    }
-
-    /**
-     * Set vrTotalDetalleAdicion
-     *
-     * @param float $vrTotalDetalleAdicion
-     *
-     * @return TurPedidoDetalle
-     */
-    public function setVrTotalDetalleAdicion($vrTotalDetalleAdicion)
-    {
-        $this->vrTotalDetalleAdicion = $vrTotalDetalleAdicion;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalDetalleAdicion
-     *
-     * @return float
-     */
-    public function getVrTotalDetalleAdicion()
-    {
-        return $this->vrTotalDetalleAdicion;
     }
 }

@@ -78,6 +78,11 @@ class TurConceptoServicio
     protected $pedidosDetallesConceptoServicioRel;     
 
     /**
+     * @ORM\OneToMany(targetEntity="TurPedidoDetalle", mappedBy="conceptoServicioFacturacionRel")
+     */
+    protected $pedidosDetallesConceptoServicioFacturacionRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="TurPedidoDetalleCompuesto", mappedBy="conceptoServicioRel")
      */
     protected $pedidosDetallesCompuestosConceptoServicioRel;     
@@ -86,6 +91,11 @@ class TurConceptoServicio
      * @ORM\OneToMany(targetEntity="TurServicioDetalle", mappedBy="conceptoServicioRel")
      */
     protected $serviciosDetallesConceptoServicioRel;     
+    
+    /**
+     * @ORM\OneToMany(targetEntity="TurServicioDetalle", mappedBy="conceptoServicioFacturacionRel")
+     */
+    protected $serviciosDetallesConceptoServicioFacturacionRel;     
     
     /**
      * @ORM\OneToMany(targetEntity="TurServicioDetalleCompuesto", mappedBy="conceptoServicioRel")
@@ -117,14 +127,17 @@ class TurConceptoServicio
      */
     protected $serviciosDetallesConceptosConceptoServicioRel;     
     
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->pedidosDetallesConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidosDetallesConceptoServicioFacturacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pedidosDetallesCompuestosConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosDetallesConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->serviciosDetallesConceptoServicioFacturacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosDetallesCompuestosConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cotizacionesDetallesConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasDetallesConceptoServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -442,6 +455,40 @@ class TurConceptoServicio
     }
 
     /**
+     * Add pedidosDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidosDetallesConceptoServicioFacturacionRel
+     *
+     * @return TurConceptoServicio
+     */
+    public function addPedidosDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidosDetallesConceptoServicioFacturacionRel)
+    {
+        $this->pedidosDetallesConceptoServicioFacturacionRel[] = $pedidosDetallesConceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pedidosDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidosDetallesConceptoServicioFacturacionRel
+     */
+    public function removePedidosDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurPedidoDetalle $pedidosDetallesConceptoServicioFacturacionRel)
+    {
+        $this->pedidosDetallesConceptoServicioFacturacionRel->removeElement($pedidosDetallesConceptoServicioFacturacionRel);
+    }
+
+    /**
+     * Get pedidosDetallesConceptoServicioFacturacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPedidosDetallesConceptoServicioFacturacionRel()
+    {
+        return $this->pedidosDetallesConceptoServicioFacturacionRel;
+    }
+
+    /**
      * Add pedidosDetallesCompuestosConceptoServicioRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurPedidoDetalleCompuesto $pedidosDetallesCompuestosConceptoServicioRel
@@ -507,6 +554,40 @@ class TurConceptoServicio
     public function getServiciosDetallesConceptoServicioRel()
     {
         return $this->serviciosDetallesConceptoServicioRel;
+    }
+
+    /**
+     * Add serviciosDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesConceptoServicioFacturacionRel
+     *
+     * @return TurConceptoServicio
+     */
+    public function addServiciosDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesConceptoServicioFacturacionRel)
+    {
+        $this->serviciosDetallesConceptoServicioFacturacionRel[] = $serviciosDetallesConceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove serviciosDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesConceptoServicioFacturacionRel
+     */
+    public function removeServiciosDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesConceptoServicioFacturacionRel)
+    {
+        $this->serviciosDetallesConceptoServicioFacturacionRel->removeElement($serviciosDetallesConceptoServicioFacturacionRel);
+    }
+
+    /**
+     * Get serviciosDetallesConceptoServicioFacturacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosDetallesConceptoServicioFacturacionRel()
+    {
+        return $this->serviciosDetallesConceptoServicioFacturacionRel;
     }
 
     /**
