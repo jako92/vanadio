@@ -97,8 +97,8 @@ class RhuEmpleadoType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))                            
             ->add('codigoSexoFk', ChoiceType::class, array('choices' => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
-            ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaExpedicionIdentificacion', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaNacimiento', DateType::class, array('required' => true, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaExpedicionIdentificacion', DateType::class, array('required' => true, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
             ->add('nombre1', TextType::class, array('required' => true))
             ->add('codigoTipoLibreta', ChoiceType::class, array('choices' => array('1° CLASE' => '1', '2° CLASE' => '2', 'NO APLICA' => '0')))
             ->add('nombre2', TextType::class, array('required' => false))
