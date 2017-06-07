@@ -134,6 +134,7 @@
                         <tr>
                             <th>COD</th>                                                       
                             <th>SERVICIO</th>
+                            <th>SERVICIO (FAC)</th>
                             <th>MODALIDAD</th>
                             <th>PERIODO</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Liquidar dias reales">LDR</p></th>                            
@@ -173,6 +174,7 @@
                             <tr {% if arServicioDetalle.marca == 1 %} class="success" {% endif %}>
                                 <td>{{ arServicioDetalle.codigoServicioDetallePk  }}<input type="hidden" name="LblCodigo[]" value="{{ arServicioDetalle.codigoServicioDetallePk }}"></td>
                                 <td>{{ arServicioDetalle.conceptoServicioRel.nombre  }}</td>                    
+                                <td>{{ arServicioDetalle.conceptoServicioFacturacionRel.nombre |default('') }}</td>                    
                                 <td>{{ arServicioDetalle.modalidadServicioRel.nombre  }}</td>                    
                                 <td>{{ arServicioDetalle.periodoRel.nombre  }}</td>
                                 <td>{% if arServicioDetalle.liquidarDiasReales == 1 %} SI {% else %} NO {% endif %}</td>                                
@@ -205,7 +207,7 @@
                                     NO 
                                     {% endif %}
                                     </td>                                
-                                    <td>{% if arServicio.estadoAutorizado == 0 %}<a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_nuevo', {'codigoServicio': arServicioDetalle.codigoServicioFk, 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                    
+                                    <td>{% if arServicio.estadoAutorizado == 0 %}<a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_nuevo', {'codigoServicio': arServicioDetalle.codigoServicioFk, 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'AgregarNuevoDetalle', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                    
                                     <td style="text-align: center"><a href="{{ path('brs_tur_movimiento_servicio_detalle_recurso', { 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_043_group.png') }}" width=22 height=22></a></td>                                    
                                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServicioDetalle.codigoServicioDetallePk }}" /></td>
                                 </tr>
@@ -224,8 +226,8 @@
                                 <div class="btn-toolbar" style="float: right">
                                     {% if arServicio.estadoAutorizado == 0 %}
                                         <div class="btn-group">
-                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_nuevo', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
-                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_cotizacion_nuevo', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo de cotizacion</a>                
+                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_nuevo', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>
+                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_cotizacion_nuevo', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo de cotizacion</a>                
                                         </div>
                                     {% endif %}            
                                     <div class="btn-group">

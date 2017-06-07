@@ -31,6 +31,11 @@ class TurCotizacionDetalle
      * @ORM\Column(name="codigo_concepto_servicio_fk", type="integer")
      */    
     private $codigoConceptoServicioFk;  
+
+    /**
+     * @ORM\Column(name="codigo_concepto_servicio_facturacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoConceptoServicioFacturacionFk;
     
     /**
      * @ORM\Column(name="codigo_modalidad_servicio_fk", type="integer")
@@ -166,6 +171,12 @@ class TurCotizacionDetalle
     protected $conceptoServicioRel;      
 
     /**
+     * @ORM\ManyToOne(targetEntity="TurConceptoServicio", inversedBy="cotizacionesDetallesConceptoServicioFacturacionRel")
+     * @ORM\JoinColumn(name="codigo_concepto_servicio_facturacion_fk", referencedColumnName="codigo_concepto_servicio_pk")
+     */
+    protected $conceptoServicioFacturacionRel;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurModalidadServicio", inversedBy="cotizacionesDetallesModalidadServicioRel")
      * @ORM\JoinColumn(name="codigo_modalidad_servicio_fk", referencedColumnName="codigo_modalidad_servicio_pk")
      */
@@ -176,6 +187,7 @@ class TurCotizacionDetalle
      * @ORM\JoinColumn(name="codigo_periodo_fk", referencedColumnName="codigo_periodo_pk")
      */
     protected $periodoRel;     
+
 
 
 
@@ -214,6 +226,30 @@ class TurCotizacionDetalle
     }
 
     /**
+     * Set codigoProyectoFk
+     *
+     * @param integer $codigoProyectoFk
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setCodigoProyectoFk($codigoProyectoFk)
+    {
+        $this->codigoProyectoFk = $codigoProyectoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoProyectoFk
+     *
+     * @return integer
+     */
+    public function getCodigoProyectoFk()
+    {
+        return $this->codigoProyectoFk;
+    }
+
+    /**
      * Set codigoConceptoServicioFk
      *
      * @param integer $codigoConceptoServicioFk
@@ -235,6 +271,30 @@ class TurCotizacionDetalle
     public function getCodigoConceptoServicioFk()
     {
         return $this->codigoConceptoServicioFk;
+    }
+
+    /**
+     * Set codigoConceptoServicioFacturacionFk
+     *
+     * @param integer $codigoConceptoServicioFacturacionFk
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setCodigoConceptoServicioFacturacionFk($codigoConceptoServicioFacturacionFk)
+    {
+        $this->codigoConceptoServicioFacturacionFk = $codigoConceptoServicioFacturacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoConceptoServicioFacturacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoConceptoServicioFacturacionFk()
+    {
+        return $this->codigoConceptoServicioFacturacionFk;
     }
 
     /**
@@ -331,6 +391,30 @@ class TurCotizacionDetalle
     public function getFechaHasta()
     {
         return $this->fechaHasta;
+    }
+
+    /**
+     * Set liquidarDiasReales
+     *
+     * @param boolean $liquidarDiasReales
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setLiquidarDiasReales($liquidarDiasReales)
+    {
+        $this->liquidarDiasReales = $liquidarDiasReales;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidarDiasReales
+     *
+     * @return boolean
+     */
+    public function getLiquidarDiasReales()
+    {
+        return $this->liquidarDiasReales;
     }
 
     /**
@@ -790,6 +874,30 @@ class TurCotizacionDetalle
     }
 
     /**
+     * Set proyectoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProyecto $proyectoRel
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setProyectoRel(\Brasa\TurnoBundle\Entity\TurProyecto $proyectoRel = null)
+    {
+        $this->proyectoRel = $proyectoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get proyectoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurProyecto
+     */
+    public function getProyectoRel()
+    {
+        return $this->proyectoRel;
+    }
+
+    /**
      * Set conceptoServicioRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioRel
@@ -811,6 +919,30 @@ class TurCotizacionDetalle
     public function getConceptoServicioRel()
     {
         return $this->conceptoServicioRel;
+    }
+
+    /**
+     * Set conceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurConceptoServicio $conceptoServicioFacturacionRel = null)
+    {
+        $this->conceptoServicioFacturacionRel = $conceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoServicioFacturacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurConceptoServicio
+     */
+    public function getConceptoServicioFacturacionRel()
+    {
+        return $this->conceptoServicioFacturacionRel;
     }
 
     /**
@@ -859,77 +991,5 @@ class TurCotizacionDetalle
     public function getPeriodoRel()
     {
         return $this->periodoRel;
-    }
-
-    /**
-     * Set liquidarDiasReales
-     *
-     * @param boolean $liquidarDiasReales
-     *
-     * @return TurCotizacionDetalle
-     */
-    public function setLiquidarDiasReales($liquidarDiasReales)
-    {
-        $this->liquidarDiasReales = $liquidarDiasReales;
-
-        return $this;
-    }
-
-    /**
-     * Get liquidarDiasReales
-     *
-     * @return boolean
-     */
-    public function getLiquidarDiasReales()
-    {
-        return $this->liquidarDiasReales;
-    }
-
-    /**
-     * Set codigoProyectoFk
-     *
-     * @param integer $codigoProyectoFk
-     *
-     * @return TurCotizacionDetalle
-     */
-    public function setCodigoProyectoFk($codigoProyectoFk)
-    {
-        $this->codigoProyectoFk = $codigoProyectoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoProyectoFk
-     *
-     * @return integer
-     */
-    public function getCodigoProyectoFk()
-    {
-        return $this->codigoProyectoFk;
-    }
-
-    /**
-     * Set proyectoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurProyecto $proyectoRel
-     *
-     * @return TurCotizacionDetalle
-     */
-    public function setProyectoRel(\Brasa\TurnoBundle\Entity\TurProyecto $proyectoRel = null)
-    {
-        $this->proyectoRel = $proyectoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get proyectoRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurProyecto
-     */
-    public function getProyectoRel()
-    {
-        return $this->proyectoRel;
     }
 }

@@ -130,9 +130,15 @@ class ServicioController extends Controller {
                     $arrControles = $request->request->All();
                     $this->actualizarDetalle($arrControles, $codigoServicio);
                     if ($arServicio->getEstadoAutorizado() == 0) {
-                        $arServicio->setEstadoAutorizado(1);
-                        $em->persist($arServicio);
-                        $em->flush();
+                        $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
+                        $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('codigoServicioFk' => $codigoServicio, 'codigoPuestoFk' => NULL));
+                        if(!$arServicioDetalle) {
+                            $arServicio->setEstadoAutorizado(1);
+                            $em->persist($arServicio);
+                            $em->flush();                            
+                        } else {
+                            $objMensaje->Mensaje('error', "No se puede autorizar el servicio, tiene detalles sin puesto");
+                        }
                     }
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
                 }
@@ -454,6 +460,7 @@ class ServicioController extends Controller {
                                 $arServicioDetalle->setModalidadServicioRel($arCotizacionDetalle->getModalidadServicioRel());
                                 $arServicioDetalle->setPeriodoRel($arCotizacionDetalle->getPeriodoRel());
                                 $arServicioDetalle->setConceptoServicioRel($arCotizacionDetalle->getConceptoServicioRel());
+                                $arServicioDetalle->setConceptoServicioFacturacionRel($arCotizacionDetalle->getConceptoServicioFacturacionRel());
                                 $arServicioDetalle->setDias($arCotizacionDetalle->getDias());
                                 $arServicioDetalle->setLunes($arCotizacionDetalle->getLunes());
                                 $arServicioDetalle->setMartes($arCotizacionDetalle->getMartes());

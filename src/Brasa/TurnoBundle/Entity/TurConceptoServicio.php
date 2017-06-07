@@ -108,6 +108,11 @@ class TurConceptoServicio
     protected $cotizacionesDetallesConceptoServicioRel;     
 
     /**
+     * @ORM\OneToMany(targetEntity="TurCotizacionDetalle", mappedBy="conceptoServicioFacturacionRel")
+     */
+    protected $cotizacionesDetallesConceptoServicioFacturacionRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="TurFacturaDetalle", mappedBy="conceptoServicioRel")
      */
     protected $facturasDetallesConceptoServicioRel;      
@@ -792,5 +797,39 @@ class TurConceptoServicio
     public function getServiciosDetallesConceptosConceptoServicioRel()
     {
         return $this->serviciosDetallesConceptosConceptoServicioRel;
+    }
+
+    /**
+     * Add cotizacionesDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCotizacionDetalle $cotizacionesDetallesConceptoServicioFacturacionRel
+     *
+     * @return TurConceptoServicio
+     */
+    public function addCotizacionesDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurCotizacionDetalle $cotizacionesDetallesConceptoServicioFacturacionRel)
+    {
+        $this->cotizacionesDetallesConceptoServicioFacturacionRel[] = $cotizacionesDetallesConceptoServicioFacturacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove cotizacionesDetallesConceptoServicioFacturacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCotizacionDetalle $cotizacionesDetallesConceptoServicioFacturacionRel
+     */
+    public function removeCotizacionesDetallesConceptoServicioFacturacionRel(\Brasa\TurnoBundle\Entity\TurCotizacionDetalle $cotizacionesDetallesConceptoServicioFacturacionRel)
+    {
+        $this->cotizacionesDetallesConceptoServicioFacturacionRel->removeElement($cotizacionesDetallesConceptoServicioFacturacionRel);
+    }
+
+    /**
+     * Get cotizacionesDetallesConceptoServicioFacturacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCotizacionesDetallesConceptoServicioFacturacionRel()
+    {
+        return $this->cotizacionesDetallesConceptoServicioFacturacionRel;
     }
 }

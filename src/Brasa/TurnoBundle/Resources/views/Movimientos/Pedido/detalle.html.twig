@@ -137,6 +137,7 @@
                         <tr>
                             <th>ID</th>
                             <th>SERVICIO</th>
+                            <th>SERVICIO (FAC)</th>
                             <th>IVA</th>
                             <th>MOD</th>
                             <th>PERIODO</th>                            
@@ -178,6 +179,7 @@
                             <tr {% if arPedidoDetalle.marca == 1 %} class="success" {% endif %}>
                                 <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_resumen', {'codigoPedidoDetalle': arPedidoDetalle.codigoPedidoDetallePk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arPedidoDetalle.codigoPedidoDetallePk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arPedidoDetalle.codigoPedidoDetallePk }}"></td>                                
                                 <td>{{ arPedidoDetalle.conceptoServicioRel.nombre  }}</td>                    
+                                <td>{{ arPedidoDetalle.conceptoServicioFacturacionRel.nombre |default('') }}</td>                    
                                 <td>{{ arPedidoDetalle.porcentajeIva  }}</td>                    
                                 <td>{{ arPedidoDetalle.modalidadServicioRel.abreviatura  }}</td>                    
                                 <td>{{ arPedidoDetalle.periodoRel.nombre  }}</td>                                
@@ -213,7 +215,7 @@
                                     NO 
                                     {% endif %}
                                     </td>                                 
-                                    <td>{% if arPedido.estadoAutorizado == 0 %}<a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': arPedidoDetalle.codigoPedidoDetallePk }) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                                                                            
+                                    <td>{% if arPedido.estadoAutorizado == 0 %}<a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': arPedidoDetalle.codigoPedidoDetallePk }) }}', 'AgregarNuevoDetalle', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                                                                            
                                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidoDetalle.codigoPedidoDetallePk }}" /></td>
                                 </tr>
                                 {% endfor %}
@@ -229,8 +231,8 @@
                                 <div class="btn-toolbar" style="float: right">
                                     {% if arPedido.estadoAutorizado == 0 %}
                                         <div class="btn-group">
-                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
-                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_cotizacion_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo desde cotizacion</a>                
+                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>
+                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_cotizacion_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo desde cotizacion</a>                
                                             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_pedido_detalle_servicio_nuevo', {'codigoPedido': arPedido.codigoPedidoPk, 'codigoPedidoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo desde servicio</a>                                    
                                         </div>
                                     {% endif %}            

@@ -556,6 +556,7 @@ class PedidoController extends Controller {
                                 $arPedidoDetalle->setPedidoRel($arPedido);
                                 $arPedidoDetalle->setProyectoRel($arCotizacionDetalle->getProyectoRel());
                                 $arPedidoDetalle->setModalidadServicioRel($arCotizacionDetalle->getModalidadServicioRel());
+                                $arPedidoDetalle->setModalidadServicioFacturacionRel($arCotizacionDetalle->getModalidadServicioFacturacionRel());
                                 $arPedidoDetalle->setPeriodoRel($arCotizacionDetalle->getPeriodoRel());
                                 $arPedidoDetalle->setConceptoServicioRel($arCotizacionDetalle->getConceptoServicioRel());
                                 $arPedidoDetalle->setDias($arCotizacionDetalle->getDias());
@@ -659,6 +660,7 @@ class PedidoController extends Controller {
                             $arPedidoDetalle->setModalidadServicioRel($arServicioDetalle->getModalidadServicioRel());
                             $arPedidoDetalle->setPeriodoRel($arServicioDetalle->getPeriodoRel());
                             $arPedidoDetalle->setConceptoServicioRel($arServicioDetalle->getConceptoServicioRel());
+                            $arPedidoDetalle->setConceptoServicioFacturacionRel($arServicioDetalle->getConceptoServicioFacturacionRel());
                             $arPedidoDetalle->setPlantillaRel($arServicioDetalle->getPlantillaRel());
                             $arPedidoDetalle->setProyectoRel($arServicioDetalle->getProyectoRel());
                             $arPedidoDetalle->setGrupoFacturacionRel($arServicioDetalle->getGrupoFacturacionRel());
