@@ -183,6 +183,7 @@ class AcreditacionController extends Controller {
         $form = $this->createForm(RhuAcreditacionAcreditarType::class, $arAcreditacion);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $arAcreditacion->setFechaAcreditacion(new \DateTime('now'));
             $arAcreditacion = $form->getData();
             $em->persist($arAcreditacion);
             $em->flush();
