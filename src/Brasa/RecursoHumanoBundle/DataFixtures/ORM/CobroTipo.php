@@ -35,24 +35,28 @@ class CobroTipo implements FixtureInterface
         $arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("P");
         if(!$arCobroTipo) {
             $arCobroTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo();
+            $arCobroTipo->setCodigoCobroTipoPk("P");
             $arCobroTipo->setNombre("PRUEBA PSICOTECNICA");
             $manager->persist($arCobroTipo);                
         }
         $arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("S");
         if(!$arCobroTipo) {
             $arCobroTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo();
+            $arCobroTipo->setCodigoCobroTipoPk("S");
             $arCobroTipo->setNombre("SELECCION");
             $manager->persist($arCobroTipo);                
         }
         $arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("V");
         if(!$arCobroTipo) {
             $arCobroTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo();
+            $arCobroTipo->setCodigoCobroTipoPk("V");
             $arCobroTipo->setNombre("VISITA");
             $manager->persist($arCobroTipo);                
         }
         $arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("L");
         if(!$arCobroTipo) {
             $arCobroTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo();
+            $arCobroTipo->setCodigoCobroTipoPk("L");
             $arCobroTipo->setNombre("POLIGRAFIA");
             $manager->persist($arCobroTipo);                
         }
