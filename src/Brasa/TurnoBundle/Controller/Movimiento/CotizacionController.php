@@ -35,8 +35,7 @@ class CotizacionController extends Controller {
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurCotizacion')->eliminar($arrSeleccionados);
@@ -53,7 +52,6 @@ class CotizacionController extends Controller {
                     $this->lista();
                     $this->generarExcel();
                 }
-            }
         }
         $arCotizaciones = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Movimientos/Cotizacion:lista.html.twig', array(

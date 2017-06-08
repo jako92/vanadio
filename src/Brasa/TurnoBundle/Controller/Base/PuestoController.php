@@ -17,6 +17,7 @@ class PuestoController extends Controller {
     var $strDqlLista = "";
     var $strCodigo = "";
     var $strNombre = "";
+    var $codigoCliente = "";
 
     /**
      * @Route("/tur/base/puesto/", name="brs_tur_base_puesto")
@@ -30,24 +31,22 @@ class PuestoController extends Controller {
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->get('BtnEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if ($form->get('BtnEliminar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurPuesto')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
-                }
-                if ($form->get('BtnFiltrar')->isClicked()) {
-                    $this->filtrar($form);
-                    $form = $this->formularioFiltro();
-                    $this->lista();
-                }
-                if ($form->get('BtnExcel')->isClicked()) {
-                    $this->filtrar($form);
-                    $form = $this->formularioFiltro();
-                    $this->generarExcel();
-                }
+                $em->getRepository('BrasaTurnoBundle:TurPuesto')->eliminar($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
+            }
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrar($form);
+                $form = $this->formularioFiltro();
+                $this->lista();
+            }
+            if ($form->get('BtnExcel')->isClicked()) {
+                $this->filtrar($form);
+                $form = $this->formularioFiltro();
+                $this->generarExcel();
             }
         }
         $arPuestos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
@@ -68,13 +67,11 @@ class PuestoController extends Controller {
         }
         $form = $this->createForm(TurPuestoType::class, $arPuesto);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $arPuesto = $form->getData();
-                $em->persist($arPuesto);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arPuesto = $form->getData();
+            $em->persist($arPuesto);
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
         }
         return $this->render('BrasaTurnoBundle:Base/Puesto:nuevo.html.twig', array(
                     'arPuesto' => $arPuesto,
@@ -91,20 +88,18 @@ class PuestoController extends Controller {
         $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
         $form = $this->formularioDetalle($arPuesto);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                if ($form->get('BtnEliminarPuestoDotacion')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionarPuestoDotacion');
-                    $em->getRepository('BrasaTurnoBundle:TurPuestoDotacion')->eliminar($arrSeleccionados);
-                    $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
-                    return $this->redirect($this->generateUrl('brs_tur_base_puesto_detalle', array('codigoPuesto' => $codigoPuesto)));
-                }
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnEliminarPuestoDotacion')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionarPuestoDotacion');
+                $em->getRepository('BrasaTurnoBundle:TurPuestoDotacion')->eliminar($arrSeleccionados);
+                $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
+                return $this->redirect($this->generateUrl('brs_tur_base_puesto_detalle', array('codigoPuesto' => $codigoPuesto)));
             }
         }
         $arPuestoDotaciones = new \Brasa\TurnoBundle\Entity\TurPuestoDotacion();
         $arPuestoDotaciones = $em->getRepository('BrasaTurnoBundle:TurPuestoDotacion')->findBy(array('codigoPuestoFk' => $codigoPuesto));
         $arPuestoAdicionales = new \Brasa\TurnoBundle\Entity\TurPuestoAdicional();
-        $arPuestoAdicionales = $em->getRepository('BrasaTurnoBundle:TurPuestoAdicional')->findBy(array('codigoPuestoFk' => $codigoPuesto));        
+        $arPuestoAdicionales = $em->getRepository('BrasaTurnoBundle:TurPuestoAdicional')->findBy(array('codigoPuestoFk' => $codigoPuesto));
         return $this->render('BrasaTurnoBundle:Base/Puesto:detalle.html.twig', array(
                     'arPuesto' => $arPuesto,
                     'arPuestoDotaciones' => $arPuestoDotaciones,
@@ -123,34 +118,32 @@ class PuestoController extends Controller {
         $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
         $form = $this->formularioDotacionNuevo();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $arrControles = $request->request->All();
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if ($form->get('BtnGuardar')->isClicked()) {
-                    $arrControles = $request->request->All();
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    if (isset($arrSeleccionados)) {
-                        foreach ($arrSeleccionados as $codigoElmentoDotacion) {
-                            $cantidad = $arrControles['TxtCantidad' . $codigoElmentoDotacion];
-                            if ($cantidad > 0) {
-                                $arElementoDotacion = new \Brasa\TurnoBundle\Entity\TurElementoDotacion();
-                                $arElementoDotacion = $em->getRepository('BrasaTurnoBundle:TurElementoDotacion')->find($codigoElmentoDotacion);
-                                $arPuestoDotacion = new \Brasa\TurnoBundle\Entity\TurPuestoDotacion();
-                                $arPuestoDotacion->setPuestoRel($arPuesto);
-                                $arPuestoDotacion->setElementoDotacionRel($arElementoDotacion);
-                                $arPuestoDotacion->setClienteRel($arPuesto->getClienteRel());
-                                $arPuestoDotacion->setCantidad($cantidad);
-                                $total = $cantidad * $arElementoDotacion->getCosto();
-                                $arPuestoDotacion->setCosto($arElementoDotacion->getCosto());
-                                $arPuestoDotacion->setTotal($total);
-                                $em->persist($arPuestoDotacion);
-                            }
+                if (isset($arrSeleccionados)) {
+                    foreach ($arrSeleccionados as $codigoElmentoDotacion) {
+                        $cantidad = $arrControles['TxtCantidad' . $codigoElmentoDotacion];
+                        if ($cantidad > 0) {
+                            $arElementoDotacion = new \Brasa\TurnoBundle\Entity\TurElementoDotacion();
+                            $arElementoDotacion = $em->getRepository('BrasaTurnoBundle:TurElementoDotacion')->find($codigoElmentoDotacion);
+                            $arPuestoDotacion = new \Brasa\TurnoBundle\Entity\TurPuestoDotacion();
+                            $arPuestoDotacion->setPuestoRel($arPuesto);
+                            $arPuestoDotacion->setElementoDotacionRel($arElementoDotacion);
+                            $arPuestoDotacion->setClienteRel($arPuesto->getClienteRel());
+                            $arPuestoDotacion->setCantidad($cantidad);
+                            $total = $cantidad * $arElementoDotacion->getCosto();
+                            $arPuestoDotacion->setCosto($arElementoDotacion->getCosto());
+                            $arPuestoDotacion->setTotal($total);
+                            $em->persist($arPuestoDotacion);
                         }
-                        $em->flush();
-                        $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
                     }
-                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                    $em->flush();
+                    $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
                 }
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
             }
         }
         $dqlElementosDotacion = $em->getRepository('BrasaTurnoBundle:TurElementoDotacion')->listaDql();
@@ -165,9 +158,7 @@ class PuestoController extends Controller {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurPuesto')->listaDql(
-                $this->strCodigo, 
-                $session->get('filtroCodigoCliente'), 
-                $this->strNombre
+                $this->strCodigo, $session->get('filtroCodigoCliente'), $this->strNombre
         );
     }
 
@@ -175,7 +166,7 @@ class PuestoController extends Controller {
         $session = new session;
         $this->strCodigo = $form->get('TxtCodigo')->getData();
         $this->strNombre = $form->get('TxtNombre')->getData();
-        $session->set('filtroNit', $form->get('TxtNit')->getData());
+        $session->set('filtroCodigoCliente', $form->get('TxtNit')->getData());
         $this->lista();
     }
 
@@ -183,21 +174,17 @@ class PuestoController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strNombreCliente = "";
-        if ($session->get('filtroNit')) {
-            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
+        if ($session->get('filtroCodigoCliente')) {
+            $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($session->get('filtroCodigoCliente'));
             if ($arCliente) {
-                $session->set('filtroCodigoCliente', $arCliente->getCodigoClientePk());
                 $strNombreCliente = $arCliente->getNombreCorto();
             } else {
                 $session->set('filtroCodigoCliente', null);
-                $session->set('filtroNit', null);
             }
-        } else {
-            $session->set('filtroCodigoCliente', null);
-        }        
+        }
         $form = $this->createFormBuilder()
-                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
-                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))                
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroCodigoCliente')))
+                ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $this->strNombre))
                 ->add('TxtCodigo', TextType::class, array('label' => 'Codigo', 'data' => $this->strCodigo))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))

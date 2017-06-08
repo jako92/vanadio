@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TurPuestoType extends AbstractType
 {
@@ -70,7 +71,8 @@ class TurPuestoType extends AbstractType
             ->add('pesoMaximo', TextType::class, array('required'  => false))
             ->add('codigoTipoLibretaMilitar', ChoiceType::class, array('choices' => array('INDIFERENTE' => '0', '1° CLASE' => '1', '2° CLASE' => '2')))                                
             ->add('moto', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                                
-            ->add('carro', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                                                
+            ->add('carro', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1'))) 
+            ->add('comentarios', TextareaType::class, array('required'  => false))
             ->add('guardar', SubmitType::class);
     }
 
