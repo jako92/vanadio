@@ -57,17 +57,25 @@ class PensionController extends Controller
                 $objFormatoPension->Generar($this);
         }
         if($form->get('BtnExcel')->isClicked()) {
-                $objPHPExcel = new \PHPExcel();
-                // Set document properties
-                $objPHPExcel->getProperties()->setCreator("EMPRESA")
-                    ->setLastModifiedBy("EMPRESA")
-                    ->setTitle("Office 2007 XLSX Test Document")
-                    ->setSubject("Office 2007 XLSX Test Document")
-                    ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-                    ->setKeywords("office 2007 openxml php")
-                    ->setCategory("Test result file");
-                $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-                $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+                ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'BA'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue('A1', 'Código')
                             ->setCellValue('B1', 'Nombre')
@@ -91,7 +99,7 @@ class PensionController extends Controller
                     $i++;
                 }
 
-                $objPHPExcel->getActiveSheet()->setTitle('Entidades_Pension');
+                $objPHPExcel->getActiveSheet()->setTitle('EntidadPension');
                 $objPHPExcel->setActiveSheetIndex(0);
 
                 // Redirect output to a client’s web browser (Excel2007)
@@ -101,13 +109,15 @@ class PensionController extends Controller
                 // If you're serving to IE 9, then the following may be needed
                 header('Cache-Control: max-age=1');
                 // If you're serving to IE over SSL, then the following may be needed
-                header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-                header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-                header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-                header ('Pragma: public'); // HTTP/1.0
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
                 $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
                 $objWriter->save('php://output');
                 exit;
+                ini_set('memory_limit', '512m');
+                set_time_limit(60);
             }
         }
         
