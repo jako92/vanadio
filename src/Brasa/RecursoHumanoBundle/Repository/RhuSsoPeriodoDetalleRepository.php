@@ -688,17 +688,21 @@ class RhuSsoPeriodoDetalleRepository extends EntityRepository {
                     $floCotizacionFSPSubsistencia = 0;
                     $floAporteVoluntarioFondoPensionesObligatorias = 0;
                     $floCotizacionVoluntariaFondoPensionesObligatorias = 0;
-                    if(!$arPeriodoEmpleadoDetalle->getVacaciones()) {
+                    //if(!$arPeriodoEmpleadoDetalle->getVacaciones()) {
                         if($arPeriodoEmpleado->getIbcFondoSolidaridad() >= ($arConfiguracionNomina->getVrSalario() * 4)) {
                             $porcentajeSolidaridad = $this->porcentajeFondo($arConfiguracionNomina->getVrSalario(), $arPeriodoEmpleado->getIbcFondoSolidaridad());
                             $porcentajeSubsistencia = $porcentajeSolidaridad - 0.5;
-                            $cotizacionSolidaridad = $arPeriodoEmpleado->getIbcFondoSolidaridad() * 0.5 / 100;
-                            $cotizacionSubsistencia = $arPeriodoEmpleado->getIbcFondoSolidaridad() * $porcentajeSubsistencia / 100;
-
+                            //Antes era asi para que quedara todo en una sola linea
+                            //$cotizacionSolidaridad = $arPeriodoEmpleado->getIbcFondoSolidaridad() * 0.5 / 100;
+                            //$cotizacionSubsistencia = $arPeriodoEmpleado->getIbcFondoSolidaridad() * $porcentajeSubsistencia / 100;
+                            
+                            $cotizacionSolidaridad = $ibcPension * 0.5 / 100;
+                            $cotizacionSubsistencia = $ibcPension * $porcentajeSubsistencia / 100;
+                            
                             $floCotizacionFSPSolidaridad = $this->redondearAporte3($cotizacionSolidaridad);
                             $floCotizacionFSPSubsistencia = $this->redondearAporte3($cotizacionSubsistencia);
                         }                        
-                    }                                                                                   
+                    //}                                                                                   
                     
                     $cotizacionFondos = $floAporteVoluntarioFondoPensionesObligatorias + $floCotizacionVoluntariaFondoPensionesObligatorias + $cotizacionPension;
 
