@@ -11,7 +11,7 @@ class CobroTipo implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("E");
+        /*$arCobroTipo = $manager->getRepository('BrasaRecursoHumanoBundle:RhuCobroTipo')->find("E");
         if(!$arCobroTipo) {
             $arCobroTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuCobroTipo();
             $arCobroTipo->setCodigoCobroTipoPk("E");
@@ -56,7 +56,7 @@ class CobroTipo implements FixtureInterface
             $arCobroTipo->setNombre("POLIGRAFIA");
             $manager->persist($arCobroTipo);                
         }
-        $manager->flush();
+        $manager->flush();*/
     }
 }
 
