@@ -13,7 +13,6 @@ class RhuCobroTipo {
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_cobro_tipo_pk", type="string", length=1)
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoCobroTipoPk;
 
@@ -33,6 +32,20 @@ class RhuCobroTipo {
     public function __construct()
     {
         $this->cobrosCobroTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoCobroTipoPk
+     *
+     * @param string $codigoCobroTipoPk
+     *
+     * @return RhuCobroTipo
+     */
+    public function setCodigoCobroTipoPk($codigoCobroTipoPk)
+    {
+        $this->codigoCobroTipoPk = $codigoCobroTipoPk;
+
+        return $this;
     }
 
     /**
