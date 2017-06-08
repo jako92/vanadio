@@ -395,6 +395,7 @@ class IntercambioDatosController extends Controller {
             }
             list($anio, $mes)= explode('/', $arRegistro->getFecha()->Format('Y/m/d'));
             $vrMovimiento = '';
+            
             if($arRegistro->getDebito() != 0){
                 $vrMovimiento = $arRegistro->getDebito();
             }
@@ -403,9 +404,9 @@ class IntercambioDatosController extends Controller {
             }
             $naturalezaMovimiento = '';
             if($arRegistro->getDebito() != 0){
-                $naturalezaMovimiento = 'CNO';
-            }else{
                 $naturalezaMovimiento = 'DNO';
+            }else{
+                $naturalezaMovimiento = 'CNO';
             }
             $centroCosto = '';
             if($arRegistro->getCodigoCentroCostoFk() == 0){
