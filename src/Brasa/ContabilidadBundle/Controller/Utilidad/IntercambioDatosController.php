@@ -416,7 +416,7 @@ class IntercambioDatosController extends Controller {
             }
             $tercero = '';
             if($arRegistro->getCuentaRel()->getExigeNit() == 1){
-                $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion()."-".$arRegistro->getTerceroRel()->getDigitoVerificacion();
+                $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
             }else{
                 $tercero = "00000000000";
             }
