@@ -5,17 +5,17 @@ namespace Brasa\RecursoHumanoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="rhu_visita")
- * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuVisitaRepository")
+ * @ORM\Table(name="rhu_prueba")
+ * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuPruebaRepository")
  */
-class RhuVisita
+class RhuPrueba
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_visita_pk", type="integer")
+     * @ORM\Column(name="codigo_prueba_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoVisitaPk;            
+    private $codigoPruebaPk;            
     
     /**
      * @ORM\Column(name="fecha", type="datetime", nullable=true)
@@ -25,7 +25,7 @@ class RhuVisita
     /**
      * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
      */    
-    private $fechaCreacion;    
+    private $fechaCreacion;
     
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer")
@@ -33,15 +33,15 @@ class RhuVisita
     private $codigoEmpleadoFk;
     
     /**
-     * @ORM\Column(name="codigo_visita_tipo_fk", type="integer")
+     * @ORM\Column(name="codigo_prueba_tipo_fk", type="integer")
      */    
-    private $codigoVisitaTipoFk;
+    private $codigoPruebaTipoFk;
     
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
     private $codigoClienteFk; 
-    
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
      */    
@@ -53,25 +53,24 @@ class RhuVisita
     private $codigoCobroFk;
     
     /**
-     * @ORM\Column(name="fecha_vence", type="date")
+     * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */    
-    private $fechaVence;    
-    
-    /**     
-     * @ORM\Column(name="validar_vencimiento", type="boolean")
+    private $codigoUsuario;
+
+    /**
+     * @ORM\Column(name="resultado", type="string", length=50, nullable=true)
      */    
-    private $validarVencimiento = false;
+    private $resultado;        
     
     /**
-     * @ORM\Column(name="nombre_quien_visita", type="string", length=100, nullable=true)
+     * @ORM\Column(name="resultado_cuantitativo", type="integer", nullable=true)
      */    
-    private $nombreQuienVisita;
+    private $resultadoCuantitativo;
     
     /**
-     * @ORM\Column(name="comentarios", type="text", nullable=true)
+     * @ORM\Column(name="nombre_quien_hace_prueba", type="string", length=100, nullable=true)
      */    
-    private $comentarios;    
-       
+    private $nombreQuienHacePrueba;     
     
     /**     
      * @ORM\Column(name="estado_autorizado", type="boolean")
@@ -92,52 +91,51 @@ class RhuVisita
      * @ORM\Column(name="vr_total", type="float")
      */
     private $vrTotal = 0;
-        
     
     /**
-     * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
+     * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
-    private $codigoUsuario;
+    private $comentarios;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="visitasEmpleadoRel")
+     * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="pruebasEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
     protected $empleadoRel;                        
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuVisitaTipo", inversedBy="visitasVisitaTipoRel")
-     * @ORM\JoinColumn(name="codigo_visita_tipo_fk", referencedColumnName="codigo_visita_tipo_pk")
+     * @ORM\ManyToOne(targetEntity="RhuPruebaTipo", inversedBy="pruebasPruebaTipoRel")
+     * @ORM\JoinColumn(name="codigo_prueba_tipo_fk", referencedColumnName="codigo_prueba_tipo_pk")
      */
-    protected $visitaTipoRel;
+    protected $pruebaTipoRel;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="visitasClienteRel")
+     * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="pruebasClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="visitasCentroCostoRel")
+     * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="pruebasCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="visitasCobroRel")
+     * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="pruebasCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
-    
+
 
     /**
-     * Get codigoVisitaPk
+     * Get codigoPruebaPk
      *
      * @return integer
      */
-    public function getCodigoVisitaPk()
+    public function getCodigoPruebaPk()
     {
-        return $this->codigoVisitaPk;
+        return $this->codigoPruebaPk;
     }
 
     /**
@@ -145,7 +143,7 @@ class RhuVisita
      *
      * @param \DateTime $fecha
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setFecha($fecha)
     {
@@ -165,11 +163,35 @@ class RhuVisita
     }
 
     /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return RhuPrueba
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
      * Set codigoEmpleadoFk
      *
      * @param integer $codigoEmpleadoFk
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCodigoEmpleadoFk($codigoEmpleadoFk)
     {
@@ -189,99 +211,99 @@ class RhuVisita
     }
 
     /**
-     * Set codigoVisitaTipoFk
+     * Set codigoPruebaTipoFk
      *
-     * @param integer $codigoVisitaTipoFk
+     * @param integer $codigoPruebaTipoFk
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
-    public function setCodigoVisitaTipoFk($codigoVisitaTipoFk)
+    public function setCodigoPruebaTipoFk($codigoPruebaTipoFk)
     {
-        $this->codigoVisitaTipoFk = $codigoVisitaTipoFk;
+        $this->codigoPruebaTipoFk = $codigoPruebaTipoFk;
 
         return $this;
     }
 
     /**
-     * Get codigoVisitaTipoFk
+     * Get codigoPruebaTipoFk
      *
      * @return integer
      */
-    public function getCodigoVisitaTipoFk()
+    public function getCodigoPruebaTipoFk()
     {
-        return $this->codigoVisitaTipoFk;
+        return $this->codigoPruebaTipoFk;
     }
 
     /**
-     * Set fechaVence
+     * Set resultado
      *
-     * @param \DateTime $fechaVence
+     * @param string $resultado
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
-    public function setFechaVence($fechaVence)
+    public function setResultado($resultado)
     {
-        $this->fechaVence = $fechaVence;
+        $this->resultado = $resultado;
 
         return $this;
     }
 
     /**
-     * Get fechaVence
-     *
-     * @return \DateTime
-     */
-    public function getFechaVence()
-    {
-        return $this->fechaVence;
-    }
-
-    /**
-     * Set validarVencimiento
-     *
-     * @param boolean $validarVencimiento
-     *
-     * @return RhuVisita
-     */
-    public function setValidarVencimiento($validarVencimiento)
-    {
-        $this->validarVencimiento = $validarVencimiento;
-
-        return $this;
-    }
-
-    /**
-     * Get validarVencimiento
-     *
-     * @return boolean
-     */
-    public function getValidarVencimiento()
-    {
-        return $this->validarVencimiento;
-    }
-
-    /**
-     * Set nombreQuienVisita
-     *
-     * @param string $nombreQuienVisita
-     *
-     * @return RhuVisita
-     */
-    public function setNombreQuienVisita($nombreQuienVisita)
-    {
-        $this->nombreQuienVisita = $nombreQuienVisita;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreQuienVisita
+     * Get resultado
      *
      * @return string
      */
-    public function getNombreQuienVisita()
+    public function getResultado()
     {
-        return $this->nombreQuienVisita;
+        return $this->resultado;
+    }
+
+    /**
+     * Set resultadoCuantitativo
+     *
+     * @param integer $resultadoCuantitativo
+     *
+     * @return RhuPrueba
+     */
+    public function setResultadoCuantitativo($resultadoCuantitativo)
+    {
+        $this->resultadoCuantitativo = $resultadoCuantitativo;
+
+        return $this;
+    }
+
+    /**
+     * Get resultadoCuantitativo
+     *
+     * @return integer
+     */
+    public function getResultadoCuantitativo()
+    {
+        return $this->resultadoCuantitativo;
+    }
+
+    /**
+     * Set nombreQuienHacePrueba
+     *
+     * @param string $nombreQuienHacePrueba
+     *
+     * @return RhuPrueba
+     */
+    public function setNombreQuienHacePrueba($nombreQuienHacePrueba)
+    {
+        $this->nombreQuienHacePrueba = $nombreQuienHacePrueba;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreQuienHacePrueba
+     *
+     * @return string
+     */
+    public function getNombreQuienHacePrueba()
+    {
+        return $this->nombreQuienHacePrueba;
     }
 
     /**
@@ -289,7 +311,7 @@ class RhuVisita
      *
      * @param string $comentarios
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setComentarios($comentarios)
     {
@@ -313,7 +335,7 @@ class RhuVisita
      *
      * @param boolean $estadoAutorizado
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setEstadoAutorizado($estadoAutorizado)
     {
@@ -337,7 +359,7 @@ class RhuVisita
      *
      * @param boolean $estadoCerrado
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setEstadoCerrado($estadoCerrado)
     {
@@ -357,11 +379,35 @@ class RhuVisita
     }
 
     /**
+     * Set vrTotal
+     *
+     * @param float $vrTotal
+     *
+     * @return RhuPrueba
+     */
+    public function setVrTotal($vrTotal)
+    {
+        $this->vrTotal = $vrTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotal
+     *
+     * @return float
+     */
+    public function getVrTotal()
+    {
+        return $this->vrTotal;
+    }
+
+    /**
      * Set codigoUsuario
      *
      * @param string $codigoUsuario
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCodigoUsuario($codigoUsuario)
     {
@@ -385,7 +431,7 @@ class RhuVisita
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
     {
@@ -405,75 +451,27 @@ class RhuVisita
     }
 
     /**
-     * Set visitaTipoRel
+     * Set pruebaTipoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisitaTipo $visitaTipoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
-    public function setVisitaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisitaTipo $visitaTipoRel = null)
+    public function setPruebaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel = null)
     {
-        $this->visitaTipoRel = $visitaTipoRel;
+        $this->pruebaTipoRel = $pruebaTipoRel;
 
         return $this;
     }
 
     /**
-     * Get visitaTipoRel
+     * Get pruebaTipoRel
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuVisitaTipo
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo
      */
-    public function getVisitaTipoRel()
+    public function getPruebaTipoRel()
     {
-        return $this->visitaTipoRel;
-    }
-
-    /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return RhuVisita
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fechaCreacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fechaCreacion;
-    }
-
-    /**
-     * Set vrTotal
-     *
-     * @param float $vrTotal
-     *
-     * @return RhuVisita
-     */
-    public function setVrTotal($vrTotal)
-    {
-        $this->vrTotal = $vrTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotal
-     *
-     * @return float
-     */
-    public function getVrTotal()
-    {
-        return $this->vrTotal;
+        return $this->pruebaTipoRel;
     }
 
     /**
@@ -481,7 +479,7 @@ class RhuVisita
      *
      * @param integer $codigoCentroCostoFk
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCodigoCentroCostoFk($codigoCentroCostoFk)
     {
@@ -505,7 +503,7 @@ class RhuVisita
      *
      * @param integer $codigoCobroFk
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCodigoCobroFk($codigoCobroFk)
     {
@@ -529,7 +527,7 @@ class RhuVisita
      *
      * @param boolean $estadoCobrado
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setEstadoCobrado($estadoCobrado)
     {
@@ -553,7 +551,7 @@ class RhuVisita
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
     {
@@ -577,7 +575,7 @@ class RhuVisita
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
     {
@@ -601,7 +599,7 @@ class RhuVisita
      *
      * @param integer $codigoClienteFk
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setCodigoClienteFk($codigoClienteFk)
     {
@@ -625,7 +623,7 @@ class RhuVisita
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
      *
-     * @return RhuVisita
+     * @return RhuPrueba
      */
     public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
     {

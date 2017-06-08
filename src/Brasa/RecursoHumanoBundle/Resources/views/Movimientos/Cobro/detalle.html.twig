@@ -53,55 +53,55 @@
                         <td class="titulo">TIPO COBRO:</td>
                         {% if (arCobro.codigoCobroTipoFk is null) %}<td></td>{% else %}<td>{{ arCobro.cobroTipoRel.nombre }}</td>{% endif %}
                         <td class="titulo">SERVICIOS:</td>
-                        <td class="td-in-well">{% if (arCobro.vrAdministracion !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
+                        <td class="td-in-well">{{ arServiciosCobrar.getTotalItemCount }}</td>
                         <td class="titulo">PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>                     
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td>{{ arCobro.clienteRel.nombreCorto }}</td>
-                        <td class="titulo">EXAMENES</td>
-                        <td class="td-in-well">{% if (arCobro.vrExamen !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
+                        <td class="titulo">EXAMENES:</td>
+                        <td class="td-in-well">{{ arExamenes.getTotalItemCount }}</td>
                         <td class="titulo">NO PRESTACIONAL:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrNoPrestacional | number_format(0, '.', ',') }}</td>                   
                     </tr>      
                     <tr>
                         <td class="titulo">DESDE:</td>
                         <td>{{ arCobro.fechaDesde |date('Y-m-d') }}</td>
-                        <td class="titulo">SELECCIONES</td>
-                        <td class="td-in-well">{% if (arCobro.vrSeleccion !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
+                        <td class="titulo">SELECCIONES:</td>
+                        <td class="td-in-well">{{ arSelecciones.getTotalItemCount }}</td>
                         <td class="titulo">AUXILIO TTE:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAuxilioTransporte| number_format(0, '.', ',') }}</td>                   
                     </tr>   
                     <tr>
                         <td class="titulo">HASTA:</td>
                         <td>{{ arCobro.fechaHasta |date('Y-m-d') }}</td>
-                        <td class="titulo">INCAPACIDADES</td>
-                        <td class="td-in-well">{% if (arCobro.vrIncapacidad !=0)%}{{ arCobro.numeroRegistros}}{% endif %}</td>
+                        <td class="titulo">VISITAS:</td>
+                        <td class="td-in-well">{{ arVisitas.getTotalItemCount }}</td>
                         <td class="titulo">PENSION:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrPension | number_format(0, '.', ',') }}</td>                   
                     </tr>                         
                     <tr>
                         <td class="titulo"></td>
                         <td></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">PRUEBAS:</td>
+                        <td class="td-in-well">{{ arPruebas.getTotalItemCount }}</td>
                         <td class="titulo">SALUD:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrSalud | number_format(0, '.', ',') }}</td>                   
                     </tr>                       
                     <tr>
                         <td class="titulo"></td>
                         <td></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">POLIGRAFIAS:</td>
+                        <td class="td-in-well">{{ arPoligrafias.getTotalItemCount }}</td>
                         <td class="titulo">RIESGOS:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrRiesgos | number_format(0, '.', ',') }}</td>                   
                     </tr>  
                     <tr>
                         <td class="titulo"></td>
                         <td></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">INCAPACIDADES:</td>
+                        <td class="td-in-well">{{ arIncapacidades.getTotalItemCount }}</td>
                         <td class="titulo">CAJA:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrCaja | number_format(0, '.', ',') }}</td>                   
                     </tr>                      
@@ -169,7 +169,7 @@
                         <td class="titulo">AJUSTE:</td>
                         <td class="td-in-well-numerico" align="right">$ {{ arCobro.vrAjuste | number_format(0, '.', ',') }}</td>                 
                     </tr>
-<tr>
+                    <tr>
                         <td class="titulo"></td>
                         <td></td>
                         <td class="titulo"></td>
@@ -189,6 +189,9 @@
             <li class="active"><a href="#servicios" data-toggle="tab">Servicios <span class="badge">{{ arServiciosCobrar.getTotalItemCount }}</span></a></li>
             <li><a href="#examenes" data-toggle="tab">Examenes <span class="badge">{{ arExamenes.getTotalItemCount }}</span></a></li>
             <li><a href="#selecciones" data-toggle="tab">Selecciones <span class="badge">{{ arSelecciones.getTotalItemCount }}</span></a></li>
+            <li><a href="#visitas" data-toggle="tab">Visitas <span class="badge">{{ arVisitas.getTotalItemCount }}</span></a></li>
+            <li><a href="#pruebas" data-toggle="tab">Pruebas <span class="badge">{{ arPruebas.getTotalItemCount }}</span></a></li>
+            <li><a href="#poligrafias" data-toggle="tab">Poligrafias <span class="badge">{{ arPoligrafias.getTotalItemCount }}</span></a></li>
             <li><a href="#incapacidades" data-toggle="tab">Incapacidades <span class="badge">{{ arIncapacidades.getTotalItemCount }}</span></a></li>
         </ul>
         <div class="tab-content">
@@ -267,7 +270,7 @@
                                 <td style="text-align: right">{{ arServicioCobrar.retiro }}</td>                                
                                 <td style="text-align: right">{{ arServicioCobrar.horasIncapacidad }}</td>  
                                 {% if arCobro. estadoAutorizado == 0 %}
-                                <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                                    <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_editar', {'codigoServicioCobrar': arServicioCobrar.codigoServicioCobrarPk, 'codigoCobro': arCobro.codigoCobroPk}) }}', 'NuevaProgramacionPago', 600, 900)" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                                 {% else %} <td></td>
                                 {% endif %}
                                 <td><input type="checkbox" name="ChkSeleccionarServicio[]" value="{{ arServicioCobrar.codigoServicioCobrarPk }}" /></td>
@@ -330,7 +333,7 @@
                             <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arExamenes.getTotalItemCount }}</span></div>                        
                         </div>
                     </div>
-                    
+
                     <div class="btn-toolbar" style="float:right">
                         <div class="btn-group">
                             {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'E' %}
@@ -344,7 +347,7 @@
                     <!-- Fin Botones Menu Items -->
                 </div>
             </div>
-             <!-- Fin detalle examen-->
+            <!-- Fin detalle examen-->
             <!-- Tabla de selecciones -->
             <div class="tab-pane" id="selecciones">
                 <div id="selecciones" style="width: 100%"><br>
@@ -378,7 +381,7 @@
                     <div class="btn-toolbar" style="float:right">
                         <div class="btn-group">
                             {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'S' %}
-                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_seleccion', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleExamen', 600, 1000)" >Nuevo</a>
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_seleccion', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleSeleccion', 600, 1000)" >Nuevo</a>
                             {% endif %}
                         </div>
                         <div class="btn-group">
@@ -389,6 +392,150 @@
                 </div>
             </div>
             <!-- Fin detalle selecciones-->
+            <!-- Tabla de visitas -->
+            <div class="tab-pane" id="visitas">
+                <div id="visitas" style="width: 100%"><br>
+                    <table  class="table table-striped table-bordered table-condensed table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>DOCUMENTO</th>
+                            <th>EMPLEADO</th>
+                            <th>TIPO</th>
+                            <th style="text-align: right">VALOR</th>
+                            <th></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarVisita[]');"/></th>
+                        </tr>
+                        {% for arVisitas in arVisitas %}
+                            <tr>                
+                                <td>{{ arVisitas.codigoVisitaPk  }}</td>
+                                <td>{{ arVisitas.empleadoRel.numeroIdentificacion  }}</td>
+                                <td>{{ arVisitas.empleadoRel.nombreCorto  }}</td>
+                                <td>{{ arVisitas.visitaTipoRel.nombre }}</td>
+                                <td style="text-align: right">{{ arVisitas.vrTotal | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: center"></td>
+                                <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarVisita[]" value="{{ arVisitas.codigoVisitaPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <!-- Botones Menu Items -->
+                    <div class="btn-toolbar" style="float: left">
+                        <div class="btn-group">                
+                            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_lista') }}" style="float:left">Volver</a>
+                        </div>
+                        <div class="btn-group">
+                            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arVisitas.getTotalItemCount }}</span></div>                        
+                        </div>
+                    </div>
+                    <div class="btn-toolbar" style="float:right">
+                        <div class="btn-group">
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'V' %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_visita', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetalleVisita', 600, 1000)" >Nuevo</a>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnEliminarDetalleVisita, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
+                        </div>
+                    </div>
+                    <!-- Fin Botones Menu Items -->
+                </div>
+            </div>
+            <!-- Fin detalle visitas-->
+            <!-- Tabla de pruebas -->
+            <div class="tab-pane" id="pruebas">
+                <div id="pruebas" style="width: 100%"><br>
+                    <table  class="table table-striped table-bordered table-condensed table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>DOCUMENTO</th>
+                            <th>EMPLEADO</th>
+                            <th>TIPO</th>
+                            <th style="text-align: right">VALOR</th>
+                            <th></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPrueba[]');"/></th>
+                        </tr>
+                        {% for arPruebas in arPruebas %}
+                            <tr>                
+                                <td>{{ arPruebas.codigoPruebaPk  }}</td>
+                                <td>{{ arPruebas.empleadoRel.numeroIdentificacion  }}</td>
+                                <td>{{ arPruebas.empleadoRel.nombreCorto  }}</td>
+                                <td>{{ arPruebas.pruebaTipoRel.nombre }}</td>
+                                <td style="text-align: right">{{ arPruebas.vrTotal | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: center"></td>
+                                <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarPrueba[]" value="{{ arPruebas.codigoPruebaPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <!-- Botones Menu Items -->
+                    <div class="btn-toolbar" style="float: left">
+                        <div class="btn-group">                
+                            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_lista') }}" style="float:left">Volver</a>
+                        </div>
+                        <div class="btn-group">
+                            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPruebas.getTotalItemCount }}</span></div>                        
+                        </div>
+                    </div>
+                    <div class="btn-toolbar" style="float:right">
+                        <div class="btn-group">
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'P' %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_prueba', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetallePrueba', 600, 1000)" >Nuevo</a>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnEliminarDetallePrueba, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
+                        </div>
+                    </div>
+                    <!-- Fin Botones Menu Items -->
+                </div>
+            </div>
+            <!-- Fin detalle pruebas-->
+            <!-- Tabla de poligrafias -->
+            <div class="tab-pane" id="poligrafias">
+                <div id="poligrafias" style="width: 100%"><br>
+                    <table  class="table table-striped table-bordered table-condensed table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>DOCUMENTO</th>
+                            <th>EMPLEADO</th>
+                            <th>FECHA</th>
+                            <th style="text-align: right">VALOR</th>
+                            <th></th>
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPoligrafia[]');"/></th>
+                        </tr>
+                        {% for arPoligrafias in arPoligrafias %}
+                            <tr>                
+                                <td>{{ arPoligrafias.codigoPoligrafiaPk  }}</td>
+                                <td>{{ arPoligrafias.numeroIdentificacion  }}</td>
+                                <td>{{ arPoligrafias.nombreCorto  }}</td>
+                                <td>{{ arPoligrafias.fecha |date("Y-m-d H:s:i")  }}</td>
+                                <td style="text-align: right">{{ arPoligrafias.vrTotal | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: center"></td>
+                                <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarPoligrafia[]" value="{{ arPoligrafias.codigoPoligrafiaPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <!-- Botones Menu Items -->
+                    <div class="btn-toolbar" style="float: left">
+                        <div class="btn-group">                
+                            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_cobro_lista') }}" style="float:left">Volver</a>
+                        </div>
+                        <div class="btn-group">
+                            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPoligrafias.getTotalItemCount }}</span></div>                        
+                        </div>
+                    </div>
+                    <div class="btn-toolbar" style="float:right">
+                        <div class="btn-group">
+                            {% if arCobro.estadoAutorizado == 0 and arCobro.codigoCobroTipoFk == 'L' %}
+                                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_cobro_detalle_nuevo_poligrafia', {'codigoCobro': arCobro.codigoCobroPk}) }}', 'nuevoDetallePoligrafia', 600, 1000)" >Nuevo</a>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnEliminarDetallePoligrafia, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                        
+                        </div>
+                    </div>
+                    <!-- Fin Botones Menu Items -->
+                </div>
+            </div>
+            <!-- Fin detalle poligrafias-->
             <!-- Tabla de incapacidades -->
             <div class="tab-pane" id="incapacidades">
                 <div id="incapacidades" style="width: 100%"><br>

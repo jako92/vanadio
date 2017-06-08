@@ -773,6 +773,16 @@ class RhuEmpleado
     protected $visitasEmpleadoRel;        
     
     /**
+     * @ORM\OneToMany(targetEntity="RhuPrueba", mappedBy="empleadoRel")
+     */
+    protected $pruebasEmpleadoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPoligrafia", mappedBy="empleadoRel")
+     */
+    protected $poligrafiasEmpleadoRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCosto", mappedBy="empleadoRel")
      */
     protected $turCostosEmpleadoRel;    
@@ -783,6 +793,7 @@ class RhuEmpleado
     protected $turCostosDetallesEmpleadoRel; 
     
 
+    
     /**
      * Constructor
      */
@@ -831,6 +842,8 @@ class RhuEmpleado
         $this->reclamosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosBancosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->visitasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pruebasEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->poligrafiasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turCostosEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turCostosDetallesEmpleadoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -2202,6 +2215,7 @@ class RhuEmpleado
 
         return $this;
     }
+    
 
     /**
      * Get rutaFoto
@@ -4705,6 +4719,74 @@ class RhuEmpleado
     public function getVisitasEmpleadoRel()
     {
         return $this->visitasEmpleadoRel;
+    }
+
+    /**
+     * Add pruebasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addPruebasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasEmpleadoRel)
+    {
+        $this->pruebasEmpleadoRel[] = $pruebasEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pruebasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasEmpleadoRel
+     */
+    public function removePruebasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasEmpleadoRel)
+    {
+        $this->pruebasEmpleadoRel->removeElement($pruebasEmpleadoRel);
+    }
+
+    /**
+     * Get pruebasEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPruebasEmpleadoRel()
+    {
+        return $this->pruebasEmpleadoRel;
+    }
+
+    /**
+     * Add poligrafiasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addPoligrafiasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasEmpleadoRel)
+    {
+        $this->poligrafiasEmpleadoRel[] = $poligrafiasEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove poligrafiasEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasEmpleadoRel
+     */
+    public function removePoligrafiasEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasEmpleadoRel)
+    {
+        $this->poligrafiasEmpleadoRel->removeElement($poligrafiasEmpleadoRel);
+    }
+
+    /**
+     * Get poligrafiasEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPoligrafiasEmpleadoRel()
+    {
+        return $this->poligrafiasEmpleadoRel;
     }
 
     /**

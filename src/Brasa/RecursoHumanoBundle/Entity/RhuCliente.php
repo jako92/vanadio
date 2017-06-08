@@ -196,6 +196,21 @@ class RhuCliente
     protected $incapacidadesClienteRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="RhuVisita", mappedBy="clienteRel")
+     */
+    protected $visitasClienteRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPrueba", mappedBy="clienteRel")
+     */
+    protected $pruebasClienteRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPoligrafia", mappedBy="clienteRel")
+     */
+    protected $poligrafiasClienteRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="clienteRel")
      */
     protected $facturasClienteRel;
@@ -225,8 +240,6 @@ class RhuCliente
      */ 
     protected $seleccionesClienteRel; 
     
-
-
     /**
      * Constructor
      */
@@ -235,6 +248,9 @@ class RhuCliente
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->visitasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pruebasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->poligrafiasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->facturasClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->sucursalClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->examenesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1121,6 +1137,108 @@ class RhuCliente
     public function getIncapacidadesClienteRel()
     {
         return $this->incapacidadesClienteRel;
+    }
+
+    /**
+     * Add visitasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel)
+    {
+        $this->visitasClienteRel[] = $visitasClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove visitasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel
+     */
+    public function removeVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel)
+    {
+        $this->visitasClienteRel->removeElement($visitasClienteRel);
+    }
+
+    /**
+     * Get visitasClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisitasClienteRel()
+    {
+        return $this->visitasClienteRel;
+    }
+
+    /**
+     * Add pruebasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addPruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel)
+    {
+        $this->pruebasClienteRel[] = $pruebasClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pruebasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel
+     */
+    public function removePruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel)
+    {
+        $this->pruebasClienteRel->removeElement($pruebasClienteRel);
+    }
+
+    /**
+     * Get pruebasClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPruebasClienteRel()
+    {
+        return $this->pruebasClienteRel;
+    }
+
+    /**
+     * Add poligrafiasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel
+     *
+     * @return RhuCliente
+     */
+    public function addPoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel)
+    {
+        $this->poligrafiasClienteRel[] = $poligrafiasClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove poligrafiasClienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel
+     */
+    public function removePoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel)
+    {
+        $this->poligrafiasClienteRel->removeElement($poligrafiasClienteRel);
+    }
+
+    /**
+     * Get poligrafiasClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPoligrafiasClienteRel()
+    {
+        return $this->poligrafiasClienteRel;
     }
 
     /**

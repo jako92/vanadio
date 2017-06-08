@@ -65,6 +65,14 @@
                         <td class="td-in-well">{% if arVisita.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>
                     </tr>
                     <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL:</td>
+                        <td class="td-in-well">{{ arVisita.vrTotal | number_format(0, '.', ',')}}</td>
+                    </tr>
+                    <tr>
                         <td class="titulo" >COMENTARIOS: </td>
                         <td class="td-in-well" colspan="6">{{ arVisita.comentarios }}</td>                                                                       
                     </tr>                    

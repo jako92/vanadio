@@ -1,0 +1,117 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Prueba lista - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Prueba: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Prueba</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Empleado:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.txtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }} 
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">                                      
+                                    {{ form_widget(form.txtNombreCorto, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label for="form_pruebaTipoRel" class="col-sm-2 control-label">Tipo:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.pruebaTipoRel, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                   
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table  class="table table-striped table-bordered table-condensed table-hover">
+            <tr>
+                <th>{{ knp_pagination_sortable(arPrueba, 'CODIGO', 'v.codigoPruebaPk') }}</th>                
+                <th>TIPO</th>                
+                <th>FECHA</th>                
+                <th>DOCUMENTO</th>
+                <th>{{ knp_pagination_sortable(arPrueba, 'EMPLEADO', 'e.nombreCorto') }}</th>                
+                <th>REALIZA PRUEBA</th>
+                <th>AUT</th>
+                <th>CER</th>
+                <th>USUARIO</th>
+                <th style="text-align: center"></th>
+                <th style="text-align: center"></th>
+                <th style="text-align: center"></th>
+            </tr>
+            {% for arPrueba in arPrueba %}
+                <tr>
+                    <td><input type="hidden" name="LblCodigo[]" value="{{ arPrueba.codigoPruebaPk }}">{{ arPrueba.codigoPruebaPk }} </td>                
+                    <td>{{ arPrueba.pruebaTipoRel.nombre | default('')  }}</td>                
+                    <td>{{ arPrueba.fecha |date("Y-m-d")  }}</td>
+                    <td>{{ arPrueba.empleadoRel.numeroIdentificacion  }}</td>
+                    <td>{{ arPrueba.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arPrueba.nombreQuienHacePrueba  }}</td>
+                    <td>{% if arPrueba.estadoAutorizado == 1%} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPrueba.estadoCerrado == 1%} SI {% else %} NO {% endif %}</td>
+                    <td>{{ arPrueba.codigoUsuario  }}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_nuevo', {'codigoPrueba':  arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_detalle', { 'codigoPrueba': arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
+                    <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPrueba.codigoPruebaPk }}" /></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Botones Menu Items -->
+        <div class="btn-group" style="float: left">
+            <div class="btn btn-default btn-sm">Pruebas <span class="badge">{{ arPrueba.getTotalItemCount }}</span></div>                        
+        </div>
+        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+            {{ knp_pagination_render(arPrueba) }}       
+        </div>
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_prueba_nuevo', {'codigoPrueba': 0}) }}">Nuevo</a>                
+            </div>
+            <div class="btn-group">
+                {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm', 'onclick': 'return confirm("Esta seguro de eliminar el registro?")'} }) }}                
+            </div>
+        </div>
+        <!-- Fin Botones Menu Items -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

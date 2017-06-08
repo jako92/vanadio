@@ -49,6 +49,11 @@ class GenTipoIdentificacion
     protected $rhuAspirantesTipoIdentificacionRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia", mappedBy="tipoIdentificacionRel")
+     */
+    protected $rhuPoligrafiasTipoIdentificacionRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCliente", mappedBy="tipoIdentificacionRel")
      */
     protected $turClientesTipoIdentificacionRel;
@@ -62,6 +67,7 @@ class GenTipoIdentificacion
         $this->rhuSeleccionesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cbtTercerosTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rhuAspirantesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rhuPoligrafiasTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turClientesTipoIdentificacionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -257,6 +263,40 @@ class GenTipoIdentificacion
     public function getRhuAspirantesTipoIdentificacionRel()
     {
         return $this->rhuAspirantesTipoIdentificacionRel;
+    }
+
+    /**
+     * Add rhuPoligrafiasTipoIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel
+     *
+     * @return GenTipoIdentificacion
+     */
+    public function addRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel)
+    {
+        $this->rhuPoligrafiasTipoIdentificacionRel[] = $rhuPoligrafiasTipoIdentificacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhuPoligrafiasTipoIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel
+     */
+    public function removeRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel)
+    {
+        $this->rhuPoligrafiasTipoIdentificacionRel->removeElement($rhuPoligrafiasTipoIdentificacionRel);
+    }
+
+    /**
+     * Get rhuPoligrafiasTipoIdentificacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhuPoligrafiasTipoIdentificacionRel()
+    {
+        return $this->rhuPoligrafiasTipoIdentificacionRel;
     }
 
     /**

@@ -92,7 +92,9 @@ class VisitaController extends Controller
                 if(count($arEmpleado) > 0) {
                     $arVisita->setEmpleadoRel($arEmpleado);
                     if($arEmpleado->getCodigoContratoActivoFk() != '') {                                                
-                        if($codigoVisita == 0) {                            
+                        if($codigoVisita == 0) {  
+                            $arVisita->setCentroCostoRel($arEmpleado->getCentroCostoRel());
+                            $arVisita->setClienteRel($arVisita->getCentroCostoRel()->getClienteRel());
                             $arVisita->setCodigoUsuario($arUsuario->getUserName());                                                                                                                
                             $arVisita->setFechaCreacion(new \DateTime('now'));                            
                         }

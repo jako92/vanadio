@@ -1,0 +1,82 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Prueba detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Prueba: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Prueba</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">                
+                {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}               
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 8,  'numero': arPrueba.codigoPruebaPk }) }}', 'Archivos', 500, 800)" >Archivos</a>
+            </div>
+        </div>            
+        <br /><br />
+        <div class="panel panel-default">
+            <div class="panel-heading">Información de la prueba</div>
+            <div class="panel-body">    
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td class="td-in-well">{{ arPrueba.codigoPruebaPk }}</td>
+                        <td class="titulo">FECHA:</th>
+                        <td class="td-in-well">{{ arPrueba.fecha |date("Y/m/d") }}</td>
+                        <td class="titulo">USUARIO:</td>
+                        <td class="td-in-well">{{ arPrueba.codigoUsuario }}</td>                        
+                    </tr>
+                    <tr>
+                        <td class="titulo">IDENTIFICACIÓN:</td>
+                        <td class="td-in-well">{{ arPrueba.empleadoRel.numeroIdentificacion }}</td>
+                        <td class="titulo">EMPLEADO:</td>
+                        <td class="td-in-well">{{ arPrueba.empleadoRel.nombreCorto }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                                                
+                    </tr>
+                    <tr>
+                        <td class="titulo">TIPO:</td>
+                        <td class="td-in-well">{{ arPrueba.pruebaTipoRel.nombre | default('') }}</td></td>
+                        <td class="titulo">REALIZA PRUEBA:</td>
+                        <td class="td-in-well">{{ arPrueba.nombreQuienHacePrueba }}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                                                
+                    </tr>
+                    <tr>
+                        <td class="titulo">AUTORIZADO:</td>
+                        <td class="td-in-well">{% if arPrueba.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>
+                        <td class="titulo">CERRADO:</td>
+                        <td class="td-in-well">{% if arPrueba.estadoCerrado == 1 %} SI {% else %} NO {% endif %}</td>
+                        <td class="titulo">TOTAL:</td>
+                        <td class="td-in-well">{{ arPrueba.vrTotal | number_format(0, '.', ',')}}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo" >COMENTARIOS: </td>
+                        <td class="td-in-well" colspan="6">{{ arPrueba.comentarios }}</td>                                                                       
+                    </tr>                    
+                </table>
+            </div>
+        </div>                    
+
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_prueba') }}" style="float:left">Volver</a>
+            </div>
+        </div>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

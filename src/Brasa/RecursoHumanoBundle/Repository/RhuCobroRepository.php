@@ -61,6 +61,9 @@ class RhuCobroRepository extends EntityRepository {
         $administracion = 0;
         $totalExamen = 0;
         $totalSeleccion = 0;
+        $totalVisita = 0;
+        $totalPrueba = 0;
+        $totalPoligrafia = 0;
         $totalIncapacidad = 0;
         $totalCobro = 0;
         $arServiciosCobrar = new \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar();
@@ -98,6 +101,27 @@ class RhuCobroRepository extends EntityRepository {
             $totalCobro += $arSeleccion->getVrServicio();
             $numeroRegistros++;
         }
+        $arVisitas = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
+        $arVisitas = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->findBy(array('codigoCobroFk' => $codigoCobro));
+        foreach ($arVisitas as $arVisita){
+            $totalVisita += $arVisita->getVrTotal();
+            $totalCobro += $arVisita->getVrTotal();
+            $numeroRegistros++;
+        }
+        $arPruebas = new \Brasa\RecursoHumanoBundle\Entity\RhuPrueba();
+        $arPruebas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrueba')->findBy(array('codigoCobroFk' => $codigoCobro));
+        foreach ($arPruebas as $arPrueba){
+            $totalPrueba += $arPrueba->getVrTotal();
+            $totalCobro += $arPrueba->getVrTotal();
+            $numeroRegistros++;
+        }
+        $arPoligrafias = new \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia();
+        $arPoligrafias = $em->getRepository('BrasaRecursoHumanoBundle:RhuPoligrafia')->findBy(array('codigoCobroFk' => $codigoCobro));
+        foreach ($arPoligrafias as $arPoligrafia){
+            $totalPoligrafia += $arPoligrafia->getVrTotal();
+            $totalCobro += $arPoligrafia->getVrTotal();
+            $numeroRegistros++;
+        }
         $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->findBy(array('codigoCobroFk' => $codigoCobro));
         foreach ($arIncapacidades as $arIncapacidad){
@@ -123,6 +147,9 @@ class RhuCobroRepository extends EntityRepository {
         $arCobro->setVrAdministracion($administracion);
         $arCobro->setVrExamen($totalExamen);
         $arCobro->setVrSeleccion($totalSeleccion);
+        $arCobro->setVrVisita($totalVisita);
+        $arCobro->setVrPrueba($totalPrueba);
+        $arCobro->setVrPoligrafia($totalPoligrafia);
         $arCobro->setVrIncapacidad(round($totalIncapacidad));
         $totalCobro += $arCobro->getVrAjuste();
         $arCobro->setvrTotalCobro(round($totalCobro));

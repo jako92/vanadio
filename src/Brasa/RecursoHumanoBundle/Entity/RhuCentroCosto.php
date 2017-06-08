@@ -270,7 +270,22 @@ class RhuCentroCosto
     /**
      * @ORM\OneToMany(targetEntity="RhuIncapacidad", mappedBy="centroCostoRel")
      */
-    protected $incapacidadesCentroCostoRel;    
+    protected $incapacidadesCentroCostoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuVisita", mappedBy="centroCostoRel")
+     */
+    protected $visitasCentroCostoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPrueba", mappedBy="centroCostoRel")
+     */
+    protected $pruebasCentroCostoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuPoligrafia", mappedBy="centroCostoRel")
+     */
+    protected $poligrafiasCentroCostoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="RhuLicencia", mappedBy="centroCostoRel")
@@ -359,9 +374,12 @@ class RhuCentroCosto
     {
         $this->programacionesPagosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->seleccionesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->examenesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seleccionesRequisitosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->visitasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pruebasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->poligrafiasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->licenciasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosCobrarCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -377,6 +395,7 @@ class RhuCentroCosto
         $this->cartasCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->soportesPagosHorariosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->turSoportesPagosPeriodosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cobrosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1538,37 +1557,37 @@ class RhuCentroCosto
     }
 
     /**
-     * Add seleccionesCentroCostoRel
+     * Add examenesCentroCostoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCentroCostoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
      *
      * @return RhuCentroCosto
      */
-    public function addSeleccionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCentroCostoRel)
+    public function addExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
     {
-        $this->seleccionesCentroCostoRel[] = $seleccionesCentroCostoRel;
+        $this->examenesCentroCostoRel[] = $examenesCentroCostoRel;
 
         return $this;
     }
 
     /**
-     * Remove seleccionesCentroCostoRel
+     * Remove examenesCentroCostoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCentroCostoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
      */
-    public function removeSeleccionesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesCentroCostoRel)
+    public function removeExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
     {
-        $this->seleccionesCentroCostoRel->removeElement($seleccionesCentroCostoRel);
+        $this->examenesCentroCostoRel->removeElement($examenesCentroCostoRel);
     }
 
     /**
-     * Get seleccionesCentroCostoRel
+     * Get examenesCentroCostoRel
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSeleccionesCentroCostoRel()
+    public function getExamenesCentroCostoRel()
     {
-        return $this->seleccionesCentroCostoRel;
+        return $this->examenesCentroCostoRel;
     }
 
     /**
@@ -1637,6 +1656,108 @@ class RhuCentroCosto
     public function getIncapacidadesCentroCostoRel()
     {
         return $this->incapacidadesCentroCostoRel;
+    }
+
+    /**
+     * Add visitasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addVisitasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasCentroCostoRel)
+    {
+        $this->visitasCentroCostoRel[] = $visitasCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove visitasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasCentroCostoRel
+     */
+    public function removeVisitasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasCentroCostoRel)
+    {
+        $this->visitasCentroCostoRel->removeElement($visitasCentroCostoRel);
+    }
+
+    /**
+     * Get visitasCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisitasCentroCostoRel()
+    {
+        return $this->visitasCentroCostoRel;
+    }
+
+    /**
+     * Add pruebasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addPruebasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasCentroCostoRel)
+    {
+        $this->pruebasCentroCostoRel[] = $pruebasCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove pruebasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasCentroCostoRel
+     */
+    public function removePruebasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasCentroCostoRel)
+    {
+        $this->pruebasCentroCostoRel->removeElement($pruebasCentroCostoRel);
+    }
+
+    /**
+     * Get pruebasCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPruebasCentroCostoRel()
+    {
+        return $this->pruebasCentroCostoRel;
+    }
+
+    /**
+     * Add poligrafiasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasCentroCostoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function addPoligrafiasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasCentroCostoRel)
+    {
+        $this->poligrafiasCentroCostoRel[] = $poligrafiasCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove poligrafiasCentroCostoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasCentroCostoRel
+     */
+    public function removePoligrafiasCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasCentroCostoRel)
+    {
+        $this->poligrafiasCentroCostoRel->removeElement($poligrafiasCentroCostoRel);
+    }
+
+    /**
+     * Get poligrafiasCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPoligrafiasCentroCostoRel()
+    {
+        return $this->poligrafiasCentroCostoRel;
     }
 
     /**
@@ -2181,39 +2302,5 @@ class RhuCentroCosto
     public function getCobrosCentroCostoRel()
     {
         return $this->cobrosCentroCostoRel;
-    }
-
-    /**
-     * Add examenesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
-     *
-     * @return RhuCentroCosto
-     */
-    public function addExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
-    {
-        $this->examenesCentroCostoRel[] = $examenesCentroCostoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove examenesCentroCostoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
-     */
-    public function removeExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
-    {
-        $this->examenesCentroCostoRel->removeElement($examenesCentroCostoRel);
-    }
-
-    /**
-     * Get examenesCentroCostoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getExamenesCentroCostoRel()
-    {
-        return $this->examenesCentroCostoRel;
     }
 }

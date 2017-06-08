@@ -1,106 +1,125 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
-<!-- row -->
-      <div class="row" style="margin-right: 0px; margin-left: 0px">
+    <!-- row -->
+    <div class="row" style="margin-right: 0px; margin-left: 0px">
         <div class="col-md-12">
-          <!-- The time line -->
-          <ul class="timeline">
-            <!-- timeline time label -->
-            <li class="time-label">
-                  <span class="bg-red">31 May. 2017</span>
-            </li>
-            <!-- /.timeline-label -->
-            <!-- timeline item -->
-            <li>
-              <i class="fa fa-envelope bg-blue"></i>
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                    <span class="bg-blue">7 Junio. 2017</span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-pencil bg-aqua"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 10:00</span>
+                        <h3 class="timeline-header"><a href="#">Equipo desarrollo</a> Nuevas funcionalidad.</h3>
+                        <div class="timeline-body">
+                            Desde la ruta Recurso humano/Movimiento/Recurso humano, ya es posible agregar las visitas, pruebas psicotecnicas, poligrafias realizadas.<br>
+                            Desde estos módulos podrán administrar y crear estas funcionalidades, las cuales permitirán generar un cobro posteriormente a los clientes.
 
-              <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 18:11</span>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline time label -->
+                <li class="time-label">
+                    <span class="bg-red">31 May. 2017</span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-envelope bg-blue"></i>
 
-                <h3 class="timeline-header"><a href="#">Equipo de soporte</a> informacion de contacto</h3>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 18:11</span>
 
-                <div class="timeline-body">
-                  El equipo de soporte esta completo y tenemos los medios tecnológicos para prestar
-                  el servicio de forma optima, le agradecemos su paciencia en estos días de acondicionamiento
-                  y la tolerancia para la resolución de casos. <br />
-                  Telefono: 3220771 <br />
-                  Email: 
-                    <ul>
-                        <li type="circle">Soporte - Sebastian: soporte1@appsoga.com</li>
-                        <li type="circle">Soporte - Felipe: soporte2@appsoga.com</li>
-                        <li type="circle">Desarrollo - Equipo desarrollo: desarrollo@appsoga.com</li>
-                        <li type="circle">Jefe desarrollo - Mario: jefedesarrollo@appsoga.com</li>
-                        <li type="circle">Gerencia: gerencia@appsoga.com</li>
-                    </ul>                  
-                </div>
-                <div class="timeline-footer">
-                  <a class="btn btn-primary btn-xs">Leer mas</a>
-                </div>
-              </div>
-            </li>
-            <!-- END timeline item -->
-            <!-- timeline item -->
-            <li>
-              <i class="fa fa-user bg-aqua"></i>
+                        <h3 class="timeline-header"><a href="#">Equipo de soporte</a> informacion de contacto</h3>
 
-              <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 5 mins may</span>
+                        <div class="timeline-body">
+                            El equipo de soporte esta completo y tenemos los medios tecnológicos para prestar
+                            el servicio de forma optima, le agradecemos su paciencia en estos días de acondicionamiento
+                            y la tolerancia para la resolución de casos. <br />
+                            Telefono: 3220771 <br />
+                            Email: 
+                            <ul>
+                                <li type="circle">Soporte - Sebastian: soporte1@appsoga.com</li>
+                                <li type="circle">Soporte - Felipe: soporte2@appsoga.com</li>
+                                <li type="circle">Desarrollo - Equipo desarrollo: desarrollo@appsoga.com</li>
+                                <li type="circle">Jefe desarrollo - Mario: jefedesarrollo@appsoga.com</li>
+                                <li type="circle">Gerencia: gerencia@appsoga.com</li>
+                            </ul>                  
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs">Leer mas</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-user bg-aqua"></i>
 
-                <h3 class="timeline-header no-border"><a href="#">Equipo de soporte</a> esta habilitada la pagina www.appsoga.com</h3>
-              </div>
-            </li>
-            <!-- END timeline item -->
-            <!-- timeline item -->
-            <li>
-              <i class="fa fa-comments bg-yellow"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins may</span>
 
-              <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 27 mins may</span>
+                        <h3 class="timeline-header no-border"><a href="#">Equipo de soporte</a> esta habilitada la pagina www.appsoga.com</h3>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-comments bg-yellow"></i>
 
-                <h3 class="timeline-header"><a href="#">Mario Estrada </a> Reporte de casos</h3>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 27 mins may</span>
 
-                <div class="timeline-body">
-                    Con el fin de ejercer un control sobre los casos reportados por los clientes
-                    le solicito notificar cualquier novedad (error, mejora, desarrollo, soporte)
-                    directamente por la pagina www.appsoga.com en el menu contáctenos, de esta forma
-                    queda registrada toda la información para realizar un mejor seguimiento.
-                </div>
-                <div class="timeline-footer">
-                  <a class="btn btn-warning btn-flat btn-xs">Ver comentario</a>
-                </div>
-              </div>
-            </li>
-            <!-- END timeline item -->
-            <!-- timeline time label -->
-            <li class="time-label">
-                  <span class="bg-green">
-                    30 Mayo. 2017
-                  </span>
-            </li>
-            <!-- /.timeline-label -->
-            <!-- timeline item -->
-            <li>
-              <i class="fa fa-camera bg-purple"></i>
+                        <h3 class="timeline-header"><a href="#">Mario Estrada </a> Reporte de casos</h3>
 
-              <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 2 days may</span>
+                        <div class="timeline-body">
+                            Con el fin de ejercer un control sobre los casos reportados por los clientes
+                            le solicito notificar cualquier novedad (error, mejora, desarrollo, soporte)
+                            directamente por la pagina www.appsoga.com en el menu contáctenos, de esta forma
+                            queda registrada toda la información para realizar un mejor seguimiento.
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">Ver comentario</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline time label -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        30 Mayo. 2017
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
 
-                <h3 class="timeline-header"><a href="#">App Soga S.A.S</a> Estamos atentos a sus necesidades.</h3>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 2 days may</span>
 
-                <div class="timeline-body">
-                  <img src="{{ asset('imagenes/default/soga2.jpg') }}" alt="..." class="margin">
-                </div>
-              </div>
-            </li>
-            <!-- END timeline item -->
-            <li>
-              <i class="fa fa-clock-o bg-gray"></i>
-            </li>
-          </ul>
+                        <h3 class="timeline-header"><a href="#">App Soga S.A.S</a> Estamos atentos a sus necesidades.</h3>
+
+                        <div class="timeline-body">
+                            <img src="{{ asset('imagenes/default/soga2.jpg') }}" alt="..." class="margin">
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
         </div>
         <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <br /> <br />
-            
+    </div>
+    <!-- /.row -->
+    <br /> <br />
+
 {% endblock %}

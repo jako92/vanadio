@@ -126,6 +126,11 @@ class RhuFactura
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
     private $estadoAutorizado = 0;
+    
+    /**     
+     * @ORM\Column(name="estado_contabilizado", type="boolean")
+     */    
+    private $estadoContabilizado = 0;
             
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
@@ -969,5 +974,29 @@ class RhuFactura
     public function getSeleccionesFacturaRel()
     {
         return $this->seleccionesFacturaRel;
+    }
+
+    /**
+     * Set estadoContabilizado
+     *
+     * @param boolean $estadoContabilizado
+     *
+     * @return RhuFactura
+     */
+    public function setEstadoContabilizado($estadoContabilizado)
+    {
+        $this->estadoContabilizado = $estadoContabilizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoContabilizado
+     *
+     * @return boolean
+     */
+    public function getEstadoContabilizado()
+    {
+        return $this->estadoContabilizado;
     }
 }
