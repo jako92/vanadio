@@ -179,6 +179,7 @@ class ConfiguracionController extends Controller {
                 ->add('cuentaPago', NumberType::class, array('data' => $arConfiguracion->getCuentaPago(), 'required' => true))
                 ->add('conceptoVacacion', EntityType::class, $arrayPropiedadesConceptoVacacion, array('required' => true))
                 ->add('afectaVacacionesParafiscales', CheckboxType::class, array('data' => $arConfiguracion->getAfectaVacacionesParafiscales(), 'required' => false))
+                ->add('liquidarAuxilioTransportePrima', CheckboxType::class, array('data' => $arConfiguracion->getliquidarAuxilioTransportePrima(), 'required' => false))
                 ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))
                 //->add('guardarProvision', 'submit', array('label' => 'Actualizar'))
                 ->getForm();

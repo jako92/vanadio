@@ -423,7 +423,12 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
      */
-    private $liquidarVacacionesSalario = false; 
+    private $liquidarVacacionesSalario = false;
+    
+    /**
+     * @ORM\Column(name="liquidar_auxilio_transporte_prima", type="boolean")
+     */
+    private $liquidarAuxilioTransportePrima = false;
     
     /**
      * @ORM\Column(name="horas_extra_dominical_diurna", type="integer")
@@ -440,6 +445,7 @@ class RhuConfiguracion
      */    
     private $ordenNombreEmpleado = 0;     
     
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -2382,6 +2388,30 @@ class RhuConfiguracion
     public function getLiquidarVacacionesSalario()
     {
         return $this->liquidarVacacionesSalario;
+    }
+
+    /**
+     * Set liquidarAuxilioTransportePrima
+     *
+     * @param boolean $liquidarAuxilioTransportePrima
+     *
+     * @return RhuConfiguracion
+     */
+    public function setLiquidarAuxilioTransportePrima($liquidarAuxilioTransportePrima)
+    {
+        $this->liquidarAuxilioTransportePrima = $liquidarAuxilioTransportePrima;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidarAuxilioTransportePrima
+     *
+     * @return boolean
+     */
+    public function getLiquidarAuxilioTransportePrima()
+    {
+        return $this->liquidarAuxilioTransportePrima;
     }
 
     /**
