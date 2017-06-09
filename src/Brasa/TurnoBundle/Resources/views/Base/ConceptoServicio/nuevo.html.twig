@@ -60,19 +60,22 @@
                     <div class="form-group form-group-sm">
                         <label for="form_horas" class="col-sm-3 control-label">Horas:</label>
                         <div class="col-sm-9">
-                            {{ form_widget(form.horas, { 'attr': {'class': 'form-control'} }) }}                        
+                            {{ form_widget(form.horas, { 'attr': {'class': 'form-control'} }) }}
+                            <div class="text-danger">{{ form_errors(form.horas) }}</div>
                         </div>                
                     </div>                    
                     <div class="form-group form-group-sm">
                         <label for="form_horasDiurnas" class="col-sm-3 control-label">Horas diurnas:</label>
                         <div class="col-sm-9">
-                            {{ form_widget(form.horasDiurnas, { 'attr': {'class': 'form-control'} }) }}                        
+                            {{ form_widget(form.horasDiurnas, { 'attr': {'class': 'form-control'} }) }}
+                            <div class="text-danger">{{ form_errors(form.horasDiurnas) }}</div>
                         </div>                
                     </div>                    
                     <div class="form-group form-group-sm">
                         <label for="form_horasNocturnas" class="col-sm-3 control-label">Horas Nocturnas:</label>
                         <div class="col-sm-9">
-                            {{ form_widget(form.horasNocturnas, { 'attr': {'class': 'form-control'} }) }}                        
+                            {{ form_widget(form.horasNocturnas, { 'attr': {'class': 'form-control'} }) }}
+                            <div class="text-danger">{{ form_errors(form.horasNocturnas) }}</div>
                         </div>                
                     </div>      
                     <div class="form-group form-group-sm">

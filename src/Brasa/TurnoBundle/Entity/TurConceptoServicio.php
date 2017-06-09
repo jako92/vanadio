@@ -3,6 +3,7 @@
 namespace Brasa\TurnoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="tur_concepto_servicio")
@@ -44,16 +45,36 @@ class TurConceptoServicio
     
     /**
      * @ORM\Column(name="horas", type="float")
+     * @ORM\Column(name="horas_diurnas", type="float")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 24,
+     *      minMessage = "El valor minimo de horas es 0",
+     *      maxMessage = "El valor maximo de horas diurnas es 24"
+     * )
      */    
     private $horas = 0;    
 
     /**
      * @ORM\Column(name="horas_diurnas", type="float")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 16,
+     *      minMessage = "El valor minimo de horas diurnas es 0",
+     *      maxMessage = "El valor maximo de horas diurnas es 16"
+     * )
      */    
     private $horasDiurnas = 0;     
     
     /**
      * @ORM\Column(name="horas_nocturnas", type="float")
+     * @ORM\Column(name="horas_diurnas", type="float")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 8,
+     *      minMessage = "El valor minimo de horas nocturnas es 0",
+     *      maxMessage = "El valor maximo de horas nocturnas es 8"
+     * )
      */    
     private $horasNocturnas = 0; 
     

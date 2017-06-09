@@ -3,6 +3,7 @@
 namespace Brasa\TurnoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="tur_cliente")
@@ -24,6 +25,7 @@ class TurCliente
     
     /**
      * @ORM\Column(name="nit", type="string", length=15, nullable=false)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $nit;        
     
@@ -34,11 +36,13 @@ class TurCliente
     
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=60)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $nombreCorto;                         
     
     /**
      * @ORM\Column(name="nombre_completo", type="string", length=500, nullable=true)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $nombreCompleto;    
     
@@ -84,6 +88,7 @@ class TurCliente
     
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */    
     private $plazoPago = 0;    
     
@@ -240,6 +245,7 @@ class TurCliente
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
     protected $sectorRel;    
     
@@ -247,11 +253,12 @@ class TurCliente
      * @ORM\ManyToOne(targetEntity="TurListaPrecio", inversedBy="clientesListaPrecioRel")
      * @ORM\JoinColumn(name="codigo_lista_precio_fk", referencedColumnName="codigo_lista_precio_pk")
      */
-    protected $listaPrecioRel;     
+    protected $listaPrecioRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="turClientesFormaPagoRel")
      * @ORM\JoinColumn(name="codigo_forma_pago_fk", referencedColumnName="codigo_forma_pago_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
     protected $formaPagoRel;            
     
@@ -264,6 +271,7 @@ class TurCliente
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="turClientesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
     protected $ciudadRel;     
 
@@ -306,6 +314,7 @@ class TurCliente
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="turClientesTipoIdentificacionRel")
      * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
     protected $tipoIdentificacionRel;    
     
@@ -393,8 +402,7 @@ class TurCliente
      * @ORM\OneToMany(targetEntity="TurIngresoPendiente", mappedBy="clienteRel")
      */
     protected $ingresosPendientesClienteRel;
-    
-    
+   
     /**
      * Constructor
      */

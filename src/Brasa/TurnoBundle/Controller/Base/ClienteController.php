@@ -37,8 +37,7 @@ class ClienteController extends Controller {
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -56,7 +55,6 @@ class ClienteController extends Controller {
                     $this->filtrar($form);
                     $this->generarExcelInterfaz();
                 }
-            }
         }
         $arClientes = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Base/Cliente:lista.html.twig', array(
@@ -76,8 +74,7 @@ class ClienteController extends Controller {
         }
         $form = $this->createForm(TurClienteType::class, $arCliente);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
                 $arCliente = $form->getData();
                 $arClienteValidar = new \Brasa\TurnoBundle\Entity\TurCliente();
                 $arClienteValidar = $em->getRepository('BrasaTurnoBundle:TurCliente')->findBy(array('nit' => $arCliente->getNit()));
@@ -94,7 +91,6 @@ class ClienteController extends Controller {
                         return $this->redirect($this->generateUrl('brs_tur_base_cliente'));
                     }
                 }
-            }
         }
         return $this->render('BrasaTurnoBundle:Base/Cliente:nuevo.html.twig', array(
                     'arCliente' => $arCliente,

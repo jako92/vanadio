@@ -64,8 +64,11 @@ class ConceptoServicioController extends Controller {
         }
         $form = $this->createForm(TurConceptoServicioType::class, $arConceptoServicio);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $horas = $form->get('horas')->getData();
+            $horasDiurnas = $form->get('horasDiurnas')->getData();
+            $horasNocturnas = $form->get('horasNocturnas')->getData();
+            if ($horas == ($horasDiurnas + $horasNocturnas)){
                 //$arrControles = $request->request->All();
                 $arConceptoServicio = $form->getData();
                 $em->persist($arConceptoServicio);
@@ -76,6 +79,8 @@ class ConceptoServicioController extends Controller {
                 } else {
                     return $this->redirect($this->generateUrl('brs_tur_base_concepto_servicio_lista'));
                 }
+            }else{
+                $objMensaje->Mensaje("error", "El total de horas no es igual a la sumas entre las horas dirunas y nocturnas");
             }
         }
         return $this->render('BrasaTurnoBundle:Base/ConceptoServicio:nuevo.html.twig', array(

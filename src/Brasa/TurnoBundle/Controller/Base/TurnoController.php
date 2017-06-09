@@ -58,6 +58,7 @@ class TurnoController extends Controller {
      * @Route("/tur/base/turno/nuevo/{codigoTurno}", name="brs_tur_base_turno_nuevo")
      */
     public function nuevoAction(Request $request, $codigoTurno = '') {
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();
         $arTurno = new \Brasa\TurnoBundle\Entity\TurTurno();
         if ($codigoTurno != '' && $codigoTurno != '0') {
@@ -65,19 +66,23 @@ class TurnoController extends Controller {
         }
         $form = $this->createForm(TurTurnoType::class, $arTurno);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $horas = $form->get('horas')->getData();
+            $horasDiurnas = $form->get('horasDiurnas')->getData();
+            $horasNocturnas = $form->get('horasNocturnas')->getData();
+            if ($horas == ($horasDiurnas + $horasNocturnas)) {
                 $arTurno = $form->getData();
                 $arUsuario = $this->getUser();
                 $arTurno->setUsuario($arUsuario->getUserName());
                 $em->persist($arTurno);
                 $em->flush();
-
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_turno_nuevo', array('codigoTurno' => 0)));
                 } else {
                     return $this->redirect($this->generateUrl('brs_tur_base_turno'));
                 }
+            } else {
+                $objMensaje->Mensaje("error", "El total de horas no es igual a la sumas entre las horas dirunas y nocturnas");
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Turno:nuevo.html.twig', array(
