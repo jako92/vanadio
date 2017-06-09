@@ -50,7 +50,7 @@ class TurConceptoServicio
      *      min = 0,
      *      max = 24,
      *      minMessage = "El valor minimo de horas es 0",
-     *      maxMessage = "El valor maximo de horas diurnas es 24"
+     *      maxMessage = "El valor maximo de horas es 24"
      * )
      */    
     private $horas = 0;    
