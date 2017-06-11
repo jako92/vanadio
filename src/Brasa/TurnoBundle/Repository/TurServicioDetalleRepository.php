@@ -50,8 +50,7 @@ class TurServicioDetalleRepository extends EntityRepository {
     public function liquidar($codigoServicioDetalle) {
         $em = $this->getEntityManager();
         $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
-        $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($codigoServicioDetalle);
-        $floValorBaseServicio = $arServicioDetalle->getServicioRel()->getClienteRel()->getListaPrecioRel()->getVrSalario() * $arServicioDetalle->getServicioRel()->getSectorRel()->getPorcentaje();                
+        $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($codigoServicioDetalle);        
         $intCantidad = 0;
         $precio = 0;
         $douTotalHoras = 0;
@@ -108,6 +107,7 @@ class TurServicioDetalleRepository extends EntityRepository {
             $douHoras = ($intHorasRealesDiurnas + $intHorasRealesNocturnas ) * $arServicioDetalleCompuesto->getCantidad();
             $arServicioDetalleCompuestoActualizar = new \Brasa\TurnoBundle\Entity\TurServicioDetalleCompuesto();
             $arServicioDetalleCompuestoActualizar = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleCompuesto')->find($arServicioDetalleCompuesto->getCodigoServicioDetalleCompuestoPk());
+            $floValorBaseServicio = $arServicioDetalle->getVrSalarioBase() * $arServicioDetalle->getServicioRel()->getSectorRel()->getPorcentaje();                
             $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arServicioDetalleCompuesto->getModalidadServicioRel()->getPorcentaje() / 100);
             $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100)/30)/16;             
             $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100)/30)/8;            

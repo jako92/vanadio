@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class TurCotizacionType extends AbstractType
 {
@@ -29,6 +30,7 @@ class TurCotizacionType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))    
             ->add('fechaVence', DateType::class, array('format' => 'yyyyMMdd'))                            
+            ->add('vrSalarioBase', NumberType::class, array('required' => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

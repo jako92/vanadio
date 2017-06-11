@@ -101,6 +101,11 @@ class TurCotizacion
      * @ORM\Column(name="vr_total", type="float")
      */
     private $vrTotal = 0; 
+
+    /**
+     * @ORM\Column(name="vr_salario_base", type="float")
+     */
+    private $vrSalarioBase = 0;
     
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
@@ -754,5 +759,29 @@ class TurCotizacion
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurCotizacion
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
     }
 }

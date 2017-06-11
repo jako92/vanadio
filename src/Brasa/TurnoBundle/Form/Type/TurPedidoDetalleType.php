@@ -80,6 +80,7 @@ class TurPedidoDetalleType extends AbstractType
             ->add('compuesto', CheckboxType::class, array('required'  => false))
             ->add('detalle', TextareaType::class, array('required' => false)) 
             ->add('detallePuesto', TextType::class, array('required' => false))                            
+            ->add('vrSalarioBase', NumberType::class)                            
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

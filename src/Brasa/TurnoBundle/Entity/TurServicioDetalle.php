@@ -218,6 +218,11 @@ class TurServicioDetalle
     private $marca = false;     
     
     /**
+     * @ORM\Column(name="vr_salario_base", type="float")
+     */
+    private $vrSalarioBase = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurServicio", inversedBy="serviciosDetallesServicioRel")
      * @ORM\JoinColumn(name="codigo_servicio_fk", referencedColumnName="codigo_servicio_pk")
      */
@@ -1623,5 +1628,29 @@ class TurServicioDetalle
     public function getServiciosDetallesCompuestosServicioDetalleRel()
     {
         return $this->serviciosDetallesCompuestosServicioDetalleRel;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
     }
 }

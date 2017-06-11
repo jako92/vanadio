@@ -61,8 +61,8 @@
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arServicio.clienteRel.nombreCorto }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>                                                
+                        <td class="titulo">SALARIO BASE (LIQ):</td>
+                        <td align="right">{{ arServicio.vrSalarioBase | number_format(0, '.', ',')}}</td>                                              
                         <td class="titulo" >MINIMO:</td>
                         <td align="right">{{ arServicio.vrTotalPrecioMinimo | number_format(0, '.', ',')}}</td>
                     </tr> 
@@ -153,6 +153,7 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Horas diurnas">HD</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Horas nocturnas">HN</p></th>
                             <th>DIAS</th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">BASE</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">P.MINIMO</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio ajustado">P.AJUSTADO</p></th>
                             <th>SUBTOTAL</th>
@@ -193,6 +194,7 @@
                                 <td style="text-align: right">{{ arServicioDetalle.horasDiurnas | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arServicioDetalle.horasNocturnas | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arServicioDetalle.dias | number_format(0, '.', ',') }}</td>                     
+                                <td style="text-align: right">{{ arServicioDetalle.vrSalarioBase | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arServicioDetalle.vrPrecioMinimo | number_format(0, '.', ',') }}</td> 
                                 {% if arServicio.estadoAutorizado == 0 and arServicioDetalle.compuesto == 0 %}
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtValorAjustado{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.vrPrecioAjustado  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                                

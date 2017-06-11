@@ -75,6 +75,9 @@ class ServicioController extends Controller {
         $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();
         if ($codigoServicio != 0) {
             $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
+        } else {
+            $arRhuConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+            $arServicio->setVrSalarioBase($arRhuConfiguracion->getVrSalario());
         }
         $form = $this->createForm(TurServicioType::class, $arServicio);
         $form->handleRequest($request);
@@ -91,7 +94,7 @@ class ServicioController extends Controller {
                         $nuevafecha = date('Y/m/', $nuevafecha);
                         $dateFechaGeneracion = date_create($nuevafecha . '01');
                         $arServicio->setFechaGeneracion($dateFechaGeneracion);
-                        $arServicio->setClienteRel($arCliente);
+                        $arServicio->setClienteRel($arCliente);                        
                         $arUsuario = $this->getUser();
                         $arServicio->setUsuario($arUsuario->getUserName());
                         $em->persist($arServicio);
@@ -375,6 +378,7 @@ class ServicioController extends Controller {
         } else {
             $arPeriodo = new \Brasa\TurnoBundle\Entity\TurPeriodo();
             $arPeriodo = $em->getRepository('BrasaTurnoBundle:TurPeriodo')->find(1);
+            $arServicioDetalle->setVrSalarioBase($arServicio->getVrSalarioBase());
             $arServicioDetalle->setLunes(true);
             $arServicioDetalle->setMartes(true);
             $arServicioDetalle->setMiercoles(true);
@@ -461,6 +465,7 @@ class ServicioController extends Controller {
                                 $arServicioDetalle->setPeriodoRel($arCotizacionDetalle->getPeriodoRel());
                                 $arServicioDetalle->setConceptoServicioRel($arCotizacionDetalle->getConceptoServicioRel());
                                 $arServicioDetalle->setConceptoServicioFacturacionRel($arCotizacionDetalle->getConceptoServicioFacturacionRel());
+                                $arServicioDetalle->setVrSalarioBase($arCotizacionDetalle->getVrSalarioBase());
                                 $arServicioDetalle->setDias($arCotizacionDetalle->getDias());
                                 $arServicioDetalle->setLunes($arCotizacionDetalle->getLunes());
                                 $arServicioDetalle->setMartes($arCotizacionDetalle->getMartes());

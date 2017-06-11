@@ -124,6 +124,11 @@ class TurServicio
     private $comentarios;                       
     
     /**
+     * @ORM\Column(name="vr_salario_base", type="float")
+     */
+    private $vrSalarioBase = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="serviciosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -783,5 +788,29 @@ class TurServicio
     public function getVrIva()
     {
         return $this->vrIva;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurServicio
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
     }
 }

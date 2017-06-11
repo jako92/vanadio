@@ -92,6 +92,8 @@ class PedidoController extends Controller {
             $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
             $fechaOriginal = $arPedido->getFechaProgramacion();
         } else {
+            $arRhuConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+            $arPedido->setVrSalarioBase($arRhuConfiguracion->getVrSalario());            
             $arPedido->setFecha(new \DateTime('now'));
             $arPedido->setFechaProgramacion(new \DateTime('now'));
         }
@@ -118,7 +120,6 @@ class PedidoController extends Controller {
                         } else {
                             $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
                             $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));
-                            $arPedido->setVrBasePrecioMinimo($arCliente->getListaPrecioRel()->getVrSalario());
                         }
 
                         $arUsuario = $this->getUser();
@@ -436,6 +437,7 @@ class PedidoController extends Controller {
         } else {
             $arPedidoDetalle->setFechaIniciaPlantilla($arPedido->getFechaProgramacion());
             $arPedidoDetalle->setPedidoRel($arPedido);
+            $arPedidoDetalle->setVrSalarioBase($arPedido->getVrSalarioBase());
             $arPedidoDetalle->setCantidad(1);
             $arPedidoDetalle->setLunes(true);
             $arPedidoDetalle->setMartes(true);
@@ -555,10 +557,11 @@ class PedidoController extends Controller {
                                 $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
                                 $arPedidoDetalle->setPedidoRel($arPedido);
                                 $arPedidoDetalle->setProyectoRel($arCotizacionDetalle->getProyectoRel());
-                                $arPedidoDetalle->setModalidadServicioRel($arCotizacionDetalle->getModalidadServicioRel());
-                                $arPedidoDetalle->setModalidadServicioFacturacionRel($arCotizacionDetalle->getModalidadServicioFacturacionRel());
+                                $arPedidoDetalle->setModalidadServicioRel($arCotizacionDetalle->getModalidadServicioRel());                                
                                 $arPedidoDetalle->setPeriodoRel($arCotizacionDetalle->getPeriodoRel());
                                 $arPedidoDetalle->setConceptoServicioRel($arCotizacionDetalle->getConceptoServicioRel());
+                                $arPedidoDetalle->setConceptoServicioFacturacionRel($arCotizacionDetalle->getConceptoServicioFacturacionRel());
+                                $arPedidoDetalle->setVrSalarioBase($arCotizacionDetalle->getVrSalarioBase());
                                 $arPedidoDetalle->setDias($arCotizacionDetalle->getDias());
                                 $arPedidoDetalle->setLunes($arCotizacionDetalle->getLunes());
                                 $arPedidoDetalle->setMartes($arCotizacionDetalle->getMartes());
@@ -654,13 +657,13 @@ class PedidoController extends Controller {
                         foreach ($arrSeleccionados AS $codigo) {
                             $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
                             $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->find($codigo);
-
                             $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
                             $arPedidoDetalle->setPedidoRel($arPedido);
                             $arPedidoDetalle->setModalidadServicioRel($arServicioDetalle->getModalidadServicioRel());
                             $arPedidoDetalle->setPeriodoRel($arServicioDetalle->getPeriodoRel());
                             $arPedidoDetalle->setConceptoServicioRel($arServicioDetalle->getConceptoServicioRel());
                             $arPedidoDetalle->setConceptoServicioFacturacionRel($arServicioDetalle->getConceptoServicioFacturacionRel());
+                            $arPedidoDetalle->setVrSalarioBase($arServicioDetalle->getVrSalarioBase());
                             $arPedidoDetalle->setPlantillaRel($arServicioDetalle->getPlantillaRel());
                             $arPedidoDetalle->setProyectoRel($arServicioDetalle->getProyectoRel());
                             $arPedidoDetalle->setGrupoFacturacionRel($arServicioDetalle->getGrupoFacturacionRel());

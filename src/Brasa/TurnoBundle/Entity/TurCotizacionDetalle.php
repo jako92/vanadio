@@ -153,6 +153,11 @@ class TurCotizacionDetalle
     private $dia31 = false;    
     
     /**
+     * @ORM\Column(name="vr_salario_base", type="float")
+     */
+    private $vrSalarioBase = 0;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurCotizacion", inversedBy="cotizacionesDetallesCotizacionRel")
      * @ORM\JoinColumn(name="codigo_cotizacion_fk", referencedColumnName="codigo_cotizacion_pk")
      */
@@ -991,5 +996,29 @@ class TurCotizacionDetalle
     public function getPeriodoRel()
     {
         return $this->periodoRel;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurCotizacionDetalle
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
     }
 }

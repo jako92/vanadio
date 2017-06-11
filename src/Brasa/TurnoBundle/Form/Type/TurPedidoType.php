@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class TurPedidoType extends AbstractType
 {
@@ -29,7 +30,8 @@ class TurPedidoType extends AbstractType
                     ->orderBy('s.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))  
-            ->add('fechaProgramacion', DateType::class, array('format' => 'yyyyMMdd'))                            
+            ->add('fechaProgramacion', DateType::class, array('format' => 'yyyyMMdd'))
+            ->add('vrSalarioBase', NumberType::class)                            
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

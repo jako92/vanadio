@@ -47,6 +47,7 @@ class TurCotizacionDetalleType extends AbstractType
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd'))
             ->add('cantidad', NumberType::class)
+            ->add('vrSalarioBase', NumberType::class)
             ->add('lunes', CheckboxType::class, array('required'  => false))
             ->add('martes', CheckboxType::class, array('required'  => false))
             ->add('miercoles', CheckboxType::class, array('required'  => false))

@@ -71,8 +71,7 @@ class TurPedidoRepository extends EntityRepository {
     public function liquidar($codigoPedido) {        
         $em = $this->getEntityManager();        
         $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido(); 
-        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
-        $floValorBaseServicio = $arPedido->getVrBasePrecioMinimo() * $arPedido->getSectorRel()->getPorcentaje();
+        $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);       
         $intCantidad = 0;
         $douTotalHoras = 0;
         $douTotalHorasDiurnas = 0;
@@ -223,6 +222,7 @@ class TurPedidoRepository extends EntityRepository {
                 $douCostoCalculado = $douCostoCalculado;
                 $arPedidoDetalleActualizar = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();        
                 $arPedidoDetalleActualizar = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arPedidoDetalle->getCodigoPedidoDetallePk());                         
+                $floValorBaseServicio = $arPedidoDetalle->getVrSalarioBase() * $arPedido->getSectorRel()->getPorcentaje();
                 $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arPedidoDetalle->getModalidadServicioRel()->getPorcentaje() / 100);                        
                 $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100)/30)/16;            
                 $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100)/30)/8;                                  
@@ -315,7 +315,8 @@ class TurPedidoRepository extends EntityRepository {
         $arPedido->setVrTotalCosto($douTotalCostoCalculado);
         $subtotal = $subtotalGeneral + $floSubTotalConceptos;        
         $baseAiu = $subtotal*10/100;        
-        $total = $subtotal + $ivaGeneral;                
+        $total = $subtotal + $ivaGeneral; 
+        $arPedido->setVrSubtotal($subtotal);
         $arPedido->setVrBaseAiu($baseAiu);
         $arPedido->setVrIva($ivaGeneral);
         $arPedido->setVrTotal($total);

@@ -51,7 +51,7 @@ class GenerarPedidoController extends Controller {
                                 $arPedidoNuevo->setSectorRel($arServicio->getSectorRel());
                                 $arPedidoNuevo->setFecha($dateFechaDesde);
                                 $arPedidoNuevo->setFechaProgramacion($dateFechaDesde);
-                                $arPedidoNuevo->setVrBasePrecioMinimo($arServicio->getClienteRel()->getListaPrecioRel()->getVrSalario());
+                                $arPedidoNuevo->setVrSalarioBase($arServicio->getVrSalarioBase());
                                 $em->persist($arPedidoNuevo);
 
                                 $arServicioDetalles = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
@@ -97,6 +97,7 @@ class GenerarPedidoController extends Controller {
                                     $arPedidoDetalleNuevo->setCantidad($arServicioDetalle->getCantidad());
                                     $arPedidoDetalleNuevo->setConceptoServicioRel($arServicioDetalle->getConceptoServicioRel());
                                     $arPedidoDetalleNuevo->setConceptoServicioFacturacionRel($arServicioDetalle->getConceptoServicioFacturacionRel());
+                                    $arPedidoDetalleNuevo->setVrSalarioBase($arServicioDetalle->getVrSalarioBase());
                                     $arPedidoDetalleNuevo->setModalidadServicioRel($arServicioDetalle->getModalidadServicioRel());
                                     $arPedidoDetalleNuevo->setPuestoRel($arServicioDetalle->getPuestoRel());
                                     $arPedidoDetalleNuevo->setPlantillaRel($arServicioDetalle->getPlantillaRel());

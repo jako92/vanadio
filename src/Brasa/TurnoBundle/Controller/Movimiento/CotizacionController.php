@@ -69,6 +69,8 @@ class CotizacionController extends Controller {
         if ($codigoCotizacion != 0) {
             $arCotizacion = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->find($codigoCotizacion);
         } else {
+            $arRhuConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+            $arCotizacion->setVrSalarioBase($arRhuConfiguracion->getVrSalario());            
             $arCotizacion->setFecha(new \DateTime('now'));
             $arCotizacion->setFechaVence(new \DateTime('now'));
         }
@@ -78,7 +80,7 @@ class CotizacionController extends Controller {
             if ($form->isValid()) {
                 $arCotizacion = $form->getData();
                 $arrControles = $request->request->All();
-                $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
+                $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();                
                 if ($arrControles['txtNit'] != '') {
                     $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
@@ -209,6 +211,7 @@ class CotizacionController extends Controller {
         if ($codigoCotizacionDetalle != 0) {
             $arCotizacionDetalle = $em->getRepository('BrasaTurnoBundle:TurCotizacionDetalle')->find($codigoCotizacionDetalle);
         } else {
+            $arCotizacionDetalle->setVrSalarioBase($arCotizacion->getVrSalarioBase());
             $arCotizacionDetalle->setLunes(true);
             $arCotizacionDetalle->setMartes(true);
             $arCotizacionDetalle->setMiercoles(true);

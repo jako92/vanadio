@@ -55,6 +55,7 @@ class TurServicioDetalleType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))                             
             ->add('cantidad', NumberType::class)
+            ->add('vrSalarioBase', NumberType::class)                            
             ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd')) 
             ->add('lunes', CheckboxType::class, array('required'  => false))

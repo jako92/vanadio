@@ -240,7 +240,7 @@ class TurCliente
     /**     
      * @ORM\Column(name="retencion_fuente", type="boolean")
      */    
-    private $retencionFuente = false;
+    private $retencionFuente = false;        
     
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
@@ -403,6 +403,7 @@ class TurCliente
      */
     protected $ingresosPendientesClienteRel;
    
+
     /**
      * Constructor
      */

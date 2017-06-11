@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class TurServicioType extends AbstractType
 {
@@ -19,7 +20,8 @@ class TurServicioType extends AbstractType
                     return $er->createQueryBuilder('s')
                     ->orderBy('s.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                   
+                'required' => true))     
+            ->add('vrSalarioBase', NumberType::class)                            
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

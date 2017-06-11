@@ -140,12 +140,7 @@ class TurPedido
     /**
      * @ORM\Column(name="vr_total", type="float")
      */
-    private $vrTotal = 0;   
-    
-    /**
-     * @ORM\Column(name="vr_base_precio_minimo", type="float")
-     */
-    private $vrBasePrecioMinimo = 0;     
+    private $vrTotal = 0;           
     
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
@@ -161,6 +156,11 @@ class TurPedido
      * @ORM\Column(name="estado_cierre_mes", type="boolean")
      */    
     private $estadoCierreMes = false;    
+    
+    /**
+     * @ORM\Column(name="vr_salario_base", type="float")
+     */
+    private $vrSalarioBase = 0;    
     
     /**
      * @ORM\ManyToOne(targetEntity="TurPedidoTipo", inversedBy="pedidosPedidoTipoRel")
@@ -810,30 +810,6 @@ class TurPedido
     }
 
     /**
-     * Set vrBasePrecioMinimo
-     *
-     * @param float $vrBasePrecioMinimo
-     *
-     * @return TurPedido
-     */
-    public function setVrBasePrecioMinimo($vrBasePrecioMinimo)
-    {
-        $this->vrBasePrecioMinimo = $vrBasePrecioMinimo;
-
-        return $this;
-    }
-
-    /**
-     * Get vrBasePrecioMinimo
-     *
-     * @return float
-     */
-    public function getVrBasePrecioMinimo()
-    {
-        return $this->vrBasePrecioMinimo;
-    }
-
-    /**
      * Set usuario
      *
      * @param string $usuario
@@ -879,6 +855,54 @@ class TurPedido
     public function getComentarios()
     {
         return $this->comentarios;
+    }
+
+    /**
+     * Set estadoCierreMes
+     *
+     * @param boolean $estadoCierreMes
+     *
+     * @return TurPedido
+     */
+    public function setEstadoCierreMes($estadoCierreMes)
+    {
+        $this->estadoCierreMes = $estadoCierreMes;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCierreMes
+     *
+     * @return boolean
+     */
+    public function getEstadoCierreMes()
+    {
+        return $this->estadoCierreMes;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurPedido
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
     }
 
     /**
@@ -1019,29 +1043,5 @@ class TurPedido
     public function getPedidosDetallesConceptosPedidoRel()
     {
         return $this->pedidosDetallesConceptosPedidoRel;
-    }
-
-    /**
-     * Set estadoCierreMes
-     *
-     * @param boolean $estadoCierreMes
-     *
-     * @return TurPedido
-     */
-    public function setEstadoCierreMes($estadoCierreMes)
-    {
-        $this->estadoCierreMes = $estadoCierreMes;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoCierreMes
-     *
-     * @return boolean
-     */
-    public function getEstadoCierreMes()
-    {
-        return $this->estadoCierreMes;
     }
 }

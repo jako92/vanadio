@@ -52,8 +52,8 @@
                     <tr>
                         <td class="titulo">NUMERO:</td>
                         <td class="td-in-well">{{ arCotizacion.numero }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">SALARIO BASE (LIQ):</td>
+                        <td align="right">{{ arCotizacion.vrSalarioBase | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">CLIENTE:</td>
@@ -142,6 +142,7 @@
                             <th>H.N</th>
                             <th>DIAS</th>
                             <th>COSTO</th>
+                            <th>BASE</th>
                             <th>P.MINIMO</th>
                             <th>P.AJUSTADO</th>
                             <th>TOTAL</th>
@@ -170,8 +171,9 @@
                                 <td style="text-align: right">{{ arCotizacionDetalle.horas | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arCotizacionDetalle.horasDiurnas | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arCotizacionDetalle.horasNocturnas | number_format(0, '.', ',') }}</td> 
-                                <td style="text-align: right">{{ arCotizacionDetalle.dias | number_format(0, '.', ',') }}</td> 
-                                <td style="text-align: right">{{ arCotizacionDetalle.vrCosto | number_format(0, '.', ',') }}</td> 
+                                <td style="text-align: right">{{ arCotizacionDetalle.dias | number_format(0, '.', ',') }}</td>                                 
+                                <td style="text-align: right">{{ arCotizacionDetalle.vrCosto | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arCotizacionDetalle.vrSalarioBase | number_format(0, '.', ',') }}</td> 
                                 <td style="text-align: right">{{ arCotizacionDetalle.vrPrecioMinimo | number_format(0, '.', ',') }}</td> 
                                 {% if arCotizacion.estadoAutorizado == 0 %}
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtValorAjustado{{ arCotizacionDetalle.codigoCotizacionDetallePk }}" value="{{ arCotizacionDetalle.vrPrecioAjustado  }}" size="10" style="text-align: right; width:80px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                                

@@ -47,6 +47,13 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.fechaHasta) }}                        
                     </div> 
+                    <label class="col-sm-2 control-label">Salario base:</label>
+                    <div class="col-sm-4">
+                       {{ form_widget(form.vrSalarioBase, { 'attr': {'class': 'form-control'} }) }}                       
+                    </div>                                         
+                </div>                     
+
+                <div class="form-group form-group-sm">
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">
                         <label for="form_lunes"  class="control-label">Lun{{ form_widget(form.lunes) }}</label>
@@ -57,14 +64,7 @@
                         <label for="form_sabado"  class="control-label">Sab{{ form_widget(form.sabado) }}</label>
                         <label for="form_domingo"  class="control-label">Dom{{ form_widget(form.domingo) }}</label>
                         <label for="form_festivo"  class="control-label">Fes{{ form_widget(form.festivo) }}</label>
-                    </div>                     
-                </div>                     
-
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-4">
-                         
-                    </div>
+                    </div> 
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">                        
                         <label for="form_liquidarDiasReales"  class="control-label">Liquidar dias reales{{ form_widget(form.liquidarDiasReales) }}</label>

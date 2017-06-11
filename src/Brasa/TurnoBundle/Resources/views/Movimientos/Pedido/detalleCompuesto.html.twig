@@ -4,30 +4,17 @@
     <section class="content-header">
         <h1>
             Programacion turnos
-            <small>Programaciones: lista</small>
+            <small>Pedido: detalle compuesto</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimiento</a></li>
-            <li class="active">Lista</li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Pedido</a></li>
+            <li class="active">detalle compuesto</li>
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>      
-        <div class="page-header">            
-            <h3>Detalle pedido compuesto</h3>            
-        </div>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <!-- Encabezado Movimiento -->
