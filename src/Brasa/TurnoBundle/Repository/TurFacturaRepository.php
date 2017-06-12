@@ -118,7 +118,8 @@ class TurFacturaRepository extends EntityRepository {
         foreach ($arFacturasDetalle as $arFacturaDetalle) {
             $arFacturasDetalleAct = new \Brasa\TurnoBundle\Entity\TurFacturaDetalle();
             $arFacturasDetalleAct = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());
-            $subtotalDetalle = $arFacturaDetalle->getVrPrecio() * $arFacturaDetalle->getCantidad();
+            //$subtotalDetalle = $arFacturaDetalle->getVrPrecio() * $arFacturaDetalle->getCantidad(); error reportado por seracis
+            $subtotalDetalle = $arFacturaDetalle->getVrPrecio(); // correccion de error reportado por seracis
             $baseIvaDetalle = ($subtotalDetalle * $arFacturaDetalle->getPorBaseIva()) / 100;
             $ivaDetalle = ($baseIvaDetalle * $arFacturaDetalle->getPorIva()) / 100;            
             $totalDetalle = $subtotalDetalle + $ivaDetalle;

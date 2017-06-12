@@ -33,20 +33,20 @@
                     <tr>
                         <td class="titulo">CODIGO:</td>
                         <td class="td-in-well">{{ arPuesto.codigoPuestoPk }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">HORA INICIO</td>
+                        <td class="td-in-well">{{ arPuesto.horaInicio | date('H:i:s')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">NOMBRE:</td>
                         <td class="td-in-well">{{ arPuesto.nombre }}</td>
-                        <td class="titulo"></td>
-                        <td></td>
+                        <td class="titulo">HORA FINAL</td>
+                        <td class="td-in-well">{{ arPuesto.horaFinal | date('H:i:s') }}</td>
                     </tr>                
                     <tr>
                         <td class="titulo">CONTACTO:</td>
                         <td class="td-in-well">{{ arPuesto.contacto }}</td>
-                        <td class="titulo"></td>
-                        <td align="right"></td>
+                        <td class="titulo">UBICACION GPS</td>
+                        <td class="td-in-well">{{ arPuesto.ubicacionGps }}</td>
                     </tr>
                     <tr>
                         <td class="titulo">EDAD MINIMA:</td>
