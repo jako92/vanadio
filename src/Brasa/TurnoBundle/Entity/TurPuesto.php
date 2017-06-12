@@ -3,6 +3,7 @@
 namespace Brasa\TurnoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="tur_puesto")
@@ -19,6 +20,7 @@ class TurPuesto
     
     /**
      * @ORM\Column(name="nombre", type="string", length=300)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $nombre;      
             
@@ -163,6 +165,21 @@ class TurPuesto
     private $carro;
     
     /**
+     * @ORM\Column(name="hora_inicio", type="time", nullable=true)
+     */    
+    private $horaInicio;    
+
+    /**
+     * @ORM\Column(name="hora_final", type="time", nullable=true)
+     */    
+    private $horaFinal;
+    
+    /**
+     * @ORM\Column(name="ubicacion_gps", type="string", length=100, nullable=true)
+     */    
+    private $ubicacionGps;
+    
+    /**
      /**
      * @ORM\ManyToOne(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil", inversedBy="turPuestosEstadoCivilRel")
      * @ORM\JoinColumn(name="codigo_estado_civil_fk", referencedColumnName="codigo_estado_civil_pk")
@@ -275,7 +292,6 @@ class TurPuesto
      */
     protected $costosDetallesPuestoRel;     
     
-
     /**
      * Constructor
      */
@@ -1001,6 +1017,78 @@ class TurPuesto
     public function getCarro()
     {
         return $this->carro;
+    }
+
+    /**
+     * Set horaInicio
+     *
+     * @param \DateTime $horaInicio
+     *
+     * @return TurPuesto
+     */
+    public function setHoraInicio($horaInicio)
+    {
+        $this->horaInicio = $horaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get horaInicio
+     *
+     * @return \DateTime
+     */
+    public function getHoraInicio()
+    {
+        return $this->horaInicio;
+    }
+
+    /**
+     * Set horaFinal
+     *
+     * @param \DateTime $horaFinal
+     *
+     * @return TurPuesto
+     */
+    public function setHoraFinal($horaFinal)
+    {
+        $this->horaFinal = $horaFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get horaFinal
+     *
+     * @return \DateTime
+     */
+    public function getHoraFinal()
+    {
+        return $this->horaFinal;
+    }
+
+    /**
+     * Set ubicacionGps
+     *
+     * @param string $ubicacionGps
+     *
+     * @return TurPuesto
+     */
+    public function setUbicacionGps($ubicacionGps)
+    {
+        $this->ubicacionGps = $ubicacionGps;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacionGps
+     *
+     * @return string
+     */
+    public function getUbicacionGps()
+    {
+        return $this->ubicacionGps;
     }
 
     /**
