@@ -128,3 +128,17 @@ sonata_admin:
                 items:
                     - admin.recursohumano.incapacidadtipo
                     - admin.recursohumano.facturaconcepto
+                    
+            app.admin.group.general:
+                label: General
+                label_catalogue: Brasa\GeneralBundle
+                items:
+                    - admin.general.sectorcomercial
+                    - admin.general.sectoreconomico
+                    - admin.general.cobertura
+                    - admin.general.dimension
+                    - admin.general.origencapital
+                    - admin.general.origenjudicial
+                    - admin.general.pais
+                    - admin.general.departamento
+                    - admin.general.ciudad

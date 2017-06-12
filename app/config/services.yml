@@ -9,7 +9,7 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
 services:
-    # ...
+    # ................... administracion del modulo de inventario......................................................................
     admin.inventario.marca:
         class: Brasa\InventarioBundle\Admin\InventarioMarcaAdmin
         arguments: [~, Brasa\InventarioBundle\Entity\InvMarca, ~]
@@ -27,7 +27,9 @@ services:
         arguments: [~, Brasa\InventarioBundle\Entity\InvArea, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Area }      
-            
+    
+    # ................... administracion del modulo de recurso humano..................................................................
+    
     admin.recursohumano.incapacidadtipo:
         class: Brasa\RecursoHumanoBundle\Admin\IncapacidadTipoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo, ~]
@@ -38,4 +40,60 @@ services:
         class: Brasa\RecursoHumanoBundle\Admin\FacturaConceptoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuFacturaConcepto, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Factura concepto }             
+            - { name: sonata.admin, manager_type: orm, label: Factura concepto }
+            
+    # .................. administracion del modulo general .............................................................................
+            
+    admin.general.sectorcomercial:
+        class: Brasa\GeneralBundle\Admin\SectorComercialAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenSectorComercial, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Sector comercial }
+            
+    admin.general.sectoreconomico:
+        class: Brasa\GeneralBundle\Admin\OrigenJudicialAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenSectorEconomico, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Sector economico }
+            
+    admin.general.cobertura:
+        class: Brasa\GeneralBundle\Admin\CoberturaAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenCobertura, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Cobertura }
+    
+    admin.general.dimension:
+        class: Brasa\GeneralBundle\Admin\DimensionAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenDimension, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Dimension }
+       
+    admin.general.origencapital:
+        class: Brasa\GeneralBundle\Admin\OrigenCapitalAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenOrigenCapital, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Origen capital }
+            
+    admin.general.origenjudicial:
+        class: Brasa\GeneralBundle\Admin\OrigenJudicialAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenOrigenJudicial, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Origen judicial }
+            
+    admin.general.pais:
+        class: Brasa\GeneralBundle\Admin\PaisAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenPais, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Pais }
+            
+    admin.general.departamento:
+        class: Brasa\GeneralBundle\Admin\DepartamentoAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenDepartamento, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Departamento }
+            
+    admin.general.ciudad:
+        class: Brasa\GeneralBundle\Admin\CiudadAdmin
+        arguments: [~, Brasa\GeneralBundle\Entity\GenCiudad, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Ciudad }

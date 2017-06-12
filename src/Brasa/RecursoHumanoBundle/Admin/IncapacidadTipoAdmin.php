@@ -11,9 +11,9 @@ class IncapacidadTipoAdmin extends AbstractAdmin
     {        
         $formMapper->add('nombre', 'text')
                    ->add('pagoConceptoRel', 'entity', array(
-            'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
-            'choice_label' => 'nombre',
-        ))
+                         'class' => 'BrasaRecursoHumanoBundle:RhuPagoConcepto',
+                         'choice_label' => 'nombre',
+                         ))
                 ->add('generaPago', 'checkbox')
                 ->add('generaIbc', 'checkbox')
                 ->add('tipo', 'number')

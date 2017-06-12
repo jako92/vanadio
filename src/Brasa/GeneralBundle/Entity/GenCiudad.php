@@ -36,18 +36,28 @@ class GenCiudad
     
     /**
      * @ORM\Column(name="codigo_interface", type="string", length=15)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 15,
+     *      minMessage = "El campo no puede contener menos de  {{ limit }}",
+     *      maxMessage = "El campo no puede contener mas de {{ limit }} caracteres")
      */
     private $codigoInterface;    
 
     /**
      * @ORM\Column(name="codigo_dane", type="string", length=3)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 3,
+     *      minMessage = "El campo no puede contener menos de  {{ limit }}",
+     *      maxMessage = "El campo no puede contener mas de {{ limit }} caracteres")
      */
     private $codigoDane;
     
     /**
      * @ORM\Column(name="porcentaje_retencion_ica", type="float")
      */
-    private $porcentaje_retencion_ica;     
+    private $porcentaje_retencion_ica = 0;     
     
     /**
      * @ORM\ManyToOne(targetEntity="GenDepartamento", inversedBy="ciudadesRel")
