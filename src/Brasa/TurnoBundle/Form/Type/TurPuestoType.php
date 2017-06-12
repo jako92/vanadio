@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class TurPuestoType extends AbstractType
 {
@@ -69,6 +70,9 @@ class TurPuestoType extends AbstractType
             ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('INDIFERENTE' => '0', 'MASCULINO' => 'M', 'FEMENINO' => 'F')))                
             ->add('pesoMinimo', TextType::class, array('required'  => false))
             ->add('pesoMaximo', TextType::class, array('required'  => false))
+            ->add('horaInicio', TimeType::class, array('required' => true))
+            ->add('horaFinal', TimeType::class, array('required' => true))
+            ->add('ubicacionGps', TextType::class, array('required'  => false))
             ->add('codigoTipoLibretaMilitar', ChoiceType::class, array('choices' => array('INDIFERENTE' => '0', '1° CLASE' => '1', '2° CLASE' => '2')))                                
             ->add('moto', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1')))                                
             ->add('carro', ChoiceType::class, array('choices'   => array('NO' => '0', 'SI' => '1'))) 

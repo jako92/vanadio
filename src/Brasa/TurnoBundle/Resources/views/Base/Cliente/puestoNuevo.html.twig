@@ -1,7 +1,7 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block content %}
     <!-- Content Header (Page header) -->
-   <section class="content-header">
+    <section class="content-header">
         <h1>
             Programacion turnos
             <small>Clientes: puesto nuevo</small>
@@ -22,6 +22,7 @@
                     <label for="form_nombre" class="col-sm-3 control-label">Nombre:</label>
                     <div class="col-sm-9">
                         {{ form_widget(form.nombre, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                        <div class="text-danger">{{ form_errors(form.nombre) }}</div>
                     </div>                
                 </div>   
                 <div class="form-group form-group-sm">
@@ -100,7 +101,25 @@
                     <div class="col-sm-9">
                         {{ form_widget(form.operacionRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>                           
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Hora inicio:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.horaInicio) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Hora final:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.horaFinal) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">Ubicacion gps:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(form.ubicacionGps, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
             </div>
         </div>                 
         <div class="panel panel-default">
