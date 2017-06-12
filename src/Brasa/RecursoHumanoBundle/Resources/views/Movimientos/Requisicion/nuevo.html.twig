@@ -33,10 +33,12 @@
                     <label for="form_nombre" class="col-sm-2 control-label">Nombre:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
+                        <div class="text-danger">{{ form_errors(form.nombre) }}</div>
                     </div>
                     <label for="form_cantidadSolicitada" class="col-sm-2 control-label">Cantidad:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.cantidadSolicitada, { 'attr': {'class': 'form-control'} }) }}
+                        <div class="text-danger">{{ form_errors(form.cantidadSolicitada) }}</div>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">

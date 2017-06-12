@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,12 +26,14 @@ class RhuSeleccionRequisito
     
     /**     
      * @ORM\Column(name="nombre", type="string")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */    
     
     private $nombre;           
                 
     /**     
      * @ORM\Column(name="cantidad_solicitada", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */    
     private $cantidadSolicitada;
     

@@ -128,6 +128,8 @@ sonata_admin:
                 items:
                     - admin.recursohumano.incapacidadtipo
                     - admin.recursohumano.facturaconcepto
+                    - admin.recursohumano.estudiotipo
+                    - admin.recursohumano.seleccionrequisicionexperiencia
                     
             app.admin.group.general:
                 label: General

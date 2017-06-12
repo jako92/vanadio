@@ -32,6 +32,7 @@ class RhuAspirante
 
     /**
      * @ORM\Column(name="numero_identificacion", type="string", length=20, nullable=false, unique=true)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $numeroIdentificacion;
     
@@ -209,6 +210,7 @@ class RhuAspirante
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuAspirantesTipoIdentificacionRel")
      * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
     protected $tipoIdentificacionRel;
 

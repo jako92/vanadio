@@ -28,12 +28,13 @@
                     <label for="form_tipoIdentificacionRel" class="col-sm-2 control-label">Tipo identificación:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.tipoIdentificacionRel, { 'attr': {'class': 'form-control'} }) }}
+                        <div class="text-danger">{{ form_errors(form.tipoIdentificacionRel) }}</div>
                     </div>
                     <label for="form_numeroIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
                     <div class="col-sm-4">
                         {% if form_errors(form.numeroIdentificacion) %}
                             {{ form_widget(form.numeroIdentificacion, { 'attr': {'class': 'form-control'} }) }}
-                            <div class="alert alert-danger" role="alert">{{ form_errors(form.numeroIdentificacion)}}</div>
+                            <div class="text-danger">{{ form_errors(form.numeroIdentificacion) }}</div>
                         {% else %}
                             {{ form_widget(form.numeroIdentificacion, { 'attr': {'class': 'form-control'} }) }}
                         {% endif %}
