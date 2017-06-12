@@ -123,12 +123,15 @@ class ProyeccionController extends Controller
                             $dateFechaHastaPrimas = $arContrato->getFechaUltimoPago();
                             $intDiasPrima = 0;                                        
                             $intDiasPrima = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($dateFechaDesde, $dateFechaHasta);    
+                            if($arConfiguracion->getDiasAusentismoPrimas()) {                                
+                                $intDiasPrima -= $intDiasAusentismo;                                
+                            }                            
                             $intDiasPrimaSalarioPromedio = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($dateFechaDesde, $dateFechaHastaPrimas);                            
                             $intDiasPrimaLiquidar = $intDiasPrima;
-                            if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
+                            /*if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
                                 $intDiasPrimaLiquidar -= 1;
                                 $intDiasPrimaSalarioPromedio -= 1;
-                            }
+                            }*/
                             $ibpPrimasInicial = $arContrato->getIbpPrimasInicial();                    
                             $ibpPrimasInicial = round($ibpPrimasInicial);
                             $ibpPrimas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHastaPrimas->format('Y-m-d'), $arContrato->getCodigoContratoPk());                

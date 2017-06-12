@@ -63,6 +63,11 @@ class RhuProyeccion
     private $diasPrima = 0;    
     
     /**
+     * @ORM\Column(name="dias_ausentismo_prima", type="integer")
+     */
+    private $diasAusentismoPrima = 0;     
+    
+    /**
      * @ORM\Column(name="fecha_desde_prima", type="date", nullable=true)
      */    
     private $fechaDesdePrima;            
@@ -899,5 +904,29 @@ class RhuProyeccion
     public function getDiasAusentismoPrimas()
     {
         return $this->diasAusentismoPrimas;
+    }
+
+    /**
+     * Set diasAusentismoPrima
+     *
+     * @param integer $diasAusentismoPrima
+     *
+     * @return RhuProyeccion
+     */
+    public function setDiasAusentismoPrima($diasAusentismoPrima)
+    {
+        $this->diasAusentismoPrima = $diasAusentismoPrima;
+
+        return $this;
+    }
+
+    /**
+     * Get diasAusentismoPrima
+     *
+     * @return integer
+     */
+    public function getDiasAusentismoPrima()
+    {
+        return $this->diasAusentismoPrima;
     }
 }

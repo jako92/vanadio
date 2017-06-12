@@ -326,7 +326,7 @@ class GenerarSoportePagoController extends Controller {
                     return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_detalle', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));
                 }
                 if ($form->get('BtnLiquidarCompensacion2')->isClicked()) {
-                    $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+                    $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();                    
                     $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                     $em->getRepository('BrasaTurnoBundle:TurSoportePago')->compensar("", $codigoSoportePagoPeriodo, $arConfiguracion->getTipoCompensacion());
                     $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);
@@ -339,7 +339,11 @@ class GenerarSoportePagoController extends Controller {
                     return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_detalle', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));
                 }
                 if ($form->get('BtnAjustarDevengado')->isClicked()) {
+                    $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                     $em->getRepository('BrasaTurnoBundle:TurSoportePago')->ajustarDevengado($codigoSoportePagoPeriodo);
+                    if($arConfiguracion->getTipoAjusteDevengado() == 2) {
+                        $em->getRepository('BrasaTurnoBundle:TurSoportePago')->ajustarExtras($codigoSoportePagoPeriodo);
+                    }
                     return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_detalle', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));
                 }
             }

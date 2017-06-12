@@ -1602,6 +1602,25 @@ class TurSoportePagoRepository extends EntityRepository {
         $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                             
     }  
     
+    public function ajustarExtras($codigoSoportePagoPeriodo) {
+        $em = $this->getEntityManager();
+        //$arSoportePagoPeriodo = new \Brasa\TurnoBundle\Entity\TurSoportePagoPeriodo();        
+        //$arSoportePagoPeriodo = $em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->find($codigoSoportePagoPeriodo);                        
+        
+        $arSoportesPago = new \Brasa\TurnoBundle\Entity\TurSoportePago();
+        $arSoportesPago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));                                
+        foreach ($arSoportesPago as $arSoportePago) {
+            if($arSoportePago->getVrAjusteDevengadoPactado() > 0) {
+                
+            }
+            //$arSoportePagoAct = new \Brasa\TurnoBundle\Entity\TurSoportePago();
+            //$arSoportePagoAct = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($arSoportePago->getCodigoSoportePagoPk());            
+            //$em->persist($arSoportePagoAct);
+        }               
+        //$em->flush();                    
+        //$em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                             
+    }     
+    
     public function horasOrdinarias() {
         $arrHoras = array(
             'horasDescanso' => 0,

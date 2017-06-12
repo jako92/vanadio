@@ -132,6 +132,12 @@ class TurConfiguracion
      */    
     private $tipoCompensacion = 0;    
     
+    /**
+     * Determina el tipo de ajuste a devengado 1-todos, 2-coordinar
+     * @ORM\Column(name="tipo_ajuste_devengado", type="integer")
+     */    
+    private $tipoAjusteDevengado = 1;    
+    
     /**     
      * @ORM\Column(name="omitir_auxilio_transporte_devengado_pactado", type="boolean")
      */    
@@ -759,5 +765,29 @@ class TurConfiguracion
     public function getHabilitarAjustarDevengado()
     {
         return $this->habilitarAjustarDevengado;
+    }
+
+    /**
+     * Set tipoAjusteDevengado
+     *
+     * @param integer $tipoAjusteDevengado
+     *
+     * @return TurConfiguracion
+     */
+    public function setTipoAjusteDevengado($tipoAjusteDevengado)
+    {
+        $this->tipoAjusteDevengado = $tipoAjusteDevengado;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoAjusteDevengado
+     *
+     * @return integer
+     */
+    public function getTipoAjusteDevengado()
+    {
+        return $this->tipoAjusteDevengado;
     }
 }
