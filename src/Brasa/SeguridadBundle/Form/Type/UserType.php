@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class UserType extends AbstractType
 {
@@ -25,7 +26,8 @@ class UserType extends AbstractType
             ->add('username', TextType::class, array('required' => true))                
             ->add('email', TextType::class, array('required' => true))                
             ->add('password', PasswordType::class, array('required' => true))
-            ->add('cargo', TextType::class, array('required' => true)) 
+            ->add('cargo', TextType::class, array('required' => true))
+            ->add('isActive', CheckboxType::class, array('required' => false))                
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
