@@ -1611,13 +1611,23 @@ class TurSoportePagoRepository extends EntityRepository {
         $arSoportesPago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo));                                
         foreach ($arSoportesPago as $arSoportePago) {
             if($arSoportePago->getVrAjusteDevengadoPactado() > 0) {
-                
+                $extras = $this->convertirExtras($arSoportePago->getVrSalario(), $arSoportePago->getVrAjusteDevengadoPactado());
+                $arSoportePagoAct = new \Brasa\TurnoBundle\Entity\TurSoportePago();
+                $arSoportePagoAct = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($arSoportePago->getCodigoSoportePagoPk());            
+                $arSoportePagoAct->setHorasFestivasDiurnas($extras['festiva_diurna']);
+                $arSoportePagoAct->setHorasFestivasNocturnas($extras['festiva_nocturna']);
+                $arSoportePagoAct->setHorasExtrasOrdinariasDiurnas($extras['extra_diurna']);
+                $arSoportePagoAct->setHorasExtrasOrdinariasNocturnas($extras['extra_nocturna']);
+                $arSoportePagoAct->setHorasExtrasFestivasDiurnas($extras['extra_festiva_diurna']);
+                $arSoportePagoAct->setHorasExtrasFestivasNocturnas($extras['extra_festiva_nocturna']);            
+                $arSoportePagoAct->setHorasRecargoNocturno($extras['recargo_nocturno']);
+                $arSoportePagoAct->setHorasRecargoFestivoDiurno($extras['recargo_festivo_diurno']);            
+                $arSoportePagoAct->setHorasRecargoFestivoNocturno($extras['recargo_festivo_nocturno']);                 
+                $arSoportePagoAct->setVrAjusteDevengadoPactado($extras['ajuste']);
+                $em->persist($arSoportePagoAct);                
             }
-            //$arSoportePagoAct = new \Brasa\TurnoBundle\Entity\TurSoportePago();
-            //$arSoportePagoAct = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($arSoportePago->getCodigoSoportePagoPk());            
-            //$em->persist($arSoportePagoAct);
         }               
-        //$em->flush();                    
+        $em->flush();                    
         //$em->getRepository('BrasaTurnoBundle:TurSoportePagoPeriodo')->liquidar($codigoSoportePagoPeriodo);                                                                             
     }     
     
@@ -1652,5 +1662,96 @@ class TurSoportePagoRepository extends EntityRepository {
             'horas' => 0); 
         return $arrHoras;
     }    
+    
+    public function convertirExtras($salario, $valor) {
+        $vrAjuste = 0;
+        $vrHora = $salario / 240;
+        $vrExtra = array(
+            'festiva_diurna' => $vrHora * 1.75,
+            'festiva_nocturna' => $vrHora * 2.10,
+            'extra_diurna' => $vrHora * 1.25,
+            'extra_nocturna' => $vrHora * 1.75,
+            'extra_festiva_diurna' => $vrHora * 2,
+            'extra_festiva_nocturna' => $vrHora * 2.5,
+            'recargo_nocturno' => $vrHora * 0.35,
+            'recargo_festivo_diurno' => $vrHora * 0.75,
+            'recargo_festivo_nocturno' => $vrHora * 1.10
+            );
+        $numeroExtras = array(
+            'festiva_diurna' => 0,
+            'festiva_nocturna' => 0,
+            'extra_diurna' => 0,
+            'extra_nocturna' => 0,
+            'extra_festiva_diurna' => 0,
+            'extra_festiva_nocturna' => 0,
+            'recargo_nocturno' => 0,
+            'recargo_festivo_diurno' => 0,
+            'recargo_festivo_nocturno' => 0,
+            'ajuste' => 0
+            );        
+        
+        while ($vrAjuste <= $valor) {
+            $clave_aleatoria = array_rand($vrExtra, 1);
+            $vrExtraAdicional = $vrExtra[$clave_aleatoria];
+            if($vrAjuste+$vrExtraAdicional < $valor) {
+                $vrAjuste += $vrExtraAdicional;
+                $numeroExtras[$clave_aleatoria] += 1;
+                $diferencia = $valor - $vrAjuste;
+                if($diferencia < 1000) {
+                    break;    
+                }
+            } else {  
+                $diferencia = ($vrAjuste + $vrExtra['extra_festiva_nocturna']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['extra_festiva_nocturna'];
+                    $numeroExtras['extra_festiva_nocturna'] += 1;
+                    break;
+                }                 
+                $diferencia = ($vrAjuste + $vrExtra['extra_festiva_diurna']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['extra_festiva_diurna'];
+                    $numeroExtras['extra_festiva_diurna'] += 1;
+                    break;
+                }
+                $diferencia = ($vrAjuste + $vrExtra['festiva_nocturna']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['festiva_nocturna'];
+                    $numeroExtras['festiva_nocturna'] += 1;
+                    break;
+                }                
+                $diferencia = ($vrAjuste + $vrExtra['festiva_diurna']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['festiva_diurna'];
+                    $numeroExtras['festiva_diurna'] += 1;
+                    break;
+                }
+                $diferencia = ($vrAjuste + $vrExtra['extra_diurna']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['extra_diurna'];
+                    $numeroExtras['extra_diurna'] += 1;
+                    break;
+                }
+                $diferencia = ($vrAjuste + $vrExtra['recargo_festivo_nocturno']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['recargo_festivo_nocturno'];
+                    $numeroExtras['recargo_festivo_nocturno'] += 1;
+                    break;
+                } 
+                $diferencia = ($vrAjuste + $vrExtra['recargo_festivo_diurno']) - $valor;
+                if($diferencia < 1000) {
+                    $vrAjuste += $vrExtra['recargo_festivo_diurno'];
+                    $numeroExtras['recargo_festivo_diurno'] += 1;
+                    break;
+                }
+    
+                $vrAjuste += $vrExtra['recargo_nocturno'];
+                $numeroExtras['recargo_nocturno'] += 1;
+                break;
+                                
+            }
+        }
+        $numeroExtras['ajuste'] = $vrAjuste;
+        return $numeroExtras;
+    }
     
 }

@@ -223,6 +223,12 @@ class RhuCentroCosto
      */    
     private $aplicaPorcentajeAdministracion = false;
     
+    /**     
+     * Utilizado para no cargar las horas extras del soporte de pago a nomina
+     * @ORM\Column(name="omitir_extras", type="boolean")
+     */    
+    private $omitirExtras = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="centrosCostosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
@@ -2302,5 +2308,29 @@ class RhuCentroCosto
     public function getCobrosCentroCostoRel()
     {
         return $this->cobrosCentroCostoRel;
+    }
+
+    /**
+     * Set omitirExtras
+     *
+     * @param boolean $omitirExtras
+     *
+     * @return RhuCentroCosto
+     */
+    public function setOmitirExtras($omitirExtras)
+    {
+        $this->omitirExtras = $omitirExtras;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirExtras
+     *
+     * @return boolean
+     */
+    public function getOmitirExtras()
+    {
+        return $this->omitirExtras;
     }
 }

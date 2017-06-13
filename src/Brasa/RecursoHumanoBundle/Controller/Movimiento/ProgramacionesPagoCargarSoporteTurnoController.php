@@ -73,16 +73,20 @@ class ProgramacionesPagoCargarSoporteTurnoController extends Controller
                         $arProgramacionPagoDetalle->setHorasNovedad($horasNovedad);
                         $arProgramacionPagoDetalle->setHorasDescanso($arSoportePago->getHorasDescanso());
                         $arProgramacionPagoDetalle->setHorasDiurnas($arSoportePago->getHorasDiurnas());
-                        $arProgramacionPagoDetalle->setHorasNocturnas($arSoportePago->getHorasNocturnas());
-                        $arProgramacionPagoDetalle->setHorasFestivasDiurnas($arSoportePago->getHorasFestivasDiurnas());
-                        $arProgramacionPagoDetalle->setHorasFestivasNocturnas($arSoportePago->getHorasFestivasNocturnas());
-                        $arProgramacionPagoDetalle->setHorasExtrasOrdinariasDiurnas($arSoportePago->getHorasExtrasOrdinariasDiurnas());
-                        $arProgramacionPagoDetalle->setHorasExtrasOrdinariasNocturnas($arSoportePago->getHorasExtrasOrdinariasNocturnas());
-                        $arProgramacionPagoDetalle->setHorasExtrasFestivasDiurnas($arSoportePago->getHorasExtrasFestivasDiurnas());
-                        $arProgramacionPagoDetalle->setHorasExtrasFestivasNocturnas($arSoportePago->getHorasExtrasFestivasNocturnas());                    
-                        $arProgramacionPagoDetalle->setHorasRecargoNocturno($arSoportePago->getHorasRecargoNocturno());                                        
-                        $arProgramacionPagoDetalle->setHorasRecargoFestivoDiurno($arSoportePago->getHorasRecargoFestivoDiurno());
-                        $arProgramacionPagoDetalle->setHorasRecargoFestivoNocturno($arSoportePago->getHorasRecargoFestivoNocturno());
+                        if(!$arSoportePagoPeriodo->getOmitirExtras()) {
+                            $arProgramacionPagoDetalle->setHorasNocturnas($arSoportePago->getHorasNocturnas());
+                            $arProgramacionPagoDetalle->setHorasFestivasDiurnas($arSoportePago->getHorasFestivasDiurnas());
+                            $arProgramacionPagoDetalle->setHorasFestivasNocturnas($arSoportePago->getHorasFestivasNocturnas());
+                            $arProgramacionPagoDetalle->setHorasExtrasOrdinariasDiurnas($arSoportePago->getHorasExtrasOrdinariasDiurnas());
+                            $arProgramacionPagoDetalle->setHorasExtrasOrdinariasNocturnas($arSoportePago->getHorasExtrasOrdinariasNocturnas());
+                            $arProgramacionPagoDetalle->setHorasExtrasFestivasDiurnas($arSoportePago->getHorasExtrasFestivasDiurnas());
+                            $arProgramacionPagoDetalle->setHorasExtrasFestivasNocturnas($arSoportePago->getHorasExtrasFestivasNocturnas());                    
+                            $arProgramacionPagoDetalle->setHorasRecargoNocturno($arSoportePago->getHorasRecargoNocturno());                                        
+                            $arProgramacionPagoDetalle->setHorasRecargoFestivoDiurno($arSoportePago->getHorasRecargoFestivoDiurno());
+                            $arProgramacionPagoDetalle->setHorasRecargoFestivoNocturno($arSoportePago->getHorasRecargoFestivoNocturno());                            
+                        }
+
+                        
                         //Pregunta por el tipo de pension, si es pensionado no le retiene pension (PABLO ARANZAZU 27/04/2016)
                         if ($arContrato->getCodigoTipoPensionFk() == 5){
                             $arProgramacionPagoDetalle->setDescuentoPension(0);

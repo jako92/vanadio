@@ -173,6 +173,11 @@ class TurSoportePagoPeriodo
      */    
     private $ajusteDevengado = false;     
     
+    /**     
+     * @ORM\Column(name="omitir_extras", type="boolean")
+     */    
+    private $omitirExtras = false;    
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurRecursoGrupo", inversedBy="soportesPagosPeriodosRecursoGrupoRel")
      * @ORM\JoinColumn(name="codigo_recurso_grupo_fk", referencedColumnName="codigo_recurso_grupo_pk")
@@ -1152,5 +1157,29 @@ class TurSoportePagoPeriodo
     public function getPagarDia31Extra()
     {
         return $this->pagarDia31Extra;
+    }
+
+    /**
+     * Set omitirExtras
+     *
+     * @param boolean $omitirExtras
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setOmitirExtras($omitirExtras)
+    {
+        $this->omitirExtras = $omitirExtras;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirExtras
+     *
+     * @return boolean
+     */
+    public function getOmitirExtras()
+    {
+        return $this->omitirExtras;
     }
 }

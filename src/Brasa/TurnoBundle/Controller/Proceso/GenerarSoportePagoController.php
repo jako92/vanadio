@@ -342,6 +342,8 @@ class GenerarSoportePagoController extends Controller {
                     $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
                     $em->getRepository('BrasaTurnoBundle:TurSoportePago')->ajustarDevengado($codigoSoportePagoPeriodo);
                     if($arConfiguracion->getTipoAjusteDevengado() == 2) {
+                    set_time_limit(0);
+                    ini_set("memory_limit", -1);
                         $em->getRepository('BrasaTurnoBundle:TurSoportePago')->ajustarExtras($codigoSoportePagoPeriodo);
                     }
                     return $this->redirect($this->generateUrl('brs_tur_proceso_generar_soporte_pago_detalle', array('codigoSoportePagoPeriodo' => $codigoSoportePagoPeriodo)));
@@ -378,7 +380,7 @@ class GenerarSoportePagoController extends Controller {
                 $arrDias = $this->festivosDomingos($arSoportePagoPeriodo->getFechaDesde(), $arSoportePagoPeriodo->getFechaHasta(), $arFestivos);
                 $arSoportePagoPeriodo->setDiaDomingoReal($arrDias['domingos']);
                 $arSoportePagoPeriodo->setDiaFestivoReal($arrDias['festivos']);
-
+                $arSoportePagoPeriodo->setOmitirExtras($arSoportePagoPeriodo->getCentroCostoRel()->getOmitirExtras());
                 if ($codigoSoportePagoPeriodo == 0) {
                     if ($arSoportePagoPeriodo->getCentroCostoRel()->getDescansoCompensacionDominicales()) {
                         $arSoportePagoPeriodo->setDiaDescansoCompensacion($arrDias['domingos'] + $arrDias['festivos']);
