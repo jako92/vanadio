@@ -130,19 +130,20 @@ class TurConfiguracion
      * Determina el tipo de compensacion 1-Seracis, 2-Galaxia
      * @ORM\Column(name="tipo_compensacion", type="integer")
      */    
-    private $tipoCompensacion = 0;    
-    
-    /**
-     * Determina el tipo de ajuste a devengado 1-todos, 2-coordinar
-     * @ORM\Column(name="tipo_ajuste_devengado", type="integer")
-     */    
-    private $tipoAjusteDevengado = 1;    
+    private $tipoCompensacion = 0;
     
     /**     
      * @ORM\Column(name="omitir_auxilio_transporte_devengado_pactado", type="boolean")
      */    
-    private $omitirAuxilioTransporteDevengadoPactado = false;     
+    private $omitirAuxilioTransporteDevengadoPactado = false;  
     
+    /**     
+     * Determina el tipo de ajuste a devengado 1-todos, 2-coordinar
+     * @ORM\Column(name="tipo_ajuste_devengado", type="integer", nullable=true)
+     */    
+    private $tipoAjusteDevengado = 1;
+
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -504,30 +505,6 @@ class TurConfiguracion
     }
 
     /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return TurConfiguracion
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
      * Set fechaUltimaSimulacion
      *
      * @param \DateTime $fechaUltimaSimulacion
@@ -573,54 +550,6 @@ class TurConfiguracion
     public function getValidarHorasProgramacion()
     {
         return $this->validarHorasProgramacion;
-    }
-
-    /**
-     * Set codigoFormatoFactura
-     *
-     * @param integer $codigoFormatoFactura
-     *
-     * @return TurConfiguracion
-     */
-    public function setCodigoFormatoFactura($codigoFormatoFactura)
-    {
-        $this->codigoFormatoFactura = $codigoFormatoFactura;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoFormatoFactura
-     *
-     * @return integer
-     */
-    public function getCodigoFormatoFactura()
-    {
-        return $this->codigoFormatoFactura;
-    }
-
-    /**
-     * Set codigoFormatoProgramacion
-     *
-     * @param integer $codigoFormatoProgramacion
-     *
-     * @return TurConfiguracion
-     */
-    public function setCodigoFormatoProgramacion($codigoFormatoProgramacion)
-    {
-        $this->codigoFormatoProgramacion = $codigoFormatoProgramacion;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoFormatoProgramacion
-     *
-     * @return integer
-     */
-    public function getCodigoFormatoProgramacion()
-    {
-        return $this->codigoFormatoProgramacion;
     }
 
     /**
@@ -672,6 +601,102 @@ class TurConfiguracion
     }
 
     /**
+     * Set habilitarAjustarDevengado
+     *
+     * @param boolean $habilitarAjustarDevengado
+     *
+     * @return TurConfiguracion
+     */
+    public function setHabilitarAjustarDevengado($habilitarAjustarDevengado)
+    {
+        $this->habilitarAjustarDevengado = $habilitarAjustarDevengado;
+
+        return $this;
+    }
+
+    /**
+     * Get habilitarAjustarDevengado
+     *
+     * @return boolean
+     */
+    public function getHabilitarAjustarDevengado()
+    {
+        return $this->habilitarAjustarDevengado;
+    }
+
+    /**
+     * Set codigoFormatoFactura
+     *
+     * @param integer $codigoFormatoFactura
+     *
+     * @return TurConfiguracion
+     */
+    public function setCodigoFormatoFactura($codigoFormatoFactura)
+    {
+        $this->codigoFormatoFactura = $codigoFormatoFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFormatoFactura
+     *
+     * @return integer
+     */
+    public function getCodigoFormatoFactura()
+    {
+        return $this->codigoFormatoFactura;
+    }
+
+    /**
+     * Set codigoFormatoNotaCredito
+     *
+     * @param integer $codigoFormatoNotaCredito
+     *
+     * @return TurConfiguracion
+     */
+    public function setCodigoFormatoNotaCredito($codigoFormatoNotaCredito)
+    {
+        $this->codigoFormatoNotaCredito = $codigoFormatoNotaCredito;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFormatoNotaCredito
+     *
+     * @return integer
+     */
+    public function getCodigoFormatoNotaCredito()
+    {
+        return $this->codigoFormatoNotaCredito;
+    }
+
+    /**
+     * Set codigoFormatoProgramacion
+     *
+     * @param integer $codigoFormatoProgramacion
+     *
+     * @return TurConfiguracion
+     */
+    public function setCodigoFormatoProgramacion($codigoFormatoProgramacion)
+    {
+        $this->codigoFormatoProgramacion = $codigoFormatoProgramacion;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoFormatoProgramacion
+     *
+     * @return integer
+     */
+    public function getCodigoFormatoProgramacion()
+    {
+        return $this->codigoFormatoProgramacion;
+    }
+
+    /**
      * Set tipoCompensacion
      *
      * @param integer $tipoCompensacion
@@ -717,54 +742,6 @@ class TurConfiguracion
     public function getOmitirAuxilioTransporteDevengadoPactado()
     {
         return $this->omitirAuxilioTransporteDevengadoPactado;
-    }
-
-    /**
-     * Set codigoFormatoNotaCredito
-     *
-     * @param integer $codigoFormatoNotaCredito
-     *
-     * @return TurConfiguracion
-     */
-    public function setCodigoFormatoNotaCredito($codigoFormatoNotaCredito)
-    {
-        $this->codigoFormatoNotaCredito = $codigoFormatoNotaCredito;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoFormatoNotaCredito
-     *
-     * @return integer
-     */
-    public function getCodigoFormatoNotaCredito()
-    {
-        return $this->codigoFormatoNotaCredito;
-    }
-
-    /**
-     * Set habilitarAjustarDevengado
-     *
-     * @param boolean $habilitarAjustarDevengado
-     *
-     * @return TurConfiguracion
-     */
-    public function setHabilitarAjustarDevengado($habilitarAjustarDevengado)
-    {
-        $this->habilitarAjustarDevengado = $habilitarAjustarDevengado;
-
-        return $this;
-    }
-
-    /**
-     * Get habilitarAjustarDevengado
-     *
-     * @return boolean
-     */
-    public function getHabilitarAjustarDevengado()
-    {
-        return $this->habilitarAjustarDevengado;
     }
 
     /**
