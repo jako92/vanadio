@@ -37,6 +37,7 @@ class TurServicioDetalleType extends AbstractType
                 'class' => 'BrasaTurnoBundle:TurConceptoServicio',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('cs')
+                    ->where('cs.tipo = 1')        
                     ->orderBy('cs.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))               
@@ -44,6 +45,7 @@ class TurServicioDetalleType extends AbstractType
                 'class' => 'BrasaTurnoBundle:TurConceptoServicio',
                 'query_builder' => function (EntityRepository $er)  {
                     return $er->createQueryBuilder('cs')
+                    ->where('cs.tipo = 1') 
                     ->orderBy('cs.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => false))                             

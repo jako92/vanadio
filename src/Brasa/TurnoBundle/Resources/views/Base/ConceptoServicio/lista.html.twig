@@ -69,7 +69,7 @@
                     <td>{{ arConceptoServicios.nombre }}</td>
                     <td>{{ arConceptoServicios.nombreFacturacion }}</td>
                     <td>{{ arConceptoServicios.nombreFacturacionAdicional }}</td>
-                    <td>{{ arConceptoServicios.tipo }}</td>
+                    <td>{% if arConceptoServicios.tipo == 1 %}Servicios{% else %}Otros{% endif %}</td>
                     <td>{{ arConceptoServicios.porBaseIva }}</td>
                     <td>{{ arConceptoServicios.porIva }}</td>
                     <td>{{ arConceptoServicios.horas }}</td>

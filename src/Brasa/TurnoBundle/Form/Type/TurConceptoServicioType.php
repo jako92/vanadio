@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TurConceptoServicioType extends AbstractType
 {
@@ -15,7 +16,11 @@ class TurConceptoServicioType extends AbstractType
             ->add('nombre', TextType::class, array('required' => true))            
             ->add('nombreFacturacion', TextType::class, array('required' => true))            
             ->add('nombreFacturacionAdicional', TextType::class, array('required' => true))            
-            ->add('tipo', NumberType::class)
+            ->add('tipo', ChoiceType::class, array(
+                    'choices' => array(
+                        'Servicios' => '1',
+                        'Otros' => '2',
+                )))
             ->add('porBaseIva', NumberType::class)
             ->add('porIva', NumberType::class)
             ->add('horas', NumberType::class, array('required' => true))                
