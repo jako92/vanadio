@@ -123,7 +123,7 @@ class ContratosController extends Controller {
         $arTrasladoSalud = $paginator->paginate($arTrasladoSalud, $request->query->getInt('page', 1)/* page number */, 5/* limit per page */);
         //$arTrasladoSalud = $paginator->paginate($arTrasladoSalud, $this->get('request')->query->get('page', 1),10);
         if ($arContrato->getEstadoActivo() == 1 || $arContrato->getIndefinido() == 1) {
-            $disabled = FALSE;
+            $disabled = TRUE;
         } else {
             $disabled = TRUE;
         }
