@@ -16,13 +16,13 @@
                 <div class="form-group form-group-sm">
                     <label for="form_detalle" class="col-sm-3 control-label">Detalle:</label>
                     <div class="col-sm-9">
-                        {{ form_widget(form.detalle, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                        {{ form_widget(form.detalle, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
                     </div>                
                 </div>             
                 <div class="form-group form-group-sm">
                     <label for="form_cantidad" class="col-sm-3 control-label">Cantidad:</label>
                     <div class="col-sm-9">
-                        {{ form_widget(form.cantidad, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.cantidad) }}
                     </div>
                 </div>
             </div>

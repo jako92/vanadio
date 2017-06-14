@@ -56,7 +56,7 @@ class TurCotizacionDetalleType extends AbstractType
             ->add('sabado', CheckboxType::class, array('required'  => false))
             ->add('domingo', CheckboxType::class, array('required'  => false))
             ->add('festivo', CheckboxType::class, array('required'  => false))
-            ->add('dia31', CheckboxType::class, array('required'  => false))
+            ->add('dia31', CheckboxType::class, array('required'  => false, 'label'=>'Habilitar dia 31'))
             ->add('liquidarDiasReales', CheckboxType::class, array('required'  => false))                                                        
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

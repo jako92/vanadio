@@ -59,14 +59,14 @@
                     </div> 
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">
-                        <label for="form_lunes"  class="control-label">Lun{{ form_widget(form.lunes) }}</label>
-                        <label for="form_martes"  class="control-label">Mar{{ form_widget(form.martes) }}</label>
-                        <label for="form_miercoles"  class="control-label">Mie{{ form_widget(form.miercoles) }}</label>
-                        <label for="form_jueves"  class="control-label">Jue{{ form_widget(form.jueves) }}</label>
-                        <label for="form_viernes"  class="control-label">Vie{{ form_widget(form.viernes) }}</label>
-                        <label for="form_sabado"  class="control-label">Sab{{ form_widget(form.sabado) }}</label>
-                        <label for="form_domingo"  class="control-label">Dom{{ form_widget(form.domingo) }}</label>
-                        <label for="form_festivo"  class="control-label">Fes{{ form_widget(form.festivo) }}</label>
+                        <div class="col-sm-4">{{ form_widget(form.lunes) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.martes) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.miercoles) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.jueves) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.viernes) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.sabado) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.domingo) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.festivo) }}</div>
                     </div>                     
                 </div>   
                 <div class="form-group form-group-sm">
@@ -76,9 +76,9 @@
                     </div>  
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">
-                        <label for="form_compuesto"  class="control-label">Compuesto{{ form_widget(form.compuesto) }}</label>
-                        <label for="form_liquidarDiasReales"  class="control-label">Liquidar dias reales{{ form_widget(form.liquidarDiasReales) }}</label>
-                        <label for="form_dia31"  class="control-label">Habilitar dia 31{{ form_widget(form.dia31) }}</label>
+                        <div class="col-sm-4">{{ form_widget(form.compuesto) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.liquidarDiasReales) }}</div>
+                        <div class="col-sm-4">{{ form_widget(form.dia31) }}</div>
                     </div>                     
                 </div>                     
             </div>
