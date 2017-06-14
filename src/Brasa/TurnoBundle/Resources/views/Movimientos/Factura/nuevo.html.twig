@@ -20,20 +20,18 @@
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">       
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Tipo:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Tipo:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.facturaTipoRel, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Servicio:</label>
-                    <div class="col-sm-9">
+                    </div>
+                    <label class="col-sm-2 control-label">Servicio:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.facturaServicioRel, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
                 </div>                 
                 <div class="form-group form-group-sm">
-                    <label for="txtNit" class="col-sm-3 control-label">Cliente:</label>
-                    <div class="col-sm-9">
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                    <div class="col-sm-10">
                         <div class="row">
                             <div class="col-lg-2">
                                 <div class="input-group">
@@ -52,8 +50,8 @@
                     </div>
                 </div>  
                 <div class="form-group form-group-sm">
-                    <label for="txtCodigoDireccion" class="col-sm-3 control-label">Direccion envio:</label>
-                    <div class="col-sm-9">
+                    <label for="txtCodigoDireccion" class="col-sm-2 control-label">Direccion envio:</label>
+                    <div class="col-sm-10">
                         <div class="row">
                             <div class="col-lg-2">
                                 <div class="input-group">
@@ -72,45 +70,40 @@
                     </div>
                 </div>                             
                 <div class="form-group form-group-sm">
-                    <label for="form_soporte" class="col-sm-3 control-label">Soporte:</label>
-                    <div class="col-sm-9">
+                    <label for="form_soporte" class="col-sm-2 control-label">Soporte:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.soporte, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Descripcion:</label>
-                    <div class="col-sm-9">
+                    </div>
+                    <label class="col-sm-2 control-label">Descripcion:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.descripcion, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
                 </div>                 
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Titulo relacion:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Titulo relacion:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.tituloRelacion, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Detalle relacion:</label>
-                    <div class="col-sm-9">
+                    </div>
+                    <label class="col-sm-2 control-label">Detalle relacion:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.detalleRelacion, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
                 </div>      
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Plazo pago:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Plazo pago:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.plazoPago, { 'attr': {'class': 'form-control'} }) }}                        
                         <p style="font-size: 0.8em;">* Si no es diligenciado se toma el plazo de pago del cliente</p>
                     </div>                
                 </div>                
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label"></label>
-                    <div class="col-sm-9">
-                        Imprimir con relacion {{ form_widget(form.imprimirRelacion) }} Imprimir agrupada {{ form_widget(form.imprimirAgrupada) }}
-                    </div>                
+                    <label class="col-sm-2"></label>
+                        <div class="col-sm-2">{{ form_widget(form.imprimirRelacion) }}</div>
+                        <div class="col-sm-2">{{ form_widget(form.imprimirAgrupada) }}</div>               
                 </div>                
                 <div class="form-group">
-                    <label for="form_comentarios" class="col-sm-3 control-label">Comentarios:</label>
-                    <div class="col-sm-9">
+                    <label for="form_comentarios" class="col-sm-2 control-label">Comentarios:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                     </div>
                 </div>                 
@@ -120,14 +113,14 @@
             <div class="panel-heading">Informacion del servicio</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label for="form_fecha" class="col-sm-3 control-label">Fecha de suspensión:</label>
-                    <div class="col-sm-9">
+                    <label for="form_fecha" class="col-sm-2 control-label">Fecha de suspensión:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.fechaSuspension) }}
                     </div>                 
                 </div>
                 <div class="form-group form-group-sm">
-                    <label for="form_fecha" class="col-sm-3 control-label">Fecha de cancelación:</label>
-                    <div class="col-sm-9">
+                    <label for="form_fecha" class="col-sm-2 control-label">Fecha de cancelación:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.fechaCancelacion) }}
                     </div>         
                 </div>
