@@ -69,6 +69,7 @@
                 <th>CLIENTE</th>
                 <th>NOMBRE</th>
                 <th>CIUDAD</th>
+                <th>CENTRAL</th>
                 <th>OPERACION</th>
                 <th>C.COSTO</th>                
                 <th>C.DOTACION</th>
@@ -82,6 +83,7 @@
                     <td>{{ arPuestos.clienteRel.nombreCorto | default('') }}</td>
                     <td>{{ arPuestos.nombre }}</td>
                     <td>{{ arPuestos.ciudadRel.nombre | default('')}}</td>
+                    <td>{{ arPuestos.centroOperacionRel.nombre | default('')}}</td>
                     <td>{{ arPuestos.operacionRel.nombre |default('')  }}</td>
                     <td>{{ arPuestos.codigoCentroCostoContabilidadFk | default('')  }}</td>                
                     <td style="text-align: right">{{ arPuestos.costoDotacion | number_format(0, '.', ',') }}</td>

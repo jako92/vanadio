@@ -36,8 +36,8 @@
                         <td class="td-in-well">{{ arControlPuesto.codigoControlPuestoPk }}</td>
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arControlPuesto.fecha |date("Y/m/d") }}</td>
-                        <td class="titulo" ></td>
-                        <td align="right"></td>
+                        <td class="titulo" >CENTRAL DE OPERACION</td>
+                        <td class="td-in-well">{{ arControlPuesto.centroOperacionRel.nombre | default('') }}</td>
                     </tr>
                 </table>
             </div>

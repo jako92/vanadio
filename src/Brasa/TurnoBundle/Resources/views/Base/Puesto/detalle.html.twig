@@ -89,6 +89,12 @@
                         <td class="titulo">COSTO DOTACION:</td>
                         <td align="right">{{ arPuesto.costoDotacion | number_format(0, '.', ',')}}</td>
                     </tr>
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">CENTRAL DE OPERACION:</td>
+                        <td class="td-in-well">{{ arPuesto.centroOperacionRel.nombre | default('')}}</td>
+                    </tr>
                 </table>
             </div>
         </div>
