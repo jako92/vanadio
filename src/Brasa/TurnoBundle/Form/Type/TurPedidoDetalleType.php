@@ -77,7 +77,7 @@ class TurPedidoDetalleType extends AbstractType
             ->add('sabado', CheckboxType::class, array('required'  => false))
             ->add('domingo', CheckboxType::class, array('required'  => false))
             ->add('festivo', CheckboxType::class, array('required'  => false))                                              
-            ->add('dia31', CheckboxType::class, array('required'  => false))                            
+            ->add('dia31', CheckboxType::class, array('required'  => false,'label'=>'Habilitar dia 31'))                            
             ->add('liquidarDiasReales', CheckboxType::class, array('required'  => false))
             ->add('compuesto', CheckboxType::class, array('required'  => false))
             ->add('detalle', TextareaType::class, array('required' => false)) 
