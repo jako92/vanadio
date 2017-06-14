@@ -82,7 +82,7 @@ class TurPuesto
     /**
      * @ORM\Column(name="codigo_operacion_fk", type="integer", nullable=true)
      */    
-    private $codigoOperacionFk;    
+    private $codigoOperacionFk;
     
     /**
      * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
@@ -180,6 +180,11 @@ class TurPuesto
     private $ubicacionGps;
     
     /**
+     * @ORM\Column(name="codigo_centro_operacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroOperacionFk;
+    
+    /**
      /**
      * @ORM\ManyToOne(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEstadoCivil", inversedBy="turPuestosEstadoCivilRel")
      * @ORM\JoinColumn(name="codigo_estado_civil_fk", referencedColumnName="codigo_estado_civil_pk")
@@ -220,7 +225,13 @@ class TurPuesto
      * @ORM\ManyToOne(targetEntity="Brasa\ContabilidadBundle\Entity\CtbCentroCosto", inversedBy="turPuestosCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_contabilidad_fk", referencedColumnName="codigo_centro_costo_pk")
      */
-    protected $centroCostoContabilidadRel;     
+    protected $centroCostoContabilidadRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TurCentroOperacion", inversedBy="puestosCentroOperacionRel")
+     * @ORM\JoinColumn(name="codigo_centro_operacion_fk", referencedColumnName="codigo_centro_operacion_pk")
+     */
+    protected $centroOperacionRel;
     
     /**
      * @ORM\OneToMany(targetEntity="TurPedidoDetalle", mappedBy="puestoRel")
@@ -1733,5 +1744,53 @@ class TurPuesto
     public function getCostosDetallesPuestoRel()
     {
         return $this->costosDetallesPuestoRel;
+    }
+
+    /**
+     * Set codigoCentroOperacionFk
+     *
+     * @param integer $codigoCentroOperacionFk
+     *
+     * @return TurPuesto
+     */
+    public function setCodigoCentroOperacionFk($codigoCentroOperacionFk)
+    {
+        $this->codigoCentroOperacionFk = $codigoCentroOperacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroOperacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroOperacionFk()
+    {
+        return $this->codigoCentroOperacionFk;
+    }
+
+    /**
+     * Set centroOperacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCentroOperacion $centroOperacionRel
+     *
+     * @return TurPuesto
+     */
+    public function setCentroOperacionRel(\Brasa\TurnoBundle\Entity\TurCentroOperacion $centroOperacionRel = null)
+    {
+        $this->centroOperacionRel = $centroOperacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroOperacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCentroOperacion
+     */
+    public function getCentroOperacionRel()
+    {
+        return $this->centroOperacionRel;
     }
 }

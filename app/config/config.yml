@@ -115,15 +115,7 @@ sonata_admin:
         dashboard: SonataAdminBundle:Core:dashboard.html.twig
        
     dashboard:
-        groups:
-            app.admin.group.inventario:
-                label: Inventario
-                label_catalogue: Brasa\InventarioBundle
-                items:
-                    - admin.inventario.marca 
-                    - admin.inventario.item
-                    - admin.inventario.area
-                    
+        groups:                    
             app.admin.group.recursohumano:
                 label: Recurso humano
                 label_catalogue: Brasa\RecursoHumanoBundle
@@ -132,6 +124,20 @@ sonata_admin:
                     - admin.recursohumano.facturaconcepto
                     - admin.recursohumano.estudiotipo
                     - admin.recursohumano.seleccionrequisicionexperiencia
+                    
+            app.admin.group.turno:
+                label: Programacion turno
+                label_catalogue: Brasa\TurnoBundle
+                items:
+                    - admin.turno.centrooperacion
+                    
+            app.admin.group.inventario:
+                label: Inventario
+                label_catalogue: Brasa\InventarioBundle
+                items:
+                    - admin.inventario.marca 
+                    - admin.inventario.item
+                    - admin.inventario.area
                     
             app.admin.group.general:
                 label: General
@@ -146,3 +152,5 @@ sonata_admin:
                     - admin.general.pais
                     - admin.general.departamento
                     - admin.general.ciudad
+                    
+            

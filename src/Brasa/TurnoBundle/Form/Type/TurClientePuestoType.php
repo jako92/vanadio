@@ -56,7 +56,14 @@ class TurClientePuestoType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
                 'choice_label' => 'nombre',
                 'required' => false
-            ))                
+            ))
+            ->add('centroOperacionRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurCentroOperacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('co')
+                    ->orderBy('co.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('direccion', TextType::class, array('required'  => false))
             ->add('telefono', TextType::class, array('required'  => false))

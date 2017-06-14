@@ -50,7 +50,18 @@ class TurControlPuesto
     /**
      * @ORM\OneToMany(targetEntity="TurControlPuestoDetalle", mappedBy="controlPuestoRel")
      */
-    protected $controlesPuestosDetallesControlPuestoRel;     
+    protected $controlesPuestosDetallesControlPuestoRel;
+    
+    /**
+     * @ORM\Column(name="codigo_centro_operacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoCentroOperacionFk;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TurCentroOperacion", inversedBy="controlPuestosCentroOperacionRel")
+     * @ORM\JoinColumn(name="codigo_centro_operacion_fk", referencedColumnName="codigo_centro_operacion_pk")
+     */
+    protected $centroOperacionRel;
 
     /**
      * Constructor
@@ -215,6 +226,30 @@ class TurControlPuesto
     }
 
     /**
+     * Set codigoCentroOperacionFk
+     *
+     * @param integer $codigoCentroOperacionFk
+     *
+     * @return TurControlPuesto
+     */
+    public function setCodigoCentroOperacionFk($codigoCentroOperacionFk)
+    {
+        $this->codigoCentroOperacionFk = $codigoCentroOperacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroOperacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroOperacionFk()
+    {
+        return $this->codigoCentroOperacionFk;
+    }
+
+    /**
      * Add controlesPuestosDetallesControlPuestoRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle $controlesPuestosDetallesControlPuestoRel
@@ -246,5 +281,29 @@ class TurControlPuesto
     public function getControlesPuestosDetallesControlPuestoRel()
     {
         return $this->controlesPuestosDetallesControlPuestoRel;
+    }
+
+    /**
+     * Set centroOperacionRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCentroOperacion $centroOperacionRel
+     *
+     * @return TurControlPuesto
+     */
+    public function setCentroOperacionRel(\Brasa\TurnoBundle\Entity\TurCentroOperacion $centroOperacionRel = null)
+    {
+        $this->centroOperacionRel = $centroOperacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroOperacionRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCentroOperacion
+     */
+    public function getCentroOperacionRel()
+    {
+        return $this->centroOperacionRel;
     }
 }

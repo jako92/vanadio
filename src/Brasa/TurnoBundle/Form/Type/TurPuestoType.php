@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TurPuestoType extends AbstractType
 {
@@ -55,14 +56,23 @@ class TurPuestoType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuEstadoCivil',
                 'choice_label' => 'nombre',
                 'required' => false
-            ))                
+            ))
+            ->add('centroOperacionRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurCentroOperacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('co')
+                    ->orderBy('co.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('direccion', TextType::class, array('required'  => false))
             ->add('telefono', TextType::class, array('required'  => false))
             ->add('celular', TextType::class, array('required'  => false))
             ->add('contacto', TextType::class, array('required'  => false))
+            ->add('numeroComunicacion', TextType::class, array('required'  => false))
             ->add('telefonoContacto', TextType::class, array('required'  => false))
             ->add('celularContacto', TextType::class, array('required'  => false))
+            ->add('controlPuesto', CheckboxType::class, array('required'  => false))
             ->add('edadMinima', TextType::class, array('required'  => false))
             ->add('edadMaxima', TextType::class, array('required'  => false))
             ->add('estaturaMinima', TextType::class, array('required'  => false))

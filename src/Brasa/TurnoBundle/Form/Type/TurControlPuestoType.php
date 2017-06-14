@@ -14,7 +14,14 @@ class TurControlPuestoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder 
+        $builder
+            ->add('centroOperacionRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurCentroOperacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('co')
+                    ->orderBy('co.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
             ->add('fecha', DateTimeType::class, array('required' => true, 'data' => new \DateTime('now')))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)

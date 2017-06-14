@@ -18,16 +18,22 @@
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         <div class="panel panel-default">
             <div class="panel-heading">Informacion general</div>
-            <div class="panel-body">             
+            <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Fecha:</label>
-                    <div class="col-sm-9 form-inline">
+                    <label for="form_centroOperacionRel" class="col-sm-2 control-label">Central de operacion:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.centroOperacionRel) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">Fecha:</label>
+                    <div class="col-sm-10 form-inline">
                         {{ form_widget(form.fecha) }}
                     </div>
                 </div>             
-                <div class="form-group">
-                    <label for="form_comentarios" class="col-sm-3 control-label">Comentarios:</label>
-                    <div class="col-sm-9">
+                <div class="form-group form-group-sm">
+                    <label for="form_comentarios" class="col-sm-2 control-label">Comentarios:</label>
+                    <div class="col-sm-10">
                         {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>                 

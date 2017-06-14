@@ -36,7 +36,7 @@
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
                 <th>{{ knp_pagination_sortable(arControlPuestos, 'CÓDIGO', 'p.codigoConctrolPuestoPk') }}</th>
-               
+                <th>CENTRAL OPERACION</th>
                 <th>FECHA</th>
                 <th>HORA</th>
                 <th>USUARIO</th>
@@ -47,7 +47,8 @@
             </tr>
             {% for arControlPuestos in arControlPuestos %}
                 <tr>                
-                    <td>{{ arControlPuestos.codigoControlPuestoPk  }}</td>  
+                    <td>{{ arControlPuestos.codigoControlPuestoPk  }}</td>
+                    <td>{{ arControlPuestos.centroOperacionRel.nombre | default('') }}</td>
                     <td>{{ arControlPuestos.fecha|date('Y-m-d')  }}</td>
                     <td>{{ arControlPuestos.fecha|date('H:i:s')  }}</td>
                     <td>{{ arControlPuestos.usuario }}</td> 

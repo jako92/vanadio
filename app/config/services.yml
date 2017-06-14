@@ -54,6 +54,14 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion experiencia }
             
+    # .................. administracion modulo programacion de turnos .................................................................
+    
+    admin.turno.centrooperacion:
+        class: Brasa\TurnoBundle\Admin\CentroOperacionAdmin
+        arguments: [~, Brasa\TurnoBundle\Entity\TurCentroOperacion, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Centro de operacion }
+            
     # .................. administracion del modulo general .............................................................................
             
     admin.general.sectorcomercial:
