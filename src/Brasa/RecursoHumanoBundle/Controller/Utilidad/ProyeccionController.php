@@ -86,8 +86,9 @@ class ProyeccionController extends Controller
                                 } else {
                                     $salarioPromedioCesantias = $douSalario;
                                 }                                            
-                            }        
-                            if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
+                            }    
+                            //Era una forma de liquidar prestaciones diseñada para seracis
+                            /*if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
                                 if($arContrato->getCodigoSalarioTipoFk() == 2) {            
                                     $intDiasLaborados = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($arContrato->getFechaDesde(), $dateFechaHasta);                                                                    
                                     foreach ($arParametrosPrestacionCesantia as $arParametroPrestacion) {
@@ -105,7 +106,7 @@ class ProyeccionController extends Controller
                                         }
                                     }                              
                                 }                                                        
-                            }                        
+                            }*/                        
                             $intDiasCesantias -= $intDiasAusentismo;
                             $douCesantias = ($salarioPromedioCesantias * $intDiasCesantias) / 360;          
                             $floPorcentajeIntereses = (($intDiasCesantias * 12) / 360)/100;
@@ -154,8 +155,9 @@ class ProyeccionController extends Controller
                                 } else {
                                     $salarioPromedioPrimas = $douSalario;
                                 }                                                
-                            }                     
-                            if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
+                            }        
+                            //Era una forma de liquidar prestaciones diseñada para seracis
+                            /*if($arConfiguracion->getPrestacionesAplicaPorcentajeSalario()) {                            
                                 if($arContrato->getCodigoSalarioTipoFk() == 2) {  
                                     $intDiasLaborados = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->diasPrestaciones($arContrato->getFechaDesde(), $dateFechaHasta);                                                                    
                                     foreach ($arParametrosPrestacionPrima as $arParametroPrestacion) {
@@ -173,7 +175,7 @@ class ProyeccionController extends Controller
                                         }
                                     }                                               
                                 }                                                        
-                            }                        
+                            }*/                        
                             $salarioPromedioPrimas = round($salarioPromedioPrimas);
                             $douPrima = ($salarioPromedioPrimas * $intDiasPrimaLiquidar) / 360;                
                             $douPrima = round($douPrima);         
