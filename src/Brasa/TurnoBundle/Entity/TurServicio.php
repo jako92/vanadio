@@ -38,78 +38,78 @@ class TurServicio
     private $codigoSectorFk;                            
     
     /**     
-     * @ORM\Column(name="estado_autorizado", type="boolean")
+     * @ORM\Column(name="estado_autorizado", type="boolean", options={"default":false})
      */    
     private $estadoAutorizado = false;                 
     
     /**     
-     * @ORM\Column(name="estado_cerrado", type="boolean")
+     * @ORM\Column(name="estado_cerrado", type="boolean", options={"default":false})
      */    
     private $estadoCerrado = false;    
     
     
     /**
-     * @ORM\Column(name="cantidad", type="integer")
+     * @ORM\Column(name="cantidad", type="integer", options={"default":0})
      */    
     private $cantidad = 0;    
     
     /**
-     * @ORM\Column(name="horas", type="integer")
+     * @ORM\Column(name="horas", type="integer", options={"default":0})
      */    
     private $horas = 0;    
     
     /**
-     * @ORM\Column(name="horas_diurnas", type="integer")
+     * @ORM\Column(name="horas_diurnas", type="integer", options={"default":0})
      */    
     private $horasDiurnas = 0;     
     
     /**
-     * @ORM\Column(name="horas_nocturnas", type="integer")
+     * @ORM\Column(name="horas_nocturnas", type="integer", options={"default":0})
      */    
     private $horasNocturnas = 0;    
   
     /**
-     * @ORM\Column(name="vr_total_costo", type="float")
+     * @ORM\Column(name="vr_total_costo", type="float", options={"default":0})
      */
     private $vrTotalCosto = 0;
     
     /**
-     * @ORM\Column(name="vr_total_otros", type="float")
+     * @ORM\Column(name="vr_total_otros", type="float", options={"default":0})
      */
     private $vrTotalOtros = 0;    
     
     /**
-     * @ORM\Column(name="vr_total_servicio", type="float")
+     * @ORM\Column(name="vr_total_servicio", type="float", options={"default":0})
      */
     private $vrTotalServicio = 0;     
     
     /**
-     * @ORM\Column(name="vr_total_precio_ajustado", type="float")
+     * @ORM\Column(name="vr_total_precio_ajustado", type="float", options={"default":0})
      */
     private $vrTotalPrecioAjustado = 0;            
 
     /**
-     * @ORM\Column(name="vr_total_precio_minimo", type="float")
+     * @ORM\Column(name="vr_total_precio_minimo", type="float", options={"default":0})
      */
     private $vrTotalPrecioMinimo = 0;        
 
     /**
-     * @ORM\Column(name="vr_subtotal", type="float")
+     * @ORM\Column(name="vr_subtotal", type="float", options={"default":0})
      */
     private $vrSubtotal = 0; 
 
     /**
-     * @ORM\Column(name="vr_iva", type="float")
+     * @ORM\Column(name="vr_iva", type="float", options={"default":0})
      */
     private $vrIva = 0;    
     
     /**
-     * @ORM\Column(name="vr_base_aiu", type="float")
+     * @ORM\Column(name="vr_base_aiu", type="float", options={"default":0})
      */
     private $vrBaseAiu = 0; 
     
     /**
-     * @ORM\Column(name="vr_total", type="float")
+     * @ORM\Column(name="vr_total", type="float", options={"default":0})
      */
     private $vrTotal = 0;    
     
@@ -124,7 +124,7 @@ class TurServicio
     private $comentarios;                       
     
     /**
-     * @ORM\Column(name="vr_salario_base", type="float")
+     * @ORM\Column(name="vr_salario_base", type="float", options={"default":0}))
      */
     private $vrSalarioBase = 0;     
     
