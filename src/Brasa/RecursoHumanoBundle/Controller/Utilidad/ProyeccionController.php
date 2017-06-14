@@ -35,6 +35,7 @@ class ProyeccionController extends Controller
             }
             if($form->get('BtnGenerar')->isClicked()) {                                 
                 $fechaHasta = $form->get('fechaHasta')->getData();
+                $this->filtrarLista($form);
                 if($fechaHasta != null) {
                     set_time_limit(0);
                     ini_set("memory_limit", -1);                    
@@ -214,10 +215,8 @@ class ProyeccionController extends Controller
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProyeccion')->listaDql(                                        
-                    "",
-                    "",
-                    "",
-                    ""
+                    $session->get('filtroIdentificacion'),
+                    $session->get('filtroHasta')
                     );
     }    
 
