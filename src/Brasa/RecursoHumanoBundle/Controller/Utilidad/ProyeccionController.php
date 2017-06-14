@@ -118,8 +118,7 @@ class ProyeccionController extends Controller
                             $arProyeccion->setVrInteresesCesantias($douInteresesCesantias);
                             $arProyeccion->setFechaDesdeCesantias($dateFechaDesde);
                             $arProyeccion->setDiasAusentismo($intDiasAusentismo);                            
-
-
+                            
                             //Primas  
                             $dateFechaDesde = $arContrato->getFechaUltimoPagoPrimas();                        
                             $dateFechaHastaPrimas = $arContrato->getFechaUltimoPago();
