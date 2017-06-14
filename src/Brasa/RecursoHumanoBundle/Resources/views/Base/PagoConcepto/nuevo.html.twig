@@ -28,28 +28,6 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-10">
-                        <label for="form_componeSalario"  class="control-label">Salario {{ form_widget(form.componeSalario) }}</label>
-                        <label for="form_componeValor"  class="control-label">Compone valor {{ form_widget(form.componeValor) }}</label>
-                        <label for="form_prestacional"  class="control-label">Prestacional {{ form_widget(form.prestacional) }}</label>
-                        <label for="form_generaIngresoBasePrestacion"  class="control-label">IBP {{ form_widget(form.generaIngresoBasePrestacion) }}</label>
-                        <label for="form_generaIngresoBaseCotizacion"  class="control-label">IBC {{ form_widget(form.generaIngresoBaseCotizacion) }}</label>
-                        <label for="form_conceptoAdicion"  class="control-label">Adional al pago {{ form_widget(form.conceptoAdicion) }}</label>
-                        <label for="form_conceptoIncapacidad"  class="control-label">Incapacidad {{ form_widget(form.conceptoIncapacidad) }}</label>
-                        <label for="form_conceptoPension"  class="control-label">Pension {{ form_widget(form.conceptoPension) }}</label>
-                        <label for="form_conceptoSalud"  class="control-label">Salud {{ form_widget(form.conceptoSalud) }}</label>
-                        <label for="form_recargoNocturno"  class="control-label">Recargo nocturno {{ form_widget(form.recargoNocturno) }}</label>
-                        <label for="form_horaExtra"  class="control-label">Horas extra {{ form_widget(form.horaExtra) }}</label>
-                        <label for="form_conceptoAuxilioTransporte"  class="control-label">Aux_tte {{ form_widget(form.conceptoAuxilioTransporte) }}</label>
-                        <label for="form_provisionIndemnizacion"  class="control-label">Provision indemnizacion {{ form_widget(form.provisionIndemnizacion) }}</label>
-                        <label for="form_provisionVacacion"  class="control-label">Provision vacacion {{ form_widget(form.provisionVacacion) }}</label>
-                        <label for="form_conceptoFondoSolidaridadPensional"  class="control-label">FSP {{ form_widget(form.conceptoFondoSolidaridadPensional) }}</label>
-                        <label for="form_conceptoCesantia"  class="control-label">Cesantia {{ form_widget(form.conceptoCesantia) }}</label>
-                        <label for="form_conceptoRetencion"  class="control-label">Retencion {{ form_widget(form.conceptoRetencion) }}</label>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
                     <label class="col-sm-2 control-label">Porcentaje:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.porPorcentaje, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
@@ -70,6 +48,38 @@
                     <label class="col-sm-2 control-label">Tipo adicional:</label>
                     <div class="col-sm-10">
                         {{ form_widget(form.tipoAdicional, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-2">{{ form_row(form.componeSalario) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.componeValor) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.prestacional) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.generaIngresoBasePrestacion) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.generaIngresoBaseCotizacion) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoAdicion) }}</div>
+                    </div>
+                </div>    
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-2">{{ form_row(form.conceptoIncapacidad) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoPension) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoSalud) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.recargoNocturno) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.horaExtra) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoAuxilioTransporte) }}</div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-2">{{ form_row(form.provisionIndemnizacion) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.provisionVacacion) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoFondoSolidaridadPensional) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoCesantia) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.conceptoRetencion) }}   </div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 {% extends '::base2.html.twig' %}
 {% block title %}Grupo de pago nuevo - Soga App{% endblock %}
 {% block content %}
-     <section class="content-header">
+    <section class="content-header">
         <h1>
             Recurso humano
             <small>Grupo pago: nuevo</small>
@@ -27,25 +27,21 @@
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_periodoPagoRel" class="col-sm-2 control-label">Periodo pago:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.periodoPagoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
                     <label for="form_nombre" class="col-sm-2 control-label">Nombre:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_ciudadRel" class="col-sm-2 control-label">Ciudad:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.ciudadRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
                     <label for="form_ssoSucursal" class="col-sm-2 control-label">Sucursal seguridad social:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.sucursalRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
@@ -68,36 +64,24 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label for="form_administrativo" class="col-sm-2 control-label">Administrativo:</label>
+                    <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-10">
-                        {{ form_widget(form.administrativo) }}
+                        <div class="col-sm-2">{{ form_row(form.administrativo) }}</div>
+                        <div class="col-sm-2">{{ form_row(form.estadoActivo) }}</div>
+                        <div class="col-sm-6"><div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="ChkGenerarPeriodo" checked> Generar programacion pago (nomina) al guardar
+                                </label>
+                            </div></div>
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_estadoActivo" class="col-sm-2 control-label">Activo:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.estadoActivo) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_ChkGenerarPeriodo" class="col-sm-2 control-label"></label>
-                    <div class="col-sm-10">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="ChkGenerarPeriodo" checked> Generar programacion pago (nomina) al guardar
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                </div>  
                 <div class="form-group form-group-sm">
                     <label for="form_generaServicioCobrar" class="col-sm-2 control-label">Genera servicio por cobrar:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.generaServicioCobrar, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group">
                     <label for="form_diasPago" class="col-sm-2 control-label">Días Pago:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.diasPago, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                     </div>
                 </div>
@@ -114,13 +98,11 @@
             <div class="panel-body">
                 <div class="form-group form-group-sm">
                     <label for="form_generarPagoAutomatico" class="col-sm-2 control-label">Pago automatico:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.generarPagoAutomatico, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
                     <label for="form_horaPagoAutomatico" class="col-sm-2 control-label">Hora pago automatico:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.horaPagoAutomatico) }}
                     </div>
                 </div>
@@ -130,48 +112,33 @@
             <div class="panel-heading">Informacion Recurso humano</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Genera soporte pago:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.generaSoportePago) }}
-                        <p style="font-size: 0.8em;">* Indica si a este grupo de pago (centro costo) se le genera soporte de pago en turnos</p>
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-4">{{ form_row(form.generaSoportePago) }}<p style="font-size: 0.8em;">* Indica si a este grupo de pago se le genera soporte de pago en turnos</p></div>
+                        <div class="col-sm-4">{{ form_row(form.descansoOrdinario) }}</div>
+                        <div class="col-sm-4">{{ form_row(form.pagarDia31) }}</div>
                     </div>
-                </div>
+                </div>     
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Descanso ordinario:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.descansoOrdinario) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Pagar dia 31:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.pagarDia31) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Secuencia:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Secuencia:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.secuencia, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Turno fijo:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.codigoTurnoFijoNominaFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
-                        <p style="font-size: 0.8em;">* Independiente del turno programado, se liquida con este turno la nomina</p>
+                    <label class="col-sm-2 control-label">Dias de descanso fijo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.diasDescansoFijo, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Turno fijo descanso:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Turno fijo descanso:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoTurnoFijoDescansoFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                         <p style="font-size: 0.8em;">* Cuando el turno es de descanso es reemplazado por este turno</p>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Dias de descanso fijo:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.diasDescansoFijo, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
+                    </div>    
+                    <label class="col-sm-2 control-label">Turno fijo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoTurnoFijoNominaFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
+                        <p style="font-size: 0.8em;">* Independiente del turno programado, se liquida con este turno la nomina</p>
                     </div>
                 </div>
             </div>
@@ -180,26 +147,16 @@
             <div class="panel-heading">Informacion Recurso humano (Compensacion)</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Compensacion automatica:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.compensacionAutomatica) }}
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-3">{{ form_row(form.compensacionAutomatica) }}</div>
+                        <div class="col-sm-3">{{ form_row(form.descansoCompensacionDominicales) }}</div>
+                        <div class="col-sm-3">{{ form_row(form.descansoCompensacionFijo) }}</div>
                     </div>
-                </div>
+                </div>     
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Descanso dominicales:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.descansoCompensacionDominicales) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Descanso fijo:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.descansoCompensacionFijo) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Dias de descanso fijo:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Dias de descanso fijo:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.diasDescansoCompensacionFijo, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>
@@ -209,32 +166,28 @@
             <div class="panel-heading">Informacion servicios</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Porcentaje cesantias:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Porcentaje cesantias:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajeCesantias, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Porcentaje int cesantias:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Porcentaje int cesantias:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajeInteresesCesantias, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Porcentaje vacaciones:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Porcentaje vacaciones:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajeVacaciones, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Porcentaje primas:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Porcentaje primas:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajePrimas, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Porcentaje caja:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Porcentaje caja:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajeCaja, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}
                     </div>
                 </div>    
@@ -245,22 +198,20 @@
             <div class="panel-body">
                 <div class="form-group form-group-sm">
                     <label for="form_porcentajeAdministracion" class="col-sm-2 control-label">Porcentaje admon:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.porcentajeAdministracion, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_aplicaPorcentajeAdministracion" class="col-sm-2 control-label">Aplica porcentaje admon:</label>
-                    <div class="col-sm-10">                        
-                        {{ form_widget(form.aplicaPorcentajeAdministracion) }}
-                    </div>
-                </div>    
-                <div class="form-group form-group-sm">
                     <label for="form_valorAdministracion" class="col-sm-2 control-label">Valor admon:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.valorAdministracion, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-3">{{ form_row(form.aplicaPorcentajeAdministracion) }}</div>
+                    </div>
+                </div>   
             </div>
         </div>            
         <div class="modal-footer">
