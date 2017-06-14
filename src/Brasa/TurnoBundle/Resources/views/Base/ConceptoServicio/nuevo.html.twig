@@ -15,8 +15,7 @@
             <li class="active">Nuevo</li>
         </ol>
     </section>      
-    <section class="content"> 
-        <div class="container">
+    <section class="content">
             {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
             <div class="panel panel-default">
                 <div class="panel-heading">Informacion general</div>
@@ -84,8 +83,7 @@
                             {{ form_widget(form.vrCosto, { 'attr': {'class': 'form-control'} }) }}                        
                         </div>                
                     </div>                                 
-                </div>
-            </div>               
+                </div>              
             <div class="modal-footer">
                 <a class="btn btn-default btn-sm" href="{{ path('brs_tur_base_concepto_servicio_lista') }}">Cancelar</a>        
                 {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
