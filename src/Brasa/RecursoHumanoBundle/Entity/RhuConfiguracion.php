@@ -164,12 +164,7 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="aportes_porcentaje_vacaciones", type="float")
      */
-    private $aportesPorcentajeVacaciones = 0;
-    
-    /**
-     * @ORM\Column(name="cuenta_pago", type="string", length=20, nullable=true)
-     */
-    private $cuentaPago;
+    private $aportesPorcentajeVacaciones = 0;    
     
     /**
      * @ORM\Column(name="codigo_hora_descanso", type="integer")
@@ -445,6 +440,7 @@ class RhuConfiguracion
      */    
     private $ordenNombreEmpleado = 0;     
     
+
 
     /**
      * Set codigoConfiguracionPk
@@ -1188,30 +1184,6 @@ class RhuConfiguracion
     public function getAportesPorcentajeVacaciones()
     {
         return $this->aportesPorcentajeVacaciones;
-    }
-
-    /**
-     * Set cuentaPago
-     *
-     * @param string $cuentaPago
-     *
-     * @return RhuConfiguracion
-     */
-    public function setCuentaPago($cuentaPago)
-    {
-        $this->cuentaPago = $cuentaPago;
-
-        return $this;
-    }
-
-    /**
-     * Get cuentaPago
-     *
-     * @return string
-     */
-    public function getCuentaPago()
-    {
-        return $this->cuentaPago;
     }
 
     /**

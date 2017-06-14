@@ -22,7 +22,11 @@ class ContabilizarPagoProvisionController extends Controller {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');
-        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
+        $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);        
+        $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+        $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteProvision());        
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -32,12 +36,8 @@ class ContabilizarPagoProvisionController extends Controller {
                 ini_set("memory_limit", -1);
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     $arConfiguracionAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionAporte();
                     $arConfiguracionAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionAporte')->find(1);
-                    $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteProvision());
                     $errorDatos = false;
                     foreach ($arrSeleccionados AS $codigo) {
                         $arProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuProvision();
@@ -574,10 +574,11 @@ class ContabilizarPagoProvisionController extends Controller {
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_provision'));
             }
-        }
+        }        
         $arProvisiones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:provision.html.twig', array(
                     'arProvisiones' => $arProvisiones,
+                    'arComprobante' => $arComprobanteContable,
                     'form' => $form->createView()));
     }
 

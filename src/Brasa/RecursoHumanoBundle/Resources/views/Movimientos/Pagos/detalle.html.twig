@@ -14,13 +14,7 @@
             <li class="active">Detalle</li>
         </ol>
     </section>    
-    <section class="content">        	
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>        
+    <section class="content">        	       
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-group">
