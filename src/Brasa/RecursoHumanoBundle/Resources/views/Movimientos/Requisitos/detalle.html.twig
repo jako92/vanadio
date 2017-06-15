@@ -33,8 +33,8 @@
                         <td class="td-in-well">{{ arRequisito.codigoRequisitoPk }}</td>
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arRequisito.fecha|date("Y/m/d") }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">TIPO</td>
+                        <td class="td-in-well">{{ arRequisito.requisitoTipoRel.nombre | default('')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">IDENTIFICACIÓN:</td>

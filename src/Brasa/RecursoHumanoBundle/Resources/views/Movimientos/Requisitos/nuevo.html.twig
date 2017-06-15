@@ -18,34 +18,37 @@
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
-            <div class="panel-body">      
+            <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label for="form_cargoRel" class="col-sm-3 control-label">Cargo:</label>
-                    <div class="col-sm-9">
+                    <label for="form_requisitoTipoRel" class="col-sm-2 control-label">Tipo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.requisitoTipoRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        <div class="text-danger">{{form_errors(form.requisitoTipoRel)}}</div>
+                    </div>
+                    <label for="form_cargoRel" class="col-sm-2 control-label">Cargo:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.cargoRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        <div class="text-danger">{{form_errors(form.cargoRel)}}</div>
                     </div>
                 </div>            
                 <div class="form-group form-group-sm">
-                    <label for="form_numeroIdentificacion" class="col-sm-3 control-label">Identificacion:</label>
-                    <div class="col-sm-9">
+                    <label for="form_numeroIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.numeroIdentificacion, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>                
-                <div class="form-group form-group-sm">
-                    <label for="form_nombreCorto" class="col-sm-3 control-label">Nombre corto:</label>
-                    <div class="col-sm-9">
+                    <label for="form_nombreCorto" class="col-sm-2 control-label">Nombre corto:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.nombreCorto, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                     </div>
                 </div>                
                 <div class="form-group">
-                    <label for="form_comentarios" class="col-sm-3 control-label">Comentarios:</label>
-                    <div class="col-sm-9">
+                    <label for="form_comentarios" class="col-sm-2 control-label">Comentarios:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.comentarios, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                     </div>
                 </div>                 
             </div>
         </div>
-
         <div class="modal-footer">
             <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_requisito_lista') }}">Cancelar</a>
             {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
