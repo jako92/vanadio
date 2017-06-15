@@ -35,7 +35,7 @@ class FormatoCartaConvenio extends \FPDF_FPDF {
         $this->SetXY(60, 20);
         $this->SetFillColor(236, 236, 236);
         $this->SetFont('Arial', 'B', 16);
-        $this->Cell(90, 20, utf8_decode("CARTA CONVENIO"), 1, 0, 'C', 1); //cuardo mitad medio
+        $this->Cell(90, 20, utf8_decode("CONVENIO"), 1, 0, 'C', 1); //cuardo mitad medio
         $this->SetFillColor(272, 272, 272);
         $this->SetFont('Arial', 'B', 10);
         $this->SetXY(60, 40);
@@ -85,14 +85,15 @@ class FormatoCartaConvenio extends \FPDF_FPDF {
         //se reemplaza el contenido de la tabla contenido formato
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
-        $sustitucion3 = $arContrato->getFechaHasta()->format('d/m/Y');
+        $sustitucion3 = $arContrato->getFechaHasta()->format('Y-m-d');
         $sustitucion4 = $arConfiguracion->getNombreEmpresa();
         $sustitucion5 = $arConfiguracion->getNitEmpresa().'-'.$arConfiguracion->getDigitoVerificacionEmpresa();
         $sustitucion6 = $arContrato->getCodigoContratoPk();
-        $sustitucion7 = $arContrato->getFecha()->format('d');
-        $sustitucion8 = $arContrato->getFecha()->format('m');
-        $sustitucion9 = $arContrato->getFecha()->format('y');
-        $sustitucion10 = $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getNombre();
+        $sustitucion7 = $arContrato->getFecha()->format('Y-m-d');
+        $fecf = $arContrato->getFecha();
+        $sustitucion7 = strftime("día %d del mes de ". $this->MesesEspañol($fecf->format('m')) ." del año %Y", strtotime($sustitucion7));
+        $sustitucion8 = $arContrato->getEmpleadoRel()->getTipoIdentificacionRel()->getNombre();
+        $sustitucion9 = $arContrato->getEmpleadoRel()->getFechaExpedicionIdentificacion()->format("d/m/Y");
         $cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
         $patron2 = '/#2/';
@@ -103,7 +104,6 @@ class FormatoCartaConvenio extends \FPDF_FPDF {
         $patron7 = '/#7/';
         $patron8 = '/#8/';
         $patron9 = '/#9/';
-        $patron10 = '/#a/';
 
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
@@ -114,7 +114,6 @@ class FormatoCartaConvenio extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron7, $sustitucion7, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron8, $sustitucion8, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron9, $sustitucion9, $cadenaCambiada);
-        $cadenaCambiada = preg_replace($patron10, $sustitucion10, $cadenaCambiada);
 
         $pdf->MultiCell(0, 5, $cadenaCambiada);
     }
