@@ -85,7 +85,7 @@ class FormatoCartaConvenio extends \FPDF_FPDF {
         //se reemplaza el contenido de la tabla contenido formato
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
-        $sustitucion3 = $arContrato->getFechaHasta()->format('Y-m-d');
+        $sustitucion3 = $arContrato->getFechaHasta()->format('d/m/Y');
         $sustitucion4 = $arConfiguracion->getNombreEmpresa();
         $sustitucion5 = $arConfiguracion->getNitEmpresa().'-'.$arConfiguracion->getDigitoVerificacionEmpresa();
         $sustitucion6 = $arContrato->getCodigoContratoPk();
