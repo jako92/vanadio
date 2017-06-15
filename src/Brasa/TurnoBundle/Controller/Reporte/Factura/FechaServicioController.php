@@ -196,7 +196,7 @@ class FechaServicioController extends Controller {
                     ->setCellValue('E' . $i, $arFacturaDetalle->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('F' . $i, $arFacturaDetalle->getPuestoRel()->getNombre())
                     ->setCellValue('G' . $i, $arFacturaDetalle->getFacturaRel()->getFecha()->format('Y-m-d'))
-                    ->setCellValue('H' . $i, $arFacturaDetalle->getFechaProgramacion()->format('m'))
+                    ->setCellValue('H' . $i, $arFacturaDetalle->getFechaProgramacion()->format('Y-m'))
                     ->setCellValue('I' . $i, $arFacturaDetalle->getConceptoServicioRel()->getNombre())
                     ->setCellValue('J' . $i, $arFacturaDetalle->getFacturaRel()->getFacturaServicioRel()->getNombre())
                     ->setCellValue('K' . $i, $arFacturaDetalle->getSubtotal());
