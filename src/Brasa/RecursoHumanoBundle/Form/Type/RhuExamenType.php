@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -45,12 +46,12 @@ class RhuExamenType extends AbstractType {
                     'class' => 'BrasaGeneralBundle:GenCiudad',
                     'choice_label' => 'nombre',
                 ))
-                ->add('fecha', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fecha', DateType::class)
                 ->add('codigoSexoFk', ChoiceType::class, array('choices' => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
                 ->add('comentarios', TextareaType::class, array('required' => false))
                 ->add('identificacion', NumberType::class, array('required' => true))
                 ->add('nombreCorto', TextType::class, array('required' => true))
-                ->add('fechaNacimiento', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaNacimiento', BirthdayType::class)
                 ->add('controlPago', ChoiceType::class, array('choices' => array('SI' => '1', 'NO' => '0')))
                 ->add('controlPago', CheckboxType::class, array('required' => false))
                 ->add('cobro', ChoiceType::class, array('choices' => array('CLIENTE' => 'C', 'EMPLEADO' => 'E', 'NO COBRAR' => 'N')))                                            

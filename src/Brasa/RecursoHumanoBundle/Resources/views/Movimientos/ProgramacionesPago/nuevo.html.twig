@@ -25,17 +25,17 @@
                 <div class="form-group form-group-sm">
                     <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.fechaDesde, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.fechaDesde) }}
                     </div>
                     <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.fechaHasta, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.fechaHasta) }}
                     </div>
                 </div>        
                 <div class="form-group form-group-sm">
                     <label for="form_fechaHastaReal" class="col-sm-2 control-label">Hasta periodo:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.fechaHastaReal, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.fechaHastaReal) }}
                         <p style="font-size: 0.8em;">- Fecha hasta donde va realmente el periodo, por ejemplo cuando el mes tiene 31 dias</p> 
                     </div>
                     <label for="form_dias" class="col-sm-2 control-label">Dias:</label>

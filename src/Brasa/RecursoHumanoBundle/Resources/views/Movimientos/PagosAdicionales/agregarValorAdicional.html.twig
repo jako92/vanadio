@@ -20,7 +20,6 @@
     <div class="panel panel-default">
         <div class="panel-heading">Datos empleado</div>
         <div class="panel-body">
-
             <div class="form-group form-group-sm">
                 <label for="form_txtNumeroIdentificacion" class="col-sm-2 control-label">Empleado:</label>
                 <div class="col-sm-10">
@@ -41,8 +40,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="form-group form-group-sm">
                 <label for="pagoConceptoRel" class="col-sm-2 control-label">Tipo:</label>
                 <div class="col-sm-10">
@@ -55,29 +52,29 @@
                     {{ form_widget(form.TxtValor, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <label for="TxtHoras" class="col-sm-2 control-label">Horas:</label>
-                <div class="col-sm-2">
+                <div class="col-sm-4">
                     {{ form_widget(form.TxtHoras, { 'attr': {'class': 'form-control'} }) }}                    
-                </div>                
-                <div class="col-sm-2">
-                    Liquidar horas salario {{ form_widget(form.liquidarHorasSalario) }}
-                </div>                    
+                </div>                           
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                <div class="col-sm-4">{{ form_row(form.liquidarHorasSalario) }}</div>
+            </div>
             </div>   
             <div class="form-group form-group-sm">
                 <label for="TxtDetalle" class="col-sm-2 control-label">Detalle:</label>
                 <div class="col-sm-10">
                     {{ form_widget(form.TxtDetalle, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control'} }) }}
                 </div>
-            </div>                 
+            </div>
             <div class="form-group form-group-sm">
-                <label for="form_aplicarDiaLaborado" class="col-sm-2 control-label">Aplicar a día laborado:</label>
-                <div class="col-sm-4">
-                    {{ form_widget(form.aplicarDiaLaborado) }}
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <div class="col-sm-4">{{ form_row(form.aplicarDiaLaborado) }}</div>
+                    <div class="col-sm-4">{{ form_row(form.aplicarDiaLaboradoSinDescanso) }}</div>
                 </div>
-                <label for="form_aplicarDiaLaboradoSinDescanso" class="col-sm-2 control-label">Aplicar a día laborado (Sin descanso):</label>
-                <div class="col-sm-4">
-                   {{ form_widget(form.aplicarDiaLaboradoSinDescanso) }} 
-                </div>                
-            </div>                                                              
+            </div>                                                          
         </div>
     </div>
 
