@@ -54,6 +54,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion experiencia }
             
+    admin.recursohumano.requisitotipo:
+        class: Brasa\RecursoHumanoBundle\Admin\RequisitoTipoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Requisito tipo }
+            
     # .................. administracion modulo programacion de turnos .................................................................
     
     admin.turno.centrooperacion:

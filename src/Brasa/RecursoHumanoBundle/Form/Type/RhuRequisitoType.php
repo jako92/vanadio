@@ -20,7 +20,14 @@ class RhuRequisitoType extends AbstractType
                     return $er->createQueryBuilder('c')
                     ->orderBy('c.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                
+                'required' => true))
+            ->add('requisitoTipoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuRequisitoTipo',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('rt')
+                    ->orderBy('rt.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
             ->add('numeroIdentificacion', TextType::class, array('required' => true))
             ->add('nombreCorto', TextType::class, array('required' => false))                
             ->add('comentarios', TextareaType::class, array('required' => false))

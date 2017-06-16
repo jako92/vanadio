@@ -682,7 +682,7 @@ class RhuProgramacionPagoRepository extends EntityRepository {
                             }
                         } elseif ($arConfiguracion->getLiquidarAuxilioTransportePrima() == 1){
                             if($arContrato->getAuxilioTransporte() == 0){$auxilioTransporte = 0;}else{$auxilioTransporte = $arConfiguracion->getVrAuxilioTransporte();}
-                                $salarioUltimaQuincena = $arContrato->getVrSalario() / 2;    
+                                $salarioUltimaQuincena = $arContrato->getVrSalarioPago() / 2;    
                                 $salarioPrima = $salarioUltimaQuincena + $ibpPrimas;
                                 $salarioPromedioPrimas = ($salarioPrima / $intDiasPrima) * 30;
                                 $salarioPromedioPrimas = $salarioPromedioPrimas + $auxilioTransporte;

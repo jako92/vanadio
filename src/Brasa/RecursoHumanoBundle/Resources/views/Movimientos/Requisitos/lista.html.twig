@@ -41,6 +41,7 @@
         <table class="table table-striped table-bordered table-condensed">
             <tr>
                 <th>CÓDIGO</th>
+                <th>TIPO</th>
                 <th>FECHA</th>
                 <th>IDENTIFICACION</th>
                 <th>EMPLEADO</th>
@@ -53,6 +54,7 @@
             {% for arRequisitos in arRequisitos %}
                 <tr>
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arRequisitos.codigoRequisitoPk }}">{{ arRequisitos.codigoRequisitoPk }} </td>
+                    <td>{{ arRequisitos.requisitoTipoRel.nombre | default('') }}</a></td>
                     <td>{{ arRequisitos.fecha |date("Y/m/d")  }}</td>
                     <td>{{ arRequisitos.numeroIdentificacion }}</a></td>
                     <td>{{ arRequisitos.nombreCorto }}</a></td>

@@ -29,9 +29,9 @@ class RhuProgramacionPagoType extends AbstractType
                     ->orderBy('pt.codigoPagoTipoPk', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))                                         
-            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))         
-            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHastaReal', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaDesde', DateType::class)         
+            ->add('fechaHasta', DateType::class)
+            ->add('fechaHastaReal', DateType::class)
             ->add('dias', NumberType::class, array('required' => true)) 
             ->add('mensajePago', TextareaType::class, array('required' => false))                                            
             ->add('guardar', SubmitType::class);        

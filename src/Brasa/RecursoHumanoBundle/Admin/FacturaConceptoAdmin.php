@@ -26,4 +26,11 @@ class FacturaConceptoAdmin extends AbstractAdmin
                 ->add('porBaseIva', 'number')
                 ->add('porIva', 'number');
     }
+    
+    public function toString($object)
+    {
+        return $object instanceof BlogPost
+            ? $object->getTitle()
+            : $object->getNombre();
+    }
 }

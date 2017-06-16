@@ -3,70 +3,84 @@
 namespace Brasa\RecursoHumanoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="rhu_requisito")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuRequisitoRepository")
  */
-class RhuRequisito
-{
+class RhuRequisito {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_requisito_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoRequisitoPk;                  
-    
+    private $codigoRequisitoPk;
+
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
-     */    
-    private $fecha;             
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="numero_identificacion", type="string", length=20, nullable=false)
-     */         
+     */
     private $numeroIdentificacion;
-    
+
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=80, nullable=true)
-     */    
-    private $nombreCorto; 
-    
+     */
+    private $nombreCorto;
+
     /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCargoFk;        
-    
-    /**     
+     */
+    private $codigoCargoFk;
+
+    /**
+     * @ORM\Column(name="codigo_requisito_tipo_fk", type="integer", nullable=true)
+     */
+    private $codigoRequisitoTipoFk;
+
+    /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
-     */    
-    private $estadoAutorizado = 0;       
-    
-    /**     
+     */
+    private $estadoAutorizado = 0;
+
+    /**
      * @ORM\Column(name="estado_cerrado", type="boolean")
-     */    
-    private $estadoCerrado = 0;    
-    
+     */
+    private $estadoCerrado = 0;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
-    private $comentarios;             
+     */
+    private $comentarios;
+
+    /**
+     * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
+     */
+    private $codigoUsuario;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuCargo", inversedBy="requisitosCargoRel")
      * @ORM\JoinColumn(name="codigo_cargo_fk", referencedColumnName="codigo_cargo_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
      */
-    protected $cargoRel;    
-    
+    protected $cargoRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuRequisitoTipo", inversedBy="requisitosRequisitoTipoRel")
+     * @ORM\JoinColumn(name="codigo_requisito_tipo_fk", referencedColumnName="codigo_requisito_tipo_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
+     */
+    protected $requisitoTipoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuRequisitoDetalle", mappedBy="requisitoRel", cascade={"persist", "remove"})
      */
     protected $requisitosDetallesRequisitoRel;
-    
-    /**
-     * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
-    private $codigoUsuario;
 
     /**
      * Constructor
@@ -183,6 +197,30 @@ class RhuRequisito
     }
 
     /**
+     * Set codigoRequisitoTipoFk
+     *
+     * @param integer $codigoRequisitoTipoFk
+     *
+     * @return RhuRequisito
+     */
+    public function setCodigoRequisitoTipoFk($codigoRequisitoTipoFk)
+    {
+        $this->codigoRequisitoTipoFk = $codigoRequisitoTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRequisitoTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoRequisitoTipoFk()
+    {
+        return $this->codigoRequisitoTipoFk;
+    }
+
+    /**
      * Set estadoAutorizado
      *
      * @param boolean $estadoAutorizado
@@ -255,6 +293,30 @@ class RhuRequisito
     }
 
     /**
+     * Set codigoUsuario
+     *
+     * @param string $codigoUsuario
+     *
+     * @return RhuRequisito
+     */
+    public function setCodigoUsuario($codigoUsuario)
+    {
+        $this->codigoUsuario = $codigoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoUsuario
+     *
+     * @return string
+     */
+    public function getCodigoUsuario()
+    {
+        return $this->codigoUsuario;
+    }
+
+    /**
      * Set cargoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel
@@ -276,6 +338,30 @@ class RhuRequisito
     public function getCargoRel()
     {
         return $this->cargoRel;
+    }
+
+    /**
+     * Set requisitoTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo $requisitoTipoRel
+     *
+     * @return RhuRequisito
+     */
+    public function setRequisitoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo $requisitoTipoRel = null)
+    {
+        $this->requisitoTipoRel = $requisitoTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get requisitoTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo
+     */
+    public function getRequisitoTipoRel()
+    {
+        return $this->requisitoTipoRel;
     }
 
     /**
@@ -310,29 +396,5 @@ class RhuRequisito
     public function getRequisitosDetallesRequisitoRel()
     {
         return $this->requisitosDetallesRequisitoRel;
-    }
-
-    /**
-     * Set codigoUsuario
-     *
-     * @param string $codigoUsuario
-     *
-     * @return RhuRequisito
-     */
-    public function setCodigoUsuario($codigoUsuario)
-    {
-        $this->codigoUsuario = $codigoUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoUsuario
-     *
-     * @return string
-     */
-    public function getCodigoUsuario()
-    {
-        return $this->codigoUsuario;
     }
 }

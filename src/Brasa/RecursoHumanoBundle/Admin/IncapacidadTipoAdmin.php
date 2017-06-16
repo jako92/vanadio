@@ -35,4 +35,11 @@ class IncapacidadTipoAdmin extends AbstractAdmin
                 ->add('tipo')
                 ->add('abreviatura');
     }
+    
+    public function toString($object)
+    {
+        return $object instanceof BlogPost
+            ? $object->getTitle()
+            : $object->getNombre();
+    }
 }
