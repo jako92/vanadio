@@ -141,7 +141,7 @@ class CobroPoligrafia extends \FPDF_FPDF {
             $pdf->Cell(30, 6, $arPoligrafia->getNumeroIdentificacion(), 1, 0, 'C');
             $pdf->Cell(55, 6, utf8_decode($arPoligrafia->getNombreCorto()), 1, 0, 'L');
             $pdf->Cell(20, 6, $arPoligrafia->getFecha()->format("Y/m/d"), 1, 0, 'C');
-            $pdf->Cell(35, 6, "POLIGRAFIA", 1, 0, 'C');
+            $pdf->Cell(35, 6, $arPoligrafia->getPoligrafiaTipoRel()->getNombre(), 1, 0, 'C');
             $pdf->Cell(20, 6, number_format($arPoligrafia->getVrTotal(),0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);

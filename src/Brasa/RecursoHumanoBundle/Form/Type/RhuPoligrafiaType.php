@@ -15,7 +15,14 @@ use Doctrine\ORM\EntityRepository;
 class RhuPoligrafiaType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
+        $builder->add('poligrafiaTipoRel', EntityType::class, array(
+                    'class' => 'BrasaRecursoHumanoBundle:RhuPoligrafiaTipo',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('pt')
+                                ->orderBy('pt.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => true))
                 ->add('tipoIdentificacionRel', EntityType::class, array(
                     'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
                     'query_builder' => function (EntityRepository $er) {
@@ -36,7 +43,7 @@ class RhuPoligrafiaType extends AbstractType {
                 ->add('nombreCorto', TextType::class, array('required' => true))
                 ->add('fecha', DateTimeType::class)
                 ->add('vrTotal', NumberType::class, array('required' => false))
-                ->add('comentarios', TextareaType::class, array('required' => true, 'attr' => array('cols' => '5', 'rows' => '10')))
+                ->add('comentarios', TextareaType::class, array('required' => false, 'attr' => array('cols' => '5', 'rows' => '10')))
                 ->add('guardar', SubmitType::class)
                 ->add('guardarnuevo', SubmitType::class, array('label' => 'Guardar y Nuevo'));
     }

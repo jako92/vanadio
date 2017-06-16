@@ -43,8 +43,8 @@
                         <td class="td-in-well">{{ arPoligrafia.numeroIdentificacion }}</td>
                         <td class="titulo">EMPLEADO:</td>
                         <td class="td-in-well">{{ arPoligrafia.nombreCorto }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>                                                
+                        <td class="titulo">TIPO</td>
+                        <td class="td-in-well">{{ arPoligrafia.poligrafiaTipoRel.nombre | default('') }}</td>                                                
                     </tr>
                     <tr>
                         <td class="titulo">AUTORIZADO:</td>

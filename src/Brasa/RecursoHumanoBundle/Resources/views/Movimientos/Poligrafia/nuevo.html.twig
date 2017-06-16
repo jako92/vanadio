@@ -18,9 +18,16 @@
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}           
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
-            <div class="panel-body">                                    
+            <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label for="form_tipoIdentificacionRel" class="col-sm-2 control-label">Tipo:</label>
+                    <label for="form_poligrafiaTipoRel" class="col-sm-2 control-label">Tipo:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.poligrafiaTipoRel) }}
+                        {{ form_errors(form.poligrafiaTipoRel) }} 
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_tipoIdentificacionRel" class="col-sm-2 control-label">Tipo identificacion:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.tipoIdentificacionRel) }}
                         {{ form_errors(form.tipoIdentificacionRel) }} 

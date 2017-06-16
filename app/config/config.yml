@@ -122,6 +122,7 @@ sonata_admin:
                 items:
                     - admin.recursohumano.incapacidadtipo
                     - admin.recursohumano.requisitotipo
+                    - admin.recursohumano.poligrafiatipo
                     - admin.recursohumano.facturaconcepto
                     - admin.recursohumano.estudiotipo
                     - admin.recursohumano.seleccionrequisicionexperiencia

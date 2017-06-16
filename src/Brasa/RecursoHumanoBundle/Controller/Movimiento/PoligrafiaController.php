@@ -78,7 +78,7 @@ class PoligrafiaController extends Controller {
         }
         $form = $this->createForm(RhuPoligrafiaType::class, $arPoligrafia);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arPoligrafia = $form->getData();
             if ($codigoPoligrafia == 0) {
@@ -115,7 +115,7 @@ class PoligrafiaController extends Controller {
         }
         $form = $this->createForm(RhuPoligrafiaEmpleadoType::class, $arPoligrafia);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arPoligrafia = $form->getData();

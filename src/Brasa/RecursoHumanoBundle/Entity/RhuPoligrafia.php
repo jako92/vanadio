@@ -3,126 +3,138 @@
 namespace Brasa\RecursoHumanoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="rhu_poligrafia")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuPoligrafiaRepository")
  */
-class RhuPoligrafia
-{
+class RhuPoligrafia {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_poligrafia_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoPoligrafiaPK;            
-    
+    private $codigoPoligrafiaPK;
+
     /**
      * @ORM\Column(name="fecha", type="datetime", nullable=true)
-     */    
-    private $fecha;                 
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
-     */    
+     */
     private $fechaCreacion;
-    
+
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoEmpleadoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_tipo_identificacion_fk", type="integer")
-     */    
-    private $codigoTipoIdentificacionFk;     
-    
+     */
+    private $codigoTipoIdentificacionFk;
+
+    /**
+     * @ORM\Column(name="codigo_poligrafia_tipo_fk", type="integer")
+     */
+    private $codigoPoligrafiaTipoFk;
+
     /**
      * @ORM\Column(name="numero_identificacion", type="string", length=20, nullable=false)
      */
-         
     private $numeroIdentificacion;
-    
+
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=80, nullable=true)
-     */    
+     */
     private $nombreCorto;
-    
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoClienteFk;
 
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCentroCostoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCobroFk;
-    
+
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
+     */
     private $codigoUsuario;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
-     */    
+     */
     private $estadoAutorizado = false;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_cerrado", type="boolean")
-     */    
+     */
     private $estadoCerrado = false;
-    
+
     /**
      * @ORM\Column(name="estado_cobrado", type="boolean")
      */
     private $estadoCobrado = 0;
-    
+
     /**
      * @ORM\Column(name="vr_total", type="float")
      */
     private $vrTotal = 0;
-    
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
+     */
     private $comentarios;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="poligrafiasEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
     protected $empleadoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuPoligrafiasTipoIdentificacionRel")
      * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
      */
     protected $tipoIdentificacionRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="poligrafiasClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="poligrafiasCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="poligrafiasCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuPoligrafiaTipo", inversedBy="poligrafiasPoligrafiaTipoRel")
+     * @ORM\JoinColumn(name="codigo_poligrafia_tipo_fk", referencedColumnName="codigo_poligrafia_tipo_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
+     */
+    protected $poligrafiaTipoRel;
+
 
     /**
      * Get codigoPoligrafiaPK
@@ -228,6 +240,30 @@ class RhuPoligrafia
     public function getCodigoTipoIdentificacionFk()
     {
         return $this->codigoTipoIdentificacionFk;
+    }
+
+    /**
+     * Set codigoPoligrafiaTipoFk
+     *
+     * @param integer $codigoPoligrafiaTipoFk
+     *
+     * @return RhuPoligrafia
+     */
+    public function setCodigoPoligrafiaTipoFk($codigoPoligrafiaTipoFk)
+    {
+        $this->codigoPoligrafiaTipoFk = $codigoPoligrafiaTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPoligrafiaTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPoligrafiaTipoFk()
+    {
+        return $this->codigoPoligrafiaTipoFk;
     }
 
     /**
@@ -612,5 +648,29 @@ class RhuPoligrafia
     public function getCobroRel()
     {
         return $this->cobroRel;
+    }
+
+    /**
+     * Set poligrafiaTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo $poligrafiaTipoRel
+     *
+     * @return RhuPoligrafia
+     */
+    public function setPoligrafiaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo $poligrafiaTipoRel = null)
+    {
+        $this->poligrafiaTipoRel = $poligrafiaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get poligrafiaTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo
+     */
+    public function getPoligrafiaTipoRel()
+    {
+        return $this->poligrafiaTipoRel;
     }
 }

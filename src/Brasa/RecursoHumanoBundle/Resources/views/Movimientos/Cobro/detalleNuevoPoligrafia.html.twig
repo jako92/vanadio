@@ -12,6 +12,7 @@
         <table class="table table-striped table-bordered table-condensed">
             <tr>
                 <th>ID</th>
+                <th>TIPO</th>
                 <th>DOCUMENTO</th>
                 <th>EMPLEADO</th>
                 <th>FECHA</th>
@@ -21,6 +22,7 @@
             {% for arPoligrafias in arPoligrafias %}
                 <tr> 
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arPoligrafias.codigoPoligrafiaPk  }}">{{ arPoligrafias.codigoPoligrafiaPk  }}</td>                  
+                    <td>{{ arPoligrafias.poligrafiaTipoRel.nombre | default('')  }}</td>
                     <td>{{ arPoligrafias.numeroIdentificacion  }}</td>
                     <td>{{ arPoligrafias.nombreCorto  }}</td>
                     <td>{{ arPoligrafias.fecha |date("Y-m-d H:s:i")  }}</td>

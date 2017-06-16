@@ -60,6 +60,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Requisito tipo }
             
+    admin.recursohumano.poligrafiatipo:
+        class: Brasa\RecursoHumanoBundle\Admin\PoligrafiaTipoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Poligrafia tipo }
+            
     # .................. administracion modulo programacion de turnos .................................................................
     
     admin.turno.centrooperacion:
