@@ -78,6 +78,11 @@ class User implements UserInterface, \Serializable {
     private $cambiarClave = 0;
 
     /**
+     * @ORM\Column(name="fecha", type="date", nullable=true)
+     */
+    private $fecha;
+
+    /**
      * @ORM\ManyToOne(targetEntity="SegRoles", inversedBy="usersRolRel")
      * @ORM\JoinColumn(name="roles", referencedColumnName="codigo_rol_pk")
      */
@@ -524,8 +529,7 @@ class User implements UserInterface, \Serializable {
      *
      * @return User
      */
-    public function setCambiarClave($cambiarClave)
-    {
+    public function setCambiarClave($cambiarClave) {
         $this->cambiarClave = $cambiarClave;
 
         return $this;
@@ -536,8 +540,32 @@ class User implements UserInterface, \Serializable {
      *
      * @return boolean
      */
-    public function getCambiarClave()
-    {
+    public function getCambiarClave() {
         return $this->cambiarClave;
+    }
+
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return User
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
     }
 }
