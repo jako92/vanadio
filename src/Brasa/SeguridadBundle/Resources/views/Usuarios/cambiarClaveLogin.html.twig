@@ -1,0 +1,38 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Seguridad
+            <small>Cambiar clave</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Seguridad</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Usuario</a></li>            
+            <li class="active">Clave</li>
+        </ol>
+    </section>    
+    <section class="content">     
+        {{ form_start(formUsuario, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(formUsuario) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Cambiar clave</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="form_password" class="col-sm-3 control-label">Nueva clave:</label>
+                    <div class="col-sm-9">
+                        {{ form_widget(formUsuario.password, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">
+                {{ form_widget(formUsuario.BtnGuardar) }} 
+            </div>
+        </div>
+        {{ form_rest(formUsuario) }}
+        {{ form_end(formUsuario) }}
+        <br/><br/><br/><br/>
+    </section>    
+{% endblock %}

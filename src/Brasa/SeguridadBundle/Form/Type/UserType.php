@@ -27,7 +27,8 @@ class UserType extends AbstractType
             ->add('email', TextType::class, array('required' => true))                
             ->add('password', PasswordType::class, array('required' => true))
             ->add('cargo', TextType::class, array('required' => true))
-            ->add('isActive', CheckboxType::class, array('required' => false))                
+            ->add('isActive', CheckboxType::class, array('required' => false,'label'=>'activo'))
+            ->add('cambiarClave', CheckboxType::class, array('required' => false,'label'=>'Cambiar clave proximo inicio de session'))
             ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 

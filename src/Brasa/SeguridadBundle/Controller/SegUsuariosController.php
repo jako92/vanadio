@@ -56,10 +56,7 @@ class SegUsuariosController extends Controller {
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($arUsuario);
             $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
-            if ($codigoUsuario == 0) {
-                $arUsuario->setPassword($password);
-            }
-
+            $arUsuario->setPassword($password);
             $em->persist($arUsuario);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_seg_admin_usuario_lista'));
@@ -484,14 +481,19 @@ class SegUsuariosController extends Controller {
             $encoder = $factory->getEncoder($arUsuario);
             $password = $encoder->encodePassword($formUsuario->get('password')->getData(), $arUsuario->getSalt());
             $arUsuario->setPassword($password);
+            $arUsuario->setCambiarClave(0);
             $em->persist($arUsuario);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_seg_usuario_detalle_ver', array('codigoUsuario' => $codigoUsuario)));
         }
-        return $this->render('BrasaSeguridadBundle:Usuarios:cambiarClave.html.twig', array(
+        if ($arUsuario->getCambiarClave()) {
+            $ruta = 'BrasaSeguridadBundle:Usuarios:cambiarClaveLogin.html.twig';
+        } else {
+            $ruta = 'BrasaSeguridadBundle:Usuarios:cambiarClave.html.twig';
+        }
+        return $this->render($ruta, array(
                     'arUsuario' => $arUsuario,
-                    'formUsuario' => $formUsuario->createView()
-        ));
+                    'formUsuario' => $formUsuario->createView()));
     }
 
     private function listar() {

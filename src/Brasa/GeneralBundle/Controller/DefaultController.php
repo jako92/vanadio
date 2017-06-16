@@ -12,9 +12,9 @@ class DefaultController extends Controller
      * @Route("/", name="brasa_general_inicio")
      */
     public function indexAction() {
-        /*$objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $em = $this->getDoctrine()->getManager();   
-        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();        
+        /*$arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();        
         $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         if($arConfiguracion->getInhabilitado() == 1) {           
             return $this->redirect($this->generateUrl('logout'));
@@ -26,6 +26,11 @@ class DefaultController extends Controller
         if($dias <= 3 ) {
             $objMensaje->Mensaje("error", "El servicio de soporte, mantenimiento y actualizacion vence en " . $dias . " dias, si el contrato es de tipo arrendamiento se suspende totalmente el acceso");
         }*/
+        $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
+        $arUsuario = $this->getUser();
+        if ($arUsuario->getCambiarClave()){
+            return $this->redirectToRoute('brs_seg_user_usuario_cambiar_clave', array('codigoUsuario' => $arUsuario->getId()));
+        }
         return $this->render('BrasaGeneralBundle:Default:index.html.twig');
     }                     
     

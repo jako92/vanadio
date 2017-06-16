@@ -13,14 +13,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
  * @ORM\Entity(repositoryClass="Brasa\SeguridadBundle\Entity\UserRepository")
  * @DoctrineAssert\UniqueEntity(fields={"email"},message="Ya existe este correo") 
  */
-class User implements UserInterface, \Serializable
-{
+class User implements UserInterface, \Serializable {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    
     private $id;
 
     /**
@@ -31,8 +30,8 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=255)
      */
-    private $nombreCorto;    
-    
+    private $nombreCorto;
+
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -56,13 +55,13 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $empresa; 
-    
+    private $empresa;
+
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $roles;    
-    
+    private $roles;
+
     /**
      * @ORM\Column(name="tareasPendientes", type="integer")
      */
@@ -71,104 +70,99 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="cargo", type="string", length=255)
      */
-    private $cargo;      
-    
+    private $cargo;
+
+    /**
+     * @ORM\Column(name="cambiar_clave", type="boolean")
+     */
+    private $cambiarClave = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="SegRoles", inversedBy="usersRolRel")
      * @ORM\JoinColumn(name="roles", referencedColumnName="codigo_rol_pk")
      */
-    protected $rolRel; 
+    protected $rolRel;
 
     /**
      * @ORM\OneToMany(targetEntity="SegUsuarioPermisoEspecial", mappedBy="usuarioRel")
      */
     protected $userUsuarioPermisoEspecialRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="SegUsuarioRol", mappedBy="usuarioRel")
      */
-    protected $usuariosRolesUsuarioRel;    
-    
+    protected $usuariosRolesUsuarioRel;
+
     /**
      * @ORM\OneToMany(targetEntity="SegPermisoDocumento", mappedBy="usuarioRel")
      */
-    protected $permisosDocumentosUsuarioRel;    
-    
+    protected $permisosDocumentosUsuarioRel;
+
     /**
      * @ORM\OneToMany(targetEntity="Brasa\GeneralBundle\Entity\GenLog", mappedBy="usuarioRel")
      */
-    protected $logsUsuarioRel;     
-    
-    public function __construct()
-    {
+    protected $logsUsuarioRel;
+
+    public function __construct() {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
-    }    
-    
+    }
+
     /**
      * @inheritDoc
      */
-    public function getUsername()
-    {
+    public function getUsername() {
         return $this->username;
     }
 
     /**
      * @inheritDoc
      */
-    public function getSalt()
-    {
+    public function getSalt() {
         return $this->salt;
     }
 
     /**
      * @inheritDoc
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
     /**
      * @inheritDoc
      */
-    public function getRoles()
-    {
+    public function getRoles() {
         return array($this->roles);
     }
 
     /**
      * @inheritDoc
      */
-    public function eraseCredentials()
-    {
+    public function eraseCredentials() {
+        
     }
-    
-    
-    public function isEnabled()
-    {
+
+    public function isEnabled() {
         return $this->isActive;
-    }    
-    
+    }
+
     /**
      * @see \Serializable::serialize()
      */
-    public function serialize()
-    {
+    public function serialize() {
         return serialize(array(
             $this->id,
-            
         ));
     }
 
     /**
      * @see \Serializable::unserialize()
      */
-    public function unserialize($serialized)
-    {
+    public function unserialize($serialized) {
         list (
-            $this->id,
-        ) = unserialize($serialized);
+                $this->id,
+                ) = unserialize($serialized);
     }
 
     public function equals(UserInterface $user) {
@@ -180,8 +174,7 @@ class User implements UserInterface, \Serializable
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -190,8 +183,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $username
      */
-    public function setUsername($username)
-    {
+    public function setUsername($username) {
         $this->username = $username;
     }
 
@@ -200,8 +192,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $salt
      */
-    public function setSalt($salt)
-    {
+    public function setSalt($salt) {
         $this->salt = $salt;
     }
 
@@ -210,8 +201,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $password
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
     }
 
@@ -220,8 +210,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $email
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
     }
 
@@ -230,8 +219,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -240,8 +228,7 @@ class User implements UserInterface, \Serializable
      *
      * @param boolean $isActive
      */
-    public function setIsActive($isActive)
-    {
+    public function setIsActive($isActive) {
         $this->isActive = $isActive;
     }
 
@@ -250,8 +237,7 @@ class User implements UserInterface, \Serializable
      *
      * @return boolean 
      */
-    public function getIsActive()
-    {
+    public function getIsActive() {
         return $this->isActive;
     }
 
@@ -261,8 +247,7 @@ class User implements UserInterface, \Serializable
      * @param string $nombreCorto
      * @return User
      */
-    public function setNombreCorto($nombreCorto)
-    {
+    public function setNombreCorto($nombreCorto) {
         $this->nombreCorto = $nombreCorto;
 
         return $this;
@@ -273,8 +258,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string 
      */
-    public function getNombreCorto()
-    {
+    public function getNombreCorto() {
         return $this->nombreCorto;
     }
 
@@ -284,8 +268,7 @@ class User implements UserInterface, \Serializable
      * @param \Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel
      * @return User
      */
-    public function addUsuariosConfiguracionRel(\Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel)
-    {
+    public function addUsuariosConfiguracionRel(\Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel) {
         $this->usuariosConfiguracionRel[] = $usuariosConfiguracionRel;
 
         return $this;
@@ -296,8 +279,7 @@ class User implements UserInterface, \Serializable
      *
      * @param \Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel
      */
-    public function removeUsuariosConfiguracionRel(\Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel)
-    {
+    public function removeUsuariosConfiguracionRel(\Brasa\TransporteBundle\Entity\TteUsuarioConfiguracion $usuariosConfiguracionRel) {
         $this->usuariosConfiguracionRel->removeElement($usuariosConfiguracionRel);
     }
 
@@ -306,12 +288,9 @@ class User implements UserInterface, \Serializable
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getUsuariosConfiguracionRel()
-    {
+    public function getUsuariosConfiguracionRel() {
         return $this->usuariosConfiguracionRel;
     }
-
-
 
     /**
      * Set empresa
@@ -320,8 +299,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setEmpresa($empresa)
-    {
+    public function setEmpresa($empresa) {
         $this->empresa = $empresa;
 
         return $this;
@@ -332,8 +310,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getEmpresa()
-    {
+    public function getEmpresa() {
         return $this->empresa;
     }
 
@@ -344,8 +321,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setRoles($roles)
-    {
+    public function setRoles($roles) {
         $this->roles = $roles;
 
         return $this;
@@ -358,8 +334,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setRolRel(\Brasa\SeguridadBundle\Entity\SegRoles $rolRel = null)
-    {
+    public function setRolRel(\Brasa\SeguridadBundle\Entity\SegRoles $rolRel = null) {
         $this->rolRel = $rolRel;
 
         return $this;
@@ -370,8 +345,7 @@ class User implements UserInterface, \Serializable
      *
      * @return \Brasa\SeguridadBundle\Entity\SegRoles
      */
-    public function getRolRel()
-    {
+    public function getRolRel() {
         return $this->rolRel;
     }
 
@@ -382,8 +356,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function addUserUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $userUsuarioPermisoEspecialRel)
-    {
+    public function addUserUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $userUsuarioPermisoEspecialRel) {
         $this->userUsuarioPermisoEspecialRel[] = $userUsuarioPermisoEspecialRel;
 
         return $this;
@@ -394,8 +367,7 @@ class User implements UserInterface, \Serializable
      *
      * @param \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $userUsuarioPermisoEspecialRel
      */
-    public function removeUserUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $userUsuarioPermisoEspecialRel)
-    {
+    public function removeUserUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $userUsuarioPermisoEspecialRel) {
         $this->userUsuarioPermisoEspecialRel->removeElement($userUsuarioPermisoEspecialRel);
     }
 
@@ -404,8 +376,7 @@ class User implements UserInterface, \Serializable
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUserUsuarioPermisoEspecialRel()
-    {
+    public function getUserUsuarioPermisoEspecialRel() {
         return $this->userUsuarioPermisoEspecialRel;
     }
 
@@ -416,8 +387,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function addUsuariosRolesUsuarioRel(\Brasa\SeguridadBundle\Entity\SegUsuarioRol $usuariosRolesUsuarioRel)
-    {
+    public function addUsuariosRolesUsuarioRel(\Brasa\SeguridadBundle\Entity\SegUsuarioRol $usuariosRolesUsuarioRel) {
         $this->usuariosRolesUsuarioRel[] = $usuariosRolesUsuarioRel;
 
         return $this;
@@ -428,8 +398,7 @@ class User implements UserInterface, \Serializable
      *
      * @param \Brasa\SeguridadBundle\Entity\SegUsuarioRol $usuariosRolesUsuarioRel
      */
-    public function removeUsuariosRolesUsuarioRel(\Brasa\SeguridadBundle\Entity\SegUsuarioRol $usuariosRolesUsuarioRel)
-    {
+    public function removeUsuariosRolesUsuarioRel(\Brasa\SeguridadBundle\Entity\SegUsuarioRol $usuariosRolesUsuarioRel) {
         $this->usuariosRolesUsuarioRel->removeElement($usuariosRolesUsuarioRel);
     }
 
@@ -438,8 +407,7 @@ class User implements UserInterface, \Serializable
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsuariosRolesUsuarioRel()
-    {
+    public function getUsuariosRolesUsuarioRel() {
         return $this->usuariosRolesUsuarioRel;
     }
 
@@ -450,8 +418,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function addPermisosDocumentosUsuarioRel(\Brasa\SeguridadBundle\Entity\SegPermisoDocumento $permisosDocumentosUsuarioRel)
-    {
+    public function addPermisosDocumentosUsuarioRel(\Brasa\SeguridadBundle\Entity\SegPermisoDocumento $permisosDocumentosUsuarioRel) {
         $this->permisosDocumentosUsuarioRel[] = $permisosDocumentosUsuarioRel;
 
         return $this;
@@ -462,8 +429,7 @@ class User implements UserInterface, \Serializable
      *
      * @param \Brasa\SeguridadBundle\Entity\SegPermisoDocumento $permisosDocumentosUsuarioRel
      */
-    public function removePermisosDocumentosUsuarioRel(\Brasa\SeguridadBundle\Entity\SegPermisoDocumento $permisosDocumentosUsuarioRel)
-    {
+    public function removePermisosDocumentosUsuarioRel(\Brasa\SeguridadBundle\Entity\SegPermisoDocumento $permisosDocumentosUsuarioRel) {
         $this->permisosDocumentosUsuarioRel->removeElement($permisosDocumentosUsuarioRel);
     }
 
@@ -472,8 +438,7 @@ class User implements UserInterface, \Serializable
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPermisosDocumentosUsuarioRel()
-    {
+    public function getPermisosDocumentosUsuarioRel() {
         return $this->permisosDocumentosUsuarioRel;
     }
 
@@ -484,8 +449,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setTareasPendientes($tareasPendientes)
-    {
+    public function setTareasPendientes($tareasPendientes) {
         $this->tareasPendientes = $tareasPendientes;
 
         return $this;
@@ -496,8 +460,7 @@ class User implements UserInterface, \Serializable
      *
      * @return integer
      */
-    public function getTareasPendientes()
-    {
+    public function getTareasPendientes() {
         return $this->tareasPendientes;
     }
 
@@ -508,8 +471,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function addLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel)
-    {
+    public function addLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel) {
         $this->logsUsuarioRel[] = $logsUsuarioRel;
 
         return $this;
@@ -520,8 +482,7 @@ class User implements UserInterface, \Serializable
      *
      * @param \Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel
      */
-    public function removeLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel)
-    {
+    public function removeLogsUsuarioRel(\Brasa\GeneralBundle\Entity\GenLog $logsUsuarioRel) {
         $this->logsUsuarioRel->removeElement($logsUsuarioRel);
     }
 
@@ -530,8 +491,7 @@ class User implements UserInterface, \Serializable
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLogsUsuarioRel()
-    {
+    public function getLogsUsuarioRel() {
         return $this->logsUsuarioRel;
     }
 
@@ -542,8 +502,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setCargo($cargo)
-    {
+    public function setCargo($cargo) {
         $this->cargo = $cargo;
 
         return $this;
@@ -554,8 +513,31 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getCargo()
-    {
+    public function getCargo() {
         return $this->cargo;
+    }
+
+    /**
+     * Set cambiarClave
+     *
+     * @param boolean $cambiarClave
+     *
+     * @return User
+     */
+    public function setCambiarClave($cambiarClave)
+    {
+        $this->cambiarClave = $cambiarClave;
+
+        return $this;
+    }
+
+    /**
+     * Get cambiarClave
+     *
+     * @return boolean
+     */
+    public function getCambiarClave()
+    {
+        return $this->cambiarClave;
     }
 }
