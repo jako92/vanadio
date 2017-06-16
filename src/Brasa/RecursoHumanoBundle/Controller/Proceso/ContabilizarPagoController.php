@@ -172,7 +172,7 @@ class ContabilizarPagoController extends Controller {
         $arPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle();
         $arPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->findBy(array('codigoPagoFk' => $codigo));
         foreach ($arPagoDetalles as $arPagoDetalle) {
-            if ($arPagoDetalle->getVrPago() > 0) {
+            //if ($arPagoDetalle->getVrPago() > 0) {
                 $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                 $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();
                 $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->findOneBy(array('codigoPagoConceptoFk' => $arPagoDetalle->getCodigoPagoConceptoFk(), 'codigoEmpleadoTipoFk' => $arPago->getEmpleadoRel()->getCodigoEmpleadoTipoFk()));
@@ -225,7 +225,7 @@ class ContabilizarPagoController extends Controller {
                     $respuesta = "El concepto de pago " . $arPagoDetalle->getCodigoPagoConceptoFk() . " no tiene cuenta para el tipo de empleado " . $arPago->getEmpleadoRel()->getCodigoEmpleadoTipoFk();
                     break;
                 }
-            }
+            //}
         }
         if ($respuesta == '') {
             //Nomina por pagar                       
