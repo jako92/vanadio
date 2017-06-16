@@ -30,9 +30,11 @@ class SegUsuariosController extends Controller {
         $form->handleRequest($request);
         $this->listar();
         $arUsuarios = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
+        $arGrupos = $paginator->paginate($em->getRepository("BrasaSeguridadBundle:SegGrupo")->findAll(), $request->query->get('page', 1), 50);
         return $this->render('BrasaSeguridadBundle:Usuarios:lista.html.twig', array(
                     'form' => $form->createView(),
-                    'arUsuarios' => $arUsuarios
+                    'arUsuarios' => $arUsuarios,
+                    'arGrupos' =>$arGrupos
         ));
     }
 
@@ -494,6 +496,20 @@ class SegUsuariosController extends Controller {
         return $this->render($ruta, array(
                     'arUsuario' => $arUsuario,
                     'formUsuario' => $formUsuario->createView()));
+    }
+    
+    /**
+     * @Route("/user/usuario/nuevo/permiso/grupo/{codigoGrupo}/", name="brs_seg_admin_permiso_grupo_nuevo")
+     */
+    public function nuevoPermisoGrupoAction(Request $request, $codigoGrupo) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->formularioSegDocumento();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            
+        }
+        return $this->render("BrasaSeguridadBundle:Usuarios:nuevoPermisoGrupo.html.twig", array(
+                    'form' => $form->createView()));
     }
 
     private function listar() {

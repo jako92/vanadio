@@ -155,4 +155,10 @@ sonata_admin:
                     - admin.general.departamento
                     - admin.general.ciudad
                     
+            app.admin.group.seguridad:
+                label: Seguridad
+                label_catalogue: Brasa\SeguridadBundle
+                items:
+                    - admin.seguridad.grupo
+                    
             

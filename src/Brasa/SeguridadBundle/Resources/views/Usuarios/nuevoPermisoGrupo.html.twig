@@ -1,0 +1,133 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Permiso grupo nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Seguridad
+            <small>Permiso: nuevo</small>
+        </h1>
+    </section>
+    <section class="content">
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">
+                <label class="col-sm-2 control-label">Tipo:</label>
+                <div class="col-sm-4">
+                    {{form_widget(form.TxtTipo, { 'attr': {'class': 'form-control'} }) }}
+                </div>  
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Modulo:</label>
+                    <div class="col-sm-4">   
+                        {{form_widget(form.TxtModulo, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>     
+            </div>
+        </div>        
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Ingreso:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.ingreso) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Nuevo:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.nuevo) }}
+                    </div>                    
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Editar:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.editar) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Eliminar:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.eliminar) }}
+                    </div>                    
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Autorizar:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.autorizar) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Desautorizar:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.desautorizar) }}
+                    </div>                    
+                </div>                
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Aprobar:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.aprobar) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Desaprobar:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.desaprobar) }}
+                    </div>                    
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Anular:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.anular) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Imprimir:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.imprimir) }}
+                    </div>                    
+                </div>  
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Desanular:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.desanular) }}
+                    </div>                   
+                </div>                
+            </div>
+        </div>
+        <!-- Fin Encabezado Movimiento -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#documentos" data-toggle="tab">Documentos</a></li>
+            <li><a href="#permisosespeciales" data-toggle="tab">Permisos Especiales</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="documentos">
+                <!-- Menu Encabezado Movimiento -->
+                <div id="documentos" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed table-hover">
+                        <tr>
+                            <th>ID</th>            
+                            <th>TIPO</th>
+                            <th>MODULO</th>
+                            <th>NOMBRE</th>            
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTablaDocumentos(this, 'ChkSeleccionarDocumento[]');"/></th>
+                        </tr>                   
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="permisosespeciales">
+                <!-- Menu Encabezado Movimiento -->
+                <div id="permisosespeciales" style="width: 100%"><br></div>
+                <table class="table table-striped table-bordered table-condensed table-hover">
+                    <tr>            
+                        <th>MODULO</th>
+                        <th>TIPO</th>
+                        <th>NOMBRE</th>            
+                        <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTablaPermisosEspeciales(this, 'ChkSeleccionarPermisoEspecial[]');"/></th>
+                    </tr>                   
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">      
+            <a class="btn btn-default btn-sm">Cancelar</a>        
+            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section> 
+{% endblock %}

@@ -129,3 +129,11 @@ services:
         arguments: [~, Brasa\GeneralBundle\Entity\GenCiudad, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Ciudad }
+            
+    # .................. administracion del modulo general .............................................................................
+            
+    admin.seguridad.grupo:
+        class: Brasa\SeguridadBundle\Admin\GrupoAdmin
+        arguments: [~, Brasa\SeguridadBundle\Entity\SegGrupo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Grupo }
