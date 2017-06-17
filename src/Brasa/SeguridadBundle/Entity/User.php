@@ -75,7 +75,7 @@ class User implements UserInterface, \Serializable {
     /**
      * @ORM\Column(name="cambiar_clave", type="boolean")
      */
-    private $cambiarClave = 0;
+    private $cambiarClave = false;
 
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)

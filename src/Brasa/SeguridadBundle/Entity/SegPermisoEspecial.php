@@ -36,6 +36,11 @@ class SegPermisoEspecial
      * @ORM\OneToMany(targetEntity="SegUsuarioPermisoEspecial", mappedBy="permisoEspecialRel")
      */
     protected $segPermisoEspecialSegUsuarioPermisoEspecialRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="permisoEspecialRel")
+     */
+    protected $permisosGruposPermisoEspecialRel;
     /**
      * Constructor
      */
@@ -158,5 +163,39 @@ class SegPermisoEspecial
     public function getModulo()
     {
         return $this->modulo;
+    }
+
+    /**
+     * Add permisosGruposPermisoEspecialRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposPermisoEspecialRel
+     *
+     * @return SegPermisoEspecial
+     */
+    public function addPermisosGruposPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposPermisoEspecialRel)
+    {
+        $this->permisosGruposPermisoEspecialRel[] = $permisosGruposPermisoEspecialRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove permisosGruposPermisoEspecialRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposPermisoEspecialRel
+     */
+    public function removePermisosGruposPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposPermisoEspecialRel)
+    {
+        $this->permisosGruposPermisoEspecialRel->removeElement($permisosGruposPermisoEspecialRel);
+    }
+
+    /**
+     * Get permisosGruposPermisoEspecialRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPermisosGruposPermisoEspecialRel()
+    {
+        return $this->permisosGruposPermisoEspecialRel;
     }
 }

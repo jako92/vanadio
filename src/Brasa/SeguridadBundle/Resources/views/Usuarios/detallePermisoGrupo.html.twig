@@ -93,7 +93,7 @@
         <!-- Fin Encabezado Movimiento -->
         <ul class="nav nav-tabs">
             <li class="active"><a href="#documentos" data-toggle="tab">Documentos</a></li>
-            <li><a href="#permisosespeciales" data-toggle="tab">Permisos Especiales</a></li>
+            <li><a href="#permisosespeciales" data-toggle="tab">Permisos especiales</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="documentos">
@@ -105,8 +105,17 @@
                             <th>TIPO</th>
                             <th>MODULO</th>
                             <th>NOMBRE</th>            
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTablaDocumentos(this, 'ChkSeleccionarDocumento[]');"/></th>
-                        </tr>                   
+                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarDocumento[]');"/></th>
+                        </tr>
+                        {%for arDocumentos in arDocumentos %}
+                            <tr>      
+                                <td>{{arDocumentos.codigoDocumentoPk}}</td>
+                                <td>{{arDocumentos.tipo}}</td>
+                                <td>{{arDocumentos.modulo}}</td>
+                                <td>{{arDocumentos.nombre}}</td>                    
+                                <td><input type="checkbox" name="ChkSeleccionarDocumento[]"  value="{{ arDocumentos.codigoDocumentoPk }}" /></td>
+                            </tr>
+                        {%endfor%} 
                     </table>
                 </div>
             </div>
@@ -118,13 +127,21 @@
                         <th>MODULO</th>
                         <th>TIPO</th>
                         <th>NOMBRE</th>            
-                        <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTablaPermisosEspeciales(this, 'ChkSeleccionarPermisoEspecial[]');"/></th>
-                    </tr>                   
+                        <th><input type="checkbox" name="ChkSeleccionarTodosPermisosEspeciales" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPermisoEspecial[]');"/></th>
+                    </tr>
+                    {% for arPermisosEspeciales in arPermisosEspeciales %}
+                        <tr>
+                            <td>{{ arPermisosEspeciales.modulo }} </td>
+                            <td>{{ arPermisosEspeciales.tipo  }}</td>
+                            <td>{{ arPermisosEspeciales.nombre  }}</td>  
+                            <td><input type="checkbox" name="ChkSeleccionarPermisoEspecial[]" value="{{ arPermisosEspeciales.codigoPermisoEspecialPk }}" /></td>
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
         </div>
         <div class="modal-footer">      
-            <a class="btn btn-default btn-sm">Cancelar</a>        
+            <a class="btn btn-default btn-sm" href="{{ path('brs_seg_admin_usuario_lista')}}">Cancelar</a>        
             {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
         </div>
         {{ form_end(form) }}

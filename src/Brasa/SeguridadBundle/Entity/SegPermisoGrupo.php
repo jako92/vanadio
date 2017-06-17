@@ -24,12 +24,12 @@ class SegPermisoGrupo {
     private $codigoGrupoFk;
 
     /**
-     * @ORM\Column(name="codigo_documento_fk", type="integer")
+     * @ORM\Column(name="codigo_documento_fk", type="integer", nullable=true)
      */
     private $codigoDocumentoFk;
 
     /**
-     * @ORM\Column(name="codigo_permiso_especial_fk", type="integer")
+     * @ORM\Column(name="codigo_permiso_especial_fk", type="integer", nullable=true)
      */
     private $codigoPermisoEspecialFk;
 
@@ -87,23 +87,37 @@ class SegPermisoGrupo {
      * @ORM\Column(name="imprimir", type="boolean", nullable=false)
      */
     private $imprimir = 0;
+    
+    /**
+     * @ORM\Column(name="permitir", type="boolean", nullable=false)
+     */
+    private $permitir = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="SegGrupo", inversedBy="permisosGruposGrupoRel")
      * @ORM\JoinColumn(name="codigo_grupo_fk", referencedColumnName="codigo_grupo_pk")
      * @Assert\NotNull(message="Seleccione un elemento")
      */
-    
     protected $grupoRel;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SegDocumento", inversedBy="permisosGruposDocumentoRel")
+     * @ORM\JoinColumn(name="codigo_documento_fk", referencedColumnName="codigo_documento_pk")
+     */
+    protected $documentoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SegPermisoEspecial", inversedBy="permisosGruposPermisoEspecialRel")
+     * @ORM\JoinColumn(name="codigo_permiso_especial_fk", referencedColumnName="codigo_permiso_especial_pk")
+     */
+    protected $permisoEspecialRel;
 
     /**
      * Get codigoPermisoGrupoPk
      *
      * @return integer
      */
-    public function getCodigoPermisoGrupoPk()
-    {
+    public function getCodigoPermisoGrupoPk() {
         return $this->codigoPermisoGrupoPk;
     }
 
@@ -114,8 +128,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setCodigoGrupoFk($codigoGrupoFk)
-    {
+    public function setCodigoGrupoFk($codigoGrupoFk) {
         $this->codigoGrupoFk = $codigoGrupoFk;
 
         return $this;
@@ -126,8 +139,7 @@ class SegPermisoGrupo {
      *
      * @return integer
      */
-    public function getCodigoGrupoFk()
-    {
+    public function getCodigoGrupoFk() {
         return $this->codigoGrupoFk;
     }
 
@@ -138,8 +150,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setCodigoDocumentoFk($codigoDocumentoFk)
-    {
+    public function setCodigoDocumentoFk($codigoDocumentoFk) {
         $this->codigoDocumentoFk = $codigoDocumentoFk;
 
         return $this;
@@ -150,8 +161,7 @@ class SegPermisoGrupo {
      *
      * @return integer
      */
-    public function getCodigoDocumentoFk()
-    {
+    public function getCodigoDocumentoFk() {
         return $this->codigoDocumentoFk;
     }
 
@@ -162,8 +172,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setCodigoPermisoEspecialFk($codigoPermisoEspecialFk)
-    {
+    public function setCodigoPermisoEspecialFk($codigoPermisoEspecialFk) {
         $this->codigoPermisoEspecialFk = $codigoPermisoEspecialFk;
 
         return $this;
@@ -174,8 +183,7 @@ class SegPermisoGrupo {
      *
      * @return integer
      */
-    public function getCodigoPermisoEspecialFk()
-    {
+    public function getCodigoPermisoEspecialFk() {
         return $this->codigoPermisoEspecialFk;
     }
 
@@ -186,8 +194,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setIngreso($ingreso)
-    {
+    public function setIngreso($ingreso) {
         $this->ingreso = $ingreso;
 
         return $this;
@@ -198,8 +205,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getIngreso()
-    {
+    public function getIngreso() {
         return $this->ingreso;
     }
 
@@ -210,8 +216,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setNuevo($nuevo)
-    {
+    public function setNuevo($nuevo) {
         $this->nuevo = $nuevo;
 
         return $this;
@@ -222,8 +227,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getNuevo()
-    {
+    public function getNuevo() {
         return $this->nuevo;
     }
 
@@ -234,8 +238,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setEditar($editar)
-    {
+    public function setEditar($editar) {
         $this->editar = $editar;
 
         return $this;
@@ -246,8 +249,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getEditar()
-    {
+    public function getEditar() {
         return $this->editar;
     }
 
@@ -258,8 +260,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setEliminar($eliminar)
-    {
+    public function setEliminar($eliminar) {
         $this->eliminar = $eliminar;
 
         return $this;
@@ -270,8 +271,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getEliminar()
-    {
+    public function getEliminar() {
         return $this->eliminar;
     }
 
@@ -282,8 +282,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setAutorizar($autorizar)
-    {
+    public function setAutorizar($autorizar) {
         $this->autorizar = $autorizar;
 
         return $this;
@@ -294,8 +293,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getAutorizar()
-    {
+    public function getAutorizar() {
         return $this->autorizar;
     }
 
@@ -306,8 +304,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setDesautorizar($desautorizar)
-    {
+    public function setDesautorizar($desautorizar) {
         $this->desautorizar = $desautorizar;
 
         return $this;
@@ -318,8 +315,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getDesautorizar()
-    {
+    public function getDesautorizar() {
         return $this->desautorizar;
     }
 
@@ -330,8 +326,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setAprobar($aprobar)
-    {
+    public function setAprobar($aprobar) {
         $this->aprobar = $aprobar;
 
         return $this;
@@ -342,8 +337,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getAprobar()
-    {
+    public function getAprobar() {
         return $this->aprobar;
     }
 
@@ -354,8 +348,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setDesaprobar($desaprobar)
-    {
+    public function setDesaprobar($desaprobar) {
         $this->desaprobar = $desaprobar;
 
         return $this;
@@ -366,8 +359,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getDesaprobar()
-    {
+    public function getDesaprobar() {
         return $this->desaprobar;
     }
 
@@ -378,8 +370,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setAnular($anular)
-    {
+    public function setAnular($anular) {
         $this->anular = $anular;
 
         return $this;
@@ -390,8 +381,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getAnular()
-    {
+    public function getAnular() {
         return $this->anular;
     }
 
@@ -402,8 +392,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setDesanular($desanular)
-    {
+    public function setDesanular($desanular) {
         $this->desanular = $desanular;
 
         return $this;
@@ -414,8 +403,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getDesanular()
-    {
+    public function getDesanular() {
         return $this->desanular;
     }
 
@@ -426,8 +414,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setImprimir($imprimir)
-    {
+    public function setImprimir($imprimir) {
         $this->imprimir = $imprimir;
 
         return $this;
@@ -438,8 +425,7 @@ class SegPermisoGrupo {
      *
      * @return boolean
      */
-    public function getImprimir()
-    {
+    public function getImprimir() {
         return $this->imprimir;
     }
 
@@ -450,8 +436,7 @@ class SegPermisoGrupo {
      *
      * @return SegPermisoGrupo
      */
-    public function setGrupoRel(\Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel = null)
-    {
+    public function setGrupoRel(\Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel = null) {
         $this->grupoRel = $grupoRel;
 
         return $this;
@@ -462,8 +447,80 @@ class SegPermisoGrupo {
      *
      * @return \Brasa\SeguridadBundle\Entity\SegGrupo
      */
-    public function getGrupoRel()
-    {
+    public function getGrupoRel() {
         return $this->grupoRel;
+    }
+
+
+    /**
+     * Set permitir
+     *
+     * @param boolean $permitir
+     *
+     * @return SegPermisoGrupo
+     */
+    public function setPermitir($permitir)
+    {
+        $this->permitir = $permitir;
+
+        return $this;
+    }
+
+    /**
+     * Get permitir
+     *
+     * @return boolean
+     */
+    public function getPermitir()
+    {
+        return $this->permitir;
+    }
+
+    /**
+     * Set documentoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegDocumento $documentoRel
+     *
+     * @return SegPermisoGrupo
+     */
+    public function setDocumentoRel(\Brasa\SeguridadBundle\Entity\SegDocumento $documentoRel = null)
+    {
+        $this->documentoRel = $documentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get documentoRel
+     *
+     * @return \Brasa\SeguridadBundle\Entity\SegDocumento
+     */
+    public function getDocumentoRel()
+    {
+        return $this->documentoRel;
+    }
+
+    /**
+     * Set permisoEspecialRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegPermisoEspecial $permisoEspecialRel
+     *
+     * @return SegPermisoGrupo
+     */
+    public function setPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegPermisoEspecial $permisoEspecialRel = null)
+    {
+        $this->permisoEspecialRel = $permisoEspecialRel;
+
+        return $this;
+    }
+
+    /**
+     * Get permisoEspecialRel
+     *
+     * @return \Brasa\SeguridadBundle\Entity\SegPermisoEspecial
+     */
+    public function getPermisoEspecialRel()
+    {
+        return $this->permisoEspecialRel;
     }
 }

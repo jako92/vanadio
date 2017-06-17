@@ -35,7 +35,12 @@ class SegDocumento
     /**
      * @ORM\OneToMany(targetEntity="SegPermisoDocumento", mappedBy="documentoRel")
      */
-    protected $permisosDocumentosDocumentoRel;  
+    protected $permisosDocumentosDocumentoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="documentoRel")
+     */
+    protected $permisosGruposDocumentoRel; 
     
     /**
      * @ORM\OneToMany(targetEntity="Brasa\GeneralBundle\Entity\GenLog", mappedBy="documentoRel")
@@ -198,5 +203,39 @@ class SegDocumento
     public function getLogsDocumentoRel()
     {
         return $this->logsDocumentoRel;
+    }
+
+    /**
+     * Add permisosGruposDocumentoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposDocumentoRel
+     *
+     * @return SegDocumento
+     */
+    public function addPermisosGruposDocumentoRel(\Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposDocumentoRel)
+    {
+        $this->permisosGruposDocumentoRel[] = $permisosGruposDocumentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove permisosGruposDocumentoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposDocumentoRel
+     */
+    public function removePermisosGruposDocumentoRel(\Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposDocumentoRel)
+    {
+        $this->permisosGruposDocumentoRel->removeElement($permisosGruposDocumentoRel);
+    }
+
+    /**
+     * Get permisosGruposDocumentoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPermisosGruposDocumentoRel()
+    {
+        return $this->permisosGruposDocumentoRel;
     }
 }
