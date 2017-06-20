@@ -430,4 +430,52 @@ class RhuFacturaTipo {
         return $this->facturasFacturaTipoRel;
     }
 
+
+    /**
+     * Set tipoCuentaBaseAiu
+     *
+     * @param integer $tipoCuentaBaseAiu
+     *
+     * @return RhuFacturaTipo
+     */
+    public function setTipoCuentaBaseAiu($tipoCuentaBaseAiu)
+    {
+        $this->tipoCuentaBaseAiu = $tipoCuentaBaseAiu;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaBaseAiu
+     *
+     * @return integer
+     */
+    public function getTipoCuentaBaseAiu()
+    {
+        return $this->tipoCuentaBaseAiu;
+    }
+
+    /**
+     * Set tipoCuentaBaseAiuContrapartida
+     *
+     * @param integer $tipoCuentaBaseAiuContrapartida
+     *
+     * @return RhuFacturaTipo
+     */
+    public function setTipoCuentaBaseAiuContrapartida($tipoCuentaBaseAiuContrapartida)
+    {
+        $this->tipoCuentaBaseAiuContrapartida = $tipoCuentaBaseAiuContrapartida;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaBaseAiuContrapartida
+     *
+     * @return integer
+     */
+    public function getTipoCuentaBaseAiuContrapartida()
+    {
+        return $this->tipoCuentaBaseAiuContrapartida;
+    }
 }
