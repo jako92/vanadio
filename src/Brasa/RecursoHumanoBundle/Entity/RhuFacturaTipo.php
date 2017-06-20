@@ -66,6 +66,11 @@ class RhuFacturaTipo {
      * @ORM\Column(name="tipo_cuenta_retencion_fuente", type="bigint")
      */
     private $tipoCuentaRetencionFuente = 1;
+    
+    /**
+     * @ORM\Column(name="tipo_cuenta_retencion_iva", type="bigint")
+     */
+    private $tipoCuentaRetencionIva = 1;
 
     /**
      * @ORM\Column(name="tipo_cuenta_iva", type="bigint")
@@ -477,5 +482,29 @@ class RhuFacturaTipo {
     public function getTipoCuentaBaseAiuContrapartida()
     {
         return $this->tipoCuentaBaseAiuContrapartida;
+    }
+
+    /**
+     * Set tipoCuentaRetencionIva
+     *
+     * @param integer $tipoCuentaRetencionIva
+     *
+     * @return RhuFacturaTipo
+     */
+    public function setTipoCuentaRetencionIva($tipoCuentaRetencionIva)
+    {
+        $this->tipoCuentaRetencionIva = $tipoCuentaRetencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaRetencionIva
+     *
+     * @return integer
+     */
+    public function getTipoCuentaRetencionIva()
+    {
+        return $this->tipoCuentaRetencionIva;
     }
 }
