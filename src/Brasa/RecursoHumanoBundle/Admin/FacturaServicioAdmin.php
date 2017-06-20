@@ -5,13 +5,17 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class FacturaConceptoAdmin extends AbstractAdmin
+class FacturaServicioAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {        
         $formMapper->add('nombre', 'text')
-                ->add('porBaseIva', 'number')
-                ->add('porIva', 'number');        
+                ->add('porcentajeIva', 'number')
+                ->add('porBaseRetencionFuente', 'number')
+                ->add('codigoCuentaCarteraFk', 'number')
+                ->add('codigoCuentaRetencionFuenteFk', 'number')
+                ->add('codigoCuentaIvaFk', 'number')
+                ->add('codigoCuentaIngresoFk', 'number');        
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -21,10 +25,14 @@ class FacturaConceptoAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('codigoFacturaConceptoPk')
+        $listMapper->addIdentifier('codigoFacturaServicioPk')
                 ->add('nombre')
-                ->add('porBaseIva')
-                ->add('porIva');
+                ->add('porcentajeIva')
+                ->add('porBaseRetencionFuente')
+                ->add('codigoCuentaCarteraFk')
+                ->add('codigoCuentaRetencionFuenteFk')
+                ->add('codigoCuentaIvaFk')
+                ->add('codigoCuentaIngresoFk');
     }
     
     public function toString($object)

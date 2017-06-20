@@ -124,6 +124,7 @@ sonata_admin:
                     - admin.recursohumano.requisitotipo
                     - admin.recursohumano.poligrafiatipo
                     - admin.recursohumano.facturaconcepto
+                    - admin.recursohumano.facturaservicio
                     - admin.recursohumano.estudiotipo
                     - admin.recursohumano.seleccionrequisicionexperiencia
                     
