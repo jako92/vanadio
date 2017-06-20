@@ -1,0 +1,51 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Orden de compra lista - Soga App{% endblock %}
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Inventario
+            <small>Orden de compra: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Inventario</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Movimiento</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Orden compra</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content"> 
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <table class="table table-striped table-bordered table-condensed table-hover">
+            <tr>            
+                <th>CÓDIGO</th>
+                <th>NOMBRE</th>
+                <th>FECHA</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            {%for arOrdenesCompra in arOrdenesCompra %}
+                <tr>
+                    <td>{{ arOrdenesCompra.codigoOrdenCompraPk}}</td>
+                    <td>{{ arOrdenesCompra.nombre}}</td>
+                    <td>{{ arOrdenesCompra.fecha |date('y/m/d')}}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_inv_movimiento_orden_compra_nuevo', {'codigoOrdenCompra': arOrdenesCompra.codigoOrdenCompraPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arOrdenesCompra.codigoOrdenCompraPk }}" /></td>
+                {%endfor%}
+            </tr>            
+        </table>
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_inv_movimiento_orden_compra_nuevo', {'codigoOrdenCompra': 0 }) }}">Nuevo</a>
+            </div>
+            <div class="btn-group" style="float: right">                
+                {{ form_widget(form.BtnEliminarDocumento, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                
+            </div>
+        </div>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}  
+    </section>    
+{% endblock %}
