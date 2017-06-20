@@ -73,7 +73,7 @@ class User implements UserInterface, \Serializable {
     private $cargo;
 
     /**
-     * @ORM\Column(name="cambiar_clave", type="boolean")
+     * @ORM\Column(name="cambiar_clave", type="boolean", options={"default":false})
      */
     private $cambiarClave = false;
 
@@ -120,6 +120,7 @@ class User implements UserInterface, \Serializable {
     protected $logsUsuarioRel;
 
     public function __construct() {
+        $this->cambiarClave = true;
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
     }
@@ -534,28 +535,6 @@ class User implements UserInterface, \Serializable {
     }
 
     /**
-     * Set cambiarClave
-     *
-     * @param boolean $cambiarClave
-     *
-     * @return User
-     */
-    public function setCambiarClave($cambiarClave) {
-        $this->cambiarClave = $cambiarClave;
-
-        return $this;
-    }
-
-    /**
-     * Get cambiarClave
-     *
-     * @return boolean
-     */
-    public function getCambiarClave() {
-        return $this->cambiarClave;
-    }
-
-    /**
      * Set fecha
      *
      * @param \DateTime $fecha
@@ -624,5 +603,29 @@ class User implements UserInterface, \Serializable {
     public function getGrupoRel()
     {
         return $this->grupoRel;
+    }
+
+    /**
+     * Set cambiarClave
+     *
+     * @param boolean $cambiarClave
+     *
+     * @return User
+     */
+    public function setCambiarClave($cambiarClave)
+    {
+        $this->cambiarClave = $cambiarClave;
+
+        return $this;
+    }
+
+    /**
+     * Get cambiarClave
+     *
+     * @return boolean
+     */
+    public function getCambiarClave()
+    {
+        return $this->cambiarClave;
     }
 }
