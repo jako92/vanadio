@@ -8,90 +8,99 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_factura_tipo")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuFacturaTipoRepository")
  */
-class RhuFacturaTipo
-{
+class RhuFacturaTipo {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_factura_tipo_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoFacturaTipoPk;        
-    
+    private $codigoFacturaTipoPk;
+
     /**
      * @ORM\Column(name="nombre", type="string", length=50)
      */
-    private $nombre;                                
-    
+    private $nombre;
+
     /**
      * @ORM\Column(name="tipo", type="integer")
-     */    
-    private $tipo = 0;      
+     */
+    private $tipo = 0;
 
     /**
      * @ORM\Column(name="operacion", type="integer")
-     */    
-    private $operacion = 0;    
-    
+     */
+    private $operacion = 0;
+
     /**
      * @ORM\Column(name="consecutivo", type="integer")
-     */    
-    private $consecutivo = 0; 
-    
+     */
+    private $consecutivo = 0;
+
     /**
      * @ORM\Column(name="documento_cartera", type="integer", nullable=true)
-     */    
-    private $documentoCartera;     
-    
+     */
+    private $documentoCartera;
+
     /**
      * @ORM\Column(name="abreviatura", type="string", length=10)
      */
-    private $abreviatura;            
-    
+    private $abreviatura;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_contabilidad", type="integer", nullable=true)
-     */    
-    private $codigoCentroCostoContabilidad;    
-    
+     */
+    private $codigoCentroCostoContabilidad;
+
     /**
      * @ORM\Column(name="codigo_comprobante", type="integer", nullable=true)
-     */    
-    private $codigoComprobante;     
-    
+     */
+    private $codigoComprobante;
+
     /**
      * @ORM\Column(name="tipo_cuenta_cartera", type="bigint")
-     */     
+     */
     private $tipoCuentaCartera = 1;
 
     /**
      * @ORM\Column(name="tipo_cuenta_retencion_fuente", type="bigint")
-     */     
+     */
     private $tipoCuentaRetencionFuente = 1;
 
     /**
      * @ORM\Column(name="tipo_cuenta_iva", type="bigint")
-     */     
-    private $tipoCuentaIva = 1; 
+     */
+    private $tipoCuentaIva = 1;
 
     /**
      * @ORM\Column(name="tipo_cuenta_ingreso", type="bigint")
-     */     
-    private $tipoCuentaIngreso = 1;         
-    
+     */
+    private $tipoCuentaIngreso = 1;
+
+    /**
+     * @ORM\Column(name="tipo_cuenta_base_aiu", type="bigint")
+     */
+    private $tipoCuentaBaseAiu = 1;
+
+    /**
+     * @ORM\Column(name="tipo_cuenta_base_aiu_contrapartida", type="bigint")
+     */
+    private $tipoCuentaBaseAiuContrapartida = 1;
+
     /**
      * @ORM\Column(name="codigo_documento_cartera", type="integer", nullable=true)
-     */    
-    private $codigoDocumentoCartera;     
+     */
+    private $codigoDocumentoCartera;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="facturaTipoRel")
      */
-    protected $facturasFacturaTipoRel;    
-    
+    protected $facturasFacturaTipoRel;
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->facturasFacturaTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -100,8 +109,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getCodigoFacturaTipoPk()
-    {
+    public function getCodigoFacturaTipoPk() {
         return $this->codigoFacturaTipoPk;
     }
 
@@ -112,8 +120,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -124,8 +131,7 @@ class RhuFacturaTipo
      *
      * @return string
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -136,8 +142,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setTipo($tipo)
-    {
+    public function setTipo($tipo) {
         $this->tipo = $tipo;
 
         return $this;
@@ -148,8 +153,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getTipo()
-    {
+    public function getTipo() {
         return $this->tipo;
     }
 
@@ -160,8 +164,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setOperacion($operacion)
-    {
+    public function setOperacion($operacion) {
         $this->operacion = $operacion;
 
         return $this;
@@ -172,8 +175,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getOperacion()
-    {
+    public function getOperacion() {
         return $this->operacion;
     }
 
@@ -184,8 +186,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setConsecutivo($consecutivo)
-    {
+    public function setConsecutivo($consecutivo) {
         $this->consecutivo = $consecutivo;
 
         return $this;
@@ -196,8 +197,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getConsecutivo()
-    {
+    public function getConsecutivo() {
         return $this->consecutivo;
     }
 
@@ -208,8 +208,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setDocumentoCartera($documentoCartera)
-    {
+    public function setDocumentoCartera($documentoCartera) {
         $this->documentoCartera = $documentoCartera;
 
         return $this;
@@ -220,8 +219,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getDocumentoCartera()
-    {
+    public function getDocumentoCartera() {
         return $this->documentoCartera;
     }
 
@@ -232,8 +230,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setAbreviatura($abreviatura)
-    {
+    public function setAbreviatura($abreviatura) {
         $this->abreviatura = $abreviatura;
 
         return $this;
@@ -244,8 +241,7 @@ class RhuFacturaTipo
      *
      * @return string
      */
-    public function getAbreviatura()
-    {
+    public function getAbreviatura() {
         return $this->abreviatura;
     }
 
@@ -256,8 +252,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setCodigoCentroCostoContabilidad($codigoCentroCostoContabilidad)
-    {
+    public function setCodigoCentroCostoContabilidad($codigoCentroCostoContabilidad) {
         $this->codigoCentroCostoContabilidad = $codigoCentroCostoContabilidad;
 
         return $this;
@@ -268,8 +263,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getCodigoCentroCostoContabilidad()
-    {
+    public function getCodigoCentroCostoContabilidad() {
         return $this->codigoCentroCostoContabilidad;
     }
 
@@ -280,8 +274,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setCodigoComprobante($codigoComprobante)
-    {
+    public function setCodigoComprobante($codigoComprobante) {
         $this->codigoComprobante = $codigoComprobante;
 
         return $this;
@@ -292,8 +285,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getCodigoComprobante()
-    {
+    public function getCodigoComprobante() {
         return $this->codigoComprobante;
     }
 
@@ -304,8 +296,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setTipoCuentaCartera($tipoCuentaCartera)
-    {
+    public function setTipoCuentaCartera($tipoCuentaCartera) {
         $this->tipoCuentaCartera = $tipoCuentaCartera;
 
         return $this;
@@ -316,8 +307,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getTipoCuentaCartera()
-    {
+    public function getTipoCuentaCartera() {
         return $this->tipoCuentaCartera;
     }
 
@@ -328,8 +318,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setTipoCuentaRetencionFuente($tipoCuentaRetencionFuente)
-    {
+    public function setTipoCuentaRetencionFuente($tipoCuentaRetencionFuente) {
         $this->tipoCuentaRetencionFuente = $tipoCuentaRetencionFuente;
 
         return $this;
@@ -340,8 +329,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getTipoCuentaRetencionFuente()
-    {
+    public function getTipoCuentaRetencionFuente() {
         return $this->tipoCuentaRetencionFuente;
     }
 
@@ -352,8 +340,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setTipoCuentaIva($tipoCuentaIva)
-    {
+    public function setTipoCuentaIva($tipoCuentaIva) {
         $this->tipoCuentaIva = $tipoCuentaIva;
 
         return $this;
@@ -364,8 +351,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getTipoCuentaIva()
-    {
+    public function getTipoCuentaIva() {
         return $this->tipoCuentaIva;
     }
 
@@ -376,8 +362,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setTipoCuentaIngreso($tipoCuentaIngreso)
-    {
+    public function setTipoCuentaIngreso($tipoCuentaIngreso) {
         $this->tipoCuentaIngreso = $tipoCuentaIngreso;
 
         return $this;
@@ -388,8 +373,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getTipoCuentaIngreso()
-    {
+    public function getTipoCuentaIngreso() {
         return $this->tipoCuentaIngreso;
     }
 
@@ -400,8 +384,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function setCodigoDocumentoCartera($codigoDocumentoCartera)
-    {
+    public function setCodigoDocumentoCartera($codigoDocumentoCartera) {
         $this->codigoDocumentoCartera = $codigoDocumentoCartera;
 
         return $this;
@@ -412,8 +395,7 @@ class RhuFacturaTipo
      *
      * @return integer
      */
-    public function getCodigoDocumentoCartera()
-    {
+    public function getCodigoDocumentoCartera() {
         return $this->codigoDocumentoCartera;
     }
 
@@ -424,8 +406,7 @@ class RhuFacturaTipo
      *
      * @return RhuFacturaTipo
      */
-    public function addFacturasFacturaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaTipoRel)
-    {
+    public function addFacturasFacturaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaTipoRel) {
         $this->facturasFacturaTipoRel[] = $facturasFacturaTipoRel;
 
         return $this;
@@ -436,8 +417,7 @@ class RhuFacturaTipo
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaTipoRel
      */
-    public function removeFacturasFacturaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaTipoRel)
-    {
+    public function removeFacturasFacturaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaTipoRel) {
         $this->facturasFacturaTipoRel->removeElement($facturasFacturaTipoRel);
     }
 
@@ -446,8 +426,8 @@ class RhuFacturaTipo
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFacturasFacturaTipoRel()
-    {
+    public function getFacturasFacturaTipoRel() {
         return $this->facturasFacturaTipoRel;
     }
+
 }
