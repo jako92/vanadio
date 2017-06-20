@@ -57,6 +57,11 @@ class GenTipoIdentificacion
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurCliente", mappedBy="tipoIdentificacionRel")
      */
     protected $turClientesTipoIdentificacionRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuCliente", mappedBy="tipoIdentificacionRel")
+     */
+    protected $rhuClientesTipoIdentificacionRel;
     
     /**
      * Constructor
@@ -331,5 +336,39 @@ class GenTipoIdentificacion
     public function getTurClientesTipoIdentificacionRel()
     {
         return $this->turClientesTipoIdentificacionRel;
+    }
+
+    /**
+     * Add rhuClientesTipoIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel
+     *
+     * @return GenTipoIdentificacion
+     */
+    public function addRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel)
+    {
+        $this->rhuClientesTipoIdentificacionRel[] = $rhuClientesTipoIdentificacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhuClientesTipoIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel
+     */
+    public function removeRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel)
+    {
+        $this->rhuClientesTipoIdentificacionRel->removeElement($rhuClientesTipoIdentificacionRel);
+    }
+
+    /**
+     * Get rhuClientesTipoIdentificacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhuClientesTipoIdentificacionRel()
+    {
+        return $this->rhuClientesTipoIdentificacionRel;
     }
 }

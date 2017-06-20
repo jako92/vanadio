@@ -3,6 +3,7 @@
 namespace Brasa\RecursoHumanoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="rhu_cliente")
@@ -184,6 +185,13 @@ class RhuCliente
      * @ORM\JoinColumn(name="codigo_asesor_fk", referencedColumnName="codigo_asesor_pk")
      */
     protected $asesorRel;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuClientesTipoIdentificacionRel")
+     * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
+     * @Assert\NotNull(message="Seleccione un elemento")
+     */
+    protected $tipoIdentificacionRel;     
     
     /**
      * @ORM\OneToMany(targetEntity="RhuCentroCosto", mappedBy="clienteRel")
@@ -1472,5 +1480,29 @@ class RhuCliente
     public function getCodigoTipoIdentificacionFk()
     {
         return $this->codigoTipoIdentificacionFk;
+    }
+
+    /**
+     * Set tipoIdentificacionRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel
+     *
+     * @return RhuCliente
+     */
+    public function setTipoIdentificacionRel(\Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel = null)
+    {
+        $this->tipoIdentificacionRel = $tipoIdentificacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoIdentificacionRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenTipoIdentificacion
+     */
+    public function getTipoIdentificacionRel()
+    {
+        return $this->tipoIdentificacionRel;
     }
 }
