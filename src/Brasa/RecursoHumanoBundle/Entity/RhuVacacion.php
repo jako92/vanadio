@@ -33,6 +33,11 @@ class RhuVacacion
     private $fecha;    
     
     /**
+     * @ORM\Column(name="numero", type="integer")
+     */    
+    private $numero = 0;     
+    
+    /**
      * @ORM\Column(name="fecha_desde_periodo", type="date")
      */    
     private $fechaDesdePeriodo;    
@@ -230,6 +235,7 @@ class RhuVacacion
      */
     protected $pagosDetallesVacacionRel; 
 
+
     /**
      * Constructor
      */
@@ -237,6 +243,7 @@ class RhuVacacion
     {
         $this->vacacionesAdicionalesVacacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosBancosDetallesVacacionRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pagosDetallesVacacionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -319,6 +326,30 @@ class RhuVacacion
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return RhuVacacion
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
     }
 
     /**
@@ -415,6 +446,30 @@ class RhuVacacion
     public function getFechaHastaDisfrute()
     {
         return $this->fechaHastaDisfrute;
+    }
+
+    /**
+     * Set fechaInicioLabor
+     *
+     * @param \DateTime $fechaInicioLabor
+     *
+     * @return RhuVacacion
+     */
+    public function setFechaInicioLabor($fechaInicioLabor)
+    {
+        $this->fechaInicioLabor = $fechaInicioLabor;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicioLabor
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicioLabor()
+    {
+        return $this->fechaInicioLabor;
     }
 
     /**
@@ -1227,30 +1282,6 @@ class RhuVacacion
     public function getPagosBancosDetallesVacacionRel()
     {
         return $this->pagosBancosDetallesVacacionRel;
-    }
-
-    /**
-     * Set fechaInicioLabor
-     *
-     * @param \DateTime $fechaInicioLabor
-     *
-     * @return RhuVacacion
-     */
-    public function setFechaInicioLabor($fechaInicioLabor)
-    {
-        $this->fechaInicioLabor = $fechaInicioLabor;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaInicioLabor
-     *
-     * @return \DateTime
-     */
-    public function getFechaInicioLabor()
-    {
-        return $this->fechaInicioLabor;
     }
 
     /**

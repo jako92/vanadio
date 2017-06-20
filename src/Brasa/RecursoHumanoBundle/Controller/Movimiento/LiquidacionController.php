@@ -173,6 +173,9 @@ class LiquidacionController extends Controller
                 if($arLiquidacion->getEstadoAutorizado() == 1) {                    
                     $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pagar($codigoLiquidacion);
                     if ($respuesta == ''){
+                        $numero = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->consecutivo(3);
+                        $arLiquidacion->setNumero($numero);
+                        $arLiquidacion->setFecha(new \DateTime('now'));
                         $arLiquidacion->setEstadoPagoGenerado(1);
                         $em->persist($arLiquidacion);
                         $em->flush();

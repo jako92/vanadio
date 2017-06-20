@@ -41,7 +41,7 @@ class RhuPagoBancoRepository extends EntityRepository {
     }     
  
     public function pendientesContabilizarDql() {        
-        $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.estadoContabilizado = 0 AND pb.estadoAutorizado = 1 ";       
+        $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.estadoContabilizado = 0 AND pb.estadoAutorizado = 1 AND pb.estadoGenerado = 1 ";       
         $dql .= " ORDER BY pb.codigoPagoBancoPk DESC";
         return $dql;
     } 

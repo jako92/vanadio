@@ -238,10 +238,13 @@ class VacacionesController extends Controller
                     $arContrato =  $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($arVacacion->getCodigoContratoFk());
                     $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->pagar($codigoVacacion);
                     if ($respuesta == ''){
-                        $arContrato->setFechaUltimoPagoVacaciones($arVacacion->getFechaHastaPeriodo());
+                        $numero = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->consecutivo(4);
+                        $arVacacion->setNumero($numero);
+                        $arVacacion->setFecha(new \DateTime('now'));                        
                         $arVacacion->setEstadoPagoGenerado(1);
-                        $em->persist($arContrato);
                         $em->persist($arVacacion);
+                        $arContrato->setFechaUltimoPagoVacaciones($arVacacion->getFechaHastaPeriodo());                        
+                        $em->persist($arContrato);                        
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     } else {

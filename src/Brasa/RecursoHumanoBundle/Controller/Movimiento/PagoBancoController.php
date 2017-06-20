@@ -125,26 +125,37 @@ class PagoBancoController extends Controller
                 }
             }            
             if($form->get('BtnDesAutorizar')->isClicked()) {
-                if ($arPagoBanco->getEstadoAutorizado() == 1 && $arPagoBanco->getEstadoImpreso() == 0){
+                if ($arPagoBanco->getEstadoAutorizado() == 1 && $arPagoBanco->getEstadoGenerado() == 0){
                     $arPagoBanco->setEstadoAutorizado(0);
                     $em->persist($arPagoBanco);
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $codigoPagoBanco)));           
                 } else {
-                    $objMensaje->Mensaje("error", "La pago banco debe estar autorizado y no puede estar impreso");
+                    $objMensaje->Mensaje("error", "El pago banco debe estar autorizado y no puede estar generado");
                 }    
             }                        
             if($form->get('BtnImprimir')->isClicked()) {
                 if ($arPagoBanco->getEstadoAutorizado() == 1){
                     $objFormatoPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoPagoBanco();
                     $objFormatoPagoBancoDetalle->Generar($em, $codigoPagoBanco);
-                    $arPagoBanco->setEstadoImpreso(1);
-                    $em->persist($arPagoBanco);
                     $em->flush();
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada");
                 }   
             }
+            if($form->get('BtnGenerar')->isClicked()) {
+                if ($arPagoBanco->getEstadoAutorizado() == 1){
+                    $numero = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->consecutivo(5);
+                    $arPagoBanco->setNumero($numero);
+                    $arPagoBanco->setFecha(new \DateTime('now'));                    
+                    $arPagoBanco->setEstadoGenerado(1);
+                    $em->persist($arPagoBanco);
+                    $em->flush();
+                } else {
+                    $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada");
+                }   
+            }            
+            
             if($form->get('BtnEliminarDetalle')->isClicked()) {
                 if ($arPagoBanco->getEstadoAutorizado() == 0){
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
@@ -825,6 +836,7 @@ class PagoBancoController extends Controller
         $arrBotonEliminarDetalle = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
+        $arrBotonGenerar = array('label' => 'Generar', 'disabled' => false);        
         $arrBotonArchivoBancolombiaPab = array('label' => 'Bancolombia Pab', 'disabled' => false);
         $arrBotonArchivoBancolombiaSap = array('label' => 'Bancolombia Sap', 'disabled' => false);
         $arrBotonArchivoAvvillasInterno = array('label' => 'Av Villas Interno', 'disabled' => false);
@@ -836,17 +848,19 @@ class PagoBancoController extends Controller
         if($ar->getEstadoAutorizado() == 1) {            
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarDetalle['disabled'] = true;
-        } else {
-            $arrBotonImprimir['disabled'] = true;
+        } else {            
+            $arrBotonGenerar['disabled'] = true;
             $arrBotonDesAutorizar['disabled'] = true;
         }
-        if ($ar->getEstadoImpreso() == 1){
-            $arrBotonDesAutorizar['disabled'] = true;
+        if($ar->getEstadoGenerado() == 1) {
+            $arrBotonGenerar['disabled'] = true;
+             $arrBotonDesAutorizar['disabled'] = true;
         }
         $form = $this->createFormBuilder()    
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)                                
+                    ->add('BtnGenerar', SubmitType::class, $arrBotonGenerar)                                
                     ->add('BtnArchivoBancolombiaPab', SubmitType::class, $arrBotonArchivoBancolombiaPab)
                     ->add('BtnArchivoBancolombiaSap', SubmitType::class, $arrBotonArchivoBancolombiaSap)
                     ->add('BtnArchivoAvvillasInterno', SubmitType::class, $arrBotonArchivoAvvillasInterno)

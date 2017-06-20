@@ -50,7 +50,8 @@
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
-                <th>{{ knp_pagination_sortable(arPagoBancos, 'CÓDIGO', 'pb.codigoPagoBancoPk') }}</th>
+                <th>{{ knp_pagination_sortable(arPagoBancos, 'ID', 'pb.codigoPagoBancoPk') }}</th>
+                <th>NUMERO</th>
                 <th>TIPO</th>
                 <th>FECHA</th>
                 <th>DESCRIPCION</th>
@@ -68,6 +69,7 @@
             {% for arPagoBancos in arPagoBancos %}
                 <tr>                
                     <td>{{ arPagoBancos.codigoPagoBancoPk  }}</td>                
+                    <td>{{ arPagoBancos.numero  }}</td>                
                     <td>{{ arPagoBancos.pagoBancoTipoRel.nombre | default('')  }}</td>
                     <td>{{ arPagoBancos.fecha |date('Y/m/d') }}</td>
                     <td>{{ arPagoBancos.descripcion  }}</td>

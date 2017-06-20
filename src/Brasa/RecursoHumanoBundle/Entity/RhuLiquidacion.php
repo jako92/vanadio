@@ -23,6 +23,11 @@ class RhuLiquidacion
     private $fecha;               
     
     /**
+     * @ORM\Column(name="numero", type="integer")
+     */    
+    private $numero = 0;     
+    
+    /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer")
      */    
     private $codigoEmpleadoFk;
@@ -443,6 +448,30 @@ class RhuLiquidacion
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return RhuLiquidacion
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
     }
 
     /**
@@ -2078,6 +2107,30 @@ class RhuLiquidacion
     }
 
     /**
+     * Set omitirCesantiasAnterior
+     *
+     * @param boolean $omitirCesantiasAnterior
+     *
+     * @return RhuLiquidacion
+     */
+    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior)
+    {
+        $this->omitirCesantiasAnterior = $omitirCesantiasAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirCesantiasAnterior
+     *
+     * @return boolean
+     */
+    public function getOmitirCesantiasAnterior()
+    {
+        return $this->omitirCesantiasAnterior;
+    }
+
+    /**
      * Set empleadoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
@@ -2239,29 +2292,5 @@ class RhuLiquidacion
     public function getPagosBancosDetallesLiquidacionRel()
     {
         return $this->pagosBancosDetallesLiquidacionRel;
-    }
-
-    /**
-     * Set omitirCesantiasAnterior
-     *
-     * @param boolean $omitirCesantiasAnterior
-     *
-     * @return RhuLiquidacion
-     */
-    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior)
-    {
-        $this->omitirCesantiasAnterior = $omitirCesantiasAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get omitirCesantiasAnterior
-     *
-     * @return boolean
-     */
-    public function getOmitirCesantiasAnterior()
-    {
-        return $this->omitirCesantiasAnterior;
     }
 }

@@ -84,7 +84,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrCesantias());                            
@@ -101,7 +101,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantias());                            
@@ -118,7 +118,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrCesantiasAnterior());                            
@@ -135,7 +135,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantiasAnterior());                            
@@ -152,7 +152,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrPrima());                            
@@ -169,7 +169,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrVacaciones());                            
@@ -187,7 +187,7 @@ class ContabilizarLiquidacionController extends Controller
                                     //$arRegistro->setCentroCostoRel($arCentroCosto);
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrIndemnizacion());                            
@@ -210,7 +210,7 @@ class ContabilizarLiquidacionController extends Controller
                                     }                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     if($arLiquidacionAdicional->getVrBonificacion() > 0) {
@@ -231,7 +231,7 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getCodigoLiquidacionPk());
+                                    $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setCredito($arLiquidacion->getVrTotal());                            

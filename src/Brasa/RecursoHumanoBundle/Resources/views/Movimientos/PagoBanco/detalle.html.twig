@@ -28,6 +28,7 @@
                 {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                
                 {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                
                 {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm' } }) }}                                                                
+                {{ form_widget(form.BtnGenerar, { 'attr': {'class': 'btn btn-default btn-sm' } }) }}                                                                
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm">Archivo banco</button>
                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -47,7 +48,10 @@
                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_ad_archivos_lista', { 'codigoDocumento': 7,  'numero': arPagoBanco.codigoPagoBancoPK }) }}', 'Archivos', 500, 800)" >Archivos</a>                    
             </div>
         </div>
-
+        <div style="float:right">
+            {% if arPagoBanco.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}
+            {% if arPagoBanco.estadoGenerado == 1 %}<span class="label label-default">Generado</span>{% endif %}
+        </div>
         <br /><br />
         <!-- Encabezado Movimiento -->
         <div class="panel panel-default">
@@ -55,26 +59,26 @@
             <div class="panel-body">
                 <table width="100%" class="table table-condensed table-bordered">
                     <tr>
-                        <td class="titulo">CÓDIGO:</td>
-                        <td class="td-in-well">{{ arPagoBanco.codigoPagoBancoPK}}</td>
+                        <td class="titulo">NUMERO:</td>
+                        <td class="td-in-well">{{ arPagoBanco.numero}}</td>
                         <td class="titulo">DESCRIPCION:</td>
                         <td class="td-in-well">{{ arPagoBanco.descripcion }}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">CUENTA:</td>
-                        <td class="td-in-well">{{ arPagoBanco.cuentaRel.nombre }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">{{ arPagoBanco.fecha |date('Y-m-d') }}</td>
                         <td class="titulo">BANCO:</td>
                         <td class="td-in-well">{{ arPagoBanco.cuentaRel.bancoRel.nombre }}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">AUTORIZADO:</td>
-                        <td>{% if arPagoBanco.estadoAutorizado == 1%}SI{% else %}NO{% endif %}</td>
+                        <td class="titulo">CUENTA:</td>
+                        <td>{{ arPagoBanco.cuentaRel.nombre }}</td>
                         <td class="titulo" >REGISTROS:</td>
                         <td align="right">{{ arPagoBanco.numeroRegistros | number_format(0, '.', ',')}}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">IMPRESO:</td>
-                        <td>{% if arPagoBanco.estadoImpreso == 1%}SI{% else %}NO{% endif %}</td>
+                        <td class="titulo"></td>
+                        <td></td>
                         <td class="titulo" >TOTAL:</td>
                         <td align="right">{{ arPagoBanco.vrTotalPago | number_format(0, '.', ',')}}</td>
                     </tr>                    

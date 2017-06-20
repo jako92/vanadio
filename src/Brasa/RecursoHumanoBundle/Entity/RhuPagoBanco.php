@@ -28,6 +28,11 @@ class RhuPagoBanco
     private $fecha;     
     
     /**
+     * @ORM\Column(name="numero", type="integer")
+     */    
+    private $numero = 0;     
+    
+    /**
      * @ORM\Column(name="fecha_trasmision", type="date", nullable=true)
      */    
     private $fechaTrasmision;    
@@ -71,6 +76,11 @@ class RhuPagoBanco
      * @ORM\Column(name="estado_impreso", type="boolean")
      */
     private $estadoImpreso = 0;    
+
+    /**
+     * @ORM\Column(name="estado_generado", type="boolean")
+     */
+    private $estadoGenerado = 0;
     
     /**
      * @ORM\Column(name="estado_contabilizado", type="boolean")
@@ -99,7 +109,6 @@ class RhuPagoBanco
      */
     protected $pagosBancosDetallesPagoBancoRel;     
     
-
 
     /**
      * Constructor
@@ -141,6 +150,54 @@ class RhuPagoBanco
     public function getCodigoPagoBancoTipoFk()
     {
         return $this->codigoPagoBancoTipoFk;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return RhuPagoBanco
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return RhuPagoBanco
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
     }
 
     /**
@@ -360,6 +417,54 @@ class RhuPagoBanco
     }
 
     /**
+     * Set estadoContabilizado
+     *
+     * @param boolean $estadoContabilizado
+     *
+     * @return RhuPagoBanco
+     */
+    public function setEstadoContabilizado($estadoContabilizado)
+    {
+        $this->estadoContabilizado = $estadoContabilizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoContabilizado
+     *
+     * @return boolean
+     */
+    public function getEstadoContabilizado()
+    {
+        return $this->estadoContabilizado;
+    }
+
+    /**
+     * Set codigoUsuario
+     *
+     * @param string $codigoUsuario
+     *
+     * @return RhuPagoBanco
+     */
+    public function setCodigoUsuario($codigoUsuario)
+    {
+        $this->codigoUsuario = $codigoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoUsuario
+     *
+     * @return string
+     */
+    public function getCodigoUsuario()
+    {
+        return $this->codigoUsuario;
+    }
+
+    /**
      * Set cuentaRel
      *
      * @param \Brasa\GeneralBundle\Entity\GenCuenta $cuentaRel
@@ -442,74 +547,26 @@ class RhuPagoBanco
     }
 
     /**
-     * Set estadoContabilizado
+     * Set estadoGenerado
      *
-     * @param boolean $estadoContabilizado
+     * @param boolean $estadoGenerado
      *
      * @return RhuPagoBanco
      */
-    public function setEstadoContabilizado($estadoContabilizado)
+    public function setEstadoGenerado($estadoGenerado)
     {
-        $this->estadoContabilizado = $estadoContabilizado;
+        $this->estadoGenerado = $estadoGenerado;
 
         return $this;
     }
 
     /**
-     * Get estadoContabilizado
+     * Get estadoGenerado
      *
      * @return boolean
      */
-    public function getEstadoContabilizado()
+    public function getEstadoGenerado()
     {
-        return $this->estadoContabilizado;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return RhuPagoBanco
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set codigoUsuario
-     *
-     * @param string $codigoUsuario
-     *
-     * @return RhuPagoBanco
-     */
-    public function setCodigoUsuario($codigoUsuario)
-    {
-        $this->codigoUsuario = $codigoUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoUsuario
-     *
-     * @return string
-     */
-    public function getCodigoUsuario()
-    {
-        return $this->codigoUsuario;
+        return $this->estadoGenerado;
     }
 }

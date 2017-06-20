@@ -78,7 +78,7 @@ class ContabilizarVacacionController extends Controller
                                     //$arRegistro->setCentroCostoRel($arCentroCosto);
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getCodigoVacacionPk());
+                                    $arRegistro->setNumero($arVacacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setDebito($arVacacion->getVrVacacionBruto());                            
@@ -96,7 +96,7 @@ class ContabilizarVacacionController extends Controller
                                     //$arRegistro->setCentroCostoRel($arCentroCosto);
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getCodigoVacacionPk());
+                                    $arRegistro->setNumero($arVacacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrPension());                            
@@ -114,7 +114,7 @@ class ContabilizarVacacionController extends Controller
                                     //$arRegistro->setCentroCostoRel($arCentroCosto);
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getCodigoVacacionPk());
+                                    $arRegistro->setNumero($arVacacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrSalud());                            
@@ -136,7 +136,7 @@ class ContabilizarVacacionController extends Controller
                                     }                                     
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getCodigoVacacionPk());
+                                    $arRegistro->setNumero($arVacacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
                                     $arRegistro->setFecha($arVacacion->getFecha()); 
                                     if($arVacacionAdicional->getVrBonificacion() > 0) {
@@ -157,7 +157,7 @@ class ContabilizarVacacionController extends Controller
                                     $arRegistro->setComprobanteRel($arComprobanteContable);                                    
                                     $arRegistro->setCuentaRel($arCuenta);
                                     $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getCodigoVacacionPk());
+                                    $arRegistro->setNumero($arVacacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrVacacion());                            

@@ -68,7 +68,9 @@
 
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>                
-                <th>CODIGO</th>
+                <th>ID</th>
+                <th>NUMERO</th>
+                <th>FECHA</th>
                 <th>GRUPO PAGO</th>
                 <th>IDENTIFICACIÓN</th>
                 <th>EMPLEADO</th>
@@ -92,6 +94,8 @@
                 <tr>
                 <input type="hidden" name="LblCodigo[]" value="{{ arVacaciones.codigoVacacionPk }}">
                 <td>{{ arVacaciones.codigoVacacionPk }}</td>
+                <td>{{ arVacaciones.numero }}</td>
+                <td>{{ arVacaciones.fecha |date("Y/m/d")  }}</td>
                 <td>{{ arVacaciones.centroCostoRel.nombre  }}</td>
                 <td>{{ arVacaciones.empleadoRel.numeroIdentificacion  }}</td>
                 <td>{{ arVacaciones.empleadoRel.nombreCorto  }}</td>

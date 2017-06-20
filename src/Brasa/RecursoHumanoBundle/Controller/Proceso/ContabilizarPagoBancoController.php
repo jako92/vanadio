@@ -88,7 +88,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setComprobanteRel($arComprobanteContable);
                                             $arRegistro->setCuentaRel($arCuenta);
                                             $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumero($arPagoBanco->getNumero());
                                             $arRegistro->setNumeroReferencia($docRerefencia);
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($arPagoBancoDetalle->getVrPago());
@@ -104,7 +104,7 @@ class ContabilizarPagoBancoController extends Controller
                                                 if($arCuentaBanco) {
                                                     $arRegistro->setComprobanteRel($arComprobanteContable);
                                                     $arRegistro->setCuentaRel($arCuentaBanco);
-                                                    $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                                    $arRegistro->setNumero($arPagoBanco->getNumero());
                                                     $arRegistro->setNumeroReferencia($docRerefencia);
                                                     $arRegistro->setFecha($arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion());
                                                     $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());
@@ -147,7 +147,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setComprobanteRel($arComprobanteContable);
                                             $arRegistro->setCuentaRel($arCuenta);
                                             $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumero($arPagoBanco->getNumero());
                                             $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($detalle['pension']);
@@ -172,7 +172,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setComprobanteRel($arComprobanteContable);
                                             $arRegistro->setCuentaRel($arCuenta);
                                             $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumero($arPagoBanco->getNumero());
                                             $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($detalle['salud']);
@@ -197,7 +197,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setComprobanteRel($arComprobanteContable);
                                             $arRegistro->setCuentaRel($arCuenta);
                                             $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumero($arPagoBanco->getNumero());
                                             $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($detalle['riesgo']);
@@ -222,7 +222,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setComprobanteRel($arComprobanteContable);
                                             $arRegistro->setCuentaRel($arCuenta);
                                             $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                            $arRegistro->setNumero($arPagoBanco->getNumero());
                                             $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($detalle['caja']);
@@ -237,7 +237,7 @@ class ContabilizarPagoBancoController extends Controller
                                     $arCuentaBanco = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
                                     $arRegistro->setComprobanteRel($arComprobanteContable);
                                     $arRegistro->setCuentaRel($arCuentaBanco);
-                                    $arRegistro->setNumero($arPagoBanco->getCodigoPagoBancoPk());
+                                    $$arRegistro->setNumero($arPagoBanco->getNumero());
                                     $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
                                     $arRegistro->setFecha($arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion());
                                     $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());

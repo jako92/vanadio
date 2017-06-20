@@ -34,10 +34,10 @@
             <div class="panel-body">
                 <table width="100%" class="table table-condensed table-bordered">
                     <tr>
-                        <td class="titulo">CÓDIGO:</td>
+                        <td class="titulo">ID:</td>
                         <td class="td-in-well">{{ arLiquidacion.codigoLiquidacionPk }}</td>
-                        <td class="titulo">FECHA:</td>
-                        <td align="right">{{ arLiquidacion.fecha|date("Y/m/d") }}</td>
+                        <td class="titulo">NUMERO:</td>
+                        <td align="right">{{ arLiquidacion.numero }}</td>
                         <td class="titulo">IBP DÍAS ADICIONALES:</td>
                         <td align="right">{{ arLiquidacion.VrIngresoBasePrestacionAdicional | number_format(0, '.', ',') }}</td>
                         <td class="titulo">DIAS</td>
@@ -46,8 +46,8 @@
                     <tr>
                         <td class="titulo">FECHA INICIO:</td>
                         <td class="td-in-well">{{ arLiquidacion.fechaDesde|date("Y/m/d") }}</td>
-                        <td class="titulo"></td>
-                        <td align="right"></td>
+                        <td class="titulo">FECHA:</td>
+                        <td align="right">{{ arLiquidacion.fecha|date("Y/m/d") }}</td>
                         <td class="titulo">IBP CESANTIAS (INICIAL):</td>
                         <td align="right">$ {{ arLiquidacion.vrIngresoBasePrestacionCesantiasInicial | number_format(0, '.', ',') }}</td>
                         <td class="titulo"></td>
