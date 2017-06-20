@@ -17,6 +17,13 @@ class RhuClienteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder    
+            ->add('tipoIdentificacionRel', EntityType::class, array(
+                'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ti')
+                    ->orderBy('ti.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                 
             ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
@@ -41,6 +48,10 @@ class RhuClienteType extends AbstractType
             ->add('nit', NumberType::class, array('required' => true))
             ->add('digitoVerificacion', TextType::class, array('required' => false))  
             ->add('nombreCorto', TextType::class, array('required' => true))              
+            ->add('nombre1', TextType::class, array('required' => false))
+            ->add('nombre2', TextType::class, array('required' => false))
+            ->add('apellido1', TextType::class, array('required' => false))
+            ->add('apellido2', TextType::class, array('required' => false))                            
             ->add('plazoPago', NumberType::class, array('required' => false)) 
             ->add('direccion', TextType::class, array('required' => false))  
             ->add('barrio', TextType::class, array('required' => false))  
