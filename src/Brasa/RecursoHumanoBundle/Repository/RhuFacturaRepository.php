@@ -369,7 +369,7 @@ class RhuFacturaRepository extends EntityRepository {
         $respuesta = "";
         if (count($arrSeleccionados) > 0) {
             foreach ($arrSeleccionados AS $codigo) {
-                $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
+                $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();                                                
                 $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigo);
                 if ($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoContabilizado() == 0 && $arFactura->getNumero() != 0) {
                     //Validar si el tercero existe para crearlo de no existir en la tabla ctbTercero
@@ -392,26 +392,172 @@ class RhuFacturaRepository extends EntityRepository {
                         $em->persist($arTercero);
                     }
                     $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arFactura->getFacturaTipoRel()->getCodigoComprobante());
-                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                    $codigoCuenta = $arFactura->getFacturaServicioRel()->getCodigoCuentaCarteraFk();
-                    if ($codigoCuenta) {
-                        //Cuenta
-                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                    
+                    $codigoCuentaCartera = $arFactura->getFacturaServicioRel()->getCodigoCuentaCarteraFk();                    
+                    $codigoCuentaIva = $arFactura->getFacturaServicioRel()->getCodigoCuentaIvaFk();
+                    $codigoCuentaIngreso = $arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoFk();
+                    $codigoCuentaRetencionFuente = $arFactura->getFacturaServicioRel()->getCodigoCuentaRetencionFuenteFk();
+                    $codigoCuentaRetencionIva = $arFactura->getFacturaServicioRel()->getCodigoCuentaRetencionIvaFk();
+                    $codigoCuentaBaseAIU = $arFactura->getFacturaServicioRel()->getCodigoCuentaBaseAiuFk();
+                    $codigoCuentaBaseAIUContrapartida = $arFactura->getFacturaServicioRel()->getCodigoCuentaBaseAiuContrapartidaFk();
+                    //Si es una devolucion
+                    if($arFactura->getFacturaTipoRel()->getTipo() == 2) {
+                        $codigoCuentaIva = $arFactura->getFacturaServicioRel()->getCodigoCuentaIvaDevolucionFk();
+                        $codigoCuentaIngreso = $arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoDevolucionFk();
+                    }
+                    //$codigoCuentaBaseAIU =
+                    
+                    //Cuenta cartera - clientes                    
+                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaCartera);
+                    if ($arCuenta) {
+                        $arRegistro->setComprobanteRel($arComprobanteContable);
+                        $arRegistro->setCuentaRel($arCuenta);                        
+                        $arRegistro->setTerceroRel($arTercero);
+                        $arRegistro->setNumero($arFactura->getNumero());
+                        $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                        $arRegistro->setFecha($arFactura->getFecha());                        
+                        if($arFactura->getFacturaTipoRel()->getTipoCuentaCartera() == 1) {
+                            $arRegistro->setDebito($arFactura->getVrNeto());
+                        } else {
+                            $arRegistro->setCredito($arFactura->getVrNeto());
+                        }                        
+                        $arRegistro->setDescripcionContable('FACTURACION ');
+                    } else {
+                        $respuesta = "La cuenta " . $codigoCuentaCartera . " cartera no esta configurada o no existe en el plan de cuentas";
+                        break;
+                    }
+                    
+                    //Cuenta iva 
+                    if($arFactura->getVrIva() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaIva);
                         if ($arCuenta) {
-                            $arRegistro->setCuentaRel($arCuenta);
                             $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
                             $arRegistro->setTerceroRel($arTercero);
                             $arRegistro->setNumero($arFactura->getNumero());
                             $arRegistro->setNumeroReferencia($arFactura->getNumero());
-                            $arRegistro->setFecha($arFactura->getFecha());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaIva() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrIva());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrIva());
+                            }                        
+                            $arRegistro->setDescripcionContable('FACTURACION ');
                         } else {
-                            $respuesta = "La cuenta " . $codigoCuenta . " no tiene cuenta contable configurada";
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " iva no esta configurada o no existe en el plan de cuentas";
                             break;
-                        }
-                    } else {
-                        $respuesta = "La factura " . $arFactura->getNumero() . " tiene un tipo de servicio " . $arFactura->getFacturaServicioRel()->getNombre() . " que no tiene cuenta contable configurada";
-                        break;
+                        }                        
                     }
+                    
+                    //Cuenta retencion fuente 
+                    if($arFactura->getVrRetencionFuente() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaRetencionFuente);
+                        if ($arCuenta) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaRetencionFuente() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrRetencionFuente());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrRetencionFuente());
+                            }                        
+                            $arRegistro->setDescripcionContable('RETENCION FUENTE');
+                        } else {
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " retencion fuente no esta configurada o no existe en el plan de cuentas";
+                            break;
+                        }                        
+                    }                    
+                    
+                    //Cuenta retencion iva 
+                    if($arFactura->getVrRetencionFuente() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaRetencionIva);
+                        if ($arCuenta) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaRetencionIva() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrRetencionIva());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrRetencionIva());
+                            }                        
+                            $arRegistro->setDescripcionContable('RETENCION IVA');
+                        } else {
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " iva no esta configurada o no existe en el plan de cuentas";
+                            break;
+                        }                        
+                    }                    
+                    
+                    //Cuenta ingreso 
+                    if($arFactura->getVrSubtotal() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaIngreso);
+                        if ($arCuenta) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaIngreso() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrSubtotal());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrSubtotal());
+                            }                        
+                            $arRegistro->setDescripcionContable('INGRESO ');
+                        } else {
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " ingreso no esta configurada o no existe en el plan de cuentas";
+                            break;
+                        }                        
+                    }                    
+                    
+                    //Cuenta base aiu 
+                    if($arFactura->getVrBaseAIU() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaBaseAIU);
+                        if ($arCuenta) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaBaseAiu() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrBaseAIU());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrBaseAIU());
+                            }                        
+                            $arRegistro->setDescripcionContable('BASE AIU ');
+                        } else {
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " base aiu no esta configurada o no existe en el plan de cuentas";
+                            break;
+                        }                        
+                    } 
+                    
+                    //Cuenta base aiu (Contrapartida)
+                    if($arFactura->getVrBaseAIU() > 0) {
+                        $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaBaseAIUContrapartida);
+                        if ($arCuenta) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuenta);                        
+                            $arRegistro->setTerceroRel($arTercero);
+                            $arRegistro->setNumero($arFactura->getNumero());
+                            $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                            $arRegistro->setFecha($arFactura->getFecha());                        
+                            if($arFactura->getFacturaTipoRel()->getTipoCuentaBaseAiu() == 1) {
+                                $arRegistro->setDebito($arFactura->getVrBaseAIU());
+                            } else {
+                                $arRegistro->setCredito($arFactura->getVrBaseAIU());
+                            }                        
+                            $arRegistro->setDescripcionContable('BASE AIU');
+                        } else {
+                            $respuesta = "La cuenta " . $codigoCuentaCartera . " base aiu (Contrapartida) no esta configurada o no existe en el plan de cuentas";
+                            break;
+                        }                        
+                    }                    
                 }
             }
         }

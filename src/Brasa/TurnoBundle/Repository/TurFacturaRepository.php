@@ -456,6 +456,7 @@ class TurFacturaRepository extends EntityRepository {
                     $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                    
                     $codigoCuenta = $arFactura->getFacturaServicioRel()->getCodigoCuentaCarteraFk();
                     if($codigoCuenta) {
+                        //Cuenta cartera - clientes
                         $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);                                        
                         $arRegistro->setComprobanteRel($arComprobanteContable);
                         $arRegistro->setCuentaRel($arCuenta);

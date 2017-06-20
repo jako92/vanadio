@@ -18,6 +18,11 @@ class RhuCliente
     private $codigoClientePk;    
     
     /**
+     * @ORM\Column(name="codigo_tipo_identificacion_fk", type="integer")
+     */    
+    private $codigoTipoIdentificacionFk;    
+    
+    /**
      * @ORM\Column(name="nit", type="string", length=15, nullable=false)
      */
     private $nit;        
@@ -1443,5 +1448,29 @@ class RhuCliente
     public function getSeleccionesClienteRel()
     {
         return $this->seleccionesClienteRel;
+    }
+
+    /**
+     * Set codigoTipoIdentificacionFk
+     *
+     * @param integer $codigoTipoIdentificacionFk
+     *
+     * @return RhuCliente
+     */
+    public function setCodigoTipoIdentificacionFk($codigoTipoIdentificacionFk)
+    {
+        $this->codigoTipoIdentificacionFk = $codigoTipoIdentificacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTipoIdentificacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoTipoIdentificacionFk()
+    {
+        return $this->codigoTipoIdentificacionFk;
     }
 }
