@@ -25,9 +25,14 @@ class SegGrupo {
     private $nombre;
 
     /**
-     * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="GrupoRel")
+     * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="grupoRel")
      */
     protected $permisosGruposGrupoRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="grupoRel")
+     */
+    protected $usersGrupoRel;
 
     /**
      * Constructor
@@ -98,4 +103,38 @@ class SegGrupo {
         return $this->permisosGruposGrupoRel;
     }
 
+
+    /**
+     * Add usersGrupoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\User $usersGrupoRel
+     *
+     * @return SegGrupo
+     */
+    public function addUsersGrupoRel(\Brasa\SeguridadBundle\Entity\User $usersGrupoRel)
+    {
+        $this->usersGrupoRel[] = $usersGrupoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove usersGrupoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\User $usersGrupoRel
+     */
+    public function removeUsersGrupoRel(\Brasa\SeguridadBundle\Entity\User $usersGrupoRel)
+    {
+        $this->usersGrupoRel->removeElement($usersGrupoRel);
+    }
+
+    /**
+     * Get usersGrupoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsersGrupoRel()
+    {
+        return $this->usersGrupoRel;
+    }
 }

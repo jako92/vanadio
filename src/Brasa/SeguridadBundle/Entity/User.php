@@ -83,10 +83,21 @@ class User implements UserInterface, \Serializable {
     private $fecha;
 
     /**
+     * @ORM\Column(name="codigoGrupo_fk", type="integer", nullable=true)
+     */
+    private $codigoGrupoFk;
+
+    /**
      * @ORM\ManyToOne(targetEntity="SegRoles", inversedBy="usersRolRel")
      * @ORM\JoinColumn(name="roles", referencedColumnName="codigo_rol_pk")
      */
     protected $rolRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SegGrupo", inversedBy="usersGrupoRel")
+     * @ORM\JoinColumn(name="codigo_grupo_fk", referencedColumnName="codigo_grupo_pk")
+     */
+    protected $grupoRel;
 
     /**
      * @ORM\OneToMany(targetEntity="SegUsuarioPermisoEspecial", mappedBy="usuarioRel")
@@ -544,7 +555,6 @@ class User implements UserInterface, \Serializable {
         return $this->cambiarClave;
     }
 
-
     /**
      * Set fecha
      *
@@ -552,8 +562,7 @@ class User implements UserInterface, \Serializable {
      *
      * @return User
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -564,8 +573,56 @@ class User implements UserInterface, \Serializable {
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
+    }
+
+
+    /**
+     * Set codigoGrupoFk
+     *
+     * @param integer $codigoGrupoFk
+     *
+     * @return User
+     */
+    public function setCodigoGrupoFk($codigoGrupoFk)
+    {
+        $this->codigoGrupoFk = $codigoGrupoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoGrupoFk
+     *
+     * @return integer
+     */
+    public function getCodigoGrupoFk()
+    {
+        return $this->codigoGrupoFk;
+    }
+
+    /**
+     * Set grupoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel
+     *
+     * @return User
+     */
+    public function setGrupoRel(\Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel = null)
+    {
+        $this->grupoRel = $grupoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get grupoRel
+     *
+     * @return \Brasa\SeguridadBundle\Entity\SegGrupo
+     */
+    public function getGrupoRel()
+    {
+        return $this->grupoRel;
     }
 }

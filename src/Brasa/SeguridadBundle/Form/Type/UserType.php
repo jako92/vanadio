@@ -5,6 +5,7 @@ namespace Brasa\SeguridadBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,6 +24,14 @@ class UserType extends AbstractType {
                     'class' => 'BrasaSeguridadBundle:SegRoles',
                     'choice_label' => 'nombre',
                 ))
+                ->add('grupoRel', EntityType::class, array(
+                'class' => 'BrasaSeguridadBundle:SegGrupo',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('g')
+                    ->orderBy('g.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'placeholder' => '',
+                'required'=>false))
                 ->add('nombreCorto', TextType::class, array('required' => true))
                 ->add('username', TextType::class, array('required' => true))
                 ->add('email', TextType::class, array('required' => true))
