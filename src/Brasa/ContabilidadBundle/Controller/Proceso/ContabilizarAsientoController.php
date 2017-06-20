@@ -24,48 +24,46 @@ class ContabilizarAsientoController extends Controller {
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                if ($form->get('BtnContabilizar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    if (count($arrSeleccionados) > 0) {
-                        foreach ($arrSeleccionados AS $codigo) {
-                            $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();
-                            $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigo);
-                            $arAsientoDetalles = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();
-                            $arAsientoDetalles = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->findBy(array('codigoAsientoFk' => $codigo));
-                            foreach ($arAsientoDetalles as $arAsientoDetalle) {
-                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                                $arRegistro->setCuentaRel($arAsientoDetalle->getCuentaRel());
-                                $arRegistro->setCentroCostoRel($arAsientoDetalle->getCentroCostoRel());
-                                $arRegistro->setTerceroRel($arAsientoDetalle->getTerceroRel());
-                                $arRegistro->setComprobanteRel($arAsientoDetalle->getAsientoRel()->getComprobanteRel());
-                                $arRegistro->setFecha($arAsientoDetalle->getAsientoRel()->getFecha());
-                                $arRegistro->setNumero($arAsientoDetalle->getSoporte());
-                                $arRegistro->setNumeroReferencia($arAsientoDetalle->getDocumentoReferente());
-                                $arRegistro->setDebito($arAsientoDetalle->getDebito());
-                                $arRegistro->setCredito($arAsientoDetalle->getCredito());
-                                $arRegistro->setBase($arAsientoDetalle->getValorBase());
-                                $arRegistro->setDescripcionContable($arAsientoDetalle->getDescripcion());
-                                $em->persist($arRegistro);
-                                $arAsiento->setEstadoContabilizado(1);
-                                $em->persist($arAsiento);
-                            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnContabilizar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $arAsiento = new \Brasa\ContabilidadBundle\Entity\CtbAsiento();
+                        $arAsiento = $em->getRepository('BrasaContabilidadBundle:CtbAsiento')->find($codigo);
+                        $arAsientoDetalles = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();
+                        $arAsientoDetalles = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->findBy(array('codigoAsientoFk' => $codigo));
+                        foreach ($arAsientoDetalles as $arAsientoDetalle) {
+                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                            $arRegistro->setCuentaRel($arAsientoDetalle->getCuentaRel());
+                            $arRegistro->setCentroCostoRel($arAsientoDetalle->getCentroCostoRel());
+                            $arRegistro->setTerceroRel($arAsientoDetalle->getTerceroRel());
+                            $arRegistro->setComprobanteRel($arAsientoDetalle->getAsientoRel()->getComprobanteRel());
+                            $arRegistro->setFecha($arAsientoDetalle->getAsientoRel()->getFecha());
+                            $arRegistro->setNumero($arAsientoDetalle->getSoporte());
+                            $arRegistro->setNumeroReferencia($arAsientoDetalle->getDocumentoReferente());
+                            $arRegistro->setDebito($arAsientoDetalle->getDebito());
+                            $arRegistro->setCredito($arAsientoDetalle->getCredito());
+                            $arRegistro->setBase($arAsientoDetalle->getValorBase());
+                            $arRegistro->setDescripcionContable($arAsientoDetalle->getDescripcion());
+                            $em->persist($arRegistro);
+                            $arAsiento->setEstadoContabilizado(1);
+                            $em->persist($arAsiento);
                         }
-                        $em->flush();
                     }
+                    $em->flush();
                 }
             }
         }
         $arAsientos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
-        return $this->render('BrasaContabilidadBundle:Procesos/Contabilizar:Asiento.html.twig', array(
+        return $this->render('BrasaContabilidadBundle:Proceso/Contabilizar:Asiento.html.twig', array(
                     'arAsientos' => $arAsientos,
                     'form' => $form->createView()));
     }
 
     private function formularioLista() {
         $form = $this->createFormBuilder()
-                ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar',))
+                ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar'))
                 ->getForm();
         return $form;
     }
