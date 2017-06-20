@@ -73,7 +73,7 @@ class User implements UserInterface, \Serializable {
     private $cargo;
 
     /**
-     * @ORM\Column(name="cambiar_clave", type="boolean", options={"default":false})
+     * @ORM\Column(name="cambiar_clave", type="boolean", options={"default":false}, nullable=true)
      */
     private $cambiarClave = false;
 
