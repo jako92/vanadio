@@ -42,6 +42,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Factura concepto }
             
+    admin.recursohumano.facturatipo:
+        class: Brasa\RecursoHumanoBundle\Admin\FacturaTipoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuFacturaTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Factura tipo }
+            
     admin.recursohumano.facturaservicio:
         class: Brasa\RecursoHumanoBundle\Admin\FacturaServicioAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuFacturaServicio, ~]
