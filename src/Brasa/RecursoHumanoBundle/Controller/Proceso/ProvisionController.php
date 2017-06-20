@@ -237,6 +237,19 @@ class ProvisionController extends Controller
                 $arProvisionPeriodo = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvisionPeriodo')->find($codigoProvisionPeriodo);                
                 $arProvisionPeriodo->setEstadoCerrado(1);               
                 $em->persist($arProvisionPeriodo);
+                $arProvisiones = new \Brasa\RecursoHumanoBundle\Entity\RhuProvision();
+                $arProvisiones = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvision')->findBy(array('codigoProvisionPeriodoFk' => $codigoProvisionPeriodo));                
+                foreach ($arProvisiones as $arProvision) {
+                    //$arProvisionAct = new \Brasa\RecursoHumanoBundle\Entity\RhuProvision();                    
+                    $arProvisionAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvision')->find($arProvision->getCodigoProvisionPk());                                    
+                    $numero = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->consecutivo(2);
+                    $arProvisionAct->setNumero($numero);
+                    $arProvisionAct->setEstadoCerrado(1);
+                    $em->persist($arProvisionAct);
+                }
+                //$q = $em->createQuery('update BrasaRecursoHumanoBundle:RhuProvision p set p.estadoCerrado = 1 WHERE p.codigoProvisionPeriodoFk = ' . $codigoProvisionPeriodo);
+                //$numActualizaciones = $q->execute();                
+                
                 $em->flush();
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_provision'));                
             }            

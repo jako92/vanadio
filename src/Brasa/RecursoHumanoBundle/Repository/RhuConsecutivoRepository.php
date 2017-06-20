@@ -25,7 +25,7 @@ class RhuConsecutivoRepository extends EntityRepository {
         $intNumero = $arConsecutivo->getConsecutivo();
         $arConsecutivo->setConsecutivo($intNumero + 1);
         $em->persist($arConsecutivo);
-        $em->flush();
+        //$em->flush();
         return $intNumero;
     }        
     

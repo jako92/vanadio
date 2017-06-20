@@ -43,6 +43,21 @@ class RhuProvision
     private $mes;    
     
     /**
+     * @ORM\Column(name="numero", type="integer", nullable=true)
+     */    
+    private $numero;     
+    
+    /**
+     * @ORM\Column(name="fecha_desde", type="date", nullable=true)
+     */    
+    private $fechaDesde;    
+    
+    /**
+     * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
+     */    
+    private $fechaHasta;    
+    
+    /**
      * @ORM\Column(name="vr_pension", type="float")
      */
     private $vrPension = 0;        
@@ -116,6 +131,11 @@ class RhuProvision
      * @ORM\Column(name="estado_contabilizado", type="boolean")
      */    
     private $estadoContabilizado = 0; 
+
+    /**
+     * @ORM\Column(name="estado_cerrado", type="boolean")
+     */    
+    private $estadoCerrado = 0; 
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuProvisionPeriodo", inversedBy="provisionesProvisionPeriodoRel")
@@ -216,6 +236,78 @@ class RhuProvision
     public function getCodigoContratoFk()
     {
         return $this->codigoContratoFk;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param integer $anio
+     *
+     * @return RhuProvision
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return integer
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
+     * Set mes
+     *
+     * @param integer $mes
+     *
+     * @return RhuProvision
+     */
+    public function setMes($mes)
+    {
+        $this->mes = $mes;
+
+        return $this;
+    }
+
+    /**
+     * Get mes
+     *
+     * @return integer
+     */
+    public function getMes()
+    {
+        return $this->mes;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return RhuProvision
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
     }
 
     /**
@@ -531,6 +623,30 @@ class RhuProvision
     }
 
     /**
+     * Set vrSalario
+     *
+     * @param float $vrSalario
+     *
+     * @return RhuProvision
+     */
+    public function setVrSalario($vrSalario)
+    {
+        $this->vrSalario = $vrSalario;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalario
+     *
+     * @return float
+     */
+    public function getVrSalario()
+    {
+        return $this->vrSalario;
+    }
+
+    /**
      * Set estadoContabilizado
      *
      * @param boolean $estadoContabilizado
@@ -552,6 +668,30 @@ class RhuProvision
     public function getEstadoContabilizado()
     {
         return $this->estadoContabilizado;
+    }
+
+    /**
+     * Set estadoCerrado
+     *
+     * @param boolean $estadoCerrado
+     *
+     * @return RhuProvision
+     */
+    public function setEstadoCerrado($estadoCerrado)
+    {
+        $this->estadoCerrado = $estadoCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCerrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCerrado()
+    {
+        return $this->estadoCerrado;
     }
 
     /**
@@ -627,74 +767,50 @@ class RhuProvision
     }
 
     /**
-     * Set vrSalario
+     * Set fechaDesde
      *
-     * @param float $vrSalario
+     * @param \DateTime $fechaDesde
      *
      * @return RhuProvision
      */
-    public function setVrSalario($vrSalario)
+    public function setFechaDesde($fechaDesde)
     {
-        $this->vrSalario = $vrSalario;
+        $this->fechaDesde = $fechaDesde;
 
         return $this;
     }
 
     /**
-     * Get vrSalario
+     * Get fechaDesde
      *
-     * @return float
+     * @return \DateTime
      */
-    public function getVrSalario()
+    public function getFechaDesde()
     {
-        return $this->vrSalario;
+        return $this->fechaDesde;
     }
 
     /**
-     * Set anio
+     * Set fechaHasta
      *
-     * @param integer $anio
+     * @param \DateTime $fechaHasta
      *
      * @return RhuProvision
      */
-    public function setAnio($anio)
+    public function setFechaHasta($fechaHasta)
     {
-        $this->anio = $anio;
+        $this->fechaHasta = $fechaHasta;
 
         return $this;
     }
 
     /**
-     * Get anio
+     * Get fechaHasta
      *
-     * @return integer
+     * @return \DateTime
      */
-    public function getAnio()
+    public function getFechaHasta()
     {
-        return $this->anio;
-    }
-
-    /**
-     * Set mes
-     *
-     * @param integer $mes
-     *
-     * @return RhuProvision
-     */
-    public function setMes($mes)
-    {
-        $this->mes = $mes;
-
-        return $this;
-    }
-
-    /**
-     * Get mes
-     *
-     * @return integer
-     */
-    public function getMes()
-    {
-        return $this->mes;
+        return $this->fechaHasta;
     }
 }

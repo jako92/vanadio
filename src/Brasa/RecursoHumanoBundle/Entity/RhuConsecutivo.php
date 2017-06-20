@@ -13,7 +13,6 @@ class RhuConsecutivo
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_consecutivo_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoConsecutivoPk;
 
@@ -29,6 +28,20 @@ class RhuConsecutivo
     
 
     /**
+     * Set codigoConsecutivoPk
+     *
+     * @param integer $codigoConsecutivoPk
+     *
+     * @return RhuConsecutivo
+     */
+    public function setCodigoConsecutivoPk($codigoConsecutivoPk)
+    {
+        $this->codigoConsecutivoPk = $codigoConsecutivoPk;
+
+        return $this;
+    }
+
+    /**
      * Get codigoConsecutivoPk
      *
      * @return integer
@@ -36,30 +49,6 @@ class RhuConsecutivo
     public function getCodigoConsecutivoPk()
     {
         return $this->codigoConsecutivoPk;
-    }
-
-    /**
-     * Set consecutivo
-     *
-     * @param integer $consecutivo
-     *
-     * @return RhuConsecutivo
-     */
-    public function setConsecutivo($consecutivo)
-    {
-        $this->consecutivo = $consecutivo;
-
-        return $this;
-    }
-
-    /**
-     * Get consecutivo
-     *
-     * @return integer
-     */
-    public function getConsecutivo()
-    {
-        return $this->consecutivo;
     }
 
     /**
@@ -84,5 +73,29 @@ class RhuConsecutivo
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set consecutivo
+     *
+     * @param integer $consecutivo
+     *
+     * @return RhuConsecutivo
+     */
+    public function setConsecutivo($consecutivo)
+    {
+        $this->consecutivo = $consecutivo;
+
+        return $this;
+    }
+
+    /**
+     * Get consecutivo
+     *
+     * @return integer
+     */
+    public function getConsecutivo()
+    {
+        return $this->consecutivo;
     }
 }

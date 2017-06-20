@@ -23,10 +23,30 @@ class RhuProvisionRepository extends EntityRepository {
     
     public function pendientesContabilizarDql() {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuProvision p JOIN p.provisionPeriodoRel pp WHERE pp.estadoGenerado = 1 AND p.estadoContabilizado = 0 ";
+        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuProvision p JOIN p.provisionPeriodoRel pp WHERE pp.estadoGenerado = 1 AND pp.estadoCerrado = 1 AND p.estadoContabilizado = 0 ";
         $dql .= " ORDER BY p.codigoProvisionPk ASC";
         return $dql;
     }
+    
+    public function contabilizadosDql($intNumeroDesde = 0, $intNumeroHasta = 0, $strDesde = "", $strHasta = "") {        
+        $em = $this->getEntityManager();
+        $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuProvision p WHERE p.estadoContabilizado = 1";
+        if($intNumeroDesde != "" || $intNumeroDesde != 0) {
+            $dql .= " AND p.numero >= " . $intNumeroDesde;
+        }
+        if($intNumeroHasta != "" || $intNumeroHasta != 0) {
+            $dql .= " AND p.numero <= " . $intNumeroHasta;
+        }   
+        if($strDesde != "" || $strDesde != 0){
+            $dql .= " AND p.fechaDesde >='" . date_format($strDesde, ('Y-m-d')) . "'";
+        }
+        if($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND p.fechaDesde <='" . date_format($strHasta, ('Y-m-d')) . "'";
+        }
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        return $arrayResultado;
+    }     
     
     public function eliminar($arrSeleccionados) {        
         $em = $this->getEntityManager();
@@ -50,5 +70,5 @@ class RhuProvisionRepository extends EntityRepository {
         }
         return $mensaje; 
     }
-    
+            
 }
