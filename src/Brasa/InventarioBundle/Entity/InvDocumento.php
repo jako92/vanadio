@@ -54,7 +54,7 @@ class InvDocumento
     /**
      * @ORM\Column(name="genera_cartera", type="boolean")
      */          
-    private $generaCartera = 0;
+    private $generaCartera = false;
 
     /**
      * @ORM\Column(name="tipo_asiento_cartera", type="smallint", nullable=true)
@@ -177,12 +177,12 @@ class InvDocumento
     /**
      * @ORM\Column(name="asignar_consecutivo_creacion", type="boolean")
      */          
-    private $asignarConsecutivoCreacion = 0;    
+    private $asignarConsecutivoCreacion = false;    
     
     /**
      * @ORM\Column(name="asignar_consecutivo_impresion", type="boolean")
      */          
-    private $asignarConsecutivoImpresion = 0;          
+    private $asignarConsecutivoImpresion = false;          
     
     /**
      * @internal Para saber si el documento genera costo promedio
