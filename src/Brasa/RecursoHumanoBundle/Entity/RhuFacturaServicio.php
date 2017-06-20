@@ -8,80 +8,94 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_factura_servicio")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuFacturaServicioRepository")
  */
-class RhuFacturaServicio
-{
+class RhuFacturaServicio {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_factura_servicio_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoFacturaServicioPk;        
-    
+    private $codigoFacturaServicioPk;
+
     /**
      * @ORM\Column(name="nombre", type="string", length=50)
      */
-    private $nombre;                                                    
+    private $nombre;
 
     /**
      * @ORM\Column(name="porcentaje_iva", type="float")
      */
-    private $porcentajeIva = 0; 
-    
+    private $porcentajeIva = 0;
+
     /**
      * @ORM\Column(name="por_base_retencion_fuente", type="float")
      */
-    private $porBaseRetencionFuente = 0;    
-    
+    private $porBaseRetencionFuente = 0;
+
     /**
      * @ORM\Column(name="por_retencion_fuente", type="float")
      */
-    private $porRetencionFuente = 0;    
-    
+    private $porRetencionFuente = 0;
+
     /**
      * @ORM\Column(name="tipo_retencion_fuente", type="integer")
      */
-    private $tipo_retencion_fuente = 0;    
-    
+    private $tipo_retencion_fuente = 0;
+
     /**
      * @ORM\Column(name="codigo_cuenta_cartera_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaCarteraFk;    
-    
+     */
+    private $codigoCuentaCarteraFk;
+
     /**
      * @ORM\Column(name="codigo_cuenta_retencion_fuente_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaRetencionFuenteFk;  
+     */
+    private $codigoCuentaRetencionFuenteFk;
     
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_iva_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaRetencionIvaFk;
+
     /**
      * @ORM\Column(name="codigo_cuenta_iva_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaIvaFk;            
-    
+     */
+    private $codigoCuentaIvaFk;
+
     /**
      * @ORM\Column(name="codigo_cuenta_ingreso_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaIngresoFk;           
-    
+     */
+    private $codigoCuentaIngresoFk;
+
     /**
      * @ORM\Column(name="codigo_cuenta_iva_devolucion_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaIvaDevolucionFk;          
-    
+     */
+    private $codigoCuentaIvaDevolucionFk;
+
     /**
      * @ORM\Column(name="codigo_cuenta_ingreso_devolucion_fk", type="string", length=20, nullable=true)
-     */     
-    private $codigoCuentaIngresoDevolucionFk;        
-        
+     */
+    private $codigoCuentaIngresoDevolucionFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_base_aiu_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaBaseAiuFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_base_aiu_contrapartida_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaBaseAiuContrapartidaFk;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="facturaServicioRel")
      */
-    protected $facturasFacturaServicioRel;       
+    protected $facturasFacturaServicioRel;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->facturasFacturaServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -90,8 +104,7 @@ class RhuFacturaServicio
      *
      * @return integer
      */
-    public function getCodigoFacturaServicioPk()
-    {
+    public function getCodigoFacturaServicioPk() {
         return $this->codigoFacturaServicioPk;
     }
 
@@ -102,8 +115,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -114,8 +126,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -126,8 +137,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setPorcentajeIva($porcentajeIva)
-    {
+    public function setPorcentajeIva($porcentajeIva) {
         $this->porcentajeIva = $porcentajeIva;
 
         return $this;
@@ -138,8 +148,7 @@ class RhuFacturaServicio
      *
      * @return float
      */
-    public function getPorcentajeIva()
-    {
+    public function getPorcentajeIva() {
         return $this->porcentajeIva;
     }
 
@@ -150,8 +159,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setPorBaseRetencionFuente($porBaseRetencionFuente)
-    {
+    public function setPorBaseRetencionFuente($porBaseRetencionFuente) {
         $this->porBaseRetencionFuente = $porBaseRetencionFuente;
 
         return $this;
@@ -162,8 +170,7 @@ class RhuFacturaServicio
      *
      * @return float
      */
-    public function getPorBaseRetencionFuente()
-    {
+    public function getPorBaseRetencionFuente() {
         return $this->porBaseRetencionFuente;
     }
 
@@ -174,8 +181,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setPorRetencionFuente($porRetencionFuente)
-    {
+    public function setPorRetencionFuente($porRetencionFuente) {
         $this->porRetencionFuente = $porRetencionFuente;
 
         return $this;
@@ -186,8 +192,7 @@ class RhuFacturaServicio
      *
      * @return float
      */
-    public function getPorRetencionFuente()
-    {
+    public function getPorRetencionFuente() {
         return $this->porRetencionFuente;
     }
 
@@ -198,8 +203,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setTipoRetencionFuente($tipoRetencionFuente)
-    {
+    public function setTipoRetencionFuente($tipoRetencionFuente) {
         $this->tipo_retencion_fuente = $tipoRetencionFuente;
 
         return $this;
@@ -210,8 +214,7 @@ class RhuFacturaServicio
      *
      * @return integer
      */
-    public function getTipoRetencionFuente()
-    {
+    public function getTipoRetencionFuente() {
         return $this->tipo_retencion_fuente;
     }
 
@@ -222,8 +225,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaCarteraFk($codigoCuentaCarteraFk)
-    {
+    public function setCodigoCuentaCarteraFk($codigoCuentaCarteraFk) {
         $this->codigoCuentaCarteraFk = $codigoCuentaCarteraFk;
 
         return $this;
@@ -234,8 +236,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaCarteraFk()
-    {
+    public function getCodigoCuentaCarteraFk() {
         return $this->codigoCuentaCarteraFk;
     }
 
@@ -246,8 +247,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaRetencionFuenteFk($codigoCuentaRetencionFuenteFk)
-    {
+    public function setCodigoCuentaRetencionFuenteFk($codigoCuentaRetencionFuenteFk) {
         $this->codigoCuentaRetencionFuenteFk = $codigoCuentaRetencionFuenteFk;
 
         return $this;
@@ -258,8 +258,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaRetencionFuenteFk()
-    {
+    public function getCodigoCuentaRetencionFuenteFk() {
         return $this->codigoCuentaRetencionFuenteFk;
     }
 
@@ -270,8 +269,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaIvaFk($codigoCuentaIvaFk)
-    {
+    public function setCodigoCuentaIvaFk($codigoCuentaIvaFk) {
         $this->codigoCuentaIvaFk = $codigoCuentaIvaFk;
 
         return $this;
@@ -282,8 +280,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaIvaFk()
-    {
+    public function getCodigoCuentaIvaFk() {
         return $this->codigoCuentaIvaFk;
     }
 
@@ -294,8 +291,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaIngresoFk($codigoCuentaIngresoFk)
-    {
+    public function setCodigoCuentaIngresoFk($codigoCuentaIngresoFk) {
         $this->codigoCuentaIngresoFk = $codigoCuentaIngresoFk;
 
         return $this;
@@ -306,8 +302,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaIngresoFk()
-    {
+    public function getCodigoCuentaIngresoFk() {
         return $this->codigoCuentaIngresoFk;
     }
 
@@ -318,8 +313,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaIvaDevolucionFk($codigoCuentaIvaDevolucionFk)
-    {
+    public function setCodigoCuentaIvaDevolucionFk($codigoCuentaIvaDevolucionFk) {
         $this->codigoCuentaIvaDevolucionFk = $codigoCuentaIvaDevolucionFk;
 
         return $this;
@@ -330,8 +324,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaIvaDevolucionFk()
-    {
+    public function getCodigoCuentaIvaDevolucionFk() {
         return $this->codigoCuentaIvaDevolucionFk;
     }
 
@@ -342,8 +335,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function setCodigoCuentaIngresoDevolucionFk($codigoCuentaIngresoDevolucionFk)
-    {
+    public function setCodigoCuentaIngresoDevolucionFk($codigoCuentaIngresoDevolucionFk) {
         $this->codigoCuentaIngresoDevolucionFk = $codigoCuentaIngresoDevolucionFk;
 
         return $this;
@@ -354,8 +346,7 @@ class RhuFacturaServicio
      *
      * @return string
      */
-    public function getCodigoCuentaIngresoDevolucionFk()
-    {
+    public function getCodigoCuentaIngresoDevolucionFk() {
         return $this->codigoCuentaIngresoDevolucionFk;
     }
 
@@ -366,8 +357,7 @@ class RhuFacturaServicio
      *
      * @return RhuFacturaServicio
      */
-    public function addFacturasFacturaServicioRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaServicioRel)
-    {
+    public function addFacturasFacturaServicioRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaServicioRel) {
         $this->facturasFacturaServicioRel[] = $facturasFacturaServicioRel;
 
         return $this;
@@ -378,8 +368,7 @@ class RhuFacturaServicio
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaServicioRel
      */
-    public function removeFacturasFacturaServicioRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaServicioRel)
-    {
+    public function removeFacturasFacturaServicioRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasFacturaServicioRel) {
         $this->facturasFacturaServicioRel->removeElement($facturasFacturaServicioRel);
     }
 
@@ -388,8 +377,80 @@ class RhuFacturaServicio
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFacturasFacturaServicioRel()
-    {
+    public function getFacturasFacturaServicioRel() {
         return $this->facturasFacturaServicioRel;
+    }
+
+
+    /**
+     * Set codigoCuentaRetencionIvaFk
+     *
+     * @param string $codigoCuentaRetencionIvaFk
+     *
+     * @return RhuFacturaServicio
+     */
+    public function setCodigoCuentaRetencionIvaFk($codigoCuentaRetencionIvaFk)
+    {
+        $this->codigoCuentaRetencionIvaFk = $codigoCuentaRetencionIvaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionIvaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionIvaFk()
+    {
+        return $this->codigoCuentaRetencionIvaFk;
+    }
+
+    /**
+     * Set codigoCuentaBaseAiuFk
+     *
+     * @param string $codigoCuentaBaseAiuFk
+     *
+     * @return RhuFacturaServicio
+     */
+    public function setCodigoCuentaBaseAiuFk($codigoCuentaBaseAiuFk)
+    {
+        $this->codigoCuentaBaseAiuFk = $codigoCuentaBaseAiuFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaBaseAiuFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaBaseAiuFk()
+    {
+        return $this->codigoCuentaBaseAiuFk;
+    }
+
+    /**
+     * Set codigoCuentaBaseAiuContrapartidaFk
+     *
+     * @param string $codigoCuentaBaseAiuContrapartidaFk
+     *
+     * @return RhuFacturaServicio
+     */
+    public function setCodigoCuentaBaseAiuContrapartidaFk($codigoCuentaBaseAiuContrapartidaFk)
+    {
+        $this->codigoCuentaBaseAiuContrapartidaFk = $codigoCuentaBaseAiuContrapartidaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaBaseAiuContrapartidaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaBaseAiuContrapartidaFk()
+    {
+        return $this->codigoCuentaBaseAiuContrapartidaFk;
     }
 }
