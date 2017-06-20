@@ -388,7 +388,7 @@ class IntercambioDatosController extends Controller {
         $strSecuencia = 1;
         foreach ($arRegistro AS $arRegistro) {
             //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
-            
+            $comprobante = $this->RellenarNr($arRegistro->getCodigoComprobanteFk(), "0", 5);
             $identificacion = "";
             if($arRegistro->getCodigoTerceroFk()) {
                 $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
@@ -421,7 +421,7 @@ class IntercambioDatosController extends Controller {
                 $tercero = "00000000000";
             }
             $numeroDocumento = $this->RellenarNr($arRegistro->getNumero(), "0", 15);
-            $array = array($anio,"!",$mes,"!",'0000'. $arRegistro->getCodigoComprobanteFk(),"!","00000","!", $numeroDocumento ,"!",$arRegistro->getFecha()->Format('m/d/Y'),"!", str_pad($strSecuencia, 5, '0', STR_PAD_LEFT) ,"!",$arRegistro->getCodigoCuentaFk(),"!", $centroCosto,"!","000","!", "!", "!" , $tercero,"!","000","!", $tercero ,"!","00000","!",'000000000000000',"!", $arRegistro->getDescripcionContable(),"!", str_pad($vrMovimiento, 15, '0', STR_PAD_LEFT),"!",str_pad($arRegistro->getBase(), 15, '0', STR_PAD_LEFT),"!","000000000000000","!", $naturalezaMovimiento, "!","PRI","!","000000000000000","!","!","!","A","!");
+            $array = array($anio,"!",$mes,"!",$comprobante,"!","00000","!", $numeroDocumento ,"!",$arRegistro->getFecha()->Format('m/d/Y'),"!", str_pad($strSecuencia, 5, '0', STR_PAD_LEFT) ,"!",$arRegistro->getCodigoCuentaFk(),"!", $centroCosto,"!","000","!", "!", "!" , $tercero,"!","000","!", $tercero ,"!","00000","!",'000000000000000',"!", $arRegistro->getDescripcionContable(),"!", str_pad($vrMovimiento, 15, '0', STR_PAD_LEFT),"!",str_pad($arRegistro->getBase(), 15, '0', STR_PAD_LEFT),"!","000000000000000","!", $naturalezaMovimiento, "!","PRI","!","000000000000000","!","!","!","A","!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }

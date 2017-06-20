@@ -151,6 +151,7 @@ class PagoBancoController extends Controller
                     $arPagoBanco->setEstadoGenerado(1);
                     $em->persist($arPagoBanco);
                     $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $codigoPagoBanco)));                               
                 } else {
                     $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada");
                 }   
