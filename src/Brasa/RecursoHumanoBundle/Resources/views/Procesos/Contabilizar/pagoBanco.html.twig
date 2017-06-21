@@ -17,6 +17,21 @@
     <section class="content">     
     {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
     {{ form_errors(form) }}
+      
+        <!-- Encabezado Movimiento -->
+        <div class="panel panel-default">
+            <div class="panel-heading">Información</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">COMPROBANTE:</td>
+                        <td class="td-in-well">{{ arComprobante.codigoComprobantePk |default('') }}-{{ arComprobante.nombre |default('') }}</td>
+                    </tr>                 
+                </table>
+            </div>
+        </div>
+
+        <!-- Fin Encabezado Movimiento -->      
     <table  class="table table-striped table-bordered table-condensed table-hover">
         <tr>
             <th>ID</th>

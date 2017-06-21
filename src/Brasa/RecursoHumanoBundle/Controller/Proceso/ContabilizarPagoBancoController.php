@@ -25,6 +25,10 @@ class ContabilizarPagoBancoController extends Controller
         }
         $paginator  = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);        
+        $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+        $arComprobanteContable =$em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobantePagoBanco());        
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -33,16 +37,10 @@ class ContabilizarPagoBancoController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
                     $mensajeError = "";
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-
                     $arCuentaPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(13);
                     $arCuentaSalud = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(14);
                     $arCuentaRiesgos = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(15);
-                    $arCuentaParafiscales = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(16);
-                    
-                    $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-                    $arComprobanteContable =$em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobantePagoBanco());
+                    $arCuentaParafiscales = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(16);                    
                     $arCentroCosto = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
                     $arCentroCosto =$em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find(1);
                     foreach ($arrSeleccionados AS $codigo) {
@@ -261,6 +259,7 @@ class ContabilizarPagoBancoController extends Controller
         $arPagosBanco = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:pagoBanco.html.twig', array(
             'arPagosBanco' => $arPagosBanco,
+            'arComprobante' => $arComprobanteContable,
             'form' => $form->createView()));
     }
 
