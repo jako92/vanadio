@@ -12,42 +12,32 @@
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Gerente:</label>
+                    <label class="col-sm-2 control-label">Nombre:</label>
                     <div class="col-sm-4">
-                         {{ form_widget(form.gerente) }}
+                        {{ form_widget(form.nombre) }}
                     </div>
-                    <label class="col-sm-2 control-label">Celular gerente:</label>
+                    <label class="col-sm-2 control-label">Cargo:</label>
                     <div class="col-sm-4">
-                         {{ form_widget(form.celularGerente) }}
+                        {{ form_widget(form.cargo) }}
                     </div>  
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Financiero:</label>
+                    <label class="col-sm-2 control-label">Telefono:</label>
                     <div class="col-sm-4">
-                         {{ form_widget(form.financiero) }}
+                        {{ form_widget(form.telefono) }}
                     </div>
-                    <label class="col-sm-2 control-label">Celular financiero:</label>
+                    <label class="col-sm-2 control-label">Celular:</label>
                     <div class="col-sm-4">
-                         {{ form_widget(form.celularFinanciero) }}
+                        {{ form_widget(form.celular) }}
                     </div>  
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Contacto:</label>
+                    <label class="col-sm-2 control-label">Fecha cumpleaños:</label>
                     <div class="col-sm-4">
-                         {{ form_widget(form.contacto) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Celular contacto:</label>
-                    <div class="col-sm-4">
-                         {{ form_widget(form.celularContacto) }}
-                    </div>  
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">Telefono contacto:</label>
-                    <div class="col-sm-4">
-                         {{ form_widget(form.telefonoContacto) }}
+                        {{ form_widget(form.fechaNacimiento) }}
                     </div> 
                 </div>
-               
+
             </div>                                    
             <div class="modal-footer">        
                 {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}

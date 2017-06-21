@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class TurClienteContactoType extends AbstractType {
 
@@ -14,13 +15,11 @@ class TurClienteContactoType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('gerente', TextType::class, array('required' => false))
-                ->add('celularGerente', TextType::class, array('required' => false))
-                ->add('financiero', TextType::class, array('required' => false))
-                ->add('celularFinanciero', TextType::class, array('required' => false))
-                ->add('contacto', TextType::class, array('required' => false))
-                ->add('celularContacto', TextType::class, array('required' => false))
-                ->add('telefonoContacto', TextType::class, array('required' => false))
+        $builder->add('nombre', TextType::class, array('required' => false))
+                ->add('cargo', TextType::class, array('required' => false))
+                ->add('celular', TextType::class, array('required' => false))
+                ->add('telefono', TextType::class, array('required' => false))
+                ->add('fechaNacimiento', BirthdayType::class, array('required' => false))
                 ->add('guardar', SubmitType::class)
                 ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

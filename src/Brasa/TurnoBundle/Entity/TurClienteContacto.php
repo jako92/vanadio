@@ -27,39 +27,29 @@ class TurClienteContacto {
     private $codigoClienteFk;
 
     /**
-     * @ORM\Column(name="gerente", type="string", length=80, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
      */
-    private $gerente;
+    private $nombre;
+    
+    /**
+     * @ORM\Column(name="cargo", type="string", length=80, nullable=true)
+     */
+    private $cargo;
 
     /**
-     * @ORM\Column(name="calular_gerente", type="string", length=20, nullable=true)
+     * @ORM\Column(name="calular", type="string", length=20, nullable=true)
      */
-    private $celularGerente;
+    private $celular;
 
     /**
-     * @ORM\Column(name="financiero", type="string", length=80, nullable=true)
+     * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
      */
-    private $financiero;
+    private $telefono;
 
     /**
-     * @ORM\Column(name="calular_financiero", type="string", length=20, nullable=true)
+     * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
      */
-    private $celularFinanciero;
-
-    /**
-     * @ORM\Column(name="contacto", type="string", length=80, nullable=true)
-     */
-    private $contacto;
-
-    /**
-     * @ORM\Column(name="calular_contacto", type="string", length=20, nullable=true)
-     */
-    private $celularContacto;
-
-    /**
-     * @ORM\Column(name="telefono_contacto", type="string", length=20, nullable=true)
-     */
-    private $telefonoContacto;
+    private $fechaNacimiento;
 
     /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="clienteContactosClienteRel")
@@ -67,169 +57,16 @@ class TurClienteContacto {
      */
     protected $clienteRel;
 
+
     /**
      * Get codigoClienteContactoPk
      *
      * @return integer
      */
-    public function getCodigoClienteContactoPk() {
+    public function getCodigoClienteContactoPk()
+    {
         return $this->codigoClienteContactoPk;
     }
-
-    /**
-     * Set gerente
-     *
-     * @param string $gerente
-     *
-     * @return TurClienteContacto
-     */
-    public function setGerente($gerente) {
-        $this->gerente = $gerente;
-
-        return $this;
-    }
-
-    /**
-     * Get gerente
-     *
-     * @return string
-     */
-    public function getGerente() {
-        return $this->gerente;
-    }
-
-    /**
-     * Set celularGerente
-     *
-     * @param string $celularGerente
-     *
-     * @return TurClienteContacto
-     */
-    public function setCelularGerente($celularGerente) {
-        $this->celularGerente = $celularGerente;
-
-        return $this;
-    }
-
-    /**
-     * Get celularGerente
-     *
-     * @return string
-     */
-    public function getCelularGerente() {
-        return $this->celularGerente;
-    }
-
-    /**
-     * Set financiero
-     *
-     * @param string $financiero
-     *
-     * @return TurClienteContacto
-     */
-    public function setFinanciero($financiero) {
-        $this->financiero = $financiero;
-
-        return $this;
-    }
-
-    /**
-     * Get financiero
-     *
-     * @return string
-     */
-    public function getFinanciero() {
-        return $this->financiero;
-    }
-
-    /**
-     * Set celularFinanciero
-     *
-     * @param string $celularFinanciero
-     *
-     * @return TurClienteContacto
-     */
-    public function setCelularFinanciero($celularFinanciero) {
-        $this->celularFinanciero = $celularFinanciero;
-
-        return $this;
-    }
-
-    /**
-     * Get celularFinanciero
-     *
-     * @return string
-     */
-    public function getCelularFinanciero() {
-        return $this->celularFinanciero;
-    }
-
-    /**
-     * Set contacto
-     *
-     * @param string $contacto
-     *
-     * @return TurClienteContacto
-     */
-    public function setContacto($contacto) {
-        $this->contacto = $contacto;
-
-        return $this;
-    }
-
-    /**
-     * Get contacto
-     *
-     * @return string
-     */
-    public function getContacto() {
-        return $this->contacto;
-    }
-
-    /**
-     * Set celularContacto
-     *
-     * @param string $celularContacto
-     *
-     * @return TurClienteContacto
-     */
-    public function setCelularContacto($celularContacto) {
-        $this->celularContacto = $celularContacto;
-
-        return $this;
-    }
-
-    /**
-     * Get celularContacto
-     *
-     * @return string
-     */
-    public function getCelularContacto() {
-        return $this->celularContacto;
-    }
-
-    /**
-     * Set telefonoContacto
-     *
-     * @param string $telefonoContacto
-     *
-     * @return TurClienteContacto
-     */
-    public function setTelefonoContacto($telefonoContacto) {
-        $this->telefonoContacto = $telefonoContacto;
-
-        return $this;
-    }
-
-    /**
-     * Get telefonoContacto
-     *
-     * @return string
-     */
-    public function getTelefonoContacto() {
-        return $this->telefonoContacto;
-    }
-
 
     /**
      * Set codigoClienteFk
@@ -256,6 +93,102 @@ class TurClienteContacto {
     }
 
     /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return TurClienteContacto
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     *
+     * @return TurClienteContacto
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set telefono
+     *
+     * @param string $telefono
+     *
+     * @return TurClienteContacto
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * Set fechaNacimiento
+     *
+     * @param \DateTime $fechaNacimiento
+     *
+     * @return TurClienteContacto
+     */
+    public function setFechaNacimiento($fechaNacimiento)
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaNacimiento
+     *
+     * @return \DateTime
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fechaNacimiento;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurCliente $clienteRel
@@ -277,5 +210,29 @@ class TurClienteContacto {
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Set cargo
+     *
+     * @param string $cargo
+     *
+     * @return TurClienteContacto
+     */
+    public function setCargo($cargo)
+    {
+        $this->cargo = $cargo;
+
+        return $this;
+    }
+
+    /**
+     * Get cargo
+     *
+     * @return string
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
     }
 }
