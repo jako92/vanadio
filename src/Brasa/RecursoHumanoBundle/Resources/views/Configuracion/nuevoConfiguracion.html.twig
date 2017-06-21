@@ -1,0 +1,515 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Configuración nómina - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Configuracion
+            <small>Nomina</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i>General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Configuracion</a></li>
+            <li class="active">Nomina</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#configuracion" data-toggle="tab">Configuración general</a></li>
+            <li><a href="#nomina" data-toggle="tab">Nomina</a></li>
+            <li><a href="#comprobantes" data-toggle="tab">Comprobantes</a></li>
+            <li><a href="#formatosdeimpresion" data-toggle="tab">Formatos de impresión</a></li>
+            <li><a href="#facturacion" data-toggle="tab">Facturación</a></li>
+            <li><a href="#consecutivo" data-toggle="tab">Consecutivo</a></li>
+        </ul>
+        <br><br>
+        <div class="tab-content">
+            <div class="tab-pane active" id="configuracion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información general</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Codigo configuracion:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.codigoConfiguracionPk) }}
+                                {{ form_errors(form.codigoConfiguracionPk) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Año actual:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.anioActual) }}
+                                {{ form_errors(form.anioActual) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Edad minima empleado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.edadMinimaEmpleado) }}
+                                {{ form_errors(form.edadMinimaEmpleado) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Tipo base pago vacaciones:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.tipoBasePagoVacaciones) }}
+                                {{ form_errors(form.tipoBasePagoVacaciones) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Correo nomina:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.correoNomina) }}
+                                {{ form_errors(form.correoNomina) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Promedio primas laborado dias:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.promedioPrimasLaboradoDias) }}
+                                {{ form_errors(form.promedioPrimasLaboradoDias) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Codigo entidad examen ingreso:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoEntidadExamenIngreso) }}
+                                {{ form_errors(form.codigoEntidadExamenIngreso) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Orden nombre empleado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.ordenNombreEmpleado) }}
+                                {{ form_errors(form.ordenNombreEmpleado) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="nomina">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información general</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Salario minimo:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.vrSalario) }}
+                                {{ form_errors(form.vrSalario) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Auxilio transporte:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.vrAuxilioTransporte) }}
+                                {{ form_errors(form.vrAuxilioTransporte) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Concepto pago</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Axilio de transporte:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.codigoAuxilioTransporte) }}
+                                {{ form_errors(form.codigoAuxilioTransporte) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Hora diurna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraDiurnaTrabajada) }}
+                                {{ form_errors(form.codigoHoraDiurnaTrabajada) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Hora nocturna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraNocturna) }}
+                                {{ form_errors(form.codigoHoraNocturna) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Recargo nocturno:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraRecargoNocturno) }}
+                                {{ form_errors(form.codigoHoraRecargoNocturno) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Recargo diurno festivo:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraRecargoFestivoDiurno) }}
+                                {{ form_errors(form.codigoHoraRecargoFestivoDiurno) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Recargo nocturno festivo:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraRecargoFestivoNocturno) }}
+                                {{ form_errors(form.codigoHoraRecargoFestivoNocturno) }}
+                            </div>
+                            <label class="col-sm-2 control-label">horas extra dominical diurna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.horasExtraDominicalDiurna) }}
+                                {{ form_errors(form.horasExtraDominicalDiurna) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Hora festiva diurna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraFestivaDiurna) }}
+                                {{ form_errors(form.codigoHoraFestivaDiurna) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Hora festiva nocturna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraFestivaNocturna) }}
+                                {{ form_errors(form.codigoHoraFestivaNocturna) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Hora extra festiva diurna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraExtraFestivaDiurna) }}
+                                {{ form_errors(form.codigoHoraExtraFestivaDiurna) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Hora extra festiva nocturna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraExtraFestivaNocturna) }}
+                                {{ form_errors(form.codigoHoraExtraFestivaNocturna) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Hora extra ordinaria diurna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraExtraOrdinariaDiurna) }}
+                                {{ form_errors(form.codigoHoraExtraOrdinariaDiurna) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Hora extra ordinaria nocturna:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraExtraOrdinariaNocturna) }}
+                                {{ form_errors(form.codigoHoraExtraOrdinariaNocturna) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Hora descanso:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoHoraDescanso) }}
+                                {{ form_errors(form.codigoHoraDescanso) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Tiempo suplementario:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoTiempoSuplementario) }}
+                                {{ form_errors(form.codigoTiempoSuplementario) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Credito:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoCredito) }}
+                                {{ form_errors(form.codigoCredito) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Seguro:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoSeguro) }}
+                                {{ form_errors(form.codigoSeguro) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Salario integral:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoSalarioIntegral) }}
+                                {{ form_errors(form.codigoSalarioIntegral) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Retencion fuente:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoRetencionFuente) }}
+                                {{ form_errors(form.codigoRetencionFuente) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Incapacidad:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoIncapacidad) }}
+                                {{ form_errors(form.codigoIncapacidad) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Ajuste devengado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoAjusteDevengado) }}
+                                {{ form_errors(form.codigoAjusteDevengado) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Horas domingo compensado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.horasDomingoNoCompensado) }}
+                                {{ form_errors(form.horasDomingoNoCompensado) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Horas domingo no compensado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.horasDomingoCompensado) }}
+                                {{ form_errors(form.horasDomingoCompensado) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Horas recargo nocturno festivo:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.horasRecargoNocturnoFestivoCompensado) }}
+                                {{ form_errors(form.horasRecargoNocturnoFestivoCompensado) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Horas recargo nocturno festivo no compensado:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.horasRecargoNocturnoFestivoNoCompensado) }}
+                                {{ form_errors(form.horasRecargoNocturnoFestivoNoCompensado) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Porcentaje pension Extra:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.porcentajePensionExtra) }}
+                                {{ form_errors(form.porcentajePensionExtra) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje bonificacion no prestacional:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.porcentajeBonificacionNoPrestacional) }}
+                                {{ form_errors(form.porcentajeBonificacionNoPrestacional) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.diasAusentismoPrimas) }}
+                                {{ form_widget(form.prestacionesAplicaPorcentajeSalario) }}
+                                {{ form_errors(form.prestacionesAplicaPorcentajeSalario) }}
+                                {{ form_widget(form.generaPorcetnajeLiquidacion) }}
+                                {{ form_widget(form.omitirDescuentoEmbargoPrimas) }}
+                                {{ form_widget(form.pagarLicenciaSalarioPactado) }}
+                                {{ form_widget(form.pagarIncapacidadSalarioPactado) }}
+                                {{ form_widget(form.promedioPrimasLaborado) }}
+                                {{ form_widget(form.omitirDescuentoEmbargoCesantias) }}
+                                {{ form_widget(form.liquidarVacacionesSalario) }}
+                                {{ form_widget(form.liquidarAuxilioTransportePrima) }}
+                                {{ form_widget(form.auxilioTransporteNoPrestacional) }}
+                                {{ form_widget(form.imprimirMensajePago) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Aportes y prestaciones</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm"> 
+                            <label class="col-sm-2 control-label">Concepto prima:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoPrima) }}
+                                {{ form_errors(form.codigoPrima) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje prima:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajePrimas) }}
+                                {{ form_errors(form.prestacionesPorcentajePrimas) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Concepto cesantia:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoCesantia) }}
+                                {{ form_errors(form.codigoCesantia) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje cesantia:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajeCesantias) }}
+                                {{ form_errors(form.prestacionesPorcentajeCesantias) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Concepto intereses cesantia:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoInteresCesantia) }}
+                                {{ form_errors(form.codigoInteresCesantia) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje intereses cesantia:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajeInteresesCesantias) }}
+                                {{ form_errors(form.prestacionesPorcentajeInteresesCesantias) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Concepto vacacion:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoVacacion) }}
+                                {{ form_errors(form.codigoVacacion) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje prestaciones vacaciones:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajeVacaciones) }}
+                                {{ form_errors(form.prestacionesPorcentajeVacaciones) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Porcentaje aportes caja:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.aportesPorcentajeCaja) }}
+                                {{ form_errors(form.aportesPorcentajeCaja) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje aportes vacaciones:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.aportesPorcentajeVacaciones) }}
+                                {{ form_errors(form.aportesPorcentajeVacaciones) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Porcentaje prestacion indemnizacion:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajeIndemnizacion) }}
+                                {{ form_errors(form.prestacionesPorcentajeIndemnizacion) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Porcentaje prestaciones aporte vacaciones:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.prestacionesPorcentajeAporteVacaciones) }}
+                                {{ form_errors(form.prestacionesPorcentajeAporteVacaciones) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Nit sena:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.nitSena) }}
+                                {{ form_errors(form.nitSena) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Nit icbf:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.nitIcbf) }}
+                                {{ form_errors(form.nitIcbf) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.afectaVacacionesParafiscales) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="tab-pane" id="comprobantes">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información general</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Comprobante pago nomina:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoComprobantePagoNomina) }}
+                                {{ form_errors(form.codigoComprobantePagoNomina) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Comprobante provision:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoComprobanteProvision) }}
+                                {{ form_errors(form.codigoComprobanteProvision) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Comprobante liquidacion:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoComprobanteLiquidacion) }}
+                                {{ form_errors(form.codigoComprobanteLiquidacion) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Comprobante Vacacion:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoComprobanteVacacion) }}
+                                {{ form_errors(form.codigoComprobanteVacacion) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Comprobante pago banco:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoComprobantePagoBanco) }}
+                                {{ form_errors(form.codigoComprobantePagoBanco) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="formatosdeimpresion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información general</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Formato colilla pago:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoPago) }}
+                                {{ form_errors(form.codigoFormatoPago) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Formato liquidacion:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoLiquidacion) }}
+                                {{ form_errors(form.codigoFormatoLiquidacion) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Formato carta laboral:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoCarta) }}
+                                {{ form_errors(form.codigoFormatoCarta) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Formato disciplinario:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoDisciplinario) }}
+                                {{ form_errors(form.codigoFormatoDisciplinario) }}
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">Formato descargo:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoDescargo) }}
+                                {{ form_errors(form.codigoFormatoDescargo) }}
+                            </div>
+                            <label class="col-sm-2 control-label">Formato factura:</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigoFormatoFactura) }}
+                                {{ form_errors(form.codigoFormatoFactura) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="facturacion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información general</div>
+                    <div class="panel-body">
+                        <div class="form-group form-group-sm">
+                            {{ form_row(form.informacionLegalFactura) }}
+                            {{ form_row(form.informacionPagoFactura) }}
+                            {{ form_row(form.informacionContactoFactura) }}
+                            {{ form_row(form.informacionResolucionDianFactura) }}
+                            {{ form_row(form.informacionResolucionSupervigilanciaFactura) }}
+                            {{ form_row(form.porcentajeIva) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="consecutivo">
+                <div id="consecutivo" style="width: 100%">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Información de los consecutivos</div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-condensed table-hover">
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>CONSECUTIVO</th>
+                                </tr>
+                                {% for arConsecutivo in arConsecutivo %}
+                                    <tr>
+
+                                        <td>
+                                            <input type="hidden" name="LblCodigo[]" value="{{ arConsecutivo.codigoConsecutivoPk }}">
+                                            <span class="badge">{{ arConsecutivo.codigoConsecutivoPk }}</span>
+                                        </td>
+                                        <td>{{ arConsecutivo.nombre }}</td>
+                                        <td style="text-align: left"><input class="input-grid" type="text" name="TxtConsecutivo{{ arConsecutivo.codigoConsecutivoPk }}" value="{{ arConsecutivo.consecutivo }}" size="5" style="text-align: right; width:50px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>            
+                </div> 
+            </div>
+            <div class="modal-footer">      
+                {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+            </div>           
+        </div>
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
