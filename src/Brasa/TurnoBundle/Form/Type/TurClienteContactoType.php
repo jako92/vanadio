@@ -15,13 +15,13 @@ class TurClienteContactoType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('nombre', TextType::class, array('required' => false))
-                ->add('cargo', TextType::class, array('required' => false))
-                ->add('celular', TextType::class, array('required' => false))
-                ->add('telefono', TextType::class, array('required' => false))
-                ->add('fechaNacimiento', BirthdayType::class, array('required' => false,'label'=>'Fecha cumpleaños'))
+        $builder->add('nombre', TextType::class, array('label' => 'Nombre:'))
+                ->add('cargo', TextType::class, array('label' => 'Cargo:'))
+                ->add('celular', TextType::class, array('label' => 'Celular:'))
+                ->add('telefono', TextType::class, array('label' => 'Telefono:'))
+                ->add('fechaNacimiento', BirthdayType::class, array('label' => 'Fecha cumpleaños:'))
                 ->add('guardar', SubmitType::class)
-                ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
+                ->add('guardarnuevo', SubmitType::class, array('label' => 'Guardar y Nuevo'));
     }
 
     /**
