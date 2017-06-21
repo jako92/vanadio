@@ -9,70 +9,70 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="rhu_cliente")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuClienteRepository")
  */
-class RhuCliente
-{
+class RhuCliente {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_cliente_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoClientePk;    
-    
+    private $codigoClientePk;
+
     /**
      * @ORM\Column(name="codigo_tipo_identificacion_fk", type="integer")
-     */    
-    private $codigoTipoIdentificacionFk;    
-    
+     */
+    private $codigoTipoIdentificacionFk;
+
     /**
      * @ORM\Column(name="nit", type="string", length=15, nullable=false)
      */
-    private $nit;        
-    
+    private $nit;
+
     /**
      * @ORM\Column(name="digito_verificacion", type="string", length=1, nullable=true)
      */
-    private $digitoVerificacion;             
-    
+    private $digitoVerificacion;
+
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=150)
      */
-    private $nombreCorto;                             
-    
+    private $nombreCorto;
+
     /**
      * @ORM\Column(name="nombre1", type="string", length=30, nullable=true)
-     */    
-    private $nombre1;        
-    
+     */
+    private $nombre1;
+
     /**
      * @ORM\Column(name="nombre2", type="string", length=30, nullable=true)
-     */    
-    private $nombre2;    
-    
+     */
+    private $nombre2;
+
     /**
      * @ORM\Column(name="apellido1", type="string", length=30, nullable=true)
-     */    
-    private $apellido1;    
+     */
+    private $apellido1;
 
     /**
      * @ORM\Column(name="apellido2", type="string", length=30, nullable=true)
-     */    
-    private $apellido2;      
-    
+     */
+    private $apellido2;
+
     /**
      * @ORM\Column(name="plazo_pago", type="integer")
-     */    
-    private $plazoPago = 0;    
-    
+     */
+    private $plazoPago = 0;
+
     /**
      * @ORM\Column(name="codigo_forma_pago_fk", type="integer", nullable=true)
-     */    
-    private $codigoFormaPagoFk;     
-    
+     */
+    private $codigoFormaPagoFk;
+
     /**
      * @ORM\Column(name="codigo_asesor_fk", type="integer", nullable=true)
-     */    
-    private $codigoAsesorFk;    
-    
+     */
+    private $codigoAsesorFk;
+
     /**
      * @ORM\Column(name="direccion", type="string", length=120, nullable=true)
      */
@@ -81,203 +81,202 @@ class RhuCliente
     /**
      * @ORM\Column(name="barrio", type="string", length=120, nullable=true)
      */
-    private $barrio;    
-    
+    private $barrio;
+
     /**
      * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
      */
-    private $codigoCiudadFk;         
-    
+    private $codigoCiudadFk;
+
     /**
      * @ORM\Column(name="telefono", type="string", length=30, nullable=true)
      */
-    private $telefono;     
-    
+    private $telefono;
+
     /**
      * @ORM\Column(name="celular", type="string", length=20, nullable=true, nullable=true)
      */
-    private $celular;    
-        
+    private $celular;
+
     /**
      * @ORM\Column(name="fax", type="string", length=20, nullable=true, nullable=true)
      */
-    private $fax;    
-    
+    private $fax;
+
     /**
      * @ORM\Column(name="email", type="string", length=80, nullable=true)
      */
-    private $email;     
-    
+    private $email;
+
     /**
      * @ORM\Column(name="gerente", type="string", length=80, nullable=true)
      */
-    private $gerente;    
-    
+    private $gerente;
+
     /**
      * @ORM\Column(name="calular_gerente", type="string", length=20, nullable=true)
      */
-    private $celularGerente;  
-    
+    private $celularGerente;
+
     /**
      * @ORM\Column(name="financiero", type="string", length=80, nullable=true)
      */
-    private $financiero;    
-    
+    private $financiero;
+
     /**
      * @ORM\Column(name="calular_financiero", type="string", length=20, nullable=true)
      */
-    private $celularFinanciero;     
-    
+    private $celularFinanciero;
+
     /**
      * @ORM\Column(name="contacto", type="string", length=80, nullable=true)
      */
-    private $contacto;    
+    private $contacto;
 
     /**
      * @ORM\Column(name="calular_contacto", type="string", length=20, nullable=true)
      */
-    private $celularContacto;     
+    private $celularContacto;
 
     /**
      * @ORM\Column(name="telefono_contacto", type="string", length=20, nullable=true)
      */
-    private $telefonoContacto;    
-    
+    private $telefonoContacto;
+
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
-     */    
-    private $usuario;     
-    
+     */
+    private $usuario;
+
     /**
      * @ORM\Column(name="cobro_examen", type="string", length=1, nullable=true)
      */
-    private $cobroExamen;    
-    
-    /**     
+    private $cobroExamen;
+
+    /**
      * @ORM\Column(name="regimen_simplificado", type="boolean")
-     */    
-    private $regimenSimplificado = false;      
+     */
+    private $regimenSimplificado = false;
 
-    /**     
+    /**
      * @ORM\Column(name="regimen_comun", type="boolean")
-     */    
-    private $regimenComun = false; 
-    
-    /**     
-     * @ORM\Column(name="autorretenedor", type="boolean")
-     */    
-    private $autorretenedor = false;    
+     */
+    private $regimenComun = false;
 
-    /**     
+    /**
+     * @ORM\Column(name="autorretenedor", type="boolean")
+     */
+    private $autorretenedor = false;
+
+    /**
      * @ORM\Column(name="retencion_iva", type="boolean")
-     */    
+     */
     private $retencionIva = false;
 
-    /**     
+    /**
      * @ORM\Column(name="retencion_fuente", type="boolean")
-     */    
+     */
     private $retencionFuente = false;
-    
-     /**
+
+    /**
      * @ORM\Column(name="vr_precio_seleccion", type="float")
      */
     private $vrPrecioSeleccion = 0;
-    
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=500, nullable=true)
-     */    
-    private $comentarios;          
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenFormaPago", inversedBy="rhuClientesFormaPagoRel")
      * @ORM\JoinColumn(name="codigo_forma_pago_fk", referencedColumnName="codigo_forma_pago_pk")
      */
-    protected $formaPagoRel;     
-    
+    protected $formaPagoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="rhuClientesCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
-    protected $ciudadRel;         
+    protected $ciudadRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenAsesor", inversedBy="rhuClientesAsesorRel")
      * @ORM\JoinColumn(name="codigo_asesor_fk", referencedColumnName="codigo_asesor_pk")
      */
-    protected $asesorRel;    
-    
+    protected $asesorRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuClientesTipoIdentificacionRel")
      * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
      * @Assert\NotNull(message="Seleccione un elemento")
      */
-    protected $tipoIdentificacionRel;     
-    
+    protected $tipoIdentificacionRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuCentroCosto", mappedBy="clienteRel")
      */
-    protected $centrosCostosClienteRel; 
+    protected $centrosCostosClienteRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuContrato", mappedBy="clienteRel")
      */
     protected $contratosClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuIncapacidad", mappedBy="clienteRel")
      */
     protected $incapacidadesClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuVisita", mappedBy="clienteRel")
      */
     protected $visitasClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPrueba", mappedBy="clienteRel")
      */
     protected $pruebasClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPoligrafia", mappedBy="clienteRel")
      */
     protected $poligrafiasClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuFactura", mappedBy="clienteRel")
      */
     protected $facturasClienteRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuSucursal", mappedBy="clienteRel") 
-     */ 
+     */
     protected $sucursalClienteRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="clienteRel") 
-     */ 
+     */
     protected $examenesClienteRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="clienteRel") 
-     */ 
-    protected $cobrosClienteRel;    
+     */
+    protected $cobrosClienteRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuServicioCobrar", mappedBy="clienteRel") 
-     */ 
-    protected $serviciosCobrarClienteRel; 
-    
+     */
+    protected $serviciosCobrarClienteRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="clienteRel") 
-     */ 
-    protected $seleccionesClienteRel; 
-    
+     */
+    protected $seleccionesClienteRel;
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->centrosCostosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratosClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesClienteRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -297,8 +296,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getCodigoClientePk()
-    {
+    public function getCodigoClientePk() {
         return $this->codigoClientePk;
     }
 
@@ -309,8 +307,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setNit($nit)
-    {
+    public function setNit($nit) {
         $this->nit = $nit;
 
         return $this;
@@ -321,8 +318,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getNit()
-    {
+    public function getNit() {
         return $this->nit;
     }
 
@@ -333,8 +329,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setDigitoVerificacion($digitoVerificacion)
-    {
+    public function setDigitoVerificacion($digitoVerificacion) {
         $this->digitoVerificacion = $digitoVerificacion;
 
         return $this;
@@ -345,8 +340,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getDigitoVerificacion()
-    {
+    public function getDigitoVerificacion() {
         return $this->digitoVerificacion;
     }
 
@@ -357,8 +351,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setNombreCorto($nombreCorto)
-    {
+    public function setNombreCorto($nombreCorto) {
         $this->nombreCorto = $nombreCorto;
 
         return $this;
@@ -369,8 +362,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getNombreCorto()
-    {
+    public function getNombreCorto() {
         return $this->nombreCorto;
     }
 
@@ -381,8 +373,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setPlazoPago($plazoPago)
-    {
+    public function setPlazoPago($plazoPago) {
         $this->plazoPago = $plazoPago;
 
         return $this;
@@ -393,8 +384,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getPlazoPago()
-    {
+    public function getPlazoPago() {
         return $this->plazoPago;
     }
 
@@ -405,8 +395,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCodigoFormaPagoFk($codigoFormaPagoFk)
-    {
+    public function setCodigoFormaPagoFk($codigoFormaPagoFk) {
         $this->codigoFormaPagoFk = $codigoFormaPagoFk;
 
         return $this;
@@ -417,8 +406,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getCodigoFormaPagoFk()
-    {
+    public function getCodigoFormaPagoFk() {
         return $this->codigoFormaPagoFk;
     }
 
@@ -429,8 +417,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCodigoAsesorFk($codigoAsesorFk)
-    {
+    public function setCodigoAsesorFk($codigoAsesorFk) {
         $this->codigoAsesorFk = $codigoAsesorFk;
 
         return $this;
@@ -441,8 +428,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getCodigoAsesorFk()
-    {
+    public function getCodigoAsesorFk() {
         return $this->codigoAsesorFk;
     }
 
@@ -453,8 +439,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setDireccion($direccion)
-    {
+    public function setDireccion($direccion) {
         $this->direccion = $direccion;
 
         return $this;
@@ -465,8 +450,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getDireccion()
-    {
+    public function getDireccion() {
         return $this->direccion;
     }
 
@@ -477,8 +461,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setBarrio($barrio)
-    {
+    public function setBarrio($barrio) {
         $this->barrio = $barrio;
 
         return $this;
@@ -489,8 +472,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getBarrio()
-    {
+    public function getBarrio() {
         return $this->barrio;
     }
 
@@ -501,8 +483,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCodigoCiudadFk($codigoCiudadFk)
-    {
+    public function setCodigoCiudadFk($codigoCiudadFk) {
         $this->codigoCiudadFk = $codigoCiudadFk;
 
         return $this;
@@ -513,8 +494,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getCodigoCiudadFk()
-    {
+    public function getCodigoCiudadFk() {
         return $this->codigoCiudadFk;
     }
 
@@ -525,8 +505,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setTelefono($telefono)
-    {
+    public function setTelefono($telefono) {
         $this->telefono = $telefono;
 
         return $this;
@@ -537,8 +516,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getTelefono()
-    {
+    public function getTelefono() {
         return $this->telefono;
     }
 
@@ -549,8 +527,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCelular($celular)
-    {
+    public function setCelular($celular) {
         $this->celular = $celular;
 
         return $this;
@@ -561,8 +538,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getCelular()
-    {
+    public function getCelular() {
         return $this->celular;
     }
 
@@ -573,8 +549,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setFax($fax)
-    {
+    public function setFax($fax) {
         $this->fax = $fax;
 
         return $this;
@@ -585,8 +560,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getFax()
-    {
+    public function getFax() {
         return $this->fax;
     }
 
@@ -597,8 +571,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
 
         return $this;
@@ -609,8 +582,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -621,8 +593,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setGerente($gerente)
-    {
+    public function setGerente($gerente) {
         $this->gerente = $gerente;
 
         return $this;
@@ -633,8 +604,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getGerente()
-    {
+    public function getGerente() {
         return $this->gerente;
     }
 
@@ -645,8 +615,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCelularGerente($celularGerente)
-    {
+    public function setCelularGerente($celularGerente) {
         $this->celularGerente = $celularGerente;
 
         return $this;
@@ -657,8 +626,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getCelularGerente()
-    {
+    public function getCelularGerente() {
         return $this->celularGerente;
     }
 
@@ -669,8 +637,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setFinanciero($financiero)
-    {
+    public function setFinanciero($financiero) {
         $this->financiero = $financiero;
 
         return $this;
@@ -681,8 +648,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getFinanciero()
-    {
+    public function getFinanciero() {
         return $this->financiero;
     }
 
@@ -693,8 +659,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCelularFinanciero($celularFinanciero)
-    {
+    public function setCelularFinanciero($celularFinanciero) {
         $this->celularFinanciero = $celularFinanciero;
 
         return $this;
@@ -705,8 +670,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getCelularFinanciero()
-    {
+    public function getCelularFinanciero() {
         return $this->celularFinanciero;
     }
 
@@ -717,8 +681,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setContacto($contacto)
-    {
+    public function setContacto($contacto) {
         $this->contacto = $contacto;
 
         return $this;
@@ -729,8 +692,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getContacto()
-    {
+    public function getContacto() {
         return $this->contacto;
     }
 
@@ -741,8 +703,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCelularContacto($celularContacto)
-    {
+    public function setCelularContacto($celularContacto) {
         $this->celularContacto = $celularContacto;
 
         return $this;
@@ -753,8 +714,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getCelularContacto()
-    {
+    public function getCelularContacto() {
         return $this->celularContacto;
     }
 
@@ -765,8 +725,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setTelefonoContacto($telefonoContacto)
-    {
+    public function setTelefonoContacto($telefonoContacto) {
         $this->telefonoContacto = $telefonoContacto;
 
         return $this;
@@ -777,8 +736,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getTelefonoContacto()
-    {
+    public function getTelefonoContacto() {
         return $this->telefonoContacto;
     }
 
@@ -789,8 +747,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setUsuario($usuario)
-    {
+    public function setUsuario($usuario) {
         $this->usuario = $usuario;
 
         return $this;
@@ -801,8 +758,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getUsuario()
-    {
+    public function getUsuario() {
         return $this->usuario;
     }
 
@@ -813,8 +769,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCobroExamen($cobroExamen)
-    {
+    public function setCobroExamen($cobroExamen) {
         $this->cobroExamen = $cobroExamen;
 
         return $this;
@@ -825,8 +780,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getCobroExamen()
-    {
+    public function getCobroExamen() {
         return $this->cobroExamen;
     }
 
@@ -837,8 +791,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setRegimenSimplificado($regimenSimplificado)
-    {
+    public function setRegimenSimplificado($regimenSimplificado) {
         $this->regimenSimplificado = $regimenSimplificado;
 
         return $this;
@@ -849,8 +802,7 @@ class RhuCliente
      *
      * @return boolean
      */
-    public function getRegimenSimplificado()
-    {
+    public function getRegimenSimplificado() {
         return $this->regimenSimplificado;
     }
 
@@ -861,8 +813,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setRegimenComun($regimenComun)
-    {
+    public function setRegimenComun($regimenComun) {
         $this->regimenComun = $regimenComun;
 
         return $this;
@@ -873,8 +824,7 @@ class RhuCliente
      *
      * @return boolean
      */
-    public function getRegimenComun()
-    {
+    public function getRegimenComun() {
         return $this->regimenComun;
     }
 
@@ -885,8 +835,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setAutorretenedor($autorretenedor)
-    {
+    public function setAutorretenedor($autorretenedor) {
         $this->autorretenedor = $autorretenedor;
 
         return $this;
@@ -897,8 +846,7 @@ class RhuCliente
      *
      * @return boolean
      */
-    public function getAutorretenedor()
-    {
+    public function getAutorretenedor() {
         return $this->autorretenedor;
     }
 
@@ -909,8 +857,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setRetencionIva($retencionIva)
-    {
+    public function setRetencionIva($retencionIva) {
         $this->retencionIva = $retencionIva;
 
         return $this;
@@ -921,8 +868,7 @@ class RhuCliente
      *
      * @return boolean
      */
-    public function getRetencionIva()
-    {
+    public function getRetencionIva() {
         return $this->retencionIva;
     }
 
@@ -933,8 +879,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setRetencionFuente($retencionFuente)
-    {
+    public function setRetencionFuente($retencionFuente) {
         $this->retencionFuente = $retencionFuente;
 
         return $this;
@@ -945,8 +890,7 @@ class RhuCliente
      *
      * @return boolean
      */
-    public function getRetencionFuente()
-    {
+    public function getRetencionFuente() {
         return $this->retencionFuente;
     }
 
@@ -957,8 +901,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setVrPrecioSeleccion($vrPrecioSeleccion)
-    {
+    public function setVrPrecioSeleccion($vrPrecioSeleccion) {
         $this->vrPrecioSeleccion = $vrPrecioSeleccion;
 
         return $this;
@@ -969,8 +912,7 @@ class RhuCliente
      *
      * @return float
      */
-    public function getVrPrecioSeleccion()
-    {
+    public function getVrPrecioSeleccion() {
         return $this->vrPrecioSeleccion;
     }
 
@@ -981,8 +923,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -993,8 +934,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -1005,8 +945,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setFormaPagoRel(\Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel = null)
-    {
+    public function setFormaPagoRel(\Brasa\GeneralBundle\Entity\GenFormaPago $formaPagoRel = null) {
         $this->formaPagoRel = $formaPagoRel;
 
         return $this;
@@ -1017,8 +956,7 @@ class RhuCliente
      *
      * @return \Brasa\GeneralBundle\Entity\GenFormaPago
      */
-    public function getFormaPagoRel()
-    {
+    public function getFormaPagoRel() {
         return $this->formaPagoRel;
     }
 
@@ -1029,8 +967,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
-    {
+    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null) {
         $this->ciudadRel = $ciudadRel;
 
         return $this;
@@ -1041,8 +978,7 @@ class RhuCliente
      *
      * @return \Brasa\GeneralBundle\Entity\GenCiudad
      */
-    public function getCiudadRel()
-    {
+    public function getCiudadRel() {
         return $this->ciudadRel;
     }
 
@@ -1053,8 +989,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null)
-    {
+    public function setAsesorRel(\Brasa\GeneralBundle\Entity\GenAsesor $asesorRel = null) {
         $this->asesorRel = $asesorRel;
 
         return $this;
@@ -1065,8 +1000,7 @@ class RhuCliente
      *
      * @return \Brasa\GeneralBundle\Entity\GenAsesor
      */
-    public function getAsesorRel()
-    {
+    public function getAsesorRel() {
         return $this->asesorRel;
     }
 
@@ -1077,8 +1011,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addCentrosCostosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel)
-    {
+    public function addCentrosCostosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel) {
         $this->centrosCostosClienteRel[] = $centrosCostosClienteRel;
 
         return $this;
@@ -1089,8 +1022,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel
      */
-    public function removeCentrosCostosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel)
-    {
+    public function removeCentrosCostosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centrosCostosClienteRel) {
         $this->centrosCostosClienteRel->removeElement($centrosCostosClienteRel);
     }
 
@@ -1099,8 +1031,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCentrosCostosClienteRel()
-    {
+    public function getCentrosCostosClienteRel() {
         return $this->centrosCostosClienteRel;
     }
 
@@ -1111,8 +1042,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel)
-    {
+    public function addContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel) {
         $this->contratosClienteRel[] = $contratosClienteRel;
 
         return $this;
@@ -1123,8 +1053,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel
      */
-    public function removeContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel)
-    {
+    public function removeContratosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratosClienteRel) {
         $this->contratosClienteRel->removeElement($contratosClienteRel);
     }
 
@@ -1133,8 +1062,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContratosClienteRel()
-    {
+    public function getContratosClienteRel() {
         return $this->contratosClienteRel;
     }
 
@@ -1145,8 +1073,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
-    {
+    public function addIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel) {
         $this->incapacidadesClienteRel[] = $incapacidadesClienteRel;
 
         return $this;
@@ -1157,8 +1084,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel
      */
-    public function removeIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel)
-    {
+    public function removeIncapacidadesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesClienteRel) {
         $this->incapacidadesClienteRel->removeElement($incapacidadesClienteRel);
     }
 
@@ -1167,8 +1093,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncapacidadesClienteRel()
-    {
+    public function getIncapacidadesClienteRel() {
         return $this->incapacidadesClienteRel;
     }
 
@@ -1179,8 +1104,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel)
-    {
+    public function addVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel) {
         $this->visitasClienteRel[] = $visitasClienteRel;
 
         return $this;
@@ -1191,8 +1115,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel
      */
-    public function removeVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel)
-    {
+    public function removeVisitasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $visitasClienteRel) {
         $this->visitasClienteRel->removeElement($visitasClienteRel);
     }
 
@@ -1201,8 +1124,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVisitasClienteRel()
-    {
+    public function getVisitasClienteRel() {
         return $this->visitasClienteRel;
     }
 
@@ -1213,8 +1135,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addPruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel)
-    {
+    public function addPruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel) {
         $this->pruebasClienteRel[] = $pruebasClienteRel;
 
         return $this;
@@ -1225,8 +1146,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel
      */
-    public function removePruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel)
-    {
+    public function removePruebasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $pruebasClienteRel) {
         $this->pruebasClienteRel->removeElement($pruebasClienteRel);
     }
 
@@ -1235,8 +1155,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPruebasClienteRel()
-    {
+    public function getPruebasClienteRel() {
         return $this->pruebasClienteRel;
     }
 
@@ -1247,8 +1166,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addPoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel)
-    {
+    public function addPoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel) {
         $this->poligrafiasClienteRel[] = $poligrafiasClienteRel;
 
         return $this;
@@ -1259,8 +1177,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel
      */
-    public function removePoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel)
-    {
+    public function removePoligrafiasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $poligrafiasClienteRel) {
         $this->poligrafiasClienteRel->removeElement($poligrafiasClienteRel);
     }
 
@@ -1269,8 +1186,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPoligrafiasClienteRel()
-    {
+    public function getPoligrafiasClienteRel() {
         return $this->poligrafiasClienteRel;
     }
 
@@ -1281,8 +1197,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel)
-    {
+    public function addFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel) {
         $this->facturasClienteRel[] = $facturasClienteRel;
 
         return $this;
@@ -1293,8 +1208,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel
      */
-    public function removeFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel)
-    {
+    public function removeFacturasClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuFactura $facturasClienteRel) {
         $this->facturasClienteRel->removeElement($facturasClienteRel);
     }
 
@@ -1303,8 +1217,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFacturasClienteRel()
-    {
+    public function getFacturasClienteRel() {
         return $this->facturasClienteRel;
     }
 
@@ -1315,8 +1228,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel)
-    {
+    public function addSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel) {
         $this->sucursalClienteRel[] = $sucursalClienteRel;
 
         return $this;
@@ -1327,8 +1239,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel
      */
-    public function removeSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel)
-    {
+    public function removeSucursalClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSucursal $sucursalClienteRel) {
         $this->sucursalClienteRel->removeElement($sucursalClienteRel);
     }
 
@@ -1337,8 +1248,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSucursalClienteRel()
-    {
+    public function getSucursalClienteRel() {
         return $this->sucursalClienteRel;
     }
 
@@ -1349,8 +1259,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel)
-    {
+    public function addExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel) {
         $this->examenesClienteRel[] = $examenesClienteRel;
 
         return $this;
@@ -1361,8 +1270,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel
      */
-    public function removeExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel)
-    {
+    public function removeExamenesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesClienteRel) {
         $this->examenesClienteRel->removeElement($examenesClienteRel);
     }
 
@@ -1371,8 +1279,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getExamenesClienteRel()
-    {
+    public function getExamenesClienteRel() {
         return $this->examenesClienteRel;
     }
 
@@ -1383,8 +1290,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel)
-    {
+    public function addCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel) {
         $this->cobrosClienteRel[] = $cobrosClienteRel;
 
         return $this;
@@ -1395,8 +1301,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel
      */
-    public function removeCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel)
-    {
+    public function removeCobrosClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobrosClienteRel) {
         $this->cobrosClienteRel->removeElement($cobrosClienteRel);
     }
 
@@ -1405,8 +1310,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCobrosClienteRel()
-    {
+    public function getCobrosClienteRel() {
         return $this->cobrosClienteRel;
     }
 
@@ -1417,8 +1321,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel)
-    {
+    public function addServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel) {
         $this->serviciosCobrarClienteRel[] = $serviciosCobrarClienteRel;
 
         return $this;
@@ -1429,8 +1332,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel
      */
-    public function removeServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel)
-    {
+    public function removeServiciosCobrarClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuServicioCobrar $serviciosCobrarClienteRel) {
         $this->serviciosCobrarClienteRel->removeElement($serviciosCobrarClienteRel);
     }
 
@@ -1439,8 +1341,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServiciosCobrarClienteRel()
-    {
+    public function getServiciosCobrarClienteRel() {
         return $this->serviciosCobrarClienteRel;
     }
 
@@ -1451,8 +1352,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function addSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel)
-    {
+    public function addSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel) {
         $this->seleccionesClienteRel[] = $seleccionesClienteRel;
 
         return $this;
@@ -1463,8 +1363,7 @@ class RhuCliente
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel
      */
-    public function removeSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel)
-    {
+    public function removeSeleccionesClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesClienteRel) {
         $this->seleccionesClienteRel->removeElement($seleccionesClienteRel);
     }
 
@@ -1473,8 +1372,7 @@ class RhuCliente
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSeleccionesClienteRel()
-    {
+    public function getSeleccionesClienteRel() {
         return $this->seleccionesClienteRel;
     }
 
@@ -1485,8 +1383,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setCodigoTipoIdentificacionFk($codigoTipoIdentificacionFk)
-    {
+    public function setCodigoTipoIdentificacionFk($codigoTipoIdentificacionFk) {
         $this->codigoTipoIdentificacionFk = $codigoTipoIdentificacionFk;
 
         return $this;
@@ -1497,8 +1394,7 @@ class RhuCliente
      *
      * @return integer
      */
-    public function getCodigoTipoIdentificacionFk()
-    {
+    public function getCodigoTipoIdentificacionFk() {
         return $this->codigoTipoIdentificacionFk;
     }
 
@@ -1509,8 +1405,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setTipoIdentificacionRel(\Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel = null)
-    {
+    public function setTipoIdentificacionRel(\Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel = null) {
         $this->tipoIdentificacionRel = $tipoIdentificacionRel;
 
         return $this;
@@ -1521,8 +1416,7 @@ class RhuCliente
      *
      * @return \Brasa\GeneralBundle\Entity\GenTipoIdentificacion
      */
-    public function getTipoIdentificacionRel()
-    {
+    public function getTipoIdentificacionRel() {
         return $this->tipoIdentificacionRel;
     }
 
@@ -1533,8 +1427,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setNombre1($nombre1)
-    {
+    public function setNombre1($nombre1) {
         $this->nombre1 = $nombre1;
 
         return $this;
@@ -1545,8 +1438,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getNombre1()
-    {
+    public function getNombre1() {
         return $this->nombre1;
     }
 
@@ -1557,8 +1449,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setNombre2($nombre2)
-    {
+    public function setNombre2($nombre2) {
         $this->nombre2 = $nombre2;
 
         return $this;
@@ -1569,8 +1460,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getNombre2()
-    {
+    public function getNombre2() {
         return $this->nombre2;
     }
 
@@ -1581,8 +1471,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setApellido1($apellido1)
-    {
+    public function setApellido1($apellido1) {
         $this->apellido1 = $apellido1;
 
         return $this;
@@ -1593,8 +1482,7 @@ class RhuCliente
      *
      * @return string
      */
-    public function getApellido1()
-    {
+    public function getApellido1() {
         return $this->apellido1;
     }
 
@@ -1605,8 +1493,7 @@ class RhuCliente
      *
      * @return RhuCliente
      */
-    public function setApellido2($apellido2)
-    {
+    public function setApellido2($apellido2) {
         $this->apellido2 = $apellido2;
 
         return $this;
@@ -1617,8 +1504,8 @@ class RhuCliente
      *
      * @return string
      */
-    public function getApellido2()
-    {
+    public function getApellido2() {
         return $this->apellido2;
     }
+
 }
