@@ -402,6 +402,11 @@ class TurCliente
      * @ORM\OneToMany(targetEntity="TurIngresoPendiente", mappedBy="clienteRel")
      */
     protected $ingresosPendientesClienteRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="TurClienteContacto", mappedBy="clienteRel")
+     */
+    protected $clienteContactosClienteRel;
    
 
     /**
@@ -2358,5 +2363,39 @@ class TurCliente
     public function getIngresosPendientesClienteRel()
     {
         return $this->ingresosPendientesClienteRel;
+    }
+
+    /**
+     * Add clienteContactosClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurClienteContacto $clienteContactosClienteRel
+     *
+     * @return TurCliente
+     */
+    public function addClienteContactosClienteRel(\Brasa\TurnoBundle\Entity\TurClienteContacto $clienteContactosClienteRel)
+    {
+        $this->clienteContactosClienteRel[] = $clienteContactosClienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove clienteContactosClienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurClienteContacto $clienteContactosClienteRel
+     */
+    public function removeClienteContactosClienteRel(\Brasa\TurnoBundle\Entity\TurClienteContacto $clienteContactosClienteRel)
+    {
+        $this->clienteContactosClienteRel->removeElement($clienteContactosClienteRel);
+    }
+
+    /**
+     * Get clienteContactosClienteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getClienteContactosClienteRel()
+    {
+        return $this->clienteContactosClienteRel;
     }
 }

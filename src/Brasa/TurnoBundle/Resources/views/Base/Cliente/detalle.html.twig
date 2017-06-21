@@ -1,7 +1,7 @@
 {% extends '::base2.html.twig' %}
 {% block content %}
     <!-- Content Header (Page header) -->
-   <section class="content-header">
+    <section class="content-header">
         <h1>
             Programacion turnos
             <small>Clientes: detalle</small>
@@ -10,7 +10,7 @@
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
-              <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cliente</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cliente</a></li>
             <li class="active">Detalle</li>
         </ol>
     </section>    
@@ -118,6 +118,7 @@
             <li><a href="#gruposfacturacion" data-toggle="tab">Grupos facturacion</a></li>
             <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
             <li><a href="#contratos" data-toggle="tab">Contratos</a></li>
+            <li><a href="#contactos" data-toggle="tab">Contactos</a></li>
         </ul>
 
         <div class="tab-content">
@@ -305,7 +306,47 @@
                         </div>
                     </div>                     
                 </div>
-            </div>  
+            </div>
+            <div class="tab-pane" id="contactos">
+                <div id="contactos" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <tr>
+                            <th>COD</th>                                
+                            <th>GERENTE</th>
+                            <th>CEL GERENTE</th>
+                            <th>FINANCIERO</th>
+                            <th>CEL FINANCIERO</th>
+                            <th>CONTACTO</th>
+                            <th>CEL CONTACTO</th>
+                            <th>TEL CONTACTO</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for arClienteContactos in arClienteContactos %}
+                            <tr>
+                                <td>{{ arClienteContactos.codigoClienteContactoPk  }}<input type="hidden" name="LblCodigoClienteContacto[]" value="{{ arClienteContactos.codigoClienteContactoPk }}"></td>                    
+                                <td>{{ arClienteContactos.gerente  }}</td>
+                                <td>{{ arClienteContactos.celularGerente  }}</td>
+                                <td>{{ arClienteContactos.financiero  }}</td>
+                                <td>{{ arClienteContactos.celularFinanciero  }}</td>
+                                <td>{{ arClienteContactos.contacto  }}</td>
+                                <td>{{ arClienteContactos.celularContacto  }}</td>
+                                <td>{{ arClienteContactos.telefonoContacto  }}</td>
+                                <td><a href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_contacto_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoContacto': arClienteContactos.codigoClienteContactoPk }) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                                <td><input type="checkbox" name="ChkSeleccionarContacto[]" value="{{ arClienteContactos.codigoClienteContactoPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="btn-toolbar" style="float: right">
+                        <div class="btn-group">            
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_contacto_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoContacto': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
+                        </div>
+                        <div class="btn-group">
+                            {{ form_widget(form.BtnEliminarContacto, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
+                        </div>
+                    </div>                     
+                </div>
+            </div> 
         </div>
         {{ form_rest(form) }}
         {{ form_end(form) }}
