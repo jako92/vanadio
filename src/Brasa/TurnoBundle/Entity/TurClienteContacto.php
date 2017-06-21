@@ -3,6 +3,7 @@
 namespace Brasa\TurnoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TurClienteContacto
@@ -27,10 +28,11 @@ class TurClienteContacto {
     private $codigoClienteFk;
 
     /**
-     * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=80)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $nombre;
-    
+
     /**
      * @ORM\Column(name="cargo", type="string", length=80, nullable=true)
      */
@@ -57,14 +59,12 @@ class TurClienteContacto {
      */
     protected $clienteRel;
 
-
     /**
      * Get codigoClienteContactoPk
      *
      * @return integer
      */
-    public function getCodigoClienteContactoPk()
-    {
+    public function getCodigoClienteContactoPk() {
         return $this->codigoClienteContactoPk;
     }
 
@@ -75,8 +75,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
+    public function setCodigoClienteFk($codigoClienteFk) {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -87,8 +86,7 @@ class TurClienteContacto {
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
-    {
+    public function getCodigoClienteFk() {
         return $this->codigoClienteFk;
     }
 
@@ -99,8 +97,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -111,8 +108,7 @@ class TurClienteContacto {
      *
      * @return string
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -123,8 +119,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setCelular($celular)
-    {
+    public function setCelular($celular) {
         $this->celular = $celular;
 
         return $this;
@@ -135,8 +130,7 @@ class TurClienteContacto {
      *
      * @return string
      */
-    public function getCelular()
-    {
+    public function getCelular() {
         return $this->celular;
     }
 
@@ -147,8 +141,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setTelefono($telefono)
-    {
+    public function setTelefono($telefono) {
         $this->telefono = $telefono;
 
         return $this;
@@ -159,8 +152,7 @@ class TurClienteContacto {
      *
      * @return string
      */
-    public function getTelefono()
-    {
+    public function getTelefono() {
         return $this->telefono;
     }
 
@@ -171,8 +163,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setFechaNacimiento($fechaNacimiento)
-    {
+    public function setFechaNacimiento($fechaNacimiento) {
         $this->fechaNacimiento = $fechaNacimiento;
 
         return $this;
@@ -183,8 +174,7 @@ class TurClienteContacto {
      *
      * @return \DateTime
      */
-    public function getFechaNacimiento()
-    {
+    public function getFechaNacimiento() {
         return $this->fechaNacimiento;
     }
 
@@ -195,8 +185,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null)
-    {
+    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null) {
         $this->clienteRel = $clienteRel;
 
         return $this;
@@ -207,8 +196,7 @@ class TurClienteContacto {
      *
      * @return \Brasa\TurnoBundle\Entity\TurCliente
      */
-    public function getClienteRel()
-    {
+    public function getClienteRel() {
         return $this->clienteRel;
     }
 
@@ -219,8 +207,7 @@ class TurClienteContacto {
      *
      * @return TurClienteContacto
      */
-    public function setCargo($cargo)
-    {
+    public function setCargo($cargo) {
         $this->cargo = $cargo;
 
         return $this;
@@ -231,8 +218,8 @@ class TurClienteContacto {
      *
      * @return string
      */
-    public function getCargo()
-    {
+    public function getCargo() {
         return $this->cargo;
     }
+
 }

@@ -19,7 +19,7 @@ class TurClienteContactoType extends AbstractType {
                 ->add('cargo', TextType::class, array('required' => false))
                 ->add('celular', TextType::class, array('required' => false))
                 ->add('telefono', TextType::class, array('required' => false))
-                ->add('fechaNacimiento', BirthdayType::class, array('required' => false))
+                ->add('fechaNacimiento', BirthdayType::class, array('required' => false,'label'=>'Fecha cumpleaños'))
                 ->add('guardar', SubmitType::class)
                 ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

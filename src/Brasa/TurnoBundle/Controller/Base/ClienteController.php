@@ -331,6 +331,7 @@ class ClienteController extends Controller {
         $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
         $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($codigoCliente);
         $arClienteContacto = new \Brasa\TurnoBundle\Entity\TurClienteContacto();
+        $arClienteContacto->setFechaNacimiento(new \DateTime('now'));
         if ($codigoContacto != '' && $codigoContacto != 0) {
             $arClienteContacto = $em->getRepository('BrasaTurnoBundle:TurClienteContacto')->find($codigoContacto);
         }
