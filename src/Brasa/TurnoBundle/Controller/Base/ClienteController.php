@@ -15,6 +15,7 @@ use Brasa\TurnoBundle\Form\Type\TurProyectoType;
 use Brasa\TurnoBundle\Form\Type\TurGrupoFacturacionType;
 use Brasa\TurnoBundle\Form\Type\TurClienteDireccionType;
 use Brasa\TurnoBundle\Form\Type\TurClienteContratoType;
+use Brasa\TurnoBundle\Form\Type\TurClienteContactoType;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
 
@@ -38,23 +39,23 @@ class ClienteController extends Controller {
         $form->handleRequest($request);
         $this->lista();
         if ($form->isSubmitted() && $form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->get('BtnEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if ($form->get('BtnEliminar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurCliente')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_cliente'));
-                }
-                if ($form->get('BtnFiltrar')->isClicked()) {
-                    $this->filtrar($form);
-                }
-                if ($form->get('BtnExcel')->isClicked()) {
-                    $this->filtrar($form);
-                    $this->generarExcel();
-                }
-                if ($form->get('BtnInterfaz')->isClicked()) {
-                    $this->filtrar($form);
-                    $this->generarExcelInterfaz();
-                }
+                $em->getRepository('BrasaTurnoBundle:TurCliente')->eliminar($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_base_cliente'));
+            }
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrar($form);
+            }
+            if ($form->get('BtnExcel')->isClicked()) {
+                $this->filtrar($form);
+                $this->generarExcel();
+            }
+            if ($form->get('BtnInterfaz')->isClicked()) {
+                $this->filtrar($form);
+                $this->generarExcelInterfaz();
+            }
         }
         $arClientes = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaTurnoBundle:Base/Cliente:lista.html.twig', array(
@@ -75,22 +76,22 @@ class ClienteController extends Controller {
         $form = $this->createForm(TurClienteType::class, $arCliente);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-                $arCliente = $form->getData();
-                $arClienteValidar = new \Brasa\TurnoBundle\Entity\TurCliente();
-                $arClienteValidar = $em->getRepository('BrasaTurnoBundle:TurCliente')->findBy(array('nit' => $arCliente->getNit()));
-                if (($codigoCliente == 0 || $codigoCliente == '') && count($arClienteValidar) > 0) {
-                    $objMensaje->Mensaje("error", "El cliente con ese nit ya existe");
+            $arCliente = $form->getData();
+            $arClienteValidar = new \Brasa\TurnoBundle\Entity\TurCliente();
+            $arClienteValidar = $em->getRepository('BrasaTurnoBundle:TurCliente')->findBy(array('nit' => $arCliente->getNit()));
+            if (($codigoCliente == 0 || $codigoCliente == '') && count($arClienteValidar) > 0) {
+                $objMensaje->Mensaje("error", "El cliente con ese nit ya existe");
+            } else {
+                $arUsuario = $this->getUser();
+                $arCliente->setUsuario($arUsuario->getUserName());
+                $em->persist($arCliente);
+                $em->flush();
+                if ($form->get('guardarnuevo')->isClicked()) {
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_nuevo', array('codigoCliente' => 0)));
                 } else {
-                    $arUsuario = $this->getUser();
-                    $arCliente->setUsuario($arUsuario->getUserName());
-                    $em->persist($arCliente);
-                    $em->flush();
-                    if ($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_tur_base_cliente_nuevo', array('codigoCliente' => 0)));
-                    } else {
-                        return $this->redirect($this->generateUrl('brs_tur_base_cliente'));
-                    }
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente'));
                 }
+            }
         }
         return $this->render('BrasaTurnoBundle:Base/Cliente:nuevo.html.twig', array(
                     'arCliente' => $arCliente,
@@ -129,6 +130,11 @@ class ClienteController extends Controller {
                     $em->getRepository('BrasaTurnoBundle:TurClienteContrato')->eliminar($arrSeleccionados);
                     return $this->redirect($this->generateUrl('brs_tur_base_cliente_detalle', array('codigoCliente' => $codigoCliente)));
                 }
+                if ($form->get('BtnEliminarContacto')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionarContacto');
+                    $em->getRepository('BrasaTurnoBundle:TurClienteContacto')->eliminar($arrSeleccionados);
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_detalle', array('codigoCliente' => $codigoCliente)));
+                }
             }
         }
         $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();
@@ -141,13 +147,16 @@ class ClienteController extends Controller {
         $arClienteDirecciones = $em->getRepository('BrasaTurnoBundle:TurClienteDireccion')->findBy(array('codigoClienteFk' => $codigoCliente));
         $arContratos = new \Brasa\TurnoBundle\Entity\TurContrato();
         $arContratos = $em->getRepository('BrasaTurnoBundle:TurContrato')->findBy(array('codigoClienteFk' => $codigoCliente));
+        $arClienteContactos = new \Brasa\TurnoBundle\Entity\TurClienteContacto();
+        $arClienteContactos = $em->getRepository('BrasaTurnoBundle:TurClienteContacto')->findBy(array('codigoClienteFk' => $codigoCliente));
         return $this->render('BrasaTurnoBundle:Base/Cliente:detalle.html.twig', array(
                     'arCliente' => $arCliente,
                     'arPuestos' => $arPuestos,
-                    'arProyectos' => $arProyectos,                    
+                    'arProyectos' => $arProyectos,
                     'arGruposFacturacion' => $arGruposFacturacion,
                     'arClienteDirecciones' => $arClienteDirecciones,
                     'arContratos' => $arContratos,
+                    'arClienteContactos' => $arClienteContactos,
                     'form' => $form->createView()
         ));
     }
@@ -279,8 +288,8 @@ class ClienteController extends Controller {
                     'arCliente' => $arCliente,
                     'form' => $form->createView()));
     }
-    
-        /**
+
+    /**
      * @Route("/tur/base/cliente/contrato/nuevo/{codigoCliente}/{codigoContrato}", name="brs_tur_base_cliente_contrato_nuevo")
      */
     public function contratoNuevoAction(Request $request, $codigoCliente, $codigoContrato) {
@@ -303,13 +312,43 @@ class ClienteController extends Controller {
                 $em->flush();
 
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_contrato_nuevo', array('codigoCliente' => $codigoCliente,'codigoContrato'=> 0)));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_contrato_nuevo', array('codigoCliente' => $codigoCliente, 'codigoContrato' => 0)));
                 } else {
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Cliente:contratoNuevo.html.twig', array(
+                    'arCliente' => $arCliente,
+                    'form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/tur/base/cliente/contacto/nuevo/{codigoCliente}/{codigoContacto}", name="brs_tur_base_cliente_contacto_nuevo")
+     */
+    public function contactoNuevoAction(Request $request, $codigoCliente, $codigoContacto) {
+        $em = $this->getDoctrine()->getManager();
+        $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
+        $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($codigoCliente);
+        $arClienteContacto = new \Brasa\TurnoBundle\Entity\TurClienteContacto();
+        if ($codigoContacto != '' && $codigoContacto != 0) {
+            $arClienteContacto = $em->getRepository('BrasaTurnoBundle:TurClienteContacto')->find($codigoContacto);
+        }
+        $form = $this->createForm(TurClienteContactoType::class, $arClienteContacto);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arClienteContacto = $form->getData();
+            $arClienteContacto->setClienteRel($arCliente);
+            $em->persist($arClienteContacto);
+            $em->flush();
+
+            if ($form->get('guardarnuevo')->isClicked()) {
+                return $this->redirect($this->generateUrl('brs_tur_base_cliente_contacto_nuevo', array('codigoCliente' => $codigoCliente, 'codigoContacto' => 0)));
+            } else {
+                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+            }
+        }
+        return $this->render('BrasaTurnoBundle:Base/Cliente:contactoNuevo.html.twig', array(
                     'arCliente' => $arCliente,
                     'form' => $form->createView()));
     }
@@ -347,6 +386,7 @@ class ClienteController extends Controller {
         $arrBotonEliminarProyecto = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonEliminarDireccion = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonEliminarContrato = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonEliminarContacto = array('label' => 'Eliminar', 'disabled' => false);
 
         $form = $this->createFormBuilder()
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
@@ -354,6 +394,7 @@ class ClienteController extends Controller {
                 ->add('BtnEliminarProyecto', SubmitType::class, $arrBotonEliminarProyecto)
                 ->add('BtnEliminarDireccion', SubmitType::class, $arrBotonEliminarDireccion)
                 ->add('BtnEliminarContrato', SubmitType::class, $arrBotonEliminarContrato)
+                ->add('BtnEliminarContacto', SubmitType::class, $arrBotonEliminarContacto)
                 ->getForm();
         return $form;
     }
