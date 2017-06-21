@@ -11,9 +11,11 @@
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
         <table class="table table-striped table-bordered table-condensed table-hover">
             <tr>            
-                <th>CÓDIGO</th>
+                <th>ID</th>
                 <th>AÑO</th>   
-                <th>MES</th>   
+                <th>MES</th> 
+                <th>SUCURSAL</th> 
+                <th>DETALLE</th> 
                 <th>TOTAL</th>
                 <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>        
@@ -22,6 +24,8 @@
                     <td>{{arSsoPediodoDetalles.codigoPeriodoDetallePk }}</td>
                     <td>{{ arSsoPediodoDetalles.ssoPeriodoRel.anio  }}</td>
                     <td>{{ arSsoPediodoDetalles.ssoPeriodoRel.mes  }}</td>                
+                    <td>{{ arSsoPediodoDetalles.ssoSucursalRel.nombre |default('')  }}</td> 
+                    <td>{{ arSsoPediodoDetalles.detalle  }}</td> 
                     <td style="text-align: right">{{ arSsoPediodoDetalles.totalCotizacion | number_format(0, '.', ',') }}</td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arSsoPediodoDetalles.codigoPeriodoDetallePk }}" /></td>
                     {%endfor%}

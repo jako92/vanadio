@@ -90,7 +90,7 @@ class PagoBancoController extends Controller
             if($form->get('guardarnuevo')->isClicked()) {
                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_nuevo', array('codigoPagoBanco' => 0)));
             } else {
-                echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+                return $this->redirect($this->generateUrl('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $arPagoBanco->getCodigoPagoBancoPk())));
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/PagoBanco:nuevo.html.twig', array(
@@ -161,7 +161,7 @@ class PagoBancoController extends Controller
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
                     if(count($arrSeleccionados) > 0) {
                         foreach ($arrSeleccionados as $codigoPagoBancoDetalle) {
-                            $arPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
+                            $arPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();                            
                             $arPagoBancoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->find($codigoPagoBancoDetalle);
                             if($arPagoBancoDetalle->getCodigoPagoFk()) {
                                 $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
@@ -180,7 +180,13 @@ class PagoBancoController extends Controller
                                 $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($arPagoBancoDetalle->getCodigoVacacionFk());
                                 $arVacacion->setEstadoPagoBanco(0);
                                 $em->persist($arVacacion);                                
-                            }                            
+                            }  
+                            if($arPagoBancoDetalle->getCodigoPeriodoDetalleFk()) {
+                                $arSsoPediodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();                            
+                                $arSsoPediodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($arPagoBancoDetalle->getCodigoPeriodoDetalleFk());                                 
+                                $arSsoPediodoDetalle->setEstadoPagoBanco(0);
+                                $em->persist($arSsoPediodoDetalle);                                
+                            }
                             $em->remove($arPagoBancoDetalle);
                         }
                         $em->flush();
@@ -531,14 +537,16 @@ class PagoBancoController extends Controller
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     if(count($arrSeleccionados) > 0) {
                         foreach ($arrSeleccionados AS $codigo) {  
-                            $arSsoPediodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
+                            $arSsoPediodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();                            
                             $arSsoPediodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($codigo);                            
                             $arPagoBancoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
                             $arPagoBancoDetalle->setPagoBancoRel($arPagoBanco);
                             $arPagoBancoDetalle->setSsoPeriodoDetalleRel($arSsoPediodoDetalle);                            
                             $valorPagar = round($arSsoPediodoDetalle->getTotalCotizacion());
                             $arPagoBancoDetalle->setVrPago($valorPagar);                                                         
-                            $em->persist($arPagoBancoDetalle);                             
+                            $em->persist($arPagoBancoDetalle);             
+                            $arSsoPediodoDetalle->setEstadoPagoBanco(1);
+                            $em->persist($arSsoPediodoDetalle);
                         }
                         $em->flush();
                     }
