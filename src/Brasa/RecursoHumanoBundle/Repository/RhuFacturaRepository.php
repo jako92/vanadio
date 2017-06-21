@@ -453,7 +453,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('IVA ');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " iva no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaIva . " iva no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
@@ -482,7 +482,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('RETENCION FUENTE');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " retencion fuente no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaRetencionFuente . " retencion fuente no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
@@ -511,7 +511,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('RETENCION IVA');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " iva no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaRetencionIva . " iva no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
@@ -540,7 +540,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('INGRESO ');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " ingreso no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaIngreso . " ingreso no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
@@ -569,7 +569,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('BASE AIU ');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " base aiu no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaBaseAIU . " base aiu no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
@@ -598,7 +598,7 @@ class RhuFacturaRepository extends EntityRepository {
                                 $arRegistro->setDescripcionContable('BASE AIU');
                                 $em->persist($arRegistro);
                             } else {
-                                $respuesta = "La cuenta " . $codigoCuentaCartera . " base aiu (Contrapartida) no esta configurada o no existe en el plan de cuentas";
+                                $respuesta = "La cuenta " . $codigoCuentaBaseAIUContrapartida . " base aiu (Contrapartida) no esta configurada o no existe en el plan de cuentas";
                                 break;
                             }
                         }
