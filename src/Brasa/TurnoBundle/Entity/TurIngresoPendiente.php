@@ -47,6 +47,10 @@ class TurIngresoPendiente
      */    
     private $vrSubtotal = 0;         
      
+    /**     
+     * @ORM\Column(name="estado_cerrado", type="boolean")
+     */    
+    private $estadoCerrado = false;     
     
     /**
      * @ORM\ManyToOne(targetEntity="TurPedidoDetalle", inversedBy="ingresosPendientesPedidoDetalleRel")
@@ -261,5 +265,29 @@ class TurIngresoPendiente
     public function getClienteRel()
     {
         return $this->clienteRel;
+    }
+
+    /**
+     * Set estadoCerrado
+     *
+     * @param boolean $estadoCerrado
+     *
+     * @return TurIngresoPendiente
+     */
+    public function setEstadoCerrado($estadoCerrado)
+    {
+        $this->estadoCerrado = $estadoCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCerrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCerrado()
+    {
+        return $this->estadoCerrado;
     }
 }

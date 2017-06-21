@@ -52,6 +52,7 @@ class TurCierreMesRepository extends EntityRepository {
                 $em->persist($arIngresoPendiente);
             }
             $arCierreMes->setEstadoGeneradoComercial(1);
+            $arCierreMes->setFechaGeneradoComercial(new \DateTime('now'));
             $em->persist($arCierreMes);
             $em->flush();         
             $strSql = "UPDATE tur_pedido SET estado_cierre_mes = 1 WHERE fecha_programacion >= '" . $fechaDesde . "' AND fecha_programacion <= '" . $fechaHasta. "'";           

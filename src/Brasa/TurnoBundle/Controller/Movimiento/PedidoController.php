@@ -107,6 +107,7 @@ class PedidoController extends Controller {
                     $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
                     $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($arrControles['txtNit']);
                     if (count($arCliente) > 0) {
+                        $error = '';
                         $arPedido->setClienteRel($arCliente);
                         if ($codigoPedido != 0) {
                             $numeroRegistros = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->numeroRegistros($codigoPedido);
@@ -120,18 +121,31 @@ class PedidoController extends Controller {
                         } else {
                             $fechaProgramacion = $arPedido->getFechaProgramacion()->format('Y/m/');
                             $arPedido->setFechaProgramacion(date_create($fechaProgramacion . '01'));
+                            $anio = $arPedido->getFechaProgramacion()->format('Y');
+                            $mes = $arPedido->getFechaProgramacion()->format('m');
+                            $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+                            $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->findOneBy(array('anio' => $anio, 'mes' => $mes));
+                            if($arCierreMes) {
+                                if($arCierreMes->getEstadoGeneradoComercial()) {
+                                    $error = "El periodo " . $anio . "/" . $mes . " ya esta cerrado y no se pueden crear pedidos para este mes";
+                                }
+                            }
                         }
+                        if($error == '') {
+                            $arUsuario = $this->getUser();
+                            $arPedido->setUsuario($arUsuario->getUserName());
+                            $em->persist($arPedido);
+                            $em->flush();
 
-                        $arUsuario = $this->getUser();
-                        $arPedido->setUsuario($arUsuario->getUserName());
-                        $em->persist($arPedido);
-                        $em->flush();
-
-                        if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_nuevo', array('codigoPedido' => 0)));
+                            if ($form->get('guardarnuevo')->isClicked()) {
+                                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_nuevo', array('codigoPedido' => 0)));
+                            } else {
+                                return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $arPedido->getCodigoPedidoPk())));
+                            }                            
                         } else {
-                            return $this->redirect($this->generateUrl('brs_tur_movimiento_pedido_detalle', array('codigoPedido' => $arPedido->getCodigoPedidoPk())));
+                            $objMensaje->Mensaje("error", $error);
                         }
+
                     } else {
                         $objMensaje->Mensaje("error", "El cliente no existe");
                     }

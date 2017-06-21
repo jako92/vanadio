@@ -312,41 +312,8 @@ class CierreMesController extends Controller {
                         }
                     }
                     $em->flush();
-
-                    //Asignar los centros de costos donde mas trabajo el recurso       
-                    /*
-                      foreach ($arrRecursos as $arrRecurso) {
-                      $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                      $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arrRecurso['codigo_empleado_fk']);
-                      if($arEmpleado) {
-                      if($arEmpleado->getEmpleadoTipoRel()->getOperativo() == 1) {
-                      $arrProgramaciones = $em->getRepository('BrasaTurnoBundle:TurRecurso')->programacionFechaRecurso($arCierreMes->getAnio(), $arCierreMes->getMes(), $arrRecurso['codigo_recurso_fk']);
-                      if($arrProgramaciones) {
-                      $codigoPuesto = $arrProgramaciones[0]['codigo_puesto_fk'];
-                      if($codigoPuesto) {
-                      $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
-                      if($arPuesto) {
-                      $arEmpleado->setPuestoRel($arPuesto);
-                      $arEmpleado->setCentroCostoContabilidadRel($arPuesto->getCentroCostoContabilidadRel());
-                      $em->persist($arEmpleado);
-
-                      $arRecursoPuesto = new \Brasa\TurnoBundle\Entity\TurRecursoPuesto();
-                      $arRecursoPuesto->setAnio($arCierreMes->getAnio());
-                      $arRecursoPuesto->setMes($arCierreMes->getMes());
-                      $arRecursoPuesto->setCodigoPuestoFk($codigoPuesto);
-                      $arRecursoPuesto->setCodigoRecursoFk($arrRecurso['codigo_recurso_fk']);
-                      $arRecursoPuesto->setCodigoEmpleadoFk($arrRecurso['codigo_empleado_fk']);
-                      $arRecursoPuesto->setCodigoCentroCostoFk($arPuesto->getCodigoCentroCostoContabilidadFk());
-                      $em->persist($arRecursoPuesto);
-                      }
-                      }
-                      }
-                      }
-                      }
-                      }
-                      $em->flush();
-                     */
-
+                    
+                    $arCierreMes->setFechaGenerado(new \DateTime('now'));
                     $arCierreMes->setEstadoGenerado(1);
                     $em->persist($arCierreMes);
                     $em->flush();
@@ -423,8 +390,23 @@ class CierreMesController extends Controller {
                         }                                                
                     }                  
                     $arCierreMes->setEstadoCerrado(1);
+                    $arCierreMes->setFechaCerrado(new \DateTime('now'));
                     $em->persist($arCierreMes);
                     $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
+                }
+                if($request->request->get('OpCerrarComercial')) {
+                    set_time_limit(0);
+                    ini_set("memory_limit", -1);                    
+                    $codigoCierreMes = $request->request->get('OpCerrarComercial');
+                    $arCierreMes = new \Brasa\TurnoBundle\Entity\TurCierreMes();
+                    $arCierreMes = $em->getRepository('BrasaTurnoBundle:TurCierreMes')->find($codigoCierreMes);               
+                    $arCierreMes->setEstadoCerradoComercial(1);
+                    $arCierreMes->setFechaCerradoComercial(new \DateTime('now'));
+                    $em->persist($arCierreMes);                    
+                    $em->flush();
+                    $q = $em->createQuery('UPDATE BrasaTurnoBundle:TurIngresoPendiente ip set ip.estadoCerrado = 1 WHERE ip.codigoCierreMesFk = ' . $codigoCierreMes);
+                    $numActualizaciones = $q->execute();                     
                     return $this->redirect($this->generateUrl('brs_tur_proceso_cierre_mes'));
                 }
                 if($form->get('BtnEliminar')->isClicked()) {

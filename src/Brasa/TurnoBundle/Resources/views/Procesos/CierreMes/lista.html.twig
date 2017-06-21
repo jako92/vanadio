@@ -20,11 +20,12 @@
 
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
-                <th>CODIGO</th>
+                <th>ID</th>
                 <th>ANIO</th>
                 <th>MES</th>
                 <th>COMERCIAL</th>                
-                <th>COSTOS</th>                
+                <th></th>
+                <th>OPERATIVO</th>                
                 <th></th>
                 <th></th>
             </tr>
@@ -36,14 +37,15 @@
                     {% if arCierreMes.estadoGeneradoComercial == 0 %}
                         <td><button class="btn btn-default btn-xs" type="submit" name="OpGenerarComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Generar</button></td>                        
                     {% else %}
-                        <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacerComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>                                                                                                                                                                       
+                        <td>{% if arCierreMes.estadoCerradoComercial == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacerComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %} Generado: {{ arCierreMes.fechaGeneradoComercial|date('Y/m/d H:i')  }} </td>                                                                                                                                                                       
                     {% endif %}
+                    <td>{% if arCierreMes.estadoGeneradoComercial == 1 and arCierreMes.estadoCerradoComercial == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrarComercial" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% else %} Cerrado: {{ arCierreMes.fechaCerradoComercial|date('Y/m/d H:i')  }} {% endif %}</td>                        
                     {% if arCierreMes.estadoGenerado == 0 %}
                         <td><button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arCierreMes.codigoCierreMesPk }}">Generar</button></td>                        
                     {% else %}
-                        <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %}</td>                                                                                                                                                                       
+                        <td>{% if arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpDeshacer" value="{{ arCierreMes.codigoCierreMesPk }}">Deshacer</button>{% endif %} Generado: {{ arCierreMes.fechaGenerado|date('Y/m/d H:i')  }}</td>                                                                                                                                                                       
                     {% endif %}                    
-                    <td>{% if arCierreMes.estadoGenerado == 1 and arCierreMes.estadoGeneradoComercial == 1 and arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% endif %}</td>                        
+                    <td>{% if arCierreMes.estadoGenerado == 1 and arCierreMes.estadoCerrado == 0 %}<button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arCierreMes.codigoCierreMesPk }}">Cerrar</button>{% else %} Cerrado: {{ arCierreMes.fechaCerrado|date('Y/m/d H:i')  }}{% endif %}</td>                        
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arCierreMes.codigoCierreMesPk }}" /></td>
                 </tr>
             {% endfor %}
@@ -55,7 +57,15 @@
             <div class="btn-group">
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
             </div>            
-        </div>        
+        </div>    
+        <blockquote>
+            <p>Recuerde: </p>
+            <footer>Debe generar el cierre comercial al terminar el mes, con este proceso se bloquea cualquier accion
+            comercial sobre el sistema, no se pueden crear/editar pedidos de este periodo</footer>
+            <footer>El proceso de cierre comercial genera un corte de pedidos pendientes por facturar y su
+            posterior contabilizacion</footer>            
+        </blockquote>             
+            
         {{ form_rest(form) }}
         {{ form_end(form) }}
         <br/><br/><br/><br/>

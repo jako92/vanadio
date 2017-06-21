@@ -37,10 +37,35 @@ class TurCierreMes
      */    
     private $estadoGenerado = false;     
 
+    /**
+     * @ORM\Column(name="fecha_generado", type="datetime", nullable=true)
+     */    
+    private $fechaGenerado;    
+
+    /**
+     * @ORM\Column(name="fecha_cerrado", type="datetime", nullable=true)
+     */    
+    private $fechaCerrado;    
+    
     /**     
      * @ORM\Column(name="estado_generado_comercial", type="boolean")
      */    
     private $estadoGeneradoComercial = false;
+    
+    /**
+     * @ORM\Column(name="fecha_generado_comercial", type="datetime", nullable=true)
+     */    
+    private $fechaGeneradoComercial;    
+    
+    /**     
+     * @ORM\Column(name="estado_cerrado_comercial", type="boolean")
+     */    
+    private $estadoCerradoComercial = false;    
+    
+    /**
+     * @ORM\Column(name="fecha_cerrado_comercial", type="datetime", nullable=true)
+     */    
+    private $fechaCerradoComercial;     
     
     /**
      * @ORM\OneToMany(targetEntity="TurCostoServicio", mappedBy="cierreMesRel", cascade={"persist", "remove"})
@@ -169,6 +194,78 @@ class TurCierreMes
     }
 
     /**
+     * Set fechaGenerado
+     *
+     * @param \DateTime $fechaGenerado
+     *
+     * @return TurCierreMes
+     */
+    public function setFechaGenerado($fechaGenerado)
+    {
+        $this->fechaGenerado = $fechaGenerado;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaGenerado
+     *
+     * @return \DateTime
+     */
+    public function getFechaGenerado()
+    {
+        return $this->fechaGenerado;
+    }
+
+    /**
+     * Set estadoGeneradoComercial
+     *
+     * @param boolean $estadoGeneradoComercial
+     *
+     * @return TurCierreMes
+     */
+    public function setEstadoGeneradoComercial($estadoGeneradoComercial)
+    {
+        $this->estadoGeneradoComercial = $estadoGeneradoComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoGeneradoComercial
+     *
+     * @return boolean
+     */
+    public function getEstadoGeneradoComercial()
+    {
+        return $this->estadoGeneradoComercial;
+    }
+
+    /**
+     * Set fechaGeneradoComercial
+     *
+     * @param \DateTime $fechaGeneradoComercial
+     *
+     * @return TurCierreMes
+     */
+    public function setFechaGeneradoComercial($fechaGeneradoComercial)
+    {
+        $this->fechaGeneradoComercial = $fechaGeneradoComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaGeneradoComercial
+     *
+     * @return \DateTime
+     */
+    public function getFechaGeneradoComercial()
+    {
+        return $this->fechaGeneradoComercial;
+    }
+
+    /**
      * Add costosServiciosCierreMesRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurCostoServicio $costosServiciosCierreMesRel
@@ -237,26 +334,74 @@ class TurCierreMes
     }
 
     /**
-     * Set estadoGeneradoComercial
+     * Set estadoCerradoComercial
      *
-     * @param boolean $estadoGeneradoComercial
+     * @param boolean $estadoCerradoComercial
      *
      * @return TurCierreMes
      */
-    public function setEstadoGeneradoComercial($estadoGeneradoComercial)
+    public function setEstadoCerradoComercial($estadoCerradoComercial)
     {
-        $this->estadoGeneradoComercial = $estadoGeneradoComercial;
+        $this->estadoCerradoComercial = $estadoCerradoComercial;
 
         return $this;
     }
 
     /**
-     * Get estadoGeneradoComercial
+     * Get estadoCerradoComercial
      *
      * @return boolean
      */
-    public function getEstadoGeneradoComercial()
+    public function getEstadoCerradoComercial()
     {
-        return $this->estadoGeneradoComercial;
+        return $this->estadoCerradoComercial;
+    }
+
+    /**
+     * Set fechaCerrado
+     *
+     * @param \DateTime $fechaCerrado
+     *
+     * @return TurCierreMes
+     */
+    public function setFechaCerrado($fechaCerrado)
+    {
+        $this->fechaCerrado = $fechaCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCerrado
+     *
+     * @return \DateTime
+     */
+    public function getFechaCerrado()
+    {
+        return $this->fechaCerrado;
+    }
+
+    /**
+     * Set fechaCerradoComercial
+     *
+     * @param \DateTime $fechaCerradoComercial
+     *
+     * @return TurCierreMes
+     */
+    public function setFechaCerradoComercial($fechaCerradoComercial)
+    {
+        $this->fechaCerradoComercial = $fechaCerradoComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCerradoComercial
+     *
+     * @return \DateTime
+     */
+    public function getFechaCerradoComercial()
+    {
+        return $this->fechaCerradoComercial;
     }
 }
