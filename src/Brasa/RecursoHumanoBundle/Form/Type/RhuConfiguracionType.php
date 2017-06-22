@@ -91,6 +91,7 @@ class RhuConfiguracionType extends AbstractType {
                 ->add('diasAusentismoPrimas', CheckboxType::class)
                 ->add('omitirDescuentoEmbargoPrimas', CheckboxType::class)
                 ->add('omitirDescuentoEmbargoCesantias', CheckboxType::class)
+                ->add('requiereRequisitoContratacion', CheckboxType::class)
                 ->add('informacionLegalFactura', TextareaType::class)
                 ->add('informacionPagoFactura', TextareaType::class)
                 ->add('informacionContactoFactura', TextareaType::class)

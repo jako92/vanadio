@@ -485,7 +485,12 @@ class RhuConfiguracion {
      * @ORM\Column(name="orden_nombre_empleado", type="integer")
      */
     private $ordenNombreEmpleado = 0;
-    
+
+    /**
+     * @ORM\Column(name="requiere_requisito_contratacion", type="boolean")
+     */
+    private $requiereRequisitoContratacion = false;
+
     /**
      * Set codigoConfiguracionPk
      *
@@ -493,8 +498,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoConfiguracionPk($codigoConfiguracionPk)
-    {
+    public function setCodigoConfiguracionPk($codigoConfiguracionPk) {
         $this->codigoConfiguracionPk = $codigoConfiguracionPk;
 
         return $this;
@@ -505,8 +509,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoConfiguracionPk()
-    {
+    public function getCodigoConfiguracionPk() {
         return $this->codigoConfiguracionPk;
     }
 
@@ -517,8 +520,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setVrSalario($vrSalario)
-    {
+    public function setVrSalario($vrSalario) {
         $this->vrSalario = $vrSalario;
 
         return $this;
@@ -529,8 +531,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getVrSalario()
-    {
+    public function getVrSalario() {
         return $this->vrSalario;
     }
 
@@ -541,8 +542,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoAuxilioTransporte($codigoAuxilioTransporte)
-    {
+    public function setCodigoAuxilioTransporte($codigoAuxilioTransporte) {
         $this->codigoAuxilioTransporte = $codigoAuxilioTransporte;
 
         return $this;
@@ -553,8 +553,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoAuxilioTransporte()
-    {
+    public function getCodigoAuxilioTransporte() {
         return $this->codigoAuxilioTransporte;
     }
 
@@ -565,8 +564,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setVrAuxilioTransporte($vrAuxilioTransporte)
-    {
+    public function setVrAuxilioTransporte($vrAuxilioTransporte) {
         $this->vrAuxilioTransporte = $vrAuxilioTransporte;
 
         return $this;
@@ -577,8 +575,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getVrAuxilioTransporte()
-    {
+    public function getVrAuxilioTransporte() {
         return $this->vrAuxilioTransporte;
     }
 
@@ -589,8 +586,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoCredito($codigoCredito)
-    {
+    public function setCodigoCredito($codigoCredito) {
         $this->codigoCredito = $codigoCredito;
 
         return $this;
@@ -601,8 +597,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoCredito()
-    {
+    public function getCodigoCredito() {
         return $this->codigoCredito;
     }
 
@@ -613,8 +608,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoSeguro($codigoSeguro)
-    {
+    public function setCodigoSeguro($codigoSeguro) {
         $this->codigoSeguro = $codigoSeguro;
 
         return $this;
@@ -625,8 +619,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoSeguro()
-    {
+    public function getCodigoSeguro() {
         return $this->codigoSeguro;
     }
 
@@ -637,8 +630,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoTiempoSuplementario($codigoTiempoSuplementario)
-    {
+    public function setCodigoTiempoSuplementario($codigoTiempoSuplementario) {
         $this->codigoTiempoSuplementario = $codigoTiempoSuplementario;
 
         return $this;
@@ -649,8 +641,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoTiempoSuplementario()
-    {
+    public function getCodigoTiempoSuplementario() {
         return $this->codigoTiempoSuplementario;
     }
 
@@ -661,8 +652,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraDiurnaTrabajada($codigoHoraDiurnaTrabajada)
-    {
+    public function setCodigoHoraDiurnaTrabajada($codigoHoraDiurnaTrabajada) {
         $this->codigoHoraDiurnaTrabajada = $codigoHoraDiurnaTrabajada;
 
         return $this;
@@ -673,8 +663,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraDiurnaTrabajada()
-    {
+    public function getCodigoHoraDiurnaTrabajada() {
         return $this->codigoHoraDiurnaTrabajada;
     }
 
@@ -685,8 +674,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoSalarioIntegral($codigoSalarioIntegral)
-    {
+    public function setCodigoSalarioIntegral($codigoSalarioIntegral) {
         $this->codigoSalarioIntegral = $codigoSalarioIntegral;
 
         return $this;
@@ -697,8 +685,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoSalarioIntegral()
-    {
+    public function getCodigoSalarioIntegral() {
         return $this->codigoSalarioIntegral;
     }
 
@@ -709,8 +696,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPorcentajePensionExtra($porcentajePensionExtra)
-    {
+    public function setPorcentajePensionExtra($porcentajePensionExtra) {
         $this->porcentajePensionExtra = $porcentajePensionExtra;
 
         return $this;
@@ -721,8 +707,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPorcentajePensionExtra()
-    {
+    public function getPorcentajePensionExtra() {
         return $this->porcentajePensionExtra;
     }
 
@@ -733,8 +718,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoIncapacidad($codigoIncapacidad)
-    {
+    public function setCodigoIncapacidad($codigoIncapacidad) {
         $this->codigoIncapacidad = $codigoIncapacidad;
 
         return $this;
@@ -745,8 +729,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoIncapacidad()
-    {
+    public function getCodigoIncapacidad() {
         return $this->codigoIncapacidad;
     }
 
@@ -757,8 +740,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setAnioActual($anioActual)
-    {
+    public function setAnioActual($anioActual) {
         $this->anioActual = $anioActual;
 
         return $this;
@@ -769,8 +751,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getAnioActual()
-    {
+    public function getAnioActual() {
         return $this->anioActual;
     }
 
@@ -781,8 +762,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPorcentajeIva($porcentajeIva)
-    {
+    public function setPorcentajeIva($porcentajeIva) {
         $this->porcentajeIva = $porcentajeIva;
 
         return $this;
@@ -793,8 +773,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPorcentajeIva()
-    {
+    public function getPorcentajeIva() {
         return $this->porcentajeIva;
     }
 
@@ -805,8 +784,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoRetencionFuente($codigoRetencionFuente)
-    {
+    public function setCodigoRetencionFuente($codigoRetencionFuente) {
         $this->codigoRetencionFuente = $codigoRetencionFuente;
 
         return $this;
@@ -817,8 +795,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoRetencionFuente()
-    {
+    public function getCodigoRetencionFuente() {
         return $this->codigoRetencionFuente;
     }
 
@@ -829,8 +806,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setEdadMinimaEmpleado($edadMinimaEmpleado)
-    {
+    public function setEdadMinimaEmpleado($edadMinimaEmpleado) {
         $this->edadMinimaEmpleado = $edadMinimaEmpleado;
 
         return $this;
@@ -841,8 +817,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getEdadMinimaEmpleado()
-    {
+    public function getEdadMinimaEmpleado() {
         return $this->edadMinimaEmpleado;
     }
 
@@ -853,8 +828,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPorcentajeBonificacionNoPrestacional($porcentajeBonificacionNoPrestacional)
-    {
+    public function setPorcentajeBonificacionNoPrestacional($porcentajeBonificacionNoPrestacional) {
         $this->porcentajeBonificacionNoPrestacional = $porcentajeBonificacionNoPrestacional;
 
         return $this;
@@ -865,8 +839,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPorcentajeBonificacionNoPrestacional()
-    {
+    public function getPorcentajeBonificacionNoPrestacional() {
         return $this->porcentajeBonificacionNoPrestacional;
     }
 
@@ -877,8 +850,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoEntidadExamenIngreso($codigoEntidadExamenIngreso)
-    {
+    public function setCodigoEntidadExamenIngreso($codigoEntidadExamenIngreso) {
         $this->codigoEntidadExamenIngreso = $codigoEntidadExamenIngreso;
 
         return $this;
@@ -889,8 +861,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoEntidadExamenIngreso()
-    {
+    public function getCodigoEntidadExamenIngreso() {
         return $this->codigoEntidadExamenIngreso;
     }
 
@@ -901,8 +872,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoComprobantePagoNomina($codigoComprobantePagoNomina)
-    {
+    public function setCodigoComprobantePagoNomina($codigoComprobantePagoNomina) {
         $this->codigoComprobantePagoNomina = $codigoComprobantePagoNomina;
 
         return $this;
@@ -913,8 +883,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoComprobantePagoNomina()
-    {
+    public function getCodigoComprobantePagoNomina() {
         return $this->codigoComprobantePagoNomina;
     }
 
@@ -925,8 +894,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoComprobanteProvision($codigoComprobanteProvision)
-    {
+    public function setCodigoComprobanteProvision($codigoComprobanteProvision) {
         $this->codigoComprobanteProvision = $codigoComprobanteProvision;
 
         return $this;
@@ -937,8 +905,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoComprobanteProvision()
-    {
+    public function getCodigoComprobanteProvision() {
         return $this->codigoComprobanteProvision;
     }
 
@@ -949,8 +916,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoComprobanteLiquidacion($codigoComprobanteLiquidacion)
-    {
+    public function setCodigoComprobanteLiquidacion($codigoComprobanteLiquidacion) {
         $this->codigoComprobanteLiquidacion = $codigoComprobanteLiquidacion;
 
         return $this;
@@ -961,8 +927,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoComprobanteLiquidacion()
-    {
+    public function getCodigoComprobanteLiquidacion() {
         return $this->codigoComprobanteLiquidacion;
     }
 
@@ -973,8 +938,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoComprobanteVacacion($codigoComprobanteVacacion)
-    {
+    public function setCodigoComprobanteVacacion($codigoComprobanteVacacion) {
         $this->codigoComprobanteVacacion = $codigoComprobanteVacacion;
 
         return $this;
@@ -985,8 +949,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoComprobanteVacacion()
-    {
+    public function getCodigoComprobanteVacacion() {
         return $this->codigoComprobanteVacacion;
     }
 
@@ -997,8 +960,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoComprobantePagoBanco($codigoComprobantePagoBanco)
-    {
+    public function setCodigoComprobantePagoBanco($codigoComprobantePagoBanco) {
         $this->codigoComprobantePagoBanco = $codigoComprobantePagoBanco;
 
         return $this;
@@ -1009,8 +971,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoComprobantePagoBanco()
-    {
+    public function getCodigoComprobantePagoBanco() {
         return $this->codigoComprobantePagoBanco;
     }
 
@@ -1021,8 +982,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setControlPago($controlPago)
-    {
+    public function setControlPago($controlPago) {
         $this->controlPago = $controlPago;
 
         return $this;
@@ -1033,8 +993,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getControlPago()
-    {
+    public function getControlPago() {
         return $this->controlPago;
     }
 
@@ -1045,8 +1004,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajeCesantias($prestacionesPorcentajeCesantias)
-    {
+    public function setPrestacionesPorcentajeCesantias($prestacionesPorcentajeCesantias) {
         $this->prestacionesPorcentajeCesantias = $prestacionesPorcentajeCesantias;
 
         return $this;
@@ -1057,8 +1015,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajeCesantias()
-    {
+    public function getPrestacionesPorcentajeCesantias() {
         return $this->prestacionesPorcentajeCesantias;
     }
 
@@ -1069,8 +1026,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajeInteresesCesantias($prestacionesPorcentajeInteresesCesantias)
-    {
+    public function setPrestacionesPorcentajeInteresesCesantias($prestacionesPorcentajeInteresesCesantias) {
         $this->prestacionesPorcentajeInteresesCesantias = $prestacionesPorcentajeInteresesCesantias;
 
         return $this;
@@ -1081,8 +1037,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajeInteresesCesantias()
-    {
+    public function getPrestacionesPorcentajeInteresesCesantias() {
         return $this->prestacionesPorcentajeInteresesCesantias;
     }
 
@@ -1093,8 +1048,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajePrimas($prestacionesPorcentajePrimas)
-    {
+    public function setPrestacionesPorcentajePrimas($prestacionesPorcentajePrimas) {
         $this->prestacionesPorcentajePrimas = $prestacionesPorcentajePrimas;
 
         return $this;
@@ -1105,8 +1059,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajePrimas()
-    {
+    public function getPrestacionesPorcentajePrimas() {
         return $this->prestacionesPorcentajePrimas;
     }
 
@@ -1117,8 +1070,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajeVacaciones($prestacionesPorcentajeVacaciones)
-    {
+    public function setPrestacionesPorcentajeVacaciones($prestacionesPorcentajeVacaciones) {
         $this->prestacionesPorcentajeVacaciones = $prestacionesPorcentajeVacaciones;
 
         return $this;
@@ -1129,8 +1081,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajeVacaciones()
-    {
+    public function getPrestacionesPorcentajeVacaciones() {
         return $this->prestacionesPorcentajeVacaciones;
     }
 
@@ -1141,8 +1092,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajeAporteVacaciones($prestacionesPorcentajeAporteVacaciones)
-    {
+    public function setPrestacionesPorcentajeAporteVacaciones($prestacionesPorcentajeAporteVacaciones) {
         $this->prestacionesPorcentajeAporteVacaciones = $prestacionesPorcentajeAporteVacaciones;
 
         return $this;
@@ -1153,8 +1103,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajeAporteVacaciones()
-    {
+    public function getPrestacionesPorcentajeAporteVacaciones() {
         return $this->prestacionesPorcentajeAporteVacaciones;
     }
 
@@ -1165,8 +1114,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesPorcentajeIndemnizacion($prestacionesPorcentajeIndemnizacion)
-    {
+    public function setPrestacionesPorcentajeIndemnizacion($prestacionesPorcentajeIndemnizacion) {
         $this->prestacionesPorcentajeIndemnizacion = $prestacionesPorcentajeIndemnizacion;
 
         return $this;
@@ -1177,8 +1125,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getPrestacionesPorcentajeIndemnizacion()
-    {
+    public function getPrestacionesPorcentajeIndemnizacion() {
         return $this->prestacionesPorcentajeIndemnizacion;
     }
 
@@ -1189,8 +1136,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setAportesPorcentajeCaja($aportesPorcentajeCaja)
-    {
+    public function setAportesPorcentajeCaja($aportesPorcentajeCaja) {
         $this->aportesPorcentajeCaja = $aportesPorcentajeCaja;
 
         return $this;
@@ -1201,8 +1147,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getAportesPorcentajeCaja()
-    {
+    public function getAportesPorcentajeCaja() {
         return $this->aportesPorcentajeCaja;
     }
 
@@ -1213,8 +1158,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setAportesPorcentajeVacaciones($aportesPorcentajeVacaciones)
-    {
+    public function setAportesPorcentajeVacaciones($aportesPorcentajeVacaciones) {
         $this->aportesPorcentajeVacaciones = $aportesPorcentajeVacaciones;
 
         return $this;
@@ -1225,8 +1169,7 @@ class RhuConfiguracion {
      *
      * @return float
      */
-    public function getAportesPorcentajeVacaciones()
-    {
+    public function getAportesPorcentajeVacaciones() {
         return $this->aportesPorcentajeVacaciones;
     }
 
@@ -1237,8 +1180,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraDescanso($codigoHoraDescanso)
-    {
+    public function setCodigoHoraDescanso($codigoHoraDescanso) {
         $this->codigoHoraDescanso = $codigoHoraDescanso;
 
         return $this;
@@ -1249,8 +1191,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraDescanso()
-    {
+    public function getCodigoHoraDescanso() {
         return $this->codigoHoraDescanso;
     }
 
@@ -1261,8 +1202,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraNocturna($codigoHoraNocturna)
-    {
+    public function setCodigoHoraNocturna($codigoHoraNocturna) {
         $this->codigoHoraNocturna = $codigoHoraNocturna;
 
         return $this;
@@ -1273,8 +1213,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraNocturna()
-    {
+    public function getCodigoHoraNocturna() {
         return $this->codigoHoraNocturna;
     }
 
@@ -1285,8 +1224,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraFestivaDiurna($codigoHoraFestivaDiurna)
-    {
+    public function setCodigoHoraFestivaDiurna($codigoHoraFestivaDiurna) {
         $this->codigoHoraFestivaDiurna = $codigoHoraFestivaDiurna;
 
         return $this;
@@ -1297,8 +1235,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraFestivaDiurna()
-    {
+    public function getCodigoHoraFestivaDiurna() {
         return $this->codigoHoraFestivaDiurna;
     }
 
@@ -1309,8 +1246,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraFestivaNocturna($codigoHoraFestivaNocturna)
-    {
+    public function setCodigoHoraFestivaNocturna($codigoHoraFestivaNocturna) {
         $this->codigoHoraFestivaNocturna = $codigoHoraFestivaNocturna;
 
         return $this;
@@ -1321,8 +1257,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraFestivaNocturna()
-    {
+    public function getCodigoHoraFestivaNocturna() {
         return $this->codigoHoraFestivaNocturna;
     }
 
@@ -1333,8 +1268,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraExtraOrdinariaDiurna($codigoHoraExtraOrdinariaDiurna)
-    {
+    public function setCodigoHoraExtraOrdinariaDiurna($codigoHoraExtraOrdinariaDiurna) {
         $this->codigoHoraExtraOrdinariaDiurna = $codigoHoraExtraOrdinariaDiurna;
 
         return $this;
@@ -1345,8 +1279,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraExtraOrdinariaDiurna()
-    {
+    public function getCodigoHoraExtraOrdinariaDiurna() {
         return $this->codigoHoraExtraOrdinariaDiurna;
     }
 
@@ -1357,8 +1290,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraExtraOrdinariaNocturna($codigoHoraExtraOrdinariaNocturna)
-    {
+    public function setCodigoHoraExtraOrdinariaNocturna($codigoHoraExtraOrdinariaNocturna) {
         $this->codigoHoraExtraOrdinariaNocturna = $codigoHoraExtraOrdinariaNocturna;
 
         return $this;
@@ -1369,8 +1301,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraExtraOrdinariaNocturna()
-    {
+    public function getCodigoHoraExtraOrdinariaNocturna() {
         return $this->codigoHoraExtraOrdinariaNocturna;
     }
 
@@ -1381,8 +1312,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraExtraFestivaDiurna($codigoHoraExtraFestivaDiurna)
-    {
+    public function setCodigoHoraExtraFestivaDiurna($codigoHoraExtraFestivaDiurna) {
         $this->codigoHoraExtraFestivaDiurna = $codigoHoraExtraFestivaDiurna;
 
         return $this;
@@ -1393,8 +1323,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraExtraFestivaDiurna()
-    {
+    public function getCodigoHoraExtraFestivaDiurna() {
         return $this->codigoHoraExtraFestivaDiurna;
     }
 
@@ -1405,8 +1334,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraExtraFestivaNocturna($codigoHoraExtraFestivaNocturna)
-    {
+    public function setCodigoHoraExtraFestivaNocturna($codigoHoraExtraFestivaNocturna) {
         $this->codigoHoraExtraFestivaNocturna = $codigoHoraExtraFestivaNocturna;
 
         return $this;
@@ -1417,8 +1345,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraExtraFestivaNocturna()
-    {
+    public function getCodigoHoraExtraFestivaNocturna() {
         return $this->codigoHoraExtraFestivaNocturna;
     }
 
@@ -1429,8 +1356,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraRecargoNocturno($codigoHoraRecargoNocturno)
-    {
+    public function setCodigoHoraRecargoNocturno($codigoHoraRecargoNocturno) {
         $this->codigoHoraRecargoNocturno = $codigoHoraRecargoNocturno;
 
         return $this;
@@ -1441,8 +1367,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraRecargoNocturno()
-    {
+    public function getCodigoHoraRecargoNocturno() {
         return $this->codigoHoraRecargoNocturno;
     }
 
@@ -1453,8 +1378,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraRecargoFestivoDiurno($codigoHoraRecargoFestivoDiurno)
-    {
+    public function setCodigoHoraRecargoFestivoDiurno($codigoHoraRecargoFestivoDiurno) {
         $this->codigoHoraRecargoFestivoDiurno = $codigoHoraRecargoFestivoDiurno;
 
         return $this;
@@ -1465,8 +1389,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraRecargoFestivoDiurno()
-    {
+    public function getCodigoHoraRecargoFestivoDiurno() {
         return $this->codigoHoraRecargoFestivoDiurno;
     }
 
@@ -1477,8 +1400,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoHoraRecargoFestivoNocturno($codigoHoraRecargoFestivoNocturno)
-    {
+    public function setCodigoHoraRecargoFestivoNocturno($codigoHoraRecargoFestivoNocturno) {
         $this->codigoHoraRecargoFestivoNocturno = $codigoHoraRecargoFestivoNocturno;
 
         return $this;
@@ -1489,8 +1411,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoHoraRecargoFestivoNocturno()
-    {
+    public function getCodigoHoraRecargoFestivoNocturno() {
         return $this->codigoHoraRecargoFestivoNocturno;
     }
 
@@ -1501,8 +1422,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoVacacion($codigoVacacion)
-    {
+    public function setCodigoVacacion($codigoVacacion) {
         $this->codigoVacacion = $codigoVacacion;
 
         return $this;
@@ -1513,8 +1433,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoVacacion()
-    {
+    public function getCodigoVacacion() {
         return $this->codigoVacacion;
     }
 
@@ -1525,8 +1444,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoAjusteDevengado($codigoAjusteDevengado)
-    {
+    public function setCodigoAjusteDevengado($codigoAjusteDevengado) {
         $this->codigoAjusteDevengado = $codigoAjusteDevengado;
 
         return $this;
@@ -1537,8 +1455,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoAjusteDevengado()
-    {
+    public function getCodigoAjusteDevengado() {
         return $this->codigoAjusteDevengado;
     }
 
@@ -1549,8 +1466,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setAfectaVacacionesParafiscales($afectaVacacionesParafiscales)
-    {
+    public function setAfectaVacacionesParafiscales($afectaVacacionesParafiscales) {
         $this->afectaVacacionesParafiscales = $afectaVacacionesParafiscales;
 
         return $this;
@@ -1561,8 +1477,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getAfectaVacacionesParafiscales()
-    {
+    public function getAfectaVacacionesParafiscales() {
         return $this->afectaVacacionesParafiscales;
     }
 
@@ -1573,8 +1488,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoPago($codigoFormatoPago)
-    {
+    public function setCodigoFormatoPago($codigoFormatoPago) {
         $this->codigoFormatoPago = $codigoFormatoPago;
 
         return $this;
@@ -1585,8 +1499,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoPago()
-    {
+    public function getCodigoFormatoPago() {
         return $this->codigoFormatoPago;
     }
 
@@ -1597,8 +1510,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoLiquidacion($codigoFormatoLiquidacion)
-    {
+    public function setCodigoFormatoLiquidacion($codigoFormatoLiquidacion) {
         $this->codigoFormatoLiquidacion = $codigoFormatoLiquidacion;
 
         return $this;
@@ -1609,8 +1521,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoLiquidacion()
-    {
+    public function getCodigoFormatoLiquidacion() {
         return $this->codigoFormatoLiquidacion;
     }
 
@@ -1621,8 +1532,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoCarta($codigoFormatoCarta)
-    {
+    public function setCodigoFormatoCarta($codigoFormatoCarta) {
         $this->codigoFormatoCarta = $codigoFormatoCarta;
 
         return $this;
@@ -1633,8 +1543,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoCarta()
-    {
+    public function getCodigoFormatoCarta() {
         return $this->codigoFormatoCarta;
     }
 
@@ -1645,8 +1554,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoDisciplinario($codigoFormatoDisciplinario)
-    {
+    public function setCodigoFormatoDisciplinario($codigoFormatoDisciplinario) {
         $this->codigoFormatoDisciplinario = $codigoFormatoDisciplinario;
 
         return $this;
@@ -1657,8 +1565,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoDisciplinario()
-    {
+    public function getCodigoFormatoDisciplinario() {
         return $this->codigoFormatoDisciplinario;
     }
 
@@ -1669,8 +1576,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoDescargo($codigoFormatoDescargo)
-    {
+    public function setCodigoFormatoDescargo($codigoFormatoDescargo) {
         $this->codigoFormatoDescargo = $codigoFormatoDescargo;
 
         return $this;
@@ -1681,8 +1587,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoDescargo()
-    {
+    public function getCodigoFormatoDescargo() {
         return $this->codigoFormatoDescargo;
     }
 
@@ -1693,8 +1598,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoFormatoFactura($codigoFormatoFactura)
-    {
+    public function setCodigoFormatoFactura($codigoFormatoFactura) {
         $this->codigoFormatoFactura = $codigoFormatoFactura;
 
         return $this;
@@ -1705,8 +1609,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoFormatoFactura()
-    {
+    public function getCodigoFormatoFactura() {
         return $this->codigoFormatoFactura;
     }
 
@@ -1717,8 +1620,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setTipoBasePagoVacaciones($tipoBasePagoVacaciones)
-    {
+    public function setTipoBasePagoVacaciones($tipoBasePagoVacaciones) {
         $this->tipoBasePagoVacaciones = $tipoBasePagoVacaciones;
 
         return $this;
@@ -1729,8 +1631,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getTipoBasePagoVacaciones()
-    {
+    public function getTipoBasePagoVacaciones() {
         return $this->tipoBasePagoVacaciones;
     }
 
@@ -1741,8 +1642,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setGeneraPorcetnajeLiquidacion($generaPorcetnajeLiquidacion)
-    {
+    public function setGeneraPorcetnajeLiquidacion($generaPorcetnajeLiquidacion) {
         $this->generaPorcetnajeLiquidacion = $generaPorcetnajeLiquidacion;
 
         return $this;
@@ -1753,8 +1653,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getGeneraPorcetnajeLiquidacion()
-    {
+    public function getGeneraPorcetnajeLiquidacion() {
         return $this->generaPorcetnajeLiquidacion;
     }
 
@@ -1765,8 +1664,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCorreoNomina($correoNomina)
-    {
+    public function setCorreoNomina($correoNomina) {
         $this->correoNomina = $correoNomina;
 
         return $this;
@@ -1777,8 +1675,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getCorreoNomina()
-    {
+    public function getCorreoNomina() {
         return $this->correoNomina;
     }
 
@@ -1789,8 +1686,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setImprimirMensajePago($imprimirMensajePago)
-    {
+    public function setImprimirMensajePago($imprimirMensajePago) {
         $this->imprimirMensajePago = $imprimirMensajePago;
 
         return $this;
@@ -1801,8 +1697,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getImprimirMensajePago()
-    {
+    public function getImprimirMensajePago() {
         return $this->imprimirMensajePago;
     }
 
@@ -1813,8 +1708,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoPrima($codigoPrima)
-    {
+    public function setCodigoPrima($codigoPrima) {
         $this->codigoPrima = $codigoPrima;
 
         return $this;
@@ -1825,8 +1719,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoPrima()
-    {
+    public function getCodigoPrima() {
         return $this->codigoPrima;
     }
 
@@ -1837,8 +1730,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoCesantia($codigoCesantia)
-    {
+    public function setCodigoCesantia($codigoCesantia) {
         $this->codigoCesantia = $codigoCesantia;
 
         return $this;
@@ -1849,8 +1741,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoCesantia()
-    {
+    public function getCodigoCesantia() {
         return $this->codigoCesantia;
     }
 
@@ -1861,8 +1752,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoInteresCesantia($codigoInteresCesantia)
-    {
+    public function setCodigoInteresCesantia($codigoInteresCesantia) {
         $this->codigoInteresCesantia = $codigoInteresCesantia;
 
         return $this;
@@ -1873,8 +1763,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoInteresCesantia()
-    {
+    public function getCodigoInteresCesantia() {
         return $this->codigoInteresCesantia;
     }
 
@@ -1885,8 +1774,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPrestacionesAplicaPorcentajeSalario($prestacionesAplicaPorcentajeSalario)
-    {
+    public function setPrestacionesAplicaPorcentajeSalario($prestacionesAplicaPorcentajeSalario) {
         $this->prestacionesAplicaPorcentajeSalario = $prestacionesAplicaPorcentajeSalario;
 
         return $this;
@@ -1897,8 +1785,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getPrestacionesAplicaPorcentajeSalario()
-    {
+    public function getPrestacionesAplicaPorcentajeSalario() {
         return $this->prestacionesAplicaPorcentajeSalario;
     }
 
@@ -1909,8 +1796,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setNitSena($nitSena)
-    {
+    public function setNitSena($nitSena) {
         $this->nitSena = $nitSena;
 
         return $this;
@@ -1921,8 +1807,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getNitSena()
-    {
+    public function getNitSena() {
         return $this->nitSena;
     }
 
@@ -1933,8 +1818,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setNitIcbf($nitIcbf)
-    {
+    public function setNitIcbf($nitIcbf) {
         $this->nitIcbf = $nitIcbf;
 
         return $this;
@@ -1945,8 +1829,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getNitIcbf()
-    {
+    public function getNitIcbf() {
         return $this->nitIcbf;
     }
 
@@ -1957,8 +1840,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setDiasAusentismoPrimas($diasAusentismoPrimas)
-    {
+    public function setDiasAusentismoPrimas($diasAusentismoPrimas) {
         $this->diasAusentismoPrimas = $diasAusentismoPrimas;
 
         return $this;
@@ -1969,8 +1851,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getDiasAusentismoPrimas()
-    {
+    public function getDiasAusentismoPrimas() {
         return $this->diasAusentismoPrimas;
     }
 
@@ -1981,8 +1862,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPromedioPrimasLaborado($promedioPrimasLaborado)
-    {
+    public function setPromedioPrimasLaborado($promedioPrimasLaborado) {
         $this->promedioPrimasLaborado = $promedioPrimasLaborado;
 
         return $this;
@@ -1993,8 +1873,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getPromedioPrimasLaborado()
-    {
+    public function getPromedioPrimasLaborado() {
         return $this->promedioPrimasLaborado;
     }
 
@@ -2005,8 +1884,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPromedioPrimasLaboradoDias($promedioPrimasLaboradoDias)
-    {
+    public function setPromedioPrimasLaboradoDias($promedioPrimasLaboradoDias) {
         $this->promedioPrimasLaboradoDias = $promedioPrimasLaboradoDias;
 
         return $this;
@@ -2017,8 +1895,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getPromedioPrimasLaboradoDias()
-    {
+    public function getPromedioPrimasLaboradoDias() {
         return $this->promedioPrimasLaboradoDias;
     }
 
@@ -2029,8 +1906,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setOmitirDescuentoEmbargoPrimas($omitirDescuentoEmbargoPrimas)
-    {
+    public function setOmitirDescuentoEmbargoPrimas($omitirDescuentoEmbargoPrimas) {
         $this->omitirDescuentoEmbargoPrimas = $omitirDescuentoEmbargoPrimas;
 
         return $this;
@@ -2041,8 +1917,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getOmitirDescuentoEmbargoPrimas()
-    {
+    public function getOmitirDescuentoEmbargoPrimas() {
         return $this->omitirDescuentoEmbargoPrimas;
     }
 
@@ -2053,8 +1928,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setOmitirDescuentoEmbargoCesantias($omitirDescuentoEmbargoCesantias)
-    {
+    public function setOmitirDescuentoEmbargoCesantias($omitirDescuentoEmbargoCesantias) {
         $this->omitirDescuentoEmbargoCesantias = $omitirDescuentoEmbargoCesantias;
 
         return $this;
@@ -2065,8 +1939,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getOmitirDescuentoEmbargoCesantias()
-    {
+    public function getOmitirDescuentoEmbargoCesantias() {
         return $this->omitirDescuentoEmbargoCesantias;
     }
 
@@ -2077,8 +1950,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setDireccionServidorArdid($direccionServidorArdid)
-    {
+    public function setDireccionServidorArdid($direccionServidorArdid) {
         $this->direccionServidorArdid = $direccionServidorArdid;
 
         return $this;
@@ -2089,8 +1961,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getDireccionServidorArdid()
-    {
+    public function getDireccionServidorArdid() {
         return $this->direccionServidorArdid;
     }
 
@@ -2101,8 +1972,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setCodigoEmpresaArdid($codigoEmpresaArdid)
-    {
+    public function setCodigoEmpresaArdid($codigoEmpresaArdid) {
         $this->codigoEmpresaArdid = $codigoEmpresaArdid;
 
         return $this;
@@ -2113,8 +1983,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getCodigoEmpresaArdid()
-    {
+    public function getCodigoEmpresaArdid() {
         return $this->codigoEmpresaArdid;
     }
 
@@ -2125,8 +1994,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPagarLicenciaSalarioPactado($pagarLicenciaSalarioPactado)
-    {
+    public function setPagarLicenciaSalarioPactado($pagarLicenciaSalarioPactado) {
         $this->pagarLicenciaSalarioPactado = $pagarLicenciaSalarioPactado;
 
         return $this;
@@ -2137,8 +2005,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getPagarLicenciaSalarioPactado()
-    {
+    public function getPagarLicenciaSalarioPactado() {
         return $this->pagarLicenciaSalarioPactado;
     }
 
@@ -2149,8 +2016,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setPagarIncapacidadSalarioPactado($pagarIncapacidadSalarioPactado)
-    {
+    public function setPagarIncapacidadSalarioPactado($pagarIncapacidadSalarioPactado) {
         $this->pagarIncapacidadSalarioPactado = $pagarIncapacidadSalarioPactado;
 
         return $this;
@@ -2161,8 +2027,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getPagarIncapacidadSalarioPactado()
-    {
+    public function getPagarIncapacidadSalarioPactado() {
         return $this->pagarIncapacidadSalarioPactado;
     }
 
@@ -2173,8 +2038,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setInformacionLegalFactura($informacionLegalFactura)
-    {
+    public function setInformacionLegalFactura($informacionLegalFactura) {
         $this->informacionLegalFactura = $informacionLegalFactura;
 
         return $this;
@@ -2185,8 +2049,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getInformacionLegalFactura()
-    {
+    public function getInformacionLegalFactura() {
         return $this->informacionLegalFactura;
     }
 
@@ -2197,8 +2060,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setInformacionPagoFactura($informacionPagoFactura)
-    {
+    public function setInformacionPagoFactura($informacionPagoFactura) {
         $this->informacionPagoFactura = $informacionPagoFactura;
 
         return $this;
@@ -2209,8 +2071,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getInformacionPagoFactura()
-    {
+    public function getInformacionPagoFactura() {
         return $this->informacionPagoFactura;
     }
 
@@ -2221,8 +2082,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setInformacionContactoFactura($informacionContactoFactura)
-    {
+    public function setInformacionContactoFactura($informacionContactoFactura) {
         $this->informacionContactoFactura = $informacionContactoFactura;
 
         return $this;
@@ -2233,8 +2093,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getInformacionContactoFactura()
-    {
+    public function getInformacionContactoFactura() {
         return $this->informacionContactoFactura;
     }
 
@@ -2245,8 +2104,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura)
-    {
+    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura) {
         $this->informacionResolucionDianFactura = $informacionResolucionDianFactura;
 
         return $this;
@@ -2257,8 +2115,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getInformacionResolucionDianFactura()
-    {
+    public function getInformacionResolucionDianFactura() {
         return $this->informacionResolucionDianFactura;
     }
 
@@ -2269,8 +2126,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura)
-    {
+    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura) {
         $this->informacionResolucionSupervigilanciaFactura = $informacionResolucionSupervigilanciaFactura;
 
         return $this;
@@ -2281,8 +2137,7 @@ class RhuConfiguracion {
      *
      * @return string
      */
-    public function getInformacionResolucionSupervigilanciaFactura()
-    {
+    public function getInformacionResolucionSupervigilanciaFactura() {
         return $this->informacionResolucionSupervigilanciaFactura;
     }
 
@@ -2293,8 +2148,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setHorasDomingoNoCompensado($horasDomingoNoCompensado)
-    {
+    public function setHorasDomingoNoCompensado($horasDomingoNoCompensado) {
         $this->horasDomingoNoCompensado = $horasDomingoNoCompensado;
 
         return $this;
@@ -2305,8 +2159,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getHorasDomingoNoCompensado()
-    {
+    public function getHorasDomingoNoCompensado() {
         return $this->horasDomingoNoCompensado;
     }
 
@@ -2317,8 +2170,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setHorasDomingoCompensado($horasDomingoCompensado)
-    {
+    public function setHorasDomingoCompensado($horasDomingoCompensado) {
         $this->horasDomingoCompensado = $horasDomingoCompensado;
 
         return $this;
@@ -2329,8 +2181,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getHorasDomingoCompensado()
-    {
+    public function getHorasDomingoCompensado() {
         return $this->horasDomingoCompensado;
     }
 
@@ -2341,8 +2192,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setHorasRecargoNocturnoFestivoCompensado($horasRecargoNocturnoFestivoCompensado)
-    {
+    public function setHorasRecargoNocturnoFestivoCompensado($horasRecargoNocturnoFestivoCompensado) {
         $this->horasRecargoNocturnoFestivoCompensado = $horasRecargoNocturnoFestivoCompensado;
 
         return $this;
@@ -2353,8 +2203,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getHorasRecargoNocturnoFestivoCompensado()
-    {
+    public function getHorasRecargoNocturnoFestivoCompensado() {
         return $this->horasRecargoNocturnoFestivoCompensado;
     }
 
@@ -2365,8 +2214,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setHorasRecargoNocturnoFestivoNoCompensado($horasRecargoNocturnoFestivoNoCompensado)
-    {
+    public function setHorasRecargoNocturnoFestivoNoCompensado($horasRecargoNocturnoFestivoNoCompensado) {
         $this->horasRecargoNocturnoFestivoNoCompensado = $horasRecargoNocturnoFestivoNoCompensado;
 
         return $this;
@@ -2377,8 +2225,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getHorasRecargoNocturnoFestivoNoCompensado()
-    {
+    public function getHorasRecargoNocturnoFestivoNoCompensado() {
         return $this->horasRecargoNocturnoFestivoNoCompensado;
     }
 
@@ -2389,8 +2236,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setLiquidarVacacionesSalario($liquidarVacacionesSalario)
-    {
+    public function setLiquidarVacacionesSalario($liquidarVacacionesSalario) {
         $this->liquidarVacacionesSalario = $liquidarVacacionesSalario;
 
         return $this;
@@ -2401,8 +2247,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getLiquidarVacacionesSalario()
-    {
+    public function getLiquidarVacacionesSalario() {
         return $this->liquidarVacacionesSalario;
     }
 
@@ -2413,8 +2258,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setLiquidarAuxilioTransportePrima($liquidarAuxilioTransportePrima)
-    {
+    public function setLiquidarAuxilioTransportePrima($liquidarAuxilioTransportePrima) {
         $this->liquidarAuxilioTransportePrima = $liquidarAuxilioTransportePrima;
 
         return $this;
@@ -2425,8 +2269,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getLiquidarAuxilioTransportePrima()
-    {
+    public function getLiquidarAuxilioTransportePrima() {
         return $this->liquidarAuxilioTransportePrima;
     }
 
@@ -2437,8 +2280,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setHorasExtraDominicalDiurna($horasExtraDominicalDiurna)
-    {
+    public function setHorasExtraDominicalDiurna($horasExtraDominicalDiurna) {
         $this->horasExtraDominicalDiurna = $horasExtraDominicalDiurna;
 
         return $this;
@@ -2449,8 +2291,7 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getHorasExtraDominicalDiurna()
-    {
+    public function getHorasExtraDominicalDiurna() {
         return $this->horasExtraDominicalDiurna;
     }
 
@@ -2461,8 +2302,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setAuxilioTransporteNoPrestacional($auxilioTransporteNoPrestacional)
-    {
+    public function setAuxilioTransporteNoPrestacional($auxilioTransporteNoPrestacional) {
         $this->auxilioTransporteNoPrestacional = $auxilioTransporteNoPrestacional;
 
         return $this;
@@ -2473,8 +2313,7 @@ class RhuConfiguracion {
      *
      * @return boolean
      */
-    public function getAuxilioTransporteNoPrestacional()
-    {
+    public function getAuxilioTransporteNoPrestacional() {
         return $this->auxilioTransporteNoPrestacional;
     }
 
@@ -2485,8 +2324,7 @@ class RhuConfiguracion {
      *
      * @return RhuConfiguracion
      */
-    public function setOrdenNombreEmpleado($ordenNombreEmpleado)
-    {
+    public function setOrdenNombreEmpleado($ordenNombreEmpleado) {
         $this->ordenNombreEmpleado = $ordenNombreEmpleado;
 
         return $this;
@@ -2497,8 +2335,32 @@ class RhuConfiguracion {
      *
      * @return integer
      */
-    public function getOrdenNombreEmpleado()
-    {
+    public function getOrdenNombreEmpleado() {
         return $this->ordenNombreEmpleado;
+    }
+
+
+    /**
+     * Set requiereRequisitoContratacion
+     *
+     * @param boolean $requiereRequisitoContratacion
+     *
+     * @return RhuConfiguracion
+     */
+    public function setRequiereRequisitoContratacion($requiereRequisitoContratacion)
+    {
+        $this->requiereRequisitoContratacion = $requiereRequisitoContratacion;
+
+        return $this;
+    }
+
+    /**
+     * Get requiereRequisitoContratacion
+     *
+     * @return boolean
+     */
+    public function getRequiereRequisitoContratacion()
+    {
+        return $this->requiereRequisitoContratacion;
     }
 }

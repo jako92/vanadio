@@ -46,7 +46,7 @@ class Configuracion implements FixtureInterface
             $arRhuConfiguracion->setPrestacionesPorcentajeIndemnizacion(30);
             $arRhuConfiguracion->setAportesPorcentajeCaja(4);
             $arRhuConfiguracion->setAportesPorcentajeVacaciones(0);
-            $arRhuConfiguracion->setCuentaPago(1);
+            //$arRhuConfiguracion->setCuentaPago(1);
             $arRhuConfiguracion->setCodigoHoraDescanso(1);
             $arRhuConfiguracion->setCodigoHoraNocturna(1);
             $arRhuConfiguracion->setCodigoHoraFestivaDiurna(1);

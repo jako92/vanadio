@@ -56,14 +56,14 @@ class ContratosController extends Controller {
                         foreach ($arrSeleccionados AS $codigo) {
                             $arPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                             $arPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->findOneBy(array('codigoContratoFk' => $codigo));
-                            if ($arPagos == null) {                                
+                            if ($arPagos == null) {
                                 $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
                                 $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find($codigo);
                                 if ($arContrato->getEstadoActivo() == 1 && $arContrato->getEstadoTerminado() == 0) {
                                     $arPrestaciones = new \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion();
-                                    $arPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->findBy(array('codigoContratoFk' => $codigo));                                    
+                                    $arPrestaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrestacion')->findBy(array('codigoContratoFk' => $codigo));
                                     foreach ($arPrestaciones as $arPrestacion) {
-                                        $em->remove($arPrestacion);                                      
+                                        $em->remove($arPrestacion);
                                     }
                                     $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                                     $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arContrato->getCodigoEmpleadoFk());
@@ -178,7 +178,7 @@ class ContratosController extends Controller {
                 $codigoCambioSalario = $request->request->get('OpImprimirCambioSalarioNotificacion');
                 $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
                 $objFormato = new \Brasa\RecursoHumanoBundle\Formatos\CambioSalarioNotificacion();
-                $objFormato->Generar($em, array($codigoCambioSalario), $arUsuario);                
+                $objFormato->Generar($em, array($codigoCambioSalario), $arUsuario);
             }
         }
         $arCambiosSalario = new \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario();
@@ -275,6 +275,14 @@ class ContratosController extends Controller {
                 $objMensaje->Mensaje("error", "El empleado esta bloqueado por información interna");
                 $intEstado = 2;
             }
+            if ($arConfiguracion->getRequiereRequisitoContratacion()) {
+                $arRequisito = $em->getRepository('BrasaRecursoHumanoBundle:RhuRequisito')->findOneBy(array('numeroIdentificacion' => $arEmpleado->getNumeroIdentificacion()));
+                if ($arRequisito->getEstadoAprobado() == 1 and $arRequisito->getEstadoAplicado() == 0 and $arRequisito->getCodigoContratoFk() == null) {
+                    $arRequisito->setContratoRel($arContrato);
+                    $arRequisito->setEstadoAplicado(1);
+                    $em->persist($arRequisito);
+                }
+            }
         }
         $form = $this->createForm(RhuContratoType::class, $arContrato);
         $form->handleRequest($request);
@@ -344,7 +352,7 @@ class ContratosController extends Controller {
                                         $arContrato->setAuxilioTransporte(1);
                                     } else {
                                         $arContrato->setAuxilioTransporte(0);
-                                    }                                    
+                                    }
                                     $arContrato->setCodigoUsuario($arUsuario->getUserName());
                                     $em->persist($arContrato);
                                     //Insertar el recurso en recursos
@@ -476,7 +484,7 @@ class ContratosController extends Controller {
                             $em->flush();
                             echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                         } else {
-                            $objMensaje->Mensaje("error","La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d'));
+                            $objMensaje->Mensaje("error", "La fecha de inicio del contrato debe ser mayor a la ultima fecha de pago del centro de costos " . $arContrato->getCentroCostoRel()->getFechaUltimoPago()->format('Y-m-d'));
                         }
                     } else {
                         $objMensaje->Mensaje("error", "Verifique el tipo de contrato con el tipo y subtipo de cotizante a seguridad social");
@@ -778,7 +786,7 @@ class ContratosController extends Controller {
                 ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $arContrato->getFechaHasta(), 'attr' => array('class' => 'date',)))
                 ->add('vrDevengadoPactado', NumberType::class, array('data' => $arContrato->getVrDevengadoPactado()))
                 ->add('turnoFijoOrdinario', CheckboxType::class, array('required' => false, 'data' => $arContrato->getTurnoFijoOrdinario()))
-                ->add('auxilioTransporte', CheckboxType::class, array('required' => false, 'data' => $arContrato->getAuxilioTransporte()))                
+                ->add('auxilioTransporte', CheckboxType::class, array('required' => false, 'data' => $arContrato->getAuxilioTransporte()))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $formActualizar->handleRequest($request);

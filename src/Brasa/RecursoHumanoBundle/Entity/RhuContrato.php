@@ -8,170 +8,169 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_contrato")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuContratoRepository")
  */
+class RhuContrato {
 
-class RhuContrato
-{
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_contrato_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoContratoPk;        
-    
+    private $codigoContratoPk;
+
     /**
      * @ORM\Column(name="codigo_contrato_tipo_fk", type="integer")
-     */    
-    private $codigoContratoTipoFk;         
-    
+     */
+    private $codigoContratoTipoFk;
+
     /**
      * @ORM\Column(name="codigo_contrato_clase_fk", type="integer", nullable=true)
-     */    
-    private $codigoContratoClaseFk;    
-    
+     */
+    private $codigoContratoClaseFk;
+
     /**
      * @ORM\Column(name="codigo_salario_tipo_fk", type="integer", nullable=true)
-     */    
-    private $codigoSalarioTipoFk;  
-    
+     */
+    private $codigoSalarioTipoFk;
+
     /**
      * @ORM\Column(name="codigo_clasificacion_riesgo_fk", type="integer")
-     */    
+     */
     private $codigoClasificacionRiesgoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_motivo_terminacion_contrato_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoMotivoTerminacionContratoFk;
-    
+
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
-     */    
-    private $fecha;     
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="codigo_tipo_tiempo_fk", type="integer")
-     */    
-    private $codigoTipoTiempoFk;    
+     */
+    private $codigoTipoTiempoFk;
 
     /**
      * @ORM\Column(name="codigo_tipo_pension_fk", type="integer")
-     */    
-    private $codigoTipoPensionFk;    
+     */
+    private $codigoTipoPensionFk;
 
     /**
      * @ORM\Column(name="codigo_tipo_salud_fk", type="integer", nullable=true)
-     */    
-    private $codigoTipoSaludFk; 
-    
+     */
+    private $codigoTipoSaludFk;
+
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer")
-     */    
+     */
     private $codigoEmpleadoFk;
-    
+
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
-     */    
-    private $fechaDesde;    
-    
+     */
+    private $fechaDesde;
+
     /**
      * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
-     */    
+     */
     private $fechaHasta;
-    
+
     /**
      * @ORM\Column(name="fecha_prorroga_inicio", type="date", nullable=true)
-     */    
-    private $fechaProrrogaInicio;    
-    
+     */
+    private $fechaProrrogaInicio;
+
     /**
      * @ORM\Column(name="fecha_prorroga_final", type="date", nullable=true)
-     */    
+     */
     private $fechaProrrogaFinal;
-    
+
     /**
      * @ORM\Column(name="numero", type="string", length=30, nullable=true)
-     */    
-    private $numero;     
-    
+     */
+    private $numero;
+
     /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer")
-     */    
-    private $codigoCargoFk;    
-    
+     */
+    private $codigoCargoFk;
+
     /**
      * @ORM\Column(name="cargo_descripcion", type="string", length=60, nullable=true)
-     */    
+     */
     private $cargoDescripcion;
-    
+
     /**
      * @ORM\Column(name="horario_trabajo", type="string", length=100, nullable=true)
-     */    
+     */
     private $horarioTrabajo;
-    
+
     /**
      * @ORM\Column(name="vr_salario", type="float")
      */
-    private $VrSalario = 0;    
-    
+    private $VrSalario = 0;
+
     /**
      * @ORM\Column(name="vr_salario_pago", type="float")
      */
-    private $VrSalarioPago = 0;    
-    
-    /**     
+    private $VrSalarioPago = 0;
+
+    /**
      * @ORM\Column(name="estado_activo", type="boolean")
-     */    
-    private $estadoActivo = 1;     
-    
+     */
+    private $estadoActivo = 1;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
-    private $comentarios;    
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\Column(name="comentarios_terminacion", type="string", length=2000, nullable=true)
-     */    
-    private $comentariosTerminacion;    
-    
-    /**     
+     */
+    private $comentariosTerminacion;
+
+    /**
      * @ORM\Column(name="indefinido", type="boolean")
-     */    
-    private $indefinido = false;     
-    
+     */
+    private $indefinido = false;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer")
-     */    
-    private $codigoCentroCostoFk;     
-    
+     */
+    private $codigoCentroCostoFk;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_cesantias", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoCesantias;    
+     */
+    private $fechaUltimoPagoCesantias;
 
     /**
      * @ORM\Column(name="fecha_ultimo_pago_vacaciones", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoVacaciones;    
-    
+     */
+    private $fechaUltimoPagoVacaciones;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_primas", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoPrimas;        
-    
+     */
+    private $fechaUltimoPagoPrimas;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago", type="date", nullable=true)
-     */    
-    private $fechaUltimoPago;             
-    
-    /**     
+     */
+    private $fechaUltimoPago;
+
+    /**
      * @ORM\Column(name="estado_liquidado", type="boolean")
-     */    
-    private $estadoLiquidado = 0; 
-    
-    /**     
+     */
+    private $estadoLiquidado = 0;
+
+    /**
      * @ORM\Column(name="estado_terminado", type="boolean")
-     */    
-    private $estadoTerminado = 0;        
+     */
+    private $estadoTerminado = 0;
 
     /**
      * @ORM\Column(name="ibp_cesantias_inicial", type="float", nullable=true)
@@ -181,266 +180,266 @@ class RhuContrato
     /**
      * @ORM\Column(name="ibp_primas_inicial", type="float", nullable=true)
      */
-    private $ibpPrimasInicial = 0;       
-    
-    /**     
+    private $ibpPrimasInicial = 0;
+
+    /**
      * @ORM\Column(name="ibp_recargo_nocturno_inicial", type="float")
      */
-    private $ibpRecargoNocturnoInicial = 0;    
-    
+    private $ibpRecargoNocturnoInicial = 0;
+
     /**
      * Este factor se utiliza para saber de cuantas horas se compone un dia
      * @ORM\Column(name="factor", type="integer", nullable=true)     
-     */    
-    private $factor = 0;     
-    
+     */
+    private $factor = 0;
+
     /**
      * @ORM\Column(name="factor_horas_dia", type="integer", nullable=true)
-     */    
-    private $factorHorasDia = 0;    
-    
+     */
+    private $factorHorasDia = 0;
+
     /**
      * @ORM\Column(name="codigo_tipo_cotizante_fk", type="integer", nullable=false)
-     */    
-    private $codigoTipoCotizanteFk;    
+     */
+    private $codigoTipoCotizanteFk;
 
     /**
      * @ORM\Column(name="codigo_subtipo_cotizante_fk", type="integer", nullable=false)
-     */    
-    private $codigoSubtipoCotizanteFk;     
-    
-    /**     
+     */
+    private $codigoSubtipoCotizanteFk;
+
+    /**
      * @ORM\Column(name="salario_integral", type="boolean")
-     */    
-    private $salarioIntegral = false;  
-    
+     */
+    private $salarioIntegral = false;
+
     /**
      * @ORM\Column(name="codigo_entidad_salud_fk", type="integer", nullable=true)
-     */    
-    private $codigoEntidadSaludFk;    
+     */
+    private $codigoEntidadSaludFk;
 
     /**
      * @ORM\Column(name="codigo_entidad_pension_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoEntidadPensionFk;
-    
+
     /**
      * @ORM\Column(name="codigo_entidad_cesantia_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoEntidadCesantiaFk;
-    
+
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
+     */
     private $codigoUsuario;
 
     /**
      * @ORM\Column(name="codigo_usuario_termina", type="string", length=50, nullable=true)
-     */    
-    private $codigoUsuarioTermina;    
-    
-     /**
+     */
+    private $codigoUsuarioTermina;
+
+    /**
      * @ORM\Column(name="codigo_entidad_caja_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoEntidadCajaFk;
-    
+
     /**
      * @ORM\Column(name="codigo_ciudad_contrato_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCiudadContratoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_ciudad_labora_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCiudadLaboraFk;
-    
+
     /**
      * @ORM\Column(name="codigo_contrato_grupo_fk", type="integer", nullable=true)
-     */    
-    private $codigoContratoGrupoFk;     
-    
+     */
+    private $codigoContratoGrupoFk;
+
     /**
      * @ORM\Column(name="codigo_centro_trabajo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCentroTrabajoFk;
-    
-       /**
+
+    /**
      * @ORM\Column(name="codigo_sucursal_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigosucursalFk;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="limitarHoraExtra", type="boolean")
-     */    
-    private $limitarHoraExtra = false;     
-    
+     */
+    private $limitarHoraExtra = false;
+
     /**
      * @ORM\Column(name="vr_devengado_pactado", type="float")
      */
-    private $VrDevengadoPactado = 0;     
-    
-    /**     
+    private $VrDevengadoPactado = 0;
+
+    /**
      * @ORM\Column(name="turno_fijo_ordinario", type="boolean")
-     */    
-    private $turnoFijoOrdinario = false;     
-    
+     */
+    private $turnoFijoOrdinario = false;
+
     /**
      * @ORM\Column(name="secuencia", type="integer", nullable=true)
-     */    
+     */
     private $secuencia;
-    
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoClienteFk;
-    
+
     /**
      * @ORM\Column(name="auxilio_transporte", type="boolean")
-     */    
-    private $auxilioTransporte = false;    
-    
+     */
+    private $auxilioTransporte = false;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="contratosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="contratosEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
-    protected $empleadoRel;    
+    protected $empleadoRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuTipoTiempo", inversedBy="contratosTipoTiempoRel")
      * @ORM\JoinColumn(name="codigo_tipo_tiempo_fk", referencedColumnName="codigo_tipo_tiempo_pk")
      */
-    protected $tipoTiempoRel;     
-    
+    protected $tipoTiempoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="empleadosCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
-    protected $centroCostoRel;     
+    protected $centroCostoRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuContratoTipo", inversedBy="contratosContratoTipoRel")
      * @ORM\JoinColumn(name="codigo_contrato_tipo_fk", referencedColumnName="codigo_contrato_tipo_pk")
      */
-    protected $contratoTipoRel;     
+    protected $contratoTipoRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuContratoGrupo", inversedBy="contratosContratoGrupoRel")
      * @ORM\JoinColumn(name="codigo_contrato_grupo_fk", referencedColumnName="codigo_contrato_grupo_pk")
      */
-    protected $contratoGrupoRel;    
-    
+    protected $contratoGrupoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuContratoClase", inversedBy="contratosContratoClaseRel")
      * @ORM\JoinColumn(name="codigo_contrato_clase_fk", referencedColumnName="codigo_contrato_clase_pk")
      */
-    protected $contratoClaseRel;    
-    
+    protected $contratoClaseRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuSalarioTipo", inversedBy="contratosSalarioTipoRel")
      * @ORM\JoinColumn(name="codigo_salario_tipo_fk", referencedColumnName="codigo_salario_tipo_pk")
      */
-    protected $salarioTipoRel;    
-    
+    protected $salarioTipoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuClasificacionRiesgo", inversedBy="contratosClasificacionRiesgoRel")
      * @ORM\JoinColumn(name="codigo_clasificacion_riesgo_fk", referencedColumnName="codigo_clasificacion_riesgo_pk")
      */
-    protected $clasificacionRiesgoRel; 
-    
+    protected $clasificacionRiesgoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCargo", inversedBy="contratosCargoRel")
      * @ORM\JoinColumn(name="codigo_cargo_fk", referencedColumnName="codigo_cargo_pk")
      */
-    protected $cargoRel;    
-    
+    protected $cargoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuTipoPension", inversedBy="contratosTipoPensionRel")
      * @ORM\JoinColumn(name="codigo_tipo_pension_fk", referencedColumnName="codigo_tipo_pension_pk")
      */
-    protected $tipoPensionRel;     
+    protected $tipoPensionRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuTipoSalud", inversedBy="contratosTipoSaludRel")
      * @ORM\JoinColumn(name="codigo_tipo_salud_fk", referencedColumnName="codigo_tipo_salud_pk")
      */
-    protected $tipoSaludRel;     
-    
+    protected $tipoSaludRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuSsoTipoCotizante", inversedBy="contratosSsoTipoCotizanteRel")
      * @ORM\JoinColumn(name="codigo_tipo_cotizante_fk", referencedColumnName="codigo_tipo_cotizante_pk")
      */
-    protected $ssoTipoCotizanteRel;     
+    protected $ssoTipoCotizanteRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuSsoSubtipoCotizante", inversedBy="contratosSsoSubtipoCotizanteRel")
      * @ORM\JoinColumn(name="codigo_subtipo_cotizante_fk", referencedColumnName="codigo_subtipo_cotizante_pk")
      */
-    protected $ssoSubtipoCotizanteRel;    
-    
+    protected $ssoSubtipoCotizanteRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuMotivoTerminacionContrato", inversedBy="contratosMotivoTerminacionContratoRel")
      * @ORM\JoinColumn(name="codigo_motivo_terminacion_contrato_fk", referencedColumnName="codigo_motivo_terminacion_contrato_pk")
      */
     protected $terminacionContratoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="contratosEntidadSaludRel")
      * @ORM\JoinColumn(name="codigo_entidad_salud_fk", referencedColumnName="codigo_entidad_salud_pk")
      */
     protected $entidadSaludRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadPension", inversedBy="contratosEntidadPensionRel")
      * @ORM\JoinColumn(name="codigo_entidad_pension_fk", referencedColumnName="codigo_entidad_pension_pk")
      */
     protected $entidadPensionRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadCesantia", inversedBy="contratosEntidadCesantiaRel")
      * @ORM\JoinColumn(name="codigo_entidad_cesantia_fk", referencedColumnName="codigo_entidad_cesantia_pk")
      */
     protected $entidadCesantiaRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadCaja", inversedBy="contratosEntidadCajaRel")
      * @ORM\JoinColumn(name="codigo_entidad_caja_fk", referencedColumnName="codigo_entidad_caja_pk")
      */
     protected $entidadCajaRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="rhuContratosCiudadContratoRel")
      * @ORM\JoinColumn(name="codigo_ciudad_contrato_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadContratoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="rhuContratosCiudadLaboraRel")
      * @ORM\JoinColumn(name="codigo_ciudad_labora_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadLaboraRel;
-    
-     /**
+
+    /**
      * @ORM\ManyToOne(targetEntity="RhuCentroTrabajo", inversedBy="contratoRel")
      * @ORM\JoinColumn(name="codigo_centro_trabajo_fk", referencedColumnName="codigo_centro_trabajo_pk")
      */
-    protected $centroTrabajoRel;        
-    
+    protected $centroTrabajoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacion", mappedBy="contratoRel")
      */
-    protected $liquidacionesContratoRel; 
+    protected $liquidacionesContratoRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuPrestacion", mappedBy="contratoRel")
      */
-    protected $prestacionesContratoRel;     
-    
+    protected $prestacionesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuProgramacionPagoDetalle", mappedBy="contratoRel")
      */
@@ -450,104 +449,106 @@ class RhuContrato
      * @ORM\OneToMany(targetEntity="RhuProgramacionPagoHoraExtra", mappedBy="contratoRel")
      */
     protected $programacionesPagosHorasExtrasContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPago", mappedBy="contratoRel")
      */
-    protected $pagosContratoRel;      
-    
+    protected $pagosContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuProvision", mappedBy="contratoRel")
      */
-    protected $provisionesContratoRel;    
-    
-     /**
+    protected $provisionesContratoRel;
+
+    /**
      * @ORM\OneToMany(targetEntity="RhuSsoPeriodoEmpleado", mappedBy="contratoRel")
      */
-    protected $ssoPeriodosEmpleadosContratoRel;    
+    protected $ssoPeriodosEmpleadosContratoRel;
 
-     /**
+    /**
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="contratoRel")
      */
-    protected $ssoAportesContratoRel;     
-    
+    protected $ssoAportesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuCambioSalario", mappedBy="contratoRel")
      */
-    protected $cambiosSalariosContratoRel;     
-    
+    protected $cambiosSalariosContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuVacacion", mappedBy="contratoRel")
      */
-    protected $vacacionesContratoRel;             
-    
+    protected $vacacionesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuLicencia", mappedBy="contratoRel")
      */
-    protected $licenciasContratoRel;  
-    
+    protected $licenciasContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuIncapacidad", mappedBy="contratoRel")
      */
-    protected $incapacidadesContratoRel;     
-    
+    protected $incapacidadesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuIngresoBase", mappedBy="contratoRel")
      */
-    protected $ingresosBasesContratoRel;     
+    protected $ingresosBasesContratoRel;
 
     /**
      * @ORM\OneToMany(targetEntity="RhuContratoSede", mappedBy="contratoRel")
      */
-    protected $contratosSedesContratoRel;    
-    
+    protected $contratosSedesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuProyeccion", mappedBy="contratoRel")
      */
-    protected $proyeccionesContratoRel; 
-    
+    protected $proyeccionesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuTrasladoPension", mappedBy="contratoRel")
      */
     protected $trasladosPensionesContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuTrasladoSalud", mappedBy="contratoRel")
      */
     protected $trasladosSaludContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuContratoProrroga", mappedBy="contratoRel")
      */
     protected $contratosProrrogasContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuSoportePagoHorarioDetalle", mappedBy="contratoRel")
      */
-    protected $soportesPagosHorariosDetallesContratoRel;    
-    
+    protected $soportesPagosHorariosDetallesContratoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuCambioTipoContrato", mappedBy="contratoRel")
      */
     protected $cambiosTiposContratosContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuDisciplinario", mappedBy="contratoRel")
      */
     protected $disciplinariosContratoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuContratoAdicion", mappedBy="contratoRel")
      */
     protected $contratosAdicionalesContratoRel;
-  
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="RhuRequisito", mappedBy="contratoRel")
+     */
+    protected $requisitosContratoRel;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->liquidacionesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prestacionesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->programacionesPagosDetallesContratoRel = new \Doctrine\Common\Collections\ArrayCollection();
@@ -577,8 +578,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoContratoPk()
-    {
+    public function getCodigoContratoPk() {
         return $this->codigoContratoPk;
     }
 
@@ -589,8 +589,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoContratoTipoFk($codigoContratoTipoFk)
-    {
+    public function setCodigoContratoTipoFk($codigoContratoTipoFk) {
         $this->codigoContratoTipoFk = $codigoContratoTipoFk;
 
         return $this;
@@ -601,8 +600,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoContratoTipoFk()
-    {
+    public function getCodigoContratoTipoFk() {
         return $this->codigoContratoTipoFk;
     }
 
@@ -613,8 +611,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoContratoClaseFk($codigoContratoClaseFk)
-    {
+    public function setCodigoContratoClaseFk($codigoContratoClaseFk) {
         $this->codigoContratoClaseFk = $codigoContratoClaseFk;
 
         return $this;
@@ -625,8 +622,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoContratoClaseFk()
-    {
+    public function getCodigoContratoClaseFk() {
         return $this->codigoContratoClaseFk;
     }
 
@@ -637,8 +633,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoSalarioTipoFk($codigoSalarioTipoFk)
-    {
+    public function setCodigoSalarioTipoFk($codigoSalarioTipoFk) {
         $this->codigoSalarioTipoFk = $codigoSalarioTipoFk;
 
         return $this;
@@ -649,8 +644,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoSalarioTipoFk()
-    {
+    public function getCodigoSalarioTipoFk() {
         return $this->codigoSalarioTipoFk;
     }
 
@@ -661,8 +655,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoClasificacionRiesgoFk($codigoClasificacionRiesgoFk)
-    {
+    public function setCodigoClasificacionRiesgoFk($codigoClasificacionRiesgoFk) {
         $this->codigoClasificacionRiesgoFk = $codigoClasificacionRiesgoFk;
 
         return $this;
@@ -673,8 +666,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoClasificacionRiesgoFk()
-    {
+    public function getCodigoClasificacionRiesgoFk() {
         return $this->codigoClasificacionRiesgoFk;
     }
 
@@ -685,8 +677,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoMotivoTerminacionContratoFk($codigoMotivoTerminacionContratoFk)
-    {
+    public function setCodigoMotivoTerminacionContratoFk($codigoMotivoTerminacionContratoFk) {
         $this->codigoMotivoTerminacionContratoFk = $codigoMotivoTerminacionContratoFk;
 
         return $this;
@@ -697,8 +688,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoMotivoTerminacionContratoFk()
-    {
+    public function getCodigoMotivoTerminacionContratoFk() {
         return $this->codigoMotivoTerminacionContratoFk;
     }
 
@@ -709,8 +699,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -721,8 +710,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -733,8 +721,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoTipoTiempoFk($codigoTipoTiempoFk)
-    {
+    public function setCodigoTipoTiempoFk($codigoTipoTiempoFk) {
         $this->codigoTipoTiempoFk = $codigoTipoTiempoFk;
 
         return $this;
@@ -745,8 +732,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoTipoTiempoFk()
-    {
+    public function getCodigoTipoTiempoFk() {
         return $this->codigoTipoTiempoFk;
     }
 
@@ -757,8 +743,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoTipoPensionFk($codigoTipoPensionFk)
-    {
+    public function setCodigoTipoPensionFk($codigoTipoPensionFk) {
         $this->codigoTipoPensionFk = $codigoTipoPensionFk;
 
         return $this;
@@ -769,8 +754,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoTipoPensionFk()
-    {
+    public function getCodigoTipoPensionFk() {
         return $this->codigoTipoPensionFk;
     }
 
@@ -781,8 +765,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoTipoSaludFk($codigoTipoSaludFk)
-    {
+    public function setCodigoTipoSaludFk($codigoTipoSaludFk) {
         $this->codigoTipoSaludFk = $codigoTipoSaludFk;
 
         return $this;
@@ -793,8 +776,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoTipoSaludFk()
-    {
+    public function getCodigoTipoSaludFk() {
         return $this->codigoTipoSaludFk;
     }
 
@@ -805,8 +787,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
+    public function setCodigoEmpleadoFk($codigoEmpleadoFk) {
         $this->codigoEmpleadoFk = $codigoEmpleadoFk;
 
         return $this;
@@ -817,8 +798,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoEmpleadoFk()
-    {
+    public function getCodigoEmpleadoFk() {
         return $this->codigoEmpleadoFk;
     }
 
@@ -829,8 +809,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaDesde($fechaDesde)
-    {
+    public function setFechaDesde($fechaDesde) {
         $this->fechaDesde = $fechaDesde;
 
         return $this;
@@ -841,8 +820,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaDesde()
-    {
+    public function getFechaDesde() {
         return $this->fechaDesde;
     }
 
@@ -853,8 +831,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaHasta($fechaHasta)
-    {
+    public function setFechaHasta($fechaHasta) {
         $this->fechaHasta = $fechaHasta;
 
         return $this;
@@ -865,8 +842,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaHasta()
-    {
+    public function getFechaHasta() {
         return $this->fechaHasta;
     }
 
@@ -877,8 +853,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaProrrogaInicio($fechaProrrogaInicio)
-    {
+    public function setFechaProrrogaInicio($fechaProrrogaInicio) {
         $this->fechaProrrogaInicio = $fechaProrrogaInicio;
 
         return $this;
@@ -889,8 +864,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaProrrogaInicio()
-    {
+    public function getFechaProrrogaInicio() {
         return $this->fechaProrrogaInicio;
     }
 
@@ -901,8 +875,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaProrrogaFinal($fechaProrrogaFinal)
-    {
+    public function setFechaProrrogaFinal($fechaProrrogaFinal) {
         $this->fechaProrrogaFinal = $fechaProrrogaFinal;
 
         return $this;
@@ -913,8 +886,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaProrrogaFinal()
-    {
+    public function getFechaProrrogaFinal() {
         return $this->fechaProrrogaFinal;
     }
 
@@ -925,8 +897,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setNumero($numero)
-    {
+    public function setNumero($numero) {
         $this->numero = $numero;
 
         return $this;
@@ -937,8 +908,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getNumero()
-    {
+    public function getNumero() {
         return $this->numero;
     }
 
@@ -949,8 +919,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoCargoFk($codigoCargoFk)
-    {
+    public function setCodigoCargoFk($codigoCargoFk) {
         $this->codigoCargoFk = $codigoCargoFk;
 
         return $this;
@@ -961,8 +930,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoCargoFk()
-    {
+    public function getCodigoCargoFk() {
         return $this->codigoCargoFk;
     }
 
@@ -973,8 +941,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCargoDescripcion($cargoDescripcion)
-    {
+    public function setCargoDescripcion($cargoDescripcion) {
         $this->cargoDescripcion = $cargoDescripcion;
 
         return $this;
@@ -985,8 +952,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getCargoDescripcion()
-    {
+    public function getCargoDescripcion() {
         return $this->cargoDescripcion;
     }
 
@@ -997,8 +963,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setHorarioTrabajo($horarioTrabajo)
-    {
+    public function setHorarioTrabajo($horarioTrabajo) {
         $this->horarioTrabajo = $horarioTrabajo;
 
         return $this;
@@ -1009,8 +974,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getHorarioTrabajo()
-    {
+    public function getHorarioTrabajo() {
         return $this->horarioTrabajo;
     }
 
@@ -1021,8 +985,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setVrSalario($vrSalario)
-    {
+    public function setVrSalario($vrSalario) {
         $this->VrSalario = $vrSalario;
 
         return $this;
@@ -1033,8 +996,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getVrSalario()
-    {
+    public function getVrSalario() {
         return $this->VrSalario;
     }
 
@@ -1045,8 +1007,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setVrSalarioPago($vrSalarioPago)
-    {
+    public function setVrSalarioPago($vrSalarioPago) {
         $this->VrSalarioPago = $vrSalarioPago;
 
         return $this;
@@ -1057,8 +1018,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getVrSalarioPago()
-    {
+    public function getVrSalarioPago() {
         return $this->VrSalarioPago;
     }
 
@@ -1069,8 +1029,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEstadoActivo($estadoActivo)
-    {
+    public function setEstadoActivo($estadoActivo) {
         $this->estadoActivo = $estadoActivo;
 
         return $this;
@@ -1081,8 +1040,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getEstadoActivo()
-    {
+    public function getEstadoActivo() {
         return $this->estadoActivo;
     }
 
@@ -1093,8 +1051,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -1105,8 +1062,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -1117,8 +1073,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setComentariosTerminacion($comentariosTerminacion)
-    {
+    public function setComentariosTerminacion($comentariosTerminacion) {
         $this->comentariosTerminacion = $comentariosTerminacion;
 
         return $this;
@@ -1129,8 +1084,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getComentariosTerminacion()
-    {
+    public function getComentariosTerminacion() {
         return $this->comentariosTerminacion;
     }
 
@@ -1141,8 +1095,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setIndefinido($indefinido)
-    {
+    public function setIndefinido($indefinido) {
         $this->indefinido = $indefinido;
 
         return $this;
@@ -1153,8 +1106,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getIndefinido()
-    {
+    public function getIndefinido() {
         return $this->indefinido;
     }
 
@@ -1165,8 +1117,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
+    public function setCodigoCentroCostoFk($codigoCentroCostoFk) {
         $this->codigoCentroCostoFk = $codigoCentroCostoFk;
 
         return $this;
@@ -1177,8 +1128,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoCentroCostoFk()
-    {
+    public function getCodigoCentroCostoFk() {
         return $this->codigoCentroCostoFk;
     }
 
@@ -1189,8 +1139,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias)
-    {
+    public function setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias) {
         $this->fechaUltimoPagoCesantias = $fechaUltimoPagoCesantias;
 
         return $this;
@@ -1201,8 +1150,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoCesantias()
-    {
+    public function getFechaUltimoPagoCesantias() {
         return $this->fechaUltimoPagoCesantias;
     }
 
@@ -1213,8 +1161,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones)
-    {
+    public function setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones) {
         $this->fechaUltimoPagoVacaciones = $fechaUltimoPagoVacaciones;
 
         return $this;
@@ -1225,8 +1172,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoVacaciones()
-    {
+    public function getFechaUltimoPagoVacaciones() {
         return $this->fechaUltimoPagoVacaciones;
     }
 
@@ -1237,8 +1183,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas)
-    {
+    public function setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas) {
         $this->fechaUltimoPagoPrimas = $fechaUltimoPagoPrimas;
 
         return $this;
@@ -1249,8 +1194,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoPrimas()
-    {
+    public function getFechaUltimoPagoPrimas() {
         return $this->fechaUltimoPagoPrimas;
     }
 
@@ -1261,8 +1205,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFechaUltimoPago($fechaUltimoPago)
-    {
+    public function setFechaUltimoPago($fechaUltimoPago) {
         $this->fechaUltimoPago = $fechaUltimoPago;
 
         return $this;
@@ -1273,8 +1216,7 @@ class RhuContrato
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPago()
-    {
+    public function getFechaUltimoPago() {
         return $this->fechaUltimoPago;
     }
 
@@ -1285,8 +1227,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEstadoLiquidado($estadoLiquidado)
-    {
+    public function setEstadoLiquidado($estadoLiquidado) {
         $this->estadoLiquidado = $estadoLiquidado;
 
         return $this;
@@ -1297,8 +1238,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getEstadoLiquidado()
-    {
+    public function getEstadoLiquidado() {
         return $this->estadoLiquidado;
     }
 
@@ -1309,8 +1249,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEstadoTerminado($estadoTerminado)
-    {
+    public function setEstadoTerminado($estadoTerminado) {
         $this->estadoTerminado = $estadoTerminado;
 
         return $this;
@@ -1321,8 +1260,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getEstadoTerminado()
-    {
+    public function getEstadoTerminado() {
         return $this->estadoTerminado;
     }
 
@@ -1333,8 +1271,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setIbpCesantiasInicial($ibpCesantiasInicial)
-    {
+    public function setIbpCesantiasInicial($ibpCesantiasInicial) {
         $this->ibpCesantiasInicial = $ibpCesantiasInicial;
 
         return $this;
@@ -1345,8 +1282,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getIbpCesantiasInicial()
-    {
+    public function getIbpCesantiasInicial() {
         return $this->ibpCesantiasInicial;
     }
 
@@ -1357,8 +1293,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setIbpPrimasInicial($ibpPrimasInicial)
-    {
+    public function setIbpPrimasInicial($ibpPrimasInicial) {
         $this->ibpPrimasInicial = $ibpPrimasInicial;
 
         return $this;
@@ -1369,8 +1304,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getIbpPrimasInicial()
-    {
+    public function getIbpPrimasInicial() {
         return $this->ibpPrimasInicial;
     }
 
@@ -1381,8 +1315,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setIbpRecargoNocturnoInicial($ibpRecargoNocturnoInicial)
-    {
+    public function setIbpRecargoNocturnoInicial($ibpRecargoNocturnoInicial) {
         $this->ibpRecargoNocturnoInicial = $ibpRecargoNocturnoInicial;
 
         return $this;
@@ -1393,8 +1326,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getIbpRecargoNocturnoInicial()
-    {
+    public function getIbpRecargoNocturnoInicial() {
         return $this->ibpRecargoNocturnoInicial;
     }
 
@@ -1405,8 +1337,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFactor($factor)
-    {
+    public function setFactor($factor) {
         $this->factor = $factor;
 
         return $this;
@@ -1417,8 +1348,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getFactor()
-    {
+    public function getFactor() {
         return $this->factor;
     }
 
@@ -1429,8 +1359,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setFactorHorasDia($factorHorasDia)
-    {
+    public function setFactorHorasDia($factorHorasDia) {
         $this->factorHorasDia = $factorHorasDia;
 
         return $this;
@@ -1441,8 +1370,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getFactorHorasDia()
-    {
+    public function getFactorHorasDia() {
         return $this->factorHorasDia;
     }
 
@@ -1453,8 +1381,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoTipoCotizanteFk($codigoTipoCotizanteFk)
-    {
+    public function setCodigoTipoCotizanteFk($codigoTipoCotizanteFk) {
         $this->codigoTipoCotizanteFk = $codigoTipoCotizanteFk;
 
         return $this;
@@ -1465,8 +1392,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoTipoCotizanteFk()
-    {
+    public function getCodigoTipoCotizanteFk() {
         return $this->codigoTipoCotizanteFk;
     }
 
@@ -1477,8 +1403,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoSubtipoCotizanteFk($codigoSubtipoCotizanteFk)
-    {
+    public function setCodigoSubtipoCotizanteFk($codigoSubtipoCotizanteFk) {
         $this->codigoSubtipoCotizanteFk = $codigoSubtipoCotizanteFk;
 
         return $this;
@@ -1489,8 +1414,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoSubtipoCotizanteFk()
-    {
+    public function getCodigoSubtipoCotizanteFk() {
         return $this->codigoSubtipoCotizanteFk;
     }
 
@@ -1501,8 +1425,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setSalarioIntegral($salarioIntegral)
-    {
+    public function setSalarioIntegral($salarioIntegral) {
         $this->salarioIntegral = $salarioIntegral;
 
         return $this;
@@ -1513,8 +1436,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getSalarioIntegral()
-    {
+    public function getSalarioIntegral() {
         return $this->salarioIntegral;
     }
 
@@ -1525,8 +1447,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk)
-    {
+    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk) {
         $this->codigoEntidadSaludFk = $codigoEntidadSaludFk;
 
         return $this;
@@ -1537,8 +1458,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoEntidadSaludFk()
-    {
+    public function getCodigoEntidadSaludFk() {
         return $this->codigoEntidadSaludFk;
     }
 
@@ -1549,8 +1469,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoEntidadPensionFk($codigoEntidadPensionFk)
-    {
+    public function setCodigoEntidadPensionFk($codigoEntidadPensionFk) {
         $this->codigoEntidadPensionFk = $codigoEntidadPensionFk;
 
         return $this;
@@ -1561,8 +1480,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoEntidadPensionFk()
-    {
+    public function getCodigoEntidadPensionFk() {
         return $this->codigoEntidadPensionFk;
     }
 
@@ -1573,8 +1491,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoEntidadCesantiaFk($codigoEntidadCesantiaFk)
-    {
+    public function setCodigoEntidadCesantiaFk($codigoEntidadCesantiaFk) {
         $this->codigoEntidadCesantiaFk = $codigoEntidadCesantiaFk;
 
         return $this;
@@ -1585,8 +1502,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoEntidadCesantiaFk()
-    {
+    public function getCodigoEntidadCesantiaFk() {
         return $this->codigoEntidadCesantiaFk;
     }
 
@@ -1597,8 +1513,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoUsuario($codigoUsuario)
-    {
+    public function setCodigoUsuario($codigoUsuario) {
         $this->codigoUsuario = $codigoUsuario;
 
         return $this;
@@ -1609,8 +1524,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getCodigoUsuario()
-    {
+    public function getCodigoUsuario() {
         return $this->codigoUsuario;
     }
 
@@ -1621,8 +1535,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoUsuarioTermina($codigoUsuarioTermina)
-    {
+    public function setCodigoUsuarioTermina($codigoUsuarioTermina) {
         $this->codigoUsuarioTermina = $codigoUsuarioTermina;
 
         return $this;
@@ -1633,8 +1546,7 @@ class RhuContrato
      *
      * @return string
      */
-    public function getCodigoUsuarioTermina()
-    {
+    public function getCodigoUsuarioTermina() {
         return $this->codigoUsuarioTermina;
     }
 
@@ -1645,8 +1557,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoEntidadCajaFk($codigoEntidadCajaFk)
-    {
+    public function setCodigoEntidadCajaFk($codigoEntidadCajaFk) {
         $this->codigoEntidadCajaFk = $codigoEntidadCajaFk;
 
         return $this;
@@ -1657,8 +1568,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoEntidadCajaFk()
-    {
+    public function getCodigoEntidadCajaFk() {
         return $this->codigoEntidadCajaFk;
     }
 
@@ -1669,8 +1579,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoCiudadContratoFk($codigoCiudadContratoFk)
-    {
+    public function setCodigoCiudadContratoFk($codigoCiudadContratoFk) {
         $this->codigoCiudadContratoFk = $codigoCiudadContratoFk;
 
         return $this;
@@ -1681,8 +1590,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoCiudadContratoFk()
-    {
+    public function getCodigoCiudadContratoFk() {
         return $this->codigoCiudadContratoFk;
     }
 
@@ -1693,8 +1601,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoCiudadLaboraFk($codigoCiudadLaboraFk)
-    {
+    public function setCodigoCiudadLaboraFk($codigoCiudadLaboraFk) {
         $this->codigoCiudadLaboraFk = $codigoCiudadLaboraFk;
 
         return $this;
@@ -1705,8 +1612,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoCiudadLaboraFk()
-    {
+    public function getCodigoCiudadLaboraFk() {
         return $this->codigoCiudadLaboraFk;
     }
 
@@ -1717,8 +1623,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoContratoGrupoFk($codigoContratoGrupoFk)
-    {
+    public function setCodigoContratoGrupoFk($codigoContratoGrupoFk) {
         $this->codigoContratoGrupoFk = $codigoContratoGrupoFk;
 
         return $this;
@@ -1729,8 +1634,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoContratoGrupoFk()
-    {
+    public function getCodigoContratoGrupoFk() {
         return $this->codigoContratoGrupoFk;
     }
 
@@ -1741,8 +1645,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk)
-    {
+    public function setCodigoCentroTrabajoFk($codigoCentroTrabajoFk) {
         $this->codigoCentroTrabajoFk = $codigoCentroTrabajoFk;
 
         return $this;
@@ -1753,8 +1656,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoCentroTrabajoFk()
-    {
+    public function getCodigoCentroTrabajoFk() {
         return $this->codigoCentroTrabajoFk;
     }
 
@@ -1765,8 +1667,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigosucursalFk($codigosucursalFk)
-    {
+    public function setCodigosucursalFk($codigosucursalFk) {
         $this->codigosucursalFk = $codigosucursalFk;
 
         return $this;
@@ -1777,8 +1678,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigosucursalFk()
-    {
+    public function getCodigosucursalFk() {
         return $this->codigosucursalFk;
     }
 
@@ -1789,8 +1689,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setLimitarHoraExtra($limitarHoraExtra)
-    {
+    public function setLimitarHoraExtra($limitarHoraExtra) {
         $this->limitarHoraExtra = $limitarHoraExtra;
 
         return $this;
@@ -1801,8 +1700,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getLimitarHoraExtra()
-    {
+    public function getLimitarHoraExtra() {
         return $this->limitarHoraExtra;
     }
 
@@ -1813,8 +1711,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setVrDevengadoPactado($vrDevengadoPactado)
-    {
+    public function setVrDevengadoPactado($vrDevengadoPactado) {
         $this->VrDevengadoPactado = $vrDevengadoPactado;
 
         return $this;
@@ -1825,8 +1722,7 @@ class RhuContrato
      *
      * @return float
      */
-    public function getVrDevengadoPactado()
-    {
+    public function getVrDevengadoPactado() {
         return $this->VrDevengadoPactado;
     }
 
@@ -1837,8 +1733,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setTurnoFijoOrdinario($turnoFijoOrdinario)
-    {
+    public function setTurnoFijoOrdinario($turnoFijoOrdinario) {
         $this->turnoFijoOrdinario = $turnoFijoOrdinario;
 
         return $this;
@@ -1849,8 +1744,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getTurnoFijoOrdinario()
-    {
+    public function getTurnoFijoOrdinario() {
         return $this->turnoFijoOrdinario;
     }
 
@@ -1861,8 +1755,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setSecuencia($secuencia)
-    {
+    public function setSecuencia($secuencia) {
         $this->secuencia = $secuencia;
 
         return $this;
@@ -1873,8 +1766,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getSecuencia()
-    {
+    public function getSecuencia() {
         return $this->secuencia;
     }
 
@@ -1885,8 +1777,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
+    public function setCodigoClienteFk($codigoClienteFk) {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -1897,8 +1788,7 @@ class RhuContrato
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
-    {
+    public function getCodigoClienteFk() {
         return $this->codigoClienteFk;
     }
 
@@ -1909,8 +1799,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setAuxilioTransporte($auxilioTransporte)
-    {
+    public function setAuxilioTransporte($auxilioTransporte) {
         $this->auxilioTransporte = $auxilioTransporte;
 
         return $this;
@@ -1921,8 +1810,7 @@ class RhuContrato
      *
      * @return boolean
      */
-    public function getAuxilioTransporte()
-    {
+    public function getAuxilioTransporte() {
         return $this->auxilioTransporte;
     }
 
@@ -1933,8 +1821,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null) {
         $this->clienteRel = $clienteRel;
 
         return $this;
@@ -1945,8 +1832,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
      */
-    public function getClienteRel()
-    {
+    public function getClienteRel() {
         return $this->clienteRel;
     }
 
@@ -1957,8 +1843,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null) {
         $this->empleadoRel = $empleadoRel;
 
         return $this;
@@ -1969,8 +1854,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
      */
-    public function getEmpleadoRel()
-    {
+    public function getEmpleadoRel() {
         return $this->empleadoRel;
     }
 
@@ -1981,8 +1865,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setTipoTiempoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoTiempo $tipoTiempoRel = null)
-    {
+    public function setTipoTiempoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoTiempo $tipoTiempoRel = null) {
         $this->tipoTiempoRel = $tipoTiempoRel;
 
         return $this;
@@ -1993,8 +1876,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuTipoTiempo
      */
-    public function getTipoTiempoRel()
-    {
+    public function getTipoTiempoRel() {
         return $this->tipoTiempoRel;
     }
 
@@ -2005,8 +1887,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
-    {
+    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null) {
         $this->centroCostoRel = $centroCostoRel;
 
         return $this;
@@ -2017,8 +1898,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
      */
-    public function getCentroCostoRel()
-    {
+    public function getCentroCostoRel() {
         return $this->centroCostoRel;
     }
 
@@ -2029,8 +1909,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setContratoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoTipo $contratoTipoRel = null)
-    {
+    public function setContratoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoTipo $contratoTipoRel = null) {
         $this->contratoTipoRel = $contratoTipoRel;
 
         return $this;
@@ -2041,8 +1920,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoTipo
      */
-    public function getContratoTipoRel()
-    {
+    public function getContratoTipoRel() {
         return $this->contratoTipoRel;
     }
 
@@ -2053,8 +1931,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setContratoGrupoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel = null)
-    {
+    public function setContratoGrupoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo $contratoGrupoRel = null) {
         $this->contratoGrupoRel = $contratoGrupoRel;
 
         return $this;
@@ -2065,8 +1942,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoGrupo
      */
-    public function getContratoGrupoRel()
-    {
+    public function getContratoGrupoRel() {
         return $this->contratoGrupoRel;
     }
 
@@ -2077,8 +1953,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setContratoClaseRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoClase $contratoClaseRel = null)
-    {
+    public function setContratoClaseRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoClase $contratoClaseRel = null) {
         $this->contratoClaseRel = $contratoClaseRel;
 
         return $this;
@@ -2089,8 +1964,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuContratoClase
      */
-    public function getContratoClaseRel()
-    {
+    public function getContratoClaseRel() {
         return $this->contratoClaseRel;
     }
 
@@ -2101,8 +1975,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setSalarioTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSalarioTipo $salarioTipoRel = null)
-    {
+    public function setSalarioTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSalarioTipo $salarioTipoRel = null) {
         $this->salarioTipoRel = $salarioTipoRel;
 
         return $this;
@@ -2113,8 +1986,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuSalarioTipo
      */
-    public function getSalarioTipoRel()
-    {
+    public function getSalarioTipoRel() {
         return $this->salarioTipoRel;
     }
 
@@ -2125,8 +1997,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setClasificacionRiesgoRel(\Brasa\RecursoHumanoBundle\Entity\RhuClasificacionRiesgo $clasificacionRiesgoRel = null)
-    {
+    public function setClasificacionRiesgoRel(\Brasa\RecursoHumanoBundle\Entity\RhuClasificacionRiesgo $clasificacionRiesgoRel = null) {
         $this->clasificacionRiesgoRel = $clasificacionRiesgoRel;
 
         return $this;
@@ -2137,8 +2008,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuClasificacionRiesgo
      */
-    public function getClasificacionRiesgoRel()
-    {
+    public function getClasificacionRiesgoRel() {
         return $this->clasificacionRiesgoRel;
     }
 
@@ -2149,8 +2019,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCargoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel = null)
-    {
+    public function setCargoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel = null) {
         $this->cargoRel = $cargoRel;
 
         return $this;
@@ -2161,8 +2030,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCargo
      */
-    public function getCargoRel()
-    {
+    public function getCargoRel() {
         return $this->cargoRel;
     }
 
@@ -2173,8 +2041,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setTipoPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoPension $tipoPensionRel = null)
-    {
+    public function setTipoPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoPension $tipoPensionRel = null) {
         $this->tipoPensionRel = $tipoPensionRel;
 
         return $this;
@@ -2185,8 +2052,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuTipoPension
      */
-    public function getTipoPensionRel()
-    {
+    public function getTipoPensionRel() {
         return $this->tipoPensionRel;
     }
 
@@ -2197,8 +2063,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setTipoSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud $tipoSaludRel = null)
-    {
+    public function setTipoSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud $tipoSaludRel = null) {
         $this->tipoSaludRel = $tipoSaludRel;
 
         return $this;
@@ -2209,8 +2074,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuTipoSalud
      */
-    public function getTipoSaludRel()
-    {
+    public function getTipoSaludRel() {
         return $this->tipoSaludRel;
     }
 
@@ -2221,8 +2085,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setSsoTipoCotizanteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoTipoCotizante $ssoTipoCotizanteRel = null)
-    {
+    public function setSsoTipoCotizanteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoTipoCotizante $ssoTipoCotizanteRel = null) {
         $this->ssoTipoCotizanteRel = $ssoTipoCotizanteRel;
 
         return $this;
@@ -2233,8 +2096,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuSsoTipoCotizante
      */
-    public function getSsoTipoCotizanteRel()
-    {
+    public function getSsoTipoCotizanteRel() {
         return $this->ssoTipoCotizanteRel;
     }
 
@@ -2245,8 +2107,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setSsoSubtipoCotizanteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoSubtipoCotizante $ssoSubtipoCotizanteRel = null)
-    {
+    public function setSsoSubtipoCotizanteRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoSubtipoCotizante $ssoSubtipoCotizanteRel = null) {
         $this->ssoSubtipoCotizanteRel = $ssoSubtipoCotizanteRel;
 
         return $this;
@@ -2257,8 +2118,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuSsoSubtipoCotizante
      */
-    public function getSsoSubtipoCotizanteRel()
-    {
+    public function getSsoSubtipoCotizanteRel() {
         return $this->ssoSubtipoCotizanteRel;
     }
 
@@ -2269,8 +2129,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setTerminacionContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato $terminacionContratoRel = null)
-    {
+    public function setTerminacionContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato $terminacionContratoRel = null) {
         $this->terminacionContratoRel = $terminacionContratoRel;
 
         return $this;
@@ -2281,8 +2140,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato
      */
-    public function getTerminacionContratoRel()
-    {
+    public function getTerminacionContratoRel() {
         return $this->terminacionContratoRel;
     }
 
@@ -2293,8 +2151,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null)
-    {
+    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null) {
         $this->entidadSaludRel = $entidadSaludRel;
 
         return $this;
@@ -2305,8 +2162,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud
      */
-    public function getEntidadSaludRel()
-    {
+    public function getEntidadSaludRel() {
         return $this->entidadSaludRel;
     }
 
@@ -2317,8 +2173,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEntidadPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension $entidadPensionRel = null)
-    {
+    public function setEntidadPensionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension $entidadPensionRel = null) {
         $this->entidadPensionRel = $entidadPensionRel;
 
         return $this;
@@ -2329,8 +2184,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadPension
      */
-    public function getEntidadPensionRel()
-    {
+    public function getEntidadPensionRel() {
         return $this->entidadPensionRel;
     }
 
@@ -2341,8 +2195,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEntidadCesantiaRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadCesantia $entidadCesantiaRel = null)
-    {
+    public function setEntidadCesantiaRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadCesantia $entidadCesantiaRel = null) {
         $this->entidadCesantiaRel = $entidadCesantiaRel;
 
         return $this;
@@ -2353,8 +2206,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCesantia
      */
-    public function getEntidadCesantiaRel()
-    {
+    public function getEntidadCesantiaRel() {
         return $this->entidadCesantiaRel;
     }
 
@@ -2365,8 +2217,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setEntidadCajaRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja $entidadCajaRel = null)
-    {
+    public function setEntidadCajaRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja $entidadCajaRel = null) {
         $this->entidadCajaRel = $entidadCajaRel;
 
         return $this;
@@ -2377,8 +2228,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadCaja
      */
-    public function getEntidadCajaRel()
-    {
+    public function getEntidadCajaRel() {
         return $this->entidadCajaRel;
     }
 
@@ -2389,8 +2239,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCiudadContratoRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadContratoRel = null)
-    {
+    public function setCiudadContratoRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadContratoRel = null) {
         $this->ciudadContratoRel = $ciudadContratoRel;
 
         return $this;
@@ -2401,8 +2250,7 @@ class RhuContrato
      *
      * @return \Brasa\GeneralBundle\Entity\GenCiudad
      */
-    public function getCiudadContratoRel()
-    {
+    public function getCiudadContratoRel() {
         return $this->ciudadContratoRel;
     }
 
@@ -2413,8 +2261,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCiudadLaboraRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadLaboraRel = null)
-    {
+    public function setCiudadLaboraRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadLaboraRel = null) {
         $this->ciudadLaboraRel = $ciudadLaboraRel;
 
         return $this;
@@ -2425,8 +2272,7 @@ class RhuContrato
      *
      * @return \Brasa\GeneralBundle\Entity\GenCiudad
      */
-    public function getCiudadLaboraRel()
-    {
+    public function getCiudadLaboraRel() {
         return $this->ciudadLaboraRel;
     }
 
@@ -2437,8 +2283,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null)
-    {
+    public function setCentroTrabajoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo $centroTrabajoRel = null) {
         $this->centroTrabajoRel = $centroTrabajoRel;
 
         return $this;
@@ -2449,8 +2294,7 @@ class RhuContrato
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroTrabajo
      */
-    public function getCentroTrabajoRel()
-    {
+    public function getCentroTrabajoRel() {
         return $this->centroTrabajoRel;
     }
 
@@ -2461,8 +2305,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addLiquidacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesContratoRel)
-    {
+    public function addLiquidacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesContratoRel) {
         $this->liquidacionesContratoRel[] = $liquidacionesContratoRel;
 
         return $this;
@@ -2473,8 +2316,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesContratoRel
      */
-    public function removeLiquidacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesContratoRel)
-    {
+    public function removeLiquidacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion $liquidacionesContratoRel) {
         $this->liquidacionesContratoRel->removeElement($liquidacionesContratoRel);
     }
 
@@ -2483,8 +2325,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLiquidacionesContratoRel()
-    {
+    public function getLiquidacionesContratoRel() {
         return $this->liquidacionesContratoRel;
     }
 
@@ -2495,8 +2336,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addPrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
-    {
+    public function addPrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel) {
         $this->prestacionesContratoRel[] = $prestacionesContratoRel;
 
         return $this;
@@ -2507,8 +2347,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel
      */
-    public function removePrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel)
-    {
+    public function removePrestacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrestacion $prestacionesContratoRel) {
         $this->prestacionesContratoRel->removeElement($prestacionesContratoRel);
     }
 
@@ -2517,8 +2356,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPrestacionesContratoRel()
-    {
+    public function getPrestacionesContratoRel() {
         return $this->prestacionesContratoRel;
     }
 
@@ -2529,8 +2367,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addProgramacionesPagosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel)
-    {
+    public function addProgramacionesPagosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel) {
         $this->programacionesPagosDetallesContratoRel[] = $programacionesPagosDetallesContratoRel;
 
         return $this;
@@ -2541,8 +2378,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel
      */
-    public function removeProgramacionesPagosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel)
-    {
+    public function removeProgramacionesPagosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoDetalle $programacionesPagosDetallesContratoRel) {
         $this->programacionesPagosDetallesContratoRel->removeElement($programacionesPagosDetallesContratoRel);
     }
 
@@ -2551,8 +2387,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProgramacionesPagosDetallesContratoRel()
-    {
+    public function getProgramacionesPagosDetallesContratoRel() {
         return $this->programacionesPagosDetallesContratoRel;
     }
 
@@ -2563,8 +2398,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
-    {
+    public function addProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel) {
         $this->programacionesPagosHorasExtrasContratoRel[] = $programacionesPagosHorasExtrasContratoRel;
 
         return $this;
@@ -2575,8 +2409,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel
      */
-    public function removeProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel)
-    {
+    public function removeProgramacionesPagosHorasExtrasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProgramacionPagoHoraExtra $programacionesPagosHorasExtrasContratoRel) {
         $this->programacionesPagosHorasExtrasContratoRel->removeElement($programacionesPagosHorasExtrasContratoRel);
     }
 
@@ -2585,8 +2418,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProgramacionesPagosHorasExtrasContratoRel()
-    {
+    public function getProgramacionesPagosHorasExtrasContratoRel() {
         return $this->programacionesPagosHorasExtrasContratoRel;
     }
 
@@ -2597,8 +2429,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addPagosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosContratoRel)
-    {
+    public function addPagosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosContratoRel) {
         $this->pagosContratoRel[] = $pagosContratoRel;
 
         return $this;
@@ -2609,8 +2440,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosContratoRel
      */
-    public function removePagosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosContratoRel)
-    {
+    public function removePagosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPago $pagosContratoRel) {
         $this->pagosContratoRel->removeElement($pagosContratoRel);
     }
 
@@ -2619,8 +2449,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPagosContratoRel()
-    {
+    public function getPagosContratoRel() {
         return $this->pagosContratoRel;
     }
 
@@ -2631,8 +2460,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addProvisionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProvision $provisionesContratoRel)
-    {
+    public function addProvisionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProvision $provisionesContratoRel) {
         $this->provisionesContratoRel[] = $provisionesContratoRel;
 
         return $this;
@@ -2643,8 +2471,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProvision $provisionesContratoRel
      */
-    public function removeProvisionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProvision $provisionesContratoRel)
-    {
+    public function removeProvisionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProvision $provisionesContratoRel) {
         $this->provisionesContratoRel->removeElement($provisionesContratoRel);
     }
 
@@ -2653,8 +2480,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProvisionesContratoRel()
-    {
+    public function getProvisionesContratoRel() {
         return $this->provisionesContratoRel;
     }
 
@@ -2665,8 +2491,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addSsoPeriodosEmpleadosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado $ssoPeriodosEmpleadosContratoRel)
-    {
+    public function addSsoPeriodosEmpleadosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado $ssoPeriodosEmpleadosContratoRel) {
         $this->ssoPeriodosEmpleadosContratoRel[] = $ssoPeriodosEmpleadosContratoRel;
 
         return $this;
@@ -2677,8 +2502,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado $ssoPeriodosEmpleadosContratoRel
      */
-    public function removeSsoPeriodosEmpleadosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado $ssoPeriodosEmpleadosContratoRel)
-    {
+    public function removeSsoPeriodosEmpleadosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoEmpleado $ssoPeriodosEmpleadosContratoRel) {
         $this->ssoPeriodosEmpleadosContratoRel->removeElement($ssoPeriodosEmpleadosContratoRel);
     }
 
@@ -2687,8 +2511,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSsoPeriodosEmpleadosContratoRel()
-    {
+    public function getSsoPeriodosEmpleadosContratoRel() {
         return $this->ssoPeriodosEmpleadosContratoRel;
     }
 
@@ -2699,8 +2522,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addSsoAportesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte $ssoAportesContratoRel)
-    {
+    public function addSsoAportesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte $ssoAportesContratoRel) {
         $this->ssoAportesContratoRel[] = $ssoAportesContratoRel;
 
         return $this;
@@ -2711,8 +2533,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte $ssoAportesContratoRel
      */
-    public function removeSsoAportesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte $ssoAportesContratoRel)
-    {
+    public function removeSsoAportesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSsoAporte $ssoAportesContratoRel) {
         $this->ssoAportesContratoRel->removeElement($ssoAportesContratoRel);
     }
 
@@ -2721,8 +2542,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSsoAportesContratoRel()
-    {
+    public function getSsoAportesContratoRel() {
         return $this->ssoAportesContratoRel;
     }
 
@@ -2733,8 +2553,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addCambiosSalariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario $cambiosSalariosContratoRel)
-    {
+    public function addCambiosSalariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario $cambiosSalariosContratoRel) {
         $this->cambiosSalariosContratoRel[] = $cambiosSalariosContratoRel;
 
         return $this;
@@ -2745,8 +2564,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario $cambiosSalariosContratoRel
      */
-    public function removeCambiosSalariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario $cambiosSalariosContratoRel)
-    {
+    public function removeCambiosSalariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioSalario $cambiosSalariosContratoRel) {
         $this->cambiosSalariosContratoRel->removeElement($cambiosSalariosContratoRel);
     }
 
@@ -2755,8 +2573,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCambiosSalariosContratoRel()
-    {
+    public function getCambiosSalariosContratoRel() {
         return $this->cambiosSalariosContratoRel;
     }
 
@@ -2767,8 +2584,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addVacacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesContratoRel)
-    {
+    public function addVacacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesContratoRel) {
         $this->vacacionesContratoRel[] = $vacacionesContratoRel;
 
         return $this;
@@ -2779,8 +2595,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesContratoRel
      */
-    public function removeVacacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesContratoRel)
-    {
+    public function removeVacacionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuVacacion $vacacionesContratoRel) {
         $this->vacacionesContratoRel->removeElement($vacacionesContratoRel);
     }
 
@@ -2789,8 +2604,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVacacionesContratoRel()
-    {
+    public function getVacacionesContratoRel() {
         return $this->vacacionesContratoRel;
     }
 
@@ -2801,8 +2615,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addLicenciasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasContratoRel)
-    {
+    public function addLicenciasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasContratoRel) {
         $this->licenciasContratoRel[] = $licenciasContratoRel;
 
         return $this;
@@ -2813,8 +2626,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasContratoRel
      */
-    public function removeLicenciasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasContratoRel)
-    {
+    public function removeLicenciasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasContratoRel) {
         $this->licenciasContratoRel->removeElement($licenciasContratoRel);
     }
 
@@ -2823,8 +2635,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLicenciasContratoRel()
-    {
+    public function getLicenciasContratoRel() {
         return $this->licenciasContratoRel;
     }
 
@@ -2835,8 +2646,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addIncapacidadesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesContratoRel)
-    {
+    public function addIncapacidadesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesContratoRel) {
         $this->incapacidadesContratoRel[] = $incapacidadesContratoRel;
 
         return $this;
@@ -2847,8 +2657,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesContratoRel
      */
-    public function removeIncapacidadesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesContratoRel)
-    {
+    public function removeIncapacidadesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad $incapacidadesContratoRel) {
         $this->incapacidadesContratoRel->removeElement($incapacidadesContratoRel);
     }
 
@@ -2857,8 +2666,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncapacidadesContratoRel()
-    {
+    public function getIncapacidadesContratoRel() {
         return $this->incapacidadesContratoRel;
     }
 
@@ -2869,8 +2677,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addIngresosBasesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIngresoBase $ingresosBasesContratoRel)
-    {
+    public function addIngresosBasesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIngresoBase $ingresosBasesContratoRel) {
         $this->ingresosBasesContratoRel[] = $ingresosBasesContratoRel;
 
         return $this;
@@ -2881,8 +2688,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuIngresoBase $ingresosBasesContratoRel
      */
-    public function removeIngresosBasesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIngresoBase $ingresosBasesContratoRel)
-    {
+    public function removeIngresosBasesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIngresoBase $ingresosBasesContratoRel) {
         $this->ingresosBasesContratoRel->removeElement($ingresosBasesContratoRel);
     }
 
@@ -2891,8 +2697,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIngresosBasesContratoRel()
-    {
+    public function getIngresosBasesContratoRel() {
         return $this->ingresosBasesContratoRel;
     }
 
@@ -2903,8 +2708,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addContratosSedesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoSede $contratosSedesContratoRel)
-    {
+    public function addContratosSedesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoSede $contratosSedesContratoRel) {
         $this->contratosSedesContratoRel[] = $contratosSedesContratoRel;
 
         return $this;
@@ -2915,8 +2719,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoSede $contratosSedesContratoRel
      */
-    public function removeContratosSedesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoSede $contratosSedesContratoRel)
-    {
+    public function removeContratosSedesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoSede $contratosSedesContratoRel) {
         $this->contratosSedesContratoRel->removeElement($contratosSedesContratoRel);
     }
 
@@ -2925,8 +2728,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContratosSedesContratoRel()
-    {
+    public function getContratosSedesContratoRel() {
         return $this->contratosSedesContratoRel;
     }
 
@@ -2937,8 +2739,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addProyeccionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProyeccion $proyeccionesContratoRel)
-    {
+    public function addProyeccionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProyeccion $proyeccionesContratoRel) {
         $this->proyeccionesContratoRel[] = $proyeccionesContratoRel;
 
         return $this;
@@ -2949,8 +2750,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuProyeccion $proyeccionesContratoRel
      */
-    public function removeProyeccionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProyeccion $proyeccionesContratoRel)
-    {
+    public function removeProyeccionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuProyeccion $proyeccionesContratoRel) {
         $this->proyeccionesContratoRel->removeElement($proyeccionesContratoRel);
     }
 
@@ -2959,8 +2759,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProyeccionesContratoRel()
-    {
+    public function getProyeccionesContratoRel() {
         return $this->proyeccionesContratoRel;
     }
 
@@ -2971,8 +2770,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addTrasladosPensionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension $trasladosPensionesContratoRel)
-    {
+    public function addTrasladosPensionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension $trasladosPensionesContratoRel) {
         $this->trasladosPensionesContratoRel[] = $trasladosPensionesContratoRel;
 
         return $this;
@@ -2983,8 +2781,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension $trasladosPensionesContratoRel
      */
-    public function removeTrasladosPensionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension $trasladosPensionesContratoRel)
-    {
+    public function removeTrasladosPensionesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoPension $trasladosPensionesContratoRel) {
         $this->trasladosPensionesContratoRel->removeElement($trasladosPensionesContratoRel);
     }
 
@@ -2993,8 +2790,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getTrasladosPensionesContratoRel()
-    {
+    public function getTrasladosPensionesContratoRel() {
         return $this->trasladosPensionesContratoRel;
     }
 
@@ -3005,8 +2801,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addTrasladosSaludContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludContratoRel)
-    {
+    public function addTrasladosSaludContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludContratoRel) {
         $this->trasladosSaludContratoRel[] = $trasladosSaludContratoRel;
 
         return $this;
@@ -3017,8 +2812,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludContratoRel
      */
-    public function removeTrasladosSaludContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludContratoRel)
-    {
+    public function removeTrasladosSaludContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludContratoRel) {
         $this->trasladosSaludContratoRel->removeElement($trasladosSaludContratoRel);
     }
 
@@ -3027,8 +2821,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getTrasladosSaludContratoRel()
-    {
+    public function getTrasladosSaludContratoRel() {
         return $this->trasladosSaludContratoRel;
     }
 
@@ -3039,8 +2832,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addContratosProrrogasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoProrroga $contratosProrrogasContratoRel)
-    {
+    public function addContratosProrrogasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoProrroga $contratosProrrogasContratoRel) {
         $this->contratosProrrogasContratoRel[] = $contratosProrrogasContratoRel;
 
         return $this;
@@ -3051,8 +2843,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoProrroga $contratosProrrogasContratoRel
      */
-    public function removeContratosProrrogasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoProrroga $contratosProrrogasContratoRel)
-    {
+    public function removeContratosProrrogasContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoProrroga $contratosProrrogasContratoRel) {
         $this->contratosProrrogasContratoRel->removeElement($contratosProrrogasContratoRel);
     }
 
@@ -3061,8 +2852,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContratosProrrogasContratoRel()
-    {
+    public function getContratosProrrogasContratoRel() {
         return $this->contratosProrrogasContratoRel;
     }
 
@@ -3073,8 +2863,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addSoportesPagosHorariosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle $soportesPagosHorariosDetallesContratoRel)
-    {
+    public function addSoportesPagosHorariosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle $soportesPagosHorariosDetallesContratoRel) {
         $this->soportesPagosHorariosDetallesContratoRel[] = $soportesPagosHorariosDetallesContratoRel;
 
         return $this;
@@ -3085,8 +2874,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle $soportesPagosHorariosDetallesContratoRel
      */
-    public function removeSoportesPagosHorariosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle $soportesPagosHorariosDetallesContratoRel)
-    {
+    public function removeSoportesPagosHorariosDetallesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSoportePagoHorarioDetalle $soportesPagosHorariosDetallesContratoRel) {
         $this->soportesPagosHorariosDetallesContratoRel->removeElement($soportesPagosHorariosDetallesContratoRel);
     }
 
@@ -3095,8 +2883,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSoportesPagosHorariosDetallesContratoRel()
-    {
+    public function getSoportesPagosHorariosDetallesContratoRel() {
         return $this->soportesPagosHorariosDetallesContratoRel;
     }
 
@@ -3107,8 +2894,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addCambiosTiposContratosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioTipoContrato $cambiosTiposContratosContratoRel)
-    {
+    public function addCambiosTiposContratosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioTipoContrato $cambiosTiposContratosContratoRel) {
         $this->cambiosTiposContratosContratoRel[] = $cambiosTiposContratosContratoRel;
 
         return $this;
@@ -3119,8 +2905,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCambioTipoContrato $cambiosTiposContratosContratoRel
      */
-    public function removeCambiosTiposContratosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioTipoContrato $cambiosTiposContratosContratoRel)
-    {
+    public function removeCambiosTiposContratosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCambioTipoContrato $cambiosTiposContratosContratoRel) {
         $this->cambiosTiposContratosContratoRel->removeElement($cambiosTiposContratosContratoRel);
     }
 
@@ -3129,8 +2914,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCambiosTiposContratosContratoRel()
-    {
+    public function getCambiosTiposContratosContratoRel() {
         return $this->cambiosTiposContratosContratoRel;
     }
 
@@ -3141,8 +2925,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addDisciplinariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario $disciplinariosContratoRel)
-    {
+    public function addDisciplinariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario $disciplinariosContratoRel) {
         $this->disciplinariosContratoRel[] = $disciplinariosContratoRel;
 
         return $this;
@@ -3153,8 +2936,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario $disciplinariosContratoRel
      */
-    public function removeDisciplinariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario $disciplinariosContratoRel)
-    {
+    public function removeDisciplinariosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuDisciplinario $disciplinariosContratoRel) {
         $this->disciplinariosContratoRel->removeElement($disciplinariosContratoRel);
     }
 
@@ -3163,8 +2945,7 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getDisciplinariosContratoRel()
-    {
+    public function getDisciplinariosContratoRel() {
         return $this->disciplinariosContratoRel;
     }
 
@@ -3175,8 +2956,7 @@ class RhuContrato
      *
      * @return RhuContrato
      */
-    public function addContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel)
-    {
+    public function addContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel) {
         $this->contratosAdicionalesContratoRel[] = $contratosAdicionalesContratoRel;
 
         return $this;
@@ -3187,8 +2967,7 @@ class RhuContrato
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel
      */
-    public function removeContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel)
-    {
+    public function removeContratosAdicionalesContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContratoAdicion $contratosAdicionalesContratoRel) {
         $this->contratosAdicionalesContratoRel->removeElement($contratosAdicionalesContratoRel);
     }
 
@@ -3197,8 +2976,42 @@ class RhuContrato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContratosAdicionalesContratoRel()
-    {
+    public function getContratosAdicionalesContratoRel() {
         return $this->contratosAdicionalesContratoRel;
+    }
+
+
+    /**
+     * Add requisitosContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuRequisito $requisitosContratoRel
+     *
+     * @return RhuContrato
+     */
+    public function addRequisitosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisito $requisitosContratoRel)
+    {
+        $this->requisitosContratoRel[] = $requisitosContratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove requisitosContratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuRequisito $requisitosContratoRel
+     */
+    public function removeRequisitosContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisito $requisitosContratoRel)
+    {
+        $this->requisitosContratoRel->removeElement($requisitosContratoRel);
+    }
+
+    /**
+     * Get requisitosContratoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRequisitosContratoRel()
+    {
+        return $this->requisitosContratoRel;
     }
 }

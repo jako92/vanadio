@@ -39,6 +39,11 @@ class RhuRequisito {
     private $codigoCargoFk;
 
     /**
+     * @ORM\Column(name="codigo_contrato_fk", type="integer", nullable=true)
+     */
+    private $codigoContratoFk;
+
+    /**
      * @ORM\Column(name="codigo_requisito_tipo_fk", type="integer", nullable=true)
      */
     private $codigoRequisitoTipoFk;
@@ -52,6 +57,16 @@ class RhuRequisito {
      * @ORM\Column(name="estado_cerrado", type="boolean")
      */
     private $estadoCerrado = 0;
+
+    /**
+     * @ORM\Column(name="estado_aprobado", type="boolean")
+     */
+    private $estadoAprobado = 0;
+
+    /**
+     * @ORM\Column(name="estado_aplicado", type="boolean")
+     */
+    private $estadoAplicado = 0;
 
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
@@ -78,6 +93,12 @@ class RhuRequisito {
     protected $requisitoTipoRel;
 
     /**
+     * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="requisitosContratoRel")
+     * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
+     */
+    protected $contratoRel;
+
+    /**
      * @ORM\OneToMany(targetEntity="RhuRequisitoDetalle", mappedBy="requisitoRel", cascade={"persist", "remove"})
      */
     protected $requisitosDetallesRequisitoRel;
@@ -85,8 +106,7 @@ class RhuRequisito {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->requisitosDetallesRequisitoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -95,8 +115,7 @@ class RhuRequisito {
      *
      * @return integer
      */
-    public function getCodigoRequisitoPk()
-    {
+    public function getCodigoRequisitoPk() {
         return $this->codigoRequisitoPk;
     }
 
@@ -107,8 +126,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -119,8 +137,7 @@ class RhuRequisito {
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -131,8 +148,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setNumeroIdentificacion($numeroIdentificacion)
-    {
+    public function setNumeroIdentificacion($numeroIdentificacion) {
         $this->numeroIdentificacion = $numeroIdentificacion;
 
         return $this;
@@ -143,8 +159,7 @@ class RhuRequisito {
      *
      * @return string
      */
-    public function getNumeroIdentificacion()
-    {
+    public function getNumeroIdentificacion() {
         return $this->numeroIdentificacion;
     }
 
@@ -155,8 +170,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setNombreCorto($nombreCorto)
-    {
+    public function setNombreCorto($nombreCorto) {
         $this->nombreCorto = $nombreCorto;
 
         return $this;
@@ -167,8 +181,7 @@ class RhuRequisito {
      *
      * @return string
      */
-    public function getNombreCorto()
-    {
+    public function getNombreCorto() {
         return $this->nombreCorto;
     }
 
@@ -179,8 +192,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setCodigoCargoFk($codigoCargoFk)
-    {
+    public function setCodigoCargoFk($codigoCargoFk) {
         $this->codigoCargoFk = $codigoCargoFk;
 
         return $this;
@@ -191,8 +203,7 @@ class RhuRequisito {
      *
      * @return integer
      */
-    public function getCodigoCargoFk()
-    {
+    public function getCodigoCargoFk() {
         return $this->codigoCargoFk;
     }
 
@@ -203,8 +214,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setCodigoRequisitoTipoFk($codigoRequisitoTipoFk)
-    {
+    public function setCodigoRequisitoTipoFk($codigoRequisitoTipoFk) {
         $this->codigoRequisitoTipoFk = $codigoRequisitoTipoFk;
 
         return $this;
@@ -215,8 +225,7 @@ class RhuRequisito {
      *
      * @return integer
      */
-    public function getCodigoRequisitoTipoFk()
-    {
+    public function getCodigoRequisitoTipoFk() {
         return $this->codigoRequisitoTipoFk;
     }
 
@@ -227,8 +236,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
+    public function setEstadoAutorizado($estadoAutorizado) {
         $this->estadoAutorizado = $estadoAutorizado;
 
         return $this;
@@ -239,8 +247,7 @@ class RhuRequisito {
      *
      * @return boolean
      */
-    public function getEstadoAutorizado()
-    {
+    public function getEstadoAutorizado() {
         return $this->estadoAutorizado;
     }
 
@@ -251,8 +258,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setEstadoCerrado($estadoCerrado)
-    {
+    public function setEstadoCerrado($estadoCerrado) {
         $this->estadoCerrado = $estadoCerrado;
 
         return $this;
@@ -263,8 +269,7 @@ class RhuRequisito {
      *
      * @return boolean
      */
-    public function getEstadoCerrado()
-    {
+    public function getEstadoCerrado() {
         return $this->estadoCerrado;
     }
 
@@ -275,8 +280,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -287,8 +291,7 @@ class RhuRequisito {
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -299,8 +302,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setCodigoUsuario($codigoUsuario)
-    {
+    public function setCodigoUsuario($codigoUsuario) {
         $this->codigoUsuario = $codigoUsuario;
 
         return $this;
@@ -311,8 +313,7 @@ class RhuRequisito {
      *
      * @return string
      */
-    public function getCodigoUsuario()
-    {
+    public function getCodigoUsuario() {
         return $this->codigoUsuario;
     }
 
@@ -323,8 +324,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setCargoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel = null)
-    {
+    public function setCargoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCargo $cargoRel = null) {
         $this->cargoRel = $cargoRel;
 
         return $this;
@@ -335,8 +335,7 @@ class RhuRequisito {
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCargo
      */
-    public function getCargoRel()
-    {
+    public function getCargoRel() {
         return $this->cargoRel;
     }
 
@@ -347,8 +346,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function setRequisitoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo $requisitoTipoRel = null)
-    {
+    public function setRequisitoTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo $requisitoTipoRel = null) {
         $this->requisitoTipoRel = $requisitoTipoRel;
 
         return $this;
@@ -359,8 +357,7 @@ class RhuRequisito {
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo
      */
-    public function getRequisitoTipoRel()
-    {
+    public function getRequisitoTipoRel() {
         return $this->requisitoTipoRel;
     }
 
@@ -371,8 +368,7 @@ class RhuRequisito {
      *
      * @return RhuRequisito
      */
-    public function addRequisitosDetallesRequisitoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle $requisitosDetallesRequisitoRel)
-    {
+    public function addRequisitosDetallesRequisitoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle $requisitosDetallesRequisitoRel) {
         $this->requisitosDetallesRequisitoRel[] = $requisitosDetallesRequisitoRel;
 
         return $this;
@@ -383,8 +379,7 @@ class RhuRequisito {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle $requisitosDetallesRequisitoRel
      */
-    public function removeRequisitosDetallesRequisitoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle $requisitosDetallesRequisitoRel)
-    {
+    public function removeRequisitosDetallesRequisitoRel(\Brasa\RecursoHumanoBundle\Entity\RhuRequisitoDetalle $requisitosDetallesRequisitoRel) {
         $this->requisitosDetallesRequisitoRel->removeElement($requisitosDetallesRequisitoRel);
     }
 
@@ -393,8 +388,104 @@ class RhuRequisito {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRequisitosDetallesRequisitoRel()
-    {
+    public function getRequisitosDetallesRequisitoRel() {
         return $this->requisitosDetallesRequisitoRel;
+    }
+
+
+    /**
+     * Set codigoContratoFk
+     *
+     * @param integer $codigoContratoFk
+     *
+     * @return RhuRequisito
+     */
+    public function setCodigoContratoFk($codigoContratoFk)
+    {
+        $this->codigoContratoFk = $codigoContratoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoContratoFk
+     *
+     * @return integer
+     */
+    public function getCodigoContratoFk()
+    {
+        return $this->codigoContratoFk;
+    }
+
+    /**
+     * Set estadoAprobado
+     *
+     * @param boolean $estadoAprobado
+     *
+     * @return RhuRequisito
+     */
+    public function setEstadoAprobado($estadoAprobado)
+    {
+        $this->estadoAprobado = $estadoAprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAprobado
+     *
+     * @return boolean
+     */
+    public function getEstadoAprobado()
+    {
+        return $this->estadoAprobado;
+    }
+
+    /**
+     * Set estadoAplicado
+     *
+     * @param boolean $estadoAplicado
+     *
+     * @return RhuRequisito
+     */
+    public function setEstadoAplicado($estadoAplicado)
+    {
+        $this->estadoAplicado = $estadoAplicado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAplicado
+     *
+     * @return boolean
+     */
+    public function getEstadoAplicado()
+    {
+        return $this->estadoAplicado;
+    }
+
+    /**
+     * Set contratoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel
+     *
+     * @return RhuRequisito
+     */
+    public function setContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel = null)
+    {
+        $this->contratoRel = $contratoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get contratoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuContrato
+     */
+    public function getContratoRel()
+    {
+        return $this->contratoRel;
     }
 }

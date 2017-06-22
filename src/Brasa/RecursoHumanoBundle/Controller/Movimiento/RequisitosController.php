@@ -107,6 +107,14 @@ class RequisitosController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_requisito_detalle', array('codigoRequisito' => $codigoRequisito)));
                 }
             }
+             if ($form->get('BtnAprobar')->isClicked()) {
+                if ($arRequisito->getEstadoAutorizado() == 1) {
+                    $arRequisito->setEstadoAprobado(1);
+                    $em->persist($arRequisito);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_requisito_detalle', array('codigoRequisito' => $codigoRequisito)));
+                }
+            }
             if ($form->get('BtnDetalleEntregado')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
@@ -323,6 +331,7 @@ class RequisitosController extends Controller {
 
     private function formularioDetalle($arRequisito) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
+        $arrBotonAprobar = array('label' => 'Aprobar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => false);
@@ -340,6 +349,7 @@ class RequisitosController extends Controller {
             $arrBotonEliminarDetalle['disabled'] = true;
             $arrBotonActualizarDetalle['disabled'] = true;
             if ($arRequisito->getEstadoCerrado() == 1) {
+                $arrBotonAprobar['disabled'] = true;
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonCerrar['disabled'] = true;
             }
@@ -354,6 +364,7 @@ class RequisitosController extends Controller {
                 ->add('BtnDetalleEntregado', SubmitType::class, $arrBotonDetalleEntregado)
                 ->add('BtnDetalleNoEntregado', SubmitType::class, $arrBotonDetalleNoEntregado)
                 ->add('BtnDetalleNoAplica', SubmitType::class, $arrBotonDetalleNoAplica)
+                ->add('BtnAprobar', SubmitType::class, $arrBotonAprobar)
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
                 ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                 ->add('BtnEliminarDetalle', SubmitType::class, $arrBotonEliminarDetalle)

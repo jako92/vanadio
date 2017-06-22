@@ -48,7 +48,7 @@ class ConfiguracionController extends Controller {
                 }
                 //fin recurrso humano
                 //provision
-                $intCodigoProvision = 0;
+                /*$intCodigoProvision = 0;
                 foreach ($arrControles['LblCodigo'] as $intCodigo) {
                     $arConfiguracionProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision();
                     $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->find($intCodigo);
@@ -64,7 +64,7 @@ class ConfiguracionController extends Controller {
                         $em->persist($arConfiguracionProvision);
                     }
                     $intCodigoProvision++;
-                }
+                }*/
                 //fin provision
                 $em->flush();
             } else {
