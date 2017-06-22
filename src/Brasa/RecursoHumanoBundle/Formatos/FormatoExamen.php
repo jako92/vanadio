@@ -59,8 +59,7 @@ class FormatoExamen extends \FPDF_FPDF {
         $arExamenDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
         $arExamenDetalles = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuExamenDetalle')->findBy(array('codigoExamenFk' => self::$codigoExamen));
         $this->SetFillColor(236, 236, 236);        
-        $this->SetFont('Arial','B',10);
-        
+        $this->SetFont('Arial','B',10);  
         $intY = 40;
         $this->SetFillColor(272, 272, 272); 
         $this->SetXY(10, $intY);
@@ -98,7 +97,12 @@ class FormatoExamen extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 6, "CLIENTE:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
-        $this->Cell(100, 6, $arExamen->getClienteRel()->getNombreCorto() , 1, 0, 'L', 1);
+        if($arExamen->getCodigoClienteFk() != null){
+            $cliente = $arExamen->getClienteRel()->getNombreCorto();
+        }else{
+             $cliente = 'SIN CONTRATO';
+        }
+        $this->Cell(100, 6, $cliente , 1, 0, 'L', 1);
         $this->SetXY(10, $intY + 20);
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 5, utf8_decode("DIRECCIÓN:") , 1, 0, 'L', 1);
