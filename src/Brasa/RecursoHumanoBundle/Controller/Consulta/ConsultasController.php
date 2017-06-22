@@ -1573,7 +1573,7 @@ class ConsultasController extends Controller {
         if ($form->get('subZonaRel')->getData()) {
             $codigoSubZona = $form->get('subZonaRel')->getData()->getCodigoSubZonaPk();
         }
-        $session->set('filtroCodigoSubzona', $codigoZona);
+        $session->set('filtroCodigoSubzona', $codigoSubZona);
 
         $session->set('filtroCodigoContrato', $form->get('TxtContrato')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
