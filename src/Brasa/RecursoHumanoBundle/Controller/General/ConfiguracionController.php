@@ -18,60 +18,65 @@ class ConfiguracionController extends Controller {
      */
     public function configuracionAction(Request $request, $codigoConfiguracionPk) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 92)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find($codigoConfiguracionPk);
         if ($arConfiguracion == NULL) {
-             $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-        } 
+            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+        }
         $form = $this->createForm(RhuConfiguracionType::class, $arConfiguracion);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            //Recurso humano
-            $arConfiguracion = $form->getData();
-            $em->persist($arConfiguracion);
-            //Consecutivo de recurso humano
-            $arrControles = $request->request->All();
-            $intIndiceConsecutivo = 0;
-            foreach ($arrControles['LblCodigo'] as $intCodigo) {
-                $arConsecutivo = new \Brasa\RecursoHumanoBundle\Entity\RhuConsecutivo();
-                $arConsecutivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->find($intCodigo);
-                if (count($arConsecutivo) > 0) {
-                    $intConsecutivo = $arrControles['TxtConsecutivo' . $intCodigo];
-                    $arConsecutivo->setConsecutivo($intConsecutivo);
-                    $em->persist($arConsecutivo);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                //Recurso humano
+                $arConfiguracion = $form->getData();
+                $em->persist($arConfiguracion);
+                //Consecutivo de recurso humano
+                $arrControles = $request->request->All();
+                $intIndiceConsecutivo = 0;
+                foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                    $arConsecutivo = new \Brasa\RecursoHumanoBundle\Entity\RhuConsecutivo();
+                    $arConsecutivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->find($intCodigo);
+                    if (count($arConsecutivo) > 0) {
+                        $intConsecutivo = $arrControles['TxtConsecutivo' . $intCodigo];
+                        $arConsecutivo->setConsecutivo($intConsecutivo);
+                        $em->persist($arConsecutivo);
+                    }
+                    $intIndiceConsecutivo++;
                 }
-                $intIndiceConsecutivo++;
-            }
-            //fin recurrso humano
-            //provision
-            $intCodigoProvision = 0;
-            foreach ($arrControles['LblCodigo'] as $intCodigo) {
-                $arConfiguracionProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision();
-                $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->find($intCodigo);
-                if (count($arConfiguracionProvision) > 0) {
-                    $intCuenta = $arrControles['TxtCuenta' . $intCodigo];
-                    $arConfiguracionProvision->setCodigoCuentaFk($intCuenta);
-                    $intTipoCuenta = $arrControles['TxtTipoCuenta' . $intCodigo];
-                    $arConfiguracionProvision->setTipoCuenta($intTipoCuenta);
-                    $intCuentaOperacion = $arrControles['TxtCuentaOperacion' . $intCodigo];
-                    $arConfiguracionProvision->setCodigoCuentaOperacionFk($intCuentaOperacion);
-                    $intCuentaComercial = $arrControles['TxtCuentaComercial' . $intCodigo];
-                    $arConfiguracionProvision->setCodigoCuentaComercialFk($intCuentaComercial);
-                    $em->persist($arConfiguracionProvision);
+                //fin recurrso humano
+                //provision
+                $intCodigoProvision = 0;
+                foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                    $arConfiguracionProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision();
+                    $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->find($intCodigo);
+                    if (count($arConfiguracionProvision) > 0) {
+                        $intCuenta = $arrControles['TxtCuenta' . $intCodigo];
+                        $arConfiguracionProvision->setCodigoCuentaFk($intCuenta);
+                        $intTipoCuenta = $arrControles['TxtTipoCuenta' . $intCodigo];
+                        $arConfiguracionProvision->setTipoCuenta($intTipoCuenta);
+                        $intCuentaOperacion = $arrControles['TxtCuentaOperacion' . $intCodigo];
+                        $arConfiguracionProvision->setCodigoCuentaOperacionFk($intCuentaOperacion);
+                        $intCuentaComercial = $arrControles['TxtCuentaComercial' . $intCodigo];
+                        $arConfiguracionProvision->setCodigoCuentaComercialFk($intCuentaComercial);
+                        $em->persist($arConfiguracionProvision);
+                    }
+                    $intCodigoProvision++;
                 }
-                $intCodigoProvision++;
+                //fin provision
+                $em->flush();
+            } else {
+                $objMensaje->Mensaje("error", "ocurrio un error, verifica que los campos obligatorios se encuentren diligenciados.");
             }
-            //fin provision
-            $em->flush();
         }
         $arConsecutivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->findAll();
         return $this->render('BrasaRecursoHumanoBundle:Configuracion:configuracion.html.twig', array(
                     'form' => $form->createView(),
                     'arConsecutivo' => $arConsecutivo));
     }
-    
+
     /**
      * @Route("/rhu/configuracion/nomina/parametros/prestaciones/", name="brs_rhu_configuracion_nomina_parametros_prestaciones")
      */
