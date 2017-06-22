@@ -15,14 +15,63 @@
             <li class="active">Lista</li>
         </ol>
     </section>    
-    <section class="content"> 
-        {{ form_start(form) }}
+   <section class="content">
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="txtNit" class="col-sm-2 control-label">Proveedor:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    <input id="txtNit"  name="txtNit"  type="text" class="form-control" value="{{ arOrdenCompra.terceroRel.nit | default('')}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">                                      
+                                    <input id="txtNombreCorto"  name="txtNombreCorto"  type="text" class="form-control" value="{{ arTercero.terceroRel.nombreCorto | default('') }}" readOnly="ReadOnly" />
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_inv_buscar_tercero', { 'campoNit': 'txtNit', 'campoNombre': 'txtNombreCorto' }) }}', 'buscarTercero', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label for="form_TxtCodigo" class="col-sm-2 control-label">Codigo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtCodigo, { 'attr': {'class': 'form-control'} }) }}
+                    </div>             
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                    </div>             
+                </div>   
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="table table-striped table-bordered table-condensed table-hover">
             <tr>            
-                <th>CÓDIGO</th>
-                <th>NOMBRE</th>
+                <th>ID</th>
+                <th>PROVEEDOR</th>
+                <th>TIPO ORDEN</th> 
+                <th>NUMERO</th>
                 <th>FECHA</th>
+                <th>SUBTOTAL</th>
+                <th>IVA</th>
+                <th>NETO</th>
+                <th>AUT</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -30,14 +79,24 @@
             {%for arOrdenesCompra in arOrdenesCompra %}
                 <tr>
                     <td>{{ arOrdenesCompra.codigoOrdenCompraPk}}</td>
-                    <td>{{ arOrdenesCompra.nombre}}</td>
+                    <td>{{ arOrdenesCompra.terceroRel.nombreCorto}}</td>
+                    <td>{{ arOrdenesCompra.ordenCompraDocumentoRel.nombre}}</td>
+                    <td style="text-align: left">{{ arOrdenesCompra.numero}}</td>
                     <td>{{ arOrdenesCompra.fecha |date('y/m/d')}}</td>
+                    <td>{{ arOrdenesCompra.vrSubtotal | number_format(0, '.', ',')}}</td>
+                    <td>{{ arOrdenesCompra.vrIva | number_format(0, '.', ',')}}</td>
+                    <td>{{ arOrdenesCompra.vrNeto | number_format(0, '.', ',')}}</td>
+                    <td>{% if arOrdenesCompra.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>
                     <td style="text-align: center"><a href="{{ path('brs_inv_movimiento_orden_compra_nuevo', {'codigoOrdenCompra': arOrdenesCompra.codigoOrdenCompraPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
-                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arOrdenesCompra.codigoOrdenCompraPk }}" /></td>
+                    <td style="text-align: center"><a href="{{ path('brs_inv_movimiento_orden_compra_detalle', { 'codigoOrdenCompra': arOrdenesCompra.codigoOrdenCompraPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
+                    <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arOrdenesCompra.codigoOrdenCompraPk }}" /></td>
                 {%endfor%}
             </tr>            
         </table>
         <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
+            </div>
             <div class="btn-group">
                 <a class="btn btn-default btn-sm" href="{{ path('brs_inv_movimiento_orden_compra_nuevo', {'codigoOrdenCompra': 0 }) }}">Nuevo</a>
             </div>

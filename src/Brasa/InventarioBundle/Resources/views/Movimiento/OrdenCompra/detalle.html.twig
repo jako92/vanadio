@@ -1,0 +1,138 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Orden de compra detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Orden de compra: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Inventario</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Orden compra</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>  
+    {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+    {{ form_errors(form) }}        
+    <section class="content">  
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+        </div>
+        <div style="float:right">
+            {% if arOrdenCompra.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}
+            {% if arOrdenCompra.estadoImpreso == 1 %}<span class="label label-success">Impreso</span>{% endif %}
+        </div>    
+        <br><br>
+        <div class="panel panel-default">
+            <div class="panel-heading">Información orden de compra</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CÓDIGO:</td>
+                        <td class="td-in-well">{{ arOrdenCompra.codigoOrdenCompraPk }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td align="right">{{ arOrdenCompra.fecha|date("Y/m/d") }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">PROVEEDOR:</td>
+                        <td class="td-in-well">{{ arOrdenCompra.terceroRel.nombrecorto }}</td>
+                        <td class="titulo">SOPORTE</td>
+                        <td align="right">{{ arOrdenCompra.soporte }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">TIPO ORDEN COMPRA</td>
+                        <td class="td-in-well">{{ arOrdenCompra.ordenCompraDocumentoRel.nombre }}</td>
+                        <td class="titulo">SUBTOTAL:</td>
+                        <td align="right">{{ arOrdenCompra.vrSubtotal | number_format(0, '.', ',') }}</td>                                               
+                    </tr> 
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">IVA:</td>
+                        <td align="right">{{ arOrdenCompra.vrIva | number_format(0, '.', ',') }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL NETO:</td>
+                        <td align="right">{{ arOrdenCompra.vrNeto | number_format(0, '.', ',')}}</td>                                               
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tipos" data-toggle="tab">Detalle</a></li>            
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tipos">
+                <!-- Menu Encabezado Movimiento -->
+                <div id="detalles" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <tr>
+                            <th>ID</th>
+                            <th>ITEM</th> 
+                            <th>% IVA</th>
+                            <th>CANTIDAD</th>
+                            <th>VALOR</th> 
+                            <th>IVA</th>
+                            <th>SUBTOTAL</th>
+                            <th>TOTAL</th> 
+                            <th><input type="checkbox" name="ChkSeleccionarTodosDetalle" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
+                        </tr>
+                        {% for arOrdenCompraDetalle in arOrdenCompraDetalle %}
+                            <tr>
+                                <td>{{ arOrdenCompraDetalle.codigoDetalleOrdenCompraPk  }}<input type="hidden" name="LblCodigo[]" value="{{ arOrdenCompraDetalle.codigoDetalleOrdenCompraPk }}"></td>
+                                <td>{{ arOrdenCompraDetalle.itemRel.nombre  }}</td>
+                                <td style="text-align:right">{{ arOrdenCompraDetalle.porcentajeIva  }}</td>
+                                {% if arOrdenCompra.estadoAutorizado == 0 %}
+                                <td style="text-align: right"><input class="input-grid" type="text" name="TxtCantidad[{{ arOrdenCompraDetalle.codigoDetalleOrdenCompraPk }}]" value="{{ arOrdenCompraDetalle.cantidad  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                {% else %}
+                                <td style="text-align: right">{{ arOrdenCompraDetalle.cantidad }}</td>                                    
+                                {% endif %}
+                                {% if arOrdenCompra.estadoAutorizado == 0 %}
+                                <td style="text-align: right"><input class="input-grid" type="text" name="TxtValor[{{ arOrdenCompraDetalle.codigoDetalleOrdenCompraPk }}]" value="{{ arOrdenCompraDetalle.valor  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>   
+                                {% else %}
+                                <td style="text-align: right">{{ arOrdenCompraDetalle.valor }}</td>                                    
+                                {% endif %}
+                                <td style="text-align:right">{{ arOrdenCompraDetalle.vrIva | number_format(0, '.', ',') }}</td>
+                                <td style="text-align:right">{{ arOrdenCompraDetalle.vrSubtotal | number_format(0, '.', ',') }}</td>
+                                <td style="text-align:right">{{ arOrdenCompraDetalle.vrTotal| number_format(0, '.', ',') }}</td>
+                                <td style="text-align:center"><input type="checkbox" name="ChkSeleccionarDetalle[]" value="{{ arOrdenCompraDetalle.codigoDetalleOrdenCompraPk }}" /></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <!-- Botones Menu Items -->
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_inv_movimiento_orden_compra_lista') }}" style="float:left">Volver</a>
+            </div>
+        </div>
+        <div class="btn-toolbar" style="float: right">
+            {% if arOrdenCompra.estadoAutorizado == 0 %}
+            <div class="btn-group">            
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_inv_movimiento_orden_compra_detalle_nuevo', {'codigoOrdenCompra': arOrdenCompra.codigoOrdenCompraPk }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
+            </div>
+            {% endif %}
+            <div class="btn-group">
+                {{ form_widget(form.BtnDetalleActualizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+            <div class="btn-group" style="float: right">                
+                {{ form_widget(form.BtnEliminarDetalle, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}                
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

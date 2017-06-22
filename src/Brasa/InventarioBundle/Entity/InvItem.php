@@ -117,7 +117,12 @@ class InvItem
     /**
      * @ORM\OneToMany(targetEntity="InvMovimientoDetalle", mappedBy="itemRel")
      */
-    protected $movimientosDetallesItemRel;    
+    protected $movimientosDetallesItemRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="InvOrdenCompraDetalle", mappedBy="itemRel")
+     */
+    protected $ordenesCompraDetallesItemRel;        
        
 
     /**
@@ -626,5 +631,39 @@ class InvItem
     public function getMovimientosDetallesItemRel()
     {
         return $this->movimientosDetallesItemRel;
+    }
+
+    /**
+     * Add ordenesCompraDetallesItemRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvOrdenCompraDetalle $ordenesCompraDetallesItemRel
+     *
+     * @return InvItem
+     */
+    public function addOrdenesCompraDetallesItemRel(\Brasa\InventarioBundle\Entity\InvOrdenCompraDetalle $ordenesCompraDetallesItemRel)
+    {
+        $this->ordenesCompraDetallesItemRel[] = $ordenesCompraDetallesItemRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenesCompraDetallesItemRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvOrdenCompraDetalle $ordenesCompraDetallesItemRel
+     */
+    public function removeOrdenesCompraDetallesItemRel(\Brasa\InventarioBundle\Entity\InvOrdenCompraDetalle $ordenesCompraDetallesItemRel)
+    {
+        $this->ordenesCompraDetallesItemRel->removeElement($ordenesCompraDetallesItemRel);
+    }
+
+    /**
+     * Get ordenesCompraDetallesItemRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenesCompraDetallesItemRel()
+    {
+        return $this->ordenesCompraDetallesItemRel;
     }
 }

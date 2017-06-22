@@ -169,6 +169,11 @@ class InvTercero
     protected $movimientosTerceroRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="InvOrdenCompra", mappedBy="terceroRel")
+     */
+    protected $ordenesCompraTerceroRel;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="invTercerosCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
@@ -978,5 +983,39 @@ class InvTercero
     public function getFormaPagoRel()
     {
         return $this->formaPagoRel;
+    }
+
+    /**
+     * Add ordenesCompraTerceroRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenesCompraTerceroRel
+     *
+     * @return InvTercero
+     */
+    public function addOrdenesCompraTerceroRel(\Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenesCompraTerceroRel)
+    {
+        $this->ordenesCompraTerceroRel[] = $ordenesCompraTerceroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenesCompraTerceroRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenesCompraTerceroRel
+     */
+    public function removeOrdenesCompraTerceroRel(\Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenesCompraTerceroRel)
+    {
+        $this->ordenesCompraTerceroRel->removeElement($ordenesCompraTerceroRel);
+    }
+
+    /**
+     * Get ordenesCompraTerceroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenesCompraTerceroRel()
+    {
+        return $this->ordenesCompraTerceroRel;
     }
 }

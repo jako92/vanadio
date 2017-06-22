@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * InvOdenCompraDetalle
  *
- * @ORM\Table(name="inv_oden_compra_detalle")
+ * @ORM\Table(name="inv_orden_compra_detalle")
  * @ORM\Entity(repositoryClass="Brasa\InventarioBundle\Repository\InvOrdenCompraDetalleRepository")
  */
 class InvOrdenCompraDetalle
@@ -24,106 +24,61 @@ class InvOrdenCompraDetalle
     /**
      * @var int
      *
-     * @ORM\Column(name="item_fk", type="integer")
+     * @ORM\Column(name="codigo_item_fk", type="integer")
      */
     private $codigoItemFk;
 
+    /**
+     * @ORM\Column(name="codigo_orden_compra_fk", type="integer", nullable=true)
+     */     
+    private $codigoOrdenCompraFk; 
+    
     /**
      * @var int
      *
      * @ORM\Column(name="cantidad", type="integer")
      */
-    private $cantidad;
+    private $cantidad = 0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="valor", type="float")
      */
-    private $valor;
-
-
+    private $valor = 0;
+    
     /**
-     * Get id
-     *
-     * @return int
+     * @ORM\Column(name="vr_subtotal", type="float")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
-
+    private $vrSubtotal = 0;     
+    
     /**
-     * Set itemFk
-     *
-     * @param integer $itemFk
-     *
-     * @return InvOdenCompraDetalle
-     */
-    public function setItemFk($itemFk)
-    {
-        $this->itemFk = $itemFk;
-
-        return $this;
-    }
-
+     * @ORM\Column(name="porcentaje_iva", type="integer")
+     */    
+    private $porcentajeIva = 0;
+    
     /**
-     * Get itemFk
-     *
-     * @return int
-     */
-    public function getItemFk()
-    {
-        return $this->itemFk;
-    }
-
+     * @ORM\Column(name="vr_iva", type="float")
+     */    
+    private $vrIva = 0;
+    
     /**
-     * Set cantidad
-     *
-     * @param integer $cantidad
-     *
-     * @return InvOdenCompraDetalle
+     * @ORM\Column(name="vr_total", type="float")
      */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
+    private $vrTotal = 0;   
+    
     /**
-     * Get cantidad
-     *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="InvOrdenCompra", inversedBy="ordenesCompraDetallesRel")
+     * @ORM\JoinColumn(name="codigo_orden_compra_fk", referencedColumnName="codigo_orden_compra_pk")
      */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
+    protected $ordenCompraRel;    
+    
     /**
-     * Set valor
-     *
-     * @param float $valor
-     *
-     * @return InvOdenCompraDetalle
+     * @ORM\ManyToOne(targetEntity="InvItem", inversedBy="ordenesCompraDetallesItemRel")
+     * @ORM\JoinColumn(name="codigo_item_fk", referencedColumnName="codigo_item_pk")
      */
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
+    protected $itemRel;
 
-        return $this;
-    }
-
-    /**
-     * Get valor
-     *
-     * @return float
-     */
-    public function getValor()
-    {
-        return $this->valor;
-    }
 
     /**
      * Get codigoDetalleOrdenCompraPk
@@ -157,5 +112,221 @@ class InvOrdenCompraDetalle
     public function getCodigoItemFk()
     {
         return $this->codigoItemFk;
+    }
+
+    /**
+     * Set codigoOrdenCompraFk
+     *
+     * @param integer $codigoOrdenCompraFk
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setCodigoOrdenCompraFk($codigoOrdenCompraFk)
+    {
+        $this->codigoOrdenCompraFk = $codigoOrdenCompraFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoOrdenCompraFk
+     *
+     * @return integer
+     */
+    public function getCodigoOrdenCompraFk()
+    {
+        return $this->codigoOrdenCompraFk;
+    }
+
+    /**
+     * Set ordenCompraRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenCompraRel
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setOrdenCompraRel(\Brasa\InventarioBundle\Entity\InvOrdenCompra $ordenCompraRel = null)
+    {
+        $this->ordenCompraRel = $ordenCompraRel;
+
+        return $this;
+    }
+
+    /**
+     * Get ordenCompraRel
+     *
+     * @return \Brasa\InventarioBundle\Entity\InvOrdenCompra
+     */
+    public function getOrdenCompraRel()
+    {
+        return $this->ordenCompraRel;
+    }
+
+    /**
+     * Set itemRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvItem $itemRel
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setItemRel(\Brasa\InventarioBundle\Entity\InvItem $itemRel = null)
+    {
+        $this->itemRel = $itemRel;
+
+        return $this;
+    }
+
+    /**
+     * Get itemRel
+     *
+     * @return \Brasa\InventarioBundle\Entity\InvItem
+     */
+    public function getItemRel()
+    {
+        return $this->itemRel;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * Set valor
+     *
+     * @param float $valor
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+
+        return $this;
+    }
+
+    /**
+     * Get valor
+     *
+     * @return float
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param integer $porcentajeIva
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return integer
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
+    }
+
+    /**
+     * Set vrIva
+     *
+     * @param float $vrIva
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setVrIva($vrIva)
+    {
+        $this->vrIva = $vrIva;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIva
+     *
+     * @return float
+     */
+    public function getVrIva()
+    {
+        return $this->vrIva;
+    }
+
+    /**
+     * Set vrSubtotal
+     *
+     * @param float $vrSubtotal
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setVrSubtotal($vrSubtotal)
+    {
+        $this->vrSubtotal = $vrSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotal
+     *
+     * @return float
+     */
+    public function getVrSubtotal()
+    {
+        return $this->vrSubtotal;
+    }
+
+    /**
+     * Set vrTotal
+     *
+     * @param float $vrTotal
+     *
+     * @return InvOrdenCompraDetalle
+     */
+    public function setVrTotal($vrTotal)
+    {
+        $this->vrTotal = $vrTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotal
+     *
+     * @return float
+     */
+    public function getVrTotal()
+    {
+        return $this->vrTotal;
     }
 }
