@@ -270,7 +270,10 @@ class TurServicioRepository extends EntityRepository {
             $arServicioDetalleConceptoAct->setIva($iva);
             $arServicioDetalleConceptoAct->setTotal($total);
             $em->persist($arServicioDetalleConceptoAct);
-            $floSubTotalConceptos += $subtotal;            
+            $floSubTotalConceptos += $subtotal;
+            $subtotalGeneral += $subtotal;
+            $ivaGeneral += $iva;
+            $totalGeneral += $total;
         }
         $arServicio->setHoras($douTotalHoras);
         $arServicio->setHorasDiurnas($douTotalHorasDiurnas);
