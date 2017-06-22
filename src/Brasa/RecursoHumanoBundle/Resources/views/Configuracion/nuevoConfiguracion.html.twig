@@ -14,7 +14,7 @@
         </ol>
     </section>    
     <section class="content">        	
-        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         <ul class="nav nav-tabs">
             <li class="active"><a href="#configuracion" data-toggle="tab">Configuración general</a></li>
             <li><a href="#nomina" data-toggle="tab">Nomina</a></li>
@@ -29,13 +29,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Información general</div>
                     <div class="panel-body">
-                        <div class="form-group form-group-sm">
-                            <label class="col-sm-2 control-label">Codigo configuracion:</label>
-                            <div class="col-sm-10">
-                                {{ form_widget(form.codigoConfiguracionPk) }}
-                                {{ form_errors(form.codigoConfiguracionPk) }}
-                            </div>
-                        </div>
                         <div class="form-group form-group-sm">
                             <label class="col-sm-2 control-label">Año actual:</label>
                             <div class="col-sm-4">

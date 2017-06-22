@@ -23,8 +23,9 @@ class NuevoConfiguracionController extends Controller {
         }
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-        if ($codigoConfiguracion != "" || $codigoConfiguracion != 0) {
-             $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find($codigoConfiguracion);
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find($codigoConfiguracion);
+        if ($arConfiguracion == NULL) {
+             $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         } 
         $form = $this->createForm(RhuNuevoConfiguracionType::class, $arConfiguracion);
         $form->handleRequest($request);

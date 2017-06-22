@@ -3,86 +3,102 @@
 namespace Brasa\RecursoHumanoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="rhu_configuracion")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuConfiguracionRepository")
  */
-class RhuConfiguracion
-{
-     /**
+class RhuConfiguracion {
+
+    /**
      * @ORM\Id
      * @ORM\Column(name="codigo_configuracion_pk", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoConfiguracionPk;
+    private $codigoConfiguracionPk = 1;
 
     /**
      * @ORM\Column(name="vr_salario", type="float")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $vrSalario;
 
     /**
      * @ORM\Column(name="codigo_auxilio_transporte", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoAuxilioTransporte;
 
     /**
      * @ORM\Column(name="vr_auxilio_transporte", type="float")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $vrAuxilioTransporte;
 
     /**
      * @ORM\Column(name="codigo_credito", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoCredito;
 
     /**
      * @ORM\Column(name="codigo_seguro", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoSeguro;
 
     /**
      * @ORM\Column(name="codigo_tiempo_suplementario", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoTiempoSuplementario;
 
     /**
      * @ORM\Column(name="codigo_hora_diurna_trabajada", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraDiurnaTrabajada;
 
     /**
      * @ORM\Column(name="codigo_salario_integral", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoSalarioIntegral;    
-    
+    private $codigoSalarioIntegral;
+
     /**
      * @ORM\Column(name="porcentaje_pension_extra", type="float")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $porcentajePensionExtra;
 
     /**
      * @ORM\Column(name="codigo_incapacidad", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoIncapacidad;
 
     /**
      * @ORM\Column(name="anio_actual", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $anioActual;
 
     /**
      * @ORM\Column(name="porcentaje_iva", type="float")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $porcentajeIva;
 
     /**
      * @ORM\Column(name="codigo_retencion_fuente", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoRetencionFuente;
 
     /**
      * @ORM\Column(name="edad_minima_empleado", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $edadMinimaEmpleado;
 
@@ -93,31 +109,37 @@ class RhuConfiguracion
 
     /**
      * @ORM\Column(name="codigo_entidad_examen_ingreso", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoEntidadExamenIngreso;
 
     /**
      * @ORM\Column(name="codigo_comprobante_pago_nomina", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoComprobantePagoNomina;
 
     /**
      * @ORM\Column(name="codigo_comprobante_provision", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoComprobanteProvision;    
-    
+    private $codigoComprobanteProvision;
+
     /**
      * @ORM\Column(name="codigo_comprobante_liquidacion", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoComprobanteLiquidacion;    
-    
+    private $codigoComprobanteLiquidacion;
+
     /**
      * @ORM\Column(name="codigo_comprobante_vacacion", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoComprobanteVacacion;    
-    
+    private $codigoComprobanteVacacion;
+
     /**
      * @ORM\Column(name="codigo_comprobante_pago_banco", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoComprobantePagoBanco;
 
@@ -149,299 +171,321 @@ class RhuConfiguracion
     /**
      * @ORM\Column(name="prestaciones_porcentaje_aporte_vacaciones", type="float")
      */
-    private $prestacionesPorcentajeAporteVacaciones = 0;    
+    private $prestacionesPorcentajeAporteVacaciones = 0;
 
     /**
      * @ORM\Column(name="prestaciones_porcentaje_indemnizacion", type="float")
      */
-    private $prestacionesPorcentajeIndemnizacion = 0; 
-    
+    private $prestacionesPorcentajeIndemnizacion = 0;
+
     /**
      * @ORM\Column(name="aportes_porcentaje_caja", type="float")
      */
-    private $aportesPorcentajeCaja = 0;    
-    
+    private $aportesPorcentajeCaja = 0;
+
     /**
      * @ORM\Column(name="aportes_porcentaje_vacaciones", type="float")
      */
-    private $aportesPorcentajeVacaciones = 0;    
-    
+    private $aportesPorcentajeVacaciones = 0;
+
     /**
      * @ORM\Column(name="codigo_hora_descanso", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraDescanso;
 
     /**
      * @ORM\Column(name="codigo_hora_nocturna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraNocturna;
 
     /**
      * @ORM\Column(name="codigo_hora_festiva_diurna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraFestivaDiurna;
 
     /**
      * @ORM\Column(name="codigo_hora_festiva_nocturna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraFestivaNocturna;
 
     /**
      * @ORM\Column(name="codigo_hora_extra_ordinaria_diurna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraExtraOrdinariaDiurna;
 
     /**
      * @ORM\Column(name="codigo_hora_extra_ordinaria_nocturna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraExtraOrdinariaNocturna;
 
     /**
      * @ORM\Column(name="codigo_hora_extra_festiva_diurna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoHoraExtraFestivaDiurna;
 
     /**
      * @ORM\Column(name="codigo_hora_extra_festiva_nocturna", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoHoraExtraFestivaNocturna;    
-    
+    private $codigoHoraExtraFestivaNocturna;
+
     /**
      * @ORM\Column(name="codigo_hora_recargo_nocturno", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoHoraRecargoNocturno;    
-    
+    private $codigoHoraRecargoNocturno;
+
     /**
      * @ORM\Column(name="codigo_hora_recargo_festivo_diurno", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoHoraRecargoFestivoDiurno;    
-    
+    private $codigoHoraRecargoFestivoDiurno;
+
     /**
      * @ORM\Column(name="codigo_hora_recargo_festivo_nocturno", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoHoraRecargoFestivoNocturno;   
-    
+    private $codigoHoraRecargoFestivoNocturno;
+
     /**
      * @ORM\Column(name="codigo_vacacion", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $codigoVacacion;
-    
+
     /**
      * @ORM\Column(name="codigo_ajuste_devengado", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoAjusteDevengado;    
-    
+    private $codigoAjusteDevengado;
+
     /**
      * @ORM\Column(name="afecta_vacaciones_parafiscales", type="boolean")
      */
-    private $afectaVacacionesParafiscales = 0;
-    
+    private $afectaVacacionesParafiscales = false;
+
     /**
      * @ORM\Column(name="codigo_formato_pago", type="integer")
-     */    
-    private $codigoFormatoPago = 0;    
-    
+     */
+    private $codigoFormatoPago = 0;
+
     /**
      * @ORM\Column(name="codigo_formato_liquidacion", type="integer")
-     */    
+     */
     private $codigoFormatoLiquidacion = 0;
-    
+
     /**
      * @ORM\Column(name="codigo_formato_carta", type="integer")
-     */    
+     */
     private $codigoFormatoCarta = 0;
-    
+
     /**
      * @ORM\Column(name="codigo_formato_disciplinario", type="integer")
-     */    
+     */
     private $codigoFormatoDisciplinario = 0;
-    
+
     /**
      * @ORM\Column(name="codigo_formato_descargo", type="integer")
-     */    
+     */
     private $codigoFormatoDescargo = 0;
-    
+
     /**
      * @ORM\Column(name="codigo_formato_factura", type="integer")
-     */    
+     */
     private $codigoFormatoFactura = 0;
-    
+
     /**
      * Tipo de base para la liquidacion de vacaciones 1-salario 2-salario+prestaciones 3-salario+recargos
      * @ORM\Column(name="tipo_base_pago_vacaciones", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $tipoBasePagoVacaciones;    
-    
+    private $tipoBasePagoVacaciones;
+
     /**
      * Se activa cuando el cliente maneja porcentajes en las liquidaciones
      * @ORM\Column(name="genera_porcentaje_liquidacion", type="boolean")
      */
-    private $generaPorcetnajeLiquidacion = 0;    
-    
+    private $generaPorcetnajeLiquidacion = false;
+
     /**
      * @ORM\Column(name="correo_nomina", type="string", length=100, nullable=true)
-     */    
-    private $correoNomina;  
-    
+     */
+    private $correoNomina;
+
     /**
      * Si esta activado muestra el mensaje en la colilla de pago
      * @ORM\Column(name="imprimir_mensaje_pago", type="boolean")
      */
-    private $imprimirMensajePago = 0;       
-    
+    private $imprimirMensajePago = false;
+
     /**
      * @ORM\Column(name="codigo_prima", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoPrima;     
-    
+    private $codigoPrima;
+
     /**
      * @ORM\Column(name="codigo_cesantia", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoCesantia;     
-    
+    private $codigoCesantia;
+
     /**
      * @ORM\Column(name="codigo_interes_cesantia", type="integer")
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $codigoInteresCesantia;    
-    
+    private $codigoInteresCesantia;
+
     /**
      * Si en el pago de primas se aplica un porcentaje en el salario
      * @ORM\Column(name="prestaciones_aplicar_porcentaje_salario", type="boolean")
      */
-    private $prestacionesAplicaPorcentajeSalario = 0;     
+    private $prestacionesAplicaPorcentajeSalario = false;
 
     /**
      * @ORM\Column(name="nit_sena", type="string", length=20, nullable=false)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $nitSena;    
+    private $nitSena;
 
     /**
      * @ORM\Column(name="nit_icbf", type="string", length=20, nullable=false)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
-    private $nitIcbf;    
-    
+    private $nitIcbf;
+
     /**
      * Si se tiene en cuenta o no los dias de ausentismo en primas
      * @ORM\Column(name="dias_ausentismo_primas", type="boolean")
      */
-    private $diasAusentismoPrimas = 0;      
-    
+    private $diasAusentismoPrimas = false;
+
     /**
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="promedio_primas_laborado", type="boolean")
      */
-    private $promedioPrimasLaborado = 0;     
-    
+    private $promedioPrimasLaborado = false;
+
     /**
      * Si estos dias tiene valor el sistema divide el promedio en estos dias
      * @ORM\Column(name="promedio_primas_laborado_dias", type="integer")
-     */    
-    private $promedioPrimasLaboradoDias = 0;    
-    
+     */
+    private $promedioPrimasLaboradoDias = 0;
+
     /**
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="omitir_descuento_embargo_primas", type="boolean")
      */
-    private $omitirDescuentoEmbargoPrimas = 0;    
-    
+    private $omitirDescuentoEmbargoPrimas = false;
+
     /**
      * Promedio primas utilizado por seracis
      * @ORM\Column(name="omitir_descuento_embargo_cesantias", type="boolean")
      */
-    private $omitirDescuentoEmbargoCesantias = 0;         
-        
+    private $omitirDescuentoEmbargoCesantias = false;
+
     /**
      * @ORM\Column(name="direccion_servidor_ardid", type="string", length=800, nullable=true)
      */
-    private $direccionServidorArdid;   
+    private $direccionServidorArdid;
 
     /**
      * @ORM\Column(name="codigo_empresa_ardid", type="integer")
-     */    
-    private $codigoEmpresaArdid = 0;    
-    
+     */
+    private $codigoEmpresaArdid = 0;
+
     /**
      * @ORM\Column(name="pagar_licencia_salario_pactado", type="boolean")
      */
-    private $pagarLicenciaSalarioPactado = 0;
+    private $pagarLicenciaSalarioPactado = false;
 
     /**
      * @ORM\Column(name="pagar_incapacidad_salario_pactado", type="boolean")
      */
-    private $pagarIncapacidadSalarioPactado = false; 
-    
+    private $pagarIncapacidadSalarioPactado = false;
+
     /**
      * @ORM\Column(name="informacion_legal_factura", type="text", nullable=true)
-     */    
-    private $informacionLegalFactura; 
+     */
+    private $informacionLegalFactura;
 
     /**
      * @ORM\Column(name="informacion_pago_factura", type="text", nullable=true)
-     */    
-    private $informacionPagoFactura;     
-    
+     */
+    private $informacionPagoFactura;
+
     /**
      * @ORM\Column(name="informacion_contacto_factura", type="text", nullable=true)
-     */    
-    private $informacionContactoFactura;    
-    
+     */
+    private $informacionContactoFactura;
+
     /**
      * @ORM\Column(name="informacion_resolucion_dian_factura", type="text", nullable=true)
-     */    
-    private $informacionResolucionDianFactura;    
-    
+     */
+    private $informacionResolucionDianFactura;
+
     /**
      * @ORM\Column(name="informacion_resolucion_supervigilancia_factura", type="text", nullable=true)
-     */    
+     */
     private $informacionResolucionSupervigilanciaFactura;
-    
+
     /**
      * @ORM\Column(name="horas_domingo_no_compensado", type="integer")
-     */    
-    private $horasDomingoNoCompensado; 
-    
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
+     */
+    private $horasDomingoNoCompensado;
+
     /**
      * @ORM\Column(name="horas_domingo_compensado", type="integer")
-     */    
-    private $horasDomingoCompensado;       
-    
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
+     */
+    private $horasDomingoCompensado;
+
     /**
      * @ORM\Column(name="horas_recargo_nocturno_festivo_compensado", type="integer")
-     */    
-    private $horasRecargoNocturnoFestivoCompensado;       
-    
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
+     */
+    private $horasRecargoNocturnoFestivoCompensado;
+
     /**
      * @ORM\Column(name="horas_recargo_nocturno_festivo_no_compensado", type="integer")
-     */    
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
+     */
     private $horasRecargoNocturnoFestivoNoCompensado;
-    
+
     /**
      * @ORM\Column(name="liquidar_vacaciones_salario", type="boolean")
      */
     private $liquidarVacacionesSalario = false;
-    
+
     /**
      * @ORM\Column(name="liquidar_auxilio_transporte_prima", type="boolean")
      */
     private $liquidarAuxilioTransportePrima = false;
-    
+
     /**
      * @ORM\Column(name="horas_extra_dominical_diurna", type="integer")
-     */    
-    private $horasExtraDominicalDiurna;   
-  
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
+     */
+    private $horasExtraDominicalDiurna;
+
     /**
      * @ORM\Column(name="auxilio_transporte_no_prestacional", type="boolean")
      */
-    private $auxilioTransporteNoPrestacional = false; 
+    private $auxilioTransporteNoPrestacional = false;
 
     /**
      * @ORM\Column(name="orden_nombre_empleado", type="integer")
-     */    
-    private $ordenNombreEmpleado = 0;     
+     */
+    private $ordenNombreEmpleado = 0;
     
-
-
     /**
      * Set codigoConfiguracionPk
      *

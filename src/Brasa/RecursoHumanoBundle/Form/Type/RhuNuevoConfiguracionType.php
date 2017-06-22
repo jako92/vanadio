@@ -6,6 +6,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RhuNuevoConfiguracionType extends AbstractType {
 
@@ -13,8 +17,7 @@ class RhuNuevoConfiguracionType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('codigoConfiguracionPk')
-                ->add('codigoAuxilioTransporte')
+        $builder->add('codigoAuxilioTransporte')
                 ->add('codigoCredito')
                 ->add('codigoSeguro')
                 ->add('codigoTiempoSuplementario')
@@ -47,6 +50,10 @@ class RhuNuevoConfiguracionType extends AbstractType {
                 ->add('codigoFormatoDisciplinario')
                 ->add('codigoFormatoDescargo')
                 ->add('codigoFormatoFactura')
+                ->add('codigoPrima')
+                ->add('codigoCesantia')
+                ->add('codigoInteresCesantia')
+                ->add('tipoBasePagoVacaciones')
                 ->add('porcentajePensionExtra')
                 ->add('vrSalario')
                 ->add('anioActual')
@@ -62,38 +69,34 @@ class RhuNuevoConfiguracionType extends AbstractType {
                 ->add('prestacionesPorcentajeIndemnizacion')
                 ->add('aportesPorcentajeCaja')
                 ->add('aportesPorcentajeVacaciones')
-                ->add('afectaVacacionesParafiscales')
-                ->add('tipoBasePagoVacaciones')
-                ->add('generaPorcetnajeLiquidacion')
-                ->add('correoNomina')
-                ->add('imprimirMensajePago')
-                ->add('codigoPrima')
-                ->add('codigoCesantia')
-                ->add('codigoInteresCesantia')
-                ->add('prestacionesAplicaPorcentajeSalario')
-                ->add('nitSena')
-                ->add('nitIcbf')
-                ->add('diasAusentismoPrimas')
-                ->add('promedioPrimasLaborado')
                 ->add('promedioPrimasLaboradoDias')
-                ->add('omitirDescuentoEmbargoPrimas')
-                ->add('omitirDescuentoEmbargoCesantias')
-                ->add('pagarLicenciaSalarioPactado')
-                ->add('pagarIncapacidadSalarioPactado')
-                ->add('informacionLegalFactura')
-                ->add('informacionPagoFactura')
-                ->add('informacionContactoFactura')
-                ->add('informacionResolucionDianFactura')
-                ->add('informacionResolucionSupervigilanciaFactura')
                 ->add('horasDomingoNoCompensado')
                 ->add('horasDomingoCompensado')
                 ->add('horasRecargoNocturnoFestivoCompensado')
                 ->add('horasRecargoNocturnoFestivoNoCompensado')
-                ->add('liquidarVacacionesSalario')
-                ->add('liquidarAuxilioTransportePrima')
                 ->add('horasExtraDominicalDiurna')
-                ->add('auxilioTransporteNoPrestacional')
                 ->add('ordenNombreEmpleado')
+                ->add('nitSena', TextType::class)
+                ->add('nitIcbf', TextType::class)
+                ->add('correoNomina', TextType::class)
+                ->add('afectaVacacionesParafiscales')
+                ->add('imprimirMensajePago', CheckboxType::class)
+                ->add('auxilioTransporteNoPrestacional', CheckboxType::class)
+                ->add('promedioPrimasLaborado', CheckboxType::class)
+                ->add('liquidarAuxilioTransportePrima', CheckboxType::class)
+                ->add('liquidarVacacionesSalario', CheckboxType::class)
+                ->add('pagarIncapacidadSalarioPactado', CheckboxType::class)
+                ->add('pagarLicenciaSalarioPactado', CheckboxType::class)
+                ->add('generaPorcetnajeLiquidacion', CheckboxType::class)
+                ->add('prestacionesAplicaPorcentajeSalario', CheckboxType::class)
+                ->add('diasAusentismoPrimas', CheckboxType::class)
+                ->add('omitirDescuentoEmbargoPrimas', CheckboxType::class)
+                ->add('omitirDescuentoEmbargoCesantias', CheckboxType::class)
+                ->add('informacionLegalFactura', TextareaType::class)
+                ->add('informacionPagoFactura', TextareaType::class)
+                ->add('informacionContactoFactura', TextareaType::class)
+                ->add('informacionResolucionDianFactura', TextareaType::class)
+                ->add('informacionResolucionSupervigilanciaFactura', TextareaType::class)
                 ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
     }
 
