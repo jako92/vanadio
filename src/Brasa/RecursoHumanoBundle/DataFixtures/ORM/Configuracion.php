@@ -11,7 +11,7 @@ class Configuracion implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $arRhuConfiguracion = $manager->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+        /*$arRhuConfiguracion = $manager->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
         if(!$arRhuConfiguracion) {
             $arRhuConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
             $arRhuConfiguracion->setCodigoConfiguracionPk(1);
@@ -82,7 +82,7 @@ class Configuracion implements FixtureInterface
             $arRhuConfiguracion->setHorasExtraDominicalDiurna(0);
             $manager->persist($arRhuConfiguracion);                
         }
-        $manager->flush();
+        $manager->flush();*/
         
     }
 }
