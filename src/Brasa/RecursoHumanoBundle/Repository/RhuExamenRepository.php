@@ -17,17 +17,17 @@ class RhuExamenRepository extends EntityRepository {
         }
         if($boolAprobado == 1 ) {
             $dql .= " AND e.estadoAprobado = 1";
-        } elseif($boolAprobado == '0' or $boolAprobado == "") {
+        } elseif($boolAprobado == '0') {
             $dql .= " AND e.estadoAprobado = 0";
         }
         if($boolAutorizado == 1 ) {
             $dql .= " AND e.estadoAutorizado = 1";
-        } elseif($boolAutorizado == '0' or $boolAutorizado == "") {
+        } elseif($boolAutorizado == '0') {
             $dql .= " AND e.estadoAutorizado = 0";
         }        
         if($boolControlPago == 1 ) {
             $dql .= " AND e.controlPago = 1";
-        } elseif($boolControlPago == '0' or $boolControlPago == "") {
+        } elseif($boolControlPago == '0') {
             $dql .= " AND e.controlPago = 0";
         }
         $dql .= " ORDER BY e.codigoExamenPk DESC";
