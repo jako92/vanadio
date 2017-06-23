@@ -60,6 +60,11 @@ class EmpleadoController extends Controller {
                 $this->listar();
                 $this->generarInterfaz2();
             }
+            if ($form->get('BtnInterfaz3')->isClicked()) {
+                $this->filtrarLista($form);
+                $this->listar();
+                $this->generarInterfaz3();
+            }
             if ($form->get('BtnInactivar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
@@ -408,8 +413,9 @@ class EmpleadoController extends Controller {
                 ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('TxtCodigo', TextType::class, array('data' => $session->get('filtroCodigoEmpleado')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
-                ->add('BtnInterfaz', SubmitType::class, array('label' => 'Interfaz',))
-                ->add('BtnInterfaz2', SubmitType::class, array('label' => 'Interfaz2',))
+                ->add('BtnInterfaz', SubmitType::class, array('label' => 'Ofimatica',))
+                ->add('BtnInterfaz2', SubmitType::class, array('label' => 'Soflant',))
+                ->add('BtnInterfaz3', SubmitType::class, array('label' => 'Seven',))
                 ->add('BtnPdf', SubmitType::class, array('label' => 'PDF',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnInactivar', SubmitType::class, array('label' => 'Activar / Inactivar',))
@@ -878,6 +884,80 @@ class EmpleadoController extends Controller {
         header('Pragma: public');
         header('Content-Length: ' . filesize($strArchivo));
         readfile($strArchivo);
+        exit;
+    }
+    
+    private function generarInterfaz3() {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'AR'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
+        }
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'Campo')
+                ->setCellValue('B1', 'Cedula o nit')
+                ->setCellValue('C1', 'Digito verificacion')
+                ->setCellValue('D1', 'Tipo documento')
+                ->setCellValue('E1', 'Nombres')
+                ->setCellValue('F1', 'Apellidos')
+                ->setCellValue('G1', 'Nombre completo')
+                ->setCellValue('H1', 'Municipio')
+                ->setCellValue('I1', 'Direccion')
+                ->setCellValue('J1', 'telefono')
+                ->setCellValue('K1', 'Fax');
+
+        $i = 2;
+        $fecha = new \DateTime('now');
+        $query = $em->createQuery($this->strSqlLista);
+        $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+        $arEmpleados = $query->getResult();
+        $fecha = new \DateTime('now');
+        foreach ($arEmpleados as $arEmpleado) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, 1)
+                    ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
+                    ->setCellValue('C' . $i, $arEmpleado->getDigitoVerificacion())
+                    ->setCellValue('D' . $i, $arEmpleado->getCodigoTipoIdentificacionFk())
+                    ->setCellValue('E' . $i, $arEmpleado->getNombre1().' '.$arEmpleado->getNombre2())
+                    ->setCellValue('F' . $i, $arEmpleado->getApellido1().' '.$arEmpleado->getApellido2())
+                    ->setCellValue('G' . $i, $arEmpleado->getNombreCorto())
+                    ->setCellValue('H' . $i, $arEmpleado->getCiudadRel()->getCodigoDane())
+                    ->setCellValue('I' . $i, $arEmpleado->getDireccion())
+                    ->setCellValue('J' . $i, $arEmpleado->getTelefono())
+                    ->setCellValue('K' . $i, '');
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Empleados');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="EmpleadosInterfaz3.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
         exit;
     }
 
