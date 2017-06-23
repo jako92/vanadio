@@ -66,7 +66,7 @@
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arExamen.fecha | date('Y/m/d') }}</td>
                         <td class="titulo">COBRO:</td>
-                        <td class="td-in-well">{{ arExamen.cobro }}</td>
+                        <td class="td-in-well">{%if arExamen.cobro == 'E' %} EMPLEADO {%endif%} {% if arExamen.cobro == 'C' %}CLIENTE {%endif%} {% if arExamen.cobro == 'N' %} NO COBRAR {%endif%}</td>
                     </tr>
                     <tr>
                         <td class="titulo">CONTROL PAGO</td>
