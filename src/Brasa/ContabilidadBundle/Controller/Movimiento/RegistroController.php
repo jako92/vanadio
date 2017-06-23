@@ -137,13 +137,15 @@ class RegistroController extends Controller {
                 ->setCellValue('A1', 'CÓDIGO')
                 ->setCellValue('B1', 'NÚMERO')
                 ->setCellValue('C1', 'NÚMERO REFERENCIA')
-                ->setCellValue('D1', 'COMPROBANTE')
-                ->setCellValue('E1', 'CUENTA')
-                ->setCellValue('F1', 'TERCERO')
-                ->setCellValue('G1', 'DEBITO')
-                ->setCellValue('H1', 'CREDITO')
-                ->setCellValue('I1', 'BASE')
-                ->setCellValue('J1', 'DETALLE');
+                ->setCellValue('D1', 'FECHA REGISTRO')
+                ->setCellValue('E1', 'COMPROBANTE')
+                ->setCellValue('F1', 'CUENTA')
+                ->setCellValue('G1', 'TERCERO')
+                ->setCellValue('H1', 'NIT')
+                ->setCellValue('I1', 'DEBITO')
+                ->setCellValue('J1', 'CREDITO')
+                ->setCellValue('K1', 'BASE')
+                ->setCellValue('L1', 'DETALLE') ;
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -154,13 +156,15 @@ class RegistroController extends Controller {
                     ->setCellValue('A' . $i, $arRegistro->getCodigoRegistroPk())
                     ->setCellValue('B' . $i, $arRegistro->getNumero())
                     ->setCellValue('C' . $i, $arRegistro->getNumeroReferencia())
-                    ->setCellValue('D' . $i, $arRegistro->getFecha()->format('Y-m-d'))
-                    ->setCellValue('E' . $i, $arRegistro->getCodigoComprobanteFk())
+                    ->setCellValue('D' . $i, $arRegistro->getFecha()->format('Y/m/d'))
+                    ->setCellValue('E' . $i, $arRegistro->getComprobanteRel()->getNombre())
                     ->setCellValue('F' . $i, $arRegistro->getCodigoCuentaFk())
                     ->setCellValue('G' . $i, $arRegistro->getTerceroRel()->getNombreCorto())
-                    ->setCellValue('H' . $i, $arRegistro->getDebito())
-                    ->setCellValue('I' . $i, $arRegistro->getCredito())
-                    ->setCellValue('J' . $i, $arRegistro->getDescripcionContable());
+                    ->setCellValue('H' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion())
+                    ->setCellValue('I' . $i, $arRegistro->getDebito())
+                    ->setCellValue('J' . $i, $arRegistro->getCredito())
+                    ->setCellValue('K' . $i, $arRegistro->getBase())
+                    ->setCellValue('L' . $i, $arRegistro->getDescripcionContable());
             $i++;
         }
 
