@@ -178,7 +178,7 @@ class VacacionesController extends Controller
 
                                     $em->flush();
                                     $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->liquidar($arVacacion->getCodigoVacacionPk());
-                                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion'));
+                                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $arVacacion->getCodigoVacacionPk())));
                                 }
                             }
                         } else {
