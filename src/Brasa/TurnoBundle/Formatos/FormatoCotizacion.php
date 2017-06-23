@@ -57,7 +57,7 @@ class FormatoCotizacion extends \FPDF_FPDF {
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 4, "NUMERO:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
-        $this->Cell(65, 4, $arCotizacion->getCodigoCotizacionPk(), 1, 0, 'L', 1);
+        $this->Cell(65, 4, $arCotizacion->getNumero(), 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->Cell(30, 4, "FECHA:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
