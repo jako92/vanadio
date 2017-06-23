@@ -54,16 +54,22 @@ class formatoPagoMasivoController extends Controller
                 } else {
                     $codigoCentroCosto = "";
                 } 
+                $arPagoTipo = $form->get('pagoTipoRel')->getData();
+                if($arPagoTipo) {
+                    $codigoPagoTipo = $arPagoTipo->getCodigoPagoTipoPk();
+                } else {
+                    $codigoPagoTipo = "";
+                }
                 
                 $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                 $codigoFormato = $arConfiguracion->getCodigoFormatoPago();
                 if($codigoFormato <= 1) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo1();
-                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto);
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto, $codigoPagoTipo);
                 }
                 if($codigoFormato == 2) {
                     $objFormatoPago = new \Brasa\RecursoHumanoBundle\Formatos\PagoMasivo2();
-                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto);
+                    $objFormatoPago->Generar($em, $form->get('numero')->getData(), "", "", $codigoZona, $codigoSubzona, $form->get('porFecha')->getData(), $fechaDesde->format('Y-m-d'), $fechaHasta->format('Y-m-d'), $form->get('dato')->getData(), $codigoCentroCosto, $codigoPagoTipo);
                 }                                 
             }            
         }                    
@@ -74,6 +80,21 @@ class formatoPagoMasivoController extends Controller
     private function formularioLista() {  
         $em = $this->getDoctrine()->getManager();  
         $session = new Session;
+        $arrayPropiedadesTipo = array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuPagoTipo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""
+            );
+        if($session->get('filtroCodigoPagoTipo')) {
+            $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuPagoTipo", $session->get('filtroCodigoPagoTipo'));
+        }        
+        
         $arrayPropiedadesZona = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuZona',
                 'query_builder' => function (EntityRepository $er) {
@@ -132,6 +153,7 @@ class formatoPagoMasivoController extends Controller
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);        
         $form = $this->createFormBuilder()  
+            ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
             ->add('zonaRel', EntityType::class, $arrayPropiedadesZona)                
             ->add('subzonaRel', EntityType::class, $arrayPropiedadesSubzona)
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)                

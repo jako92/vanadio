@@ -378,6 +378,11 @@ class RhuVacacionRepository extends EntityRepository {
         }                 
         return $resultados;        
     }    
-    
+    public function generarNovedadTurnos($codigoVacacion) {
+        $em = $this->getEntityManager();
+        $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
+        $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);                
+        return 0;        
+    }     
 }
 

@@ -16,12 +16,6 @@
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
 
@@ -43,59 +37,33 @@
                         <td class="td-in-well">{{ arServicioDetalle.conceptoServicioRel.nombre |default('') }}</td>
                     </tr>
                     <tr>
-                        <td class="titulo">DESDE:</td>
-                        <td class="td-in-well">{{ arServicioDetalle.fechaDesde |date('Y/m/d') }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td class="td-in-well">DESDE:{{ arServicioDetalle.fechaDesde |date('Y/m/d') }} HASTA: {{ arServicioDetalle.fechaHasta |date('Y/m/d') }}</td>
                         <td class="titulo">MODALIDAD:</td>
                         <td class="td-in-well">{{ arServicioDetalle.modalidadServicioRel.nombre |default('') }}</td>
-                    </tr>                
-                    <tr>
-                        <td class="titulo">HASTA:</td>
-                        <td class="td-in-well">{{ arServicioDetalle.fechaHasta |date('Y/m/d') }}</td>
-                        <td class="titulo">PERIODO:</td>
-                        <td class="td-in-well">{{ arServicioDetalle.periodoRel.nombre |default('') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
-                        <td class="titulo">PLANTILLA:</td>
-                        <td class="td-in-well">
-                            {{ arServicioDetalle.plantillaRel.nombre |default('') }} 
-                            {% if arServicioDetalle.codigoPlantillaFk is not null %} <a href="{{ path('brs_tur_base_plantilla_detalle', { 'codigoPlantilla': arServicioDetalle.codigoPlantillaFk }) }}" target="_blanck">Click para editar</a>{% endif %}
-                        </td>
-
-                    </tr>                
+                    </tr>                               
                 </table>                    
             </div>
         </div>
-        <div class="btn-toolbar" style="float:left">
-            <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_utilidad_simular_programacion', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'SimularProgramacion', 600, 900)" >Simular programacion</a>
-            </div>
-        </div>
-        <br /><br />
+        
         <div class="panel panel-default">
             <div class="panel-heading">Información de la programacion</div>
             <div class="panel-body"> 
                 <div class="form-group form-group-sm">
-                    <label for="form_fecha" class="col-sm-3 control-label">Fecha inicia secuencia:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.fechaIniciaPlantilla) }}
-                        <p style="font-size: 0.8em;">* Fecha en la que inicia la secuencia de la plantilla (general o especifica)</p> 
-                    </div>
-                </div>   
-                <div class="form-group form-group-sm">
-                    <label for="form_plantillaRel" class="col-sm-3 control-label">Plantilla general:</label>
-                    <div class="col-sm-9">
+                    <label for="form_plantillaRel" class="col-sm-2 control-label">Plantilla general:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.plantillaRel, { 'attr': {'class': 'form-control'} }) }}
                         <p style="font-size: 0.8em;">* Plantilla de turnos general, si esta seleccionada prevalece sobre la especifica. {% if arServicioDetalle.codigoPlantillaFk is not null %} <a href="{{ path('brs_tur_base_plantilla_detalle', { 'codigoPlantilla': arServicioDetalle.codigoPlantillaFk }) }}" target="_blanck">Click para editar</a>{% endif %}</p>
-                    </div>
-                </div>                     
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    </div>                    
+                    <label for="form_fecha" class="col-sm-2 control-label">Fecha inicia secuencia:</label>
+                    <div class="col-sm-3">
+                        {{ form_widget(form.fechaIniciaPlantilla) }}
+                        <p style="font-size: 0.8em;">* Fecha en la que inicia la secuencia</p> 
+                    </div>  
+                    <div class="col-sm-1">
                         {{ form_widget(form.BtnGuardarServicioDetalle, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                     </div>
-                </div>                     
-                <br />    
+                </div>                            
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#plantillageneral" data-toggle="tab">Plantilla general</a></li>
                     <li><a href="#plantillaespecifica" data-toggle="tab">Plantilla especifica</a></li>
@@ -339,6 +307,9 @@
                 </table> 
                 <div class="btn-toolbar" style="float: left">
                     <div class="btn-group" style="float: left">
+                        <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_servicio_detalle', { 'codigoServicio': arServicioDetalle.codigoServicioFk }) }}">Volver</a>
+                    </div>                    
+                    <div class="btn-group" style="float: left">
                         <div class="btn btn-default btn-sm">Recursos <span class="badge">{{ arServicioDetalleRecursos.getTotalItemCount }}</span></div>                        
                     </div>
                     <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
@@ -346,6 +317,9 @@
                     </div>
                 </div>  
                 <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_utilidad_simular_programacion', {'codigoServicio': arServicio.codigoServicioPk, 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'SimularProgramacion', 600, 1200)" >Simular programacion</a>
+                    </div>
                     <div class="btn-group">
                         <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_servicio_detalle_recurso_nuevo', {'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>                        
                     </div>
@@ -360,8 +334,7 @@
         </div>                    
 
         {{ form_rest(form) }}
-        {{ form_end(form) }}
-        <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_servicio_detalle', { 'codigoServicio': arServicioDetalle.codigoServicioFk }) }}">Volver</a>
-        <br/><br/><br/><br/>
+        {{ form_end(form) }}        
+        <br/><br/><br/>
     </section>
 {% endblock %}

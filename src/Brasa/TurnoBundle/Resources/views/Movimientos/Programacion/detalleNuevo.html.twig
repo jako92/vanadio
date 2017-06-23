@@ -61,7 +61,6 @@
                 <th>SERVICIO</th>
                 <th>MODALIDAD</th>
                 <th>PERIODO</th>
-                <th>PLANTILLA</th>
                 <th>DES</th>
                 <th>HAS</th>            
                 <th>LU</th>
@@ -95,8 +94,7 @@
                     <td>{{ arPedidosDetalle.pedidoRel.fechaProgramacion | date('Y/m')}}</td>                  
                     <td>{{ arPedidosDetalle.conceptoServicioRel.nombre | default('') }}</td>                    
                     <td>{{ arPedidosDetalle.modalidadServicioRel.nombre | default('') }}</td>                    
-                    <td>{{ arPedidosDetalle.periodoRel.nombre  }}</td>  
-                    <td>{{ arPedidosDetalle.plantillaRel.nombre | default('')  }}</td>
+                    <td>{{ arPedidosDetalle.periodoRel.nombre  }}</td>                      
                     <td>{{ arPedidosDetalle.diaDesde }}</td>
                     <td>{{ arPedidosDetalle.diaHasta }}</td>                
                     <td>{% if arPedidosDetalle.lunes == 1%} SI {% else %} NO {% endif %}</td>                

@@ -492,6 +492,11 @@ class RhuConfiguracion {
     private $requiereRequisitoContratacion = false;
 
     /**
+     * @ORM\Column(name="generar_novedad_vacaciones_turnos", type="boolean")
+     */
+    private $generarNovedadVacacionesTurnos = false;     
+    
+    /**
      * Set codigoConfiguracionPk
      *
      * @param integer $codigoConfiguracionPk
@@ -2362,5 +2367,29 @@ class RhuConfiguracion {
     public function getRequiereRequisitoContratacion()
     {
         return $this->requiereRequisitoContratacion;
+    }
+
+    /**
+     * Set generarNovedadVacacionesTurnos
+     *
+     * @param boolean $generarNovedadVacacionesTurnos
+     *
+     * @return RhuConfiguracion
+     */
+    public function setGenerarNovedadVacacionesTurnos($generarNovedadVacacionesTurnos)
+    {
+        $this->generarNovedadVacacionesTurnos = $generarNovedadVacacionesTurnos;
+
+        return $this;
+    }
+
+    /**
+     * Get generarNovedadVacacionesTurnos
+     *
+     * @return boolean
+     */
+    public function getGenerarNovedadVacacionesTurnos()
+    {
+        return $this->generarNovedadVacacionesTurnos;
     }
 }

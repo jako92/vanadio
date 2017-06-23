@@ -29,6 +29,7 @@ DELETE FROM tur_factura;
 DELETE FROM tur_programacion_detalle;
 DELETE FROM tur_programacion;
 DELETE FROM tur_costo_detalle;
+DELETE FROM tur_ingreso_pendiente;
 DELETE FROM tur_pedido_detalle_compuesto;
 DELETE FROM tur_pedido_detalle_concepto;
 DELETE FROM tur_pedido_detalle_recurso;

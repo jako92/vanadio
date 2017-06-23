@@ -756,7 +756,7 @@ class ServicioController extends Controller {
                 ->add('BtnPlantillaNuevo', SubmitType::class, array('label' => 'Nuevo',))
                 ->add('BtnPlantillaEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->add('BtnPlantillaActualizar', SubmitType::class, array('label' => 'Actualizar',))
-                ->add('BtnGuardarServicioDetalle', SubmitType::class, array('label' => 'Guardar',))
+                ->add('BtnGuardarServicioDetalle', SubmitType::class, array('label' => 'Actualizar',))
                 ->getForm();
         return $form;
     }

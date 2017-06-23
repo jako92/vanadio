@@ -11,8 +11,9 @@ class PagoMasivo1 extends \FPDF_FPDF {
     public static $fechaHasta;
     public static $dato;
     public static $codigoCentroCosto;    
+    public static $codigoPagoTipo;
     
-    public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "", $centroCosto = "") {        
+    public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "", $centroCosto = "", $pagoTipo = "") {        
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
@@ -27,6 +28,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
         self::$fechaHasta = $fechaHasta;
         self::$dato = $dato;
         self::$codigoCentroCosto = $centroCosto;
+        self::$codigoPagoTipo = $pagoTipo;
         //$pdf = new FormatoPagoMasivo('P', 'mm', array(215, 147));
         $pdf = new PagoMasivo1('P','mm', 'letter');
         $pdf->AliasNbPages();
@@ -100,7 +102,7 @@ class PagoMasivo1 extends \FPDF_FPDF {
         $pdf->SetFillColor(200, 200, 200);
         $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
         $arConfiguracion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);        
-        $dql = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaImpresionDql(self::$codigoPago, self::$codigoProgramacionPago, self::$codigoZona, self::$codigoSubzona, self::$porFecha, self::$fechaDesde, self::$fechaHasta, self::$dato, self::$codigoCentroCosto);        
+        $dql = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaImpresionDql(self::$codigoPago, self::$codigoProgramacionPago, self::$codigoZona, self::$codigoSubzona, self::$porFecha, self::$fechaDesde, self::$fechaHasta, self::$dato, self::$codigoCentroCosto, self::$codigoPagoTipo);        
         $query = self::$em->createQuery($dql);
         $arPagos = $query->getResult();
         $numeroPagos = count($arPagos);

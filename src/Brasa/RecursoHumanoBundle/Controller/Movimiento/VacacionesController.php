@@ -244,7 +244,8 @@ class VacacionesController extends Controller
                         $arVacacion->setEstadoPagoGenerado(1);
                         $em->persist($arVacacion);
                         $arContrato->setFechaUltimoPagoVacaciones($arVacacion->getFechaHastaPeriodo());                        
-                        $em->persist($arContrato);                        
+                        $em->persist($arContrato);
+                        $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->generarNovedadTurnos($codigoVacacion);
                         $em->flush();
                         return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
                     } else {
