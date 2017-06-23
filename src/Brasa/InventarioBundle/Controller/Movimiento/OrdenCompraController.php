@@ -14,7 +14,7 @@ class OrdenCompraController extends Controller {
     var $strDqlLista = "";
     var $strCodigo = "";
     var $strNumero = "";
-    var $strTercero= "";
+    var $strTercero = "";
 
     /**
      * @Route("/inv/movimiento/orden/compra/lista", name="brs_inv_movimiento_orden_compra_lista")
@@ -41,10 +41,10 @@ class OrdenCompraController extends Controller {
                 }
             }
             if ($form->get('BtnExcel')->isClicked()) {
-                    $this->filtrar($form, $arrControles);
-                    $this->lista();
-                    $this->generarExcel();
-                }
+                $this->filtrar($form, $arrControles);
+                $this->lista();
+                $this->generarExcel();
+            }
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form, $arrControles);
             }
@@ -120,25 +120,27 @@ class OrdenCompraController extends Controller {
                 return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
             }
             if ($form->get('BtnAutorizar')->isClicked()) {
-                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->autorizar($codigoOrdenCompra);
-                    if ($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta);
-                    }
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
+                $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->autorizar($codigoOrdenCompra);
+                if ($respuesta != "") {
+                    $objMensaje->Mensaje("error", $respuesta);
+                }
+                return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
             }
             if ($form->get('BtnDesAutorizar')->isClicked()) {
-                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->desAutorizar($codigoOrdenCompra);
-                    if ($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta);
-                    }
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
+                $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->desAutorizar($codigoOrdenCompra);
+                if ($respuesta != "") {
+                    $objMensaje->Mensaje("error", $respuesta);
+                }
+                return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
             }
             if ($form->get('BtnImprimir')->isClicked()) {
-                    $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->imprimir($codigoOrdenCompra);
-                    if ($respuesta != "") {
-                        $objMensaje->Mensaje("error", $respuesta);
-                    }
-                    return $this->redirect($this->generateUrl('brs_inv_movimiento_orden_compra_detalle', array('codigoOrdenCompra' => $codigoOrdenCompra)));
+                $respuesta = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->imprimir($codigoOrdenCompra);
+                if ($respuesta != "") {
+                    $objMensaje->Mensaje("error", $respuesta);
+                } else {
+                    $objFormatoOrdenCompra = new \Brasa\InventarioBundle\Formatos\FormatoOrdenCompra();
+                    $objFormatoOrdenCompra->Generar($em, $codigoOrdenCompra);
+                }
             }
         }
 
@@ -193,16 +195,14 @@ class OrdenCompraController extends Controller {
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->listaDql(
-                $this->strCodigo,
-                $this->strNumero,
-                $this->strTercero
+                $this->strCodigo, $this->strNumero, $this->strTercero
         );
     }
 
     private function filtrar($form, $arrControles) {
         $em = $this->getDoctrine()->getManager();
         $arTercero = $em->getRepository('BrasaInventarioBundle:InvTercero')->findOneBy(array('nit' => $arrControles['txtNit']));
-        if($arTercero){
+        if ($arTercero) {
             $this->strTercero = $arTercero->getCodigoTerceroPk();
         }
         $this->strCodigo = $form->get('TxtCodigo')->getData();
@@ -223,17 +223,17 @@ class OrdenCompraController extends Controller {
         return $form;
     }
 
-    private function formularioDetalle($arOrdenCompra) { 
+    private function formularioDetalle($arOrdenCompra) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Desautorizar', 'disabled' => true);
-        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' =>true);
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => true);
         $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        if($arOrdenCompra->getEstadoAutorizado() == 1){
+        if ($arOrdenCompra->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => true);
             $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => true);
             $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => true);
-            $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' =>false);
+            $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
             $arrBotonDesAutorizar = array('label' => 'Desautorizar', 'disabled' => false);
         }
         $form = $this->createFormBuilder()
@@ -263,7 +263,7 @@ class OrdenCompraController extends Controller {
             $em->getRepository('BrasaInventarioBundle:InvOrdenCompra')->liquidar($codigoOrdenCompra);
         }
     }
-    
+
     private function generarExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
@@ -297,10 +297,10 @@ class OrdenCompraController extends Controller {
 
         $i = 2;
 
-        
+
         $query = $em->createQuery($this->strDqlLista);
         $arOrdenesCompra = $query->getResult();
-        
+
         foreach ($arOrdenesCompra as $arOrdenCompra) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arOrdenCompra->getCodigoOrdenCompraPk())
