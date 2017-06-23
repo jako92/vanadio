@@ -326,4 +326,27 @@ class RhuIncapacidadRepository extends EntityRepository {
         $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuIncapacidad e WHERE e.codigoCobroFk = " . $codigoCobro;
         return $dql;
     }
+    
+    public function generarNovedadTurnos($arIncapacidad, $usuario, $codigoEmpleado) {
+        $em = $this->getEntityManager();                 
+        $codigoTipoNovedad = $arIncapacidad->getIncapacidadTipoRel()->getTipoNovedadTurno();
+        if($codigoTipoNovedad) {
+            $arNovedadTipo = new \Brasa\TurnoBundle\Entity\TurNovedadTipo();
+            $arNovedadTipo = $em->getRepository('BrasaTurnoBundle:TurNovedadTipo')->find($codigoTipoNovedad);
+            if($arNovedadTipo) {                    
+                $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
+                $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($codigoEmpleado);
+                $arNovedad = new \Brasa\TurnoBundle\Entity\TurNovedad();
+                $arNovedad->setNovedadTipoRel($arNovedadTipo);
+                $arNovedad->setRecursoRel($arRecurso);
+                $arNovedad->setFechaDesde($arIncapacidad->getFechaDesde());
+                $arNovedad->setFechaHasta($arIncapacidad->getFechaHasta());
+                $arNovedad->setUsuario($usuario);
+                $arNovedad->setOrigen('RHU');
+                $em->persist($arNovedad);
+            }
+        }                    
+        return true;        
+    }     
+    
 }

@@ -175,6 +175,10 @@ class IncapacidadController extends Controller {
                                                     $arIncapacidad->setContratoRel($arContrato);
                                                 }
                                                 $em->persist($arIncapacidad);
+                                                if($arConfiguracion->getGenerarNovedadIncapacidadTurnos()) {
+                                                    $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->generarNovedadTurnos($arIncapacidad, $arUsuario->getUserName(), $arEmpleado->getCodigoEmpleadoPk());
+                                                }
+                                                
                                                 $em->flush();
                                                 if ($codigoIncapacidad == 0) {
                                                     $em->getRepository('BrasaGeneralBundle:GenLog')->crearLog($arUsuario->getId(), 12, 1, $arIncapacidad->getCodigoIncapacidadPk());

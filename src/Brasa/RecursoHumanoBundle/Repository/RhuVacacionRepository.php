@@ -377,12 +377,33 @@ class RhuVacacionRepository extends EntityRepository {
            $resultados['vrSalud'] = 0; 
         }                 
         return $resultados;        
-    }    
-    public function generarNovedadTurnos($codigoVacacion) {
+    }
+    
+    public function generarNovedadTurnos($codigoVacacion, $usuario) {
         $em = $this->getEntityManager();
-        $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
-        $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);                
-        return 0;        
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->configuracionDatoCodigo(1);
+        if($arConfiguracion->getGenerarNovedadVacacionesTurnos()) {
+            $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();        
+            $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
+            $codigoTipoNovedad = $arConfiguracion->getTipoNovedadVacacionTurno();
+            if($codigoTipoNovedad) {
+                $arNovedadTipo = new \Brasa\TurnoBundle\Entity\TurNovedadTipo();
+                $arNovedadTipo = $em->getRepository('BrasaTurnoBundle:TurNovedadTipo')->find($codigoTipoNovedad);
+                if($arNovedadTipo) {                    
+                    $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
+                    $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arVacacion->getCodigoEmpleadoFk());
+                    $arNovedad = new \Brasa\TurnoBundle\Entity\TurNovedad();
+                    $arNovedad->setNovedadTipoRel($arNovedadTipo);
+                    $arNovedad->setRecursoRel($arRecurso);
+                    $arNovedad->setFechaDesde($arVacacion->getFechaDesdeDisfrute());
+                    $arNovedad->setFechaHasta($arVacacion->getFechaHastaDisfrute());
+                    $arNovedad->setUsuario($usuario);
+                    $arNovedad->setOrigen('RHU');
+                    $em->persist($arNovedad);
+                }
+            }            
+        }
+        return true;        
     }     
 }
 

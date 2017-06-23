@@ -48,6 +48,11 @@ class RhuIncapacidadTipo
     private $codigoPagoConceptoFk;     
     
     /**
+     * @ORM\Column(name="tipo_novedad_turno", type="integer", nullable=true)
+     */
+    private $tipoNovedadTurno;    
+    
+    /**
      * @ORM\ManyToOne(targetEntity="RhuPagoConcepto", inversedBy="incapacidadesTiposPagoConceptoRel")
      * @ORM\JoinColumn(name="codigo_pago_concepto_fk", referencedColumnName="codigo_pago_concepto_pk")
      */
@@ -99,6 +104,30 @@ class RhuIncapacidadTipo
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return RhuIncapacidadTipo
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 
     /**
@@ -198,6 +227,30 @@ class RhuIncapacidadTipo
     }
 
     /**
+     * Set tipoNovedadTurno
+     *
+     * @param integer $tipoNovedadTurno
+     *
+     * @return RhuIncapacidadTipo
+     */
+    public function setTipoNovedadTurno($tipoNovedadTurno)
+    {
+        $this->tipoNovedadTurno = $tipoNovedadTurno;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoNovedadTurno
+     *
+     * @return integer
+     */
+    public function getTipoNovedadTurno()
+    {
+        return $this->tipoNovedadTurno;
+    }
+
+    /**
      * Set pagoConceptoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel
@@ -253,29 +306,5 @@ class RhuIncapacidadTipo
     public function getIncapacidadesIncapacidadTipoRel()
     {
         return $this->incapacidadesIncapacidadTipoRel;
-    }
-
-    /**
-     * Set abreviatura
-     *
-     * @param string $abreviatura
-     *
-     * @return RhuIncapacidadTipo
-     */
-    public function setAbreviatura($abreviatura)
-    {
-        $this->abreviatura = $abreviatura;
-
-        return $this;
-    }
-
-    /**
-     * Get abreviatura
-     *
-     * @return string
-     */
-    public function getAbreviatura()
-    {
-        return $this->abreviatura;
     }
 }

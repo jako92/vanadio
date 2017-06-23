@@ -53,6 +53,11 @@ class TurNovedad
     private $estadoAplicada = false;    
     
     /**
+     * @ORM\Column(name="origen", type="string", length=3, nullable=true)
+     */    
+    private $origen;    
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;     
@@ -348,5 +353,29 @@ class TurNovedad
     public function getEstadoAplicada()
     {
         return $this->estadoAplicada;
+    }
+
+    /**
+     * Set origen
+     *
+     * @param string $origen
+     *
+     * @return TurNovedad
+     */
+    public function setOrigen($origen)
+    {
+        $this->origen = $origen;
+
+        return $this;
+    }
+
+    /**
+     * Get origen
+     *
+     * @return string
+     */
+    public function getOrigen()
+    {
+        return $this->origen;
     }
 }

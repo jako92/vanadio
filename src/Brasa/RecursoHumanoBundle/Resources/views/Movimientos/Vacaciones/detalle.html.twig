@@ -41,6 +41,10 @@
             </div>        
         </div>
     </div>
+        <div style="float:right">
+            {% if arVacaciones.estadoAutorizado == 1 %}<span class="label label-default">Autorizado</span>{% endif %}                                                   
+            {% if arVacaciones.estadoPagoGenerado == 1 %}<span class="label label-default">Generado</span>{% endif %}                                                   
+        </div>              
     <br /><br />
     <div class="panel panel-default">
         <div class="panel-heading">Información de las vacaciones</div>
@@ -105,16 +109,16 @@
                 <tr>
                     <td class="titulo">GRUPO PAGO:</td>
                     <td class="td-in-well">{{ arVacaciones.centroCostoRel.nombre }}</td>
-                    <td class="titulo">AUTORIZADO:</td>
-                    <td> {% if arVacaciones.estadoAutorizado == 1 %}SI{% else %} NO {% endif %}</td>
+                    <td class="titulo"></td>
+                    <td></td>
                     <td class="titulo">TOTAL VACACIONES:</td>
                     <td class="td-in-well" align="right">{{ arVacaciones.vrVacacionBruto | number_format(0, '.', ',')}}</td>
                 </tr>
                 <tr>
                     <td class="titulo">CONTRATO:</td>
                     <td class="td-in-well">{{ arVacaciones.codigoContratoFk }}</td>
-                    <td class="titulo">PAGADO:</td>
-                    <td> {% if arVacaciones.estadoPagoGenerado == 1 %}SI{% else %} NO {% endif %}</td>
+                    <td class="titulo"></td>
+                    <td></td>
                     <td class="titulo">OTRAS DEDUCCIONES:</td>
                     <td class="td-in-well" align="right">{{ arVacaciones.vrDeduccion | number_format(0, '.', ',')}}</td>
                 </tr>

@@ -92,6 +92,7 @@
                 <th>RECURSO</th>
                 <th>REEMPLAZO</th>
                 <th>USUARIO</th>
+                <th>ORI</th>
                 <th>APL</th>
                 <th></th>
                 <th></th>
@@ -106,6 +107,7 @@
                     <td>{{ arNovedades.recursoRel.nombreCorto |default('')  }}</td>                              
                     <td>{{ arNovedades.recursoReemplazoRel.nombreCorto |default('')  }}</td> 
                     <td>{{ arNovedades.usuario  }}</td> 
+                    <td>{{ arNovedades.origen  }}</td> 
                     <td>{% if arNovedades.estadoAplicada == 1 %} SI {% else %} NO {% endif %}</td> 
                     <td style="text-align: center"><a class="btn btn-default btn-xs" id="{{ path('brs_tur_movimiento_novedad_cambiar_tipo', { 'codigoNovedad': arNovedades.codigoNovedadPk}) }}" style="float:left">Cambiar tipo</a></td>
                     <td style="text-align: center"><a href="{{ path('brs_tur_movimiento_novedad_nuevo', {'codigoNovedad': arNovedades.codigoNovedadPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
