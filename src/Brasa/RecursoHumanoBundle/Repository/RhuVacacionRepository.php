@@ -393,6 +393,7 @@ class RhuVacacionRepository extends EntityRepository {
                     $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
                     $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arVacacion->getCodigoEmpleadoFk());
                     $arNovedad = new \Brasa\TurnoBundle\Entity\TurNovedad();
+                    $arNovedad->setFecha(new \DateTime('now'));
                     $arNovedad->setNovedadTipoRel($arNovedadTipo);
                     $arNovedad->setRecursoRel($arRecurso);
                     $arNovedad->setFechaDesde($arVacacion->getFechaDesdeDisfrute());

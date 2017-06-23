@@ -18,6 +18,11 @@ class TurNovedad
     private $codigoNovedadPk;             
 
     /**
+     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     */    
+    private $fecha;    
+    
+    /**
      * @ORM\Column(name="codigo_novedad_tipo_fk", type="integer", nullable=true)
      */    
     private $codigoNovedadTipoFk;
@@ -81,6 +86,7 @@ class TurNovedad
     protected $novedadTipoRel;    
 
 
+
     /**
      * Get codigoNovedadPk
      *
@@ -89,6 +95,54 @@ class TurNovedad
     public function getCodigoNovedadPk()
     {
         return $this->codigoNovedadPk;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return TurNovedad
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set codigoNovedadTipoFk
+     *
+     * @param integer $codigoNovedadTipoFk
+     *
+     * @return TurNovedad
+     */
+    public function setCodigoNovedadTipoFk($codigoNovedadTipoFk)
+    {
+        $this->codigoNovedadTipoFk = $codigoNovedadTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoNovedadTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoNovedadTipoFk()
+    {
+        return $this->codigoNovedadTipoFk;
     }
 
     /**
@@ -212,6 +266,54 @@ class TurNovedad
     }
 
     /**
+     * Set estadoAplicada
+     *
+     * @param boolean $estadoAplicada
+     *
+     * @return TurNovedad
+     */
+    public function setEstadoAplicada($estadoAplicada)
+    {
+        $this->estadoAplicada = $estadoAplicada;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAplicada
+     *
+     * @return boolean
+     */
+    public function getEstadoAplicada()
+    {
+        return $this->estadoAplicada;
+    }
+
+    /**
+     * Set origen
+     *
+     * @param string $origen
+     *
+     * @return TurNovedad
+     */
+    public function setOrigen($origen)
+    {
+        $this->origen = $origen;
+
+        return $this;
+    }
+
+    /**
+     * Get origen
+     *
+     * @return string
+     */
+    public function getOrigen()
+    {
+        return $this->origen;
+    }
+
+    /**
      * Set comentarios
      *
      * @param string $comentarios
@@ -284,30 +386,6 @@ class TurNovedad
     }
 
     /**
-     * Set codigoNovedadTipoFk
-     *
-     * @param integer $codigoNovedadTipoFk
-     *
-     * @return TurNovedad
-     */
-    public function setCodigoNovedadTipoFk($codigoNovedadTipoFk)
-    {
-        $this->codigoNovedadTipoFk = $codigoNovedadTipoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoNovedadTipoFk
-     *
-     * @return integer
-     */
-    public function getCodigoNovedadTipoFk()
-    {
-        return $this->codigoNovedadTipoFk;
-    }
-
-    /**
      * Set novedadTipoRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurNovedadTipo $novedadTipoRel
@@ -329,53 +407,5 @@ class TurNovedad
     public function getNovedadTipoRel()
     {
         return $this->novedadTipoRel;
-    }
-
-    /**
-     * Set estadoAplicada
-     *
-     * @param boolean $estadoAplicada
-     *
-     * @return TurNovedad
-     */
-    public function setEstadoAplicada($estadoAplicada)
-    {
-        $this->estadoAplicada = $estadoAplicada;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAplicada
-     *
-     * @return boolean
-     */
-    public function getEstadoAplicada()
-    {
-        return $this->estadoAplicada;
-    }
-
-    /**
-     * Set origen
-     *
-     * @param string $origen
-     *
-     * @return TurNovedad
-     */
-    public function setOrigen($origen)
-    {
-        $this->origen = $origen;
-
-        return $this;
-    }
-
-    /**
-     * Get origen
-     *
-     * @return string
-     */
-    public function getOrigen()
-    {
-        return $this->origen;
     }
 }

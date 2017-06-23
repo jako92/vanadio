@@ -74,6 +74,7 @@ class NovedadController extends Controller {
             $arNovedad = $em->getRepository('BrasaTurnoBundle:TurNovedad')->find($codigoNovedad);
         } else {
             $arNovedad->setOrigen('TUR');
+            $arNovedad->setFecha(new \DateTime('now'));
             $arNovedad->setFechaDesde(new \DateTime('now'));
             $arNovedad->setFechaHasta(new \DateTime('now'));
         }
