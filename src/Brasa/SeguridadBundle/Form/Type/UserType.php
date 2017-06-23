@@ -32,6 +32,14 @@ class UserType extends AbstractType {
                 'choice_label' => 'nombre',
                 'placeholder' => '',
                 'required'=>false))
+                ->add('usuarioActividadRel', EntityType::class, array(
+                'class' => 'BrasaSeguridadBundle:SegUsuarioActividad',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('ua')
+                    ->orderBy('ua.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'placeholder' => '',
+                'required'=>false))
                 ->add('nombreCorto', TextType::class, array('required' => true))
                 ->add('username', TextType::class, array('required' => true))
                 ->add('email', TextType::class, array('required' => true))

@@ -264,7 +264,7 @@ class RhuCentroCosto
     protected $empleadosCentroCostoRel;
     
     /**
-     * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="centroCostoRel")
+     * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="centroCostoRel")
      */
     protected $examenesCentroCostoRel;
 

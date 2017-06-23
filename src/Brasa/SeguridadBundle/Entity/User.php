@@ -66,6 +66,11 @@ class User implements UserInterface, \Serializable {
      * @ORM\Column(name="codigo_grupo_fk", type="integer", nullable=true)
      */
     private $codigoGrupoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_usuario_actividad_fk", type="integer", nullable=true)
+     */
+    private $codigoUsuarioActividadFk;
 
     /**
      * @ORM\Column(name="tareas_pendientes", type="integer")
@@ -103,6 +108,12 @@ class User implements UserInterface, \Serializable {
      * @ORM\JoinColumn(name="codigo_grupo_fk", referencedColumnName="codigo_grupo_pk")
      */
     protected $grupoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SegUsuarioActividad", inversedBy="usersUsuarioActividadRel")
+     * @ORM\JoinColumn(name="codigo_usuario_actividad_fk", referencedColumnName="codigo_usuario_actividad_pk")
+     */
+    protected $usuarioActividadRel;
 
     /**
      * @ORM\OneToMany(targetEntity="SegUsuarioPermisoEspecial", mappedBy="usuarioRel")
@@ -649,4 +660,52 @@ class User implements UserInterface, \Serializable {
         return $this->notificacionesPendientes;
     }
 
+
+    /**
+     * Set codigoUsuarioActividadFk
+     *
+     * @param integer $codigoUsuarioActividadFk
+     *
+     * @return User
+     */
+    public function setCodigoUsuarioActividadFk($codigoUsuarioActividadFk)
+    {
+        $this->codigoUsuarioActividadFk = $codigoUsuarioActividadFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoUsuarioActividadFk
+     *
+     * @return integer
+     */
+    public function getCodigoUsuarioActividadFk()
+    {
+        return $this->codigoUsuarioActividadFk;
+    }
+
+    /**
+     * Set usuarioActividadRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegUsuarioActividad $usuarioActividadRel
+     *
+     * @return User
+     */
+    public function setUsuarioActividadRel(\Brasa\SeguridadBundle\Entity\SegUsuarioActividad $usuarioActividadRel = null)
+    {
+        $this->usuarioActividadRel = $usuarioActividadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioActividadRel
+     *
+     * @return \Brasa\SeguridadBundle\Entity\SegUsuarioActividad
+     */
+    public function getUsuarioActividadRel()
+    {
+        return $this->usuarioActividadRel;
+    }
 }

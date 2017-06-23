@@ -326,7 +326,7 @@ class RhuSeleccion
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccionEntrevista", mappedBy="seleccionRel")
      */
-    protected $seleccionesEntrevistasSeleccionRel;  
+    protected $seleccionesEntrevistasSeleccionRel;
     
     /**
      * Constructor
@@ -395,6 +395,30 @@ class RhuSeleccion
     public function getCodigoSeleccionTipoFk()
     {
         return $this->codigoSeleccionTipoFk;
+    }
+
+    /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuSeleccion
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
     }
 
     /**
@@ -902,6 +926,30 @@ class RhuSeleccion
     }
 
     /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuSeleccion
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
      * Set codigoCargoFk
      *
      * @param integer $codigoCargoFk
@@ -1358,27 +1406,27 @@ class RhuSeleccion
     }
 
     /**
-     * Set centroCostoRel
+     * Set clienteRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
      *
      * @return RhuSeleccion
      */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
     {
-        $this->centroCostoRel = $centroCostoRel;
+        $this->clienteRel = $clienteRel;
 
         return $this;
     }
 
     /**
-     * Get centroCostoRel
+     * Get clienteRel
      *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
      */
-    public function getCentroCostoRel()
+    public function getClienteRel()
     {
-        return $this->centroCostoRel;
+        return $this->clienteRel;
     }
 
     /**
@@ -1598,6 +1646,30 @@ class RhuSeleccion
     }
 
     /**
+     * Set cobroRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
+     *
+     * @return RhuSeleccion
+     */
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
+    {
+        $this->cobroRel = $cobroRel;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
+     */
+    public function getCobroRel()
+    {
+        return $this->cobroRel;
+    }
+
+    /**
      * Add seleccionesReferenciasSeleccionRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionReferencia $seleccionesReferenciasSeleccionRel
@@ -1731,135 +1803,5 @@ class RhuSeleccion
     public function getSeleccionesEntrevistasSeleccionRel()
     {
         return $this->seleccionesEntrevistasSeleccionRel;
-    }
-
-    /**
-     * Set codigoclienteFk
-     *
-     * @param integer $codigoclienteFk
-     *
-     * @return RhuSeleccion
-     */
-    public function setCodigoclienteFk($codigoclienteFk)
-    {
-        $this->codigoclienteFk = $codigoclienteFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoclienteFk
-     *
-     * @return integer
-     */
-    public function getCodigoclienteFk()
-    {
-        return $this->codigoclienteFk;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
-     *
-     * @return RhuSeleccion
-     */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
-     */
-    public function getClienteRel()
-    {
-        return $this->clienteRel;
-    }
-
-    /**
-     * Add seleccionesExamenRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel
-     *
-     * @return RhuSeleccion
-     */
-    public function addSeleccionesExamenRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel)
-    {
-        $this->seleccionesExamenRel[] = $seleccionesExamenRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove seleccionesExamenRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel
-     */
-    public function removeSeleccionesExamenRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $seleccionesExamenRel)
-    {
-        $this->seleccionesExamenRel->removeElement($seleccionesExamenRel);
-    }
-
-    /**
-     * Get seleccionesExamenRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSeleccionesExamenRel()
-    {
-        return $this->seleccionesExamenRel;
-    }
-
-    /**
-     * Set codigoCobroFk
-     *
-     * @param integer $codigoCobroFk
-     *
-     * @return RhuSeleccion
-     */
-    public function setCodigoCobroFk($codigoCobroFk)
-    {
-        $this->codigoCobroFk = $codigoCobroFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCobroFk
-     *
-     * @return integer
-     */
-    public function getCodigoCobroFk()
-    {
-        return $this->codigoCobroFk;
-    }
-
-    /**
-     * Set cobroRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel
-     *
-     * @return RhuSeleccion
-     */
-    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
-    {
-        $this->cobroRel = $cobroRel;
-
-        return $this;
-    }
-
-    /**
-     * Get cobroRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
-     */
-    public function getCobroRel()
-    {
-        return $this->cobroRel;
     }
 }

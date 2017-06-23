@@ -20,44 +20,49 @@
                 <div class="form-group form-group-sm">
                     <label for="form_rolRel" class="col-sm-2 control-label">Tipo:</label>
                     <div class="col-sm-10">
-                        {{ form_widget(form.rolRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                        {{ form_widget(form.rolRel, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','autofocus':'autofocus'} }) }}
                     </div>
                 </div>            
                 <div class="form-group form-group-sm">
                     <label for="form_nombreCorto" class="col-sm-2 control-label">Nombre:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.nombreCorto, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.nombreCorto) }}
                     </div>
                     <label for="form_email" class="col-sm-2 control-label">Correo:</label>
                     <div class="col-sm-4">
                         {% if form_errors(form.email) %}
-                            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_widget(form.email) }}
                             <div class="alert alert-danger" role="alert">{{ form_errors(form.email, { 'attr': {'autofocus': 'autofocus'} }) }}</div>
                         {% else %}
-                            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_widget(form.email) }}
                         {% endif %}
                     </div>
                 </div>                
                 <div class="form-group form-group-sm">
                     <label for="form_username" class="col-sm-2 control-label">Usuario:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.username, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.username) }}
                     </div>
                     <label for="form_password" class="col-sm-2 control-label">Clave:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.password, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.password) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_cargo" class="col-sm-2 control-label">Actividad:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.usuarioActividadRel) }}
+                    </div>
+                    <label for="form_grupoRel" class="col-sm-2 control-label">Grupo:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.grupoRel) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_cargo" class="col-sm-2 control-label">Cargo:</label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.cargo, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                    <label for="form_grupoRel" class="col-sm-2 control-label">Grupo:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.grupoRel, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
+                        {{ form_widget(form.cargo) }}
+                    </div></div>
                 <div class="form-group form-group-sm">
                     <label for="form_fecha" class="col-sm-2 control-label">fecha:</label>
                     <div class="col-sm-10">{{ form_widget(form.fecha) }}
