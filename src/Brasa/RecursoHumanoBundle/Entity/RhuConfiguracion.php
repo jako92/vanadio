@@ -487,7 +487,7 @@ class RhuConfiguracion {
     private $ordenNombreEmpleado = 0;
 
     /**
-     * @ORM\Column(name="requiere_requisito_contratacion", type="boolean")
+     * @ORM\Column(name="requiere_requisito_contratacion", type="boolean", options={"default":false}, nullable=true)
      */
     private $requiereRequisitoContratacion = false;
 

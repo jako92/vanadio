@@ -63,9 +63,19 @@ class User implements UserInterface, \Serializable {
     private $roles;
 
     /**
-     * @ORM\Column(name="tareasPendientes", type="integer")
+     * @ORM\Column(name="codigo_grupo_fk", type="integer", nullable=true)
+     */
+    private $codigoGrupoFk;
+
+    /**
+     * @ORM\Column(name="tareas_pendientes", type="integer")
      */
     private $tareasPendientes = 0;
+
+    /**
+     * @ORM\Column(name="notificaciones_pendientes", type="integer", options={"default":0}, nullable=true)
+     */
+    private $notificacionesPendientes = 0;
 
     /**
      * @ORM\Column(name="cargo", type="string", length=255)
@@ -81,11 +91,6 @@ class User implements UserInterface, \Serializable {
      * @ORM\Column(name="fecha", type="date", nullable=true)
      */
     private $fecha;
-
-    /**
-     * @ORM\Column(name="codigoGrupo_fk", type="integer", nullable=true)
-     */
-    private $codigoGrupoFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="SegRoles", inversedBy="usersRolRel")
@@ -556,55 +561,6 @@ class User implements UserInterface, \Serializable {
         return $this->fecha;
     }
 
-
-    /**
-     * Set codigoGrupoFk
-     *
-     * @param integer $codigoGrupoFk
-     *
-     * @return User
-     */
-    public function setCodigoGrupoFk($codigoGrupoFk)
-    {
-        $this->codigoGrupoFk = $codigoGrupoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoGrupoFk
-     *
-     * @return integer
-     */
-    public function getCodigoGrupoFk()
-    {
-        return $this->codigoGrupoFk;
-    }
-
-    /**
-     * Set grupoRel
-     *
-     * @param \Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel
-     *
-     * @return User
-     */
-    public function setGrupoRel(\Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel = null)
-    {
-        $this->grupoRel = $grupoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get grupoRel
-     *
-     * @return \Brasa\SeguridadBundle\Entity\SegGrupo
-     */
-    public function getGrupoRel()
-    {
-        return $this->grupoRel;
-    }
-
     /**
      * Set cambiarClave
      *
@@ -612,8 +568,7 @@ class User implements UserInterface, \Serializable {
      *
      * @return User
      */
-    public function setCambiarClave($cambiarClave)
-    {
+    public function setCambiarClave($cambiarClave) {
         $this->cambiarClave = $cambiarClave;
 
         return $this;
@@ -624,8 +579,74 @@ class User implements UserInterface, \Serializable {
      *
      * @return boolean
      */
-    public function getCambiarClave()
-    {
+    public function getCambiarClave() {
         return $this->cambiarClave;
     }
+
+    /**
+     * Set codigoGrupoFk
+     *
+     * @param integer $codigoGrupoFk
+     *
+     * @return User
+     */
+    public function setCodigoGrupoFk($codigoGrupoFk) {
+        $this->codigoGrupoFk = $codigoGrupoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoGrupoFk
+     *
+     * @return integer
+     */
+    public function getCodigoGrupoFk() {
+        return $this->codigoGrupoFk;
+    }
+
+    /**
+     * Set grupoRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel
+     *
+     * @return User
+     */
+    public function setGrupoRel(\Brasa\SeguridadBundle\Entity\SegGrupo $grupoRel = null) {
+        $this->grupoRel = $grupoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get grupoRel
+     *
+     * @return \Brasa\SeguridadBundle\Entity\SegGrupo
+     */
+    public function getGrupoRel() {
+        return $this->grupoRel;
+    }
+
+    /**
+     * Set notificacionesPendientes
+     *
+     * @param integer $notificacionesPendientes
+     *
+     * @return User
+     */
+    public function setNotificacionesPendientes($notificacionesPendientes) {
+        $this->notificacionesPendientes = $notificacionesPendientes;
+
+        return $this;
+    }
+
+    /**
+     * Get notificacionesPendientes
+     *
+     * @return integer
+     */
+    public function getNotificacionesPendientes() {
+        return $this->notificacionesPendientes;
+    }
+
 }
