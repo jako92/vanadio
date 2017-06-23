@@ -40,7 +40,7 @@ class RhuSeleccionRequisicionAspiranteRepository extends EntityRepository {
                     $arSelecion->setTipoIdentificacionRel($arAspitante->getTipoIdentificacionRel());
                     $arSelecion->setEstadoCivilRel($arAspitante->getEstadoCivilRel());
                     $arSelecion->setNumeroIdentificacion($arAspitante->getNumeroIdentificacion());
-                    $arSelecion->setCentroCostoRel($arRequisicionDetalle->getSeleccionRequisitoRel()->getCentroCostoRel());
+                    //$arSelecion->setCentroCostoRel($arRequisicionDetalle->getSeleccionRequisitoRel()->getCentroCostoRel());
                     $arSelecion->setFechaNacimiento($arAspitante->getFechaNacimiento());
                     $arSelecion->setCodigoSexoFk($arAspitante->getCodigoSexoFk());
                     $arSelecion->setRhRel($arAspitante->getRhRel());
