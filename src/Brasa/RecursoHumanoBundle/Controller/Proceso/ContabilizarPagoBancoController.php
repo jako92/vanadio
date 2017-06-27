@@ -142,15 +142,20 @@ class ContabilizarPagoBancoController extends Controller
 
                                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                                             $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arCuentaPension->getCodigoCuentaFk());
-                                            $arRegistro->setComprobanteRel($arComprobanteContable);
-                                            $arRegistro->setCuentaRel($arCuenta);
-                                            $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getNumero());
-                                            $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
-                                            $arRegistro->setFecha($arPagoBanco->getFecha());
-                                            $arRegistro->setDebito($detalle['pension']);
-                                            $arRegistro->setDescripcionContable('SS ENTIDAD PENSION');
-                                            $em->persist($arRegistro);                                            
+                                            if($arCuenta) {
+                                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                                $arRegistro->setCuentaRel($arCuenta);
+                                                $arRegistro->setTerceroRel($arTercero);
+                                                $arRegistro->setNumero($arPagoBanco->getNumero());
+                                                $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
+                                                $arRegistro->setFecha($arPagoBanco->getFecha());
+                                                $arRegistro->setDebito($detalle['pension']);
+                                                $arRegistro->setDescripcionContable('SS ENTIDAD PENSION');
+                                                $em->persist($arRegistro);                                                                                            
+                                            } else {
+                                                $mensajeError = "La cuenta " . $arCuentaPension->getCodigoCuentaFk() . " para la pension no existe en el plan de cuentas";
+                                            }
+
                                         }
                                     }       
 
@@ -167,15 +172,19 @@ class ContabilizarPagoBancoController extends Controller
 
                                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                                             $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arCuentaSalud->getCodigoCuentaFk());
-                                            $arRegistro->setComprobanteRel($arComprobanteContable);
-                                            $arRegistro->setCuentaRel($arCuenta);
-                                            $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getNumero());
-                                            $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
-                                            $arRegistro->setFecha($arPagoBanco->getFecha());
-                                            $arRegistro->setDebito($detalle['salud']);
-                                            $arRegistro->setDescripcionContable('SS ENTIDAD SALUD');
-                                            $em->persist($arRegistro);                                            
+                                            if($arCuenta) {
+                                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                                $arRegistro->setCuentaRel($arCuenta);
+                                                $arRegistro->setTerceroRel($arTercero);
+                                                $arRegistro->setNumero($arPagoBanco->getNumero());
+                                                $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
+                                                $arRegistro->setFecha($arPagoBanco->getFecha());
+                                                $arRegistro->setDebito($detalle['salud']);
+                                                $arRegistro->setDescripcionContable('SS ENTIDAD SALUD');
+                                                $em->persist($arRegistro);                                                
+                                            } else {
+                                                $mensajeError = "La cuenta " . $arCuentaSalud->getCodigoCuentaFk() . " para la salud no existe en el plan de cuentas";
+                                            }                                            
                                         }
                                     }
 
@@ -217,15 +226,19 @@ class ContabilizarPagoBancoController extends Controller
 
                                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                                             $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arCuentaParafiscales->getCodigoCuentaFk());
-                                            $arRegistro->setComprobanteRel($arComprobanteContable);
-                                            $arRegistro->setCuentaRel($arCuenta);
-                                            $arRegistro->setTerceroRel($arTercero);
-                                            $arRegistro->setNumero($arPagoBanco->getNumero());
-                                            $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
-                                            $arRegistro->setFecha($arPagoBanco->getFecha());
-                                            $arRegistro->setDebito($detalle['caja']);
-                                            $arRegistro->setDescripcionContable('SS PARAFISCALES');
-                                            $em->persist($arRegistro);                                            
+                                            if($arCuenta) {
+                                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                                $arRegistro->setCuentaRel($arCuenta);
+                                                $arRegistro->setTerceroRel($arTercero);
+                                                $arRegistro->setNumero($arPagoBanco->getNumero());
+                                                $arRegistro->setNumeroReferencia($arPagoBanco->getCodigoPagoBancoPk());
+                                                $arRegistro->setFecha($arPagoBanco->getFecha());
+                                                $arRegistro->setDebito($detalle['caja']);
+                                                $arRegistro->setDescripcionContable('SS PARAFISCALES');
+                                                $em->persist($arRegistro);                                                
+                                            } else {
+                                                $mensajeError = "La cuenta " . $arCuentaParafiscales->getCodigoCuentaFk() . " para parafiscales no existe en el plan de cuentas";
+                                            }                                            
                                         }
                                     }                                      
                                     
