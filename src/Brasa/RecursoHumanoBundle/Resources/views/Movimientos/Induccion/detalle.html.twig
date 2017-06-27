@@ -1,0 +1,57 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Inducción detalle - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Inducción: detalle</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Inducción</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </section>    
+    <section class="content">
+        <div class="btn-group">
+
+        </div>
+        <br /> <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">Información inducción</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CÓDIGO:</td>
+                        <td class="td-in-well">{{ arInduccion.codigoInduccionPk }}</td>
+                        <td class="titulo">FECHA:</td>
+                        <td align="right">{{ arInduccion.fecha|date("Y/m/d H:i:s") }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">IDENTIFICACION:</td>
+                        <td class="td-in-well">{{ arInduccion.empleadoRel.numeroIdentificacion }}</td>
+                        <td class="titulo">DESDE:</td>
+                        <td align="right">{{ arInduccion.fechaDesde|date("Y/m/d") }}</td>                                               
+                    </tr>
+                    <tr>
+                        <td class="titulo">EMPLEADO:</td>
+                        <td class="td-in-well">{{ arInduccion.empleadoRel.nombreCorto }}</td>
+                        <td class="titulo">HASTA:</td>
+                        <td align="right">{{ arInduccion.fechaHasta|date("Y/m/d") }}</td>                                               
+                    </tr>                    
+
+                </table>
+            </div>
+        </div>
+        <br />
+        <!-- Botones Menu Items -->
+        <div class="btn-toolbar" style="float:left">
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_induccion_lista') }}">Volver</a>
+            </div>
+        </div>
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

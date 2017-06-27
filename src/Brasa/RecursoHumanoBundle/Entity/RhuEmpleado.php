@@ -714,7 +714,12 @@ class RhuEmpleado
     /**
      * @ORM\OneToMany(targetEntity="RhuExamen", mappedBy="empleadoRel")
      */
-    protected $examenesEmpleadoRel;    
+    protected $examenesEmpleadoRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RhuInduccion", mappedBy="empleadoRel")
+     */
+    protected $induccionesEmpleadoRel; 
        
     /**
      * @ORM\OneToMany(targetEntity="Brasa\TurnoBundle\Entity\TurRecurso", mappedBy="empleadoRel")
@@ -4855,5 +4860,39 @@ class RhuEmpleado
     public function getTurCostosDetallesEmpleadoRel()
     {
         return $this->turCostosDetallesEmpleadoRel;
+    }
+
+    /**
+     * Add induccionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuInduccion $induccionesEmpleadoRel
+     *
+     * @return RhuEmpleado
+     */
+    public function addInduccionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuInduccion $induccionesEmpleadoRel)
+    {
+        $this->induccionesEmpleadoRel[] = $induccionesEmpleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove induccionesEmpleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuInduccion $induccionesEmpleadoRel
+     */
+    public function removeInduccionesEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuInduccion $induccionesEmpleadoRel)
+    {
+        $this->induccionesEmpleadoRel->removeElement($induccionesEmpleadoRel);
+    }
+
+    /**
+     * Get induccionesEmpleadoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInduccionesEmpleadoRel()
+    {
+        return $this->induccionesEmpleadoRel;
     }
 }

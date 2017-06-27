@@ -1,0 +1,71 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Inducción nuevo - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Recurso humano
+            <small>Inducción: nuevo</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-group"></i> Recurso humano</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Movimientos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Inducción</a></li>
+            <li class="active">Nuevo</li>
+        </ol>
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}        
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">      
+                <div class="form-group form-group-sm">
+                    <label for="form_txtNumeroIdentificacion" class="col-sm-2 control-label">Empleado:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    <input id="form_txtNumeroIdentificacion"  name="form_txtNumeroIdentificacion"  type="text" class="form-control" value="{{ arInduccion.empleadoRel.numeroIdentificacion |default('') }}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">                                      
+                                    <input id="form_txtNombreCorto"  name="form_txtNombreCorto"  type="text" class="form-control" value="{{ arInduccion.empleadoRel.nombreCorto |default('') }}" readOnly="ReadOnly" />
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                  
+                <div class="form-group form-group-sm">
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Fecha desde:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.fechaDesde) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_fechaHasta" class="col-sm-2 control-label">Fecha hasta:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.fechaHasta) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form_comentarios" class="col-sm-2 control-label">Comentarios:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.comentarios) }}
+                    </div>
+                </div>   
+            </div>
+        </div>
+
+        <div class="modal-footer">              
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_induccion_lista') }}">Cancelar</a>        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}
+            {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}            
+        </div>    
+        {{ form_end(form) }}    
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
