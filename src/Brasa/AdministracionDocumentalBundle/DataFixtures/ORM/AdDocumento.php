@@ -178,7 +178,14 @@ class AdDocumento implements FixtureInterface
             $arDocumento->setCodigoDocumentoPk(21);
             $arDocumento->setNombre("ACREDITACION");
             $manager->persist($arDocumento);                
-        }               
+        }    
+        $arDocumento = $manager->getRepository('BrasaAdministracionDocumentalBundle:AdDocumento')->find(22);
+        if(!$arDocumento) {
+            $arDocumento = new \Brasa\AdministracionDocumentalBundle\Entity\AdDocumento();
+            $arDocumento->setCodigoDocumentoPk(22);
+            $arDocumento->setNombre("REQUISITOS");
+            $manager->persist($arDocumento);                
+        }  
         $manager->flush();
     }
 }
