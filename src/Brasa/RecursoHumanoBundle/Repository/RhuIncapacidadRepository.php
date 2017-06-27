@@ -336,8 +336,9 @@ class RhuIncapacidadRepository extends EntityRepository {
             if($arNovedadTipo) {                    
                 $arRecurso = new \Brasa\TurnoBundle\Entity\TurRecurso();
                 $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($codigoEmpleado);
-                $arNovedad->setFecha(new \DateTime('now'));
+                
                 $arNovedad = new \Brasa\TurnoBundle\Entity\TurNovedad();
+                $arNovedad->setFecha(new \DateTime('now'));
                 $arNovedad->setNovedadTipoRel($arNovedadTipo);
                 $arNovedad->setRecursoRel($arRecurso);
                 $arNovedad->setFechaDesde($arIncapacidad->getFechaDesde());
