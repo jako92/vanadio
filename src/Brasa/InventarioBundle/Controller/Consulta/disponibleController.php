@@ -7,8 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class disponibleController extends Controller {
 
@@ -51,13 +54,33 @@ class disponibleController extends Controller {
     private function lista() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroInvLoteFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroInvLoteFechaDesde');
+            $strFechaHasta = $session->get('filtroInvLoteFechaHasta');
+        }
         $this->strListaDql = $em->getRepository('BrasaInventarioBundle:InvLote')->consultaDisponibleDql(
-                $session->get('filtroCodigoItem'));
+                $session->get('filtroCodigoItem'),
+                $session->get('filtroCodigoBodega'),
+                $strFechaDesde, 
+                $strFechaHasta);
     }
 
     private function filtrar($form) {
         $session = new Session;
+        $codigoBodga = "";
+        if ($form->get('bodegaRel')->getData()) {
+            $codigoBodga = $form->get('bodegaRel')->getData()->getCodigoBodegaPk();
+        }
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroInvLoteFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroInvLoteFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroInvLoteFiltrarFecha', $form->get('filtrarFecha')->getData());
         $session->set('filtroCodigoItem', $form->get('TxtCodigoItem')->getData());
+        $session->set('filtroCodigoBodega', $codigoBodga);
     }
 
     private function formularioFiltro() {
@@ -72,8 +95,39 @@ class disponibleController extends Controller {
                 $session->set('filtroCodigoItem', null);
             }
         }
+        $arrayPropiedades = array(
+            'class' => 'BrasaInventarioBundle:InvBodega',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoBodega')) {
+            $arrayPropiedades['data'] = $em->getReference("BrasaInventarioBundle:InvBodega", $session->get('filtroCodigoBodega'));
+        }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroInvLoteFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroInvLoteFechaDesde');
+        }
+        if ($session->get('filtroInvLoteFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroInvLoteFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
 
         $form = $this->createFormBuilder()
+                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroInvLoteFiltrarFecha')))
+                ->add('bodegaRel', EntityType::class, $arrayPropiedades)
                 ->add('TxtCodigoItem', TextType::class, array('label' => 'Item', 'data' => $session->get('filtroCodigoItem')))
                 ->add('TxtNombreItem', TextType::class, array('label' => 'NombreItem', 'data' => $strNombreItem))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
