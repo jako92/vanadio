@@ -213,11 +213,11 @@ class ServicioController extends Controller {
         }
 
         $dql = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->listaDql($codigoServicio, "0");
-        $arServicioDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
+        $arServicioDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
         $dql = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->listaDql($codigoServicio, "1");
         $arServicioDetalleCerrado = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
         $dql = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->listaDql($codigoServicio);
-        $arServicioDetalleConcepto = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
+        $arServicioDetalleConcepto = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
         return $this->render('BrasaTurnoBundle:Movimientos/Servicio:detalle.html.twig', array(
                     'arServicio' => $arServicio,
                     'arServicioDetalle' => $arServicioDetalle,
