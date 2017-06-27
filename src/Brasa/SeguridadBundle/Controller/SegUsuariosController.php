@@ -43,7 +43,7 @@ class SegUsuariosController extends Controller {
      */
     public function nuevoAction(Request $request, $codigoUsuario) {
         $em = $this->getDoctrine()->getManager();
-        //El error es que se debe colocar el eslas entes de Brasa solo con eso toma la clase
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
         if ($codigoUsuario != 0) {
             $arUsuario = $em->getRepository('BrasaSeguridadBundle:User')->find($codigoUsuario);
@@ -59,6 +59,7 @@ class SegUsuariosController extends Controller {
             $encoder = $factory->getEncoder($arUsuario);
             $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
             $arUsuario->setPassword($password);
+            $arSegPermisoGrupo = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->asignarPermisosUsuario($arUsuario->getCodigoGrupoFk(), $arUsuario);
             $em->persist($arUsuario);
             $em->flush();
             return $this->redirect($this->generateUrl('brs_seg_admin_usuario_lista'));
@@ -540,7 +541,8 @@ class SegUsuariosController extends Controller {
                         if (!$arPermisoGrupoValidarPermisoDocumento) {
                             $arDocumento = $em->getRepository('BrasaSeguridadBundle:SegDocumento')->find($codigoDocumento);
                             $arPermisoGrupo = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
-                            $arPermisoGrupo->setGrupoRel($arGrupo);$arPermisoGrupo->setDocumentoRel($arDocumento);
+                            $arPermisoGrupo->setGrupoRel($arGrupo);
+                            $arPermisoGrupo->setDocumentoRel($arDocumento);
                             $arPermisoGrupo->setIngreso($arDatos['ingreso']);
                             $arPermisoGrupo->setNuevo($arDatos['nuevo']);
                             $arPermisoGrupo->setEditar($arDatos['editar']);

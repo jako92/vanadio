@@ -31,8 +31,17 @@ class GenNotificacion implements FixtureInterface, ContainerAwareInterface {
             $manager->getConnection()->executeQuery($strSql);
         }
         if ($databaseDriver == "pdo_sqlsrv") {
-            $strSql = "";
-            //$manager->getConnection()->executeQuery($strSql);
+            $strSql = "if object_id('nueva_notificacion') is not null
+                          drop trigger nueva_notificacion";
+            $strSql2 = "CREATE TRIGGER nueva_notificacion 
+                        ON gen_notificacion FOR INSERT AS
+                        BEGIN
+                            DECLARE @usuario AS INT
+                            SET @usuario = (SELECT codigo_usuario_fk FROM INSERTED)
+                            UPDATE users SET  notificaciones_pendientes = (notificaciones_pendientes + 1) WHERE id = @usuario
+                        END";
+            $manager->getConnection()->executeQuery($strSql);
+            $manager->getConnection()->executeQuery($strSql2);
         }
     }
 

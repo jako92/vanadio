@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="seg_permiso_grupo")
- * @ORM\Entity(repositoryClass="Brasa\SeguridadBundle\Repository\SegPermisoDocumentoRepository")
+ * @ORM\Entity(repositoryClass="Brasa\SeguridadBundle\Repository\SegPermisoGrupoRepository")
  */
 class SegPermisoGrupo {
 
