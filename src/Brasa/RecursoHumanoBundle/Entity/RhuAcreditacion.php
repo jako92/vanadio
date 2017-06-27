@@ -29,7 +29,7 @@ class RhuAcreditacion
     private $fecha;    
 
     /**
-     * @ORM\Column(name="fechaVenceCurso", type="date", nullable=true)
+     * @ORM\Column(name="fecha_vence_curso", type="date", nullable=true)
      */     
     
     private $fechaVenceCurso;     
@@ -131,9 +131,8 @@ class RhuAcreditacion
      * @ORM\ManyToOne(targetEntity="RhuAcreditacionRechazo", inversedBy="acreditacionesAcreditacionRechazoRel")
      * @ORM\JoinColumn(name="codigo_acreditacion_rechazo_fk", referencedColumnName="codigo_acreditacion_rechazo_pk")
      */
-    protected $acreditacionRechazoRel;     
-
-
+    protected $acreditacionRechazoRel;
+    
 
     /**
      * Get codigoAcreditacionPk
@@ -191,6 +190,30 @@ class RhuAcreditacion
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set fechaVenceCurso
+     *
+     * @param \DateTime $fechaVenceCurso
+     *
+     * @return RhuAcreditacion
+     */
+    public function setFechaVenceCurso($fechaVenceCurso)
+    {
+        $this->fechaVenceCurso = $fechaVenceCurso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVenceCurso
+     *
+     * @return \DateTime
+     */
+    public function getFechaVenceCurso()
+    {
+        return $this->fechaVenceCurso;
     }
 
     /**
@@ -647,29 +670,5 @@ class RhuAcreditacion
     public function getAcreditacionRechazoRel()
     {
         return $this->acreditacionRechazoRel;
-    }
-
-    /**
-     * Set fechaVenceCurso
-     *
-     * @param \DateTime $fechaVenceCurso
-     *
-     * @return RhuAcreditacion
-     */
-    public function setFechaVenceCurso($fechaVenceCurso)
-    {
-        $this->fechaVenceCurso = $fechaVenceCurso;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaVenceCurso
-     *
-     * @return \DateTime
-     */
-    public function getFechaVenceCurso()
-    {
-        return $this->fechaVenceCurso;
     }
 }

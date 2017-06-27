@@ -43,7 +43,7 @@
                 <div class="form-group form-group-sm">  
                     <label for="form_fechaDesde" class="col-sm-2 control-label">Fecha vence desde:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.fechaDesde, {'attr': {'class': 'form-control'} }) }} 
+                        {{ form_widget(form.fechaDesde) }} 
                     </div>
                     <label class="col-sm-2 control-label">Rechazado:</label>
                     <div class="col-sm-4">                  
@@ -53,22 +53,38 @@
                 <div class="form-group form-group-sm">  
                     <label for="form_fechaHasta" class="col-sm-2 control-label">Fecha vence hasta:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.fechaHasta, {'attr': {'class': 'form-control'} }) }} 
+                        {{ form_widget(form.fechaHasta) }} 
                     </div>
                     <label class="col-sm-2 control-label">Validado:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.estadoValidado, { 'attr': {'class': 'form-control'} }) }}
                     </div>                    
-                </div> 
+                </div>
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Validar por fecha</label>
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Fecha vence curso desde:</label>
                     <div class="col-sm-4">                  
-                        {{ form_widget(form.filtrarFecha) }}
+                        {{ form_widget(form.fechaDesdeVenceCurso) }} 
                     </div>
                     <label class="col-sm-2 control-label">Acreditado:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.estadoAcreditado, { 'attr': {'class': 'form-control'} }) }}
-                    </div>                    
+                    </div> 
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label for="form_fechaHastaVenceCurso" class="col-sm-2 control-label">Fecha vence curso hasta:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.fechaHastaVenceCurso) }} 
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-2">                  
+                        {{ form_widget(form.filtrarFecha) }}
+                    </div>
+                    <div class="col-sm-2">                  
+                        {{ form_widget(form.filtrarFechaVenceCurso) }}
+                    </div>
+                                       
                 </div>                    
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">

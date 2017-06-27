@@ -88,7 +88,7 @@ class AcreditacionController extends Controller {
 
         $form = $this->createForm(RhuAcreditacionType::class, $arAcreditacion);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arAcreditacion = $form->getData();
             $arrControles = $request->request->All();
@@ -336,23 +336,36 @@ class AcreditacionController extends Controller {
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
         $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        $strFechaDesdeVenceCurso = $dateFecha->format('Y/m/') . "01";
+        $strFechaHastaVenceCurso = $dateFecha->format('Y/m/') . $intUltimoDia;
         if ($session->get('filtroRhuAcreditacionFechaDesde') != "") {
             $strFechaDesde = $session->get('filtroRhuAcreditacionFechaDesde');
         }
         if ($session->get('filtroRhuAcreditacionFechaHasta') != "") {
             $strFechaHasta = $session->get('filtroRhuAcreditacionFechaHasta');
         }
+        if ($session->get('filtroRhuAcreditacionFechaDesdeVenceCurso') != "") {
+            $strFechaDesdeVenceCurso = $session->get('filtroRhuAcreditacionFechaDesdeVenceCurso');
+        }
+        if ($session->get('filtroRhuAcreditacionFechaHastaVencecurso') != "") {
+            $strFechaHastaVenceCurso = $session->get('filtroRhuAcreditacionFechaHastaVenceCurso');
+        }
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
+        $dateFechaDesdeVenceCurso = date_create($strFechaDesdeVenceCurso);
+        $dateFechaHastaVenceCurso = date_create($strFechaHastaVenceCurso);
         $form = $this->createFormBuilder()
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
                 ->add('estadoRechazado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'RECHAZADO' => '1', 'SIN RECHAZAR' => '0'), 'data' => $session->get('filtroRhuAcreditacionEstadoRechazado')))
                 ->add('estadoValidado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'VALIDADO' => '1', 'SIN VALIDAR' => '0'), 'data' => $session->get('filtroRhuAcreditacionEstadoValidado')))
                 ->add('estadoAcreditado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'ACREDITADO' => '1', 'SIN ACREDITAR' => '0'), 'data' => $session->get('filtroRhuAcreditacionEstadoAcreditado')))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $dateFechaDesde))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => $dateFechaHasta))
-                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFecha')))
+                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta))
+                ->add('fechaDesdeVenceCurso', DateType::class, array('data' => $dateFechaDesdeVenceCurso))
+                ->add('fechaHastaVenceCurso', DateType::class, array('data' => $dateFechaHastaVenceCurso))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFecha'),'label'=>'Validar por fecha'))
+                ->add('filtrarFechaVenceCurso', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuAcreditacionFiltrarFechaVenceCurso'),'label'=>'Validar por fecha vence curso'))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
@@ -372,13 +385,22 @@ class AcreditacionController extends Controller {
         $session = new session;
         $strFechaDesde = "";
         $strFechaHasta = "";
+        $strFechaDesdeVenceCurso = "";
+        $strFechaHastaVenceCurso = "";
         $filtrarFecha = $session->get('filtroRhuAcreditacionFiltrarFecha');
+        $filtrarFechaVenceCurso = $session->get('filtroRhuAcreditacionFiltrarFechaVenceCurso');
         if ($filtrarFecha) {
             $strFechaDesde = $session->get('filtroRhuAcreditacionFechaDesde');
             $strFechaHasta = $session->get('filtroRhuAcreditacionFechaHasta');
         }
+        if ($filtrarFechaVenceCurso) {
+            $strFechaDesdeVenceCurso = $session->get('filtroRhuAcreditacionFechaDesdeVenceCurso');
+            $strFechaHastaVenceCurso = $session->get('filtroRhuAcreditacionFechaHastaVenceCurso');
+        }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuAcreditacion')->listaDQL(
-                $session->get('filtroRhuCodigoEmpleado'), $session->get('filtroRhuAcreditacionEstadoRechazado'), $session->get('filtroRhuAcreditacionEstadoValidado'), $session->get('filtroRhuAcreditacionEstadoAcreditado'), $strFechaDesde, $strFechaHasta
+                $session->get('filtroRhuCodigoEmpleado'), $session->get('filtroRhuAcreditacionEstadoRechazado'), 
+                $session->get('filtroRhuAcreditacionEstadoValidado'), $session->get('filtroRhuAcreditacionEstadoAcreditado'), 
+                $strFechaDesde, $strFechaHasta,$strFechaDesdeVenceCurso, $strFechaHastaVenceCurso
         );
     }
 
@@ -390,9 +412,14 @@ class AcreditacionController extends Controller {
         $session->set('filtroRhuAcreditacionEstadoAcreditado', $form->get('estadoAcreditado')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $dateFechaDesdeVenceCurso = $form->get('fechaDesdeVenceCurso')->getData();
+        $dateFechaHastaVenceCurso = $form->get('fechaHastaVenceCurso')->getData();
         $session->set('filtroRhuAcreditacionFechaDesde', $dateFechaDesde->format('Y/m/d'));
         $session->set('filtroRhuAcreditacionFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuAcreditacionFechaDesdeVenceCurso', $dateFechaDesdeVenceCurso->format('Y/m/d'));
+        $session->set('filtroRhuAcreditacionFechaHastaVenceCurso', $dateFechaHastaVenceCurso->format('Y/m/d'));
         $session->set('filtroRhuAcreditacionFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroRhuAcreditacionFiltrarFechaVenceCurso', $form->get('filtrarFechaVenceCurso')->getData());
     }
 
     private function generarExcel() {
