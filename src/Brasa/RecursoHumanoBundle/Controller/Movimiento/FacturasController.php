@@ -508,15 +508,16 @@ class FacturasController extends Controller
                     ->setCellValue('C1', 'FECHA')
                     ->setCellValue('D1', 'VENCE')
                     ->setCellValue('E1', 'CLIENTE')
-                    ->setCellValue('F1', 'SERVICIO')
-                    ->setCellValue('G1', 'VR_BRUTO')
-                    ->setCellValue('H1', 'VR_NETO')
-                    ->setCellValue('I1', 'VR_RET_FTE')
-                    ->setCellValue('J1', 'VR_RET_CREE')
-                    ->setCellValue('K1', 'VR_RET_IVA')
-                    ->setCellValue('L1', 'VR_BASE AIU')
-                    ->setCellValue('M1', 'VR_TOTAL_ADMON')
-                    ->setCellValue('N1', 'VR_TOTAL_MISION');
+                    ->setCellValue('F1', 'FACTURA TIPO')
+                    ->setCellValue('G1', 'SERVICIO')
+                    ->setCellValue('H1', 'VR_BRUTO')
+                    ->setCellValue('I1', 'VR_NETO')
+                    ->setCellValue('J1', 'VR_RET_FTE')
+                    ->setCellValue('K1', 'VR_RET_CREE')
+                    ->setCellValue('L1', 'VR_RET_IVA')
+                    ->setCellValue('M1', 'VR_BASE AIU')
+                    ->setCellValue('N1', 'VR_TOTAL_ADMON')
+                    ->setCellValue('O1', 'VR_TOTAL_MISION');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -530,15 +531,16 @@ class FacturasController extends Controller
                     ->setCellValue('C' . $i, $arFactura->getFecha()->format('Y/m/d'))
                     ->setCellValue('D' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
                     ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNombreCorto())
-                    ->setCellValue('F' . $i, $arFactura->getFacturaServicioRel()->getNombre())
-                    ->setCellValue('G' . $i, $arFactura->getVrBruto())
-                    ->setCellValue('H' . $i, $arFactura->getVrNeto())
-                    ->setCellValue('I' . $i, $arFactura->getVrRetencionFuente())
-                    ->setCellValue('J' . $i, $arFactura->getVrRetencionCree())
-                    ->setCellValue('K' . $i, $arFactura->getVrRetencionIva())
-                    ->setCellValue('L' . $i, $arFactura->getVrBaseAIU())
-                    ->setCellValue('M' . $i, $arFactura->getVrTotalAdministracion())
-                    ->setCellValue('N' . $i, $arFactura->getVrIngresoMision());
+                    ->setCellValue('F' . $i, $arFactura->getFacturaTipoRel()->getNombre())
+                    ->setCellValue('G' . $i, $arFactura->getFacturaServicioRel()->getNombre())
+                    ->setCellValue('H' . $i, $arFactura->getVrBruto())
+                    ->setCellValue('I' . $i, $arFactura->getVrNeto())
+                    ->setCellValue('J' . $i, $arFactura->getVrRetencionFuente())
+                    ->setCellValue('K' . $i, $arFactura->getVrRetencionCree())
+                    ->setCellValue('L' . $i, $arFactura->getVrRetencionIva())
+                    ->setCellValue('M' . $i, $arFactura->getVrBaseAIU())
+                    ->setCellValue('N' . $i, $arFactura->getVrTotalAdministracion())
+                    ->setCellValue('O' . $i, $arFactura->getVrIngresoMision());
             $i++;
         }
 
