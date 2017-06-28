@@ -85,6 +85,12 @@ services:
         arguments: [~, Brasa\TurnoBundle\Entity\TurCentroOperacion, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Centro de operacion }
+    
+    admin.turno.modalidadservicio:
+        class: Brasa\TurnoBundle\Admin\ModalidadServicioAdmin
+        arguments: [~, Brasa\TurnoBundle\Entity\TurModalidadServicio, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Modalidad servicio }
             
     # .................. administracion del modulo general .............................................................................
             

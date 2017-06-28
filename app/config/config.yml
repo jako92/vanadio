@@ -134,6 +134,7 @@ sonata_admin:
                 label_catalogue: Brasa\TurnoBundle
                 items:
                     - admin.turno.centrooperacion
+                    - admin.turno.modalidadservicio
                     
             app.admin.group.inventario:
                 label: Inventario
