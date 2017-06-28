@@ -69,7 +69,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
 
     public function Body($pdf) {
         $pdf->SetXY(10, 45);
-        $pdf->SetFont('Arial', '', 10);  
+        $pdf->SetFont('Arial', '', 8);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
@@ -146,7 +146,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
         $pdf->Cell(50, 5, "Fecha: ". $fechaVerson, 1, 0, 'C', 1); //cuadro derecho abajo 2
         //Contenido de la carta desde la mitad de la hoja------------------------------------------------------------------------------------
         $pdf->SetXY(10, 181);
-        $pdf->SetFont('Arial', '', 10);  
+        $pdf->SetFont('Arial', '', 8);  
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find(self::$codigoVacacion);
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
@@ -199,7 +199,7 @@ class VacacionAnuncio extends \FPDF_FPDF {
             //$strRutaImagen = "/var/www/html/almacenamientodorchester/imagenes/"."empleados/" . $arVacacion->getEmpleadoRel()->getRutaFoto();
             $this->Cell(0, 0, $this->Image($strRutaImagen , 150 ,200, 25 , 32,'JPG'), 0, 0, 'C', 0); //foto
         }
-        $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
+        $this->Text(170, 290, utf8_decode('FECHA: 12/11/2013'));
         //$this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
         
     }
