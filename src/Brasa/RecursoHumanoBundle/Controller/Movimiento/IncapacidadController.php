@@ -116,9 +116,7 @@ class IncapacidadController extends Controller {
                 $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                 $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
                 if (count($arEmpleado) > 0) {
-                    $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-                    $arContrato = $em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->findOneBy(array('codigoEmpleadoFk' => $arEmpleado->getCodigoEmpleadoPk(), 'estadoActivo' => 1));
-                    if (count($arContrato) > 0) {
+                    if ($arEmpleado->getCodigoContratoActivoFk() != '') {
                         $arIncapacidad->setEmpleadoRel($arEmpleado);
                         if ($arrControles['form_txtCodigoIncapacidadDiagnostico'] != '') {
                             $arIncapacidadDiagnostico = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadDiagnostico();
