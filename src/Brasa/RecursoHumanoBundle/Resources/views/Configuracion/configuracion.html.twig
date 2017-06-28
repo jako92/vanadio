@@ -22,6 +22,8 @@
             <li><a href="#formatosdeimpresion" data-toggle="tab">Formatos de impresión</a></li>
             <li><a href="#facturacion" data-toggle="tab">Facturación</a></li>
             <li><a href="#consecutivo" data-toggle="tab">Consecutivo</a></li>
+            <li><a href="#cuentas" data-toggle="tab">Cuentas</a></li>
+            <li><a href="#provision" data-toggle="tab">Provision</a></li>
         </ul>
         <br><br>
         <div class="tab-content">
@@ -478,7 +480,7 @@
             <div class="tab-pane" id="consecutivo">
                 <div id="consecutivo" style="width: 100%">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Información de los consecutivos</div>
+                        <div class="panel-heading">Información de los cuentas</div>
                         <div class="panel-body">
                             <table class="table table-striped table-bordered table-condensed table-hover">
                                 <tr>
@@ -488,13 +490,65 @@
                                 </tr>
                                 {% for arConsecutivo in arConsecutivo %}
                                     <tr>
-
                                         <td>
-                                            <input type="hidden" name="LblCodigo[]" value="{{ arConsecutivo.codigoConsecutivoPk }}">
-                                            <span class="badge">{{ arConsecutivo.codigoConsecutivoPk }}</span>
+                                            <input type="hidden" name="LblCodigo[]" value="{{ arConsecutivo.codigoConsecutivoPk }}"><span class="badge">{{ arConsecutivo.codigoConsecutivoPk }}</span>
                                         </td>
                                         <td>{{ arConsecutivo.nombre }}</td>
                                         <td style="text-align: left"><input class="input-grid" type="text" name="TxtConsecutivo{{ arConsecutivo.codigoConsecutivoPk }}" value="{{ arConsecutivo.consecutivo }}" size="5" style="text-align: right; width:50px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>            
+                </div> 
+            </div>
+            <div class="tab-pane" id="cuentas">
+                <div id="cuentas" style="width: 100%">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Información de las cuentas</div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-condensed table-hover">
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>CUENTA</th>
+                                </tr>
+                                {% for arConfiguracionCuenta in arConfiguracionCuenta %}
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="LblCodigoCuenta[]" value="{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}"><span class="badge">{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}</span>
+                                        </td>
+                                        <td>{{ arConfiguracionCuenta.nombre }}</td>
+                                        <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuenta{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}" value="{{ arConfiguracionCuenta.codigoCuentaFk }}" size="10" style="text-align: right; width:50px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>            
+                </div> 
+            </div>
+            <div class="tab-pane" id="provision">
+                <div id="provision" style="width: 100%">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Información provision</div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-condensed table-hover">
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>TIPO EMPLEADO</th>
+                                    <th>TIPO CUENTA</th>
+                                    <th>CUENTA</th>
+                                </tr>
+                                {% for arConfiguracionProvision in arConfiguracionProvision %}
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="LblCodigoCuentaProvision[]" value="{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}"><span class="badge">{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}</span>
+                                        </td>
+                                        <td>{{ arConfiguracionProvision.nombre }}</td>
+                                        <td>{{ arConfiguracionProvision.empleadoTipoRel.nombre }}</td>
+                                        <td style="text-align: left"><input class="input-grid" type="text" name="TxtTipoCuenta{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.tipoCuenta }}" size="5" style="text-align: right; width:50px" onkeypress="return validarNumeros(event)" onclick="this.select()"/> - {% if arConfiguracionProvision.tipoCuenta == 1 %}DEBITO{%else%}CREDITO{%endif%}</td>
+                                        <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuentaProvision{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.codigoCuentaFk }}" size="5" style="text-align: right; width:50px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                                     </tr>
                                 {% endfor %}
                             </table>

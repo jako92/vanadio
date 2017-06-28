@@ -46,35 +46,48 @@ class ConfiguracionController extends Controller {
                     }
                     $intIndiceConsecutivo++;
                 }
-                //fin recurrso humano
+                //fin recurso humano
+                ////Cuentas
+                $intCodigoCuenta = 0;
+                foreach ($arrControles['LblCodigoCuenta'] as $intCodigoCuenta) {
+                    $arConfiguracionCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionCuenta();
+                    $arConfiguracionCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find($intCodigoCuenta);
+                    if (count($arConfiguracionCuenta) > 0) {
+                        $intConfiguracionCuenta = $arrControles['TxtCodigoCuenta' . $intCodigoCuenta];
+                        $arConfiguracionCuenta->setCodigoCuentaFk($intConfiguracionCuenta);
+                        $em->persist($arConfiguracionCuenta);
+                    }
+                    $intCodigoCuenta++;
+                }
+                //fin cuentas
                 //provision
-                /*$intCodigoProvision = 0;
-                foreach ($arrControles['LblCodigo'] as $intCodigo) {
+                $intCodigoProvision = 0;
+                foreach ($arrControles['LblCodigoCuentaProvision'] as $intCodigoProvision) {
                     $arConfiguracionProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionProvision();
-                    $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->find($intCodigo);
+                    $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->find($intCodigoProvision);
                     if (count($arConfiguracionProvision) > 0) {
-                        $intCuenta = $arrControles['TxtCuenta' . $intCodigo];
-                        $arConfiguracionProvision->setCodigoCuentaFk($intCuenta);
-                        $intTipoCuenta = $arrControles['TxtTipoCuenta' . $intCodigo];
+                        $intCuentaProvision = $arrControles['TxtCodigoCuentaProvision' . $intCodigoProvision];
+                        $arConfiguracionProvision->setCodigoCuentaFk($intCuentaProvision);
+                        $intTipoCuenta = $arrControles['TxtTipoCuenta' . $intCodigoProvision];
                         $arConfiguracionProvision->setTipoCuenta($intTipoCuenta);
-                        $intCuentaOperacion = $arrControles['TxtCuentaOperacion' . $intCodigo];
-                        $arConfiguracionProvision->setCodigoCuentaOperacionFk($intCuentaOperacion);
-                        $intCuentaComercial = $arrControles['TxtCuentaComercial' . $intCodigo];
-                        $arConfiguracionProvision->setCodigoCuentaComercialFk($intCuentaComercial);
                         $em->persist($arConfiguracionProvision);
                     }
                     $intCodigoProvision++;
-                }*/
+                }
                 //fin provision
                 $em->flush();
             } else {
                 $objMensaje->Mensaje("error", "ocurrio un error, verifica que los campos obligatorios se encuentren diligenciados.");
             }
         }
+        $arConfiguracionCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->findAll();
+        $arConfiguracionProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionProvision')->findAll();
         $arConsecutivo = $em->getRepository('BrasaRecursoHumanoBundle:RhuConsecutivo')->findAll();
         return $this->render('BrasaRecursoHumanoBundle:Configuracion:configuracion.html.twig', array(
                     'form' => $form->createView(),
-                    'arConsecutivo' => $arConsecutivo));
+                    'arConsecutivo' => $arConsecutivo,
+                    'arConfiguracionCuenta' => $arConfiguracionCuenta,
+                    'arConfiguracionProvision' => $arConfiguracionProvision));
     }
 
     /**

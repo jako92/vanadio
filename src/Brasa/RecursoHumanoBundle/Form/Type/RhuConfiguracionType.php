@@ -97,7 +97,7 @@ class RhuConfiguracionType extends AbstractType {
                 ->add('informacionContactoFactura', TextareaType::class)
                 ->add('informacionResolucionDianFactura', TextareaType::class)
                 ->add('informacionResolucionSupervigilanciaFactura', TextareaType::class)
-                ->add('guardar', SubmitType::class, array('label' => 'Guardar'));
+                ->add('guardar', SubmitType::class, array('label' => 'Actualizar'));
     }
 
     /**
