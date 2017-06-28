@@ -83,5 +83,32 @@ class CarReciboRepository extends EntityRepository {
             $em->flush();
         }
     }
+    
+    public function listaPendienteContabilizarDql($numeroRecibo = "", $boolEstadoAutorizado = "", $strFechaDesde = "", $strFechaHasta = "", $boolEstadoAnulado = "") {
+        $dql = "SELECT r FROM BrasaCarteraBundle:CarRecibo r WHERE r.estadoContabilizado = 0 AND r.numero > 0";
+        if ($numeroRecibo != "") {
+            $dql .= " AND r.numero = " . $numeroRecibo;
+        }
+        if ($boolEstadoAutorizado == 1) {
+            $dql .= " AND r.estadoAutorizado = 1";
+        }
+        if ($boolEstadoAutorizado == "0") {
+            $dql .= " AND r.estadoAutorizado = 0";
+        }
+        if ($boolEstadoAnulado == 1) {
+            $dql .= " AND r.estadoAnulado = 1";
+        }
+        if ($boolEstadoAnulado == "0") {
+            $dql .= " AND r.estadoAnulado = 0";
+        }
+        if ($strFechaDesde != "") {
+            $dql .= " AND r.fecha >= '" . $strFechaDesde . "";
+        }
+        if ($strFechaHasta != "") {
+            $dql .= " AND r.fecha <= '" . $strFechaHasta . "";
+        }
+        $dql .= " ORDER BY r.codigoReciboTipoFk, r.fecha DESC, r.numero DESC";
+        return $dql;
+    }
 
 }

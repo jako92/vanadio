@@ -1,6 +1,6 @@
 <?php
 
-namespace Brasa\RecursoHumanoBundle\Controller\Proceso;
+namespace Brasa\CarteraBundle\Controller\Proceso;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,12 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ContabilizarFacturaController extends Controller {
+class ContabilizarReciboController extends Controller {
 
     var $strDqlLista = "";
 
     /**
-     * @Route("/rhu/proceso/contabilizar/factura/", name="brs_rhu_proceso_contabilizar_factura")
+     * @Route("/car/proceso/contabilizar/recibo/", name="brs_car_proceso_contabilizar_recibo")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,11 +35,11 @@ class ContabilizarFacturaController extends Controller {
                 set_time_limit(0);
                 ini_set("memory_limit", -1);
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->contabilizar($arrSeleccionados);
+                $respuesta = $em->getRepository('BrasaCarteraBundle:CarRecibo')->contabilizar($arrSeleccionados);
                 if ($respuesta != "") {
                     $objMensaje->Mensaje("error", $respuesta);
                 }
-                return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_factura'));
+                return $this->redirect($this->generateUrl('brs_car_proceso_contabilizar_recibo'));
             }
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
@@ -47,9 +47,9 @@ class ContabilizarFacturaController extends Controller {
             }
         }
 
-        $arFacturas = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
-        return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:factura.html.twig', array(
-                    'arFacturas' => $arFacturas,
+        $arRecibos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
+        return $this->render('BrasaCarteraBundle:Proceso/Contabilizar:recibo.html.twig', array(
+                    'arRecibos' => $arRecibos,
                     'form' => $form->createView()));
     }
 
@@ -58,25 +58,25 @@ class ContabilizarFacturaController extends Controller {
         $session = new Session;
         $strFechaDesde = "";
         $strFechaHasta = "";
-        $filtrarFecha = $session->get('filtroFacturaFiltrarFecha');
+        $filtrarFecha = $session->get('filtroReciboFiltrarFecha');
         if ($filtrarFecha) {
-            $strFechaDesde = $session->get('filtroFacturaFechaDesde');
-            $strFechaHasta = $session->get('filtroFacturaFechaHasta');
+            $strFechaDesde = $session->get('filtroReciboFechaDesde');
+            $strFechaHasta = $session->get('filtroReciboFechaHasta');
         }
-        $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->listaPendienteContabilizarDql(
-                $session->get('filtroFacturaNumero'), $session->get('filtroFacturaEstadoAutorizado'), $strFechaDesde, $strFechaHasta, $session->get('filtroFacturaEstadoAnulado'));
+        $this->strListaDql = $em->getRepository('BrasaCarteraBundle:CarRecibo')->listaPendienteContabilizarDql(
+                $session->get('filtroReciboNumero'), $session->get('filtroReciboEstadoAutorizado'), $strFechaDesde, $strFechaHasta, $session->get('filtroReciboEstadoAnulado'));
     }
 
     private function filtrar($form) {
         $session = new Session;
-        $session->set('filtroFacturaNumero', $form->get('TxtNumero')->getData());
-        $session->set('filtroFacturaEstadoAutorizado', $form->get('estadoAutorizado')->getData());
-        $session->set('filtroFacturaEstadoAnulado', $form->get('estadoAnulado')->getData());
+        $session->set('filtroReciboNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroReciboEstadoAutorizado', $form->get('estadoAutorizado')->getData());
+        $session->set('filtroReciboEstadoAnulado', $form->get('estadoAnulado')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        $session->set('filtroFacturaFechaDesde', $dateFechaDesde->format('Y/m/d'));
-        $session->set('filtroFacturaFechaHasta', $dateFechaHasta->format('Y/m/d'));
-        $session->set('filtroFacturaFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroReciboFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroReciboFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroReciboFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function formularioFiltro() {
@@ -86,21 +86,21 @@ class ContabilizarFacturaController extends Controller {
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
         $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
-        if ($session->get('filtroFacturaFechaDesde') != "") {
-            $strFechaDesde = $session->get('filtroFacturaFechaDesde');
+        if ($session->get('filtroReciboFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroReciboFechaDesde');
         }
-        if ($session->get('filtroFacturaFechaHasta') != "") {
-            $strFechaHasta = $session->get('filtroFacturaFechaHasta');
+        if ($session->get('filtroReciboFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroReciboFechaHasta');
         }
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroFacturaNumero')))
-                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroFacturaEstadoAutorizado')))
-                ->add('estadoAnulado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'ANULADO' => '1', 'SIN ANULAR' => '0'), 'data' => $session->get('filtroFacturaEstadoAnulado')))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroReciboNumero')))
+                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroReciboEstadoAutorizado')))
+                ->add('estadoAnulado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'ANULADO' => '1', 'SIN ANULAR' => '0'), 'data' => $session->get('filtroReciboEstadoAnulado')))
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroFacturaFiltrarFecha')))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroReciboFiltrarFecha')))
                 ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();

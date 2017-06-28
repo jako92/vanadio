@@ -30,6 +30,17 @@ class CarReciboTipo
     protected $recibosReciboTipoRel;
     
     /**
+     * @ORM\Column(name="codigo_cuenta_banco_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaBancoFk;
+    
+    /**
+     * @ORM\Column(name="tipo_cuenta_banco", type="bigint")
+     */
+    private $tipoCuentaBanco = 1;
+    
+    
+    /**
      * Constructor
      */
     public function __construct()

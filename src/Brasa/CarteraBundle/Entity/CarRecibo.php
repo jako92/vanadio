@@ -108,6 +108,11 @@ class CarRecibo
      */    
     private $estadoAutorizado = 0;
     
+    /**     
+     * @ORM\Column(name="estado_contabilizado", type="boolean")
+     */    
+    private $estadoContabilizado = 0;
+    
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
@@ -774,5 +779,29 @@ class CarRecibo
     public function getVrPagoTotal()
     {
         return $this->vrPagoTotal;
+    }
+
+    /**
+     * Set estadoContabilizado
+     *
+     * @param boolean $estadoContabilizado
+     *
+     * @return CarRecibo
+     */
+    public function setEstadoContabilizado($estadoContabilizado)
+    {
+        $this->estadoContabilizado = $estadoContabilizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoContabilizado
+     *
+     * @return boolean
+     */
+    public function getEstadoContabilizado()
+    {
+        return $this->estadoContabilizado;
     }
 }
