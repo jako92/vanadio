@@ -16,10 +16,6 @@ class RhuExamenControlType extends AbstractType
             ->add('examenClaseRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuExamenClase',
                 'choice_label' => 'nombre',
-            ))
-            ->add('cargoRel', EntityType::class, array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCargo',
-                'choice_label' => 'nombre',
             ))    
             ->add('entidadExamenRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadExamen',

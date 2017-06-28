@@ -157,6 +157,7 @@ class ExamenController extends Controller {
                         $arExamen->setNombreCorto($arEmpleado->getNombreCorto());
                         $arExamen->setCiudadRel($arEmpleado->getCiudadRel());
                         $arExamen->setEmpleadoRel($arEmpleado);
+                        $arExamen->setCargoRel($arEmpleado->getCargoRel());
                         $arExamen->setControl(1);
                         $arExamen->setCodigoSexoFk($arEmpleado->getCodigoSexoFk());
                         $em->persist($arExamen);
