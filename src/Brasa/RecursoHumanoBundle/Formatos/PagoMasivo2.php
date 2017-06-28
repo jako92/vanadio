@@ -290,24 +290,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
                 $pdf->Ln();
                 $pdf->SetAutoPageBreak(true, 15);
             }
-
-            //TOTALES
                 $pdf->Ln(2);
-                $pdf->Cell(143, 4, "", 0, 0, 'R');
-                $pdf->SetFont('Arial', 'B', 7);
-                $pdf->SetFillColor(200, 200, 200);
-                $pdf->Cell(30, 4, "TOTAL DEVENGADO:", 1, 0, 'R',true);
-                $pdf->Cell(20, 4, number_format($arPago->getVrDevengado(), 0, '.', ','), 1, 0, 'R');
-                $pdf->Ln();
-                $pdf->Cell(143, 4, "", 0, 0, 'R');
-                $pdf->Cell(30, 4, "TOTAL DEDUCCIONES:", 1, 0, 'R',true);
-                $pdf->Cell(20, 4, "-".number_format($arPago->getVrDeducciones(), 0, '.', ','), 1, 0, 'R');
-                $pdf->Ln();
-                $pdf->Cell(143, 4, "", 0, 0, 'R');
-                $pdf->Cell(30, 4, "NETO PAGAR", 1, 0, 'R',true);
-                $pdf->Cell(20, 4, number_format($arPago->getVrNeto(), 0, '.', ','), 1, 0, 'R');
-                $pdf->Ln(-5);
-
                 if($arPago->getCodigoSoportePagoFk() && $arPago->getCentroCostoRel()->getImprimirProgramacionFormato()) {
                     $desde = $arPago->getFechaDesde()->format('j');
                     $hasta = $arPago->getFechaHasta()->format('j');
@@ -327,7 +310,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
                         //creamos la cabecera de la tabla.
                         $w = array(6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2);
                         for ($i = $desde; $i <= $hasta; $i++) {
-                            $pdf->Cell(6.2, 4, "D".$i, 1, 0, 'L', 1);
+                            $pdf->Cell(6.23, 4, "D".$i, 1, 0, 'L', 1);
                         }
                         $pdf->Ln();
                         $arSoportePagoProgramaciones = new \Brasa\TurnoBundle\Entity\TurSoportePagoProgramacion();
@@ -336,7 +319,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
                             $detalle = $this->convertirArray($arSoportePagoProgramacion);
                             $pdf->SetFont('Arial', '', 5);
                             for($j=$desde; $j<=$hasta; $j++) {                            
-                                $pdf->Cell(6.2, 4, $detalle[$j], 1, 0, 'L');
+                                $pdf->Cell(6.23, 4, $detalle[$j], 1, 0, 'L');
                             }
                             $pdf->Ln();
                             $pdf->SetAutoPageBreak(true, 15);
@@ -348,6 +331,21 @@ class PagoMasivo2 extends \FPDF_FPDF {
                 } else {
                     $pdf->Ln(15);
                 }
+                //TOTALES
+                $pdf->Cell(143, 4, "", 0, 0, 'R');
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetFillColor(200, 200, 200);
+                $pdf->Cell(30, 4, "TOTAL DEVENGADO:", 1, 0, 'R',true);
+                $pdf->Cell(20, 4, number_format($arPago->getVrDevengado(), 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln();
+                $pdf->Cell(143, 4, "", 0, 0, 'R');
+                $pdf->Cell(30, 4, "TOTAL DEDUCCIONES:", 1, 0, 'R',true);
+                $pdf->Cell(20, 4, "-".number_format($arPago->getVrDeducciones(), 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln();
+                $pdf->Cell(143, 4, "", 0, 0, 'R');
+                $pdf->Cell(30, 4, "NETO PAGAR", 1, 0, 'R',true);
+                $pdf->Cell(20, 4, number_format($arPago->getVrNeto(), 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln(-5);
                 
             if($arConfiguracion->getImprimirMensajePago()) {
                     $pdf->SetFont('Arial', 'B', 7);
