@@ -915,10 +915,13 @@ class EmpleadoController extends Controller {
                 ->setCellValue('E1', 'Nombres')
                 ->setCellValue('F1', 'Apellidos')
                 ->setCellValue('G1', 'Nombre completo')
-                ->setCellValue('H1', 'Municipio')
-                ->setCellValue('I1', 'Direccion')
-                ->setCellValue('J1', 'telefono')
-                ->setCellValue('K1', 'Fax');
+                ->setCellValue('H1', 'Codigo de pais')
+                ->setCellValue('I1', 'Codigo de region')
+                ->setCellValue('J1', 'Codigo de departamento')
+                ->setCellValue('K1', 'Codigo de municipio')
+                ->setCellValue('L1', 'Direccion')
+                ->setCellValue('M1', 'telefono')
+                ->setCellValue('N1', 'Fax');
 
         $i = 2;
         $fecha = new \DateTime('now');
@@ -935,10 +938,13 @@ class EmpleadoController extends Controller {
                     ->setCellValue('E' . $i, $arEmpleado->getNombre1().' '.$arEmpleado->getNombre2())
                     ->setCellValue('F' . $i, $arEmpleado->getApellido1().' '.$arEmpleado->getApellido2())
                     ->setCellValue('G' . $i, $arEmpleado->getNombreCorto())
-                    ->setCellValue('H' . $i, $arEmpleado->getCiudadRel()->getCodigoDane())
-                    ->setCellValue('I' . $i, $arEmpleado->getDireccion())
-                    ->setCellValue('J' . $i, $arEmpleado->getTelefono())
-                    ->setCellValue('K' . $i, '');
+                    ->setCellValue('H' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoPaisFk())
+                    ->setCellValue('I' . $i, "0")
+                    ->setCellValue('J' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoDane())
+                    ->setCellValue('K' . $i, $arEmpleado->getCiudadRel()->getCodigoDane())
+                    ->setCellValue('L' . $i, $arEmpleado->getDireccion())
+                    ->setCellValue('M' . $i, $arEmpleado->getTelefono())
+                    ->setCellValue('N' . $i, '');
             $i++;
         }
 
@@ -947,7 +953,7 @@ class EmpleadoController extends Controller {
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="EmpleadosInterfaz3.xlsx"');
+        header('Content-Disposition: attachment;filename="EmpleadosInterfazSeven.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
