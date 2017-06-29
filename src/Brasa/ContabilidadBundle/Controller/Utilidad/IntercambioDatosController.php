@@ -487,7 +487,7 @@ class IntercambioDatosController extends Controller {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, 381)
                     ->setCellValue('B' . $i, 7)
-                    ->setCellValue('C' . $i, 701)
+                    ->setCellValue('C' . $i, $session->get('filtroCtbCodigoComprobante'))
                     ->setCellValue('D' . $i, $arRegistro->getFecha()->format('d'))
                     ->setCellValue('E' . $i, $arRegistro->getFecha()->format('m'))
                     ->setCellValue('F' . $i, $arRegistro->getFecha()->format('Y'))
