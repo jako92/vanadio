@@ -108,7 +108,7 @@ class IntercambioDatosController extends Controller {
                     $this->filtrar($form, $request);
                     $this->listar();
                     $this->generarExcelInterfaceSeven();
-                }                
+                }
             }
         }
         return $this->render('BrasaContabilidadBundle:Utilidad/IntercambioDatos:exportar.html.twig', array(
@@ -167,16 +167,17 @@ class IntercambioDatosController extends Controller {
                 ->add('TxtNumeroDesde', TextType::class, array('data' => $session->get('filtroCtbNumeroDesde')))
                 ->add('TxtNumeroHasta', TextType::class, array('data' => $session->get('filtroCtbNumeroHasta')))
                 ->add('comprobanteRel', EntityType::class, array(
-                'class' => 'BrasaContabilidadBundle:CtbComprobante',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                    ->orderBy('c.nombre', 'ASC');},
-                'label' => 'Codigo',
-                'data' => $session->get('filtroCtbCodigoComprobante'),
-                'choice_label' => 'nombre',
-                'required' => true))
-                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta,'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                    'class' => 'BrasaContabilidadBundle:CtbComprobante',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('c')
+                                ->orderBy('c.nombre', 'ASC');
+                    },
+                    'label' => 'Codigo',
+                    'data' => $session->get('filtroCtbCodigoComprobante'),
+                    'choice_label' => 'nombre',
+                    'required' => true))
+                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroCtbRegistroFiltrarFecha')))
                 ->add('BtnGenerarOfimatica', SubmitType::class, array('label' => 'Ofimatica',))
                 ->add('BtnGenerarIlimitada', SubmitType::class, array('label' => 'Ilimitada',))
@@ -368,7 +369,7 @@ class IntercambioDatosController extends Controller {
 
         return (string) $Nro;
     }
-    
+
     private function generarSoftland() {
         $em = $this->getDoctrine()->getManager();
         $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
@@ -376,7 +377,7 @@ class IntercambioDatosController extends Controller {
         $query = $em->createQuery($this->strDqlLista);
         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
         $arRegistro = $query->getResult();
-        $strNombreArchivo = "CMDMOVIMIENTO". date('YmdHis'). ".txt";
+        $strNombreArchivo = "CMDMOVIMIENTO" . date('YmdHis') . ".txt";
         $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
         //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
         ob_clean();
@@ -390,38 +391,37 @@ class IntercambioDatosController extends Controller {
             //$ciudad = mbsplit("-", $arEmpleados->getCiudadRel()->getNombre(), 0);
             $comprobante = $this->RellenarNr($arRegistro->getCodigoComprobanteFk(), "0", 5);
             $identificacion = "";
-            if($arRegistro->getCodigoTerceroFk()) {
+            if ($arRegistro->getCodigoTerceroFk()) {
                 $identificacion = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
             }
-            list($anio, $mes)= explode('/', $arRegistro->getFecha()->Format('Y/m/d'));
+            list($anio, $mes) = explode('/', $arRegistro->getFecha()->Format('Y/m/d'));
             $vrMovimiento = '';
-            
-            if($arRegistro->getDebito() != 0){
+
+            if ($arRegistro->getDebito() != 0) {
                 $vrMovimiento = $arRegistro->getDebito();
-            }
-            else{
+            } else {
                 $vrMovimiento = $arRegistro->getCredito();
             }
             $naturalezaMovimiento = '';
-            if($arRegistro->getDebito() != 0){
+            if ($arRegistro->getDebito() != 0) {
                 $naturalezaMovimiento = 'DNO';
-            }else{
+            } else {
                 $naturalezaMovimiento = 'CNO';
             }
             $centroCosto = '';
-            if($arRegistro->getCodigoCentroCostoFk() == 0){
+            if ($arRegistro->getCodigoCentroCostoFk() == 0) {
                 $centroCosto = '000';
-            }else{
-                $centroCosto = "00".$arRegistro->getCodigoCentroCostoFk();
+            } else {
+                $centroCosto = "00" . $arRegistro->getCodigoCentroCostoFk();
             }
             $tercero = '';
-            if($arRegistro->getCuentaRel()->getExigeNit() == 1){
+            if ($arRegistro->getCuentaRel()->getExigeNit() == 1) {
                 $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
-            }else{
+            } else {
                 $tercero = "00000000000";
             }
             $numeroDocumento = $this->RellenarNr($arRegistro->getNumero(), "0", 15);
-            $array = array($anio,"!",$mes,"!",$comprobante,"!","00000","!", $numeroDocumento ,"!",$arRegistro->getFecha()->Format('m/d/Y'),"!", str_pad($strSecuencia, 5, '0', STR_PAD_LEFT) ,"!",$arRegistro->getCodigoCuentaFk(),"!", $centroCosto,"!","000","!", "!", "!" , $tercero,"!","000","!", $tercero ,"!","00000","!",'000000000000000',"!", $arRegistro->getDescripcionContable(),"!", str_pad($vrMovimiento, 15, '0', STR_PAD_LEFT),"!",str_pad($arRegistro->getBase(), 15, '0', STR_PAD_LEFT),"!","000000000000000","!", $naturalezaMovimiento, "!","PRI","!","000000000000000","!","!","!","A","!");
+            $array = array($anio, "!", $mes, "!", $comprobante, "!", "00000", "!", $numeroDocumento, "!", $arRegistro->getFecha()->Format('m/d/Y'), "!", str_pad($strSecuencia, 5, '0', STR_PAD_LEFT), "!", $arRegistro->getCodigoCuentaFk(), "!", $centroCosto, "!", "000", "!", "!", "!", $tercero, "!", "000", "!", $tercero, "!", "00000", "!", '000000000000000', "!", $arRegistro->getDescripcionContable(), "!", str_pad($vrMovimiento, 15, '0', STR_PAD_LEFT), "!", str_pad($arRegistro->getBase(), 15, '0', STR_PAD_LEFT), "!", "000000000000000", "!", $naturalezaMovimiento, "!", "PRI", "!", "000000000000000", "!", "!", "!", "A", "!");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
@@ -442,7 +442,7 @@ class IntercambioDatosController extends Controller {
         readfile($strArchivo);
         exit;
     }
-    
+
     private function generarExcelInterfaceSeven() {
         $em = $this->getDoctrine()->getManager();
         set_time_limit(0);
@@ -460,51 +460,55 @@ class IntercambioDatosController extends Controller {
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CODIGO_EMPRESA')
-                ->setCellValue('B1', 'TIPO_OPERACION')
-                ->setCellValue('C1', 'NUMERO_CUENTA')
-                ->setCellValue('D1', 'FECHA')
-                ->setCellValue('E1', 'SUCURSAL')
-                ->setCellValue('F1', 'PROVEEDOR')
-                ->setCellValue('G1', 'DETALLE_PROVEEDOR')
-                ->setCellValue('H1', 'TIPO')
-                ->setCellValue('I1', 'NUMERO_FACTURA')
-                ->setCellValue('J1', 'PREFIJO_FACTURA')
-                ->setCellValue('K1', 'CUENTA_CONTABLE')
-                ->setCellValue('L1', 'MONEDA')
-                ->setCellValue('M1', 'FECHA_TASA')
-                ->setCellValue('N1', 'VALOR_TASA')
-                ->setCellValue('O1', 'FECHA_VENCIMIENTO')
-                ->setCellValue('P1', 'VALOR_TOTAL_CUENTA_PAGAR')
-                ->setCellValue('Q1', 'DIAS_GRACIA_INTERES_CORRIENTE')
-                ->setCellValue('R1', 'DIAS_GRACIA_INTERES_MORA')
-                ->setCellValue('S1', 'PORCENTAJE_INTERES_CORRIENTE')
-                ->setCellValue('T1', 'PORCENTAJE_INTERES_MORA')
-                ->setCellValue('U1', 'DESCRIPCION')
-                ->setCellValue('V1', 'CENTRO_COSTO')
-                ->setCellValue('W1', 'PROYECTO')
-                ->setCellValue('X1', 'AREA_NEGOCIO')
-                ->setCellValue('Y1', 'PORCENTAJE_DISTRIBUCION');
+                ->setCellValue('A1', 'Empresa')
+                ->setCellValue('B1', 'Modulo')
+                ->setCellValue('C1', 'Tipo operacion')
+                ->setCellValue('D1', 'Dia')
+                ->setCellValue('E1', 'Mes')
+                ->setCellValue('F1', 'Año')
+                ->setCellValue('G1', 'Numero')
+                ->setCellValue('H1', 'Desc. Encabezado')
+                ->setCellValue('I1', 'Desc. Detalle')
+                ->setCellValue('J1', 'Cuenta')
+                ->setCellValue('K1', 'Tercero')
+                ->setCellValue('L1', 'Vlr. Debito')
+                ->setCellValue('M1', 'Vlr Credito')
+                ->setCellValue('N1', 'Base')
+                ->setCellValue('O1', 'Referencia')
+                ->setCellValue('P1', 'C. Costo')
+                ->setCellValue('Q1', 'Proyecto')
+                ->setCellValue('R1', 'Area')
+                ->setCellValue('S1', 'Sucursal');
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
         $arRegistros = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
         $arRegistros = $query->getResult();
         foreach ($arRegistros as $arRegistro) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arRegistro->getBase())
-                    ->setCellValue('B' . $i, $arRegistro->getNumeroReferencia())
-                    ->setCellValue('C' . $i, $arRegistro->getCodigoCentroCostoFk())
-                    ->setCellValue('D' . $i, $this->RellenarNr($arRegistro->getCodigoComprobanteFk(), "0", 2))
-                    ->setCellValue('E' . $i, $arRegistro->getCodigoCuentaFk())
-                    ->setCellValue('F' . $i, $arRegistro->getCredito())
+                    ->setCellValue('A' . $i, 381)
+                    ->setCellValue('B' . $i, 7)
+                    ->setCellValue('C' . $i, 701)
+                    ->setCellValue('D' . $i, $arRegistro->getFecha()->format('d'))
+                    ->setCellValue('E' . $i, $arRegistro->getFecha()->format('m'))
+                    ->setCellValue('F' . $i, $arRegistro->getFecha()->format('Y'))
                     ->setCellValue('G' . $i, $arRegistro->getNumero())
-                    ->setCellValue('H' . $i, $arRegistro->getDebito())
+                    ->setCellValue('H' . $i, $arRegistro->getDescripcionContable())
                     ->setCellValue('I' . $i, $arRegistro->getDescripcionContable())
-                    ->setCellValue('J' . $i, $arRegistro->getDescripcionContable())
-                    ->setCellValue('K' . $i, $arRegistro->getFecha()->format('Y/m/d'))
-                    ->setCellValue('K' . $i, PHPExcel_Shared_Date::PHPToExcel(gmmktime(0, 0, 0, $arRegistro->getFecha()->format('m'), $arRegistro->getFecha()->format('d'), $arRegistro->getFecha()->format('Y'))));
+                    ->setCellValue('J' . $i, $arRegistro->getCodigoCuentaFk())
+                    ->setCellValue('K' . $i, 0)
+                    ->setCellValue('L' . $i, $arRegistro->getDebito())
+                    ->setCellValue('M' . $i, $arRegistro->getCredito())
+                    ->setCellValue('N' . $i, $arRegistro->getBase())
+                    ->setCellValue('O' . $i, $arRegistro->getNumeroReferencia())
+                    ->setCellValue('P' . $i, 0)
+                    ->setCellValue('Q' . $i, 10001)
+                    ->setCellValue('R' . $i, 41101)
+                    ->setCellValue('S' . $i, 5001);
             if ($arRegistro->getCodigoTerceroFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion() . "-" . $arRegistro->getTerceroRel()->getDigitoVerificacion());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion() . "-" . $arRegistro->getTerceroRel()->getDigitoVerificacion());
+            }
+            if ($arRegistro->getCodigoCentroCostoFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arRegistro->getCentroCostoRel()->getCodigoInterface());
             }
             $i++;
         }
@@ -526,6 +530,6 @@ class IntercambioDatosController extends Controller {
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }    
+    }
 
 }
