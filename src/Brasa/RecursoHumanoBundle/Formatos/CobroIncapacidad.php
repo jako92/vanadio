@@ -105,7 +105,7 @@ class CobroIncapacidad extends \FPDF_FPDF {
 
     public function EncabezadoDetalles() {
         $this->Ln(12);
-        $header = array('ITEM', 'NRO INCAPACIDAD', 'DOCUMENTO', 'EMPLEADO', 'DESDE','HASTA','TIPO', 'VALOR');
+        $header = array('ITEM', 'NRO INCAPACIDAD', 'DOCUMENTO','EMPLEADO', 'SALARIO', 'DESDE','HASTA','DIAS','TIPO', 'VALOR');
         $this->SetFillColor(236, 236, 236);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -113,7 +113,7 @@ class CobroIncapacidad extends \FPDF_FPDF {
         $this->SetFont('', 'B', 6);
 
         //creamos la cabecera de la tabla.
-        $w = array(8, 22, 30, 100, 20, 20, 35, 20);
+        $w = array(8, 22, 30, 70,20, 20, 20,10, 35, 20);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -139,9 +139,11 @@ class CobroIncapacidad extends \FPDF_FPDF {
             $pdf->Cell(8, 6, $var, 1, 0, 'C');
             $pdf->Cell(22, 6, $arIncapacidad->getCodigoIncapacidadPk(), 1, 0, 'C');
             $pdf->Cell(30, 6, $arIncapacidad->getEmpleadoRel()->getNumeroIdentificacion(), 1, 0, 'C');
-            $pdf->Cell(100, 6, utf8_decode($arIncapacidad->getEmpleadoRel()->getNombreCorto()), 1, 0, 'L');
+            $pdf->Cell(70, 6, utf8_decode($arIncapacidad->getEmpleadoRel()->getNombreCorto()), 1, 0, 'L');
+            $pdf->Cell(20, 6, utf8_decode($arIncapacidad->getEmpleadoRel()->getVrSalario()), 1, 0, 'R');
             $pdf->Cell(20, 6, $arIncapacidad->getFechaDesde()->format("Y/m/d"), 1, 0, 'C');
             $pdf->Cell(20, 6, $arIncapacidad->getFechaHasta()->format("Y/m/d"), 1, 0, 'C');
+            $pdf->Cell(10, 6, $arIncapacidad->getDiasCobro(), 1, 0, 'C');
             $pdf->Cell(35, 6, $arIncapacidad->getIncapacidadTipoRel()->getNombre(), 1, 0, 'C');
             $pdf->Cell(20, 6, number_format($arIncapacidad->getVrIncapacidad(),0, '.', ','), 1, 0, 'R');
             $pdf->Ln();
