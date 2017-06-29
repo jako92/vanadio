@@ -35,6 +35,7 @@ class TurSoportePagoPeriodoType extends AbstractType
             ->add('descansoFestivoFijo', CheckboxType::class, array('required'  => false))                            
             ->add('pagarDia31', CheckboxType::class, array('required'  => false))                            
             ->add('pagarDia31Extra', CheckboxType::class, array('required'  => false))                            
+            ->add('horasRecargoAgrupadas', CheckboxType::class, array('required'  => false))                            
             ->add('diaDescansoCompensacion', NumberType::class, array('required' => false))                            
             ->add('guardar', SubmitType::class);
     }

@@ -193,6 +193,16 @@ class RhuCentroCosto
      */    
     private $pagarDia31 = false;
 
+    /**     
+     * @ORM\Column(name="horas_recargos_agrupadas", type="boolean")
+     */    
+    private $horasRecargoAgrupadas = true;     
+    
+    /**
+     * @ORM\Column(name="tipo_compensacion", type="integer", nullable=true)
+     */    
+    private $tipoCompensacion = 0;     
+    
     /**
      * @ORM\Column(name="porcentaje_cesantias", type="float")
      */
@@ -2332,5 +2342,53 @@ class RhuCentroCosto
     public function getOmitirExtras()
     {
         return $this->omitirExtras;
+    }
+
+    /**
+     * Set horasRecargoAgrupadas
+     *
+     * @param boolean $horasRecargoAgrupadas
+     *
+     * @return RhuCentroCosto
+     */
+    public function setHorasRecargoAgrupadas($horasRecargoAgrupadas)
+    {
+        $this->horasRecargoAgrupadas = $horasRecargoAgrupadas;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoAgrupadas
+     *
+     * @return boolean
+     */
+    public function getHorasRecargoAgrupadas()
+    {
+        return $this->horasRecargoAgrupadas;
+    }
+
+    /**
+     * Set tipoCompensacion
+     *
+     * @param integer $tipoCompensacion
+     *
+     * @return RhuCentroCosto
+     */
+    public function setTipoCompensacion($tipoCompensacion)
+    {
+        $this->tipoCompensacion = $tipoCompensacion;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCompensacion
+     *
+     * @return integer
+     */
+    public function getTipoCompensacion()
+    {
+        return $this->tipoCompensacion;
     }
 }

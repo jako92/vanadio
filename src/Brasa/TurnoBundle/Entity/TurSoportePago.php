@@ -267,6 +267,21 @@ class TurSoportePago
      */    
     private $horasExtrasFestivasNocturnasReales = 0;    
     
+    /**
+     * @ORM\Column(name="horas_recargo_nocturno_reales", type="float")
+     */    
+    private $horasRecargoNocturnoReales = 0;    
+    
+    /**
+     * @ORM\Column(name="horas_recargo_festivo_diurno_reales", type="float")
+     */    
+    private $horasRecargoFestivoDiurnoReales = 0;    
+    
+    /**
+     * @ORM\Column(name="horas_recargo_festivo_nocturno_reales", type="float")
+     */    
+    private $horasRecargoFestivoNocturnoReales = 0;     
+    
     /**     
      * @ORM\Column(name="terminacion_turno", type="integer", nullable=true)
      */    
@@ -1855,5 +1870,77 @@ class TurSoportePago
     public function getContratoMultiple()
     {
         return $this->contratoMultiple;
+    }
+
+    /**
+     * Set horasRecargoNocturnoReales
+     *
+     * @param float $horasRecargoNocturnoReales
+     *
+     * @return TurSoportePago
+     */
+    public function setHorasRecargoNocturnoReales($horasRecargoNocturnoReales)
+    {
+        $this->horasRecargoNocturnoReales = $horasRecargoNocturnoReales;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoNocturnoReales
+     *
+     * @return float
+     */
+    public function getHorasRecargoNocturnoReales()
+    {
+        return $this->horasRecargoNocturnoReales;
+    }
+
+    /**
+     * Set horasRecargoFestivoDiurnoReales
+     *
+     * @param float $horasRecargoFestivoDiurnoReales
+     *
+     * @return TurSoportePago
+     */
+    public function setHorasRecargoFestivoDiurnoReales($horasRecargoFestivoDiurnoReales)
+    {
+        $this->horasRecargoFestivoDiurnoReales = $horasRecargoFestivoDiurnoReales;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoFestivoDiurnoReales
+     *
+     * @return float
+     */
+    public function getHorasRecargoFestivoDiurnoReales()
+    {
+        return $this->horasRecargoFestivoDiurnoReales;
+    }
+
+    /**
+     * Set horasRecargoFestivoNocturnoReales
+     *
+     * @param float $horasRecargoFestivoNocturnoReales
+     *
+     * @return TurSoportePago
+     */
+    public function setHorasRecargoFestivoNocturnoReales($horasRecargoFestivoNocturnoReales)
+    {
+        $this->horasRecargoFestivoNocturnoReales = $horasRecargoFestivoNocturnoReales;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoFestivoNocturnoReales
+     *
+     * @return float
+     */
+    public function getHorasRecargoFestivoNocturnoReales()
+    {
+        return $this->horasRecargoFestivoNocturnoReales;
     }
 }

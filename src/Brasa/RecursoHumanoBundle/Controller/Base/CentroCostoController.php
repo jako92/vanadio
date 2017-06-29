@@ -93,6 +93,7 @@ class CentroCostoController extends Controller
         if($codigoCentroCosto != 0) {
             $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')->find($codigoCentroCosto);
         } else {
+            $arCentroCosto->setHorasRecargoAgrupadas(true);            
             $arCentroCosto->setFechaUltimoPago(new \DateTime('now'));
             $arCentroCosto->setFechaUltimoPagoCesantias(new \DateTime('now'));
             $arCentroCosto->setFechaUltimoPagoPrima(new \DateTime('now'));            

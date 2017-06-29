@@ -178,6 +178,16 @@ class TurSoportePagoPeriodo
      */    
     private $omitirExtras = false;    
     
+    /**     
+     * @ORM\Column(name="horas_recargos_agrupadas", type="boolean")
+     */    
+    private $horasRecargoAgrupadas = true;    
+    
+    /**
+     * @ORM\Column(name="tipo_compensacion", type="integer")
+     */    
+    private $tipoCompensacion = 0;     
+    
     /**
      * @ORM\ManyToOne(targetEntity="TurRecursoGrupo", inversedBy="soportesPagosPeriodosRecursoGrupoRel")
      * @ORM\JoinColumn(name="codigo_recurso_grupo_fk", referencedColumnName="codigo_recurso_grupo_pk")
@@ -1181,5 +1191,53 @@ class TurSoportePagoPeriodo
     public function getOmitirExtras()
     {
         return $this->omitirExtras;
+    }
+
+    /**
+     * Set horasRecargoAgrupadas
+     *
+     * @param boolean $horasRecargoAgrupadas
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setHorasRecargoAgrupadas($horasRecargoAgrupadas)
+    {
+        $this->horasRecargoAgrupadas = $horasRecargoAgrupadas;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoAgrupadas
+     *
+     * @return boolean
+     */
+    public function getHorasRecargoAgrupadas()
+    {
+        return $this->horasRecargoAgrupadas;
+    }
+
+    /**
+     * Set tipoCompensacion
+     *
+     * @param integer $tipoCompensacion
+     *
+     * @return TurSoportePagoPeriodo
+     */
+    public function setTipoCompensacion($tipoCompensacion)
+    {
+        $this->tipoCompensacion = $tipoCompensacion;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCompensacion
+     *
+     * @return integer
+     */
+    public function getTipoCompensacion()
+    {
+        return $this->tipoCompensacion;
     }
 }

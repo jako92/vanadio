@@ -195,7 +195,10 @@
                 <th>HEOD</th>
                 <th>HEON</th>
                 <th>HEFD</th>
-                <th>HEFN</th>
+                <th>HEFN</th>                
+                <th>HRN</th>
+                <th>HRFD</th>
+                <th>HRFN</th>
                 <th>H</th>
             </tr>
             {% for arSoportesPagosDetalles in arSoportesPagosDetalles %}
@@ -214,6 +217,9 @@
                     <td style="text-align: right">{{ arSoportesPagosDetalles.horasExtrasOrdinariasNocturnas | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportesPagosDetalles.horasExtrasFestivasDiurnas | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportesPagosDetalles.horasExtrasFestivasNocturnas | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arSoportesPagosDetalles.horasRecargoNocturno | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arSoportesPagosDetalles.horasRecargoFestivoDiurno | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ arSoportesPagosDetalles.horasRecargoFestivoNocturno | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ arSoportesPagosDetalles.horas | number_format(2, '.', ',') }}</td>
                 </tr>
 
