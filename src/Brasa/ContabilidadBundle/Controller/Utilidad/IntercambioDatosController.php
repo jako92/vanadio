@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class IntercambioDatosController extends Controller {
 
@@ -107,7 +109,7 @@ class IntercambioDatosController extends Controller {
                 if ($form->get('BtnGenerarSeven')->isClicked()) {
                     $this->filtrar($form, $request);
                     $this->listar();
-                    $this->generarExcelInterfaceSeven();
+                    $this->generarExcelInterfaceSeven($form);
                 }
             }
         }
@@ -166,6 +168,8 @@ class IntercambioDatosController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('TxtNumeroDesde', TextType::class, array('data' => $session->get('filtroCtbNumeroDesde')))
                 ->add('TxtNumeroHasta', TextType::class, array('data' => $session->get('filtroCtbNumeroHasta')))
+                ->add('TxtNumero', NumberType::class)
+                ->add('TxtDescripcion', TextareaType::class)
                 ->add('comprobanteRel', EntityType::class, array(
                     'class' => 'BrasaContabilidadBundle:CtbComprobante',
                     'query_builder' => function (EntityRepository $er) {
@@ -443,7 +447,7 @@ class IntercambioDatosController extends Controller {
         exit;
     }
 
-    private function generarExcelInterfaceSeven() {
+    private function generarExcelInterfaceSeven($form) {
         $em = $this->getDoctrine()->getManager();
         set_time_limit(0);
         ini_set("memory_limit", -1);
@@ -485,14 +489,14 @@ class IntercambioDatosController extends Controller {
         $arRegistros = $query->getResult();
         foreach ($arRegistros as $arRegistro) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, 381)
+                    ->setCellValue('A' . $i, 3821)
                     ->setCellValue('B' . $i, 7)
                     ->setCellValue('C' . $i, $session->get('filtroCtbCodigoComprobante'))
                     ->setCellValue('D' . $i, $arRegistro->getFecha()->format('d'))
                     ->setCellValue('E' . $i, $arRegistro->getFecha()->format('m'))
                     ->setCellValue('F' . $i, $arRegistro->getFecha()->format('Y'))
-                    ->setCellValue('G' . $i, $arRegistro->getNumero())
-                    ->setCellValue('H' . $i, $arRegistro->getDescripcionContable())
+                    ->setCellValue('G' . $i, $form->get('TxtNumero')->getData())
+                    ->setCellValue('H' . $i, $form->get('TxtDescripcion')->getData())
                     ->setCellValue('I' . $i, $arRegistro->getDescripcionContable())
                     ->setCellValue('J' . $i, $arRegistro->getCodigoCuentaFk())
                     ->setCellValue('K' . $i, 0)
@@ -502,10 +506,16 @@ class IntercambioDatosController extends Controller {
                     ->setCellValue('O' . $i, $arRegistro->getNumeroReferencia())
                     ->setCellValue('P' . $i, 0)
                     ->setCellValue('Q' . $i, 10001)
-                    ->setCellValue('R' . $i, 41101)
-                    ->setCellValue('S' . $i, 5001);
+                    ->setCellValue('R' . $i, 0)
+                    ->setCellValue('S' . $i, 0);
             if ($arRegistro->getCodigoTerceroFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion() . "-" . $arRegistro->getTerceroRel()->getDigitoVerificacion());
+                $numeroIdentificacionTercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
+                $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $numeroIdentificacionTercero));
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion());
+                if ($arEmpleado->getCodigoEmpleadoTipoFk() == 1) {$area = "2201";} else {$area = "1101";}
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R' . $i, $area);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S' . $i, $arEmpleado->getCodigoSubzonaFk());
             }
             if ($arRegistro->getCodigoCentroCostoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arRegistro->getCentroCostoRel()->getCodigoInterface());

@@ -71,8 +71,24 @@
                     </div>
                 </div>
             </div>
-        </div>       
-
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion seven</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-2 control-label">Numero</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.TxtNumero) }}
+                    </div> 
+                </div>
+                <div class="form-group form-group-sm"> 
+                    <label class="col-sm-2 control-label">Descripcion Encabezado</label>
+                    <div class="col-sm-10">                  
+                        {{ form_widget(form.TxtDescripcion) }}
+                    </div> 
+                </div>
+            </div>
+        </div>
         {{ form_rest(form) }}
         {{ form_end(form) }}
         <br/><br/><br/><br/>
