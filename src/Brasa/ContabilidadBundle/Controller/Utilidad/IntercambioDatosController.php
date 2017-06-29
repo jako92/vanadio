@@ -176,8 +176,8 @@ class IntercambioDatosController extends Controller {
                     'data' => $session->get('filtroCtbCodigoComprobante'),
                     'choice_label' => 'nombre',
                     'required' => true))
-                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta, 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde, 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta, 'attr' => array('class' => 'date',)))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroCtbRegistroFiltrarFecha')))
                 ->add('BtnGenerarOfimatica', SubmitType::class, array('label' => 'Ofimatica',))
                 ->add('BtnGenerarIlimitada', SubmitType::class, array('label' => 'Ilimitada',))

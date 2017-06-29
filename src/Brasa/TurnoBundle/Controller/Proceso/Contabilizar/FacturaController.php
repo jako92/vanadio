@@ -70,8 +70,8 @@ class FacturaController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('numeroDesde', NumberType::class, array('label' => 'Numero desde'))
                 ->add('numeroHasta', NumberType::class, array('label' => 'Numero hasta'))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaDesde', DateType::class, array( 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta', DateType::class, array( 'attr' => array('class' => 'date',)))
                 ->add('BtnDescontabilizar', SubmitType::class, array('label' => 'Descontabilizar',))
                 ->getForm();
         $form->handleRequest($request);
@@ -164,8 +164,8 @@ class FacturaController extends Controller {
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroFacturaNumero')))
                 ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADO' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroFacturaEstadoAutorizado')))
                 ->add('estadoAnulado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'ANULADO' => '1', 'SIN ANULAR' => '0'), 'data' => $session->get('filtroFacturaEstadoAnulado')))
-                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
-                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('fechaDesde', DateType::class, array( 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array( 'data' => $dateFechaHasta))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroFacturaFiltrarFecha')))
                 ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
