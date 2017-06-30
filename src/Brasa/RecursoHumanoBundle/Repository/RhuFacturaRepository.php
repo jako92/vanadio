@@ -279,58 +279,58 @@ class RhuFacturaRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arFactura = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFactura = $em->getRepository('BrasaRecursoHumanoBundle:RhuFactura')->find($codigoFactura);
-
         $strResultado = "";
         if ($arFactura->getEstadoAutorizado() == 1 && $arFactura->getEstadoAnulado() == 0 && $arFactura->getNumero() != 0 && $arFactura->getEstadoContabilizado() == 0) {
-            $boolAnular = TRUE;
-            $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
-            $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
-            //Devolver saldo a los pedidos
-            foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                if ($arFacturaDetalle->getCodigoPedidoDetalleFk()) {
-                    $arPedidoDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\TurPedidoDetalle();
-                    $arPedidoDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:TurPedidoDetalle')->find($arFacturaDetalle->getCodigoPedidoDetalleFk());
-                    $floValorTotalPendiente = $arPedidoDetalleAct->getVrTotalDetallePendiente() + $arFacturaDetalle->getVrPrecio();
-                    $arPedidoDetalleAct->setVrTotalDetallePendiente($floValorTotalPendiente);
-                    $arPedidoDetalleAct->setEstadoFacturado(0);
-                    $em->persist($arPedidoDetalleAct);
+            $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
+            $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->findOneBy(array('numero' => $arFactura->getNumero()));
+            if (!$arRecibo) {//validar si la factura ya tiene recibos generados
+                $boolAnular = TRUE;
+                $arFacturaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
+                $arFacturaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->findBy(array('codigoFacturaFk' => $codigoFactura));
+
+                //Actualizar los detalles de la factura a cero
+                foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                    $arFacturaDetalle->setVrPrecio(0);
+                    $arFacturaDetalle->setVrSubtotal(0);
+                    $arFacturaDetalle->setVrSubtotalOperado(0);
+                    $arFacturaDetalle->setVrIva(0);
+                    $arFacturaDetalle->setVrAdministracion(0);
+                    $arFacturaDetalle->setVrOperacion(0);
+                    $arFacturaDetalle->setCantidad(0);
+                    $arFacturaDetalle->setVrBaseIva(0);
+                    $arFacturaDetalle->setVrTotal(0);
+                    $em->persist($arFacturaDetalle);
                 }
-            }
-            //Actualizar los detalles de la factura a cero
-            foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                $arFacturaDetalleAct = new \Brasa\RecursoHumanoBundle\Entity\RhuFacturaDetalle();
-                $arFacturaDetalleAct = $em->getRepository('BrasaRecursoHumanoBundle:RhuFacturaDetalle')->find($arFacturaDetalle->getCodigoFacturaDetallePk());
-                $arFacturaDetalle->setVrPrecio(0);
-                $arFacturaDetalle->setCantidad(0);
-                $arFacturaDetalle->setSubtotal(0);
-                $arFacturaDetalle->setSubtotalOperado(0);
-                $arFacturaDetalle->setBaseIva(0);
-                $arFacturaDetalle->setIva(0);
-                $arFacturaDetalle->setTotal(0);
-                $em->persist($arFacturaDetalle);
-            }
-            $arFactura->setVrSubtotal(0);
-            $arFactura->setVrRetencionFuente(0);
-            $arFactura->setVrBaseAIU(0);
-            $arFactura->setVrIva(0);
-            $arFactura->setVrTotal(0);
-            $arFactura->setVrTotalNeto(0);
-            $arFactura->setEstadoAnulado(1);
-            $em->persist($arFactura);
+                $arFactura->setVrBruto(0);
+                $arFactura->setVrNeto(0);
+                $arFactura->setVrRetencionFuente(0);
+                $arFactura->setVrRetencionCree(0);
+                $arFactura->setVrRetencionIva(0);
+                $arFactura->setVrBaseAIU(0);
+                $arFactura->setVrTotalAdministracion(0);
+                $arFactura->setVrIngresoMision(0);
+                $arFactura->setVrIva(0);
+                $arFactura->setVrSeleccion(0);
+                $arFactura->setVrExamen(0);
+                $arFactura->setVrSubtotal(0);
+                $arFactura->setEstadoAnulado(1);
+                $em->persist($arFactura);
 
-
-            //Anular cuenta por cobrar
-            /* $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
-              $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => 2, 'numeroDocumento' => $arFactura->getNumero()));
-              if($arCuentaCobrar) {
-              if($arCuentaCobrar->getValorOriginal() == $arCuentaCobrar->getSaldo()) {
-              $arCuentaCobrar->setSaldo(0);
-              $arCuentaCobrar->setValorOriginal(0);
-              $arCuentaCobrar->setAbono(0);
-              $em->persist($arCuentaCobrar);
-              }
-              } */
-            $em->flush();
+                //Anular cuenta por cobrar
+                $arCuentaCobrar = new \Brasa\CarteraBundle\Entity\CarCuentaCobrar();
+                $arCuentaCobrar = $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->findOneBy(array('codigoCuentaCobrarTipoFk' => 1, 'numeroDocumento' => $arFactura->getNumero()));
+                if ($arCuentaCobrar) {
+                    if ($arCuentaCobrar->getValorOriginal() == $arCuentaCobrar->getSaldo()) {
+                        $arCuentaCobrar->setSaldo(0);
+                        $arCuentaCobrar->setValorOriginal(0);
+                        $arCuentaCobrar->setAbono(0);
+                        $em->persist($arCuentaCobrar);
+                    }
+                }
+                $em->flush();
+            } else {
+                $strResultado = "La factura ya tiene recibo generado";
+            }
         } else {
             $strResultado = "La factura debe estar autorizada e impresa, no puede estar previamente anulada ni contabilizada";
         }
