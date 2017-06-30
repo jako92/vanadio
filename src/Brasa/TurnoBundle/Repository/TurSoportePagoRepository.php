@@ -1208,16 +1208,21 @@ class TurSoportePagoRepository extends EntityRepository {
                         } else {
                             $diasDescansoSoportePago = 0;
                         }
-                    }    
-                    
+                    } 
+                    $diasFestivoSinNovedad = 0;
+                    $arSoportePagoDetalles = new \Brasa\TurnoBundle\Entity\TurSoportePagoDetalle();
+                    $arSoportePagoDetalles = $em->getRepository('BrasaTurnoBundle:TurSoportePagoDetalle')->findBy(array('codigoSoportePagoFk' => $arSoportePago->getCodigoSoportePagoPk()), array('codigoSoportePagoDetallePk' => 'DESC'));                                        
+                    foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {
+                        if($arSoportePagoDetalle->getFestivo() == 1 && $arSoportePagoDetalle->getNovedad() == 0) {
+                            $diasFestivoSinNovedad++;
+                        }
+                    }
                     $horasLaboradasReales = $arSoportePago->getDiasTransporte() * 8;
-                    $horasLimite = $horasLaboradasReales - $horasFestivoReales;
-                    
+                    $horasLimite = $horasLaboradasReales - ($diasFestivoSinNovedad * 8);                    
                     $diasPeriodoCompensar = $diasPeriodo;
-                    $horasPeriodo =  $diasPeriodoCompensar * 8;
-                    $horasPeriodoCompensar = ($diasPeriodoCompensar * 8) - $horasFestivoReales;
+                    $horasPeriodo =  $diasPeriodoCompensar * 8;                    
                     $horasDescansoSoportePago = $diasDescansoSoportePago * 8;                    
-                    $descansoAuxilioTransporte = 0;
+                    
                     $horasDia = $arSoportePago->getHorasDiurnasReales();
                     $horasNoche = $arSoportePago->getHorasNocturnasReales();
                     $horasFestivasDia = $arSoportePago->getHorasFestivasDiurnasReales();
@@ -1232,19 +1237,50 @@ class TurSoportePagoRepository extends EntityRepository {
                     
                     $horarOrdinarias = $horasDia + $horasNoche + $horasFestivasDia + $horasFestivasNoche;                    
                     $horasCompensar = $horasLimite - $horarOrdinarias;
-
-                    $arSoportePagoDetalles = new \Brasa\TurnoBundle\Entity\TurSoportePagoDetalle();
-                    $arSoportePagoDetalles = $em->getRepository('BrasaTurnoBundle:TurSoportePagoDetalle')->findBy(array('codigoSoportePagoFk' => $arSoportePago->getCodigoSoportePagoPk()), array('codigoSoportePagoDetallePk' => 'DESC'));                    
-                    foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {                        
-                        
+                    $horasAfectadas = 0;
+                    $horasExtraDiaAfectar = 0;
+                    $horasExtraNocheAfectar = 0;                    
+                    if($horasCompensar > 0) {
+                        foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {                        
+                            //Afectar diurnas
+                            if($horasAfectadas < $horasCompensar) {
+                                if($arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas() > 0) {                                    
+                                    $horasTemporal = 0;
+                                    if(($horasAfectadas + $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas()) < $horasCompensar) {                                        
+                                        $horasTemporal = $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();                                        
+                                    } else {
+                                        $horasTemporal = ($horasCompensar - $horasAfectadas);
+                                    }
+                                    $horasAfectadas += $horasTemporal;
+                                    $horasExtraDiaAfectar += $horasTemporal;
+                                }                                                                 
+                            }
+                            //Afectar nocturnas
+                            if($horasAfectadas < $horasCompensar) {
+                                if($arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas() > 0) {                                    
+                                    $horasTemporal = 0;
+                                    if(($horasAfectadas + $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas()) < $horasCompensar) {                                        
+                                        $horasTemporal = $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();                                        
+                                    } else {
+                                        $horasTemporal = ($horasCompensar - $horasAfectadas);
+                                    }
+                                    $horasAfectadas += $horasTemporal;
+                                    $horasExtraNocheAfectar += $horasTemporal;
+                                }                                                                 
+                            }                            
+                        }
+                        $horasExtraDia -= $horasExtraDiaAfectar;
+                        $horasDia += $horasExtraDiaAfectar;
+                        $horasExtraNoche -= $horasExtraNocheAfectar;
+                        $horasNoche +=  $horasExtraNocheAfectar;
                     }
                     
                     $arSoportePagoAct = new \Brasa\TurnoBundle\Entity\TurSoportePago();                        
                     $arSoportePagoAct = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($arSoportePago->getCodigoSoportePagoPk());
                     $arSoportePagoAct->setHorasDiurnas($horasDia);
                     $arSoportePagoAct->setHorasNocturnas($horasNoche);
-                    //$arSoportePagoAct->setHorasFestivasDiurnas($horasFestivasDia);
-                    //$arSoportePagoAct->setHorasFestivasNocturnas($horasFestivasNoche);
+                    $arSoportePagoAct->setHorasFestivasDiurnas($horasFestivasDia);
+                    $arSoportePagoAct->setHorasFestivasNocturnas($horasFestivasNoche);
                     $arSoportePagoAct->setHorasExtrasOrdinariasDiurnas($horasExtraDia);
                     $arSoportePagoAct->setHorasExtrasOrdinariasNocturnas($horasExtraNoche);
                     $arSoportePagoAct->setHorasExtrasFestivasDiurnas($horasExtraFestivasDia);
@@ -1254,11 +1290,7 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arSoportePagoAct->setHorasRecargoFestivoNocturno($horasRecargoFestivoNocturno);                    
                     $arSoportePagoAct->setDiasPeriodoCompensar($diasPeriodoCompensar);
                     $arSoportePagoAct->setDiasPeriodoDescansoCompensar($descansoCompensacion);
-                    
-                    $diasAuxilioTransporte = $arSoportePagoAct->getDiasTransporte() - $descansoAuxilioTransporte;
-                    $arSoportePagoAct->setDiasTransporte($diasAuxilioTransporte);
-                    //$horas = $horasDia + $horasDescansoRecurso;
-                    //$arSoportePagoAct->setHoras($horas);
+                    $arSoportePagoAct->setHorasDescanso($diasFestivoSinNovedad * 8);                                        
                     $em->persist($arSoportePagoAct);
                    
                 }                
