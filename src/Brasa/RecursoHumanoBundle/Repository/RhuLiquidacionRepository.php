@@ -216,8 +216,11 @@ class RhuLiquidacionRepository extends EntityRepository {
                 if($arLiquidacion->getLiquidarPrima() == 1) {            
                     $dateFechaDesde = $arLiquidacion->getContratoRel()->getFechaUltimoPagoPrimas();
                     $dateFechaHasta = $arLiquidacion->getContratoRel()->getFechaHasta();
-                    $intDiasPrima = 0;                
-                    if($dateFechaDesde <= $dateFechaHasta) {
+                    $intDiasPrima = 0;
+                    if($dateFechaDesde == $dateFechaHasta){
+                        $intDiasPrimaLiquidar = 0;
+                    }
+                    if($dateFechaDesde < $dateFechaHasta) {
                         $intDiasPrima = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);    
                         $intDiasPrimaLiquidar = $intDiasPrima;
                         /*if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
