@@ -439,7 +439,8 @@ class LiquidacionController extends Controller
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonEliminarAdicional = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
-        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);        
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $arrBotonImprimirCartaRetiro = array('label' => 'Carta retiro', 'disabled' => false); 
         $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);
         $arrBotonGenerarPago = array('label' => 'Generar pago', 'disabled' => false);
         if($ar->getEstadoAutorizado() == 1) {            
@@ -460,6 +461,7 @@ class LiquidacionController extends Controller
                     ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
                     ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
                     ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                    ->add('BtnImprimirCartaRetiro', SubmitType::class, $arrBotonImprimirCartaRetiro)
                     ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
                     ->add('BtnEliminarAdicional', SubmitType::class, $arrBotonEliminarAdicional)
                     ->add('BtnGenerarPago', SubmitType::class, $arrBotonGenerarPago)

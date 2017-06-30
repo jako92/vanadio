@@ -34,6 +34,10 @@ class GenPais
      */
     protected $departamentosRel;
     
+    /**
+     * @ORM\OneToMany(targetEntity="GenRegion", mappedBy="paisRel")
+     */
+    protected $regionesRel;
     
     /**
      * Constructor
@@ -41,6 +45,7 @@ class GenPais
     public function __construct()
     {
         $this->departamentosRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regionesRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -147,5 +152,39 @@ class GenPais
     public function getDepartamentosRel()
     {
         return $this->departamentosRel;
+    }
+
+    /**
+     * Add regionesRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenRegion $regionesRel
+     *
+     * @return GenPais
+     */
+    public function addRegionesRel(\Brasa\GeneralBundle\Entity\GenRegion $regionesRel)
+    {
+        $this->regionesRel[] = $regionesRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove regionesRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenRegion $regionesRel
+     */
+    public function removeRegionesRel(\Brasa\GeneralBundle\Entity\GenRegion $regionesRel)
+    {
+        $this->regionesRel->removeElement($regionesRel);
+    }
+
+    /**
+     * Get regionesRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegionesRel()
+    {
+        return $this->regionesRel;
     }
 }

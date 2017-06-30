@@ -16,6 +16,13 @@ class GenDepartamento
      * @ORM\Column(name="codigo_departamento_pk", type="integer")
      */
     private $codigoDepartamentoPk;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="codigo_region_fk", type="integer", nullable=true)
+     */
+    private $codigoRegionFk;
 
     /**
      * @ORM\Column(name="nombre", type="string", length=50)
@@ -43,6 +50,12 @@ class GenDepartamento
      * @ORM\JoinColumn(name="codigo_pais_fk", referencedColumnName="codigo_pais_pk")
      */
     protected $paisRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="GenRegion", inversedBy="departamentosRel")
+     * @ORM\JoinColumn(name="codigo_region_fk", referencedColumnName="codigo_region_pk")
+     */
+    protected $regionRel;
 
 
     
@@ -206,5 +219,53 @@ class GenDepartamento
     public function getPaisRel()
     {
         return $this->paisRel;
+    }
+
+    /**
+     * Set codigoRegionFk
+     *
+     * @param integer $codigoRegionFk
+     *
+     * @return GenDepartamento
+     */
+    public function setCodigoRegionFk($codigoRegionFk)
+    {
+        $this->codigoRegionFk = $codigoRegionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRegionFk
+     *
+     * @return integer
+     */
+    public function getCodigoRegionFk()
+    {
+        return $this->codigoRegionFk;
+    }
+
+    /**
+     * Set regionRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenRegion $regionRel
+     *
+     * @return GenDepartamento
+     */
+    public function setRegionRel(\Brasa\GeneralBundle\Entity\GenRegion $regionRel = null)
+    {
+        $this->regionRel = $regionRel;
+
+        return $this;
+    }
+
+    /**
+     * Get regionRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenRegion
+     */
+    public function getRegionRel()
+    {
+        return $this->regionRel;
     }
 }

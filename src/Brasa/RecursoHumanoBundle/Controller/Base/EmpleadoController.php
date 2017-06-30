@@ -941,7 +941,7 @@ class EmpleadoController extends Controller {
                     ->setCellValue('F' . $i, $arEmpleado->getApellido1().' '.$arEmpleado->getApellido2())
                     ->setCellValue('G' . $i, $arEmpleado->getNombreCorto())
                     ->setCellValue('H' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoPaisFk())
-                    ->setCellValue('I' . $i, "0")
+                    ->setCellValue('I' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getRegionRel()->getCodigoInterface()))
                     ->setCellValue('J' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoDane())
                     ->setCellValue('K' . $i, $arEmpleado->getCiudadRel()->getCodigoDane())
                     ->setCellValue('L' . $i, $arEmpleado->getDireccion())
