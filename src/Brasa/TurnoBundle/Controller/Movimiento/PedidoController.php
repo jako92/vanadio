@@ -281,9 +281,9 @@ class PedidoController extends Controller {
         //$arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->findBy(array ('codigoPedidoFk' => $codigoPedido));
 
         $dql = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->listaDql($codigoPedido);
-        $arPedidoDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
+        $arPedidoDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
         $dql = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleConcepto')->listaDql($codigoPedido);
-        $arPedidoDetalleConceptos = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
+        $arPedidoDetalleConceptos = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
         return $this->render('BrasaTurnoBundle:Movimientos/Pedido:detalle.html.twig', array(
                     'arPedido' => $arPedido,
                     'arPedidoDetalle' => $arPedidoDetalle,
