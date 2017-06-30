@@ -159,7 +159,7 @@ class RhuExamenRepository extends EntityRepository {
     
     public function pendienteCobrarCobro($codigoCliente) {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.estadoCobrado = 0 "
+        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.estadoCobrado = 0 AND e.cobro != 'N'"
                 . " AND e.codigoClienteFk = " . $codigoCliente;
         return $dql;
     }
