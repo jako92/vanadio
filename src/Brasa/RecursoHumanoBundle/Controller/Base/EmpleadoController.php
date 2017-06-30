@@ -474,7 +474,7 @@ class EmpleadoController extends Controller {
                 ->setCellValue('E1', 'CIUDAD EXPEDICIÓN IDENTIFICACIÓN')
                 ->setCellValue('F1', 'FECHA EXPEDICIÓN IDENTIFICACIÓN')
                 ->setCellValue('G1', 'LIBRETA MILITAR')
-                ->setCellValue('H1', 'CENTRO COSTO')
+                ->setCellValue('H1', 'GRUPO DE PAGO')
                 ->setCellValue('I1', 'NOMBRE')
                 ->setCellValue('J1', 'TELÉFONO')
                 ->setCellValue('K1', 'CELULAR')
