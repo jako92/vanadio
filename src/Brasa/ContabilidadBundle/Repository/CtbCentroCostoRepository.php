@@ -11,17 +11,18 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class CtbCentroCostoRepository extends EntityRepository {
-    
+
     public function ListaDql($strNombre = "", $strCodigo = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT c FROM BrasaContabilidadBundle:CtbCentroCosto c WHERE c.codigoCentroCostoPk <> 0";
-        if($strNombre != "" ) {
+        $dql = "SELECT c FROM BrasaContabilidadBundle:CtbCentroCosto c WHERE c.codigoCentroCostoPk <> 0";
+        if ($strNombre != "") {
             $dql .= " AND c.nombre LIKE '%" . $strNombre . "%'";
         }
-        if($strCodigo != "" ) {
-            $dql .= " AND c.codigoCentroCostoPk LIKE '%" . $strCodigo . "%'";
+        if ($strCodigo != "") {
+            $dql .= " AND c.codigoInterface LIKE '%" . $strCodigo . "%'";
         }
-        $dql .= " ORDER BY c.nombre";
+        $dql .= " ORDER BY c.codigoCentroCostoPk ASC";
         return $dql;
     }
+
 }

@@ -7,8 +7,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbCentroCostoType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CentroCostoController extends Controller {
+
+    var $strDqlLista = "";
+    var $strCodigo = "";
+    var $strNombre = "";
 
     /**
      * @Route("/ctb/base/centro/costo/lista", name="brs_ctb_base_centro_costo_lista")
@@ -23,7 +28,9 @@ class CentroCostoController extends Controller {
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel'))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))
                 ->getForm();
+        $form = $this->formularioFiltro();
         $form->handleRequest($request);
+        $this->lista();
         $arCentroCostos = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -36,20 +43,18 @@ class CentroCostoController extends Controller {
                         $em->flush();
                     }
                 }
+                if ($form->get('BtnFiltrar')->isClicked()) {
+                    $this->filtrar($form);
+                }
                 if ($form->get('BtnExcel')->isClicked()) {
                     $this->generarExcel();
                 }
             }
         }
-        $arCentroCostos = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
-        $query = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->findAll();
-        $arCentroCostos = $paginator->paginate($query, $request->query->getInt('page', 1)/* page number */, 20/* limit per page */);
-        //$arCentroCostos = $paginator->paginate($query, $this->get('request')->query->get('page', 1),100);
-
+        $arCentroCostos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaContabilidadBundle:Base/CentroCosto:lista.html.twig', array(
                     'arCentroCostos' => $arCentroCostos,
-                    'form' => $form->createView()
-        ));
+                    'form' => $form->createView()));
     }
 
     /**
@@ -76,6 +81,30 @@ class CentroCostoController extends Controller {
         return $this->render('BrasaContabilidadBundle:Base/CentroCosto:nuevo.html.twig', array(
                     'form' => $form->createView(),
         ));
+    }
+
+    private function lista() {
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->listaDQL(
+                $this->strNombre, $this->strCodigo
+        );
+    }
+
+    private function filtrar($form) {
+        $this->strCodigo = $form->get('TxtCodigo')->getData();
+        $this->strNombre = $form->get('TxtNombre')->getData();
+        $this->lista();
+    }
+
+    private function formularioFiltro() {
+        $form = $this->createFormBuilder()
+                ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $this->strNombre))
+                ->add('TxtCodigo', TextType::class, array('label' => 'Codigo interface', 'data' => $this->strCodigo))
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
+        return $form;
     }
 
     public function generarExcel() {
