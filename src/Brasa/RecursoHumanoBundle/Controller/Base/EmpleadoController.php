@@ -259,12 +259,12 @@ class EmpleadoController extends Controller {
             if ($codigoEmpleado == 0) {
                 $arEmpleado->setCodigoUsuario($arUsuario->getUserName());
             }
-            if($arConfiguracion->getOrdenNombreEmpleado() == 0) {
+            if ($arConfiguracion->getOrdenNombreEmpleado() == 0) {
                 $arEmpleado->setNombreCorto($arEmpleado->getApellido1() . " " . $arEmpleado->getApellido2() . " " . $arEmpleado->getNombre1() . " " . $arEmpleado->getNombre2());
             } else {
                 $arEmpleado->setNombreCorto($arEmpleado->getNombre1() . " " . $arEmpleado->getNombre2() . " " . $arEmpleado->getApellido1() . " " . $arEmpleado->getApellido2());
             }
-            
+
             if ($arEmpleado->getCodigoTipoLibreta() != 0) {
                 $arEmpleado->setLibretaMilitar($arEmpleado->getNumeroIdentificacion());
             } else {
@@ -520,7 +520,7 @@ class EmpleadoController extends Controller {
                 ->setCellValue('AY1', 'NOMBRE CENTRO COSTO CONTABILIDAD')
                 ->setCellValue('AZ1', 'PUESTO')
                 ->setCellValue('BA1', 'VENCE VISITA');
-        
+
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -657,7 +657,7 @@ class EmpleadoController extends Controller {
                 $fechaExpedicionIdentificacion = $arEmpleado->getFechaExpedicionIdentificacion()->Format('Y-m-d');
             }
             $venceUltimaVisita = "";
-            if($arEmpleado->getFechaUltimaVisita()) {
+            if ($arEmpleado->getFechaUltimaVisita()) {
                 $venceUltimaVisita = $arEmpleado->getFechaUltimaVisita()->format('Y-m-d');
             }
             $objPHPExcel->setActiveSheetIndex(0)
@@ -710,7 +710,7 @@ class EmpleadoController extends Controller {
                     ->setCellValue('AX' . $i, $arEmpleado->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('AY' . $i, $arEmpleado->getCentroCostoContabilidadRel()->getNombre())
                     ->setCellValue('BA' . $i, $venceUltimaVisita);
-            
+
             if ($arEmpleado->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AU' . $i, $arEmpleado->getZonaRel()->getNombre());
             }
@@ -852,7 +852,7 @@ class EmpleadoController extends Controller {
         $query = $em->createQuery($this->strSqlLista);
         $arEmpleados = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
         $arEmpleados = $query->getResult();
-        $strNombreArchivo = "GTERCEROS". date('YmdHis').".txt";
+        $strNombreArchivo = "GTERCEROS" . date('YmdHis') . ".txt";
         $strArchivo = $arConfiguracionGeneral->getRutaTemporal() . $strNombreArchivo;
         //$strArchivo = "c:/xampp/" . $strNombreArchivo;                                    
         ob_clean();
@@ -867,7 +867,7 @@ class EmpleadoController extends Controller {
             $ciudad = $arEmpleados->getCiudadRel()->getNombre();
             $ciudad = explode("-", $ciudad);
             $ciudad = $ciudad[0];
-            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(),"!", $arEmpleados->getDireccion(),"!", $ciudad ,"!", $arEmpleados->getTelefono(),"!","!", $arEmpleados->getCorreo(),"!","!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getPaisRel()->getPais(),"!","!","!","!","!","!","A");
+            $array = array($arEmpleados->getNumeroIdentificacion(), "!", "000", "!", $arEmpleados->getNombreCorto(), "!", $arEmpleados->getDireccion(), "!", $ciudad, "!", $arEmpleados->getTelefono(), "!", "!", $arEmpleados->getCorreo(), "!", "!", $arEmpleados->getCiudadRel()->getDepartamentoRel()->getPaisRel()->getPais(), "!", "!", "!", "!", "!", "!", "A");
             foreach ($array as $fields) {
                 fputs($ar, $fields);
             }
@@ -888,7 +888,7 @@ class EmpleadoController extends Controller {
         readfile($strArchivo);
         exit;
     }
-    
+
     private function generarInterfaz3() {
         ob_clean();
         set_time_limit(0);
@@ -922,8 +922,11 @@ class EmpleadoController extends Controller {
                 ->setCellValue('J1', 'Codigo de departamento')
                 ->setCellValue('K1', 'Codigo de municipio')
                 ->setCellValue('L1', 'Direccion')
-                ->setCellValue('M1', 'telefono')
-                ->setCellValue('N1', 'Fax');
+                ->setCellValue('M1', 'Email')
+                ->setCellValue('N1', 'telefono')
+                ->setCellValue('O1', 'Fax')
+                ->setCellValue('P1', 'Clase tercero')
+                ->setCellValue('Q1', 'Modulo');
 
         $i = 2;
         $fecha = new \DateTime('now');
@@ -937,16 +940,22 @@ class EmpleadoController extends Controller {
                     ->setCellValue('B' . $i, $arEmpleado->getNumeroIdentificacion())
                     ->setCellValue('C' . $i, $arEmpleado->getDigitoVerificacion())
                     ->setCellValue('D' . $i, $arEmpleado->getCodigoTipoIdentificacionFk())
-                    ->setCellValue('E' . $i, $arEmpleado->getNombre1().' '.$arEmpleado->getNombre2())
-                    ->setCellValue('F' . $i, $arEmpleado->getApellido1().' '.$arEmpleado->getApellido2())
+                    ->setCellValue('E' . $i, $arEmpleado->getNombre1() . ' ' . $arEmpleado->getNombre2())
+                    ->setCellValue('F' . $i, $arEmpleado->getApellido1() . ' ' . $arEmpleado->getApellido2())
                     ->setCellValue('G' . $i, $arEmpleado->getNombreCorto())
                     ->setCellValue('H' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoPaisFk())
                     ->setCellValue('I' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getRegionRel()->getCodigoInterface())
                     ->setCellValue('J' . $i, $arEmpleado->getCiudadRel()->getDepartamentoRel()->getCodigoDane())
                     ->setCellValue('K' . $i, $arEmpleado->getCiudadRel()->getCodigoDane())
                     ->setCellValue('L' . $i, $arEmpleado->getDireccion())
-                    ->setCellValue('M' . $i, $arEmpleado->getTelefono())
-                    ->setCellValue('N' . $i, '');
+                    ->setCellValue('M' . $i, 0)
+                    ->setCellValue('N' . $i, $arEmpleado->getTelefono())
+                    ->setCellValue('O' . $i, 0)
+                    ->setCellValue('P' . $i, 0)
+                    ->setCellValue('Q' . $i, 1);
+            if ($arEmpleado->getCorreo()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $i, $arEmpleado->getCorreo());
+            }
             $i++;
         }
 
