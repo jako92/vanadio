@@ -123,6 +123,11 @@ class TurTurno
     private $induccion = false;    
     
     /**
+     * @ORM\Column(name="incapacidad_no_legalizada", type="boolean")
+     */    
+    private $incapacidadNoLegalizada = false;    
+    
+    /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
      */    
     private $usuario;     
@@ -818,5 +823,29 @@ class TurTurno
     public function getTurnoCompleto()
     {
         return $this->turnoCompleto;
+    }
+
+    /**
+     * Set incapacidadNoLegalizada
+     *
+     * @param boolean $incapacidadNoLegalizada
+     *
+     * @return TurTurno
+     */
+    public function setIncapacidadNoLegalizada($incapacidadNoLegalizada)
+    {
+        $this->incapacidadNoLegalizada = $incapacidadNoLegalizada;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadNoLegalizada
+     *
+     * @return boolean
+     */
+    public function getIncapacidadNoLegalizada()
+    {
+        return $this->incapacidadNoLegalizada;
     }
 }

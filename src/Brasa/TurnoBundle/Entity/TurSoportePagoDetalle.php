@@ -58,6 +58,11 @@ class TurSoportePagoDetalle
     private $incapacidad = false;
     
     /**
+     * @ORM\Column(name="incapacidad_no_legalizada", type="integer")
+     */    
+    private $incapacidadNoLegalizada = 0;    
+    
+    /**
      * @ORM\Column(name="licencia", type="boolean")
      */    
     private $licencia = false;     
@@ -1251,5 +1256,29 @@ class TurSoportePagoDetalle
     public function getDia31()
     {
         return $this->dia31;
+    }
+
+    /**
+     * Set incapacidadNoLegalizada
+     *
+     * @param integer $incapacidadNoLegalizada
+     *
+     * @return TurSoportePagoDetalle
+     */
+    public function setIncapacidadNoLegalizada($incapacidadNoLegalizada)
+    {
+        $this->incapacidadNoLegalizada = $incapacidadNoLegalizada;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadNoLegalizada
+     *
+     * @return integer
+     */
+    public function getIncapacidadNoLegalizada()
+    {
+        return $this->incapacidadNoLegalizada;
     }
 }

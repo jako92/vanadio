@@ -27,6 +27,7 @@ class TurTurnoType extends AbstractType
             ->add('novedad', CheckboxType::class, array('required'  => false))
             ->add('descanso', CheckboxType::class, array('required'  => false))
             ->add('incapacidad', CheckboxType::class, array('required'  => false))
+            ->add('incapacidadNoLegalizada', CheckboxType::class, array('required'  => false))
             ->add('licencia', CheckboxType::class, array('required'  => false))
             ->add('licenciaNoRemunerada', CheckboxType::class, array('required'  => false))
             ->add('vacacion', CheckboxType::class, array('required'  => false))

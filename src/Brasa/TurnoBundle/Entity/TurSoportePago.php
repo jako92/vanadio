@@ -106,6 +106,11 @@ class TurSoportePago
      * @ORM\Column(name="incapacidad", type="integer")
      */    
     private $incapacidad = 0;
+
+    /**
+     * @ORM\Column(name="incapacidad_no_legalizada", type="integer")
+     */    
+    private $incapacidadNoLegalizada = 0;
     
     /**
      * @ORM\Column(name="licencia", type="integer")
@@ -1942,5 +1947,29 @@ class TurSoportePago
     public function getHorasRecargoFestivoNocturnoReales()
     {
         return $this->horasRecargoFestivoNocturnoReales;
+    }
+
+    /**
+     * Set incapacidadNoLegalizada
+     *
+     * @param integer $incapacidadNoLegalizada
+     *
+     * @return TurSoportePago
+     */
+    public function setIncapacidadNoLegalizada($incapacidadNoLegalizada)
+    {
+        $this->incapacidadNoLegalizada = $incapacidadNoLegalizada;
+
+        return $this;
+    }
+
+    /**
+     * Get incapacidadNoLegalizada
+     *
+     * @return integer
+     */
+    public function getIncapacidadNoLegalizada()
+    {
+        return $this->incapacidadNoLegalizada;
     }
 }

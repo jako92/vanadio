@@ -206,7 +206,7 @@ class TurSoportePagoDetalleRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $intLicenciaNoRemunerada = 0;
         $novedades = 0;
-        $dql   = "SELECT SUM(spd.licenciaNoRemunerada) as licenciaNoRemunerada "
+        $dql   = "SELECT SUM(spd.licenciaNoRemunerada + spd.incapacidadNoLegalizada) as licenciaNoRemunerada "
                 . "FROM BrasaTurnoBundle:TurSoportePagoDetalle spd "
                 . "WHERE spd.codigoSoportePagoFk =  " . $codigoSoportePago . " AND (spd.fecha >='" . $fechaDesde . "' AND spd.fecha <= '" . $fechaHasta . "')";
         $query = $em->createQuery($dql);

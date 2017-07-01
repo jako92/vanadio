@@ -48,6 +48,7 @@
                 <th>ING</th>                
                 <th>RET</th>                
                 <th>INC</th>
+                <th>INL</th>
                 <th>LIC</th>
                 <th>SLN</th>
                 <th>VAC</th>
@@ -71,6 +72,7 @@
                     <td>{% if arTurnos.ingreso == 1 %} SI {% else %} NO {% endif %}</td>
                     <td>{% if arTurnos.retiro == 1 %} SI {% else %} NO {% endif %}</td>                
                     <td>{% if arTurnos.incapacidad == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arTurnos.incapacidadNoLegalizada == 1 %} SI {% else %} NO {% endif %}</td>
                     <td>{% if arTurnos.licencia == 1 %} SI {% else %} NO {% endif %}</td>
                     <td>{% if arTurnos.licenciaNoRemunerada == 1 %} SI {% else %} NO {% endif %}</td>
                     <td>{% if arTurnos.vacacion == 1 %} SI {% else %} NO {% endif %}</td>

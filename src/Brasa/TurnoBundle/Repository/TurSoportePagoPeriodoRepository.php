@@ -217,7 +217,7 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
     public function diasIncapacidad($codigoSoportePagoPeriodo, $codigoRecurso) {
         $em = $this->getEntityManager();
         $diasIncapacidad = 0;
-        $dql   = "SELECT SUM(sp.incapacidad) as diasIncapacidad "
+        $dql   = "SELECT SUM(sp.incapacidad+sp.incapacidadNoLegalizada) as diasIncapacidad "
                 . "FROM BrasaTurnoBundle:TurSoportePago sp "
                 . "WHERE sp.codigoSoportePagoPeriodoFk =  " . $codigoSoportePagoPeriodo . " AND sp.codigoRecursoFk = " . $codigoRecurso;
         $query = $em->createQuery($dql);  
@@ -225,6 +225,15 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
         if($arrayResultado) {
             $diasIncapacidad = $arrayResultado[0]['diasIncapacidad'];                    
         } 
+
+        /*$dql   = "SELECT SUM(sp.incapacidadNoLegalizada) as diasIncapacidadNoLegalizada "
+                . "FROM BrasaTurnoBundle:TurSoportePago sp "
+                . "WHERE sp.codigoSoportePagoPeriodoFk =  " . $codigoSoportePagoPeriodo . " AND sp.codigoRecursoFk = " . $codigoRecurso;
+        $query = $em->createQuery($dql);  
+        $arrayResultado = $query->getResult();         
+        if($arrayResultado) {
+            $diasIncapacidad += $arrayResultado[0]['diasIncapacidadNoLegalizada'];                    
+        }*/
         
         return $diasIncapacidad;
     }
