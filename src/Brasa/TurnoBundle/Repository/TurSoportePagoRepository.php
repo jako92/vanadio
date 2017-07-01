@@ -1213,7 +1213,7 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arSoportePagoDetalles = new \Brasa\TurnoBundle\Entity\TurSoportePagoDetalle();
                     $arSoportePagoDetalles = $em->getRepository('BrasaTurnoBundle:TurSoportePagoDetalle')->findBy(array('codigoSoportePagoFk' => $arSoportePago->getCodigoSoportePagoPk()), array('codigoSoportePagoDetallePk' => 'DESC'));                                        
                     foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {
-                        if($arSoportePagoDetalle->getFestivo() == 1 && $arSoportePagoDetalle->getNovedad() == 0) {
+                        if($arSoportePagoDetalle->getFestivo() == 1 && $arSoportePagoDetalle->getNovedad() == 0 && $arSoportePagoDetalle->getDias() > 0) {
                             $diasFestivoSinNovedad++;
                         }
                     }

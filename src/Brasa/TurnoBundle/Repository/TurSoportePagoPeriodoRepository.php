@@ -153,7 +153,7 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
             if($arRecurso) {
                 $arSoportePago = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->findOneBy(array('codigoSoportePagoPeriodoFk' => $codigoSoportePagoPeriodo, 'codigoRecursoFk' => $arRecurso->getCodigoRecursoPk()));
                 if(!$arSoportePago) {
-                    $arrInconsistencias[] = array('inconsistencia' => "El recurso esta en el centro de costo con contrato activo y no registra turnos en programacion", 'recurso' => $arRecurso->getNombreCorto(), 'numeroIdentificacion' => $arRecurso->getNumeroIdentificacion(), 'codigo'=> $arRecurso->getCodigoEmpleadoFk());
+                    $arrInconsistencias[] = array('inconsistencia' => "El recurso esta en el centro de costo con contrato activo y no registra turnos en programacion, verifique la ultima fecha de pago del contrato", 'recurso' => $arRecurso->getNombreCorto(), 'numeroIdentificacion' => $arRecurso->getNumeroIdentificacion(), 'codigo'=> $arRecurso->getCodigoEmpleadoFk());
                 }                        
             } else {
                 $arrInconsistencias[] = array('inconsistencia' => "El empleado esta en un centro de costos pagado por turnos y no esta en programado en turnos", 'recurso' => $arContrato['nombreCorto'], 'numeroIdentificacion' => $arContrato['numeroIdentificacion'], 'codigo'=> $arContrato['codigoEmpleadoFk']);
