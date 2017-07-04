@@ -80,6 +80,30 @@ class GenContenido implements FixtureInterface {
                                        #4 = Nombre empleado
                                        #5 = Cargo empleado");
         }
+        
+        $arContenido = $manager->getRepository('BrasaGeneralBundle:GenContenido')->find(4);
+        if (!$arContenido) {
+            $arContenido = new \Brasa\GeneralBundle\Entity\GenContenido();
+            $arContenido->setCodigoContenidoPk(4);
+            $arContenido->setTitulo("REMISIÓN EXAMEN MEDICO DE EGRESO");
+            $arContenido->setNombre("REMISIÓN EXAMEN MEDICO DE EGRESO");
+            $arContenido->setEtiqueta("#1 = Fecha actual Ej: 7 de marzo de 2017
+                                       #2 = Fecha retiro Ej: 1 de marzo de 2017
+                                       #3 = Nombre empresa
+                                       #4 = Nombre empleado
+                                       #5 = Cargo empleado
+                                       #6 = Documento empleado");
+            $manager->persist($arContenido);
+        } else {
+            $arContenido->setTitulo("REMISIÓN EXAMEN MEDICO DE EGRESO");
+            $arContenido->setNombre("REMISIÓN EXAMEN MEDICO DE EGRESO");
+            $arContenido->setEtiqueta("#1 = Fecha actual Ej: 7 de marzo de 2017
+                                       #2 = Fecha retiro Ej: 1 de marzo de 2017
+                                       #3 = Nombre empresa
+                                       #4 = Nombre empleado
+                                       #5 = Cargo empleado
+                                       #6 = Documento empleado");
+        }
 
         $manager->flush();
     }

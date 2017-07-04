@@ -126,6 +126,10 @@ class LiquidacionController extends Controller {
                 $objFormatoCartaRetiro = new \Brasa\RecursoHumanoBundle\Formatos\CartaRetiro();
                 $objFormatoCartaRetiro->Generar($em, $arLiquidacion->getCodigoContratoFk());
             }
+            if ($form->get('BtnImprimirCartaExamenEgreso')->isClicked()) {
+                $objFormatoCartaExamenEgreso = new \Brasa\RecursoHumanoBundle\Formatos\CartaExamenEgreso();
+                $objFormatoCartaExamenEgreso->Generar($em, $arLiquidacion->getCodigoContratoFk());
+            }
             if ($form->get('BtnAutorizar')->isClicked()) {
                 if ($arLiquidacion->getEstadoAutorizado() == 0) {
                     if ($arLiquidacion->getVrTotal() >= 0) {
@@ -440,6 +444,8 @@ class LiquidacionController extends Controller {
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonImprimirCartaRetiro = array('label' => 'Carta retiro', 'disabled' => false);
+        $arrBotonImprimirCartaExamenEgreso = array('label' => 'Carta examen egreso', 'disabled' => false);
+        $arrBotonImprimirCartaPazysalvo = array('label' => 'Carta paz y salvo', 'disabled' => false);
         $arrBotonLiquidar = array('label' => 'Liquidar', 'disabled' => false);
         $arrBotonGenerarPago = array('label' => 'Generar pago', 'disabled' => false);
         if ($ar->getEstadoAutorizado() == 1) {
@@ -461,6 +467,8 @@ class LiquidacionController extends Controller {
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnImprimirCartaRetiro', SubmitType::class, $arrBotonImprimirCartaRetiro)
+                ->add('BtnImprimirCartaExamenEgreso', SubmitType::class, $arrBotonImprimirCartaExamenEgreso)
+                ->add('BtnImprimirCartaPazySalvo', SubmitType::class, $arrBotonImprimirCartaPazysalvo)
                 ->add('BtnLiquidar', SubmitType::class, $arrBotonLiquidar)
                 ->add('BtnEliminarAdicional', SubmitType::class, $arrBotonEliminarAdicional)
                 ->add('BtnGenerarPago', SubmitType::class, $arrBotonGenerarPago)
