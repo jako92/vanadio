@@ -20,6 +20,7 @@ class RegistrosController extends Controller {
     var $strComprobante = "";
     var $strDesde = "";
     var $strHasta = "";
+    var $strCuenta = "";
 
     /**
      * @Route("/ctb/consultas/registros/", name="brs_ctb_consultas_registros")
@@ -65,7 +66,7 @@ class RegistrosController extends Controller {
             $strFechaHasta = $session->get('filtroCtbRegistroFechaHasta');
         }
         $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaDQL(
-                $session->get('filtroCtbCodigoComprobante'), $session->get('filtroCtbNumero'), $session->get('filtroCtbNumeroReferencia'), $strFechaDesde, $strFechaHasta
+                $session->get('filtroCtbCodigoComprobante'), $session->get('filtroCtbNumero'), $session->get('filtroCtbNumeroReferencia'), $strFechaDesde, $strFechaHasta, $session->get('filtroCtbCuenta')
         );
     }
 
@@ -88,6 +89,7 @@ class RegistrosController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumero')))
                 ->add('TxtNumeroReferencia', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumeroReferencia')))
+                ->add('TxtCuenta', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbCuenta')))
                 ->add('TxtComprobante', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbCodigoComprobante')))
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
@@ -101,6 +103,7 @@ class RegistrosController extends Controller {
     private function filtrar($form, Request $request) {
         $session = $this->get('session');
         $session->set('filtroCtbNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroCtbCuenta', $form->get('TxtCuenta')->getData());
         $session->set('filtroCtbNumeroReferencia', $form->get('TxtNumeroReferencia')->getData());
         $session->set('filtroCtbCodigoComprobante', $form->get('TxtComprobante')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
