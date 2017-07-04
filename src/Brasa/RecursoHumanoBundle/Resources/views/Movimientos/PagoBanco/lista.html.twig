@@ -19,28 +19,31 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
-        </script>  
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.date').datepicker({dateFormat: 'yy-mm-dd', dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"], monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]})
-            });
         </script>        
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
-                <div class="form-group form-group-sm">  
-                    <label for="form_fecha" class="col-sm-2 control-label">Fecha:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.fecha, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group form-group-sm">
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Fecha desde:</label>
+                    <div class="col-sm-4">                
+                        {{ form_widget(form.fechaDesde) }}
                     </div>
-                    <label  class="col-sm-2 control-label">Tipo:</label>
+                    <label for="form_pagoBancoTipoRel" class="col-sm-2 control-label">Tipo:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.pagoBancoTipoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-
+                <div class="form-group form-group-sm">
+                    <label for="form_fechaHasta" class="col-sm-2 control-label">Fecha hasta:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.fechaHasta) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    {{ form_row(form.filtrarFecha) }}
+                </div>
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
