@@ -25,7 +25,19 @@
             {{ form_widget(form.BtnGenerarPago, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             {% if arLiquidacion.estadoPagoGenerado == 0 %}
                 <a class="btn btn-default btn-sm" id="{{ path('brs_rhu_movimiento_liquidacion_parametros', { 'codigoLiquidacion': arLiquidacion.codigoLiquidacionPk}) }}" style="float:left">Parametros</a>                        
-            {% endif %}                
+            {% endif %}
+            <!-- Split button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-sm">Utilidades</button>
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>{{ form_widget(form.BtnImprimirCartaRetiro, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}</li>
+                <li class="divider">a</li>
+              </ul>
+            </div>
 
         </div>
         <br /> <br />
