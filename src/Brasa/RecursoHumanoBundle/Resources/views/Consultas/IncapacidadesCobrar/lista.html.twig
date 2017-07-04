@@ -24,13 +24,13 @@
         {{ form_errors(form) }}
         <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
-            <div class="panel-body">                
+            <div class="panel-body">
                 <div class="form-group form-group-sm">  
                     <label for="form_centroCostoRel" class="col-sm-2 control-label">Grupo pago:</label>
                     <div class="col-sm-10">                  
                         {{ form_widget(form.centroCostoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>                                           
+                </div>
                 <div class="form-group form-group-sm">  
                     <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
                     <div class="col-sm-10">                  
@@ -50,16 +50,16 @@
                     </div>                
                 </div>
                 <div class="form-group form-group-sm">  
-                    <label for="form_entidadSaludRel" class="col-sm-2 control-label">Eps:</label>
+                    <label for="form_entidadSaludRel" class="col-sm-2 control-label">Entidad salud:</label>
                     <div class="col-sm-10">                  
                         {{ form_widget(form.entidadSaludRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>    
+                </div>
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnFiltrarIncapacidadesCobrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                     </div>
-                </div>    
+                </div>     
             </div>
         </div> 
         <table  class="table table-striped table-bordered table-condensed table-hover">
@@ -79,7 +79,6 @@
                 <th style="text-align: right">VALOR</th>
                 <th style="text-align: right">PAGADO</th>
                 <th style="text-align: right">SALDO</th>
-
             </tr>
             {% for arIncapacidadesCobrar in arIncapacidadesCobrar %}
                 <tr>
@@ -105,12 +104,10 @@
             <div class="btn-group">
                 {{ knp_pagination_render(arIncapacidadesCobrar) }} 
             </div>
-
         </div>                
         <div class="btn-toolbar" style="float: right">                 
             <div class="btn-group">
-                {{ form_widget(form.BtnExcelIncapacidadesCobrar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
-                {{ form_widget(form.BtnPDFIncapacidadesCobrar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }} 
             </div>
         </div>
 
