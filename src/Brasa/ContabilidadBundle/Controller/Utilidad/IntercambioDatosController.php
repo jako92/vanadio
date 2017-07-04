@@ -34,8 +34,7 @@ class IntercambioDatosController extends Controller {
         $form->handleRequest($request);
         $this->listar();
         if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->isValid()) {                
                 if ($form->get('BtnGenerarIlimitada')->isClicked()) {
                     $this->filtrar($form, $request);
                     $this->listar();
@@ -102,9 +101,11 @@ class IntercambioDatosController extends Controller {
                     $this->generarExcelInterfaceOfimatica();
                 }
                 if ($form->get('BtnGenerarSoftland')->isClicked()) {
+                    $arComprobante = $form->get('comprobanteRel')->getData();
+                    $codigoComprobante = $arComprobante->getCodigoComprobantePk();
                     $this->filtrar($form, $request);
                     $this->listar();
-                    $this->generarSoftland();
+                    $this->generarSoftland($codigoComprobante);
                 }
                 if ($form->get('BtnGenerarSeven')->isClicked()) {
                     $this->filtrar($form, $request);
@@ -380,6 +381,8 @@ class IntercambioDatosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arComprobante = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();        
+        $arComprobante = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);        
         $query = $em->createQuery($this->strDqlLista);
         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
         $arRegistro = $query->getResult();
@@ -423,7 +426,9 @@ class IntercambioDatosController extends Controller {
             $tercero = '';
             if ($arRegistro->getCuentaRel()->getExigeNit() == 1) {
                 $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
-                
+                if($arComprobante->getAdicionarDigitoVerificacionIntercambioDatos()) {
+                    $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion() . "-" . $arRegistro->getTerceroRel()->getDigitoVerificacion();
+                }
             } else {
                 $tercero = "00000000000";
             }

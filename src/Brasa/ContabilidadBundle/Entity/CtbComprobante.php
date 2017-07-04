@@ -29,7 +29,7 @@ class CtbComprobante
     /**
      * @ORM\Column(name="adicionar_digito_verificacion_intercambio_datos", type="boolean")
      */    
-    private $adicionalDigitoVerificacionIntercambioDatos = false;     
+    private $adicionarDigitoVerificacionIntercambioDatos = false;     
     
     /**
      * @ORM\OneToMany(targetEntity="CtbAsiento", mappedBy="comprobanteRel")
@@ -94,27 +94,27 @@ class CtbComprobante
     }
 
     /**
-     * Set adicionalDigitoVerificacionIntercambioDatos
+     * Set adicionarDigitoVerificacionIntercambioDatos
      *
-     * @param boolean $adicionalDigitoVerificacionIntercambioDatos
+     * @param boolean $adicionarDigitoVerificacionIntercambioDatos
      *
      * @return CtbComprobante
      */
-    public function setAdicionalDigitoVerificacionIntercambioDatos($adicionalDigitoVerificacionIntercambioDatos)
+    public function setAdicionarDigitoVerificacionIntercambioDatos($adicionarDigitoVerificacionIntercambioDatos)
     {
-        $this->adicionalDigitoVerificacionIntercambioDatos = $adicionalDigitoVerificacionIntercambioDatos;
+        $this->adicionarDigitoVerificacionIntercambioDatos = $adicionarDigitoVerificacionIntercambioDatos;
 
         return $this;
     }
 
     /**
-     * Get adicionalDigitoVerificacionIntercambioDatos
+     * Get adicionarDigitoVerificacionIntercambioDatos
      *
      * @return boolean
      */
-    public function getAdicionalDigitoVerificacionIntercambioDatos()
+    public function getAdicionarDigitoVerificacionIntercambioDatos()
     {
-        return $this->adicionalDigitoVerificacionIntercambioDatos;
+        return $this->adicionarDigitoVerificacionIntercambioDatos;
     }
 
     /**
