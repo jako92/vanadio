@@ -52,10 +52,12 @@ class PagoBancoController extends Controller {
             }
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
+                $form = $this->formularioFiltro();
                 $this->listar();
             }
             if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrar($form);
+                $form = $this->formularioFiltro();
                 $this->listar();
                 $this->generarExcel();
             }
