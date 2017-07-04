@@ -118,9 +118,9 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
         foreach ($arSoportesPagoProcesar as $arSoportePago) {
             if($arSoportePago->getRecursoRel()) {
                 if($arSoportePago->getCodigoContratoFk()) {
-                    /*if($arSoportePago->getRecursoRel()->getCodigoEmpleadoFk() == 4695) {
+                    /*if($arSoportePago->getRecursoRel()->getCodigoEmpleadoFk() == 2421) {
                         echo "hola";
-                    } */                   
+                    }*/                    
                     $arrVacaciones = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->dias($arSoportePago->getRecursoRel()->getCodigoEmpleadoFk(), $arSoportePago->getCodigoContratoFk(), $arSoportePagoPeriodo->getFechaDesde(), $arSoportePagoPeriodo->getFechaHasta());                            
                     $intDiasVacaciones = $arrVacaciones['dias'];                    
                     $intDiasLicencia = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->diasLicenciaPeriodo31($arSoportePagoPeriodo->getFechaDesde(), $arSoportePagoPeriodo->getFechaHasta(), $arSoportePago->getRecursoRel()->getCodigoEmpleadoFk());                                                
@@ -135,7 +135,7 @@ class TurSoportePagoPeriodoRepository extends EntityRepository {
                         $arrInconsistencias[] = array('inconsistencia' => "Licencias de " . $intDiasLicenciaSoportePago . " dias en turnos y de " . $intDiasLicencia . " en recurso humano", 'recurso' => $arSoportePago->getRecursoRel()->getNombreCorto(), 'numeroIdentificacion' => $arSoportePago->getRecursoRel()->getNumeroIdentificacion(), 'codigo'=> $arSoportePago->getRecursoRel()->getCodigoEmpleadoFk());
                     }
                     if($intDiasIncapacidad != $intDiasIncapacidadSoportePagoPeriodo) {
-                        $arrInconsistencias[] = array('inconsistencia' => "Incapacidades de " . $arSoportePago->getIncapacidad() . " dias en turnos y de " . $intDiasIncapacidad . " en recurso humano", 'recurso' => $arSoportePago->getRecursoRel()->getNombreCorto(), 'numeroIdentificacion' => $arSoportePago->getRecursoRel()->getNumeroIdentificacion(), 'codigo'=> $arSoportePago->getRecursoRel()->getCodigoEmpleadoFk());
+                        $arrInconsistencias[] = array('inconsistencia' => "Incapacidades de " . $intDiasIncapacidadSoportePagoPeriodo . " dias en turnos y de " . $intDiasIncapacidad . " en recurso humano", 'recurso' => $arSoportePago->getRecursoRel()->getNombreCorto(), 'numeroIdentificacion' => $arSoportePago->getRecursoRel()->getNumeroIdentificacion(), 'codigo'=> $arSoportePago->getRecursoRel()->getCodigoEmpleadoFk());
                     }                    
                 }                
             }
