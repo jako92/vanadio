@@ -27,5 +27,15 @@ class TurPuestoDotacionRepository extends EntityRepository {
             }
             $em->flush();
         }
-    }     
+    }
+    
+    public function ListaDqlConsulta($codigoCliente = "") {
+        $em = $this->getEntityManager();
+        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPuestoDotacion pd WHERE pd.codigoPuestoDotacionPk <> 0 ";
+        if($codigoCliente != "") {
+            $dql .= " AND pd.codigoClienteFk = '" . $codigoCliente . "'";
+        }
+        $dql .= " ORDER BY pd.codigoPuestoDotacionPk DESC";
+        return $dql;
+    }
 }
