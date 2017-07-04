@@ -366,7 +366,7 @@ class AspiranteController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $session->set('dqlAspiranteLista', $em->getRepository('BrasaRecursoHumanoBundle:RhuAspirante')->listaDQL(
-                        $session->get('filtroNombre'), $session->get('filtroIdentificacion'), $session->get('filtroAspiranteFechaNacimiento'), $session->get('filtroBloqueado'), $session->get('filtroCodigoCiudad'), $session->get('filtroCodigoCargo'), $session->get('filtroDisponibilidad'), $session->get('filtroReintegro'), $session->get('filtroSexo'), $session->get('filtroCodigoEstadoCivil'), $session->get('filtroLibretaMilitar'), $session->get('filtroCodigoZona'), $session->get('filtroPesoMinimo'), $session->get('filtroPesoMaximo'), $session->get('filtroEstaturaMinima'), $session->get('filtroEstaturaMaxima')
+                        $session->get('filtroNombre'), $session->get('filtroIdentificacion'), $session->get('filtroAspiranteFechaNacimiento'), $session->get('filtroBloqueado'), $session->get('filtroCodigoCiudad'), $session->get('filtroCodigoCargo'), $session->get('filtroDisponibilidad'), $session->get('filtroReintegro'), $session->get('filtroSexo'), $session->get('filtroCodigoEstadoCivil'), $session->get('filtroLibretaMilitar'), $session->get('filtroCodigoZona'), $session->get('filtroPesoMinimo'), $session->get('filtroPesoMaximo'), $session->get('filtroEstaturaMinima'), $session->get('filtroEstaturaMaxima'),$session->get('filtroContratado')
         ));
     }
 
@@ -455,6 +455,7 @@ class AspiranteController extends Controller {
                 ->add('bloqueado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroBloqueado')))
                 ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $session->get('filtroNombreAspirante')))
                 ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacionAspirante')))
+                ->add('contratado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
@@ -480,7 +481,7 @@ class AspiranteController extends Controller {
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
         $session->set('filtroBloqueado', $form->get('bloqueado')->getData());
         $session->set('filtroReintegro', $form->get('reintegro')->getData());
-
+        $session->set('filtroContratado', $form->get('contratado')->getData());
         $codigoCiudad = '';
         if ($form->get('ciudadRel')->getData()) {
             $codigoCiudad = $form->get('ciudadRel')->getData()->getCodigoCiudadPk();

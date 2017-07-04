@@ -81,6 +81,14 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">                                                             
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-3"></div>
+                    <label class="col-sm-3 control-label">Contratado</label>
+                    <div class="col-sm-3">                  
+                        {{ form_widget(form.contratado, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">                                                             
                     <label class="col-sm-3 control-label">Peso (Min):</label>
                     <div class="col-sm-3">                  
                         {{ form_widget(form.pesoMinimo, { 'attr': {'class': 'form-control'} }) }}
@@ -99,7 +107,7 @@
                     <div class="col-sm-3">                  
                         {{ form_widget(form.estaturaMaxima, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>    
+                </div>
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -118,6 +126,7 @@
                 <th>BLOQUEADO</th>
                 <th>ZONA</th>
                 <th>REINTEGRO</th>
+                <th>CONTRATADO</th>
                 <th style="text-align: center"></th>
                 <th></th>
                 <th></th>
@@ -140,6 +149,7 @@
                     <td>{% if arAspirantes.bloqueado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{{ arAspirantes.zonaRel.nombre | default('') }}</td>
                     <td>{% if arAspirantes.reintegro == 1%} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arAspirantes.contratado == 1%} SI {% else %} NO {% endif %}</td>
                     <td><a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_aplicar', {'codigoAspirante': arAspirantes.codigoAspirantePk }) }}', 'Archivos', 500, 700)" >Aplicar</a></td>
                     {% if arAspirantes.bloqueado == 1 %}
                         <td><a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_movimiento_aspirante_desbloquear', {'codigoAspirante': arAspirantes.codigoAspirantePk }) }}', 'Archivos', 500, 700)" >Desbloquear</a></td>

@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class RhuAspiranteRepository extends EntityRepository {
     
-    public function listaDql($strNombre = '', $strIdentificacion = "", $fechaNacimiento = "", $boolBloqueado = '', $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "") {                        
+    public function listaDql($strNombre = '', $strIdentificacion = "", $fechaNacimiento = "", $boolBloqueado = '', $codigoCiudad = "", $codigoCargo = "", $codigoDisponibilidad = "", $codigoReintegro = "", $codigoSexo = "", $codigoEstadoCivil = "", $codigoLibretaMilitar = "", $codigoZona = "", $pesoMinimo = "", $pesoMaximo = "", $estaturaMinimo = "", $estaturaMaximo = "", $codigoContratado = "") {                        
         $dql   = "SELECT a FROM BrasaRecursoHumanoBundle:RhuAspirante a WHERE a.codigoAspirantePk <> 0 ";
         if($strNombre != "" ) {
             $dql .= " AND a.nombreCorto LIKE '%" . $strNombre . "%'";
@@ -62,7 +62,9 @@ class RhuAspiranteRepository extends EntityRepository {
         if($estaturaMaximo != "") {
             $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
         }
-        
+        if($codigoContratado > 0 &&  $codigoContratado < 2) {
+            $dql .= " AND a.contratado = " . $codigoContratado;
+        }
         $dql .= " ORDER BY a.fecha";
         return $dql;
     }

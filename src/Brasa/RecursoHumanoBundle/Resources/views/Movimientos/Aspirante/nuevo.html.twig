@@ -111,9 +111,8 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.operacion, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                    <label for="form_reintegro" class="col-sm-2 control-label">Reintegro:</label>
+                    <label for="form_reintegro" class="col-sm-2 control-label"></label>
                     <div class="col-sm-4">
-                        {{ form_widget(form.reintegro, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
@@ -165,7 +164,16 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.zonaRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
-                </div> 
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_reintegro" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-2">
+                        {{ form_widget(form.reintegro) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_widget(form.contratado) }}
+                    </div>
+                </div>
                 <div class="form-group form-group-sm">
                     <label for="form_recomendado" class="col-sm-2 control-label">Recomendado por:</label>
                     <div class="col-sm-10">

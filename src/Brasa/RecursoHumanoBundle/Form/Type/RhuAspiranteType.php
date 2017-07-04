@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -86,7 +87,8 @@ class RhuAspiranteType extends AbstractType
             ))                
             ->add('recomendado', TextType::class, array('required' => false))                
             ->add('operacion', TextType::class, array('required' => false))
-            ->add('reintegro', ChoiceType::class, array('choices'   => array('SI' => '1', 'NO' => '0')))                
+            ->add('reintegro', CheckboxType::class, array('required'  => false))                
+            ->add('contratado', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

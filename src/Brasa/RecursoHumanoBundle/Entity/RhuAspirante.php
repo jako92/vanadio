@@ -205,7 +205,12 @@ class RhuAspirante
     /**
      * @ORM\Column(name="codigo_zona_fk", type="integer", nullable=true)
      */    
-    private $codigoZonaFk;     
+    private $codigoZonaFk;    
+    
+    /**
+     * @ORM\Column(name="contratado", type="boolean")
+     */
+    private $contratado = false;
     
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuAspirantesTipoIdentificacionRel")
@@ -1394,5 +1399,29 @@ class RhuAspirante
     public function getSeleccionesRequisicionesAspirantesAspiranteRel()
     {
         return $this->seleccionesRequisicionesAspirantesAspiranteRel;
+    }
+
+    /**
+     * Set contratado
+     *
+     * @param boolean $contratado
+     *
+     * @return RhuAspirante
+     */
+    public function setContratado($contratado)
+    {
+        $this->contratado = $contratado;
+
+        return $this;
+    }
+
+    /**
+     * Get contratado
+     *
+     * @return boolean
+     */
+    public function getContratado()
+    {
+        return $this->contratado;
     }
 }
