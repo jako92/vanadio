@@ -1215,7 +1215,7 @@ class TurSoportePagoRepository extends EntityRepository {
                     $horasExtraDia = $arSoportePago->getHorasExtrasOrdinariasDiurnasReales();
                     $horasExtraNoche = $arSoportePago->getHorasExtrasOrdinariasNocturnasReales();                    
                     $horasExtraFestivasDia = $arSoportePago->getHorasExtrasFestivasDiurnasReales();
-                    $horasExtraFestivasNoche = $arSoportePago->getHorasFestivasNocturnasReales();   
+                    $horasExtraFestivasNoche = $arSoportePago->getHorasExtrasFestivasNocturnasReales();   
                     $horasRecargoNocturno = $arSoportePago->getHorasRecargoNocturnoReales();
                     $horasRecargoFestivoDiurno = $arSoportePago->getHorasRecargoFestivoDiurnoReales();
                     $horasRecargoFestivoNocturno = $arSoportePago->getHorasRecargoFestivoNocturnoReales();                    
