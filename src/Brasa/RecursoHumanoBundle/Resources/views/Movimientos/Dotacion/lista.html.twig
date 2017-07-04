@@ -26,17 +26,15 @@
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">
+                    <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtIdentificacion, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
                     <label for="form_centroCostoRel" class="col-sm-2 control-label">Grupo pago:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.centroCostoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_TxtIdentificacion" class="col-sm-2 control-label">Identificacion:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.TxtIdentificacion, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>    
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
@@ -49,7 +47,7 @@
                 <th>{{ knp_pagination_sortable(arDotaciones, 'CODIGO', 'd.codigoDotacionPk') }}</th>
                 <th>FECHA</th>
                 <th>TIPO DOTACIÓN</th>
-                <th>CENTRO CENTRO</th>                
+                <th>GRUPO PAGO</th>                
                 <th>IDENTIFICACIÓN</th>
                 <th>{{ knp_pagination_sortable(arDotaciones, 'EMPLEADO', 'e.nombreCorto') }}</th>                
                 <th>NÚMERO REFERENCIA</th>

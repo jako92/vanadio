@@ -7,14 +7,6 @@
             Programacion turnos
             <small>Puesto: dotacion nuevo</small>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Cliente</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Puesto</a></li>
-            <li class="active"> Dotacion nuevo</li>
-        </ol>
     </section>   
     <section class="content"> 
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
@@ -42,7 +34,6 @@
                 <th>NOMBRE</th>
                 <th>COSTO</th>
                 <th>CANTIDAD</th>
-                <th></th>
             </tr>
             {% for arElementosDotacion in arElementosDotacion %}
                 <tr>
@@ -50,7 +41,6 @@
                     <td>{{ arElementosDotacion.nombre }}</td>                
                     <td style="text-align: right">{{ arElementosDotacion.costo | number_format(0, '.', ',') }}</td>                
                     <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtCantidad{{ arElementosDotacion.codigoElementoDotacionPk }}" value="0" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
-                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arElementosDotacion.codigoElementoDotacionPk }}" /></td>
                 </tr>
             {% endfor %} 
         </table>                

@@ -122,9 +122,8 @@ class PuestoController extends Controller {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnGuardar')->isClicked()) {
                 $arrControles = $request->request->All();
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if (isset($arrSeleccionados)) {
-                    foreach ($arrSeleccionados as $codigoElmentoDotacion) {
+                if (isset($arrControles['LblCodigo'])) {
+                    foreach ($arrControles['LblCodigo'] as $codigoElmentoDotacion) {
                         $cantidad = $arrControles['TxtCantidad' . $codigoElmentoDotacion];
                         if ($cantidad > 0) {
                             $arElementoDotacion = new \Brasa\TurnoBundle\Entity\TurElementoDotacion();
@@ -143,6 +142,7 @@ class PuestoController extends Controller {
                     $em->flush();
                     $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
                 }
+
                 echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
             }
         }
