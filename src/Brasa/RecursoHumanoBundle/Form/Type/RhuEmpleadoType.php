@@ -34,7 +34,16 @@ class RhuEmpleadoType extends AbstractType
                     return $centroCosto->getCodigoCentroCostoPk() . '-' . $centroCosto->getNombre();
                 },
                 'required' => true))  
-                            
+                        
+            ->add('sucursalRel', EntityType::class, array(
+                'class' => 'BrasaContabilidadBundle:CtbSucursal',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.codigoSucursalPk', 'ASC');},
+                'choice_label' => function ($sucursal) {
+                    return $sucursal->getCodigoSucursalPk() . '-' . $sucursal->getNombre();
+                },
+                'required' => true))                            
                             
             ->add('tipoIdentificacionRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',

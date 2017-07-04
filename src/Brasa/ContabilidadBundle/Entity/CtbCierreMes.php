@@ -45,8 +45,9 @@ class CtbCierreMes
     /**
      * @ORM\Column(name="estado_cerrado", type="boolean")
      */    
-    private $estadoCerrado = 0;     
+    private $estadoCerrado = false;     
     
+
 
 
     /**

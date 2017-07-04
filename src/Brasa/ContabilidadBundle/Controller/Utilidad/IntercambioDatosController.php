@@ -178,7 +178,9 @@ class IntercambioDatosController extends Controller {
                     },
                     'label' => 'Codigo',
                     'data' => $session->get('filtroCtbCodigoComprobante'),
-                    'choice_label' => 'nombre',
+                    'choice_label' => function ($comprobante) {
+                    return $comprobante->getCodigoComprobantePk() . '-' . $comprobante->getNombre();
+                },
                     'required' => true))
                 ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde, 'attr' => array('class' => 'date',)))
                 ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta, 'attr' => array('class' => 'date',)))
@@ -374,7 +376,7 @@ class IntercambioDatosController extends Controller {
         return (string) $Nro;
     }
 
-    private function generarSoftland() {
+    private function generarSoftland($codigoComprobante) {
         $em = $this->getDoctrine()->getManager();
         $arConfiguracionGeneral = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
         $arConfiguracionGeneral = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
@@ -421,6 +423,7 @@ class IntercambioDatosController extends Controller {
             $tercero = '';
             if ($arRegistro->getCuentaRel()->getExigeNit() == 1) {
                 $tercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
+                
             } else {
                 $tercero = "00000000000";
             }

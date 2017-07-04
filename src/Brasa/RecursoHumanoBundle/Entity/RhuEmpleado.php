@@ -150,6 +150,11 @@ class RhuEmpleado
     private $codigoCentroCostoContabilidadFk;    
     
     /**
+     * @ORM\Column(name="codigo_sucursal_fk", type="string", length=20, nullable=true)
+     */    
+    private $codigoSucursalFk;    
+    
+    /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
      */    
     private $codigoCargoFk;    
@@ -429,6 +434,12 @@ class RhuEmpleado
      * @ORM\JoinColumn(name="codigo_centro_costo_contabilidad_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoContabilidadRel;     
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\ContabilidadBundle\Entity\CtbSucursal", inversedBy="rhuEmpleadosSucursalRel")
+     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
+     */
+    protected $sucursalRel;    
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuBanco", inversedBy="empleadosBancoRel")
@@ -4894,5 +4905,53 @@ class RhuEmpleado
     public function getInduccionesEmpleadoRel()
     {
         return $this->induccionesEmpleadoRel;
+    }
+
+    /**
+     * Set codigoSucursalFk
+     *
+     * @param string $codigoSucursalFk
+     *
+     * @return RhuEmpleado
+     */
+    public function setCodigoSucursalFk($codigoSucursalFk)
+    {
+        $this->codigoSucursalFk = $codigoSucursalFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSucursalFk
+     *
+     * @return string
+     */
+    public function getCodigoSucursalFk()
+    {
+        return $this->codigoSucursalFk;
+    }
+
+    /**
+     * Set sucursalRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel
+     *
+     * @return RhuEmpleado
+     */
+    public function setSucursalRel(\Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel = null)
+    {
+        $this->sucursalRel = $sucursalRel;
+
+        return $this;
+    }
+
+    /**
+     * Get sucursalRel
+     *
+     * @return \Brasa\ContabilidadBundle\Entity\CtbSucursal
+     */
+    public function getSucursalRel()
+    {
+        return $this->sucursalRel;
     }
 }

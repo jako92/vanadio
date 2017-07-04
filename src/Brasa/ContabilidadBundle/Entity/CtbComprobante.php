@@ -27,13 +27,16 @@ class CtbComprobante
     private $nombre;      
     
     /**
+     * @ORM\Column(name="adicionar_digito_verificacion_intercambio_datos", type="boolean")
+     */    
+    private $adicionalDigitoVerificacionIntercambioDatos = false;     
+    
+    /**
      * @ORM\OneToMany(targetEntity="CtbAsiento", mappedBy="comprobanteRel")
      */
     protected $asientosComprobanteRel;
     
-    
-    
-    
+       
     /**
      * Constructor
      */
@@ -88,6 +91,30 @@ class CtbComprobante
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set adicionalDigitoVerificacionIntercambioDatos
+     *
+     * @param boolean $adicionalDigitoVerificacionIntercambioDatos
+     *
+     * @return CtbComprobante
+     */
+    public function setAdicionalDigitoVerificacionIntercambioDatos($adicionalDigitoVerificacionIntercambioDatos)
+    {
+        $this->adicionalDigitoVerificacionIntercambioDatos = $adicionalDigitoVerificacionIntercambioDatos;
+
+        return $this;
+    }
+
+    /**
+     * Get adicionalDigitoVerificacionIntercambioDatos
+     *
+     * @return boolean
+     */
+    public function getAdicionalDigitoVerificacionIntercambioDatos()
+    {
+        return $this->adicionalDigitoVerificacionIntercambioDatos;
     }
 
     /**

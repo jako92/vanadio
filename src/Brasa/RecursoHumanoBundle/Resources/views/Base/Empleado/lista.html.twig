@@ -67,7 +67,8 @@
                 <th>CONTRATO</th>
                 <th>TELÉFONO</th>                
                 <th>FECHA INICIO</th>
-                <th>C.CONTABILIDAD</th>
+                <th>C_C</th>
+                <th>SUC</th>
                 <th>CONTRATO ACT</th>
                 <th>ACCIONES NUEVO</th>
                 <th style="text-align: center"></th>
@@ -79,11 +80,12 @@
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arEmpleados.codigoEmpleadoPk }}">{{ arEmpleados.codigoEmpleadoPk }} </td>
                     <td>{{ arEmpleados.numeroIdentificacion  }}</td>
                     <td>{{ arEmpleados.nombreCorto }}</td>
-                    <td>{% if arEmpleados.centroCostoRel.nombre is defined %} {{ arEmpleados.centroCostoRel.nombre  }} {% endif %}</td>
+                    <td>{{ arEmpleados.centroCostoRel.nombre | default('')}}</td>                    
                     <td>{{ arEmpleados.codigoContratoActivoFk  }}</td>
                     <td>{{ arEmpleados.telefono }}</td>                
                     <td>{% if arEmpleados.fechaContrato != "" %} {{ arEmpleados.fechaContrato|date('Y/m/d')  }} {% else %} SIN DEFINIR {% endif %}</td>
-                    <td>{{ arEmpleados.codigoCentroCostoContabilidadFk| default('')}}</td>                               
+                    <td>{{ arEmpleados.codigoCentroCostoContabilidadFk | default('')}}</td>                               
+                    <td>{{ arEmpleados.codigoSucursalFk | default('')}}</td>
                     <td>{% if arEmpleados.estadoContratoActivo == 1 %} SI {% else %} NO {% endif %}</td>                                
                     <td>
                         <div class="btn-group">
