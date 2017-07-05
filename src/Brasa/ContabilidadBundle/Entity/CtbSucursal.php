@@ -29,7 +29,15 @@ class CtbSucursal
     /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEmpleado", mappedBy="sucursalRel")
      */
-    protected $rhuEmpleadosSucursalRel;       
+    protected $rhuEmpleadosSucursalRel;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->rhuEmpleadosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Set codigoSucursalPk
@@ -77,13 +85,6 @@ class CtbSucursal
     public function getNombre()
     {
         return $this->nombre;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->rhuEmpleadosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

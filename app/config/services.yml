@@ -92,6 +92,14 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Modalidad servicio }
             
+    # .................. administracion modulo contabilidad .................................................................
+    
+    admin.contabilidad.sucursales:
+        class: Brasa\ContabilidadBundle\Admin\SucursalAdmin
+        arguments: [~, Brasa\ContabilidadBundle\Entity\CtbSucursal, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Sucursal }
+            
     # .................. administracion del modulo general .............................................................................
             
     admin.general.sectorcomercial:

@@ -119,6 +119,7 @@ sonata_admin:
             app.admin.group.recursohumano:
                 label: Recurso humano
                 label_catalogue: Brasa\RecursoHumanoBundle
+                icon: '<i class="fa fa-group"></i>'
                 items:
                     - admin.recursohumano.incapacidadtipo
                     - admin.recursohumano.requisitotipo
@@ -132,6 +133,7 @@ sonata_admin:
             app.admin.group.turno:
                 label: Programacion turno
                 label_catalogue: Brasa\TurnoBundle
+                icon: '<i class="fa fa-calendar"></i>'
                 items:
                     - admin.turno.centrooperacion
                     - admin.turno.modalidadservicio
@@ -139,14 +141,23 @@ sonata_admin:
             app.admin.group.inventario:
                 label: Inventario
                 label_catalogue: Brasa\InventarioBundle
+                icon: '<i class="fa fa-cube"></i>'
                 items:
                     - admin.inventario.marca 
                     - admin.inventario.item
                     - admin.inventario.area
                     
+            app.admin.group.contabilidad:
+                label: Contabilidad
+                label_catalogue: Brasa\ContabilidadBundle
+                icon: '<i class="fa fa-map-o"></i>'
+                items:
+                    - admin.contabilidad.sucursales
+                    
             app.admin.group.general:
                 label: General
                 label_catalogue: Brasa\GeneralBundle
+                icon: '<i class="fa fa-bookmark"></i>'
                 items:
                     - admin.general.sectorcomercial
                     - admin.general.sectoreconomico
@@ -161,6 +172,7 @@ sonata_admin:
             app.admin.group.seguridad:
                 label: Seguridad
                 label_catalogue: Brasa\SeguridadBundle
+                icon: '<i class="fa fa-lock"></i>'
                 items:
                     - admin.seguridad.grupo
                     
