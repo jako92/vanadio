@@ -91,6 +91,12 @@ services:
         arguments: [~, Brasa\TurnoBundle\Entity\TurModalidadServicio, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Modalidad servicio }
+    
+    admin.turno.serviciotipo:
+        class: Brasa\TurnoBundle\Admin\ServicioTipoAdmin
+        arguments: [~, Brasa\TurnoBundle\Entity\TurServicioTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Servicio tipo }
             
     # .................. administracion modulo contabilidad .................................................................
     

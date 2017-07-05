@@ -77,6 +77,7 @@
                 <th>{{ knp_pagination_sortable(arServicios, 'ID', 'p.codigoServicioPk') }}</th>                
                 <th>NIT</th>
                 <th>CLIENTE</th>
+                <th>TIPO</th>
                 <th>SECTOR</th>
                 <th>ULT.GENERADO</th>                
                 <th>H</th>
@@ -92,7 +93,8 @@
                 <tr>                
                     <td>{{ arServicios.codigoServicioPk  }}</td>                
                     <td>{{ arServicios.clienteRel.nit  }}</td>  
-                    <td>{{ arServicios.clienteRel.nombreCorto  }}</td>  
+                    <td>{{ arServicios.clienteRel.nombreCorto  }}</td>
+                    <td>{{ arServicios.servicioTipoRel.nombre |default('')  }}</td>
                     <td>{{ arServicios.sectorRel.nombre |default('')  }}</td>
                     <td>{{ arServicios.fechaGeneracion |date('Y/m')  }}</td>                
                     <td style="text-align: right">{{ arServicios.horas | number_format(0, '.', ',') }}</td>

@@ -20,7 +20,14 @@ class TurServicioType extends AbstractType
                     return $er->createQueryBuilder('s')
                     ->orderBy('s.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))     
+                'required' => true))
+            ->add('servicioTipoRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurServicioTipo',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('st')
+                    ->orderBy('st.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
             ->add('vrSalarioBase', NumberType::class)                            
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)

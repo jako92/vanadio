@@ -805,14 +805,15 @@ class ServicioController extends Controller {
                 ->setCellValue('A1', 'CÓDIG0')
                 ->setCellValue('B1', 'NIT')
                 ->setCellValue('C1', 'CLIENTE')
-                ->setCellValue('D1', 'SECTOR')
-                ->setCellValue('E1', 'SECTOR_COM')
-                ->setCellValue('F1', 'AUT')
-                ->setCellValue('G1', 'CER')
-                ->setCellValue('H1', 'HORAS')
-                ->setCellValue('I1', 'H.DIURNAS')
-                ->setCellValue('J1', 'H.NOCTURNAS')
-                ->setCellValue('K1', 'VALOR');
+                ->setCellValue('D1', 'TIPO')
+                ->setCellValue('E1', 'SECTOR')
+                ->setCellValue('F1', 'SECTOR_COM')
+                ->setCellValue('G1', 'AUT')
+                ->setCellValue('H1', 'CER')
+                ->setCellValue('I1', 'HORAS')
+                ->setCellValue('J1', 'H.DIURNAS')
+                ->setCellValue('K1', 'H.NOCTURNAS')
+                ->setCellValue('L1', 'VALOR');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -824,15 +825,18 @@ class ServicioController extends Controller {
                     ->setCellValue('A' . $i, $arServicio->getCodigoServicioPk())
                     ->setCellValue('B' . $i, $arServicio->getClienteRel()->getNit())
                     ->setCellValue('C' . $i, $arServicio->getClienteRel()->getNombreCorto())
-                    ->setCellValue('D' . $i, $arServicio->getSectorRel()->getNombre())
-                    ->setCellValue('F' . $i, $objFunciones->devuelveBoolean($arServicio->getEstadoAutorizado()))
-                    ->setCellValue('G' . $i, $objFunciones->devuelveBoolean($arServicio->getEstadoCerrado()))
-                    ->setCellValue('H' . $i, $arServicio->getHoras())
-                    ->setCellValue('I' . $i, $arServicio->getHorasDiurnas())
-                    ->setCellValue('J' . $i, $arServicio->getHorasNocturnas())
-                    ->setCellValue('K' . $i, $arServicio->getVrTotal());
+                    ->setCellValue('E' . $i, $arServicio->getSectorRel()->getNombre())
+                    ->setCellValue('G' . $i, $objFunciones->devuelveBoolean($arServicio->getEstadoAutorizado()))
+                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arServicio->getEstadoCerrado()))
+                    ->setCellValue('I' . $i, $arServicio->getHoras())
+                    ->setCellValue('J' . $i, $arServicio->getHorasDiurnas())
+                    ->setCellValue('K' . $i, $arServicio->getHorasNocturnas())
+                    ->setCellValue('L' . $i, $arServicio->getVrTotal());
             if ($arServicio->getClienteRel()->getCodigoSectorComercialFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arServicio->getClienteRel()->getSectorComercialRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F' . $i, $arServicio->getClienteRel()->getSectorComercialRel()->getNombre());
+            }
+            if ($arServicio->getCodigoServicioTipoFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $i, $arServicio->getServicioTipoRel()->getNombre());
             }
             $i++;
         }

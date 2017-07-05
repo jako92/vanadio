@@ -67,48 +67,48 @@
                         <td align="right">{{ arServicio.vrTotalPrecioMinimo | number_format(0, '.', ',')}}</td>
                     </tr> 
                     <tr>
-                        <td class="titulo">SECTOR:</td>
-                        <td class="td-in-well">{{ arServicio.sectorRel.nombre }}</td>
+                        <td class="titulo">TIPO:</td>
+                        <td class="td-in-well">{{ arServicio.servicioTipoRel.nombre | default('') }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >TOTAL OTROS:</td>
                         <td align="right">{{ arServicio.vrTotalOtros | number_format(0, '.', ',')}}</td>
                     </tr>                 
                     <tr>
-                        <td class="titulo">USUARIO:</td>
-                        <td class="td-in-well">{{ arServicio.usuario}}</td>
+                        <td class="titulo">SECTOR:</td>
+                        <td class="td-in-well">{{ arServicio.sectorRel.nombre }}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >TOTAL SERVICIO:</td>
                         <td align="right">{{ arServicio.vrTotalServicio | number_format(0, '.', ',')}}</td>
                     </tr> 
                     <tr>
-                        <td class="titulo" >HORAS:</td>
-                        <td align="right">{{ arServicio.horas | number_format(0, '.', ',')}}</td>
+                        <td class="titulo">USUARIO:</td>
+                        <td align="right">{{ arServicio.usuario}}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >SUBTOTAL:</td>
                         <td align="right">{{ arServicio.vrSubtotal | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
-                        <td class="titulo" >HORAS DIURNAS:</td>
-                        <td align="right">{{ arServicio.horasDiurnas | number_format(0, '.', ',')}}</td>
+                        <td class="titulo" >HORAS:</td>
+                        <td align="right">{{ arServicio.horas | number_format(0, '.', ',')}}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >BASE AIU:</td>
                         <td align="right">{{ arServicio.vrBaseAiu | number_format(0, '.', ',')}}</td>
                     </tr>                
                     <tr>
-                        <td class="titulo" >HORAS NOCTURNAS:</td>
-                        <td align="right">{{ arServicio.horasNocturnas | number_format(0, '.', ',')}}</td>
+                        <td class="titulo" >HORAS DIURNAS:</td>
+                        <td align="right">{{ arServicio.horasDiurnas | number_format(0, '.', ',')}}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >IVA:</td>
                         <td align="right">{{ arServicio.vrIva | number_format(0, '.', ',')}}</td>
                     </tr> 
                     <tr>
-                        <td class="titulo" ></td>
-                        <td align="right"></td>
+                        <td class="titulo" >HORAS NOCTURNAS:</td>
+                        <td align="right">{{ arServicio.horasNocturnas | number_format(0, '.', ',')}}</td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >TOTAL:</td>

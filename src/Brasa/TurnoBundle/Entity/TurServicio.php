@@ -30,12 +30,17 @@ class TurServicio
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
      */    
-    private $codigoClienteFk;    
+    private $codigoClienteFk;
     
     /**
      * @ORM\Column(name="codigo_sector_fk", type="integer", nullable=true)
      */    
-    private $codigoSectorFk;                            
+    private $codigoSectorFk;
+    
+    /**
+     * @ORM\Column(name="codigo_servicio_tipo_fk", type="integer", nullable=true)
+     */    
+    private $codigoServicioTipoFk;
     
     /**     
      * @ORM\Column(name="estado_autorizado", type="boolean", options={"default":false})
@@ -138,7 +143,13 @@ class TurServicio
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="serviciosSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
      */
-    protected $sectorRel;         
+    protected $sectorRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TurServicioTipo", inversedBy="serviciosServicioTipoRel")
+     * @ORM\JoinColumn(name="codigo_servicio_tipo_fk", referencedColumnName="codigo_servicio_tipo_pk")
+     */
+    protected $servicioTipoRel;
     
     /**
      * @ORM\OneToMany(targetEntity="TurServicioDetalle", mappedBy="servicioRel", cascade={"persist", "remove"})
@@ -812,5 +823,53 @@ class TurServicio
     public function getVrSalarioBase()
     {
         return $this->vrSalarioBase;
+    }
+
+    /**
+     * Set codigoServicioTipoFk
+     *
+     * @param integer $codigoServicioTipoFk
+     *
+     * @return TurServicio
+     */
+    public function setCodigoServicioTipoFk($codigoServicioTipoFk)
+    {
+        $this->codigoServicioTipoFk = $codigoServicioTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoServicioTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoServicioTipoFk()
+    {
+        return $this->codigoServicioTipoFk;
+    }
+
+    /**
+     * Set servicioTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel
+     *
+     * @return TurServicio
+     */
+    public function setServicioTipoRel(\Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel = null)
+    {
+        $this->servicioTipoRel = $servicioTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get servicioTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurServicioTipo
+     */
+    public function getServicioTipoRel()
+    {
+        return $this->servicioTipoRel;
     }
 }
