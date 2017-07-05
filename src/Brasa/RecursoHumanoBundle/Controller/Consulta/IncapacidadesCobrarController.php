@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -51,7 +52,19 @@ class IncapacidadesCobrarController extends Controller {
     private function listar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesCobrarDQL();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroIncapacidadesFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroDesde');
+            $strFechaHasta = $session->get('filtroHasta');
+        }
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesCobrarDQL(
+                $session->get('filtroCentroCosto'),
+                $session->get('filtroIdentificacion'),
+                $strFechaDesde,
+                $strFechaHasta,
+                $session->get('filtroEntidadSalud'));
     }
 
     private function formularioLista() {
@@ -61,11 +74,11 @@ class IncapacidadesCobrarController extends Controller {
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
         $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
-        if ($session->get('fechaDesde') != "") {
-            $strFechaDesde = $session->get('fechaDesde');
+        if ($session->get('filtroDesde') != "") {
+            $strFechaDesde = $session->get('filtroDesde');
         }
-        if ($session->get('fechaHasta') != "") {
-            $strFechaHasta = $session->get('fechaHasta');
+        if ($session->get('filtroHasta') != "") {
+            $strFechaHasta = $session->get('filtroHasta');
         }
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
@@ -90,6 +103,7 @@ class IncapacidadesCobrarController extends Controller {
                 'empty_data' => "",
                 'placeholder' => "TODOS",
                 'data' => ""))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroIncapacidadesFiltrarFecha')))
                 ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
@@ -101,9 +115,23 @@ class IncapacidadesCobrarController extends Controller {
 
     private function filtrarLista($form) {
         $session = new Session;
+        $codigoCentroCosto = "";
+        if ($form->get('centroCostoRel')->getData()) {
+            $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
+        }
+        $codigoEntidadSalud = "";
+        if ($form->get('entidadSaludRel')->getData()) {
+            $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
+        }
+        $session->set('filtroCentroCosto', $codigoCentroCosto);
+        $session->set('filtroEntidadSalud', $codigoEntidadSalud);
+        $session->set('filtroIncapacidadesFiltrarFecha', $form->get('filtrarFecha')->getData());
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroIncapacidadesFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function generarExcel() {
