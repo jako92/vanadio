@@ -720,7 +720,7 @@ class EmpleadoController extends Controller {
                     ->setCellValue('AT' . $i, $discapacidad)
                     ->setCellValue('AX' . $i, $arEmpleado->getCodigoCentroCostoContabilidadFk())
                     ->setCellValue('AY' . $i, $sucursal)
-                    ->setCellValue('AY' . $i, $centroCostoContabilidad)
+                    ->setCellValue('AZ' . $i, $centroCostoContabilidad)
                     ->setCellValue('BB' . $i, $venceUltimaVisita);
 
             if ($arEmpleado->getCodigoZonaFk()) {
