@@ -517,9 +517,10 @@ class EmpleadoController extends Controller {
                 ->setCellValue('AV1', 'SUBZONA')
                 ->setCellValue('AW1', 'TIPO')
                 ->setCellValue('AX1', 'C.CONTABILIDAD')
-                ->setCellValue('AY1', 'NOMBRE CENTRO COSTO CONTABILIDAD')
-                ->setCellValue('AZ1', 'PUESTO')
-                ->setCellValue('BA1', 'VENCE VISITA');
+                ->setCellValue('AY1', 'SUCURSAL')
+                ->setCellValue('AZ1', 'NOMBRE CENTRO COSTO CONTABILIDAD')
+                ->setCellValue('BA1', 'PUESTO')
+                ->setCellValue('BB1', 'VENCE VISITA');
 
 
         $i = 2;
@@ -660,6 +661,16 @@ class EmpleadoController extends Controller {
             if ($arEmpleado->getFechaUltimaVisita()) {
                 $venceUltimaVisita = $arEmpleado->getFechaUltimaVisita()->format('Y-m-d');
             }
+            if ($arEmpleado->getCodigoSucursalFk() != null) {
+                $sucursal = $arEmpleado->getSucursalRel()->getNombre();
+            } else {
+                $sucursal = "";
+            }
+            if ($arEmpleado->getCodigoCentroCostoContabilidadFk() != null) {
+                $centroCostoContabilidad = $arEmpleado->getCentroCostoContabilidadRel()->getNombre();
+            } else {
+                $centroCostoContabilidad = "";
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arEmpleado->getCodigoEmpleadoPk())
                     ->setCellValue('B' . $i, $arEmpleado->getTipoIdentificacionRel()->getNombre())
@@ -708,8 +719,9 @@ class EmpleadoController extends Controller {
                     ->setCellValue('AS' . $i, $horario)
                     ->setCellValue('AT' . $i, $discapacidad)
                     ->setCellValue('AX' . $i, $arEmpleado->getCodigoCentroCostoContabilidadFk())
-                    ->setCellValue('AY' . $i, $arEmpleado->getCentroCostoContabilidadRel()->getNombre())
-                    ->setCellValue('BA' . $i, $venceUltimaVisita);
+                    ->setCellValue('AY' . $i, $sucursal)
+                    ->setCellValue('AY' . $i, $centroCostoContabilidad)
+                    ->setCellValue('BB' . $i, $venceUltimaVisita);
 
             if ($arEmpleado->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AU' . $i, $arEmpleado->getZonaRel()->getNombre());
@@ -721,7 +733,7 @@ class EmpleadoController extends Controller {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AW' . $i, $arEmpleado->getEmpleadoTipoRel()->getNombre());
             }
             if ($arEmpleado->getCodigoPuestoFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AZ' . $i, $arEmpleado->getPuestoRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BA' . $i, $arEmpleado->getPuestoRel()->getNombre());
             }
             $i++;
         }

@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,6 +22,7 @@ class RegistrosController extends Controller {
     var $strDesde = "";
     var $strHasta = "";
     var $strCuenta = "";
+    var $strTercero= "";
 
     /**
      * @Route("/ctb/consultas/registros/", name="brs_ctb_consultas_registros")
@@ -66,7 +68,13 @@ class RegistrosController extends Controller {
             $strFechaHasta = $session->get('filtroCtbRegistroFechaHasta');
         }
         $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaDQL(
-                $session->get('filtroCtbCodigoComprobante'), $session->get('filtroCtbNumero'), $session->get('filtroCtbNumeroReferencia'), $strFechaDesde, $strFechaHasta, $session->get('filtroCtbCuenta')
+                $session->get('filtroCtbCodigoComprobante'),
+                $session->get('filtroCtbNumero'), 
+                $session->get('filtroCtbNumeroReferencia'), 
+                $strFechaDesde, 
+                $strFechaHasta, 
+                $session->get('filtroCtbCuenta'),
+                $session->get('filtroTercero')
         );
     }
 
@@ -87,6 +95,16 @@ class RegistrosController extends Controller {
         $dateFechaHasta = date_create($strFechaHasta);
 
         $form = $this->createFormBuilder()
+                ->add('terceroRel', EntityType::class, array(
+                'class' => 'BrasaContabilidadBundle:CtbTercero',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('cc')
+                    ->orderBy('cc.nombreCorto', 'ASC');},
+                'choice_label' => 'nombreCorto',
+                'required' => false,
+                'empty_data' => "",
+                'placeholder' => "TODOS",
+                'data' => ""))
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumero')))
                 ->add('TxtNumeroReferencia', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumeroReferencia')))
                 ->add('TxtCuenta', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbCuenta')))
@@ -102,6 +120,11 @@ class RegistrosController extends Controller {
 
     private function filtrar($form, Request $request) {
         $session = $this->get('session');
+        $codigoTercero = "";
+        if ($form->get('terceroRel')->getData()) {
+            $codigoTercero = $form->get('terceroRel')->getData()->getcodigoTerceroPk();
+        }
+        $session->set('filtroTercero', $codigoTercero);
         $session->set('filtroCtbNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroCtbCuenta', $form->get('TxtCuenta')->getData());
         $session->set('filtroCtbNumeroReferencia', $form->get('TxtNumeroReferencia')->getData());
