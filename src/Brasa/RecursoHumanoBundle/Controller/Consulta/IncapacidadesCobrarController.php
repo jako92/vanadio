@@ -57,7 +57,18 @@ class IncapacidadesCobrarController extends Controller {
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
-
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('fechaDesde') != "") {
+            $strFechaDesde = $session->get('fechaDesde');
+        }
+        if ($session->get('fechaHasta') != "") {
+            $strFechaHasta = $session->get('fechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
                 ->add('centroCostoRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
@@ -69,7 +80,6 @@ class IncapacidadesCobrarController extends Controller {
                 'empty_data' => "",
                 'placeholder' => "TODOS",
                 'data' => ""))
-                            
                 ->add('entidadSaludRel', EntityType::class, array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
                 'query_builder' => function (EntityRepository $er) {
@@ -81,8 +91,8 @@ class IncapacidadesCobrarController extends Controller {
                 'placeholder' => "TODOS",
                 'data' => ""))
                 ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
@@ -113,20 +123,21 @@ class IncapacidadesCobrarController extends Controller {
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'CÓDIGO')
-                ->setCellValue('B1', 'CENTRO COSTO')
-                ->setCellValue('C1', 'IDENTIFICACIÓN')
-                ->setCellValue('D1', 'NOMBRE')
-                ->setCellValue('E1', 'CARGO')
-                ->setCellValue('F1', 'FECHA')
-                ->setCellValue('G1', 'EXAMEN')
-                ->setCellValue('H1', 'ENTIDAD EXAMEN')
-                ->setCellValue('I1', 'CIUDAD')
-                ->setCellValue('J1', 'VALOR');
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'CENTRO COSTO')
+                ->setCellValue('D1', 'IDENTIFICACIÓN')
+                ->setCellValue('E1', 'NOMBRE')
+                ->setCellValue('F1', 'DIAS')
+                ->setCellValue('G1', 'FECHA DESDE')
+                ->setCellValue('H1', 'FECHA HASTA')
+                ->setCellValue('I1', 'ENTIDAD EXAMEN')
+                ->setCellValue('J1', 'CIUDAD')
+                ->setCellValue('K1', 'VALOR');
 
         $i = 2;
         $query = $em->createQuery($this->strDqlLista);
-        $arExamenesPendientePago = new \Brasa\RecursoHumanoBundle\Entity\RhuExamen();
-        $arExamenesPendientePago = $query->getResult();
+        $arIncapacidadesPendientePago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
+        $arIncapacidadesPendientePago = $query->getResult();
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         for ($col = 'A'; $col !== 'Z'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
@@ -137,27 +148,28 @@ class IncapacidadesCobrarController extends Controller {
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('rigth');
             $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
         }
-        foreach ($arExamenesPendientePago as $arExamenPendientePago) {
-            if ($arExamenPendientePago->getCentroCostoRel()) {
-                $nombreCentroCosto = $arExamenPendientePago->getCentroCostoRel()->getNombre();
+        foreach ($arIncapacidadesPendientePago as $arIncapacidadPendientePago) {
+            if ($arIncapacidadPendientePago->getCentroCostoRel()) {
+                $nombreCentroCosto = $arIncapacidadPendientePago->getCentroCostoRel()->getNombre();
             } else {
                 $nombreCentroCosto = "";
             }
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arExamenPendientePago->getCodigoExamenPk())
-                    ->setCellValue('B' . $i, $nombreCentroCosto)
-                    ->setCellValue('C' . $i, $arExamenPendientePago->getIdentificacion())
-                    ->setCellValue('D' . $i, $arExamenPendientePago->getNombreCorto())
-                    ->setCellValue('E' . $i, $arExamenPendientePago->getCargoRel()->getNombre())
-                    ->setCellValue('F' . $i, $arExamenPendientePago->getFecha()->Format('Y-m-d'))
-                    ->setCellValue('G' . $i, $arExamenPendientePago->getExamenClaseRel()->getNombre())
-                    ->setCellValue('H' . $i, $arExamenPendientePago->getEntidadExamenRel()->getNombre())
-                    ->setCellValue('I' . $i, $arExamenPendientePago->getCiudadRel()->getNombre())
-                    ->setCellValue('J' . $i, $arExamenPendientePago->getVrTotal());
+                    ->setCellValue('A' . $i, $arIncapacidadPendientePago->getCodigoIncapacidadPk())
+                    ->setCellValue('B' . $i, $arIncapacidadPendientePago->getNumero())
+                    ->setCellValue('C' . $i, $nombreCentroCosto)
+                    ->setCellValue('D' . $i, $arIncapacidadPendientePago->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('E' . $i, $arIncapacidadPendientePago->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('F' . $i, $arIncapacidadPendientePago->getDiasCobro())
+                    ->setCellValue('G' . $i, $arIncapacidadPendientePago->getFechaDesde()->Format('Y-m-d'))
+                    ->setCellValue('H' . $i, $arIncapacidadPendientePago->getFechaHasta()->Format('Y-m-d'))
+                    ->setCellValue('I' . $i, $arIncapacidadPendientePago->getEntidadSaludRel()->getNombre())
+                    ->setCellValue('J' . $i, $arIncapacidadPendientePago->getEmpleadoRel()->getCiudadRel()->getNombre())
+                    ->setCellValue('K' . $i, $arIncapacidadPendientePago->getVrCobro());
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('PagoExamenPendiente');
+        $objPHPExcel->getActiveSheet()->setTitle('IncapacidadPendientes');
         $objPHPExcel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel2007)

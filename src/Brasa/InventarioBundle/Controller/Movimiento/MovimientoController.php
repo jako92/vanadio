@@ -360,7 +360,7 @@ class MovimientoController extends Controller {
         return $form;
     }
 
-    private function generarExcel() {
+    private function generarExcel($codigoDocumento) {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
@@ -386,7 +386,11 @@ class MovimientoController extends Controller {
                 ->setCellValue('B1', 'FECHA')
                 ->setCellValue('C1', 'NUMERO')
                 ->setCellValue('D1', 'TERCERO')
-                ->setCellValue('E1', 'AUTORIZADO');
+                ->setCellValue('E1', 'TIPO')
+                ->setCellValue('F1', 'SUBTOTAL')
+                ->setCellValue('G1', 'IVA')
+                ->setCellValue('H1', 'BRUTO')
+                ->setCellValue('I1', 'AUTORIZADO');
 
         $i = 2;
 
@@ -399,7 +403,11 @@ class MovimientoController extends Controller {
                     ->setCellValue('B' . $i, $arMovimiento->getFecha()->format('Y/m/d'))
                     ->setCellValue('C' . $i, $arMovimiento->getNumero())
                     ->setCellValue('D' . $i, $arMovimiento->getTerceroRel()->getNombreCorto())
-                    ->setCellValue('E' . $i, $objFunciones->devuelveBoolean($arMovimiento->getEstadoAutorizado()));
+                    ->setCellValue('E' . $i, $arMovimiento->getFacturaTipoRel()->getNombre())
+                    ->setCellValue('F' . $i, $arMovimiento->getVrSubtotal())
+                    ->setCellValue('G' . $i, $arMovimiento->getVrIva())
+                    ->setCellValue('H' . $i, $arMovimiento->getVrBruto())
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arMovimiento->getEstadoAutorizado()));
             $i++;
         }
 
