@@ -66,7 +66,7 @@ class CtbTercero
     /**
      * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
      */    
-    private $codigoCiudadFk;
+    private $codigoCiudadFk;    
     
     /**
      * @ORM\Column(name="direccion", type="string", length=80, nullable=true)
@@ -97,7 +97,12 @@ class CtbTercero
     /**
      * @ORM\Column(name="area", type="string", length=10, nullable=true)
      */    
-    private $area;     
+    private $area;
+    
+    /**
+     * @ORM\Column(name="codigo_sucursal_fk", type="string", length=20, nullable=true)
+     */    
+    private $codigoSucursalFk; 
 
    /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="ctbTercerosCiudadRel")
@@ -110,13 +115,17 @@ class CtbTercero
      * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
      */
     protected $tipoIdentificacionRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="CtbSucursal", inversedBy="ctbTercerosSucursalRel")
+     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
+     */
+    protected $sucursalRel; 
 
     /**
      * @ORM\OneToMany(targetEntity="CtbAsientoDetalle", mappedBy="terceroRel")
      */
     protected $asientosDetallesTerceroRel;
-           
-    
     /**
      * Constructor
      */
@@ -496,6 +505,54 @@ class CtbTercero
     }
 
     /**
+     * Set area
+     *
+     * @param string $area
+     *
+     * @return CtbTercero
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * Set codigoSucursalFk
+     *
+     * @param string $codigoSucursalFk
+     *
+     * @return CtbTercero
+     */
+    public function setCodigoSucursalFk($codigoSucursalFk)
+    {
+        $this->codigoSucursalFk = $codigoSucursalFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSucursalFk
+     *
+     * @return string
+     */
+    public function getCodigoSucursalFk()
+    {
+        return $this->codigoSucursalFk;
+    }
+
+    /**
      * Set ciudadRel
      *
      * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
@@ -544,6 +601,30 @@ class CtbTercero
     }
 
     /**
+     * Set sucursalRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel
+     *
+     * @return CtbTercero
+     */
+    public function setSucursalRel(\Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel = null)
+    {
+        $this->sucursalRel = $sucursalRel;
+
+        return $this;
+    }
+
+    /**
+     * Get sucursalRel
+     *
+     * @return \Brasa\ContabilidadBundle\Entity\CtbSucursal
+     */
+    public function getSucursalRel()
+    {
+        return $this->sucursalRel;
+    }
+
+    /**
      * Add asientosDetallesTerceroRel
      *
      * @param \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle $asientosDetallesTerceroRel
@@ -575,29 +656,5 @@ class CtbTercero
     public function getAsientosDetallesTerceroRel()
     {
         return $this->asientosDetallesTerceroRel;
-    }
-
-    /**
-     * Set area
-     *
-     * @param string $area
-     *
-     * @return CtbTercero
-     */
-    public function setArea($area)
-    {
-        $this->area = $area;
-
-        return $this;
-    }
-
-    /**
-     * Get area
-     *
-     * @return string
-     */
-    public function getArea()
-    {
-        return $this->area;
     }
 }

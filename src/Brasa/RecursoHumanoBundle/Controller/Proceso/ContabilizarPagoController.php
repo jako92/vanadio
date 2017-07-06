@@ -63,6 +63,7 @@ class ContabilizarPagoController extends Controller {
                                 $arTercero->setCelular($arPago->getEmpleadoRel()->getCelular());
                                 $arTercero->setEmail($arPago->getEmpleadoRel()->getCorreo());
                                 $arTercero->setArea($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz());
+                                $arTercero->setSucursalRel($arPago->getEmpleadoRel()->getSucursalRel());
                                 $em->persist($arTercero);
                             }
                             $respuesta = $this->contabilizarPagoNomina($codigo, $arComprobanteContable, $arPago->getEmpleadoRel()->getCentroCostoContabilidadRel(), $arTercero, $arPago, $arConfiguracionNomina);

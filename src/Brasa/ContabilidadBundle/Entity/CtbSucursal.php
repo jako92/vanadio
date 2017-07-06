@@ -32,11 +32,16 @@ class CtbSucursal
     protected $rhuEmpleadosSucursalRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="CtbTercero", mappedBy="sucursalRel")
+     */
+    protected $ctbTercerosSucursalRel;
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->rhuEmpleadosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ctbTercerosSucursalRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -119,5 +124,39 @@ class CtbSucursal
     public function getRhuEmpleadosSucursalRel()
     {
         return $this->rhuEmpleadosSucursalRel;
+    }
+
+    /**
+     * Add ctbTercerosSucursalRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbTercero $ctbTercerosSucursalRel
+     *
+     * @return CtbSucursal
+     */
+    public function addCtbTercerosSucursalRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $ctbTercerosSucursalRel)
+    {
+        $this->ctbTercerosSucursalRel[] = $ctbTercerosSucursalRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove ctbTercerosSucursalRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbTercero $ctbTercerosSucursalRel
+     */
+    public function removeCtbTercerosSucursalRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $ctbTercerosSucursalRel)
+    {
+        $this->ctbTercerosSucursalRel->removeElement($ctbTercerosSucursalRel);
+    }
+
+    /**
+     * Get ctbTercerosSucursalRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCtbTercerosSucursalRel()
+    {
+        return $this->ctbTercerosSucursalRel;
     }
 }
