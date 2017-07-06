@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TurServicioType extends AbstractType
 {
@@ -28,6 +29,7 @@ class TurServicioType extends AbstractType
                     ->orderBy('st.nombre', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))
+            ->add('soporte', TextType::class, array('required'=>false))
             ->add('vrSalarioBase', NumberType::class)                            
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)

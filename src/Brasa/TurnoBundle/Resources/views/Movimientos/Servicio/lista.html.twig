@@ -79,6 +79,7 @@
                 <th>CLIENTE</th>
                 <th>TIPO</th>
                 <th>SECTOR</th>
+                <th>SOPORTE</th>
                 <th>ULT.GENERADO</th>                
                 <th>H</th>
                 <th>H.D</th>
@@ -96,6 +97,7 @@
                     <td>{{ arServicios.clienteRel.nombreCorto  }}</td>
                     <td>{{ arServicios.servicioTipoRel.nombre |default('')  }}</td>
                     <td>{{ arServicios.sectorRel.nombre |default('')  }}</td>
+                    <td>{{ arServicios.soporte  }}</td>
                     <td>{{ arServicios.fechaGeneracion |date('Y/m')  }}</td>                
                     <td style="text-align: right">{{ arServicios.horas | number_format(0, '.', ',') }}</td>
                     <td style="text-align: right">{{ arServicios.horasDiurnas | number_format(0, '.', ',') }}</td>

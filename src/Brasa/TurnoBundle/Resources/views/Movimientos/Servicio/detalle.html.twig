@@ -113,7 +113,15 @@
                         <td class="td-in-well"></td>                                                
                         <td class="titulo" >TOTAL:</td>
                         <td align="right">{{ arServicio.vrTotal | number_format(0, '.', ',')}}</td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td class="titulo">SOPORTE</td>
+                        <td colspan="5">{{ arServicio.soporte }}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo">COMENTARIOS:</td>
+                        <td colspan="5">{{ arServicio.comentarios }}</td>
+                    </tr>
                 </table>
             </div>
         </div>

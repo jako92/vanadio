@@ -23,7 +23,7 @@ class TurServicio
     private $fechaGeneracion;    
     
     /**
-     * @ORM\Column(name="soporte", type="string", length=30, nullable=true)
+     * @ORM\Column(name="soporte", type="string", length=50, nullable=true)
      */
     private $soporte;     
     
