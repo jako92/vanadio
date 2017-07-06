@@ -514,16 +514,10 @@ class IntercambioDatosController extends Controller {
                     ->setCellValue('O' . $i, $arRegistro->getNumeroReferencia())
                     ->setCellValue('P' . $i, 0)
                     ->setCellValue('Q' . $i, 10001)
-                    ->setCellValue('R' . $i, 0)
+                    ->setCellValue('R' . $i, $arRegistro->getArea())
                     ->setCellValue('S' . $i, 0);
             if ($arRegistro->getCodigoTerceroFk()) {
-                $numeroIdentificacionTercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
-                $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $numeroIdentificacionTercero));
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $arRegistro->getTerceroRel()->getNumeroIdentificacion());
-                if ($arEmpleado->getCodigoEmpleadoTipoFk() == 1) {$area = "2201";} else {$area = "1101";}
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R' . $i, $area);
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S' . $i, $arEmpleado->getCodigoSubzonaFk());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $numeroIdentificacionTercero);
             }
             if ($arRegistro->getCodigoCentroCostoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arRegistro->getCentroCostoRel()->getCodigoInterface());

@@ -92,7 +92,12 @@ class CtbTercero
     /**
      * @ORM\Column(name="email", type="string", length=80, nullable=true)
      */
-    private $email;           
+    private $email;
+    
+    /**
+     * @ORM\Column(name="area", type="string", length=10, nullable=true)
+     */    
+    private $area;     
 
    /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="ctbTercerosCiudadRel")
@@ -570,5 +575,29 @@ class CtbTercero
     public function getAsientosDetallesTerceroRel()
     {
         return $this->asientosDetallesTerceroRel;
+    }
+
+    /**
+     * Set area
+     *
+     * @param string $area
+     *
+     * @return CtbTercero
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
     }
 }

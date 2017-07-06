@@ -223,11 +223,11 @@ class RhuLiquidacionRepository extends EntityRepository {
                     if($dateFechaDesde < $dateFechaHasta) {
                         $intDiasPrima = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);    
                         $intDiasPrimaLiquidar = $intDiasPrima;
-                        /*if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
+                        if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
                             if($dateFechaHasta->format('m-d') != '01-01') {
                                 $intDiasPrimaLiquidar = $intDiasPrimaLiquidar - 1;
                             }
-                        }*/
+                        }
                         $ibpPrimasInicial = $arContrato->getIbpPrimasInicial();                    
                         $ibpPrimasInicial = round($ibpPrimasInicial);
                         $ibpPrimas = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->ibp($dateFechaDesde->format('Y-m-d'), $dateFechaHasta->format('Y-m-d'), $arLiquidacion->getCodigoContratoFk());                
@@ -237,11 +237,11 @@ class RhuLiquidacionRepository extends EntityRepository {
                             if($intDiasPrimaLiquidar > 0) {
                                 $salarioPromedioPrimas = ($ibpPrimas / $intDiasPrimaLiquidar) * 30;
                                 //Configuracion especifica para grtemporales                        
-                                if($arConfiguracion->getAuxilioTransporteNoPrestacional()) {
+                                /*if($arConfiguracion->getAuxilioTransporteNoPrestacional()) {
                                     if($arContrato->getAuxilioTransporte() == 1) {
                                         $salarioPromedioPrimas += $auxilioTransporte;
                                     }                                                                         
-                                }                                
+                                }*/                                
                             } else {
                                 $salarioPromedioPrimas = 0;
                             }                         

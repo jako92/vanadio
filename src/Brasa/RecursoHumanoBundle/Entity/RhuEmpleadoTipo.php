@@ -25,7 +25,12 @@ class RhuEmpleadoTipo
     /**
      * @ORM\Column(name="operativo", type="boolean")
      */    
-    private $operativo = false;     
+    private $operativo = false;
+    
+    /**
+     * @ORM\Column(name="interfaz", type="string", length=10, nullable=true)
+     */    
+    private $interfaz;     
     
     /**
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="empleadoTipoRel")
@@ -209,5 +214,29 @@ class RhuEmpleadoTipo
     public function getOperativo()
     {
         return $this->operativo;
+    }
+
+    /**
+     * Set interfaz
+     *
+     * @param integer $interfaz
+     *
+     * @return RhuEmpleadoTipo
+     */
+    public function setInterfaz($interfaz)
+    {
+        $this->interfaz = $interfaz;
+
+        return $this;
+    }
+
+    /**
+     * Get interfaz
+     *
+     * @return integer
+     */
+    public function getInterfaz()
+    {
+        return $this->interfaz;
     }
 }
