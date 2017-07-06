@@ -179,7 +179,7 @@ class FormatoCartaPresentacion extends \FPDF_FPDF {
         $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
         $strRutaImagen = '';
         if($arContrato->getEmpleadoRel()->getRutaFoto() != "") {
-            $strRutaImagen = $arConfiguracion->getRutaImagenes() . $arContrato->getEmpleadoRel()->getRutaFoto();
+            $strRutaImagen = $arConfiguracion->getRutaRaiz().''.$arConfiguracion->getRutaImagenes() . $arContrato->getEmpleadoRel()->getRutaFoto();
             //$strRutaImagen = "/var/www/html/almacenamientodorchester/imagenes/"."empleados/" . $arContrato->getEmpleadoRel()->getRutaFoto();
             $this->Cell(0, 0, $this->Image($strRutaImagen , 150 ,200, 25 , 32,'JPG'), 0, 0, 'C', 0); //foto
         }

@@ -504,7 +504,7 @@ class RhuConfiguracion {
     /**
      * @ORM\Column(name="generar_novedad_incapacidad_turnos", type="boolean")
      */
-    private $generarNovedadIncapacidadTurnos = false;     
+    private $generarNovedadIncapacidadTurnos = false;
 
 
     /**

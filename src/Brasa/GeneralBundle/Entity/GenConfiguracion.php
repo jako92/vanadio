@@ -61,7 +61,12 @@ class GenConfiguracion
     /**
      * @ORM\Column(name="nit_ventas_mostrador", type="integer")
      */
-    private $nitVentasMostrador = 0;         
+    private $nitVentasMostrador = 0;
+    
+    /**
+     * @ORM\Column(name="ruta_raiz", type="string", length=500, nullable=true)
+     */      
+    private $rutaRaiz;
 
     /**
      * @ORM\Column(name="ruta_temporal", type="string", length=500, nullable=true)
@@ -899,5 +904,29 @@ class GenConfiguracion
     public function getFechaHastaServicio()
     {
         return $this->fechaHastaServicio;
+    }
+
+    /**
+     * Set rutaRaiz
+     *
+     * @param string $rutaRaiz
+     *
+     * @return GenConfiguracion
+     */
+    public function setRutaRaiz($rutaRaiz)
+    {
+        $this->rutaRaiz = $rutaRaiz;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaRaiz
+     *
+     * @return string
+     */
+    public function getRutaRaiz()
+    {
+        return $this->rutaRaiz;
     }
 }

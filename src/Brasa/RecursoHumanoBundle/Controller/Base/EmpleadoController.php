@@ -343,9 +343,9 @@ class EmpleadoController extends Controller {
                         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
                         $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
                         $strNombreArchivo = $arEmpleado->getCodigoEmpleadoPk() . "_" . $objArchivo->getClientOriginalName();
-                        $strRuta = $arConfiguracion->getRutaImagenes() . $strNombreArchivo;
+                        $strRuta = $arConfiguracion->getRutaRaiz().''.$arConfiguracion->getRutaImagenes() . $strNombreArchivo;
                         if (!file_exists($strRuta)) {
-                            $form['attachment']->getData()->move($arConfiguracion->getRutaImagenes(), $strNombreArchivo);
+                            $form['attachment']->getData()->move($arConfiguracion->getRutaRaiz().''.$arConfiguracion->getRutaImagenes(), $strNombreArchivo);
                             $arEmpleado->setRutaFoto($strNombreArchivo);
                             $em->persist($arEmpleado);
                             $em->flush();

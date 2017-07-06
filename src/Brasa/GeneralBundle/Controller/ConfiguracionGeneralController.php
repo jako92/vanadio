@@ -62,6 +62,7 @@ class ConfiguracionGeneralController extends Controller {
                 ->add('porcentajeRetencionIvaVentas', TextType::class, array('data' => $arConfiguracionGeneral->getPorcentajeRetencionIvaVentas(), 'required' => true))
                 ->add('fechaUltimoCierre', DateType::class, array('data' => $arConfiguracionGeneral->getFechaUltimoCierre(), 'required' => true))
                 ->add('nitVentasMostrador', TextType::class, array('data' => $arConfiguracionGeneral->getNitVentasMostrador(), 'required' => true))
+                ->add('rutaRaiz', TextType::class, array('data' => $arConfiguracionGeneral->getRutaRaiz(), 'required' => true))
                 ->add('rutaTemporal', TextType::class, array('data' => $arConfiguracionGeneral->getRutaTemporal(), 'required' => true))
                 ->add('rutaAlmacenamiento', TextType::class, array('data' => $arConfiguracionGeneral->getRutaAlmacenamiento(), 'required' => true))
                 ->add('rutaImagenes', TextType::class, array('data' => $arConfiguracionGeneral->getRutaImagenes(), 'required' => true))
@@ -90,6 +91,7 @@ class ConfiguracionGeneralController extends Controller {
                     $PorcentajeRetencionIvaVentas = $controles['porcentajeRetencionIvaVentas'];
                     $FechaUltimoCierre = $formConfiguracionGeneral->get('fechaUltimoCierre')->getData();
                     $NitVentasMostrador = $controles['nitVentasMostrador'];
+                    $RutaRaiz = $controles['rutaRaiz'];
                     $RutaTemporal = $controles['rutaTemporal'];
                     $RutaAlmacenamiento = $controles['rutaAlmacenamiento'];
                     $RutaImagenes = $controles['rutaImagenes'];
@@ -112,6 +114,7 @@ class ConfiguracionGeneralController extends Controller {
                     $arConfiguracionGeneral->setPorcentajeRetencionIvaVentas($PorcentajeRetencionIvaVentas);
                     $arConfiguracionGeneral->setFechaUltimoCierre($FechaUltimoCierre);
                     $arConfiguracionGeneral->setNitVentasMostrador($NitVentasMostrador);
+                    $arConfiguracionGeneral->setRutaRaiz($RutaRaiz);
                     $arConfiguracionGeneral->setRutaTemporal($RutaTemporal);
                     $arConfiguracionGeneral->setRutaAlmacenamiento($RutaAlmacenamiento);
                     $arConfiguracionGeneral->setRutaImagenes($RutaImagenes);
