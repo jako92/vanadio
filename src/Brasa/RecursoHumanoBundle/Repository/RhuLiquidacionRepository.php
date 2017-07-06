@@ -223,10 +223,10 @@ class RhuLiquidacionRepository extends EntityRepository {
                     if($dateFechaDesde < $dateFechaHasta) {
                         $intDiasPrima = $this->diasPrestaciones($dateFechaDesde, $dateFechaHasta);    
                         $intDiasPrimaLiquidar = $intDiasPrima;
-                        if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {
-                            if($dateFechaHasta->format('m-d') != '01-01') {
-                                $intDiasPrimaLiquidar = $intDiasPrimaLiquidar - 1;
-                            }
+                        if($dateFechaDesde->format('m-d') == '06-30' || $dateFechaDesde->format('m-d') == '12-30') {                            
+                            //if($dateFechaHasta->format('m-d') != '01-01') {
+                                $intDiasPrimaLiquidar = $intDiasPrimaLiquidar - 1;    
+                            //}
                         }
                         $ibpPrimasInicial = $arContrato->getIbpPrimasInicial();                    
                         $ibpPrimasInicial = round($ibpPrimasInicial);
