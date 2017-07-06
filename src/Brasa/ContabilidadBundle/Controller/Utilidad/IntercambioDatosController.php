@@ -520,6 +520,9 @@ class IntercambioDatosController extends Controller {
                 $numeroIdentificacionTercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
                 $area = $arRegistro->getTerceroRel()->getArea();
                 $sucursal = $arRegistro->getTerceroRel()->getCodigoSucursalFk();
+                if(!$arRegistro->getTerceroRel()->getCodigoSucursalFk()){
+                    $sucursal = 0;
+                }
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R' . $i, $area);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $numeroIdentificacionTercero);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S' . $i, $sucursal);
