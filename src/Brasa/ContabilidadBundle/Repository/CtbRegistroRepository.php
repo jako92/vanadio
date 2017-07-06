@@ -438,4 +438,18 @@ class CtbRegistroRepository extends EntityRepository
         return $arrayResultado;
     }            
     
+    public function listaAnalizarinconsistenciasDQL($fechaDesde = "", $fechaHasta = "") {
+        $em = $this->getEntityManager();
+        $dql = "SELECT r.codigoComprobanteFk, r.numero, SUM(r.debito) as debito, SUM(r.credito) as credito, SUM(r.base) as base, r.codigoRegistroPk, r.numeroReferencia, r.fecha, r.codigoCuentaFk, r.descripcionContable FROM BrasaContabilidadBundle:CtbRegistro r  WHERE r.codigoRegistroPk <> 0";
+        if ($fechaDesde != "") {
+            $dql .= " AND r.fecha >='" . $fechaDesde . "'";
+        }
+        if ($fechaHasta != "") {
+            $dql .= " AND r.fecha <='" . $fechaHasta . "'";
+        }
+        $dql .= " GROUP BY r.codigoComprobanteFk, r.numero";
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        return $arrayResultado;
+    }
 }
