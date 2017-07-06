@@ -117,7 +117,7 @@ class CtbTercero
     protected $tipoIdentificacionRel;
     
     /**
-     * @ORM\ManyToOne(targetEntity="CtbSucursal", inversedBy="ctbTercerosSucursalRel")
+     * @ORM\ManyToOne(targetEntity="CtbSucursal", inversedBy="tercerosSucursalRel")
      * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
      */
     protected $sucursalRel; 
@@ -126,12 +126,19 @@ class CtbTercero
      * @ORM\OneToMany(targetEntity="CtbAsientoDetalle", mappedBy="terceroRel")
      */
     protected $asientosDetallesTerceroRel;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CtbRegistro", mappedBy="terceroRel")
+     */
+    protected $registrosTerceroRel;     
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->asientosDetallesTerceroRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->registrosTerceroRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -656,5 +663,39 @@ class CtbTercero
     public function getAsientosDetallesTerceroRel()
     {
         return $this->asientosDetallesTerceroRel;
+    }
+
+    /**
+     * Add registrosTerceroRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosTerceroRel
+     *
+     * @return CtbTercero
+     */
+    public function addRegistrosTerceroRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosTerceroRel)
+    {
+        $this->registrosTerceroRel[] = $registrosTerceroRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove registrosTerceroRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosTerceroRel
+     */
+    public function removeRegistrosTerceroRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosTerceroRel)
+    {
+        $this->registrosTerceroRel->removeElement($registrosTerceroRel);
+    }
+
+    /**
+     * Get registrosTerceroRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegistrosTerceroRel()
+    {
+        return $this->registrosTerceroRel;
     }
 }

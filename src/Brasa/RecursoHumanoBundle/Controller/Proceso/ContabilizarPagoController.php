@@ -217,7 +217,9 @@ class ContabilizarPagoController extends Controller {
                         } else {
                             $arRegistro->setCredito($arPagoDetalle->getVrPago());
                         }
-                        $arRegistro->setDescripcionContable($arPagoDetalle->getPagoConceptoRel()->getNombre());
+                        $arRegistro->setDescripcionContable($arPagoDetalle->getPagoConceptoRel()->getNombre());                        
+                        $arRegistro->setSucursalRel($arPago->getEmpleadoRel()->getSucursalRel());
+                        $arRegistro->setCodigoAreaFk($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz());
                         $em->persist($arRegistro);
                     } else {
                         $respuesta = "La cuenta " . $arPagoConceptoCuenta->getCodigoCuentaFk() . " no existe en el plan de cuentas";
@@ -245,6 +247,8 @@ class ContabilizarPagoController extends Controller {
                         $arRegistro->setFecha($arPago->getFechaHasta());
                         $arRegistro->setCredito($arPago->getVrNeto());
                         $arRegistro->setDescripcionContable('NOMINA POR PAGAR');
+                        $arRegistro->setSucursalRel($arPago->getEmpleadoRel()->getSucursalRel());
+                        $arRegistro->setCodigoAreaFk($arPago->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz());                        
                         $em->persist($arRegistro);
                     }
                 }

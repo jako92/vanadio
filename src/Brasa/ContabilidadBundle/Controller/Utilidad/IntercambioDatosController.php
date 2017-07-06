@@ -514,18 +514,14 @@ class IntercambioDatosController extends Controller {
                     ->setCellValue('O' . $i, $arRegistro->getNumeroReferencia())
                     ->setCellValue('P' . $i, 0)
                     ->setCellValue('Q' . $i, 10001)
-                    ->setCellValue('R' . $i, 0)
-                    ->setCellValue('S' . $i, 0);
+                    ->setCellValue('R' . $i, $arRegistro->getCodigoAreaFk())
+                    ->setCellValue('S' . $i, $arRegistro->getCodigoSucursalFk());
             if ($arRegistro->getCodigoTerceroFk()) {
                 $numeroIdentificacionTercero = $arRegistro->getTerceroRel()->getNumeroIdentificacion();
-                $area = $arRegistro->getTerceroRel()->getArea();
-                $sucursal = $arRegistro->getTerceroRel()->getCodigoSucursalFk();
                 if(!$arRegistro->getTerceroRel()->getCodigoSucursalFk()){
                     $sucursal = 0;
-                }
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R' . $i, $area);
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $numeroIdentificacionTercero);
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S' . $i, $sucursal);
+                }                
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $numeroIdentificacionTercero);                
             }
             if ($arRegistro->getCodigoCentroCostoFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P' . $i, $arRegistro->getCentroCostoRel()->getCodigoInterface());

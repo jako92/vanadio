@@ -36,13 +36,17 @@ class CtbComprobante
      */
     protected $asientosComprobanteRel;
     
-       
+    /**
+     * @ORM\OneToMany(targetEntity="CtbRegistro", mappedBy="comprobanteRel")
+     */
+    protected $registrosComprobanteRel;        
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->asientosComprobanteRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->registrosComprobanteRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -149,5 +153,39 @@ class CtbComprobante
     public function getAsientosComprobanteRel()
     {
         return $this->asientosComprobanteRel;
+    }
+
+    /**
+     * Add registrosComprobanteRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosComprobanteRel
+     *
+     * @return CtbComprobante
+     */
+    public function addRegistrosComprobanteRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosComprobanteRel)
+    {
+        $this->registrosComprobanteRel[] = $registrosComprobanteRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove registrosComprobanteRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosComprobanteRel
+     */
+    public function removeRegistrosComprobanteRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosComprobanteRel)
+    {
+        $this->registrosComprobanteRel->removeElement($registrosComprobanteRel);
+    }
+
+    /**
+     * Get registrosComprobanteRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegistrosComprobanteRel()
+    {
+        return $this->registrosComprobanteRel;
     }
 }

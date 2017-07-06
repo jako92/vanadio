@@ -28,6 +28,11 @@ class CtbCentroCosto
     private $codigoInterface;                 
     
     /**
+     * @ORM\OneToMany(targetEntity="CtbRegistro", mappedBy="centroCostoRel")
+     */
+    protected $registrosCentroCostoRel;    
+    
+    /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEmpleado", mappedBy="centroCostoContabilidadRel")
      */
     protected $rhuEmpleadosCentroCostoRel;    
@@ -47,6 +52,19 @@ class CtbCentroCosto
      */
     protected $turCostosDetallesCentroCostoRel; 
     
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->registrosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rhuEmpleadosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turPuestosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turCostosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->turCostosDetallesCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Set codigoCentroCostoPk
      *
@@ -118,13 +136,39 @@ class CtbCentroCosto
     {
         return $this->codigoInterface;
     }
+
     /**
-     * Constructor
+     * Add registrosCentroCostoRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosCentroCostoRel
+     *
+     * @return CtbCentroCosto
      */
-    public function __construct()
+    public function addRegistrosCentroCostoRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosCentroCostoRel)
     {
-        $this->rhuEmpleadosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->turPuestosCentroCostoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->registrosCentroCostoRel[] = $registrosCentroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove registrosCentroCostoRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosCentroCostoRel
+     */
+    public function removeRegistrosCentroCostoRel(\Brasa\ContabilidadBundle\Entity\CtbRegistro $registrosCentroCostoRel)
+    {
+        $this->registrosCentroCostoRel->removeElement($registrosCentroCostoRel);
+    }
+
+    /**
+     * Get registrosCentroCostoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegistrosCentroCostoRel()
+    {
+        return $this->registrosCentroCostoRel;
     }
 
     /**

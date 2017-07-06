@@ -52,6 +52,16 @@ class CtbRegistro
      * @ORM\Column(name="codigo_centro_costo_fk", type="string", length=20, nullable=true)
      */     
     private $codigoCentroCostoFk;                                          
+
+    /**
+     * @ORM\Column(name="codigo_sucursal_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoSucursalFk;
+    
+    /**
+     * @ORM\Column(name="codigo_area_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoAreaFk;    
     
     /**
      * @ORM\Column(name="debito", type="float")
@@ -86,13 +96,13 @@ class CtbRegistro
     protected $cuentaRel;                  
     
     /**
-     * @ORM\ManyToOne(targetEntity="CtbCentroCosto", inversedBy="CtbRegistro")
+     * @ORM\ManyToOne(targetEntity="CtbCentroCosto", inversedBy="registrosCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     private $centroCostoRel;    
     
     /**
-     * @ORM\ManyToOne(targetEntity="CtbTercero", inversedBy="CtbRegistro")
+     * @ORM\ManyToOne(targetEntity="CtbTercero", inversedBy="registrosTerceroRel")
      * @ORM\JoinColumn(name="codigo_tercero_fk", referencedColumnName="codigo_tercero_pk")
      */
     protected $terceroRel;    
@@ -102,6 +112,12 @@ class CtbRegistro
      * @ORM\JoinColumn(name="codigo_comprobante_fk", referencedColumnName="codigo_comprobante_pk")
      */
     protected $comprobanteRel;     
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CtbSucursal", inversedBy="registrosSucursalRel")
+     * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
+     */
+    private $sucursalRel;
 
 
 
@@ -284,6 +300,54 @@ class CtbRegistro
     }
 
     /**
+     * Set codigoSucursalFk
+     *
+     * @param string $codigoSucursalFk
+     *
+     * @return CtbRegistro
+     */
+    public function setCodigoSucursalFk($codigoSucursalFk)
+    {
+        $this->codigoSucursalFk = $codigoSucursalFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSucursalFk
+     *
+     * @return string
+     */
+    public function getCodigoSucursalFk()
+    {
+        return $this->codigoSucursalFk;
+    }
+
+    /**
+     * Set codigoAreaFk
+     *
+     * @param string $codigoAreaFk
+     *
+     * @return CtbRegistro
+     */
+    public function setCodigoAreaFk($codigoAreaFk)
+    {
+        $this->codigoAreaFk = $codigoAreaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAreaFk
+     *
+     * @return string
+     */
+    public function getCodigoAreaFk()
+    {
+        return $this->codigoAreaFk;
+    }
+
+    /**
      * Set debito
      *
      * @param float $debito
@@ -428,6 +492,30 @@ class CtbRegistro
     }
 
     /**
+     * Set centroCostoRel
+     *
+     * @param \Brasa\ContabilidadBundle\Entity\CtbCentroCosto $centroCostoRel
+     *
+     * @return CtbRegistro
+     */
+    public function setCentroCostoRel(\Brasa\ContabilidadBundle\Entity\CtbCentroCosto $centroCostoRel = null)
+    {
+        $this->centroCostoRel = $centroCostoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get centroCostoRel
+     *
+     * @return \Brasa\ContabilidadBundle\Entity\CtbCentroCosto
+     */
+    public function getCentroCostoRel()
+    {
+        return $this->centroCostoRel;
+    }
+
+    /**
      * Set terceroRel
      *
      * @param \Brasa\ContabilidadBundle\Entity\CtbTercero $terceroRel
@@ -476,26 +564,26 @@ class CtbRegistro
     }
 
     /**
-     * Set centroCostoRel
+     * Set sucursalRel
      *
-     * @param \Brasa\ContabilidadBundle\Entity\CtbCentroCosto $centroCostoRel
+     * @param \Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel
      *
      * @return CtbRegistro
      */
-    public function setCentroCostoRel(\Brasa\ContabilidadBundle\Entity\CtbCentroCosto $centroCostoRel = null)
+    public function setSucursalRel(\Brasa\ContabilidadBundle\Entity\CtbSucursal $sucursalRel = null)
     {
-        $this->centroCostoRel = $centroCostoRel;
+        $this->sucursalRel = $sucursalRel;
 
         return $this;
     }
 
     /**
-     * Get centroCostoRel
+     * Get sucursalRel
      *
-     * @return \Brasa\ContabilidadBundle\Entity\CtbCentroCosto
+     * @return \Brasa\ContabilidadBundle\Entity\CtbSucursal
      */
-    public function getCentroCostoRel()
+    public function getSucursalRel()
     {
-        return $this->centroCostoRel;
+        return $this->sucursalRel;
     }
 }
