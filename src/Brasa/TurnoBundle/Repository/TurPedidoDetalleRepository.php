@@ -559,4 +559,13 @@ class TurPedidoDetalleRepository extends EntityRepository {
         return $boolFestivo;
     }      
     
+    public function pedidoSinProgramarDql($codigoCliente = "") {
+        $dql   = "SELECT pd, p FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p WHERE p.estadoProgramado = 0 AND p.estadoAutorizado = 1 AND p.estadoAnulado = 0";        
+        if($codigoCliente != "") {
+            $dql .= " AND p.codigoClienteFk = " . $codigoCliente;
+        }        
+        $dql .= " ORDER BY pd.codigoPedidoFk";
+        return $dql;
+    }     
+    
 }

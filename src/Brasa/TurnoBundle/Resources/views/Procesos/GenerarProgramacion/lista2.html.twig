@@ -1,0 +1,142 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Generar programacion turnos - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Programacion: generar</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Procesos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Generar programacion</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content"> 
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>    
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">                               
+                <div     class="form-group form-group-sm">
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">     
+                                    {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <div class="btn-toolbar" style="float: right">
+
+                    <div class="btn-group">
+                        {{ form_widget(form.BtnGenerar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>                        
+                    <div class="btn-group">                            
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>                    
+            </div>
+        </div>                 
+            
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th></th>                
+                <th></th>
+                <th></th>
+                <th>PUESTO</th>                
+                <th>SERVICIO</th>                
+                <th>PERIODO</th>                           
+                <th>DES</th>
+                <th>HAS</th>
+                <th>CANT</th>
+                <th>LU</th>
+                <th>MA</th>
+                <th>MI</th>
+                <th>JU</th>
+                <th>VI</th>
+                <th>SA</th>
+                <th>DO</th>
+                <th>FE</th>
+                <th><p data-toggle="tooltip" data-placement="top" title="Horas (Programadas)">H(P)</p></th>                            
+                <th><p data-toggle="tooltip" data-placement="top" title="Horas diurnas (Programadas)">HD(P)</p></th>                            
+                <th><p data-toggle="tooltip" data-placement="top" title="Horas nocturnas (Programadas)">HN(P)</p></th>
+                <th>DIAS</th>
+                <th></th>
+            </tr>
+            {% set intCodigoCliente = '' %}
+            {% for arPedidosDetalles in arPedidosDetalles %}
+                {% if intCodigoCliente != arPedidosDetalles.pedidoRel.codigoClienteFk %}
+                    <tr> 
+                        <td id="suptipo">{{ arPedidosDetalles.codigoPedidoFk | default('') }}</td>
+                        <td id="suptipo">{{ arPedidosDetalles.pedidoRel.numero | default('') }}</td>
+                        <td id="suptipo">{{ arPedidosDetalles.pedidoRel.fechaProgramacion | date('Y/m') }}</td>
+                        <td id="suptipo" colspan="18">{{ arPedidosDetalles.pedidoRel.clienteRel.nombreCorto | default('') }}</td>
+                        <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidosDetalles.codigoPedidoFk }}" /></td> 
+                    </tr>
+                    {% set intCodigoCliente = arPedidosDetalles.pedidoRel.codigoClienteFk %}
+                {% endif %}                 
+                <tr>
+                    <td id="suptipo" colspan="3"></td>                                       
+                    <td>{{ arPedidosDetalles.puestoRel.nombre | default('') }}</td> 
+                    <td>{{ arPedidosDetalles.conceptoServicioRel.nombre  }}</td>                                        
+                    <td>{{ arPedidosDetalles.periodoRel.nombre  }}</td>                                       
+                    <td>{{ arPedidosDetalles.diaDesde }}</td>    
+                    <td>{{ arPedidosDetalles.diaHasta }}</td>    
+                    <td>{{ arPedidosDetalles.cantidad  }}</td>                    
+                    <td>{% if arPedidosDetalles.lunes == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.martes == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.miercoles == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.jueves == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.viernes == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.sabado == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.domingo == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td>{% if arPedidosDetalles.festivo == 1 %} SI {% else %} NO {% endif %}</td>                      
+                    <td style="text-align: right" {% if arPedidosDetalles.horas != arPedidosDetalles.horasProgramadas %} class="danger" {% endif %}>{{ arPedidosDetalles.horas | number_format(0, '.', ',') }}({{ arPedidosDetalles.horasProgramadas | number_format(0, '.', ',') }})</td> 
+                    <td style="text-align: right" {% if arPedidosDetalles.horasDiurnas != arPedidosDetalles.horasDiurnasProgramadas %} class="danger" {% endif %}>{{ arPedidosDetalles.horasDiurnas | number_format(0, '.', ',') }}({{ arPedidosDetalles.horasDiurnasProgramadas | number_format(0, '.', ',') }})</td> 
+                    <td style="text-align: right" {% if arPedidosDetalles.horasNocturnas != arPedidosDetalles.horasNocturnasProgramadas %} class="danger" {% endif %}>{{ arPedidosDetalles.horasNocturnas | number_format(0, '.', ',') }}({{ arPedidosDetalles.horasNocturnasProgramadas | number_format(0, '.', ',') }})</td> 
+                    <td style="text-align: right">{{ arPedidosDetalles.dias | number_format(0, '.', ',') }}</td> 
+                    <td style="text-align: center">{% if arPedidosDetalles.codigoServicioDetalleFk %}<a href="{{ path('brs_tur_movimiento_servicio_detalle_recurso', { 'codigoServicioDetalle': arPedidosDetalles.codigoServicioDetalleFk }) }}" target="_blank"><img src="{{ asset('imagenes/bootstrap/glyphicons_043_group.png') }}" width=22 height=22></a>{% endif %}</td>                                    
+                </tr>
+            {% endfor %}
+        </table>  
+        
+        <!-- Botones Menu Items -->
+        <div class="btn-group" style="float: left">
+            <div class="btn btn-default btn-sm">registros <span class="badge">{{ arPedidosDetalles.getTotalItemCount }}</span></div>                        
+        </div>
+        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+            {{ knp_pagination_render(arPedidosDetalles) }}       
+        </div>
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">                                
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+            <div class="btn-group">                                
+                {{ form_widget(form.BtnCerrarProgramacion, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>            
+        </div>        
+        <!-- Fin Botones Menu Items -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
