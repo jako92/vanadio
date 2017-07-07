@@ -27,17 +27,17 @@
             <div class="panel-heading">Parametros</div>
             <div class="panel-body">        
                 <div class="form-group form-group-sm">
-                    <label for="form_fecha" class="col-sm-3 control-label">Periodo:</label>
-                    <div class="col-sm-9">
+                    <label for="form_fecha" class="col-sm-2 control-label">Periodo año:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.anio) }}
+                    </div>
+                    <label for="form_fecha" class="col-sm-2 control-label">Periodo mes:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.mes) }}
                     </div>
-                </div>                     
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnActualizarHorasProgramadas, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
-                        <br/><br/>                        
-                    </div>
+                </div><br>                  
+                <div class="btn-group" style="float: right">
+                    {{ form_widget(form.BtnActualizarHorasProgramadas, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
                 </div>
             </div>
         </div>
