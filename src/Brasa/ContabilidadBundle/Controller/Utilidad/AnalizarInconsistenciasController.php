@@ -36,7 +36,7 @@ class AnalizarInconsistenciasController extends Controller {
                 $this->listar();
             }
         }
-        $arRegistros = $paginator->paginate($this->strDqlLista, $request->query->get('page', 1), 100);
+        $arRegistros = $this->strDqlLista;
         return $this->render('BrasaContabilidadBundle:Utilidad/AnalizarInconsistencias:lista.html.twig', array(
                     'arRegistros' => $arRegistros,
                     'form' => $form->createView()
