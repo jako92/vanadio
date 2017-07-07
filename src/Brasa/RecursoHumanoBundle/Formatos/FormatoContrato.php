@@ -1,13 +1,13 @@
 <?php
+
 namespace Brasa\RecursoHumanoBundle\Formatos;
 
 class FormatoContrato extends \FPDF_FPDF {
-    
+
     public static $em;
-    
     public static $codigoContrato;
-    
-    public function Generar($em, $codigoContrato) {        
+
+    public function Generar($em, $codigoContrato) {
         ob_clean();
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
@@ -18,21 +18,20 @@ class FormatoContrato extends \FPDF_FPDF {
         $pdf->SetFont('Times', '', 12);
         $this->Body($pdf);
 
-        $pdf->Output("Contrato$codigoContrato.pdf", 'D');        
-        
-    } 
-    
+        $pdf->Output("Contrato$codigoContrato.pdf", 'D');
+    }
+
     public function Header() {
-        $this->SetFillColor(236, 236, 236);        
-        $this->SetFont('Arial','B',10);                        
-        $this->EncabezadoDetalles();        
+        $this->SetFillColor(236, 236, 236);
+        $this->SetFont('Arial', 'B', 10);
+        $this->EncabezadoDetalles();
     }
 
     public function EncabezadoDetalles() {
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
+        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContrato->getCodigoContratoTipoFk());        
+        $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContrato->getCodigoContratoTipoFk());
         $this->SetXY(10, 10);
         $this->Image('imagenes/logos/logo.jpg', 12, 13, 35, 17);
         //$this->Cell(185, 7, utf8_decode($arContenidoFormato->getTitulo()), 0, 0, 'C', 1);
@@ -42,37 +41,37 @@ class FormatoContrato extends \FPDF_FPDF {
 
     public function Body($pdf) {
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
-        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);        
+        $arConfiguracion = self::$em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
         $arContrato = new \Brasa\RecursoHumanoBundle\Entity\RhuContrato();
-        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);        
+        $arContrato = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->find(self::$codigoContrato);
         $codigoContratoTipo = $arContrato->getCodigoContratoTipoFk();
         $arContratoTipo = new \Brasa\RecursoHumanoBundle\Entity\RhuContratoTipo();
         $arContratoTipo = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContratoTipo')->find($codigoContratoTipo);
         $codigoContenidoFormato = $arContratoTipo->getCodigoContenidoFormatoFk();
         $arContenidoFormato = new \Brasa\GeneralBundle\Entity\GenContenidoFormato();
-        if ($codigoContratoTipo == null){
-           $cadena = "El contrato no tiene asociado un formato tipo contrato"; 
+        if ($codigoContratoTipo == null) {
+            $cadena = "El contrato no tiene asociado un formato tipo contrato";
         } else {
-           if ($codigoContenidoFormato == null){
-               $cadena = "El contrato no tiene un formato creado en el sistema";
-           } else {
-               $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContratoTipo->getCodigoContenidoFormatoFk());
-               $cadena = $arContenidoFormato->getContenido();
-             }
-          }
+            if ($codigoContenidoFormato == null) {
+                $cadena = "El contrato no tiene un formato creado en el sistema";
+            } else {
+                $arContenidoFormato = self::$em->getRepository('BrasaGeneralBundle:GenContenidoFormato')->find($arContratoTipo->getCodigoContenidoFormatoFk());
+                $cadena = $arContenidoFormato->getContenido();
+            }
+        }
         $pdf->SetXY(50, 36);
-        $pdf->SetFont('Arial','B',12);
-        $pdf->Cell(110, 6, utf8_decode($arContenidoFormato->getTitulo()) , 0, 0, 'C');
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(110, 6, utf8_decode($arContenidoFormato->getTitulo()), 0, 0, 'C');
         //$pdf->MultiCell(110, 2, $arContenidoFormato->getTitulo(), 0, 'C');
         $pdf->SetXY(50, 44);
-        $pdf->Cell(110, 6, utf8_decode($arConfiguracion->getNombreEmpresa()) , 0, 0, 'C');
+        $pdf->Cell(110, 6, utf8_decode($arConfiguracion->getNombreEmpresa()), 0, 0, 'C');
         //$pdf->SetXY(50, 50);
         //$pdf->Cell(110, 6, utf8_decode("REGIONAL " . $arConfiguracion->getCiudadRel()->getDepartamentoRel()->getNombre()) , 0, 0, 'C');
         $pdf->SetXY(177, 56);
-        $pdf->SetFont('Arial','B',9);
-        $pdf->Cell(25, 6, utf8_decode("N° " . $arContrato->getCodigoContratoPk()) , 0, 0, 'C');
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->Cell(25, 6, utf8_decode("N° " . $arContrato->getCodigoContratoPk()), 0, 0, 'C');
         $pdf->SetXY(10, 72);
-        $pdf->SetFont('Arial', '', 10);  
+        $pdf->SetFont('Arial', '', 10);
         //se reemplaza el contenido de la tabla tipo de proceso disciplinario
         $sustitucion1 = $arContrato->getEmpleadoRel()->getNumeroIdentificacion();
         $sustitucion2 = $arContrato->getEmpleadoRel()->getNombreCorto();
@@ -82,12 +81,12 @@ class FormatoContrato extends \FPDF_FPDF {
         $sustitucion6 = $arConfiguracion->getDireccionEmpresa();
         $sustitucion7 = $arContrato->getEmpleadoRel()->getBarrio();
         $sustitucion8 = $arContrato->getEmpleadoRel()->getFechaNacimiento()->format('Y/m/d');
-        if ($arContrato->getEmpleadoRel()->getCodigoCiudadNacimientoFk() != null){
+        if ($arContrato->getEmpleadoRel()->getCodigoCiudadNacimientoFk() != null) {
             $ciudadNacimiento = $arContrato->getEmpleadoRel()->getCiudadNacimientoRel()->getNombre();
         } else {
             $ciudadNacimiento = '';
         }
-        if ($arContrato->getEmpleadoRel()->getCodigoCiudadNacimientoFk() != null){
+        if ($arContrato->getEmpleadoRel()->getCodigoCiudadNacimientoFk() != null) {
             $gentilicio = $arContrato->getEmpleadoRel()->getCiudadNacimientoRel()->getDepartamentoRel()->getPaisRel()->getGentilicio();
         } else {
             $gentilicio = '';
@@ -96,10 +95,10 @@ class FormatoContrato extends \FPDF_FPDF {
         $sustitucion10 = $arContrato->getEmpleadoRel()->getCiudadRel()->getNombre();
         $sustitucion11 = $gentilicio;
         $sustitucion12 = $arContrato->getCargoRel()->getNombre();
-        $sustitucion13 = number_format($arContrato->getVrSalario(), 2,'.',',');
+        $sustitucion13 = number_format($arContrato->getVrSalario(), 2, '.', ',');
         $sustitucion14 = $arContrato->getCentroCostoRel()->getPeriodoPagoRel()->getNombre();
         $sustitucion15 = $arContrato->getCentroCostoRel()->getDiasPago();
-        if ($arContrato->getFechaProrrogaInicio() == null){
+        if ($arContrato->getFechaProrrogaInicio() == null) {
             $sustitucion16 = $arContrato->getFechaDesde()->format('Y/m/d');
             $sustitucion23 = $arContrato->getFechaHasta()->format('Y/m/d');
             $feci = $arContrato->getFechaDesde();
@@ -113,30 +112,34 @@ class FormatoContrato extends \FPDF_FPDF {
         //$feci = $arContrato->getFechaDesde();
         //$fecf = $arContrato->getFechaHasta();
         $sustitucion17 = $arContrato->getCiudadContratoRel()->getNombre();
-        if ($arContrato->getEmpleadoRel()->getCodigoCiudadExpedicionFk() != null){
+        if ($arContrato->getEmpleadoRel()->getCodigoCiudadExpedicionFk() != null) {
             $ciudadExpedicion = $arContrato->getEmpleadoRel()->getCiudadExpedicionRel()->getNombre();
         } else {
             $ciudadExpedicion = '';
         }
         $sustitucion18 = $ciudadExpedicion;
-        $sustitucion19 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion16));
+        $sustitucion19 = strftime("%d de " . $this->MesesEspañol($feci->format('m')) . " de %Y", strtotime($sustitucion16));
         $sustitucion20 = $arContrato->getTipoTiempoRel()->getNombre();
-        $sustitucion21 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion16));
+        $sustitucion21 = strftime("%d de " . $this->MesesEspañol($feci->format('m')) . " de %Y", strtotime($sustitucion16));
         //calculo meses        
         $interval = $feci->diff($fecf);
         $interval = round($interval->format('%a%') / 30);
-        $sustitucion22 = $interval; 
-        $sustitucion24 = strftime("%d de ". $this->MesesEspañol($feci->format('m')) ." de %Y", strtotime($sustitucion23));
-        $sustitucion25 = " - ".$arConfiguracion->getDigitoVerificacionEmpresa();
+        $sustitucion22 = $interval;
+        $sustitucion24 = strftime("%d de " . $this->MesesEspañol($feci->format('m')) . " de %Y", strtotime($sustitucion23));
+        $sustitucion25 = " - " . $arConfiguracion->getDigitoVerificacionEmpresa();
         $salarioLetras = self::$em->getRepository('BrasaRecursoHumanoBundle:RhuContrato')->numtoletras($arContrato->getVrSalario());
-        $sustitucion26 = $salarioLetras." $(";
-        $sustitucion26 .= number_format($arContrato->getVrSalario(), 2,'.',',');
+        $sustitucion26 = $salarioLetras . " $(";
+        $sustitucion26 .= number_format($arContrato->getVrSalario(), 2, '.', ',');
         $sustitucion26 .= ")";
         $sustitucion27 = $arContrato->getCiudadContratoRel()->getNombre();
         $sustitucion28 = $arContrato->getCiudadLaboraRel()->getNombre();
         $sustitucion29 = date('Y-m-d');
         $sustitucion30 = $arContrato->getCentroCostoRel()->getNombre();
-        $sustitucion31 = number_format($arContrato->getVrSalarioPago(), 2,'.',',');
+        $sustitucion31 = number_format($arContrato->getVrSalarioPago(), 2, '.', ',');
+        $sustitucion32 = $arContrato->getEntidadCajaRel()->getNombre();
+        $sustitucion33 = $arContrato->getEntidadCesantiaRel()->getNombre();
+        $sustitucion34 = $arContrato->getEntidadPensionRel()->getNombre();
+        $sustitucion35 = $arContrato->getEntidadSaludRel()->getNombre();
         //contenido de la cadena
         //$cadena = $arContenidoFormato->getContenido();
         $patron1 = '/#1/';
@@ -170,6 +173,11 @@ class FormatoContrato extends \FPDF_FPDF {
         $patron29 = '/#t/';
         $patron30 = '/#u/';
         $patron31 = '/#v/';
+        $patron32 = '/#w/';
+        $patron33 = '/#x/';
+        $patron34 = '/#y/';
+        $patron35 = '/#z/';
+
         //reemplazar en la cadena
         $cadenaCambiada = preg_replace($patron1, $sustitucion1, $cadena);
         $cadenaCambiada = preg_replace($patron2, $sustitucion2, $cadenaCambiada);
@@ -202,58 +210,61 @@ class FormatoContrato extends \FPDF_FPDF {
         $cadenaCambiada = preg_replace($patron29, $sustitucion29, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron30, $sustitucion30, $cadenaCambiada);
         $cadenaCambiada = preg_replace($patron31, $sustitucion31, $cadenaCambiada);
-        $pdf->MultiCell(0,5, $cadenaCambiada);
-   
+        $cadenaCambiada = preg_replace($patron32, $sustitucion32, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron33, $sustitucion33, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron34, $sustitucion34, $cadenaCambiada);
+        $cadenaCambiada = preg_replace($patron35, $sustitucion35, $cadenaCambiada);
+        $pdf->MultiCell(0, 5, $cadenaCambiada);
     }
 
     public function Footer() {
         //$this->Cell(0,10,'Página '.$this->PageNo(),0,0,'C'); 
         $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
-    } 
-    
+    }
+
     public static function MesesEspañol($mes) {
-        
-        if ($mes == '01'){
+
+        if ($mes == '01') {
             $mesEspañol = "Enero";
         }
-        if ($mes == '02'){
+        if ($mes == '02') {
             $mesEspañol = "Febrero";
         }
-        if ($mes == '03'){
+        if ($mes == '03') {
             $mesEspañol = "Marzo";
         }
-        if ($mes == '04'){
+        if ($mes == '04') {
             $mesEspañol = "Abril";
         }
-        if ($mes == '05'){
+        if ($mes == '05') {
             $mesEspañol = "Mayo";
         }
-        if ($mes == '06'){
+        if ($mes == '06') {
             $mesEspañol = "Junio";
         }
-        if ($mes == '07'){
+        if ($mes == '07') {
             $mesEspañol = "Julio";
         }
-        if ($mes == '08'){
+        if ($mes == '08') {
             $mesEspañol = "Agosto";
         }
-        if ($mes == '09'){
+        if ($mes == '09') {
             $mesEspañol = "Septiembre";
         }
-        if ($mes == '10'){
+        if ($mes == '10') {
             $mesEspañol = "Octubre";
         }
-        if ($mes == '11'){
+        if ($mes == '11') {
             $mesEspañol = "Noviembre";
         }
-        if ($mes == '12'){
+        if ($mes == '12') {
             $mesEspañol = "Diciembre";
         }
 
         return $mesEspañol;
     }
-}
 
+}
 ?>
 
 
