@@ -184,9 +184,9 @@ class PeriodoController extends Controller {
                 return $this->redirect($this->generateUrl('brs_rhu_utilidad_seguridad_social_detalle', array('codigoPeriodo' => $codigoPeriodo)));
             }
             if ($request->request->get('OpCerrar')) {
-                $codigoPeriodo = $request->request->get('OpCerrar');
+                $codigoPeriodoDetalle = $request->request->get('OpCerrar');
                 $arPeriodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
-                $arPeriodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($codigoPeriodo);
+                $arPeriodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($codigoPeriodoDetalle);
                 if ($arPeriodoDetalle->getEstadoGenerado() == 0) {
                     $objMensaje->Mensaje("error", "Debe generar periodo de la sucursal para poder cerrarlo");
                 } else {
