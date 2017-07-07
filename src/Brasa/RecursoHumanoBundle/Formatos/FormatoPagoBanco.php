@@ -52,46 +52,57 @@ class FormatoPagoBanco extends \FPDF_FPDF {
         $this->SetXY(10, 40);
         $this->SetFillColor(200, 200, 200); 
         $this->SetFont('Arial','B',8);
-        $this->Cell(30, 6, utf8_decode("CÓDIGO:") , 1, 0, 'L', 1);
+        $this->Cell(30, 6, utf8_decode("NUMERO:") , 1, 0, 'L', 1);
         $this->SetFillColor(272, 272, 272); 
         $this->SetFont('Arial','',8);
-        $this->Cell(30, 6, $arPagoBanco->getCodigoPagoBancoPk(), 1, 0, 'R', 1);
+        $this->Cell(30, 6, $arPagoBanco->getNumero(), 1, 0, 'R', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
         $this->Cell(30, 6, "BANCO:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 6, utf8_decode($arPagoBanco->getCuentaRel()->getBancoRel()->getNombre()), 1, 0, 'L', 1);
+        $this->Cell(103, 6, utf8_decode($arPagoBanco->getCuentaRel()->getBancoRel()->getNombre()), 1, 0, 'L', 1);
         //linea 2
         $this->SetXY(10, 45);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, utf8_decode("REGISTROS:") , 1, 0, 'L', 1);
+        $this->Cell(30, 5, utf8_decode("REGISTRO:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272);
         $this->Cell(30, 5, $arPagoBanco->getNumeroRegistros() , 1, 0, 'R', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, "DESCRIPCION:" , 1, 0, 'L', 1);
+        $this->Cell(30, 5, "TIPO:" , 1, 0, 'L', 1);
         $this->SetFont('Arial','',7);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 5, $arPagoBanco->getDescripcion() , 1, 0, 'L', 1);
+        $this->Cell(103, 5, $arPagoBanco->getPagoBancoTipoRel()->getNombre() , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         
         //linea 3
         $this->SetXY(10, 50);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
-        $this->Cell(30, 5, utf8_decode("TIPO:") , 1, 0, 'L', 1);
+        $this->Cell(30, 5, utf8_decode("FECHA:") , 1, 0, 'L', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272);
-        $this->Cell(30, 5, $arPagoBanco->getPagoBancoTipoRel()->getNombre() , 1, 0, 'L', 1);
+        $this->Cell(30, 5, $arPagoBanco->getFecha()->format('Y/m/d') , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->SetFillColor(200, 200, 200);
         $this->Cell(30, 5, "TOTAL:" , 1, 0, 'R', 1);
         $this->SetFont('Arial','',8);
         $this->SetFillColor(272, 272, 272); 
-        $this->Cell(100, 5, number_format($arPagoBanco->getVrTotalPago(), 0, '.', ',') , 1, 0, 'R', 1);
+        $this->Cell(103, 5, number_format($arPagoBanco->getVrTotalPago(), 0, '.', ',') , 1, 0, 'R', 1);
+        $this->SetFont('Arial','B',8);
+        $this->EncabezadoDetalles();
+        
+        //linea 4
+        $this->SetXY(10, 55);
+        $this->SetFont('Arial','B',8);
+        $this->SetFillColor(200, 200, 200);
+        $this->Cell(30, 5, utf8_decode("DESCRIPCION:") , 1, 0, 'L', 1);
+        $this->SetFont('Arial','',8);
+        $this->SetFillColor(272, 272, 272);
+        $this->Cell(163, 5, $arPagoBanco->getDescripcion() , 1, 0, 'L', 1);
         $this->SetFont('Arial','B',8);
         $this->EncabezadoDetalles();
         
