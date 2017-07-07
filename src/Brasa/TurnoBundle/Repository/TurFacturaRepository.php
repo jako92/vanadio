@@ -139,23 +139,18 @@ class TurFacturaRepository extends EntityRepository {
         $subtotal = round($subtotal);
         $iva = round($iva);
         $total = round($total);
-        $topeRetencionFuente = 0;
-        if ($arFactura->getFacturaServicioRel()->getTipoRetencionFuente() == 1) {
-            $topeRetencionFuente = $arConfiguracion->getBaseRetencionFuente();
-        }
-        if ($arFactura->getFacturaServicioRel()->getTipoRetencionFuente() == 2) {
-            $topeRetencionFuente = $arConfiguracion->getBaseRetencionFuenteCompras();
-        }
+        $topeMinimoRetencionFuente = $arFactura->getFacturaServicioRel()->getMinimoRetencionFuente();        
+        
         if ($arFactura->getFacturaTipoRel()->getTipo() == 2) {
             if ($arConfiguracion->getAplicarTopeRetencionFuenteNotasCredito() == 0) {
-                $topeRetencionFuente = 0;
+                $topeMinimoRetencionFuente = 0;
             }
         }
         $porRetencionFuente = $arFactura->getFacturaServicioRel()->getPorRetencionFuente();
         $porBaseRetencionFuente = $arFactura->getFacturaServicioRel()->getPorBaseRetencionFuente();
         $baseRetencionFuente = ($subtotal * $porBaseRetencionFuente) / 100;
         $baseRetencionFuente = $baseRetencionFuente;
-        if ($baseRetencionFuente >= $topeRetencionFuente) {
+        if ($baseRetencionFuente >= $topeMinimoRetencionFuente) {
             if ($arFactura->getClienteRel()->getRetencionFuente()) {
                 $retencionFuente = ($baseRetencionFuente * $porRetencionFuente ) / 100;
                 $retencionFuente = round($retencionFuente);

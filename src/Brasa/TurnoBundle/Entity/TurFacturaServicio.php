@@ -35,12 +35,12 @@ class TurFacturaServicio
     /**
      * @ORM\Column(name="por_retencion_fuente", type="float")
      */
-    private $porRetencionFuente = 0;    
+    private $porRetencionFuente = 0;           
     
     /**
-     * @ORM\Column(name="tipo_retencion_fuente", type="integer")
+     * @ORM\Column(name="minimo_retencion_fuente", type="float")
      */
-    private $tipo_retencion_fuente = 0;    
+    private $minimoRetencionFuente = 0;    
     
     /**
      * @ORM\Column(name="codigo_cuenta_cartera_fk", type="string", length=20, nullable=true)
@@ -83,6 +83,7 @@ class TurFacturaServicio
      */
     protected $facturasFacturaServicioRel;    
 
+
     /**
      * Constructor
      */
@@ -123,6 +124,30 @@ class TurFacturaServicio
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurFacturaServicio
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
     }
 
     /**
@@ -174,6 +199,30 @@ class TurFacturaServicio
     }
 
     /**
+     * Set minimoRetencionFuente
+     *
+     * @param float $minimoRetencionFuente
+     *
+     * @return TurFacturaServicio
+     */
+    public function setMinimoRetencionFuente($minimoRetencionFuente)
+    {
+        $this->minimoRetencionFuente = $minimoRetencionFuente;
+
+        return $this;
+    }
+
+    /**
+     * Get minimoRetencionFuente
+     *
+     * @return float
+     */
+    public function getMinimoRetencionFuente()
+    {
+        return $this->minimoRetencionFuente;
+    }
+
+    /**
      * Set codigoCuentaCarteraFk
      *
      * @param string $codigoCuentaCarteraFk
@@ -219,6 +268,30 @@ class TurFacturaServicio
     public function getCodigoCuentaRetencionFuenteFk()
     {
         return $this->codigoCuentaRetencionFuenteFk;
+    }
+
+    /**
+     * Set codigoCuentaRetencionIvaFk
+     *
+     * @param string $codigoCuentaRetencionIvaFk
+     *
+     * @return TurFacturaServicio
+     */
+    public function setCodigoCuentaRetencionIvaFk($codigoCuentaRetencionIvaFk)
+    {
+        $this->codigoCuentaRetencionIvaFk = $codigoCuentaRetencionIvaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionIvaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionIvaFk()
+    {
+        return $this->codigoCuentaRetencionIvaFk;
     }
 
     /**
@@ -349,77 +422,5 @@ class TurFacturaServicio
     public function getFacturasFacturaServicioRel()
     {
         return $this->facturasFacturaServicioRel;
-    }
-
-    /**
-     * Set tipoRetencionFuente
-     *
-     * @param integer $tipoRetencionFuente
-     *
-     * @return TurFacturaServicio
-     */
-    public function setTipoRetencionFuente($tipoRetencionFuente)
-    {
-        $this->tipo_retencion_fuente = $tipoRetencionFuente;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoRetencionFuente
-     *
-     * @return integer
-     */
-    public function getTipoRetencionFuente()
-    {
-        return $this->tipo_retencion_fuente;
-    }
-
-    /**
-     * Set porcentajeIva
-     *
-     * @param float $porcentajeIva
-     *
-     * @return TurFacturaServicio
-     */
-    public function setPorcentajeIva($porcentajeIva)
-    {
-        $this->porcentajeIva = $porcentajeIva;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeIva
-     *
-     * @return float
-     */
-    public function getPorcentajeIva()
-    {
-        return $this->porcentajeIva;
-    }
-
-    /**
-     * Set codigoCuentaRetencionIvaFk
-     *
-     * @param string $codigoCuentaRetencionIvaFk
-     *
-     * @return TurFacturaServicio
-     */
-    public function setCodigoCuentaRetencionIvaFk($codigoCuentaRetencionIvaFk)
-    {
-        $this->codigoCuentaRetencionIvaFk = $codigoCuentaRetencionIvaFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCuentaRetencionIvaFk
-     *
-     * @return string
-     */
-    public function getCodigoCuentaRetencionIvaFk()
-    {
-        return $this->codigoCuentaRetencionIvaFk;
     }
 }

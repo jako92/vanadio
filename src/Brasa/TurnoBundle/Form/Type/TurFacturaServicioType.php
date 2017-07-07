@@ -17,6 +17,7 @@ class TurFacturaServicioType extends AbstractType
             ->add('porcentajeIva', NumberType::class)                
             ->add('porBaseRetencionFuente', NumberType::class)                
             ->add('porRetencionFuente', NumberType::class)                
+            ->add('minimoRetencionFuente', NumberType::class)                
             ->add('codigoCuentaIngresoFk', TextType::class, array('required' => true))                 
             ->add('codigoCuentaCarteraFk', TextType::class, array('required' => true))                 
             ->add('codigoCuentaIvaFk', TextType::class, array('required' => true))                 
