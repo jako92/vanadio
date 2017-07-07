@@ -65,7 +65,8 @@ class disponibleController extends Controller {
                 $session->get('filtroCodigoItem'),
                 $session->get('filtroCodigoBodega'),
                 $strFechaDesde, 
-                $strFechaHasta);
+                $strFechaHasta,
+                $session->get('filtroInvSinDisponible'));
     }
 
     private function filtrar($form) {
@@ -79,6 +80,7 @@ class disponibleController extends Controller {
         $session->set('filtroInvLoteFechaDesde', $dateFechaDesde->format('Y/m/d'));
         $session->set('filtroInvLoteFechaHasta', $dateFechaHasta->format('Y/m/d'));
         $session->set('filtroInvLoteFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroInvSinDisponible', $form->get('filtrarSinDisponible')->getData());
         $session->set('filtroCodigoItem', $form->get('TxtCodigoItem')->getData());
         $session->set('filtroCodigoBodega', $codigoBodga);
     }
@@ -127,6 +129,7 @@ class disponibleController extends Controller {
                 ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroInvLoteFiltrarFecha')))
+                ->add('filtrarSinDisponible', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroInvSinDisponible')))
                 ->add('bodegaRel', EntityType::class, $arrayPropiedades)
                 ->add('TxtCodigoItem', TextType::class, array('label' => 'Item', 'data' => $session->get('filtroCodigoItem')))
                 ->add('TxtNombreItem', TextType::class, array('label' => 'NombreItem', 'data' => $strNombreItem))

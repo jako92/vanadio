@@ -21,8 +21,8 @@ class InvLoteRepository extends EntityRepository {
         return $dql;
     }
     
-    public function consultaDisponibleDql($codigoItem = '', $codigoBodega, $fechaDesde = "", $fechaHasta = "") {
-        $dql   = "SELECT l FROM BrasaInventarioBundle:InvLote l WHERE l.cantidadDisponible > 0";        
+    public function consultaDisponibleDql($codigoItem = '', $codigoBodega, $fechaDesde = "", $fechaHasta = "", $sinDisponible = 0) {
+        $dql   = "SELECT l FROM BrasaInventarioBundle:InvLote l WHERE l.codigoItemFk IS NOT NULL";        
         if($codigoItem != "" ) {
             $dql .= " AND l.codigoItemFk = " . $codigoItem;
         }
@@ -34,6 +34,9 @@ class InvLoteRepository extends EntityRepository {
         }
         if($fechaHasta != '') {
             $dql .= " AND l.fechaVencimiento <= '$fechaHasta'";
+        }
+        if($sinDisponible == 0) {
+            $dql .= " AND l.cantidadDisponible > 0";
         }
         $dql .= " ORDER BY l.loteFk";
         return $dql;
