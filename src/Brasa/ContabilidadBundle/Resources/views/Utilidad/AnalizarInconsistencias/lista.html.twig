@@ -42,22 +42,14 @@
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">            
             <tr>
-                <th>NUMERO</th>              
-                <th>COMPROBANTE</th>               
-                <th>DEBITO</th>
-                <th>CREDITO</th>
-                <th>BASE</th>
+                <th>CODIGO</th>              
+                <th>DESCRIPCION</th>
             </tr>
-            {% for arRegistros in arRegistros %}
-                {% if (arRegistros.debito != arRegistros.credito ) %}
+            {% for arInconsistencias in arInconsistencias %}
                     <tr class="danger">
-                        <td>{{ arRegistros.numero }}</td>
-                        <td>{{ arRegistros.codigoComprobanteFk  }}</td>               
-                        <td style="text-align: right">{{ arRegistros.debito }}</td>
-                        <td style="text-align: right">{{ arRegistros.credito }}</td>
-                        <td style="text-align: right">{{ arRegistros.base }}</td>
+                        <td>{{ arRegistros.codigoInconsistenciaPk }}</td>
+                        <td>{{ arRegistros.descripcion  }}</td>
                     </tr>
-                {% endif %}
             {% endfor %}           
         </table>
 
