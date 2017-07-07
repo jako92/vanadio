@@ -1406,7 +1406,7 @@
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Movimientos
+                    <a href="#"><i class="fa fa-circle-o"></i> Movimiento
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -1420,7 +1420,7 @@
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Consultas
+                    <a href="#"><i class="fa fa-circle-o"></i> Consulta
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -1442,10 +1442,19 @@
                         <li><a href="{{ path('brs_inv_base_bodega') }}">Bodega</a></li>
                         <li><a href="{{ path('brs_inv_base_tercero') }}">Tercero</a></li>
                         <li><a href="{{ path('brs_inv_base_documento') }}">Documento</a></li>
-                        <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank" >Otros</a></li>
-                </li>                            
-            </ul>
-        </li>
+                        <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank" >Otros</a></li>                
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-circle-o"></i> Proceso
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">                            
+                        <li><a href="{{ path('brs_inv_proceso_regenerar') }}">Regenerar</a></li>
+                    </ul>
+                </li>                  
         </ul>                 
         </li>  
         <li class="treeview">
