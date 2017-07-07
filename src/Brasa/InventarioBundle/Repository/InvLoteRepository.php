@@ -44,10 +44,11 @@ class InvLoteRepository extends EntityRepository {
     
     public function afectar($tipo, $operacion, $codigoItem, $codigoLote, $fechaVecimiento, $codigoBodega, $cantidad) {
         $em = $this->getEntityManager();
+        $arItem = new \Brasa\InventarioBundle\Entity\InvItem();        
+        $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($codigoItem);
         $arLote = new \Brasa\InventarioBundle\Entity\InvLote();
         $arLote = $em->getRepository('BrasaInventarioBundle:InvLote')->find(array('codigoItemFk' => $codigoItem,'loteFk' => $codigoLote,'codigoBodegaFk' => $codigoBodega));
-        if(!$arLote) {
-           $arItem = $em->getRepository('BrasaInventarioBundle:InvItem')->find($codigoItem);
+        if(!$arLote) {           
            $arBodega = $em->getRepository('BrasaInventarioBundle:InvBodega')->find($codigoBodega);
            $arLote = new \Brasa\InventarioBundle\Entity\InvLote();
            $arLote->setCodigoItemFk($codigoItem);
@@ -58,10 +59,13 @@ class InvLoteRepository extends EntityRepository {
            $arLote->setFechaVencimiento($fechaVecimiento);
            $arLote->setCodigoBodegaFk($codigoBodega);
         } 
-        $cantidad = ($operacion * $cantidad) * $tipo; 
-        $cantidad += $arLote->getCantidadExistencia();
+        $cantidadLote = ($operacion * $cantidad) * $tipo; 
+        $cantidad = $cantidadLote + $arLote->getCantidadExistencia();
         $arLote->setCantidadExistencia($cantidad);
         $arLote->setCantidadDisponible($cantidad);
+        $arItem->setCantidadExistencia($arItem->getCantidadExistencia() + $cantidadLote);
+        $arItem->setCantidadDisponible($arItem->getCantidadDisponible() + $cantidadLote);
+        $em->persist($arLote);
         $em->persist($arLote);
     }        
 }

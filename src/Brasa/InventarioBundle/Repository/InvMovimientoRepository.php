@@ -74,6 +74,8 @@ class InvMovimientoRepository extends EntityRepository {
             }
             $arMovimiento->setEstadoAutorizado(1);
             $em->persist($arMovimiento);
+            $query = $em->createQuery('UPDATE BrasaInventarioBundle:InvMovimientoDetalle md set md.estadoAutorizado = 1 WHERE md.codigoMovimientoFk = ' . $codigoMovimiento);
+            $numActualizaciones = $query->execute();            
         }
         return $respuesta;
     }

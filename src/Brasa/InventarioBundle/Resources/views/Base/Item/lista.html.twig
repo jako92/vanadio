@@ -44,6 +44,7 @@
                 <th>NOMBRE</th>
                 <th>MARCA</th>
                 <th>%IVA</th>
+                <th>EX</th>
                 <th></th>                
                 <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
             </tr>
@@ -53,6 +54,7 @@
                     <td>{{ arItems.nombre  }}</td>
                     <td>{{ arItems.marcaRel.nombre | default('')  }}</td>
                     <td>{{ arItems.porcentajeIva  }}</td>
+                    <td>{{ arItems.cantidadExistencia  }}</td>
                     <td style="text-align: center"><a href="{{ path('brs_inv_base_item_nuevo', {'codigoItem': arItems.codigoItemPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td align="center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arItems.codigoItemPk }}" /></td>
                 </tr>

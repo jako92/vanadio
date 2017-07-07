@@ -149,9 +149,9 @@ class ItemController extends Controller {
                 ->setCellValue('D1', 'COSTO PROMEDIO')
                 ->setCellValue('E1', 'PRECIO PREDETERMINADO')
                 ->setCellValue('F1', '% IVA')
-                ->setCellValue('G1', 'CANTIDAD EXISTENCIA')
-                ->setCellValue('H1', 'CANTIDAD REMISIONADA')
-                ->setCellValue('I1', 'CANTIDAD DISPONIBLE');
+                ->setCellValue('G1', 'EXI')
+                ->setCellValue('H1', 'REM')
+                ->setCellValue('I1', 'DIS');
 
         $i = 2;
 

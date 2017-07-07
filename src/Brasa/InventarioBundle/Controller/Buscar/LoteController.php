@@ -46,7 +46,7 @@ class LoteController extends Controller {
     private function lista($codigoItem) {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaInventarioBundle:InvLote')->consultaDisponibleDQL(
-                $codigoItem);
+                $codigoItem, "", "", "", 0);
     }
 
     private function formularioLista() {

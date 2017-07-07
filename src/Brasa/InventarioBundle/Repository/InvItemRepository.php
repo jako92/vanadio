@@ -23,6 +23,27 @@ class InvItemRepository extends EntityRepository {
         $dql .= " ORDER BY i.nombre ASC";
         return $dql;
     } 
-    
+
+    public function regenerar() {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('UPDATE BrasaInventarioBundle:InvItem i set i.cantidadExistencia = 0, i.cantidadDisponible = 0');
+        $numActualizaciones = $query->execute();        
+        $arItems = new \Brasa\InventarioBundle\Entity\InvItem();        
+        $arItems = $em->getRepository('BrasaInventarioBundle:InvItem')->findAll();
+        foreach ($arItems as $arItem) {
+                $dql = "SELECT SUM(md.cantidadOperada) as cantidadOperada FROM BrasaInventarioBundle:InvMovimientoDetalle md "
+                        . "WHERE md.codigoItemFk = " . $arItem->getCodigoItemPk() . " AND md.estadoAutorizado = 1";
+                $query = $em->createQuery($dql);
+                $arResultados = $query->getSingleResult();            
+                if($arResultados['cantidadOperada']) {
+                    $arItemAct = new \Brasa\InventarioBundle\Entity\InvItem();        
+                    $arItemAct = $em->getRepository('BrasaInventarioBundle:InvItem')->find($arItem->getCodigoItemPk());  
+                    $arItemAct->setCantidadExistencia($arResultados['cantidadOperada']);
+                    $arItemAct->setCantidadDisponible($arResultados['cantidadOperada']);
+                    $em->persist($arItemAct);
+                }
+        }
+        $em->flush();
+    }            
     
 }
