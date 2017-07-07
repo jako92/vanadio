@@ -42,32 +42,20 @@
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">            
             <tr>
-                <th>ID</th>
-                <th>NUMERO</th>
-                <th>NUMERO REF</th>
-                <th>FECHA</th>                
-                <th>COMPROBANTE</th>
-                <th>CUENTA</th>
-                <th>C.COSTO</th>                
+                <th>NUMERO</th>              
+                <th>COMPROBANTE</th>               
                 <th>DEBITO</th>
                 <th>CREDITO</th>
                 <th>BASE</th>
-                <th>DETALLE</th>
             </tr>
             {% for arRegistros in arRegistros %}
                 {% if (arRegistros.debito != arRegistros.credito ) %}
                     <tr class="danger">
-                        <td><input type="hidden" name="LblCodigo[]" value="{{ arRegistros.codigoRegistroPk }}">{{ arRegistros.codigoRegistroPk }} </td>
                         <td>{{ arRegistros.numero }}</td>
-                        <td>{{ arRegistros.numeroReferencia }}</td>
-                        <td>{{ arRegistros.fecha |date("Y/m/d")  }}</td>
-                        <td>{{ arRegistros.codigoComprobanteFk  }}</td>
-                        <td>{{ arRegistros.codigoCuentaFk  }}</td>
-                        <td>{{ arRegistros.codigoCentroCostoFk |default('') }}</td>                
+                        <td>{{ arRegistros.codigoComprobanteFk  }}</td>               
                         <td style="text-align: right">{{ arRegistros.debito }}</td>
                         <td style="text-align: right">{{ arRegistros.credito }}</td>
                         <td style="text-align: right">{{ arRegistros.base }}</td>
-                        <td>{{ arRegistros.descripcionContable  }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}           
