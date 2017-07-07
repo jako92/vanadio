@@ -44,7 +44,7 @@ class FacturaServicioController extends Controller {
                 }
             }
         }
-        $arFacturaServicios = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 20);
+        $arFacturaServicios = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 100);
         return $this->render('BrasaTurnoBundle:Base/FacturaServicio:lista.html.twig', array(
                     'arFacturaServicios' => $arFacturaServicios,
                     'form' => $form->createView()));
