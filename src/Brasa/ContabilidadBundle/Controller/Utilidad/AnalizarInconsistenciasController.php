@@ -25,32 +25,41 @@ class AnalizarInconsistenciasController extends Controller {
      * @Route("/ctb/utilidades/analizar/inconsistencias", name="brs_ctb_utilidades_analizar_inconsistencias")
      */
     public function listarAction(Request $request) {
+        $session = new Session;
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
         $form = $this->formulario();
         $form->handleRequest($request);
         $this->listar();
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('BtnFiltrar')->isClicked()) {
-                $this->filtrar($form, $request);
+            if ($form->get('BtnGenerar')->isClicked()) {
+                $arRegistros = $em->createQuery($em->getRepository('BrasaContabilidadBundle:CtbRegistro')->generarInconsistencias($session->get('filtroCtbRegistroFechaDesde'), $session->get('filtroCtbRegistroFechaHasta')));
+                foreach ($arRegistros as $arRegistro) {
+                    if ($arRegistro['debito'] != $arRegistro['credito']) {
+                        $descripcionInconsistencia = "El registro contable con numero".$arRegistro['numero']."y comprobante".$arRegistro['CodigoComprobanteFk']." contiene inconsistencias en los valores";
+                        $arInconsistencia = new \Brasa\ContabilidadBundle\Entity\CtbInconsistencia();
+                        $arInconsistencia->setDescripcion($descripcionInconsistencia);
+                        $em->persist($arInconsistencia);
+                        $em->flush();
+                    }
+                }
+                $this->filtrar($form);
                 $this->listar();
             }
         }
-        $arRegistros = $this->strDqlLista;
+        $arInconsistencias = $this->strDqlLista;
         return $this->render('BrasaContabilidadBundle:Utilidad/AnalizarInconsistencias:lista.html.twig', array(
-                    'arRegistros' => $arRegistros,
+                    'arInconsistencias' => $arInconsistencias,
                     'form' => $form->createView()
         ));
     }
 
     private function listar() {
-        $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaAnalizarinconsistenciasDQL(
-                $session->get('filtroCtbRegistroFechaDesde'), $session->get('filtroCtbRegistroFechaHasta'));
+        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbInconsistencia')->listaDQL();
     }
 
-    private function filtrar($form, Request $request) {
+    private function filtrar($form) {
         $session = $this->get('session');
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -77,7 +86,7 @@ class AnalizarInconsistenciasController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('fechaDesde', DateType::class, array('data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('data' => $dateFechaHasta))
-                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnGenerar', SubmitType::class, array('label' => 'Generar'))
                 ->getForm();
         return $form;
     }

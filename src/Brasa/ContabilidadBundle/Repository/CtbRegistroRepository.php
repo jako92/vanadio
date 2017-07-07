@@ -438,7 +438,7 @@ class CtbRegistroRepository extends EntityRepository
         return $arrayResultado;
     }            
     
-    public function listaAnalizarinconsistenciasDQL($fechaDesde = "", $fechaHasta = "") {
+    public function generarInconsistencias($fechaDesde = "", $fechaHasta = "") {
         $em = $this->getEntityManager();
         $dql = "SELECT r.codigoComprobanteFk, r.numero, SUM(r.debito) as debito, SUM(r.credito) as credito, SUM(r.base) as base FROM BrasaContabilidadBundle:CtbRegistro r  WHERE r.codigoRegistroPk <> 0";
         if ($fechaDesde != "") {
@@ -448,6 +448,7 @@ class CtbRegistroRepository extends EntityRepository
             $dql .= " AND r.fecha <='" . $fechaHasta . "'";
         }
         $dql .= " GROUP BY r.codigoComprobanteFk, r.numero";
+        
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
         return $arrayResultado;
