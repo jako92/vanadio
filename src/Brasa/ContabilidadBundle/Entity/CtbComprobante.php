@@ -40,6 +40,8 @@ class CtbComprobante
      * @ORM\OneToMany(targetEntity="CtbRegistro", mappedBy="comprobanteRel")
      */
     protected $registrosComprobanteRel;        
+    
+   
     /**
      * Constructor
      */

@@ -108,7 +108,7 @@ class CtbRegistro
     protected $terceroRel;    
     
     /**
-     * @ORM\ManyToOne(targetEntity="CtbComprobante", inversedBy="CtbRegistro")
+     * @ORM\ManyToOne(targetEntity="CtbComprobante", inversedBy="registrosComprobanteRel")
      * @ORM\JoinColumn(name="codigo_comprobante_fk", referencedColumnName="codigo_comprobante_pk")
      */
     protected $comprobanteRel;     
@@ -118,6 +118,7 @@ class CtbRegistro
      * @ORM\JoinColumn(name="codigo_sucursal_fk", referencedColumnName="codigo_sucursal_pk")
      */
     private $sucursalRel;
+
 
 
 

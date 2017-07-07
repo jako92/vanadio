@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityRepository;
 class CtbRegistroRepository extends EntityRepository
 {
 
-    public function listaDql($comprobante = "", $numero = "", $numeroReferencia = "", $fechaDesde = "", $fechaHasta = "", $srtCuenta = "", $strTercero= "") {        
-        $dql   = "SELECT r FROM BrasaContabilidadBundle:CtbRegistro r WHERE r.codigoRegistroPk <> 0";
+    public function listaDql($comprobante = "", $numero = "", $numeroReferencia = "", $fechaDesde = "", $fechaHasta = "", $srtCuenta = "", $codigoTercero = "") {        
+        $dql   = "SELECT r FROM BrasaContabilidadBundle:CtbRegistro r JOIN r.terceroRel t WHERE r.codigoRegistroPk <> 0";
         if($comprobante != "") {
             $dql .= " AND r.codigoComprobanteFk = " . $comprobante;
         }
@@ -33,8 +33,8 @@ class CtbRegistroRepository extends EntityRepository
         if($srtCuenta != "") {
             $dql .= " AND r.codigoCuentaFk = " . $srtCuenta;
         }
-        if($strTercero != "") {
-            $dql .= " AND r.codigoTerceroFk = " . $strTercero;
+        if($codigoTercero != "") {
+            $dql .= " AND t.numeroIdentificacion = " . $codigoTercero;
         }
         return $dql;
     }           

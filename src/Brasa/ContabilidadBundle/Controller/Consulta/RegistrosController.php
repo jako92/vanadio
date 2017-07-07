@@ -22,7 +22,7 @@ class RegistrosController extends Controller {
     var $strDesde = "";
     var $strHasta = "";
     var $strCuenta = "";
-    var $strTercero= "";
+    var $strTercero = "";
 
     /**
      * @Route("/ctb/consultas/registros/", name="brs_ctb_consultas_registros")
@@ -68,19 +68,28 @@ class RegistrosController extends Controller {
             $strFechaHasta = $session->get('filtroCtbRegistroFechaHasta');
         }
         $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaDQL(
-                $session->get('filtroCtbCodigoComprobante'),
+                $session->get('filtroCtbCodigoComprobante'), 
                 $session->get('filtroCtbNumero'), 
                 $session->get('filtroCtbNumeroReferencia'), 
                 $strFechaDesde, 
                 $strFechaHasta, 
-                $session->get('filtroCtbCuenta'),
-                $session->get('filtroTercero')
+                $session->get('filtroCtbCuenta'), 
+                $session->get('filtroCodigoTercero')
         );
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
+        $strNombreTercero = "";
+        if ($session->get('filtroCodigoTercero')) {
+            $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion'=>$session->get('filtroCodigoTercero')));
+            if ($arTercero) {
+                $strNombreTercero = $arTercero->getNombreCorto();
+            } else {
+                $session->set('filtroCodigoTercero', null);
+            }
+        }
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
@@ -95,16 +104,8 @@ class RegistrosController extends Controller {
         $dateFechaHasta = date_create($strFechaHasta);
 
         $form = $this->createFormBuilder()
-                ->add('terceroRel', EntityType::class, array(
-                'class' => 'BrasaContabilidadBundle:CtbTercero',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombreCorto', 'ASC');},
-                'choice_label' => 'nombreCorto',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""))
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroCodigoTercero')))
+                ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $strNombreTercero))
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumero')))
                 ->add('TxtNumeroReferencia', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumeroReferencia')))
                 ->add('TxtCuenta', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbCuenta')))
@@ -120,15 +121,11 @@ class RegistrosController extends Controller {
 
     private function filtrar($form, Request $request) {
         $session = $this->get('session');
-        $codigoTercero = "";
-        if ($form->get('terceroRel')->getData()) {
-            $codigoTercero = $form->get('terceroRel')->getData()->getcodigoTerceroPk();
-        }
-        $session->set('filtroTercero', $codigoTercero);
         $session->set('filtroCtbNumero', $form->get('TxtNumero')->getData());
         $session->set('filtroCtbCuenta', $form->get('TxtCuenta')->getData());
         $session->set('filtroCtbNumeroReferencia', $form->get('TxtNumeroReferencia')->getData());
         $session->set('filtroCtbCodigoComprobante', $form->get('TxtComprobante')->getData());
+        $session->set('filtroCodigoTercero', $form->get('TxtIdentificacion')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroCtbRegistroFechaDesde', $dateFechaDesde->format('Y/m/d'));

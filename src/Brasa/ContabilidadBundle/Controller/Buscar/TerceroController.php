@@ -16,9 +16,9 @@ class TerceroController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/ctb/buscar/tercero/{campoCodigo}", name="brs_ctb_buscar_tercero")
+     * @Route("/ctb/buscar/tercero/{campoCodigo}/{campoNombre}", name="brs_ctb_buscar_tercero")
      */
-    public function listaAction(Request $request, $campoCodigo) {
+    public function listaAction(Request $request, $campoCodigo, $campoNombre) {
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioLista();
@@ -36,6 +36,7 @@ class TerceroController extends Controller {
         return $this->render('BrasaContabilidadBundle:Buscar:tercero.html.twig', array(
                     'arTerceros' => $arTercero,
                     'campoCodigo' => $campoCodigo,
+                    'campoNombre' => $campoNombre,
                     'form' => $form->createView()
         ));
     }

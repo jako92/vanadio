@@ -10,9 +10,10 @@
     </section>   
     <section class="content"> 
         <script language="javascript">
-            function selTercero(codigo, campoCodigo)
+            function selTercero(codigo,nombre, campoCodigo, campoNombre)
             {
                 opener.document.getElementById(campoCodigo).value = codigo;
+                opener.document.getElementById(campoNombre).value = nombre;
                 opener.document.getElementById(campoCodigo).focus();
                 self.close();
             }
@@ -55,7 +56,7 @@
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arTerceros.codigoTerceroPk }}">{{ arTerceros.codigoTerceroPk }} </td>
                     <td>{{ arTerceros.numeroIdentificacion  }}</td>
                     <td>{{ arTerceros.nombreCorto }}</td>                                                
-                    <td style="text-align: center"><a href="javascript:selTercero('{{ arTerceros.numeroIdentificacion }}','{{ campoCodigo }}')" ><img src="{{ asset('imagenes/bootstrap/glyphicons_198_ok.png') }}" width=20 height=20></a></td>                                
+                    <td style="text-align: center"><a href="javascript:selTercero('{{ arTerceros.numeroIdentificacion }}','{{ arTerceros.nombreCorto }}','{{ campoCodigo }}','{{ campoNombre }}')" ><img src="{{ asset('imagenes/bootstrap/glyphicons_198_ok.png') }}" width=20 height=20></a></td>                                
                 </tr>
             {% endfor %} 
         </table>                                         
