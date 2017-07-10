@@ -69,9 +69,10 @@ class ContabilizarPagoBancoController extends Controller
                                         $arTercero->setEmail($arPagoBancoDetalle->getEmpleadoRel()->getCorreo());
                                         $em->persist($arTercero);
                                     }
-                                    $docRerefencia = $arPagoBanco->getCodigoPagoBancoPk();
+                                    $docRerefencia = $arPagoBanco->getCodigoPagoBancoPk();                                    
                                     if($arPagoBancoDetalle->getCodigoVacacionFk()) {
                                         $docRerefencia = $arPagoBancoDetalle->getCodigoVacacionFk();
+                                        
                                     }
                                     if($arPagoBancoDetalle->getCodigoLiquidacionFk()) {
                                         $docRerefencia = $arPagoBancoDetalle->getCodigoVacacionFk();
@@ -79,6 +80,8 @@ class ContabilizarPagoBancoController extends Controller
                                     if($arPagoBancoDetalle->getCodigoPagoFk()) {
                                         $docRerefencia = $arPagoBancoDetalle->getPagoRel()->getNumero();
                                     }                                    
+                                    $arSucursal = $arPagoBancoDetalle->getEmpleadoRel()->getSucursalRel();
+                                    $area = $arPagoBancoDetalle->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz();                                    
                                     $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                                    
                                     if($arPagoBanco->getPagoBancoTipoRel()->getCodigoCuentaFk()) {
                                         $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoBanco->getPagoBancoTipoRel()->getCodigoCuentaFk());
