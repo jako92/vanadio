@@ -51,6 +51,8 @@ class CertificadoIngresoRetencionController extends Controller {
                             $strFechaExpedicion = $formCertificado->get('fechaExpedicion')->getData();
                             $strLugarExpedicion = $controles['LugarExpedicion'];
                             $strFechaCertificado = $controles['fechaCertificado'];
+                            $strFechaInicio = $formCertificado->get('fechaInicio')->getData();
+                            $strFechaFin = $formCertificado->get('fechaFin')->getData();
                             $strAfc = $controles['afc'];
                             $stCertifico1 = $controles['certifico1'];
                             $stCertifico2 = $controles['certifico2'];
@@ -88,8 +90,16 @@ class CertificadoIngresoRetencionController extends Controller {
                                 $ValorPension = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->saludCertificadoIngreso($datFechaCertificadoInicio, $datFechaCertificadoFin, $codigoEmpleado, $codigoConcepto);
                                 $floPension += $ValorPension;
                             }
-                            $datFechaInicio = $arrayCostos[0]['fechaInicio'];
-                            $datFechaFin = $arrayCostos[0]['fechaFin'];
+                            if($strFechaInicio == ''){
+                                $datFechaInicio = $arrayCostos[0]['fechaInicio'];
+                            }else{
+                                $datFechaInicio = $strFechaInicio->format('Y-m-d');
+                            }
+                            if($strFechaFin == ''){
+                                $datFechaFin = $arrayCostos[0]['fechaFin'];
+                            }else{
+                                $datFechaFin = $strFechaFin->format('Y-m-d');
+                            } 
                             $arrayPrestacionesSociales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->devuelvePrestacionesSocialesFecha($codigoEmpleado, $datFechaCertificadoInicio, $datFechaCertificadoFin);
                             $floCesantiaseInteresesLiquidadas = (float) $arrayPrestacionesSociales[0]['Cesantias'] + $arrayPrestacionesSociales[0]['CesantiasAnterior'] + $arrayPrestacionesSociales[0]['InteresesCesantias'] + $arrayPrestacionesSociales[0]['InteresesCesantiasAnterior'];
                             $floPrimaLiquidadas = (float) $arrayPrestacionesSociales[0]['Prima'];
@@ -261,6 +271,8 @@ class CertificadoIngresoRetencionController extends Controller {
                 ->add('txtIdentificacion', TextType::class, array('data' => '', 'required' => false))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
                 ->add('fechaCertificado', ChoiceType::class, array('choices' => array($anioActual = date('Y') => $anioActual = date('Y'), $fechaPrimeraAnterior => $fechaPrimeraAnterior, $fechaSegundaAnterior => $fechaSegundaAnterior, $fechaTerceraAnterior => $fechaTerceraAnterior),))
+                ->add('fechaInicio', DateType::class, array('placeholder' => '', 'required' => false))
+                ->add('fechaFin', DateType::class, array('placeholder' => '', 'required' => false))
                 ->add('fechaExpedicion', DateType::class, array('data' => new \ DateTime('now')))
                 ->add('LugarExpedicion', EntityType::class, array(
                     'class' => 'BrasaGeneralBundle:GenCiudad',
