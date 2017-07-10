@@ -49,6 +49,8 @@ class ContabilizarVacacionController extends Controller
                     foreach ($arrSeleccionados AS $codigo) {                                     
                         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
                         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigo);
+                        $arSucursal = $arVacacion->getEmpleadoRel()->getSucursalRel();
+                        $area = $arVacacion->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz();                        
                         if($arVacacion->getEstadoContabilizado() == 0) {
                             $arCentroCosto = $arVacacion->getEmpleadoRel()->getCentroCostoContabilidadRel();                                                       
                             $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arVacacion->getEmpleadoRel()->getNumeroIdentificacion()));                            
@@ -83,6 +85,8 @@ class ContabilizarVacacionController extends Controller
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setDebito($arVacacion->getVrVacacionBruto());                            
                                     $arRegistro->setDescripcionContable('VACACIONES');
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $em->persist($arRegistro);
                                 }             
                             }
@@ -101,6 +105,8 @@ class ContabilizarVacacionController extends Controller
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrPension());                            
                                     $arRegistro->setDescripcionContable('PENSION');
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $em->persist($arRegistro);
                                 }             
                             }                            
@@ -119,6 +125,8 @@ class ContabilizarVacacionController extends Controller
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrSalud());                            
                                     $arRegistro->setDescripcionContable('SALUD');
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $em->persist($arRegistro);
                                 }             
                             }               
@@ -143,7 +151,9 @@ class ContabilizarVacacionController extends Controller
                                         $arRegistro->setDebito($arVacacionAdicional->getVrBonificacion());    
                                     } else {
                                         $arRegistro->setCredito($arVacacionAdicional->getVrDeduccion());
-                                    }                                                                         
+                                    }                
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable($arVacacionAdicional->getPagoConceptoRel()->getNombre());
                                     $em->persist($arRegistro);
                                 }                                    
@@ -162,6 +172,8 @@ class ContabilizarVacacionController extends Controller
                                     $arRegistro->setFecha($arVacacion->getFecha());
                                     $arRegistro->setCredito($arVacacion->getVrVacacion());                            
                                     $arRegistro->setDescripcionContable('VACACIONES POR PAGAR');
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $em->persist($arRegistro);
                                 }             
                             }                            

@@ -56,6 +56,8 @@ class ContabilizarLiquidacionController extends Controller
                     foreach ($arrSeleccionados AS $codigo) {                                     
                         $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
                         $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($codigo);
+                        $arSucursal = $arLiquidacion->getEmpleadoRel()->getSucursalRel();
+                        $area = $arLiquidacion->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz();                        
                         if($arLiquidacion->getEstadoContabilizado() == 0) {                            
                             $arCentroCosto = $arLiquidacion->getEmpleadoRel()->getCentroCostoContabilidadRel();                                                       
                             $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arLiquidacion->getEmpleadoRel()->getNumeroIdentificacion()));
@@ -87,7 +89,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrCesantias());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrCesantias()); 
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('CESANTIAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -104,7 +108,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantias());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantias()); 
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('INTERESES CESANTIAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -121,7 +127,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrCesantiasAnterior());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrCesantiasAnterior()); 
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('CESANTIAS AÑO ANTERIOR');
                                     $em->persist($arRegistro);
                                 }             
@@ -138,7 +146,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantiasAnterior());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantiasAnterior());      
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('INTERESES CESANTIAS AÑO ANTERIOR');
                                     $em->persist($arRegistro);
                                 }             
@@ -155,7 +165,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrPrima());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrPrima()); 
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PRIMAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -172,7 +184,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrVacaciones());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrVacaciones());  
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('VACACIONES');
                                     $em->persist($arRegistro);
                                 }             
@@ -190,7 +204,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setDebito($arLiquidacion->getVrIndemnizacion());                            
+                                    $arRegistro->setDebito($arLiquidacion->getVrIndemnizacion());   
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('VACACIONES');
                                     $em->persist($arRegistro);
                                 }             
@@ -217,7 +233,9 @@ class ContabilizarLiquidacionController extends Controller
                                         $arRegistro->setDebito($arLiquidacionAdicional->getVrBonificacion());    
                                     } else {
                                         $arRegistro->setCredito($arLiquidacionAdicional->getVrDeduccion());
-                                    }                                                                    
+                                    }                       
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());
                                     $em->persist($arRegistro);
                                 }                                    
@@ -234,7 +252,9 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setNumero($arLiquidacion->getNumero());
                                     $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    $arRegistro->setCredito($arLiquidacion->getVrTotal());                            
+                                    $arRegistro->setCredito($arLiquidacion->getVrTotal());  
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('LIQUIDACION POR PAGAR');
                                     $em->persist($arRegistro);
                                 }             

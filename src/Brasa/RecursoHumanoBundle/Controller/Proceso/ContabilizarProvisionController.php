@@ -44,6 +44,8 @@ class ContabilizarProvisionController extends Controller {
                         $arProvision = new \Brasa\RecursoHumanoBundle\Entity\RhuProvision();                        
                         $arProvision = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvision')->find($codigo);
                         $tipoEmpleado = $arProvision->getEmpleadoRel()->getCodigoEmpleadoTipoFk();
+                        $arSucursal = $arProvision->getEmpleadoRel()->getSucursalRel();
+                        $area = $arProvision->getEmpleadoRel()->getEmpleadoTipoRel()->getInterfaz();
                         $arCentroCosto = $arProvision->getEmpleadoRel()->getCentroCostoContabilidadRel();
                         //$arCentroCosto = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
                         //$arCentroCosto = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find(1);
@@ -76,11 +78,13 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setCentroCostoRel($arCentroCosto);                                    
                                     }
                                     $arRegistro->setCuentaRel($arCuenta);
-                                    $arRegistro->setTerceroRel($arTercero);
+                                    $arRegistro->setTerceroRel($arTercero);                                    
                                     $arRegistro->setNumero($arProvision->getNumero());
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setDebito($arProvision->getVrCesantias());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);
                                     $arRegistro->setDescripcionContable('PROVISION CESANTIAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -102,6 +106,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setCredito($arProvision->getVrCesantias());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION CESANTIAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -127,6 +133,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setDebito($arProvision->getVrInteresesCesantias());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION INTERESES CESANTIAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -148,6 +156,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setCredito($arProvision->getVrInteresesCesantias());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);
                                     $arRegistro->setDescripcionContable('PROVISION INTERESES CESANTIAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -173,6 +183,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setDebito($arProvision->getVrPrimas());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION PRIMAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -194,6 +206,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setCredito($arProvision->getVrPrimas());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION PRIMAS');
                                     $em->persist($arRegistro);
                                 } else {
@@ -219,6 +233,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setDebito($arProvision->getVrVacaciones());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION VACACIONES');
                                     $em->persist($arRegistro);
                                 } else {
@@ -240,6 +256,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setCredito($arProvision->getVrVacaciones());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION VACACIONES');
                                     $em->persist($arRegistro);
                                 } else {
@@ -265,6 +283,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setDebito($arProvision->getVrIndemnizacion());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION INDEMNIZACION');
                                     $em->persist($arRegistro);
                                 } else {
@@ -286,6 +306,8 @@ class ContabilizarProvisionController extends Controller {
                                     $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                     $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                     $arRegistro->setCredito($arProvision->getVrIndemnizacion());
+                                    $arRegistro->setSucursalRel($arSucursal);
+                                    $arRegistro->setCodigoAreaFk($area);                                    
                                     $arRegistro->setDescripcionContable('PROVISION INDEMNIZACION');
                                     $em->persist($arRegistro);
                                 } else {
@@ -313,6 +335,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrPension());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION PENSION');
                                         $em->persist($arRegistro);
                                     } else {
@@ -334,6 +358,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrPension());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION PENSION');
                                         $em->persist($arRegistro);
                                     } else {
@@ -366,6 +392,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrSalud());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION SALUD');
                                         $em->persist($arRegistro);
                                     } else {
@@ -387,6 +415,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrSalud());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION SALUD');
                                         $em->persist($arRegistro);
                                     } else {
@@ -423,6 +453,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrRiesgos());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION RIESGOS');
                                         $em->persist($arRegistro);
                                     } else {
@@ -444,6 +476,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrRiesgos());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION RIESGOS');
                                         $em->persist($arRegistro);
                                     } else {
@@ -476,6 +510,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrCaja());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION CAJA');
                                         $em->persist($arRegistro);
                                     } else {
@@ -497,6 +533,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrCaja());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION CAJA');
                                         $em->persist($arRegistro);
                                     } else {
@@ -529,6 +567,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrSena());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION SENA');
                                         $em->persist($arRegistro);
                                     } else {
@@ -550,6 +590,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrSena());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION SENA');
                                         $em->persist($arRegistro);
                                     } else {
@@ -582,6 +624,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setDebito($arProvision->getVrIcbf());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION ICBF');
                                         $em->persist($arRegistro);
                                     } else {
@@ -603,6 +647,8 @@ class ContabilizarProvisionController extends Controller {
                                         $arRegistro->setNumeroReferencia($arProvision->getCodigoProvisionPeriodoFk());
                                         $arRegistro->setFecha($arProvision->getProvisionPeriodoRel()->getFechaHasta());
                                         $arRegistro->setCredito($arProvision->getVrIcbf());
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                        
                                         $arRegistro->setDescripcionContable('PROVISION ICBF');
                                         $em->persist($arRegistro);
                                     } else {
