@@ -47,7 +47,7 @@
                     </tr>
                     <tr>
                         <td class="titulo">TIPO ORDEN COMPRA</td>
-                        <td class="td-in-well">{{ arOrdenCompra.ordenCompraDocumentoRel.nombre }}</td>
+                        <td class="td-in-well">{{ arOrdenCompra.ordenCompraDocumentoRel.nombre | default('')}}</td>
                         <td class="titulo">SUBTOTAL:</td>
                         <td align="right">{{ arOrdenCompra.vrSubtotal | number_format(0, '.', ',') }}</td>                                               
                     </tr> 

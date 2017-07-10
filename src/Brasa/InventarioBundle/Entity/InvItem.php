@@ -122,7 +122,12 @@ class InvItem
     /**
      * @ORM\OneToMany(targetEntity="InvOrdenCompraDetalle", mappedBy="itemRel")
      */
-    protected $ordenesCompraDetallesItemRel;        
+    protected $ordenesCompraDetallesItemRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="InvSolicitudDetalle", mappedBy="itemRel")
+     */
+    protected $solicitudesDetallesItemRel;
        
 
     /**
@@ -665,5 +670,39 @@ class InvItem
     public function getOrdenesCompraDetallesItemRel()
     {
         return $this->ordenesCompraDetallesItemRel;
+    }
+
+    /**
+     * Add solicitudesDetallesItemRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvSolicitudDetalle $solicitudesDetallesItemRel
+     *
+     * @return InvItem
+     */
+    public function addSolicitudesDetallesItemRel(\Brasa\InventarioBundle\Entity\InvSolicitudDetalle $solicitudesDetallesItemRel)
+    {
+        $this->solicitudesDetallesItemRel[] = $solicitudesDetallesItemRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove solicitudesDetallesItemRel
+     *
+     * @param \Brasa\InventarioBundle\Entity\InvSolicitudDetalle $solicitudesDetallesItemRel
+     */
+    public function removeSolicitudesDetallesItemRel(\Brasa\InventarioBundle\Entity\InvSolicitudDetalle $solicitudesDetallesItemRel)
+    {
+        $this->solicitudesDetallesItemRel->removeElement($solicitudesDetallesItemRel);
+    }
+
+    /**
+     * Get solicitudesDetallesItemRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSolicitudesDetallesItemRel()
+    {
+        return $this->solicitudesDetallesItemRel;
     }
 }

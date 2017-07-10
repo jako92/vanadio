@@ -80,7 +80,7 @@
                 <tr>
                     <td>{{ arOrdenesCompra.codigoOrdenCompraPk}}</td>
                     <td>{{ arOrdenesCompra.terceroRel.nombreCorto}}</td>
-                    <td>{{ arOrdenesCompra.ordenCompraDocumentoRel.nombre}}</td>
+                    <td>{{ arOrdenesCompra.ordenCompraDocumentoRel.nombre | default('')}}</td>
                     <td style="text-align: left">{{ arOrdenesCompra.numero}}</td>
                     <td>{{ arOrdenesCompra.fecha |date('y/m/d')}}</td>
                     <td>{{ arOrdenesCompra.vrSubtotal | number_format(0, '.', ',')}}</td>
