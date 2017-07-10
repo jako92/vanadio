@@ -505,7 +505,7 @@ class IntercambioDatosController extends Controller {
                     ->setCellValue('F' . $i, $arRegistro->getFecha()->format('Y'))
                     ->setCellValue('G' . $i, $form->get('TxtNumero')->getData())
                     ->setCellValue('H' . $i, $form->get('TxtDescripcion')->getData())
-                    ->setCellValue('I' . $i, $arRegistro->getDescripcionContable())
+                    ->setCellValue('I' . $i, "DES:" . $arRegistro->getDescripcionContable())
                     ->setCellValue('J' . $i, $arRegistro->getCodigoCuentaFk())
                     ->setCellValue('K' . $i, 0)
                     ->setCellValue('L' . $i, $arRegistro->getDebito())
