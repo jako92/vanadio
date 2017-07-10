@@ -32,8 +32,11 @@ class RhuAspiranteRepository extends EntityRepository {
         if($codigoDisponibilidad > 0) {
             $dql .= " AND a.codigoDisponibilidadFk = " . $codigoDisponibilidad;
         }
-        if($codigoReintegro > 0 &&  $codigoReintegro < 2) {
-            $dql .= " AND a.reintegro = " . $codigoReintegro;
+        if($codigoReintegro == 1) {
+            $dql .= " AND a.reintegro = 1";
+        }
+        if($codigoReintegro == "0") {
+            $dql .= " AND a.reintegro = 0";
         }
         if($codigoSexo == 'M') {
             $dql .= " AND a.codigoSexoFk = '" . $codigoSexo . "'";
@@ -62,8 +65,11 @@ class RhuAspiranteRepository extends EntityRepository {
         if($estaturaMaximo != "") {
             $dql .= " AND a.estatura <= '" . $estaturaMaximo . "'";
         }
-        if($codigoContratado > 0 &&  $codigoContratado < 2) {
-            $dql .= " AND a.contratado = " . $codigoContratado;
+        if($codigoContratado == 1) {
+            $dql .= " AND a.contratado = 1";
+        }
+        if($codigoContratado == "0") {
+            $dql .= " AND a.contratado = 0";
         }
         $dql .= " ORDER BY a.fecha";
         return $dql;
