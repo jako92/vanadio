@@ -93,6 +93,8 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setNumeroReferencia($docRerefencia);
                                             $arRegistro->setFecha($arPagoBanco->getFecha());
                                             $arRegistro->setDebito($arPagoBancoDetalle->getVrPago());
+                                            $arRegistro->setSucursalRel($arSucursal);
+                                            $arRegistro->setCodigoAreaFk($area);
                                             $arRegistro->setDescripcionContable('PAGO');
                                             $em->persist($arRegistro);                                    
 
@@ -110,6 +112,8 @@ class ContabilizarPagoBancoController extends Controller
                                                     $arRegistro->setFecha($arPagoBancoDetalle->getPagoBancoRel()->getFechaAplicacion());
                                                     $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());
                                                     $arRegistro->setDescripcionContable('');
+                                                    $arRegistro->setSucursalRel($arSucursal);
+                                                    $arRegistro->setCodigoAreaFk($area);                                                    
                                                     $em->persist($arRegistro);                                                                                                                                            
                                                 } else {
                                                     $mensajeError = "La cuenta contable de la cuenta bancaria no existe";
