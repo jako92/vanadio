@@ -361,7 +361,7 @@ class TurFacturaRepository extends EntityRepository {
 
     public function anular($codigoFactura) {
         $em = $this->getEntityManager();
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();          
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
 
         $strResultado = "";
@@ -393,13 +393,17 @@ class TurFacturaRepository extends EntityRepository {
                 $arFacturaDetalle->setTotal(0);
                 $em->persist($arFacturaDetalle);
             }
+            
             $arFactura->setVrSubtotal(0);
             $arFactura->setVrRetencionFuente(0);
+            $arFactura->setVrRetencionIva(0);            
             $arFactura->setVrBaseAIU(0);
             $arFactura->setVrIva(0);
             $arFactura->setVrTotal(0);
             $arFactura->setVrTotalNeto(0);
             $arFactura->setEstadoAnulado(1);
+            $arFactura->setVrBaseRetencionFuente(0);
+            $arFactura->setVrSubtotalOperado(0);            
             $em->persist($arFactura);
 
             //Anular cuenta por cobrar
