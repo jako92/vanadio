@@ -14,7 +14,7 @@ class CtbRegistroRepository extends EntityRepository
 {
 
     public function listaDql($comprobante = "", $numero = "", $numeroReferencia = "", $fechaDesde = "", $fechaHasta = "", $srtCuenta = "", $codigoTercero = "") {        
-        $dql   = "SELECT r FROM BrasaContabilidadBundle:CtbRegistro r JOIN r.terceroRel t WHERE r.codigoRegistroPk <> 0";
+        $dql   = "SELECT r FROM BrasaContabilidadBundle:CtbRegistro r WHERE r.codigoRegistroPk <> 0";
         if($comprobante != "") {
             $dql .= " AND r.codigoComprobanteFk = " . $comprobante;
         }
@@ -34,7 +34,7 @@ class CtbRegistroRepository extends EntityRepository
             $dql .= " AND r.codigoCuentaFk = " . $srtCuenta;
         }
         if($codigoTercero != "") {
-            $dql .= " AND t.numeroIdentificacion = " . $codigoTercero;
+            $dql .= " AND r.codigoTerceroFk = " . $codigoTercero;
         }
         return $dql;
     }           

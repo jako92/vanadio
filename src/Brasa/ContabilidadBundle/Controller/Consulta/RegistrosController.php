@@ -46,6 +46,7 @@ class RegistrosController extends Controller {
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form, $request);
+                    $this->formularioLista();
                     $this->listar();
                 }
             }
@@ -82,13 +83,17 @@ class RegistrosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
         $strNombreTercero = "";
-        if ($session->get('filtroCodigoTercero')) {
-            $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion'=>$session->get('filtroCodigoTercero')));
+        if ($session->get('filtroNitTercero')) {
+            $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion'=>$session->get('filtroNitTercero')));
             if ($arTercero) {
                 $strNombreTercero = $arTercero->getNombreCorto();
+                $session->set('filtroCodigoTercero', $arTercero->getCodigoTerceroPk());
             } else {
                 $session->set('filtroCodigoTercero', null);
+                $session->set('filtroNitTercero', null);
             }
+        } else {
+            $session->set('filtroCodigoTercero', null);
         }
         $dateFecha = new \DateTime('now');
         $strFechaDesde = $dateFecha->format('Y/m/') . "01";
@@ -104,7 +109,7 @@ class RegistrosController extends Controller {
         $dateFechaHasta = date_create($strFechaHasta);
 
         $form = $this->createFormBuilder()
-                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroCodigoTercero')))
+                ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroNitTercero')))
                 ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $strNombreTercero))
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumero')))
                 ->add('TxtNumeroReferencia', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCtbNumeroReferencia')))
@@ -125,7 +130,7 @@ class RegistrosController extends Controller {
         $session->set('filtroCtbCuenta', $form->get('TxtCuenta')->getData());
         $session->set('filtroCtbNumeroReferencia', $form->get('TxtNumeroReferencia')->getData());
         $session->set('filtroCtbCodigoComprobante', $form->get('TxtComprobante')->getData());
-        $session->set('filtroCodigoTercero', $form->get('TxtIdentificacion')->getData());
+        $session->set('filtroNitTercero', $form->get('TxtIdentificacion')->getData());
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
         $session->set('filtroCtbRegistroFechaDesde', $dateFechaDesde->format('Y/m/d'));
