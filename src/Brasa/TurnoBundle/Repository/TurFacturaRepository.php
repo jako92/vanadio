@@ -424,6 +424,8 @@ class TurFacturaRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $respuesta = "";
         if (count($arrSeleccionados) > 0) {
+            $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();            
+            $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
             foreach ($arrSeleccionados AS $codigo) {
                 $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();
                 $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigo);
@@ -549,19 +551,54 @@ class TurFacturaRepository extends EntityRepository {
                                 break;
                             }
                         }
+                        
+                        if($arConfiguracion->getContabilizarFacturaIngresoCentroCosto()) {
+                            //Ingreso
+                            $strSql = "SELECT codigo_centro_costo_contabilidad_fk as centroCosto, SUM(subtotal) as subtotal                                        
+                                        FROM tur_factura_detalle                                                            
+                                        LEFT JOIN tur_puesto ON codigo_puesto_fk = codigo_puesto_pk
+                                        WHERE codigo_factura_fk = $codigo 
+                                        GROUP BY codigo_centro_costo_contabilidad_fk";
+                            $connection = $em->getConnection();
+                            $statement = $connection->prepare($strSql);
+                            $statement->execute();
+                            $arFacturaDetalles = $statement->fetchAll();
+                            foreach ($arFacturaDetalles as $arFacturaDetalle) {
+                                $arCentroCosto = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find($arFacturaDetalle['centroCosto']);
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                if ($arFactura->getFacturaTipoRel()->getTipo() == 2 || $arFactura->getFacturaTipoRel()->getTipo() == 3) {
+                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoDevolucionFk());
+                                } else {
+                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoFk());
+                                }
+                                if ($arFactura->getFacturaTipoRel()->getTipoCuentaIngreso() == 1) {
+                                    $arRegistro->setDebito($arFacturaDetalle['subtotal']);
+                                } else {
+                                    $arRegistro->setCredito($arFacturaDetalle['subtotal']);
+                                }
 
-                        //Ingreso
-                        $strSql = "SELECT codigo_centro_costo_contabilidad_fk as centroCosto, SUM(subtotal) as subtotal                                        
-                                    FROM tur_factura_detalle                                                            
-                                    LEFT JOIN tur_puesto ON codigo_puesto_fk = codigo_puesto_pk
-                                    WHERE codigo_factura_fk = $codigo 
-                                    GROUP BY codigo_centro_costo_contabilidad_fk";
-                        $connection = $em->getConnection();
-                        $statement = $connection->prepare($strSql);
-                        $statement->execute();
-                        $arFacturaDetalles = $statement->fetchAll();
-                        foreach ($arFacturaDetalles as $arFacturaDetalle) {
-                            $arCentroCosto = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find($arFacturaDetalle['centroCosto']);
+                                if ($arCuenta) {
+                                    $arRegistro->setComprobanteRel($arComprobanteContable);
+                                    $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    $arRegistro->setCuentaRel($arCuenta);
+                                    $arRegistro->setTerceroRel($arTercero);
+                                    $arRegistro->setNumero($arFactura->getNumero());
+                                    $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                                    $arRegistro->setFecha($arFactura->getFecha());
+                                    $arRegistro->setDescripcionContable('FACTURACION ' . $this->MesesEspañol($arFactura->getFecha()->format('m')));
+                                    $em->persist($arRegistro);
+                                } else {
+                                    if ($arFactura->getFacturaTipoRel()->getTipo() == 2 || $arFactura->getFacturaTipoRel()->getTipo() == 3) {
+                                        $codigoCuentaIngreso = $arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoDevolucionFk();
+                                    } else {
+                                        $codigoCuentaIngreso = $arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoFk();
+                                    }
+                                    $respuesta = "La cuenta " . $codigoCuentaIngreso . " tiene un tipo de servicio " . $arFactura->getFacturaServicioRel()->getNombre() . " que no tiene cuenta contable configurada";
+                                    break;
+                                }
+                            }                            
+                        } else {
+                            //Ingreso                                                                                        
                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                             if ($arFactura->getFacturaTipoRel()->getTipo() == 2 || $arFactura->getFacturaTipoRel()->getTipo() == 3) {
                                 $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoDevolucionFk());
@@ -569,13 +606,13 @@ class TurFacturaRepository extends EntityRepository {
                                 $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaIngresoFk());
                             }
                             if ($arFactura->getFacturaTipoRel()->getTipoCuentaIngreso() == 1) {
-                                $arRegistro->setDebito($arFacturaDetalle['subtotal']);
+                                $arRegistro->setDebito($arFactura->getVrSubtotal());
                             } else {
-                                $arRegistro->setCredito($arFacturaDetalle['subtotal']);
+                                $arRegistro->setCredito($arFactura->getVrSubtotal());
                             }
+
                             if ($arCuenta) {
-                                $arRegistro->setComprobanteRel($arComprobanteContable);
-                                $arRegistro->setCentroCostoRel($arCentroCosto);
+                                $arRegistro->setComprobanteRel($arComprobanteContable);                                
                                 $arRegistro->setCuentaRel($arCuenta);
                                 $arRegistro->setTerceroRel($arTercero);
                                 $arRegistro->setNumero($arFactura->getNumero());
@@ -591,8 +628,9 @@ class TurFacturaRepository extends EntityRepository {
                                 }
                                 $respuesta = "La cuenta " . $codigoCuentaIngreso . " tiene un tipo de servicio " . $arFactura->getFacturaServicioRel()->getNombre() . " que no tiene cuenta contable configurada";
                                 break;
-                            }
+                            }                                                        
                         }
+
 
                         $arFactura->setEstadoContabilizado(1);
                         $em->persist($arFactura);

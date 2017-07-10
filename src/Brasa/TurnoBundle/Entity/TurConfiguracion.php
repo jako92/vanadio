@@ -143,6 +143,11 @@ class TurConfiguracion
      */    
     private $tipoAjusteDevengado = 1;
 
+    /**     
+     * @ORM\Column(name="contabilizar_factura_ingreso_centro_costo", type="boolean")
+     */    
+    private $contabilizarFacturaIngresoCentroCosto = false;
+    
 
     /**
      * Set codigoConfiguracionPk
@@ -766,5 +771,29 @@ class TurConfiguracion
     public function getTipoAjusteDevengado()
     {
         return $this->tipoAjusteDevengado;
+    }
+
+    /**
+     * Set contabilizarFacturaIngresoCentroCosto
+     *
+     * @param boolean $contabilizarFacturaIngresoCentroCosto
+     *
+     * @return TurConfiguracion
+     */
+    public function setContabilizarFacturaIngresoCentroCosto($contabilizarFacturaIngresoCentroCosto)
+    {
+        $this->contabilizarFacturaIngresoCentroCosto = $contabilizarFacturaIngresoCentroCosto;
+
+        return $this;
+    }
+
+    /**
+     * Get contabilizarFacturaIngresoCentroCosto
+     *
+     * @return boolean
+     */
+    public function getContabilizarFacturaIngresoCentroCosto()
+    {
+        return $this->contabilizarFacturaIngresoCentroCosto;
     }
 }
