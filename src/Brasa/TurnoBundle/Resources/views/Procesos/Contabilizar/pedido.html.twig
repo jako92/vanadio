@@ -1,0 +1,120 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Contabilizar pedidos - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Pedido cierre mes: contabilizar</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Procesos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Contabilizar</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>    
+    <section class="content">    
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">
+                <div     class="form-group form-group-sm">
+                    <label for="txtNit" class="col-sm-2 control-label">Cliente:</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                    {{ form_widget(form.TxtNit, { 'attr': {'class': 'form-control'} }) }}                              
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="input-group">     
+                                    {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
+                                    <span class="input-group-btn">                                        
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group form-group-sm">  
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
+                    <div class="col-sm-4">  
+                        {{ form_widget(form.fechaDesde) }}
+                    </div> 
+                    <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>  
+                <div class="form-group form-group-sm">  
+                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
+                    <div class="col-sm-4">   
+                        {{ form_widget(form.fechaHasta) }}
+                    </div>                   
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label for="form_filtrarFecha" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">   
+                        {{ form_widget(form.filtrarFecha) }}
+                    </div>                   
+                </div> 
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table  class="table table-striped table-bordered table-condensed table-hover">
+            <tr>
+                <th>{{ knp_pagination_sortable(arPedidos, 'CÓDIGO', 'p.codigoPedidoPk') }}</th>
+                <th>TIPO</th>
+                <th>NUMERO</th>
+                <th>FECHA</th>
+                <th>CLIENTE</th>
+                <th>TOTAL</th>    
+                <th>AUT</th>
+                <th>CON</th>
+                <th>ANU</th>
+                <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionar[]');"/></th>
+            </tr>
+            {% for arPedidos in arPedidos %}
+                <tr>                                             
+                    <td>{{ arPedidos.codigoPedidoPk  }}</td>  
+                    <td>{{ arPedidos.pedidoTipoRel.nombre |default('')  }}</td>
+                    <td>{{ arPedidos.numero  }}</td>
+                    <td>{{ arPedidos.fecha |date("Y/m/d")  }}</td>
+                    <td>{{ arPedidos.clienteRel.nombreCorto |default('') }}</td>
+                    <td style="text-align: right">{{ arPedidos.vrTotal | number_format(0, '.', ',') }}</td>                
+                    <td>{% if arPedidos.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>                
+                    <td>{% if arPedidos.estadoContabilizado == 1 %} SI {% else %} NO {% endif %}</td>                
+                    <td>{% if arPedidos.estadoAnulado == 1 %} SI {% else %} NO {% endif %}</td>                
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidos.codigoPedidoPk }}" /></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        <!-- Botones Menu Items -->
+        <div class="btn-group" style="float: left">
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPedidos.getTotalItemCount }}</span></div>                        
+        </div>
+        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+            {{ knp_pagination_render(arPedidos) }}       
+        </div>
+
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">                
+                {{ form_widget(form.BtnContabilizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                
+            </div>
+        </div>
+        <!-- Fin Botones Menu Items -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

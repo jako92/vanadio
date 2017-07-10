@@ -75,7 +75,17 @@ class TurPedido
     /**     
      * @ORM\Column(name="estado_anulado", type="boolean")
      */    
-    private $estadoAnulado = false;     
+    private $estadoAnulado = false;
+    
+    /**     
+     * @ORM\Column(name="estado_contabilizado", type="boolean")
+     */    
+    private $estadoContabilizado = false;
+    
+    /**     
+     * @ORM\Column(name="estado_cierre_mes", type="boolean")
+     */    
+    private $estadoCierreMes = false;
     
     /**
      * @ORM\Column(name="cantidad", type="integer")
@@ -150,12 +160,7 @@ class TurPedido
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
-    private $comentarios;         
-    
-    /**     
-     * @ORM\Column(name="estado_cierre_mes", type="boolean")
-     */    
-    private $estadoCierreMes = false;    
+    private $comentarios;
     
     /**
      * @ORM\Column(name="vr_salario_base", type="float")
@@ -1043,5 +1048,29 @@ class TurPedido
     public function getPedidosDetallesConceptosPedidoRel()
     {
         return $this->pedidosDetallesConceptosPedidoRel;
+    }
+
+    /**
+     * Set estadoContabilizado
+     *
+     * @param boolean $estadoContabilizado
+     *
+     * @return TurPedido
+     */
+    public function setEstadoContabilizado($estadoContabilizado)
+    {
+        $this->estadoContabilizado = $estadoContabilizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoContabilizado
+     *
+     * @return boolean
+     */
+    public function getEstadoContabilizado()
+    {
+        return $this->estadoContabilizado;
     }
 }

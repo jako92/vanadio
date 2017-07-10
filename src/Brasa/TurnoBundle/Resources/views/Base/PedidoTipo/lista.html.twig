@@ -1,0 +1,94 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Pedido tipos lista - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Tipo pedido: lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Administracion</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Tipo pedido</a></li>
+            <li class="active">Lista</li>
+        </ol>
+    </section>  
+    <section class="content">
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="form_TxtNombre" class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.TxtNombre , { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table  class="table table-striped table-bordered table-condensed table-hover">
+            <tr>
+                <th>{{ knp_pagination_sortable(arPedidoTipos, 'CÓDIGO', 'p.codigoPedidoTipoPk') }}</th>
+                <th>NOMBRE</th>
+                <th>TIPO</th>
+                <th>COMPROBANTE</th>
+                <th>TC_CAR</th>
+                <th>C_CAR</th>
+                <th>TC_ING</th>
+                <th>C_ING</th>
+                <th>TC_IVA</th>
+                <th>C_IVA</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for arPedidoTipos in arPedidoTipos %}
+                <tr>
+                    <td>{{ arPedidoTipos.codigoPedidoTipoPk  }}</td>
+                    <td>{{ arPedidoTipos.nombre }}</td>                
+                    <td>{{ arPedidoTipos.tipo }}</td>
+                    <td>{{ arPedidoTipos.codigoComprobanteFk }}</td>
+                    <td>{{ arPedidoTipos.tipoCuentaCartera }}</td>
+                    <td>{{ arPedidoTipos.codigoCuentaCarteraFk }}</td>
+                    <td>{{ arPedidoTipos.tipoCuentaIngreso }}</td>
+                    <td>{{ arPedidoTipos.codigoCuentaIngresoFk }}</td>
+                    <td>{{ arPedidoTipos.tipoCuentaIva }}</td>
+                    <td>{{ arPedidoTipos.codigoCuentaIvaFk }}</td>
+                    <td style="text-align: center"><a href="{{ path('brs_tur_base_pedido_tipo_nuevo', {'codigoPedidoTipo': arPedidoTipos.codigoPedidoTipoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
+                    <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidoTipos.codigoPedidoTipoPk }}" /></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        <!-- Botones Menu Items -->
+        <div class="btn-group" style="float: left">
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arPedidoTipos.getTotalItemCount }}</span></div>
+        </div>
+        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+            {{ knp_pagination_render(arPedidoTipos) }}
+        </div>
+        <div class="btn-toolbar" style="float: right">
+            <div class="btn-group">
+                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_tur_base_pedido_tipo_nuevo', {'codigoPedidoTipo': 0}) }}">Nuevo</a>
+            </div>
+            <div class="btn-group">
+                {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
+            </div>
+        </div>
+        <!-- Fin Botones Menu Items -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}
