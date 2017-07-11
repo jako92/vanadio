@@ -88,7 +88,7 @@ class ImportarController extends Controller {
                 $anio = $cell->getValue();
                 $cell = $worksheet->getCellByColumnAndRow(4, $row);
                 $mes = $cell->getValue();
-                $arrTemporal = array('codigoPuesto' => $codigoPuesto,'codigoRecurso' => $codigoRecurso,
+                $arrTemporal = array('codigoPuesto' => $codigoPuesto, 'codigoRecurso' => $codigoRecurso,
                     'codigoPedidoDetalle' => $codigoPedidoDetalle, 'anio' => $anio, 'mes' => $mes);
                 for ($i = 5; $i <= 35; $i++) {
                     $cell = $worksheet->getCellByColumnAndRow($i, $row);
@@ -104,13 +104,12 @@ class ImportarController extends Controller {
             for ($i = 5; $i <= 35; $i++) {
                 if (!$this->validarTurno($arrCarga[$i])) {
                     $error = " el turno " . $arrCarga[$i] . " no existe.";
+                    $objMensaje->Mensaje('error', "Error al cargar:" . $error, $this);
                 }
             }
         }
 
-        if ($error != "") {
-            $objMensaje->Mensaje('error', "Error al cargar:" . $error, $this);
-        } else {
+        if (!$error) {
             foreach ($arrCargas as $arrCarga) {
                 $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
                 $arProgramacionImportar->setCodigoPuestoFk($arrCarga['codigoPuesto']);
@@ -158,7 +157,11 @@ class ImportarController extends Controller {
 
     private function validarTurno($codigoTurno) {
         $em = $this->getDoctrine()->getManager();
-        $arTurno = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($codigoTurno);
+        if ($codigoTurno) {
+            $arTurno = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($codigoTurno);
+        } else {
+            $arTurno = true;
+        }
         return $arTurno;
     }
 
