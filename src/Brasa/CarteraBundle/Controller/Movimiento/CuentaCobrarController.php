@@ -148,7 +148,7 @@ class CuentaCobrarController extends Controller {
             $arrayPropiedades['data'] = $em->getReference("BrasaCarteraBundle:CarCuentaCobrarTipo", $session->get('filtroCuentaCobrarTipo'));
         }
         $form = $this->createFormBuilder()
-                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCotizacionNumero')))
+                ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroCuentaCobrarNumero')))
                 ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
                 ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
