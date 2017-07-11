@@ -69,6 +69,20 @@ class TurPedidoRepository extends EntityRepository {
         return $dql;
     }
 
+    public function listaFechaDql($fechaDesde = "", $fechaHasta = "", $numeroDesde = "", $numeroHasta = "") {
+        $dql = "SELECT p FROM BrasaTurnoBundle:TurPedido p WHERE p.codigoPedidoPk <> 0";
+        if ($numeroDesde != "" && $numeroHasta != "") {
+            $dql .= " AND p.numero >= " . $numeroDesde . " AND p.numero <= " . $numeroHasta;
+        }
+        if ($fechaDesde != "" && $fechaHasta != "") {
+            $dql .= " AND p.fecha >= '" . $fechaDesde->format('Y-m-d') . " 00:00:00' AND p.fecha <= '" . $fechaHasta->format('Y-m-d') . " 23:59:59'";
+        }
+
+
+        $dql .= " ORDER BY p.codigoPedidoTipoFk, p.fecha DESC, p.numero DESC";
+        return $dql;
+    }
+    
     public function pedidoMaestroDql() {
         $dql = "SELECT p FROM BrasaTurnoBundle:TurPedido p WHERE p.codigoPedidoTipoFk = 2";
         return $dql;

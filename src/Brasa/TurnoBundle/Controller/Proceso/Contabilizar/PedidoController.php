@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class PedidoController extends Controller {
 
@@ -46,6 +47,49 @@ class PedidoController extends Controller {
         $arPedidos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
         return $this->render('BrasaTurnoBundle:Procesos/Contabilizar:pedido.html.twig', array(
                     'arPedidos' => $arPedidos,
+                    'form' => $form->createView()));
+    }
+    
+    /**
+     * @Route("/rhu/proceso/contabilizar/pedido/descontabilizar", name="brs_rhu_proceso_contabilizar_pedido_descontabilizar")
+     */
+    public function descontabilizarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session;
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $form = $this->createFormBuilder()
+                ->add('numeroDesde', NumberType::class, array('label' => 'Numero desde'))
+                ->add('numeroHasta', NumberType::class, array('label' => 'Numero hasta'))
+                ->add('fechaDesde', DateType::class, array( 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta', DateType::class, array( 'attr' => array('class' => 'date',)))
+                ->add('BtnDescontabilizar', SubmitType::class, array('label' => 'Descontabilizar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnDescontabilizar')->isClicked()) {
+                    $intNumeroDesde = $form->get('numeroDesde')->getData();
+                    $intNumeroHasta = $form->get('numeroHasta')->getData();
+                    $dateFechaDesde = $form->get('fechaDesde')->getData();
+                    $dateFechaHasta = $form->get('fechaHasta')->getData();
+                    if (($intNumeroDesde != "" && $intNumeroHasta != "") || ($dateFechaDesde != "" && $dateFechaHasta != "")) {
+                        $dql = $em->getRepository('BrasaTurnoBundle:TurPedido')->listaFechaDql($dateFechaDesde, $dateFechaHasta, $intNumeroDesde, $intNumeroHasta);
+                        $query = $em->createQuery($dql);
+                        $arPedidos = $query->getResult();
+                        foreach ($arPedidos as $arPedido) {
+                            $arPedidoAct = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($arPedido->getCodigoPedidoPk());
+                            $arPedidoAct->setEstadoContabilizado(0);
+                            $em->persist($arPedidoAct);
+                        }
+                        $em->flush();
+                        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                    } else {
+                        $objMensaje->Mensaje('error', 'Debe seleccionar el filtro correctamente', $this);
+                    }
+                }
+            }
+        }
+        return $this->render('BrasaTurnoBundle:Procesos/Contabilizar:pedidoDescontabilizar.html.twig', array(
                     'form' => $form->createView()));
     }
 
