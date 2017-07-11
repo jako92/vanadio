@@ -327,7 +327,7 @@ class PagoConceptoController extends Controller
                     ->setCellValue('G1', 'DEDUCCION');
 
         $i = 2;
-        $dql   = "SELECT cpc.origen, cpc.codigoPagoConceptoFk as CodigoConcepto,cpc.numeroIdentificacion as Documento,cpc.nombreCorto as Nombre,cpc.nombreConcepto as Concepto,SUM(cpc.vrBonificacion) as Bonificacion,SUM(cpc.vrDeduccion) as Deduccion FROM BrasaRecursoHumanoBundle:RhuConsultaPagoConcepto cpc GROUP BY cpc.origen, cpc.numeroIdentificacion, cpc.nombreCorto, cpc.codigoPagoConceptoFk,cpc.nombreConcepto";        
+        $dql   = "SELECT cpc.origen, cpc.codigoPagoConceptoFk as CodigoConcepto,cpc.numeroIdentificacion as Documento,cpc.nombreCorto as Nombre,cpc.nombreConcepto as Concepto,SUM(cpc.vrDevengado) as Devengado,SUM(cpc.vrDeduccion) as Deduccion FROM BrasaRecursoHumanoBundle:RhuConsultaPagoConcepto cpc GROUP BY cpc.origen, cpc.numeroIdentificacion, cpc.nombreCorto, cpc.codigoPagoConceptoFk,cpc.nombreConcepto";        
         $query = $em->createQuery($dql);
         $arConsultaPagoConceptos = new \Brasa\RecursoHumanoBundle\Entity\RhuConsultaPagoConcepto();
         $arConsultaPagoConceptos = $query->getResult();
@@ -340,7 +340,7 @@ class PagoConceptoController extends Controller
                     ->setCellValue('D' . $i, $arConsultaPagoConcepto['CodigoConcepto'])
                     ->setCellValue('E' . $i, $arConsultaPagoConcepto['Concepto'])
                     ->setCellValue('F' . $i, $arConsultaPagoConcepto['Deduccion'])
-                    ->setCellValue('G' . $i, $arConsultaPagoConcepto['Bonificacion'])
+                    ->setCellValue('G' . $i, $arConsultaPagoConcepto['Devengado'])
                     
                     ;
             $i++;
