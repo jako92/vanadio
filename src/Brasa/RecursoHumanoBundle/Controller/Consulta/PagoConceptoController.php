@@ -104,11 +104,13 @@ class PagoConceptoController extends Controller
     }
 
     private function filtrarLista($form, Request $request) {
+        ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
         $em = $this->getDoctrine()->getManager(); 
         $session = $this->get('session');        
         $strSql = "DELETE FROM rhu_consulta_pago_concepto WHERE 1";
-        $em->getConnection()->executeQuery($strSql);        
-                                
+        $em->getConnection()->executeQuery($strSql);
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());        
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -124,8 +126,8 @@ class PagoConceptoController extends Controller
                     "",
                     $session->get('filtroIdentificacion'),
                     "",
-                    $strFechaDesde = $session->get('filtroDesde'),
-                    $strFechaHasta = $session->get('filtroHasta'),
+                    $session->get('filtroDesde'),
+                    $session->get('filtroHasta'),
                     $session->get('filtroCodigoPagoConcepto')
                     );               
         $query = $em->createQuery($dql);        
@@ -145,7 +147,7 @@ class PagoConceptoController extends Controller
                 $arConsultaPagoConcepto->setVrDeduccion($arPagoDetalle->getVrPago());  
             }
             if($arPagoDetalle->getOperacion() == 1) {
-                $arConsultaPagoConcepto->setVrBonificacion($arPagoDetalle->getVrPago());  
+                $arConsultaPagoConcepto->setVrDevengado($arPagoDetalle->getVrPago());  
             }            
             $em->persist($arConsultaPagoConcepto);            
         }
@@ -168,7 +170,7 @@ class PagoConceptoController extends Controller
             $arConsultaPagoConcepto->setNombreCorto($arVacacionAdicional->getVacacionRel()->getEmpleadoRel()->getNombreCorto());
             $arConsultaPagoConcepto->setCodigoPagoConceptoFk($arVacacionAdicional->getCodigoPagoConceptoFk());
             $arConsultaPagoConcepto->setNombreConcepto($arVacacionAdicional->getPagoConceptoRel()->getNombre());            
-            $arConsultaPagoConcepto->setVrBonificacion($arVacacionAdicional->getVrBonificacion());
+            $arConsultaPagoConcepto->setVrDevengado($arVacacionAdicional->getVrDevengado());
             $arConsultaPagoConcepto->setVrDeduccion($arVacacionAdicional->getVrDeduccion());
             $arConsultaPagoConcepto->setFechaDesde($arVacacionAdicional->getVacacionRel()->getFecha());
             $arConsultaPagoConcepto->setFechaHasta($arVacacionAdicional->getVacacionRel()->getFecha());            
@@ -186,7 +188,7 @@ class PagoConceptoController extends Controller
             $arConsultaPagoConcepto->setNombreCorto($arLiquidacionAdicional->getLiquidacionRel()->getEmpleadoRel()->getNombreCorto());
             $arConsultaPagoConcepto->setCodigoPagoConceptoFk($arLiquidacionAdicional->getCodigoPagoConceptoFk());
             $arConsultaPagoConcepto->setNombreConcepto($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());            
-            $arConsultaPagoConcepto->setVrBonificacion($arLiquidacionAdicional->getVrBonificacion());
+            $arConsultaPagoConcepto->setVrDevengado($arLiquidacionAdicional->getVrDevengado());
             $arConsultaPagoConcepto->setVrDeduccion($arLiquidacionAdicional->getVrDeduccion());
             $arConsultaPagoConcepto->setFechaDesde($arLiquidacionAdicional->getLiquidacionRel()->getFecha());
             $arConsultaPagoConcepto->setFechaHasta($arLiquidacionAdicional->getLiquidacionRel()->getFecha());            
@@ -229,7 +231,7 @@ class PagoConceptoController extends Controller
                     ->setCellValue('H1', 'CONCEPTO')
                     ->setCellValue('I1', 'DESDE')
                     ->setCellValue('J1', 'HASTA')
-                    ->setCellValue('K1', 'BONIFICACION')
+                    ->setCellValue('K1', 'DEVENGADO')
                     ->setCellValue('L1', 'DEDUCCION')
                     ->setCellValue('M1', 'ZONA')
                     ->setCellValue('N1', 'SUBZONA')
@@ -260,7 +262,7 @@ class PagoConceptoController extends Controller
                     ->setCellValue('H' . $i, $arConsultaPagoConcepto->getNombreConcepto())
                     ->setCellValue('I' . $i, $arConsultaPagoConcepto->getFechaDesde()->format('Y-m-d'))
                     ->setCellValue('J' . $i, $arConsultaPagoConcepto->getFechaHasta()->format('Y-m-d'))
-                    ->setCellValue('K' . $i, $arConsultaPagoConcepto->getVrBonificacion())
+                    ->setCellValue('K' . $i, $arConsultaPagoConcepto->getVrDevengado())
                     ->setCellValue('L' . $i, $arConsultaPagoConcepto->getVrDeduccion());
             if($arEmpleado->getCodigoZonaFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $i, $arEmpleado->getZonaRel()->getNombre());
@@ -321,7 +323,7 @@ class PagoConceptoController extends Controller
                     ->setCellValue('C1', 'EMPLEADO')
                     ->setCellValue('D1', 'CODIGO')
                     ->setCellValue('E1', 'CONCEPTO')                    
-                    ->setCellValue('F1', 'BONIFICACION')
+                    ->setCellValue('F1', 'DEVENGADO')
                     ->setCellValue('G1', 'DEDUCCION');
 
         $i = 2;

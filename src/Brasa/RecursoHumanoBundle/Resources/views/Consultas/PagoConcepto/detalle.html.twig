@@ -66,7 +66,7 @@
                 <th>CONCEPTO</th>                                               
                 <th>DESDE</th>
                 <th>HASTA</th>
-                <th style="text-align: right">BONIFICACION</th>
+                <th style="text-align: right">DEVENGADO</th>
                 <th style="text-align: right">DEDUCCION</th>
             </tr>
             {% for arConsultaPagoConcepto in arConsultaPagoConcepto %}
@@ -79,7 +79,7 @@
                     <td>{{ arConsultaPagoConcepto.nombreConcepto  }}</td>  
                     <td>{{ arConsultaPagoConcepto.fechaDesde |date("Y/m/d")  }}</td>  
                     <td>{{ arConsultaPagoConcepto.fechaHasta |date("Y/m/d")  }}</td>
-                    <td style="text-align: right">{{ arConsultaPagoConcepto.vrBonificacion | number_format(0, '.', ',') }}</td>                
+                    <td style="text-align: right">{{ arConsultaPagoConcepto.vrDevengado | number_format(0, '.', ',') }}</td>                
                     <td style="text-align: right">{{ arConsultaPagoConcepto.vrDeduccion | number_format(0, '.', ',') }}</td>                                
                 </tr>
             {% endfor %}

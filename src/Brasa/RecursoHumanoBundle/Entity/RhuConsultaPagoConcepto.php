@@ -8,71 +8,69 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_consulta_pago_concepto")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuConsultaPagoConceptoRepository")
  */
-class RhuConsultaPagoConcepto
-{
+class RhuConsultaPagoConcepto {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_consulta_pago_concepto_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoConsultaPagoConceptoPk;
-    
+
     /**
      * @ORM\Column(name="origen", type="string", length=30, nullable=true)
-     */    
-    private $origen;    
+     */
+    private $origen;
 
     /**
      * @ORM\Column(name="numero", type="integer")
-     */    
-    private $numero = 0; 
+     */
+    private $numero = 0;
 
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
-     */    
-    private $codigoEmpleadoFk = 0;    
-    
+     */
+    private $codigoEmpleadoFk = 0;
+
     /**
      * @ORM\Column(name="numero_identificacion", type="string", length=20, nullable=true)
      */
-         
     private $numeroIdentificacion;
 
     /**
      * @ORM\Column(name="nombre_corto", type="string", length=80, nullable=true)
-     */    
+     */
     private $nombreCorto;
 
     /**
      * @ORM\Column(name="codigo_pago_concepto_fk", type="integer", nullable=true)
-     */    
-    private $codigoPagoConceptoFk; 
+     */
+    private $codigoPagoConceptoFk;
 
     /**
      * @ORM\Column(name="nombreConcepto", type="string", length=80, nullable=true)
-     */    
-    private $nombreConcepto; 
+     */
+    private $nombreConcepto;
 
     /**
      * @ORM\Column(name="vr_deduccion", type="float")
      */
-    private $vrDeduccion = 0;         
+    private $vrDeduccion = 0;
 
     /**
-     * @ORM\Column(name="vr_bonificacion", type="float")
+     * @ORM\Column(name="vr_devengado", type="float")
      */
-    private $vrBonificacion = 0;    
-    
+    private $vrDevengado = 0;
+
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
-     */    
-    private $fechaDesde;    
-    
+     */
+    private $fechaDesde;
+
     /**
      * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
-     */    
-    private $fechaHasta;     
-
+     */
+    private $fechaHasta;
 
 
     /**
@@ -131,6 +129,30 @@ class RhuConsultaPagoConcepto
     public function getNumero()
     {
         return $this->numero;
+    }
+
+    /**
+     * Set codigoEmpleadoFk
+     *
+     * @param integer $codigoEmpleadoFk
+     *
+     * @return RhuConsultaPagoConcepto
+     */
+    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
+    {
+        $this->codigoEmpleadoFk = $codigoEmpleadoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEmpleadoFk
+     *
+     * @return integer
+     */
+    public function getCodigoEmpleadoFk()
+    {
+        return $this->codigoEmpleadoFk;
     }
 
     /**
@@ -254,27 +276,27 @@ class RhuConsultaPagoConcepto
     }
 
     /**
-     * Set vrBonificacion
+     * Set vrDevengado
      *
-     * @param float $vrBonificacion
+     * @param float $vrDevengado
      *
      * @return RhuConsultaPagoConcepto
      */
-    public function setVrBonificacion($vrBonificacion)
+    public function setVrDevengado($vrDevengado)
     {
-        $this->vrBonificacion = $vrBonificacion;
+        $this->vrDevengado = $vrDevengado;
 
         return $this;
     }
 
     /**
-     * Get vrBonificacion
+     * Get vrDevengado
      *
      * @return float
      */
-    public function getVrBonificacion()
+    public function getVrDevengado()
     {
-        return $this->vrBonificacion;
+        return $this->vrDevengado;
     }
 
     /**
@@ -323,29 +345,5 @@ class RhuConsultaPagoConcepto
     public function getFechaHasta()
     {
         return $this->fechaHasta;
-    }
-
-    /**
-     * Set codigoEmpleadoFk
-     *
-     * @param integer $codigoEmpleadoFk
-     *
-     * @return RhuConsultaPagoConcepto
-     */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
-        $this->codigoEmpleadoFk = $codigoEmpleadoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoEmpleadoFk
-     *
-     * @return integer
-     */
-    public function getCodigoEmpleadoFk()
-    {
-        return $this->codigoEmpleadoFk;
     }
 }
