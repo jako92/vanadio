@@ -37,7 +37,11 @@
         </div>
         <table width="100%" class="table table-condensed table-bordered">
             <tr>           
+                <th>PUESTO</th>
                 <th>RECURSO</th>
+                <th>PEDIDO DETALLE</th>
+                <th>AÑO</th>
+                <th>MES</th>
                 <th>1</th>
                 <th>2</th>
                 <th>3</th>
@@ -71,8 +75,12 @@
                 <th>31</th>
             </tr>
             {% for arProgramacionesImportar in arProgramacionesImportar %}               
-                <tr>                    
+                <tr> 
+                    <td>{{ arProgramacionesImportar.codigoPuestoFk }}</td>
                     <td>{{ arProgramacionesImportar.codigoRecursoFk }}</td>
+                    <td>{{ arProgramacionesImportar.codigoPedidoDetalleFk }}</td>
+                    <td>{{ arProgramacionesImportar.anio  }}</td>
+                    <td>{{ arProgramacionesImportar.mes  }}</td>
                     <td>{{ arProgramacionesImportar.dia1  }}</td>
                     <td>{{ arProgramacionesImportar.dia2  }}</td>
                     <td>{{ arProgramacionesImportar.dia3  }}</td>

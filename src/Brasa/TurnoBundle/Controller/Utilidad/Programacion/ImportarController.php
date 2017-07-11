@@ -79,9 +79,18 @@ class ImportarController extends Controller {
             $nrColumns = ord($highestColumn) - 64;
             for ($row = 2; $row <= $highestRow; ++$row) {
                 $cell = $worksheet->getCellByColumnAndRow(0, $row);
+                $codigoPuesto = $cell->getValue();
+                $cell = $worksheet->getCellByColumnAndRow(1, $row);
                 $codigoRecurso = $cell->getValue();
-                $arrTemporal = array('codigoRecurso' => $codigoRecurso);
-                for ($i = 1; $i <= 31; $i++) {
+                $cell = $worksheet->getCellByColumnAndRow(2, $row);
+                $codigoPedidoDetalle = $cell->getValue();
+                $cell = $worksheet->getCellByColumnAndRow(3, $row);
+                $anio = $cell->getValue();
+                $cell = $worksheet->getCellByColumnAndRow(4, $row);
+                $mes = $cell->getValue();
+                $arrTemporal = array('codigoPuesto' => $codigoPuesto,'codigoRecurso' => $codigoRecurso,
+                    'codigoPedidoDetalle' => $codigoPedidoDetalle, 'anio' => $anio, 'mes' => $mes);
+                for ($i = 5; $i <= 35; $i++) {
                     $cell = $worksheet->getCellByColumnAndRow($i, $row);
                     $turno = $cell->getValue();
                     $arrTemporal[$i] = $turno;
@@ -92,7 +101,7 @@ class ImportarController extends Controller {
 
         //Validar que el turno exista
         foreach ($arrCargas as $arrCarga) {
-            for ($i = 1; $i <= 31; $i++) {
+            for ($i = 5; $i <= 35; $i++) {
                 if (!$this->validarTurno($arrCarga[$i])) {
                     $error = " el turno " . $arrCarga[$i] . " no existe.";
                 }
@@ -104,38 +113,42 @@ class ImportarController extends Controller {
         } else {
             foreach ($arrCargas as $arrCarga) {
                 $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
+                $arProgramacionImportar->setCodigoPuestoFk($arrCarga['codigoPuesto']);
                 $arProgramacionImportar->setCodigoRecursoFk($arrCarga['codigoRecurso']);
-                $arProgramacionImportar->setDia1($arrCarga[1]);
-                $arProgramacionImportar->setDia2($arrCarga[2]);
-                $arProgramacionImportar->setDia3($arrCarga[3]);
-                $arProgramacionImportar->setDia4($arrCarga[4]);
-                $arProgramacionImportar->setDia5($arrCarga[5]);
-                $arProgramacionImportar->setDia6($arrCarga[6]);
-                $arProgramacionImportar->setDia7($arrCarga[7]);
-                $arProgramacionImportar->setDia8($arrCarga[8]);
-                $arProgramacionImportar->setDia9($arrCarga[9]);
-                $arProgramacionImportar->setDia10($arrCarga[10]);
-                $arProgramacionImportar->setDia11($arrCarga[11]);
-                $arProgramacionImportar->setDia12($arrCarga[12]);
-                $arProgramacionImportar->setDia13($arrCarga[13]);
-                $arProgramacionImportar->setDia14($arrCarga[14]);
-                $arProgramacionImportar->setDia15($arrCarga[15]);
-                $arProgramacionImportar->setDia16($arrCarga[16]);
-                $arProgramacionImportar->setDia17($arrCarga[17]);
-                $arProgramacionImportar->setDia18($arrCarga[18]);
-                $arProgramacionImportar->setDia19($arrCarga[19]);
-                $arProgramacionImportar->setDia20($arrCarga[20]);
-                $arProgramacionImportar->setDia21($arrCarga[21]);
-                $arProgramacionImportar->setDia22($arrCarga[22]);
-                $arProgramacionImportar->setDia23($arrCarga[23]);
-                $arProgramacionImportar->setDia24($arrCarga[24]);
-                $arProgramacionImportar->setDia25($arrCarga[25]);
-                $arProgramacionImportar->setDia26($arrCarga[26]);
-                $arProgramacionImportar->setDia27($arrCarga[27]);
-                $arProgramacionImportar->setDia28($arrCarga[28]);
-                $arProgramacionImportar->setDia29($arrCarga[29]);
-                $arProgramacionImportar->setDia30($arrCarga[30]);
-                $arProgramacionImportar->setDia31($arrCarga[31]);
+                $arProgramacionImportar->setCodigoPedidoDetalleFk($arrCarga['codigoPedidoDetalle']);
+                $arProgramacionImportar->setAnio($arrCarga['anio']);
+                $arProgramacionImportar->setMes($arrCarga['mes']);
+                $arProgramacionImportar->setDia1($arrCarga[5]);
+                $arProgramacionImportar->setDia2($arrCarga[6]);
+                $arProgramacionImportar->setDia3($arrCarga[7]);
+                $arProgramacionImportar->setDia4($arrCarga[8]);
+                $arProgramacionImportar->setDia5($arrCarga[9]);
+                $arProgramacionImportar->setDia6($arrCarga[10]);
+                $arProgramacionImportar->setDia7($arrCarga[11]);
+                $arProgramacionImportar->setDia8($arrCarga[12]);
+                $arProgramacionImportar->setDia9($arrCarga[13]);
+                $arProgramacionImportar->setDia10($arrCarga[14]);
+                $arProgramacionImportar->setDia11($arrCarga[15]);
+                $arProgramacionImportar->setDia12($arrCarga[16]);
+                $arProgramacionImportar->setDia13($arrCarga[17]);
+                $arProgramacionImportar->setDia14($arrCarga[18]);
+                $arProgramacionImportar->setDia15($arrCarga[19]);
+                $arProgramacionImportar->setDia16($arrCarga[20]);
+                $arProgramacionImportar->setDia17($arrCarga[21]);
+                $arProgramacionImportar->setDia18($arrCarga[22]);
+                $arProgramacionImportar->setDia19($arrCarga[23]);
+                $arProgramacionImportar->setDia20($arrCarga[24]);
+                $arProgramacionImportar->setDia21($arrCarga[25]);
+                $arProgramacionImportar->setDia22($arrCarga[26]);
+                $arProgramacionImportar->setDia23($arrCarga[27]);
+                $arProgramacionImportar->setDia24($arrCarga[28]);
+                $arProgramacionImportar->setDia25($arrCarga[29]);
+                $arProgramacionImportar->setDia26($arrCarga[30]);
+                $arProgramacionImportar->setDia27($arrCarga[31]);
+                $arProgramacionImportar->setDia28($arrCarga[32]);
+                $arProgramacionImportar->setDia29($arrCarga[33]);
+                $arProgramacionImportar->setDia30($arrCarga[34]);
+                $arProgramacionImportar->setDia31($arrCarga[35]);
                 $em->persist($arProgramacionImportar);
             }
             $em->flush();
@@ -165,80 +178,88 @@ class ImportarController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'AG'; $col++) {
+        for ($col = 'A'; $col !== 'AK'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CODIGO RECURSO')
-                ->setCellValue('B1', '1')
-                ->setCellValue('C1', '2')
-                ->setCellValue('D1', '3')
-                ->setCellValue('E1', '4')
-                ->setCellValue('F1', '5')
-                ->setCellValue('G1', '6')
-                ->setCellValue('H1', '7')
-                ->setCellValue('I1', '8')
-                ->setCellValue('J1', '9')
-                ->setCellValue('K1', '10')
-                ->setCellValue('L1', '11')
-                ->setCellValue('M1', '12')
-                ->setCellValue('N1', '13')
-                ->setCellValue('O1', '14')
-                ->setCellValue('P1', '15')
-                ->setCellValue('Q1', '16')
-                ->setCellValue('R1', '17')
-                ->setCellValue('S1', '18')
-                ->setCellValue('T1', '19')
-                ->setCellValue('U1', '20')
-                ->setCellValue('V1', '21')
-                ->setCellValue('W1', '22')
-                ->setCellValue('X1', '23')
-                ->setCellValue('Y1', '24')
-                ->setCellValue('Z1', '25')
-                ->setCellValue('AA1', '26')
-                ->setCellValue('AB1', '27')
-                ->setCellValue('AC1', '28')
-                ->setCellValue('AD1', '29')
-                ->setCellValue('AE1', '30')
-                ->setCellValue('AF1', '31');
+                ->setCellValue('A1', 'CODIGO PUESTO')
+                ->setCellValue('B1', 'CODIGO RECURSO')
+                ->setCellValue('C1', 'CODIGO PEDIDO DETALLE')
+                ->setCellValue('D1', 'AÑO')
+                ->setCellValue('E1', 'MES')
+                ->setCellValue('F1', '1')
+                ->setCellValue('G1', '2')
+                ->setCellValue('H1', '3')
+                ->setCellValue('I1', '4')
+                ->setCellValue('J1', '5')
+                ->setCellValue('K1', '6')
+                ->setCellValue('L1', '7')
+                ->setCellValue('M1', '8')
+                ->setCellValue('N1', '9')
+                ->setCellValue('O1', '10')
+                ->setCellValue('P1', '11')
+                ->setCellValue('Q1', '12')
+                ->setCellValue('R1', '13')
+                ->setCellValue('S1', '14')
+                ->setCellValue('T1', '15')
+                ->setCellValue('U1', '16')
+                ->setCellValue('V1', '17')
+                ->setCellValue('W1', '18')
+                ->setCellValue('X1', '19')
+                ->setCellValue('Y1', '20')
+                ->setCellValue('Z1', '21')
+                ->setCellValue('AA1', '22')
+                ->setCellValue('AB1', '23')
+                ->setCellValue('AC1', '24')
+                ->setCellValue('AD1', '25')
+                ->setCellValue('AE1', '26')
+                ->setCellValue('AF1', '27')
+                ->setCellValue('AG1', '28')
+                ->setCellValue('AH1', '29')
+                ->setCellValue('AI1', '30')
+                ->setCellValue('AJ1', '31');
 
         $i = 2;
         $arProgramacionesImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
         $arProgramacionesImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->findAll();
         foreach ($arProgramacionesImportar as $arProgramacionImportar) {
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $arProgramacionImportar->getCodigoRecursoFk())
-                    ->setCellValue('B' . $i, $arProgramacionImportar->getDia1())
-                    ->setCellValue('C' . $i, $arProgramacionImportar->getDia2())
-                    ->setCellValue('D' . $i, $arProgramacionImportar->getDia3())
-                    ->setCellValue('E' . $i, $arProgramacionImportar->getDia4())
-                    ->setCellValue('F' . $i, $arProgramacionImportar->getDia5())
-                    ->setCellValue('G' . $i, $arProgramacionImportar->getDia6())
-                    ->setCellValue('H' . $i, $arProgramacionImportar->getDia7())
-                    ->setCellValue('I' . $i, $arProgramacionImportar->getDia8())
-                    ->setCellValue('J' . $i, $arProgramacionImportar->getDia9())
-                    ->setCellValue('K' . $i, $arProgramacionImportar->getDia10())
-                    ->setCellValue('L' . $i, $arProgramacionImportar->getDia11())
-                    ->setCellValue('M' . $i, $arProgramacionImportar->getDia12())
-                    ->setCellValue('N' . $i, $arProgramacionImportar->getDia13())
-                    ->setCellValue('O' . $i, $arProgramacionImportar->getDia14())
-                    ->setCellValue('P' . $i, $arProgramacionImportar->getDia15())
-                    ->setCellValue('Q' . $i, $arProgramacionImportar->getDia16())
-                    ->setCellValue('R' . $i, $arProgramacionImportar->getDia17())
-                    ->setCellValue('S' . $i, $arProgramacionImportar->getDia18())
-                    ->setCellValue('T' . $i, $arProgramacionImportar->getDia19())
-                    ->setCellValue('U' . $i, $arProgramacionImportar->getDia20())
-                    ->setCellValue('V' . $i, $arProgramacionImportar->getDia21())
-                    ->setCellValue('W' . $i, $arProgramacionImportar->getDia22())
-                    ->setCellValue('X' . $i, $arProgramacionImportar->getDia23())
-                    ->setCellValue('Y' . $i, $arProgramacionImportar->getDia24())
-                    ->setCellValue('Z' . $i, $arProgramacionImportar->getDia25())
-                    ->setCellValue('AA' . $i, $arProgramacionImportar->getDia26())
-                    ->setCellValue('AB' . $i, $arProgramacionImportar->getDia27())
-                    ->setCellValue('AC' . $i, $arProgramacionImportar->getDia28())
-                    ->setCellValue('AD' . $i, $arProgramacionImportar->getDia29())
-                    ->setCellValue('AE' . $i, $arProgramacionImportar->getDia30())
-                    ->setCellValue('AF' . $i, $arProgramacionImportar->getDia31());
+                    ->setCellValue('A' . $i, $arProgramacionImportar->getCodigoPuestoFk())
+                    ->setCellValue('B' . $i, $arProgramacionImportar->getCodigoRecursoFk())
+                    ->setCellValue('C' . $i, $arProgramacionImportar->getCodigoPedidoDetalleFk())
+                    ->setCellValue('D' . $i, $arProgramacionImportar->getAnio())
+                    ->setCellValue('E' . $i, $arProgramacionImportar->getMes())
+                    ->setCellValue('F' . $i, $arProgramacionImportar->getDia1())
+                    ->setCellValue('G' . $i, $arProgramacionImportar->getDia2())
+                    ->setCellValue('H' . $i, $arProgramacionImportar->getDia3())
+                    ->setCellValue('I' . $i, $arProgramacionImportar->getDia4())
+                    ->setCellValue('J' . $i, $arProgramacionImportar->getDia5())
+                    ->setCellValue('K' . $i, $arProgramacionImportar->getDia6())
+                    ->setCellValue('L' . $i, $arProgramacionImportar->getDia7())
+                    ->setCellValue('M' . $i, $arProgramacionImportar->getDia8())
+                    ->setCellValue('N' . $i, $arProgramacionImportar->getDia9())
+                    ->setCellValue('O' . $i, $arProgramacionImportar->getDia10())
+                    ->setCellValue('P' . $i, $arProgramacionImportar->getDia11())
+                    ->setCellValue('Q' . $i, $arProgramacionImportar->getDia12())
+                    ->setCellValue('R' . $i, $arProgramacionImportar->getDia13())
+                    ->setCellValue('S' . $i, $arProgramacionImportar->getDia14())
+                    ->setCellValue('T' . $i, $arProgramacionImportar->getDia15())
+                    ->setCellValue('U' . $i, $arProgramacionImportar->getDia16())
+                    ->setCellValue('V' . $i, $arProgramacionImportar->getDia17())
+                    ->setCellValue('W' . $i, $arProgramacionImportar->getDia18())
+                    ->setCellValue('X' . $i, $arProgramacionImportar->getDia19())
+                    ->setCellValue('Y' . $i, $arProgramacionImportar->getDia20())
+                    ->setCellValue('Z' . $i, $arProgramacionImportar->getDia21())
+                    ->setCellValue('AA' . $i, $arProgramacionImportar->getDia22())
+                    ->setCellValue('AB' . $i, $arProgramacionImportar->getDia23())
+                    ->setCellValue('AC' . $i, $arProgramacionImportar->getDia24())
+                    ->setCellValue('AD' . $i, $arProgramacionImportar->getDia25())
+                    ->setCellValue('AE' . $i, $arProgramacionImportar->getDia26())
+                    ->setCellValue('AF' . $i, $arProgramacionImportar->getDia27())
+                    ->setCellValue('AG' . $i, $arProgramacionImportar->getDia28())
+                    ->setCellValue('AH' . $i, $arProgramacionImportar->getDia29())
+                    ->setCellValue('AI' . $i, $arProgramacionImportar->getDia30())
+                    ->setCellValue('AJ' . $i, $arProgramacionImportar->getDia31());
             $i++;
         }
 
