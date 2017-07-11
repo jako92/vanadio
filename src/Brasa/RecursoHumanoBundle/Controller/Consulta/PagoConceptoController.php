@@ -170,7 +170,7 @@ class PagoConceptoController extends Controller
             $arConsultaPagoConcepto->setNombreCorto($arVacacionAdicional->getVacacionRel()->getEmpleadoRel()->getNombreCorto());
             $arConsultaPagoConcepto->setCodigoPagoConceptoFk($arVacacionAdicional->getCodigoPagoConceptoFk());
             $arConsultaPagoConcepto->setNombreConcepto($arVacacionAdicional->getPagoConceptoRel()->getNombre());            
-            $arConsultaPagoConcepto->setVrDevengado($arVacacionAdicional->getVrDevengado());
+            $arConsultaPagoConcepto->setVrDevengado($arVacacionAdicional->getVrBonificacion());
             $arConsultaPagoConcepto->setVrDeduccion($arVacacionAdicional->getVrDeduccion());
             $arConsultaPagoConcepto->setFechaDesde($arVacacionAdicional->getVacacionRel()->getFecha());
             $arConsultaPagoConcepto->setFechaHasta($arVacacionAdicional->getVacacionRel()->getFecha());            
@@ -188,7 +188,7 @@ class PagoConceptoController extends Controller
             $arConsultaPagoConcepto->setNombreCorto($arLiquidacionAdicional->getLiquidacionRel()->getEmpleadoRel()->getNombreCorto());
             $arConsultaPagoConcepto->setCodigoPagoConceptoFk($arLiquidacionAdicional->getCodigoPagoConceptoFk());
             $arConsultaPagoConcepto->setNombreConcepto($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());            
-            $arConsultaPagoConcepto->setVrDevengado($arLiquidacionAdicional->getVrDevengado());
+            $arConsultaPagoConcepto->setVrDevengado($arLiquidacionAdicional->getVrBonificacion());
             $arConsultaPagoConcepto->setVrDeduccion($arLiquidacionAdicional->getVrDeduccion());
             $arConsultaPagoConcepto->setFechaDesde($arLiquidacionAdicional->getLiquidacionRel()->getFecha());
             $arConsultaPagoConcepto->setFechaHasta($arLiquidacionAdicional->getLiquidacionRel()->getFecha());            
