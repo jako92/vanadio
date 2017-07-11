@@ -527,6 +527,55 @@ class TurFacturaRepository extends EntityRepository {
                             }
                         }
 
+                        //Retencion renta
+                        if ($arFactura->getVrRetencionRenta() > 0) {
+                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaRetencionRentaFk());                        
+                            if ($arCuenta) {
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuenta);
+                                $arRegistro->setTerceroRel($arTercero);
+                                $arRegistro->setNumero($arFactura->getNumero());
+                                $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                                $arRegistro->setFecha($arFactura->getFecha());
+                                $arRegistro->setBase($arFactura->getVrBaseAiu());
+                                if ($arFactura->getFacturaTipoRel()->getTipoCuentaRetencionRenta() == 1) {
+                                    $arRegistro->setDebito($arFactura->getVrRetencionRenta());
+                                } else {
+                                    $arRegistro->setCredito($arFactura->getVrRetencionRenta());
+                                }
+                                $arRegistro->setDescripcionContable('FACTURACION ' . $this->MesesEspañol($arFactura->getFecha()->format('m')));
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "La cuenta " . $arFactura->getFacturaServicioRel()->getCodigoCuentaRetencionRentaFk() . " tiene un tipo de servicio " . $arFactura->getFacturaServicioRel()->getNombre() . " que no tiene cuenta contable configurada para retencion renta";
+                                break;
+                            }
+                            
+                            //Contrapartida
+                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arFactura->getFacturaServicioRel()->getCodigoCuentaAutoretencionRentaFk());                        
+                            if ($arCuenta) {
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuenta);
+                                $arRegistro->setTerceroRel($arTercero);
+                                $arRegistro->setNumero($arFactura->getNumero());
+                                $arRegistro->setNumeroReferencia($arFactura->getNumero());
+                                $arRegistro->setFecha($arFactura->getFecha());
+                                $arRegistro->setBase($arFactura->getVrBaseAiu());
+                                if ($arFactura->getFacturaTipoRel()->getTipoCuentaAutoretencionRenta() == 1) {
+                                    $arRegistro->setDebito($arFactura->getVrRetencionRenta());
+                                } else {
+                                    $arRegistro->setCredito($arFactura->getVrRetencionRenta());
+                                }
+                                $arRegistro->setDescripcionContable('FACTURACION ' . $this->MesesEspañol($arFactura->getFecha()->format('m')));
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "La cuenta " . $arFactura->getFacturaServicioRel()->getCodigoCuentaAutoretencionRentaFk() . " tiene un tipo de servicio " . $arFactura->getFacturaServicioRel()->getNombre() . " que no tiene cuenta contable configurada para retencion renta";
+                                break;
+                            }                            
+                            
+                        }                        
+                        
                         //Iva
                         if ($arFactura->getVrIva() > 0) {
                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();

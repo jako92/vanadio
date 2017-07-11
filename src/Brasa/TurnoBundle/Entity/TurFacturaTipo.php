@@ -73,6 +73,16 @@ class TurFacturaTipo
     private $tipoCuentaRetencionIva = 1;
 
     /**
+     * @ORM\Column(name="tipo_cuenta_retencion_renta", type="bigint")
+     */     
+    private $tipoCuentaRetencionRenta = 1;    
+
+    /**
+     * @ORM\Column(name="tipo_cuenta_autoretencion_renta", type="bigint")
+     */     
+    private $tipoCuentaAutoretencionRenta = 1;
+    
+    /**
      * @ORM\Column(name="tipo_cuenta_iva", type="bigint")
      */     
     private $tipoCuentaIva = 1; 
@@ -479,5 +489,53 @@ class TurFacturaTipo
     public function getTipoCuentaRetencionIva()
     {
         return $this->tipoCuentaRetencionIva;
+    }
+
+    /**
+     * Set tipoCuentaRetencionRenta
+     *
+     * @param integer $tipoCuentaRetencionRenta
+     *
+     * @return TurFacturaTipo
+     */
+    public function setTipoCuentaRetencionRenta($tipoCuentaRetencionRenta)
+    {
+        $this->tipoCuentaRetencionRenta = $tipoCuentaRetencionRenta;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaRetencionRenta
+     *
+     * @return integer
+     */
+    public function getTipoCuentaRetencionRenta()
+    {
+        return $this->tipoCuentaRetencionRenta;
+    }
+
+    /**
+     * Set tipoCuentaAutoretencionRenta
+     *
+     * @param integer $tipoCuentaAutoretencionRenta
+     *
+     * @return TurFacturaTipo
+     */
+    public function setTipoCuentaAutoretencionRenta($tipoCuentaAutoretencionRenta)
+    {
+        $this->tipoCuentaAutoretencionRenta = $tipoCuentaAutoretencionRenta;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCuentaAutoretencionRenta
+     *
+     * @return integer
+     */
+    public function getTipoCuentaAutoretencionRenta()
+    {
+        return $this->tipoCuentaAutoretencionRenta;
     }
 }
