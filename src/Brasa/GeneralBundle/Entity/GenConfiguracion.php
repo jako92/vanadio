@@ -169,11 +169,22 @@ class GenConfiguracion
     private $fechaHastaServicio;    
     
     /**
+     * @ORM\Column(name="autoretenedor_renta", type="boolean")
+     */    
+    private $autoretenedorRenta = false;     
+    
+    /**
+     * @ORM\Column(name="porcentaje_retencion_renta", type="float")
+     */
+    private $porcentajeRetencionRenta = 0;     
+    
+    /**
      * @ORM\ManyToOne(targetEntity="GenCiudad", inversedBy="configuracionesRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadRel;
     
+
 
 
     /**
@@ -403,6 +414,30 @@ class GenConfiguracion
     }
 
     /**
+     * Set rutaRaiz
+     *
+     * @param string $rutaRaiz
+     *
+     * @return GenConfiguracion
+     */
+    public function setRutaRaiz($rutaRaiz)
+    {
+        $this->rutaRaiz = $rutaRaiz;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaRaiz
+     *
+     * @return string
+     */
+    public function getRutaRaiz()
+    {
+        return $this->rutaRaiz;
+    }
+
+    /**
      * Set rutaTemporal
      *
      * @param string $rutaTemporal
@@ -472,6 +507,30 @@ class GenConfiguracion
     public function getRutaImagenes()
     {
         return $this->rutaImagenes;
+    }
+
+    /**
+     * Set rutaImagenesVer
+     *
+     * @param string $rutaImagenesVer
+     *
+     * @return GenConfiguracion
+     */
+    public function setRutaImagenesVer($rutaImagenesVer)
+    {
+        $this->rutaImagenesVer = $rutaImagenesVer;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaImagenesVer
+     *
+     * @return string
+     */
+    public function getRutaImagenesVer()
+    {
+        return $this->rutaImagenesVer;
     }
 
     /**
@@ -835,54 +894,6 @@ class GenConfiguracion
     }
 
     /**
-     * Set ciudadRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
-     *
-     * @return GenConfiguracion
-     */
-    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
-    {
-        $this->ciudadRel = $ciudadRel;
-
-        return $this;
-    }
-
-    /**
-     * Get ciudadRel
-     *
-     * @return \Brasa\GeneralBundle\Entity\GenCiudad
-     */
-    public function getCiudadRel()
-    {
-        return $this->ciudadRel;
-    }
-
-    /**
-     * Set rutaImagenesVer
-     *
-     * @param string $rutaImagenesVer
-     *
-     * @return GenConfiguracion
-     */
-    public function setRutaImagenesVer($rutaImagenesVer)
-    {
-        $this->rutaImagenesVer = $rutaImagenesVer;
-
-        return $this;
-    }
-
-    /**
-     * Get rutaImagenesVer
-     *
-     * @return string
-     */
-    public function getRutaImagenesVer()
-    {
-        return $this->rutaImagenesVer;
-    }
-
-    /**
      * Set fechaHastaServicio
      *
      * @param \DateTime $fechaHastaServicio
@@ -907,26 +918,74 @@ class GenConfiguracion
     }
 
     /**
-     * Set rutaRaiz
+     * Set autoretenedorRenta
      *
-     * @param string $rutaRaiz
+     * @param boolean $autoretenedorRenta
      *
      * @return GenConfiguracion
      */
-    public function setRutaRaiz($rutaRaiz)
+    public function setAutoretenedorRenta($autoretenedorRenta)
     {
-        $this->rutaRaiz = $rutaRaiz;
+        $this->autoretenedorRenta = $autoretenedorRenta;
 
         return $this;
     }
 
     /**
-     * Get rutaRaiz
+     * Get autoretenedorRenta
      *
-     * @return string
+     * @return boolean
      */
-    public function getRutaRaiz()
+    public function getAutoretenedorRenta()
     {
-        return $this->rutaRaiz;
+        return $this->autoretenedorRenta;
+    }
+
+    /**
+     * Set ciudadRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel
+     *
+     * @return GenConfiguracion
+     */
+    public function setCiudadRel(\Brasa\GeneralBundle\Entity\GenCiudad $ciudadRel = null)
+    {
+        $this->ciudadRel = $ciudadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudadRel
+     *
+     * @return \Brasa\GeneralBundle\Entity\GenCiudad
+     */
+    public function getCiudadRel()
+    {
+        return $this->ciudadRel;
+    }
+
+    /**
+     * Set porcentajeRetencionRenta
+     *
+     * @param float $porcentajeRetencionRenta
+     *
+     * @return GenConfiguracion
+     */
+    public function setPorcentajeRetencionRenta($porcentajeRetencionRenta)
+    {
+        $this->porcentajeRetencionRenta = $porcentajeRetencionRenta;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeRetencionRenta
+     *
+     * @return float
+     */
+    public function getPorcentajeRetencionRenta()
+    {
+        return $this->porcentajeRetencionRenta;
     }
 }

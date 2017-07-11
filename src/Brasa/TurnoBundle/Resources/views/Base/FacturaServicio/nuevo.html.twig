@@ -22,27 +22,25 @@
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">                                                      
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Nombre:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.nombre, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
                 </div>  
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">% IVA:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">% IVA:</label>
+                    <div class="col-sm-1">
                         {{ form_widget(form.porcentajeIva, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>                  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">% BASE RTE FTE:</label>
+                    </div>                      
+                    <label class="col-sm-2 control-label">% BASE RTE FTE:</label>
                     <div class="col-sm-1">
                         {{ form_widget(form.porBaseRetencionFuente, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
-                    <label class="col-sm-3 control-label">% RTE FTE:</label>
+                    <label class="col-sm-2 control-label">% RTE FTE:</label>
                     <div class="col-sm-1">
                         {{ form_widget(form.porRetencionFuente, { 'attr': {'class': 'form-control'} }) }}                        
                     </div> 
-                    <label class="col-sm-3 control-label">VALOR MINIMO:</label>
+                    <label class="col-sm-2 control-label">VALOR MINIMO:</label>
                     <div class="col-sm-1">
                         {{ form_widget(form.minimoRetencionFuente, { 'attr': {'class': 'form-control'} }) }}                        
                     </div> 
@@ -54,44 +52,49 @@
             <div class="panel-heading">Informacion contabilidad</div>
             <div class="panel-body">                                                      
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta ingreso:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Cuenta ingreso:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoCuentaIngresoFk, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
+                    <label class="col-sm-2 control-label">Cuenta cartera:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaCarteraFk, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>                                    
                 </div>                   
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta cartera:</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.codigoCuentaCarteraFk, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta iva:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Cuenta iva:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoCuentaIvaFk, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
-                </div>  
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta rte fte:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Cuenta rte fte:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoCuentaRetencionFuenteFk, { 'attr': {'class': 'form-control'} }) }}                        
-                    </div>                
-                </div>
+                    </div>                                    
+                </div>  
+
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta rte iva:</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Cuenta rte iva:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoCuentaRetencionIvaFk, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
+                    <label class="col-sm-2 control-label">Cuenta ingreso (Dev):</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaIngresoDevolucionFk, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>                                    
                 </div> 
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta ingreso (Dev):</label>
-                    <div class="col-sm-9">
-                        {{ form_widget(form.codigoCuentaIngresoDevolucionFk, { 'attr': {'class': 'form-control'} }) }}                        
+                    <label class="col-sm-2 control-label">Cuenta rte renta:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaRetencionRentaFk, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
-                </div>  
+                    <label class="col-sm-2 control-label">Cuenta auto rte renta:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaAutoretencionRentaFk, { 'attr': {'class': 'form-control'} }) }}                        
+                    </div>                                    
+                </div>                    
                 <div class="form-group form-group-sm">
-                    <label class="col-sm-3 control-label">Cuenta iva (Dev):</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Cuenta iva (Dev):</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.codigoCuentaIvaDevolucionFk, { 'attr': {'class': 'form-control'} }) }}                        
                     </div>                
                 </div>                      

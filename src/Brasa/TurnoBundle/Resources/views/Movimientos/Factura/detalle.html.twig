@@ -89,9 +89,17 @@
                         <td class="td-in-well">{{ arFactura.descripcion }}</td>
                         <td class="titulo">TIPO IMPRESION:</td>
                         <td class="td-in-well">{% if arFactura.imprimirRelacion == 1 %}ANEXO{% endif %} {% if arFactura.imprimirAgrupada == 1 %}AGRUPADA{% endif %}</td> 
+                        <td class="titulo" >RETENCION RENTA (AUTO):</td>
+                        <td align="right">{{ arFactura.vrRetencionRenta | number_format(0, '.', ',')}}</td>
+                    </tr>
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td> 
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>                        
                         <td class="titulo" >TOTAL BRUTO:</td>
                         <td align="right">{{ arFactura.vrTotal | number_format(0, '.', ',')}}</td>
-                    </tr>
+                    </tr>  
                     <tr>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td> 
@@ -99,7 +107,7 @@
                         <td class="td-in-well"></td>                        
                         <td class="titulo" >TOTAL NETO:</td>
                         <td align="right">{{ arFactura.vrTotalNeto | number_format(0, '.', ',')}}</td>
-                    </tr>  
+                    </tr>                     
                     <tr>
                         <td class="titulo" >COMENTARIO: </td>
                         <td class="td-in-well" colspan="5">{{ arFactura.comentarios }}</td>                        

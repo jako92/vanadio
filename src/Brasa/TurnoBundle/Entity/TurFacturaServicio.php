@@ -56,6 +56,16 @@ class TurFacturaServicio
      * @ORM\Column(name="codigo_cuenta_retencion_iva_fk", type="string", length=20, nullable=true)
      */     
     private $codigoCuentaRetencionIvaFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_renta_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoCuentaRetencionRentaFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_autoretencion_renta_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoCuentaAutoretencionRentaFk;
     
     /**
      * @ORM\Column(name="codigo_cuenta_iva_fk", type="string", length=20, nullable=true)
@@ -422,5 +432,53 @@ class TurFacturaServicio
     public function getFacturasFacturaServicioRel()
     {
         return $this->facturasFacturaServicioRel;
+    }
+
+    /**
+     * Set codigoCuentaRetencionRentaFk
+     *
+     * @param string $codigoCuentaRetencionRentaFk
+     *
+     * @return TurFacturaServicio
+     */
+    public function setCodigoCuentaRetencionRentaFk($codigoCuentaRetencionRentaFk)
+    {
+        $this->codigoCuentaRetencionRentaFk = $codigoCuentaRetencionRentaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionRentaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionRentaFk()
+    {
+        return $this->codigoCuentaRetencionRentaFk;
+    }
+
+    /**
+     * Set codigoCuentaAutoretencionRentaFk
+     *
+     * @param string $codigoCuentaAutoretencionRentaFk
+     *
+     * @return TurFacturaServicio
+     */
+    public function setCodigoCuentaAutoretencionRentaFk($codigoCuentaAutoretencionRentaFk)
+    {
+        $this->codigoCuentaAutoretencionRentaFk = $codigoCuentaAutoretencionRentaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaAutoretencionRentaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaAutoretencionRentaFk()
+    {
+        return $this->codigoCuentaAutoretencionRentaFk;
     }
 }

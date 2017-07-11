@@ -23,6 +23,8 @@ class TurFacturaServicioType extends AbstractType
             ->add('codigoCuentaIvaFk', TextType::class, array('required' => true))                 
             ->add('codigoCuentaRetencionFuenteFk', TextType::class, array('required' => true))
             ->add('codigoCuentaRetencionIvaFk', TextType::class, array('required' => true))
+            ->add('codigoCuentaRetencionRentaFk', TextType::class, array('required' => true))
+            ->add('codigoCuentaAutoretencionRentaFk', TextType::class, array('required' => true))                
             ->add('codigoCuentaIngresoDevolucionFk', TextType::class, array('required' => true))                 
             ->add('codigoCuentaIvaDevolucionFk', TextType::class, array('required' => true))                                 
             ->add('guardar', SubmitType::class)

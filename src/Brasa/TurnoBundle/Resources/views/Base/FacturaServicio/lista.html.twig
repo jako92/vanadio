@@ -54,6 +54,8 @@
                 <th>C_IVA</th>
                 <th>C_RTE_FTE</th>
                 <th>C_RTE_IVA</th>
+                <th>C_RTE_REN</th>
+                <th>C_RTE_REN</th>
                 <th>C_DEV_ING</th>   
                 <th>C_DEV_IVA</th>
                 <th></th>
@@ -72,6 +74,8 @@
                     <td>{{ arFacturaServicios.codigoCuentaIvaFk }}</td> 
                     <td>{{ arFacturaServicios.codigoCuentaRetencionFuenteFk }}</td>
                     <td>{{ arFacturaServicios.codigoCuentaRetencionIvaFk }}</td>
+                    <td>{{ arFacturaServicios.codigoCuentaRetencionRentaFk }}</td>
+                    <td>{{ arFacturaServicios.codigoCuentaAutoretencionRentaFk }}</td>
                     <td>{{ arFacturaServicios.codigoCuentaIngresoDevolucionFk }}</td> 
                     <td>{{ arFacturaServicios.codigoCuentaIvaDevolucionFk }}</td>                 
                     <td style="text-align: center"><a href="{{ path('brs_tur_base_factura_servicio_nuevo', {'codigoFacturaServicio': arFacturaServicios.codigoFacturaServicioPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                

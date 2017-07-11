@@ -128,6 +128,11 @@ class TurFactura
     private $VrRetencionIva = 0;    
     
     /**
+     * @ORM\Column(name="vr_retencion_renta", type="float")
+     */
+    private $VrRetencionRenta = 0;    
+    
+    /**
      * @ORM\Column(name="vr_subtotal", type="float")
      */
     private $vrSubtotal = 0;     
@@ -227,6 +232,7 @@ class TurFactura
      * @ORM\OneToMany(targetEntity="TurFacturaDetalle", mappedBy="facturaRel", cascade={"persist", "remove"})
      */
     protected $facturasDetallesFacturaRel;     
+
 
     /**
      * Constructor
@@ -775,6 +781,30 @@ class TurFactura
     }
 
     /**
+     * Set vrRetencionRenta
+     *
+     * @param float $vrRetencionRenta
+     *
+     * @return TurFactura
+     */
+    public function setVrRetencionRenta($vrRetencionRenta)
+    {
+        $this->VrRetencionRenta = $vrRetencionRenta;
+
+        return $this;
+    }
+
+    /**
+     * Get vrRetencionRenta
+     *
+     * @return float
+     */
+    public function getVrRetencionRenta()
+    {
+        return $this->VrRetencionRenta;
+    }
+
+    /**
      * Set vrSubtotal
      *
      * @param float $vrSubtotal
@@ -1015,6 +1045,54 @@ class TurFactura
     }
 
     /**
+     * Set fechaSuspension
+     *
+     * @param \DateTime $fechaSuspension
+     *
+     * @return TurFactura
+     */
+    public function setFechaSuspension($fechaSuspension)
+    {
+        $this->fechaSuspension = $fechaSuspension;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaSuspension
+     *
+     * @return \DateTime
+     */
+    public function getFechaSuspension()
+    {
+        return $this->fechaSuspension;
+    }
+
+    /**
+     * Set fechaCancelacion
+     *
+     * @param \DateTime $fechaCancelacion
+     *
+     * @return TurFactura
+     */
+    public function setFechaCancelacion($fechaCancelacion)
+    {
+        $this->fechaCancelacion = $fechaCancelacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCancelacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCancelacion()
+    {
+        return $this->fechaCancelacion;
+    }
+
+    /**
      * Set facturaTipoRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurFacturaTipo $facturaTipoRel
@@ -1190,53 +1268,5 @@ class TurFactura
     public function getFacturasDetallesFacturaRel()
     {
         return $this->facturasDetallesFacturaRel;
-    }
-
-    /**
-     * Set fechaSuspension
-     *
-     * @param \DateTime $fechaSuspension
-     *
-     * @return TurFactura
-     */
-    public function setFechaSuspension($fechaSuspension)
-    {
-        $this->fechaSuspension = $fechaSuspension;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaSuspension
-     *
-     * @return \DateTime
-     */
-    public function getFechaSuspension()
-    {
-        return $this->fechaSuspension;
-    }
-
-    /**
-     * Set fechaCancelacion
-     *
-     * @param \DateTime $fechaCancelacion
-     *
-     * @return TurFactura
-     */
-    public function setFechaCancelacion($fechaCancelacion)
-    {
-        $this->fechaCancelacion = $fechaCancelacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCancelacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCancelacion()
-    {
-        return $this->fechaCancelacion;
     }
 }
