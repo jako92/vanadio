@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuLiquidacionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -390,7 +391,12 @@ class LiquidacionController extends Controller {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->listaDql(
-                $session->get('filtroIdentificacion'), $session->get('filtroGenerado'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroPagado'));
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroGenerado'),
+                $session->get('filtroCodigoCentroCosto'),
+                $session->get('filtroPagado'),
+                $session->get('filtroDesde'),
+                $session->get('filtroHasta'));
     }
 
     private function formularioLista() {
@@ -426,6 +432,8 @@ class LiquidacionController extends Controller {
             $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $form = $this->createFormBuilder()
+                ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
@@ -486,6 +494,15 @@ class LiquidacionController extends Controller {
         $session->set('filtroGenerado', $form->get('estadoGenerado')->getData());
         $session->set('filtroPagado', $form->get('estadoPagado')->getData());
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        if ($form->get('fechaHasta')->getData() == null){
+            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
+            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        } else {
+            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
+        }
     }
 
     private function generarExcel() {
