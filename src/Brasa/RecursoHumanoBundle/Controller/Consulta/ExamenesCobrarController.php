@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -51,18 +52,59 @@ class ExamenesCobrarController extends Controller {
     private function listar() {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->pendienteCobrarConsulta();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroExamenFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('fechaDesde');
+            $strFechaHasta = $session->get('fechaHasta');
+        }
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->pendienteCobrarConsulta(
+                $session->get('filtroIdentificacion'),
+                $strFechaDesde, 
+                $strFechaHasta,
+                $session->get('filtroCodigoExamenClase')
+                );
     }
 
     private function formularioLista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('fechaDesde') != "") {
+            $strFechaDesde = $session->get('fechaDesde');
+        }
+        if ($session->get('fechaHasta') != "") {
+            $strFechaHasta = $session->get('fechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
+        
+        $arrayPropiedadesCentroCosto = array(
+            'class' => 'BrasaRecursoHumanoBundle:RhuExamenClase',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('ec')
+                                ->orderBy('ec.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoExamenClase')) {
+            $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuExamenClase", $session->get('filtroCodigoExamenClase'));
+        }
 
         $form = $this->createFormBuilder()
-                ->add('TxtContrato', TextType::class, array('label' => 'Contrato', 'data' => $session->get('filtroContrato')))
+                ->add('examenClaseRel', EntityType::class, $arrayPropiedadesCentroCosto)
                 ->add('TxtIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroExamenFiltrarFecha')))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->getForm();
@@ -71,10 +113,17 @@ class ExamenesCobrarController extends Controller {
 
     private function filtrarLista($form) {
         $session = new Session;
-        $session->set('filtroContrato', $form->get('TxtContrato')->getData());
+        $codigoExamenClase = '';
+        if ($form->get('examenClaseRel')->getData()) {
+            $codigoExamenClase = $form->get('examenClaseRel')->getData()->getCodigoExamenClasePk();
+        }
         $session->set('filtroIdentificacion', $form->get('TxtIdentificacion')->getData());
-        $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-        $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('fechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('fechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroExamenFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroCodigoExamenClase', $codigoExamenClase);
     }
 
     private function generarExcel() {
