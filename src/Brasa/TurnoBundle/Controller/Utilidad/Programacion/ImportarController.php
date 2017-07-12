@@ -34,7 +34,7 @@ class ImportarController extends Controller {
             }
             if ($form->get('BtnCargar')->isClicked()) {
                 if ($form['attachment']->getData()) {
-                    $this->cargarTurno($form);
+                    $this->cargarProgramacion($form);
                 } else {
                     $objMensaje->Mensaje('error', "Por favor cargar un archivo adjunto valido");
                 }
@@ -57,7 +57,7 @@ class ImportarController extends Controller {
         return $form;
     }
 
-    private function cargarTurno($form) {
+    private function cargarProgramacion($form) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
