@@ -219,9 +219,11 @@ class ContabilizarLiquidacionController extends Controller
                             $arLiquidacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales();
                             $arLiquidacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacionAdicionales')->findBy(array('codigoLiquidacionFk' => $codigo));
                             foreach ($arLiquidacionAdicionales as $arLiquidacionAdicional) {
-                                if($arLiquidacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()) {
+                                $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();
+                                $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->findOneBy(array('codigoPagoConceptoFk' => $arLiquidacionAdicional->getCodigoPagoConceptoFk(), 'codigoEmpleadoTipoFk' => $arLiquidacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk()));                                                                
+                                if($arPagoConceptoCuenta) {
                                     $arCuenta = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
-                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arLiquidacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()); 
+                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoConceptoCuenta->getCodigoCuentaFk());                                    
                                     if($arCuenta) {
                                         $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
                                         $arRegistro->setComprobanteRel($arComprobanteContable);
@@ -242,7 +244,10 @@ class ContabilizarLiquidacionController extends Controller
                                         $arRegistro->setCodigoAreaFk($area);                                    
                                         $arRegistro->setDescripcionContable($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());
                                         $em->persist($arRegistro);
-                                    }                                    
+                                    } else {
+                                        $respuesta = "La cuenta " . $arPagoConceptoCuenta->getCodigoCuentaFk() . " no existe en el plan de cuentas";
+                                        break;                                         
+                                    }                                  
                                 } else {
                                     $respuesta = "El concepto adicional de la liquidacion " . $arLiquidacionAdicional->getPagoConceptoRel()->getNombre() . " no tiene cuenta configurada";
                                     break;
@@ -250,7 +255,7 @@ class ContabilizarLiquidacionController extends Controller
                             }                                
 
                             //Liquidacion
-                            if($arLiquidacion->getVrTotal() > 0) {                                    
+                            if($arLiquidacion->getVrTotal() > 0) {                                   
                                 $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuentaLiquidacion); 
                                 if($arCuenta) {
                                     $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            

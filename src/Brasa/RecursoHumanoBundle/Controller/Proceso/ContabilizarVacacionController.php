@@ -22,7 +22,8 @@ class ContabilizarVacacionController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 69)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');        
+        $paginator  = $this->get('knp_paginator');      
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -32,6 +33,7 @@ class ContabilizarVacacionController extends Controller
                 ini_set("memory_limit", -1);                
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
+                    $respuesta = '';
                     $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
@@ -136,28 +138,38 @@ class ContabilizarVacacionController extends Controller
                             $arVacacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionAdicional();
                             $arVacacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->findBy(array('codigoVacacionFk' => $codigo));
                             foreach ($arVacacionAdicionales as $arVacacionAdicional) {
-                                $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arVacacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()); 
-                                if($arCuenta) {
-                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
-                                    $arRegistro->setComprobanteRel($arComprobanteContable);
-                                    if($arCuenta->getExigeCentroCostos()) {
-                                        $arRegistro->setCentroCostoRel($arCentroCosto);                                        
-                                    }                                     
-                                    $arRegistro->setCuentaRel($arCuenta);
-                                    $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arVacacion->getNumero());
-                                    $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
-                                    $arRegistro->setFecha($arVacacion->getFecha()); 
-                                    if($arVacacionAdicional->getVrBonificacion() > 0) {
-                                        $arRegistro->setDebito($arVacacionAdicional->getVrBonificacion());    
+                                $arPagoConceptoCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoConceptoCuenta();
+                                $arPagoConceptoCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoConceptoCuenta')->findOneBy(array('codigoPagoConceptoFk' => $arVacacionAdicional->getCodigoPagoConceptoFk(), 'codigoEmpleadoTipoFk' => $arVacacion->getEmpleadoRel()->getCodigoEmpleadoTipoFk()));                                                                
+                                if($arPagoConceptoCuenta) {
+                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arPagoConceptoCuenta->getCodigoCuentaFk());
+                                    if($arCuenta) {
+                                        $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
+                                        $arRegistro->setComprobanteRel($arComprobanteContable);
+                                        if($arCuenta->getExigeCentroCostos()) {
+                                            $arRegistro->setCentroCostoRel($arCentroCosto);                                        
+                                        }                                     
+                                        $arRegistro->setCuentaRel($arCuenta);
+                                        $arRegistro->setTerceroRel($arTercero);
+                                        $arRegistro->setNumero($arVacacion->getNumero());
+                                        $arRegistro->setNumeroReferencia($arVacacion->getCodigoVacacionPk());
+                                        $arRegistro->setFecha($arVacacion->getFecha()); 
+                                        if($arVacacionAdicional->getVrBonificacion() > 0) {
+                                            $arRegistro->setDebito($arVacacionAdicional->getVrBonificacion());    
+                                        } else {
+                                            $arRegistro->setCredito($arVacacionAdicional->getVrDeduccion());
+                                        }                
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                    
+                                        $arRegistro->setDescripcionContable($arVacacionAdicional->getPagoConceptoRel()->getNombre());
+                                        $em->persist($arRegistro);
                                     } else {
-                                        $arRegistro->setCredito($arVacacionAdicional->getVrDeduccion());
-                                    }                
-                                    $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
-                                    $arRegistro->setDescripcionContable($arVacacionAdicional->getPagoConceptoRel()->getNombre());
-                                    $em->persist($arRegistro);
-                                }                                    
+                                        $respuesta = "La cuenta " . $arPagoConceptoCuenta->getCodigoCuentaFk() . " no existe en el plan de cuentas";
+                                        break;                                         
+                                    }                                     
+                                } else {
+                                    $respuesta = "El concepto adicional de la liquidacion " . $arVacacionAdicional->getPagoConceptoRel()->getNombre() . " no tiene cuenta configurada";
+                                    break;                                    
+                                }                                                                   
                             }                                                                                                                
                             
                             //Vacaciones por pagar
@@ -179,12 +191,18 @@ class ContabilizarVacacionController extends Controller
                                 }             
                             }                            
                             
+                            if ($respuesta != '') {                                                            
+                                break;
+                            }                            
                             $arVacacion->setEstadoContabilizado(1);                                
-                            $em->persist($arVacacion);                                 
-                                                         
+                            $em->persist($arVacacion);                                                                                          
                         }
                     }
-                    $em->flush();
+                    if ($respuesta == '') {
+                        $em->flush();
+                    } else {
+                        $objMensaje->Mensaje('error', $respuesta);
+                    }
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_vacacion'));
             }   
