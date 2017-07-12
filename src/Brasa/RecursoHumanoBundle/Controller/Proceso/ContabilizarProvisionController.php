@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class ContabilizarProvisionController extends Controller {
 
     var $strDqlLista = "";
@@ -675,6 +676,11 @@ class ContabilizarProvisionController extends Controller {
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_provision'));
             }
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form, $request);
+                $this->formularioLista();
+                $this->listar();
+            }            
         }        
         $arProvisiones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:provision.html.twig', array(
@@ -684,17 +690,52 @@ class ContabilizarProvisionController extends Controller {
     }
 
     private function formularioLista() {
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');        
+        $strNombreEmpleado = "";
+        if ($session->get('filtroRhuIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroRhuIdentificacion')));
+            if ($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            } else {
+                $session->set('filtroRhuIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }        
         $form = $this->createFormBuilder()
+                ->add('TxtAnio', TextType::class, array('data' => $session->get('filtroRhuAnio')))
+                ->add('TxtMes', TextType::class, array('data' => $session->get('filtroRhuMes')))
+                ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroRhuIdentificacion')))
+                ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))                
                 ->add('BtnContabilizar', SubmitType::class, array('label' => 'Contabilizar',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();
         return $form;
     }
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvision')->pendientesContabilizarDql();
+        $session = $this->get('session');        
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuProvision')->pendientesContabilizarDql(
+                $session->get('filtroRhuAnio'),
+                $session->get('filtroRhuMes'),
+                $session->get('filtroRhuCodigoEmpleado'));
     }
 
+
+
+    private function filtrarLista($form, Request $request) {
+        $session = $this->get('session');        
+        $session->set('filtroRhuIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroRhuAnio', $form->get('TxtAnio')->getData());
+        $session->set('filtroRhuMes', $form->get('TxtMes')->getData());
+    }
+ 
+    
     /**
      * @Route("/rhu/proceso/descontabilizar/provision/", name="brs_rhu_proceso_descontabilizar_provision")
      */

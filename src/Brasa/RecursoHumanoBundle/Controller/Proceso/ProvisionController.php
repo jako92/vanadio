@@ -171,6 +171,8 @@ class ProvisionController extends Controller
                         $arProvision->setContratoRel($arContrato);
                         $arProvision->setAnio($arProvisionPeriodo->getAnio());
                         $arProvision->setMes($arProvisionPeriodo->getMes());
+                        $arProvision->setFechaDesde($arProvisionPeriodo->getFechaDesde());
+                        $arProvision->setFechaHasta($arProvisionPeriodo->getFechaHasta());
                         $arProvision->setProvisionPeriodoRel($arProvisionPeriodo);
                         $arProvision->setVrSalario($arContrato->getVrSalarioPago());
                         $arProvision->setVrIngresoBasePrestacion($ingresoBasePrestacion);

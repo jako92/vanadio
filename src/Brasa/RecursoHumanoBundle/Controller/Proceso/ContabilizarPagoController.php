@@ -98,7 +98,11 @@ class ContabilizarPagoController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->pendientesContabilizarDql(
-                $session->get('filtroPagoNumero'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroDesde'), $session->get('filtroHasta')
+                $session->get('filtroPagoNumero'), 
+                $session->get('filtroCodigoCentroCosto'), 
+                $session->get('filtroIdentificacion'), 
+                $session->get('filtroDesde'), 
+                $session->get('filtroHasta')
         );
     }
 

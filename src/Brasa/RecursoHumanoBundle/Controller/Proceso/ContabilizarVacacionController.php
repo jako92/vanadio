@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ContabilizarVacacionController extends Controller
 {
@@ -186,7 +187,12 @@ class ContabilizarVacacionController extends Controller
                     $em->flush();
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_vacacion'));
-            }            
+            }   
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form, $request);
+                $this->formularioLista();
+                $this->listar();
+            }             
         }       
                 
         $arVacaciones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);                               
@@ -196,16 +202,58 @@ class ContabilizarVacacionController extends Controller
     }          
     
     private function formularioLista() {
-        $form = $this->createFormBuilder()                        
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');        
+        $strNombreEmpleado = "";
+        if ($session->get('filtroRhuIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroRhuIdentificacion')));
+            if ($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            } else {
+                $session->set('filtroIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }                
+        $form = $this->createFormBuilder()   
+            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('TxtNumero', TextType::class, array('label' => 'Numero', 'data' => $session->get('filtroRhuVacacionNumero')))
+            ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroRhuIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))                
+            ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))                
             ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();        
         return $form;
     }      
     
     private function listar() {
-        $em = $this->getDoctrine()->getManager();                
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->pendientesContabilizarDql();  
-    }             
+        $em = $this->getDoctrine()->getManager();     
+        $session = $this->get('session');
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->pendientesContabilizarDql(
+                $session->get('filtroRhuVacacionNumero'),  
+                $session->get('filtroRhuCodigoEmpleado'), 
+                $session->get('filtroDesde'), 
+                $session->get('filtroHasta')                
+                );  
+    }                 
+    
+    private function filtrarLista($form, Request $request) {
+        $session = $this->get('session');
+        $session->set('filtroRhuIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroRhuVacacionNumero', $form->get('TxtNumero')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        if ($form->get('fechaHasta')->getData() == null) {
+            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
+            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        } else {
+            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
+        }
+    }              
     
     /**
      * @Route("/rhu/proceso/descontabilizar/vacacion/", name="brs_rhu_proceso_descontabilizar_vacacion")

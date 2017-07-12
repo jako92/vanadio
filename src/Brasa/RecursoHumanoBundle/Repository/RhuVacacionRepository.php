@@ -336,8 +336,20 @@ class RhuVacacionRepository extends EntityRepository {
         return $arVacaciones;
     }           
     
-    public function pendientesContabilizarDql() {        
-        $dql   = "SELECT v FROM BrasaRecursoHumanoBundle:RhuVacacion v WHERE v.estadoContabilizado = 0 AND v.estadoPagoGenerado = 1 AND v.vrVacacion > 0 ";       
+    public function pendientesContabilizarDql($intNumero = 0, $codigoEmpleado = "", $strDesde = "", $strHasta = "") {        
+        $dql   = "SELECT v FROM BrasaRecursoHumanoBundle:RhuVacacion v WHERE v.estadoContabilizado = 0 AND v.estadoPagoGenerado = 1 AND v.vrVacacion > 0 ";  
+        if($intNumero != "" && $intNumero != 0) {
+            $dql .= " AND v.numero = " . $intNumero;
+        }         
+        if($codigoEmpleado != "" ) {
+            $dql .= " AND v.codigoEmpleadoFk = " . $codigoEmpleado;
+        }
+        if($strDesde != "" || $strDesde != 0){
+            $dql .= " AND v.fecha >='" . $strDesde . "'";
+        }
+        if($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND v.fecha <='" . $strHasta . "'";
+        }         
         $dql .= " ORDER BY v.codigoVacacionPk DESC";
         return $dql;
     }  

@@ -21,9 +21,18 @@ class RhuProvisionRepository extends EntityRepository {
         return $dql;
     }                            
     
-    public function pendientesContabilizarDql() {        
+    public function pendientesContabilizarDql($anio="", $mes="", $codigoEmpleado = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT p FROM BrasaRecursoHumanoBundle:RhuProvision p JOIN p.provisionPeriodoRel pp WHERE pp.estadoGenerado = 1 AND pp.estadoCerrado = 1 AND p.estadoContabilizado = 0 ";
+        if($anio != "") {
+            $dql .=" AND p.anio = " . $anio;
+        }
+        if($mes != "") {
+            $dql .=" AND p.mes = " . $mes;
+        }   
+        if($codigoEmpleado != "") {
+            $dql .=" AND p.codigoEmpleadoFk = " . $codigoEmpleado;
+        }        
         $dql .= " ORDER BY p.codigoProvisionPk ASC";
         return $dql;
     }

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ContabilizarLiquidacionController extends Controller
 {
@@ -21,7 +22,8 @@ class ContabilizarLiquidacionController extends Controller
         if(!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 68)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
-        $paginator  = $this->get('knp_paginator');        
+        $paginator  = $this->get('knp_paginator');
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -31,6 +33,7 @@ class ContabilizarLiquidacionController extends Controller
                 ini_set("memory_limit", -1);                
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
+                    $respuesta = '';
                     $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
                     $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
                     $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
@@ -216,28 +219,33 @@ class ContabilizarLiquidacionController extends Controller
                             $arLiquidacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales();
                             $arLiquidacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacionAdicionales')->findBy(array('codigoLiquidacionFk' => $codigo));
                             foreach ($arLiquidacionAdicionales as $arLiquidacionAdicional) {
-                                $arCuenta = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
-                                $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arLiquidacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()); 
-                                if($arCuenta) {
-                                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
-                                    $arRegistro->setComprobanteRel($arComprobanteContable);
-                                    if($arCuenta->getExigeCentroCostos()) {
-                                        $arRegistro->setCentroCostoRel($arCentroCosto);                                        
+                                if($arLiquidacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()) {
+                                    $arCuenta = new \Brasa\ContabilidadBundle\Entity\CtbCuenta();
+                                    $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($arLiquidacionAdicional->getPagoConceptoRel()->getCodigoCuentaFk()); 
+                                    if($arCuenta) {
+                                        $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();                            
+                                        $arRegistro->setComprobanteRel($arComprobanteContable);
+                                        if($arCuenta->getExigeCentroCostos()) {
+                                            $arRegistro->setCentroCostoRel($arCentroCosto);                                        
+                                        }                                    
+                                        $arRegistro->setCuentaRel($arCuenta);
+                                        $arRegistro->setTerceroRel($arTercero);
+                                        $arRegistro->setNumero($arLiquidacion->getNumero());
+                                        $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
+                                        $arRegistro->setFecha($arLiquidacion->getFechaHasta());
+                                        if($arLiquidacionAdicional->getVrBonificacion() > 0) {
+                                            $arRegistro->setDebito($arLiquidacionAdicional->getVrBonificacion());    
+                                        } else {
+                                            $arRegistro->setCredito($arLiquidacionAdicional->getVrDeduccion());
+                                        }                       
+                                        $arRegistro->setSucursalRel($arSucursal);
+                                        $arRegistro->setCodigoAreaFk($area);                                    
+                                        $arRegistro->setDescripcionContable($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());
+                                        $em->persist($arRegistro);
                                     }                                    
-                                    $arRegistro->setCuentaRel($arCuenta);
-                                    $arRegistro->setTerceroRel($arTercero);
-                                    $arRegistro->setNumero($arLiquidacion->getNumero());
-                                    $arRegistro->setNumeroReferencia($arLiquidacion->getCodigoLiquidacionPk());
-                                    $arRegistro->setFecha($arLiquidacion->getFechaHasta());
-                                    if($arLiquidacionAdicional->getVrBonificacion() > 0) {
-                                        $arRegistro->setDebito($arLiquidacionAdicional->getVrBonificacion());    
-                                    } else {
-                                        $arRegistro->setCredito($arLiquidacionAdicional->getVrDeduccion());
-                                    }                       
-                                    $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
-                                    $arRegistro->setDescripcionContable($arLiquidacionAdicional->getPagoConceptoRel()->getNombre());
-                                    $em->persist($arRegistro);
+                                } else {
+                                    $respuesta = "El concepto adicional de la liquidacion " . $arLiquidacionAdicional->getPagoConceptoRel()->getNombre() . " no tiene cuenta configurada";
+                                    break;
                                 }                                    
                             }                                
 
@@ -259,15 +267,26 @@ class ContabilizarLiquidacionController extends Controller
                                     $em->persist($arRegistro);
                                 }             
                             }
-
-                            $arLiquidacion->setEstadoContabilizado(1);                                
-                            $em->persist($arLiquidacion);                                 
-                                                         
+                            
+                            if ($respuesta != '') {                                                            
+                                break;
+                            }
+                            $arLiquidacion->setEstadoContabilizado(1);                                                            
+                            $em->persist($arLiquidacion);                                                                                          
                         }
                     }
-                    $em->flush();
+                    if ($respuesta == '') {
+                        $em->flush();
+                    } else {
+                        $objMensaje->Mensaje('error', $respuesta);
+                    }                                        
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_proceso_contabilizar_liquidacion'));
+            }    
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form, $request);
+                $this->formularioLista();
+                $this->listar();
             }            
         }       
                 
@@ -278,16 +297,58 @@ class ContabilizarLiquidacionController extends Controller
     }          
     
     private function formularioLista() {
-        $form = $this->createFormBuilder()                        
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');        
+        $strNombreEmpleado = "";
+        if ($session->get('filtroRhuIdentificacion')) {
+            $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroRhuIdentificacion')));
+            if ($arEmpleado) {
+                $strNombreEmpleado = $arEmpleado->getNombreCorto();
+                $session->set('filtroRhuCodigoEmpleado', $arEmpleado->getCodigoEmpleadoPk());
+            } else {
+                $session->set('filtroIdentificacion', null);
+                $session->set('filtroRhuCodigoEmpleado', null);
+            }
+        } else {
+            $session->set('filtroRhuCodigoEmpleado', null);
+        }                
+        $form = $this->createFormBuilder()   
+            ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('TxtNumero', TextType::class, array('label' => 'Numero', 'data' => $session->get('filtroRhuLiquidacionNumero')))
+            ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroRhuIdentificacion')))
+            ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))                
+            ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))                
             ->add('BtnContabilizar', SubmitType::class, array('label'  => 'Contabilizar',))
             ->getForm();        
         return $form;
     }      
     
     private function listar() {
-        $em = $this->getDoctrine()->getManager();                
-        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pendientesContabilizarDql();  
+        $em = $this->getDoctrine()->getManager();     
+        $session = $this->get('session');
+        $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->pendientesContabilizarDql(
+                $session->get('filtroRhuLiquidacionNumero'),  
+                $session->get('filtroRhuCodigoEmpleado'), 
+                $session->get('filtroDesde'), 
+                $session->get('filtroHasta')                
+                );  
     }                 
+    
+    private function filtrarLista($form, Request $request) {
+        $session = $this->get('session');
+        $session->set('filtroRhuIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
+        $session->set('filtroRhuLiquidacionNumero', $form->get('TxtNumero')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        if ($form->get('fechaHasta')->getData() == null) {
+            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
+            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
+        } else {
+            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
+            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d'));
+        }
+    }    
     
     /**
      * @Route("/rhu/proceso/descontabilizar/liquidacion/", name="brs_rhu_proceso_descontabilizar_liquidacion")
