@@ -14,45 +14,44 @@
             <div class="panel-body">   
                 <div class="form-group form-group-sm">
                     <label for="form_anio" class="col-sm-2 control-label">Año:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.anio, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        <p style="font-size: 0.8em;"> * Año del periodo real que se esta pagando (ej: 2017)</p>
                     </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label for="form_anioPago" class="col-sm-2 control-label">Año pago:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.anioPago, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
-                </div>    
-                <div class="form-group form-group-sm">
                     <label for="form_mes" class="col-sm-2 control-label">Mes:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.mes, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
-                    </div>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.mes, { 'attr': {'class': 'form-control'} }) }}
+                        <p style="font-size: 0.8em;"> * Mes del periodo real que se esta pagando (Ej: 6 - cuando se va pagar junio)</p>
+                    </div>                    
                 </div>
                 <div class="form-group form-group-sm">
-                    <label for="form_mesPago" class="col-sm-2 control-label">Mes pago:</label>
-                    <div class="col-sm-10">
-                        {{ form_widget(form.mesPago, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    <label for="form_anioPago" class="col-sm-2 control-label">Año (Salud):</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.anioPago, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>
+                    <label for="form_mesPago" class="col-sm-2 control-label">Mes (Salud):</label>                    
+                    <div class="col-sm-4">
+                        {{ form_widget(form.mesPago, { 'attr': {'class': 'form-control'} }) }}
+                        <p style="font-size: 0.8em;"> * El mes para los aportes a salud (Ej: La salud del mes 6 corresponde al mes 7)</p>
+                    </div>                    
+                </div>    
                 <div class="form-group form-group-sm">
                     <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
                     <div class="col-sm-10">
-                        {{ form_widget(form.fechaDesde, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}                        
+                        {{ form_widget(form.fechaDesde) }}                        
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
                     <div class="col-sm-10">
-                        {{ form_widget(form.fechaHasta, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        {{ form_widget(form.fechaHasta) }}
                         <p style="font-size: 0.8em;"> * El ultimo dia real del mes</p>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_fechaPago" class="col-sm-2 control-label">Fecha pago:</label>
                     <div class="col-sm-10">
-                        {{ form_widget(form.fechaPago, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        {{ form_widget(form.fechaPago) }}
                     </div>
                 </div>    
             </div>

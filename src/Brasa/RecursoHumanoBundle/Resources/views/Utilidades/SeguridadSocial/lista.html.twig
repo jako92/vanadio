@@ -19,11 +19,11 @@
     {{ form_errors(form) }}
     <table  class="table table-striped table-bordered table-condensed table-hover">            
         <tr>
-            <th>CÓDIGO</th>
+            <th>ID</th>
             <th>AÑO</th>
-            <th>AÑO PAGO</th>
+            <th>AÑO(SALUD)</th>
             <th>MES</th>
-            <th>MES PAGO</th>
+            <th>MES(SALUD)</th>
             <th>DESDE</th>
             <th>HASTA</th>
             <th>GENERADO</th>
@@ -70,7 +70,7 @@
     <!-- Botones Menu Items -->
     <div class="btn-toolbar" style="float:right">
         <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_nuevo', { 'codigoPeriodo': 0 }) }}', 'AgregarNuevoPeriodo', 600, 900)" style="float:left">Nuevo</a>
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_nuevo', { 'codigoPeriodo': 0 }) }}', 'AgregarNuevoPeriodo', 600, 1200)" style="float:left">Nuevo</a>
         </div>
         <div class="btn-group">
             <button class="btn btn-danger btn-sm" type="submit" name="OpEliminar" value="{{ 1 }}">Eliminar</button>
