@@ -48,7 +48,9 @@
                     {% if arSsoPeriodos.estadoGenerado == 0 %}
                         <button class="btn btn-default btn-xs" type="submit" name="OpGenerar" value="{{ arSsoPeriodos.codigoPeriodoPk }}">Generar</button> 
                     {% else %}
+                        {% if arSsoPeriodos.estadoCerrado == 0 %}
                         <button class="btn btn-danger btn-xs" type="submit" name="OpDesgenerar" value="{{ arSsoPeriodos.codigoPeriodoPk }}">Desgenerar</button> 
+                        {% endif %}
                     {% endif %} 
                 </td>
                 <td>

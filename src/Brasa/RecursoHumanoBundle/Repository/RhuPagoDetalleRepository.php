@@ -475,11 +475,24 @@ class RhuPagoDetalleRepository extends EntityRepository {
 
     public function incapacidad($fechaDesde, $fechaHasta, $codigoContrato) {
         $em = $this->getEntityManager();
+        $dateFechaHasta = date_create($fechaHasta);
         $dql = "SELECT pd.codigoIncapacidadFk, SUM(pd.vrIngresoBaseCotizacion) as ibc, SUM(pd.numeroHoras) as horas, SUM(pd.numeroDias) as dias, MIN(pd.fechaDesdeNovedad) as fechaDesdeNovedad, MAX(pd.fechaHastaNovedad) as fechaHastaNovedad, COUNT(pd.codigoIncapacidadFk) as numeroRegistros FROM BrasaRecursoHumanoBundle:RhuPagoDetalle pd JOIN pd.pagoRel p "
                 . "WHERE p.estadoPagado = 1 AND p.codigoContratoFk = " . $codigoContrato . " "
                 . "AND p.fechaDesdePago >= '" . $fechaDesde . "' AND p.fechaDesdePago <= '" . $fechaHasta . "' AND pd.codigoIncapacidadFk IS NOT NULL GROUP BY pd.codigoIncapacidadFk";
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();
+        $i = 0;
+        foreach ($arrayResultado as $incapacidad) {
+            $dateFechaHastaIncapacidad = date_create($incapacidad['fechaHastaNovedad']);
+            $dateFechaDesdeIncapacidad = date_create($incapacidad['fechaDesdeNovedad']);
+            if($dateFechaHastaIncapacidad > $dateFechaHasta) {
+                $arrayResultado[$i]['fechaHastaNovedad'] = $fechaHasta;
+            }
+            if($dateFechaDesdeIncapacidad > $dateFechaHasta) {
+                $arrayResultado[$i]['fechaDesdeNovedad'] = $fechaHasta;
+            }            
+            $i++;
+        }
         return $arrayResultado;
     }
 
