@@ -112,61 +112,77 @@ class ImportarController extends Controller {
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arPedidoDetalle->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arrCarga['codigoRecurso']);
             $validar = $this->validarHoras($arrCarga);
-            if ($validar['validado']) {
-                $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->findOneBy(array('codigoRecursoFk' => $arRecurso->getCodigoRecursoPk(), 'codigoPedidoDetalleFk' => $arPedidoDetalle->getCodigoPedidoDetallePk()));
-                if (!$arProgramacionImportar) {
-                    $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
-                }
-                $arProgramacionImportar->setCodigoClienteFk($arPedidoDetalle->getPedidoRel()->getCodigoClienteFk());
-                $arProgramacionImportar->setNombreCliente($arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto());
-                $arProgramacionImportar->setCodigoPuestoFk($arPuesto->getCodigoPuestoPk());
-                $arProgramacionImportar->setNombrePuesto($arPuesto->getNombre());
-                $arProgramacionImportar->setCodigoRecursoFk($arRecurso->getCodigoRecursoPk());
-                $arProgramacionImportar->setNombreRecurso($arRecurso->getNombreCorto());
-                $arProgramacionImportar->setCodigoPedidoDetalleFk($arPedidoDetalle->getCodigoPedidoDetallePk());
-                $arProgramacionImportar->setAnio($arrCarga['anio']);
-                $arProgramacionImportar->setMes($arrCarga['mes']);
-                $arProgramacionImportar->setDia1($arrCarga[4]);
-                $arProgramacionImportar->setDia2($arrCarga[5]);
-                $arProgramacionImportar->setDia3($arrCarga[6]);
-                $arProgramacionImportar->setDia4($arrCarga[7]);
-                $arProgramacionImportar->setDia5($arrCarga[8]);
-                $arProgramacionImportar->setDia6($arrCarga[9]);
-                $arProgramacionImportar->setDia7($arrCarga[10]);
-                $arProgramacionImportar->setDia8($arrCarga[11]);
-                $arProgramacionImportar->setDia9($arrCarga[12]);
-                $arProgramacionImportar->setDia10($arrCarga[13]);
-                $arProgramacionImportar->setDia11($arrCarga[14]);
-                $arProgramacionImportar->setDia12($arrCarga[15]);
-                $arProgramacionImportar->setDia13($arrCarga[16]);
-                $arProgramacionImportar->setDia14($arrCarga[17]);
-                $arProgramacionImportar->setDia15($arrCarga[18]);
-                $arProgramacionImportar->setDia16($arrCarga[19]);
-                $arProgramacionImportar->setDia17($arrCarga[20]);
-                $arProgramacionImportar->setDia18($arrCarga[21]);
-                $arProgramacionImportar->setDia19($arrCarga[22]);
-                $arProgramacionImportar->setDia20($arrCarga[23]);
-                $arProgramacionImportar->setDia21($arrCarga[24]);
-                $arProgramacionImportar->setDia22($arrCarga[25]);
-                $arProgramacionImportar->setDia23($arrCarga[26]);
-                $arProgramacionImportar->setDia24($arrCarga[27]);
-                $arProgramacionImportar->setDia25($arrCarga[28]);
-                $arProgramacionImportar->setDia26($arrCarga[29]);
-                $arProgramacionImportar->setDia27($arrCarga[30]);
-                $arProgramacionImportar->setDia28($arrCarga[31]);
-                $arProgramacionImportar->setDia29($arrCarga[32]);
-                $arProgramacionImportar->setDia30($arrCarga[33]);
-                $arProgramacionImportar->setDia31($arrCarga[34]);
-                $arProgramacionImportar->setHorasDiurnas($validar['horasDiurnas']);
-                $arProgramacionImportar->setHorasNocturnas($validar['horasNocturnas']);
-                $arProgramacionImportar->setHoras(($validar['horasDiurnas'] + $validar['horasNocturnas']));
-                $arProgramacionImportar->setHorasPedido($arPedidoDetalle->getPedidoRel()->getHoras());
-                $arProgramacionImportar->setHorasDiurnasPedido($arPedidoDetalle->getPedidoRel()->getHorasDiurnas());
-                $arProgramacionImportar->setHorasNocturnasPedido($arPedidoDetalle->getPedidoRel()->getHorasNocturnas());
-                $em->persist($arProgramacionImportar);
-            } else {
+            if (!$arPedidoDetalle) {
+                $error = true;
+                $objMensaje->Mensaje("error", 'El codigo pedido detalle '.$arrCarga['codigoPedidoDetalle'].' no esxiste');
+            }
+            if (!$arPuesto) {
                 $error = true;
                 $objMensaje->Mensaje("error", $validar['mensaje']);
+                $objMensaje->Mensaje("error", 'El codigo puesto '.$arPedidoDetalle->getCodigoPuestoFk().' no esxiste');
+            }
+            if (!$arRecurso) {
+                $error = true;
+                $objMensaje->Mensaje("error", $validar['mensaje']);
+                $objMensaje->Mensaje("error", 'El codigo recurso '.$arrCarga['codigoRecurso'].' no esxiste');
+            }
+            if ($error == false) {
+                if ($validar['validado']) {
+                    $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->findOneBy(array('codigoRecursoFk' => $arRecurso->getCodigoRecursoPk(), 'codigoPedidoDetalleFk' => $arPedidoDetalle->getCodigoPedidoDetallePk()));
+                    if (!$arProgramacionImportar) {
+                        $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
+                    }
+                    $arProgramacionImportar->setCodigoClienteFk($arPedidoDetalle->getPedidoRel()->getCodigoClienteFk());
+                    $arProgramacionImportar->setNombreCliente($arPedidoDetalle->getPedidoRel()->getClienteRel()->getNombreCorto());
+                    $arProgramacionImportar->setCodigoPuestoFk($arPuesto->getCodigoPuestoPk());
+                    $arProgramacionImportar->setNombrePuesto($arPuesto->getNombre());
+                    $arProgramacionImportar->setCodigoRecursoFk($arRecurso->getCodigoRecursoPk());
+                    $arProgramacionImportar->setNombreRecurso($arRecurso->getNombreCorto());
+                    $arProgramacionImportar->setCodigoPedidoDetalleFk($arPedidoDetalle->getCodigoPedidoDetallePk());
+                    $arProgramacionImportar->setAnio($arrCarga['anio']);
+                    $arProgramacionImportar->setMes($arrCarga['mes']);
+                    $arProgramacionImportar->setDia1($arrCarga[4]);
+                    $arProgramacionImportar->setDia2($arrCarga[5]);
+                    $arProgramacionImportar->setDia3($arrCarga[6]);
+                    $arProgramacionImportar->setDia4($arrCarga[7]);
+                    $arProgramacionImportar->setDia5($arrCarga[8]);
+                    $arProgramacionImportar->setDia6($arrCarga[9]);
+                    $arProgramacionImportar->setDia7($arrCarga[10]);
+                    $arProgramacionImportar->setDia8($arrCarga[11]);
+                    $arProgramacionImportar->setDia9($arrCarga[12]);
+                    $arProgramacionImportar->setDia10($arrCarga[13]);
+                    $arProgramacionImportar->setDia11($arrCarga[14]);
+                    $arProgramacionImportar->setDia12($arrCarga[15]);
+                    $arProgramacionImportar->setDia13($arrCarga[16]);
+                    $arProgramacionImportar->setDia14($arrCarga[17]);
+                    $arProgramacionImportar->setDia15($arrCarga[18]);
+                    $arProgramacionImportar->setDia16($arrCarga[19]);
+                    $arProgramacionImportar->setDia17($arrCarga[20]);
+                    $arProgramacionImportar->setDia18($arrCarga[21]);
+                    $arProgramacionImportar->setDia19($arrCarga[22]);
+                    $arProgramacionImportar->setDia20($arrCarga[23]);
+                    $arProgramacionImportar->setDia21($arrCarga[24]);
+                    $arProgramacionImportar->setDia22($arrCarga[25]);
+                    $arProgramacionImportar->setDia23($arrCarga[26]);
+                    $arProgramacionImportar->setDia24($arrCarga[27]);
+                    $arProgramacionImportar->setDia25($arrCarga[28]);
+                    $arProgramacionImportar->setDia26($arrCarga[29]);
+                    $arProgramacionImportar->setDia27($arrCarga[30]);
+                    $arProgramacionImportar->setDia28($arrCarga[31]);
+                    $arProgramacionImportar->setDia29($arrCarga[32]);
+                    $arProgramacionImportar->setDia30($arrCarga[33]);
+                    $arProgramacionImportar->setDia31($arrCarga[34]);
+                    $arProgramacionImportar->setHorasDiurnas($validar['horasDiurnas']);
+                    $arProgramacionImportar->setHorasNocturnas($validar['horasNocturnas']);
+                    $arProgramacionImportar->setHoras(($validar['horasDiurnas'] + $validar['horasNocturnas']));
+                    $arProgramacionImportar->setHorasPedido($arPedidoDetalle->getPedidoRel()->getHoras());
+                    $arProgramacionImportar->setHorasDiurnasPedido($arPedidoDetalle->getPedidoRel()->getHorasDiurnas());
+                    $arProgramacionImportar->setHorasNocturnasPedido($arPedidoDetalle->getPedidoRel()->getHorasNocturnas());
+                    $em->persist($arProgramacionImportar);
+                } else {
+                    $error = true;
+                    $objMensaje->Mensaje("error", $validar['mensaje']);
+                }
             }
         }
         $em->flush();
