@@ -1428,30 +1428,87 @@ class TurSoportePagoRepository extends EntityRepository {
                     $horasLaboradasReales = $arSoportePagoPeriodo->getDiasPeriodo() * 8;
                     $horasLimite = $horasLaboradasReales - ($diasDescansoFestivos * 8);                    
                     $diasPeriodoCompensar = $diasPeriodo;
-                    $horasPeriodo =  $diasPeriodoCompensar * 8;                    
-                    
+                    $horasPeriodo =  $diasPeriodoCompensar * 8; 
+                    $horasDominicales = $arSoportePago->getHorasFestivasDiurnasReales() + $arSoportePago->getHorasFestivasNocturnasReales();
+                    $horasLimite -= $horasDominicales;
+                            
                     $horasDia = 0;
                     $horasNoche = 0;
-                    $horasFestivasDia = 0;
-                    $horasFestivasNoche = 0;                       
+                    $horasFestivasDia = $arSoportePago->getHorasFestivasDiurnasReales();
+                    $horasFestivasNoche = $arSoportePago->getHorasFestivasNocturnasReales();                       
                     $horasExtraDia = 0;
                     $horasExtraNoche = 0;                    
-                    $horasExtraFestivasDia = 0;
-                    $horasExtraFestivasNoche = 0;
+                    $horasExtraFestivasDia = $arSoportePago->getHorasExtrasFestivasDiurnasReales();
+                    $horasExtraFestivasNoche = $arSoportePago->getHorasExtrasFestivasNocturnasReales();
                     $totalHoras = 0;
-                    foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) {  
-                        if($totalHoras >= $horasLimite) {
-                            $horasExtraDia += $arSoportePagoDetalle->getHorasDiurnas();
-                            $horasExtraNoche += $arSoportePagoDetalle->getHorasNocturnas();
-                            $horasFestivasDia += $arSoportePagoDetalle->getHorasFestivasDiurnas() + $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();
-                            $horasFestivasNoche += $arSoportePagoDetalle->getHorasFestivasNocturnas() + $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas();
-                        } else {
-                            $horasDia += $arSoportePagoDetalle->getHorasDiurnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();
-                            $horasNoche += $arSoportePagoDetalle->getHorasNocturnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();
-                            $horasFestivasDia += $arSoportePagoDetalle->getHorasFestivasDiurnas() + $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();                        
-                            $horasFestivasNoche += $arSoportePagoDetalle->getHorasFestivasNocturnas() + $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas(); 
-                            $totalHoras = $horasDia + $horasNoche;                            
+                    foreach ($arSoportePagoDetalles as $arSoportePagoDetalle) { 
+                        $horasDiaDetalle = $arSoportePagoDetalle->getHorasDiurnas();
+                        $horasNocheDetalle = $arSoportePagoDetalle->getHorasNocturnas(); 
+                        $horasExtraDiaDetalle = $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();
+                        $horasExtraNocheDetalle = $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();                        
+                        if($totalHoras < $horasLimite) {
+                            $diferencia = $horasLimite - $totalHoras;
+                            //Dia
+                            if($diferencia > 0) {
+                                if($horasDiaDetalle < $diferencia) {
+                                    $horasDia += $horasDiaDetalle;                                    
+                                    $diferencia -= $horasDiaDetalle;
+                                    $horasDiaDetalle = 0;
+                                } else {
+                                    $horasDia += $diferencia;                                    
+                                    $horasDiaDetalle = $horasDiaDetalle - $diferencia;                                
+                                    $diferencia = 0;                                    
+                                }                                
+                            }
+                            if($diferencia > 0) {
+                                if($horasExtraDiaDetalle < $diferencia) {
+                                    $horasDia += $horasExtraDiaDetalle;
+                                    $diferencia -= $horasExtraDiaDetalle;
+                                    $horasExtraDiaDetalle = 0;
+                                } else {
+                                    $horasDia += $diferencia;                                    
+                                    $diferencia = 0;
+                                    $horasExtraDiaDetalle = $horasExtraDiaDetalle - $diferencia;                                
+                                }                                
+                            }
+                            //Noche
+                            if($diferencia > 0) {
+                                if($horasNocheDetalle < $diferencia) {
+                                    $horasNoche += $horasNocheDetalle;                                    
+                                    $diferencia -= $horasNocheDetalle;
+                                    $horasNocheDetalle = 0;
+                                } else {
+                                    $horasNoche += $diferencia;                                    
+                                    $diferencia = 0;
+                                    $horasNocheDetalle = $horasNocheDetalle - $diferencia;                                
+                                }                                
+                            }
+                            if($diferencia > 0) {
+                                if($horasExtraNocheDetalle < $diferencia) {
+                                    $horasNoche += $horasExtraNocheDetalle;
+                                    $diferencia -= $horasExtraNocheDetalle;
+                                    $horasExtraNocheDetalle = 0;
+                                } else {
+                                    $horasNoche += $diferencia;                                    
+                                    $diferencia = 0;
+                                    $horasExtraNocheDetalle = $horasExtraNocheDetalle - $diferencia;                                
+                                }                                
+                            }
+                            //$horasDia += $arSoportePagoDetalle->getHorasDiurnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();
+                            //$horasNoche += $arSoportePagoDetalle->getHorasNocturnas() + $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();                            
+                            //if($arSoportePagoDetalle->getFestivo() == 1) {                                
+                            //    $horasExtraDia += $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();
+                            //    $horasExtraNoche += $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas();
+                            //}
+                            $totalHoras = $horasDia + $horasNoche;                              
                         }
+                        
+                        if($totalHoras >= $horasLimite) {
+                            $horasExtraDia += $horasDiaDetalle + $arSoportePagoDetalle->getHorasExtrasOrdinariasDiurnas();
+                            $horasExtraNoche += $horasNocheDetalle + $arSoportePagoDetalle->getHorasExtrasOrdinariasNocturnas();
+                            //$horasFestivasDia += $arSoportePagoDetalle->getHorasFestivasDiurnas() + $arSoportePagoDetalle->getHorasExtrasFestivasDiurnas();
+                            //$horasFestivasNoche += $arSoportePagoDetalle->getHorasFestivasNocturnas() + $arSoportePagoDetalle->getHorasExtrasFestivasNocturnas();
+                        } 
                     }
                     
                     
@@ -1471,7 +1528,8 @@ class TurSoportePagoRepository extends EntityRepository {
                     $arSoportePagoAct->setDiasPeriodoCompensar($diasPeriodoCompensar);
                     $arSoportePagoAct->setHorasDescanso($diasDescansoPagar * 8);                                        
                     $em->persist($arSoportePagoAct);                   
-                }                  
+                }      
+                
             } else {
                 $arSoportePagoAct = new \Brasa\TurnoBundle\Entity\TurSoportePago();
                 $arSoportePagoAct = $em->getRepository('BrasaTurnoBundle:TurSoportePago')->find($arSoportePago->getCodigoSoportePagoPk());
