@@ -6,50 +6,50 @@ use Doctrine\ORM\EntityRepository;
 
 class TurProgramacionDetalleRepository extends EntityRepository {
 
-    public function listaDql($codigoProgramacion = "", $codigoPuesto = "", $codigoPedidoDetalle = "") {        
-        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd WHERE pd.codigoProgramacionDetallePk <> 0 ";        
-        if($codigoPuesto == 0) {
+    public function listaDql($codigoProgramacion = "", $codigoPuesto = "", $codigoPedidoDetalle = "") {
+        $dql = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd WHERE pd.codigoProgramacionDetallePk <> 0 ";
+        if ($codigoPuesto == 0) {
             $codigoPuesto = '';
         }
-        if($codigoPedidoDetalle == 0) {
+        if ($codigoPedidoDetalle == 0) {
             $codigoPedidoDetalle = '';
-        }        
-        if($codigoProgramacion != '') {
-            $dql .= " AND pd.codigoProgramacionFk = " . $codigoProgramacion . " ";  
-        }  
-        if($codigoPuesto != '') {
-            $dql .= " AND pd.codigoPuestoFk = " . $codigoPuesto . " ";  
-        }      
-        if($codigoPedidoDetalle != '') {
-            $dql .= " AND pd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " ";  
-        }         
+        }
+        if ($codigoProgramacion != '') {
+            $dql .= " AND pd.codigoProgramacionFk = " . $codigoProgramacion . " ";
+        }
+        if ($codigoPuesto != '') {
+            $dql .= " AND pd.codigoPuestoFk = " . $codigoPuesto . " ";
+        }
+        if ($codigoPedidoDetalle != '') {
+            $dql .= " AND pd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle . " ";
+        }
         $dql .= " ORDER BY pd.codigoPuestoFk, pd.codigoPedidoDetalleFk";
         return $dql;
-    } 
-    
+    }
+
     public function consultaDetalleDql($codigoCliente, $codigoRecurso, $codigoCentroCosto, $strFechaDesde = "", $strFechaHasta = "", $boolEstadoAutorizado = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.programacionRel p JOIN pd.recursoRel r "
+        $dql = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.programacionRel p JOIN pd.recursoRel r "
                 . "WHERE pd.codigoProgramacionDetallePk <> 0 ";
-        if($codigoCliente != '') {
+        if ($codigoCliente != '') {
             $dql = $dql . "AND p.codigoClienteFk = " . $codigoCliente;
         }
-        if($codigoRecurso != '') {
+        if ($codigoRecurso != '') {
             $dql = $dql . "AND pd.codigoRecursoFk = " . $codigoRecurso;
         }
-        if($codigoCentroCosto != '') {
+        if ($codigoCentroCosto != '') {
             $dql = $dql . "AND r.codigoCentroCostoFk = " . $codigoCentroCosto;
         }
-        if($strFechaDesde != "") {
+        if ($strFechaDesde != "") {
             $dql .= " AND p.fecha >= '" . $strFechaDesde . "'";
         }
-        if($strFechaHasta != "") {
+        if ($strFechaHasta != "") {
             $dql .= " AND p.fecha <= '" . $strFechaHasta . "'";
         }
-        if($boolEstadoAutorizado == 1 ) {
+        if ($boolEstadoAutorizado == 1) {
             $dql .= " AND p.estadoAutorizado = 1";
         }
-        if($boolEstadoAutorizado == "0") {
+        if ($boolEstadoAutorizado == "0") {
             $dql .= " AND p.estadoAutorizado = 0";
         }
         $dql .= " ORDER BY p.codigoClienteFk, pd.codigoPuestoFk";
@@ -58,7 +58,7 @@ class TurProgramacionDetalleRepository extends EntityRepository {
 
     public function pedido($codigoPedidoDetalle) {
         $em = $this->getEntityManager();
-        $dql   = "SELECT SUM(pd.horas) as horas "
+        $dql = "SELECT SUM(pd.horas) as horas "
                 . "FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
                 . "WHERE pd.codigoPedidoDetalleFk = " . $codigoPedidoDetalle;
         $query = $em->createQuery($dql);
@@ -68,30 +68,36 @@ class TurProgramacionDetalleRepository extends EntityRepository {
 
     public function eliminarDetallesSeleccionados($arrSeleccionados) {
         $strResultado = "";
-        if(count($arrSeleccionados) > 0) {
+        if (count($arrSeleccionados) > 0) {
             $em = $this->getEntityManager();
             foreach ($arrSeleccionados AS $codigo) {
                 $intNumeroRegistros = 0;
-                $dql   = "SELECT COUNT(spd.codigoProgramacionDetalleFk) as numeroRegistros FROM BrasaTurnoBundle:TurSoportePagoDetalle spd "
+                $dql = "SELECT COUNT(spd.codigoProgramacionDetalleFk) as numeroRegistros FROM BrasaTurnoBundle:TurSoportePagoDetalle spd "
                         . "WHERE spd.codigoProgramacionDetalleFk = " . $codigo;
                 $query = $em->createQuery($dql);
                 $arrSoportePagoDetalles = $query->getSingleResult();
-                if($arrSoportePagoDetalles) {
+
+                if ($arrSoportePagoDetalles) {
                     $intNumeroRegistros = $arrSoportePagoDetalles['numeroRegistros'];
                 }
-                if($intNumeroRegistros <= 0) {                    
+                if ($intNumeroRegistros <= 0) {
                     $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
                     $arProgramacionDetalle = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->find($codigo);
+                    $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->findOneBy(array('codigoPedidoDetalleFk' => $arProgramacionDetalle->getCodigoPedidoDetalleFk(), 'codigoRecursoFk' => $arProgramacionDetalle->getCodigoRecursoFk()));
                     $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
-                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionDetalle->getCodigoPedidoDetalleFk());                                                    
+                    $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionDetalle->getCodigoPedidoDetalleFk());
                     $horasProgramadas = $arPedidoDetalle->getHorasProgramadas() - $arProgramacionDetalle->getHoras();
                     $horasDiurnasProgramadas = $arPedidoDetalle->getHorasDiurnasProgramadas() - $arProgramacionDetalle->getHorasDiurnas();
                     $horasNocturnasProgramadas = $arPedidoDetalle->getHorasNocturnasProgramadas() - $arProgramacionDetalle->getHorasNocturnas();
                     $arPedidoDetalle->setHorasProgramadas($horasProgramadas);
                     $arPedidoDetalle->setHorasDiurnasProgramadas($horasDiurnasProgramadas);
-                    $arPedidoDetalle->setHorasNocturnasProgramadas($horasNocturnasProgramadas);                                       
+                    $arPedidoDetalle->setHorasNocturnasProgramadas($horasNocturnasProgramadas);
                     $em->persist($arPedidoDetalle);
                     $em->remove($arProgramacionDetalle);
+                    if ($arProgramacionImportar) {
+                        $arProgramacionImportar->setEstadoProgramado(0);
+                        $em->persist($arProgramacionImportar);
+                    }
                 } else {
                     $strResultado .= "El detalle " . $codigo . " no se puede eliminar porque tiene soportes de pago asociados ";
                 }
@@ -109,78 +115,78 @@ class TurProgramacionDetalleRepository extends EntityRepository {
 
     public function periodo($strFechaDesde, $strFechaHasta, $codigoRecursoGrupo = "", $codigoRecurso = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.programacionRel p JOIN pd.recursoRel r "
+        $dql = "SELECT pd FROM BrasaTurnoBundle:TurProgramacionDetalle pd JOIN pd.programacionRel p JOIN pd.recursoRel r "
                 . "WHERE p.fecha >= '" . $strFechaDesde . "' AND p.fecha <='" . $strFechaHasta . "'";
-        if($codigoRecursoGrupo != "") {
+        if ($codigoRecursoGrupo != "") {
             $dql .= " AND r.codigoRecursoGrupoFk = " . $codigoRecursoGrupo;
         }
-        if($codigoRecurso != "") {
+        if ($codigoRecurso != "") {
             $dql .= " AND pd.codigoRecursoFk = " . $codigoRecurso;
-        }        
-        $query = $em->createQuery($dql);                
+        }
+        $query = $em->createQuery($dql);
         $arResultado = $query->getResult();
         return $arResultado;
     }
 
     public function periodoDias($anio, $mes, $codigoRecurso = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd.codigoProgramacionDetallePk, pd.dia1, pd.dia2, pd.dia3, pd.dia4, pd.dia5, pd.dia6, pd.dia7, pd.dia8, pd.dia9, pd.dia10, "
+        $dql = "SELECT pd.codigoProgramacionDetallePk, pd.dia1, pd.dia2, pd.dia3, pd.dia4, pd.dia5, pd.dia6, pd.dia7, pd.dia8, pd.dia9, pd.dia10, "
                 . "pd.dia11, pd.dia12, pd.dia13, pd.dia14, pd.dia15, pd.dia16, pd.dia17, pd.dia18, pd.dia19, pd.dia20, "
                 . "pd.dia21, pd.dia22, pd.dia23, pd.dia24, pd.dia25, pd.dia26, pd.dia27, pd.dia28, pd.dia29, pd.dia30, pd.dia31 "
                 . "FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
                 . "WHERE pd.anio = " . $anio . " AND pd.mes =" . $mes;
-        if($codigoRecurso != "") {
+        if ($codigoRecurso != "") {
             $dql .= " AND pd.codigoRecursoFk = " . $codigoRecurso;
-        }        
-        $query = $em->createQuery($dql);                
+        }
+        $query = $em->createQuery($dql);
         $arResultado = $query->getResult();
         return $arResultado;
-    }    
-    
+    }
+
     public function validarRecurso($codigoProgramacion) {
         $em = $this->getEntityManager();
         $boolResultado = TRUE;
-        $dql   = "SELECT pd.codigoProgramacionDetallePk FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
+        $dql = "SELECT pd.codigoProgramacionDetallePk FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
                 . "WHERE pd.codigoProgramacionFk = " . $codigoProgramacion . " AND pd.codigoRecursoFk IS NULL";
         $query = $em->createQuery($dql);
         $arResultado = $query->getResult();
-        if(count($arResultado) > 0) {
+        if (count($arResultado) > 0) {
             $boolResultado = FALSE;
         }
         return $boolResultado;
     }
-    
+
     public function validarPuesto($codigoProgramacion) {
         $em = $this->getEntityManager();
         $boolResultado = TRUE;
-        $dql   = "SELECT pd.codigoProgramacionDetallePk FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
+        $dql = "SELECT pd.codigoProgramacionDetallePk FROM BrasaTurnoBundle:TurProgramacionDetalle pd "
                 . "WHERE pd.codigoProgramacionFk = " . $codigoProgramacion . " AND pd.codigoPuestoFk IS NULL";
         $query = $em->createQuery($dql);
         $arResultado = $query->getResult();
-        if(count($arResultado) > 0) {
+        if (count($arResultado) > 0) {
             $boolResultado = FALSE;
         }
         return $boolResultado;
-    }    
+    }
 
     public function nuevo($codigoPedidoDetalle, $arProgramacion) {
         $em = $this->getEntityManager();
-        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();          
+        $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
         $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($codigoPedidoDetalle);
         $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
-        $validarHoras = $arConfiguracion->getValidarHorasProgramacion();        
+        $validarHoras = $arConfiguracion->getValidarHorasProgramacion();
         $horasDiurnas = $arPedidoDetalle->getHorasDiurnasProgramadas();
         $horasNocturnas = $arPedidoDetalle->getHorasNocturnasProgramadas();
         $horasDiurnasContratadas = $arPedidoDetalle->getHorasDiurnas();
-        $horasNocturnasContratadas = $arPedidoDetalle->getHorasNocturnas();        
+        $horasNocturnasContratadas = $arPedidoDetalle->getHorasNocturnas();
         $intDiaInicial = $arPedidoDetalle->getDiaDesde();
         $intDiaFinal = $arPedidoDetalle->getDiaHasta();
         $arFestivos = $em->getRepository('BrasaGeneralBundle:GenFestivo')->festivos($arProgramacion->getFecha()->format('Y-m-') . $intDiaInicial, $arProgramacion->getFecha()->format('Y-m-') . $intDiaFinal);
         $strMesAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m');
 
-        if($arPedidoDetalle->getCodigoServicioDetalleFk()) {
-            if($arPedidoDetalle->getServicioDetalleRel()->getPlantillaRel()) {
-                if($arPedidoDetalle->getServicioDetalleRel()->getPlantillaRel()) {
+        if ($arPedidoDetalle->getCodigoServicioDetalleFk()) {
+            if ($arPedidoDetalle->getServicioDetalleRel()->getPlantillaRel()) {
+                if ($arPedidoDetalle->getServicioDetalleRel()->getPlantillaRel()) {
                     $arPlantilla = $arPedidoDetalle->getServicioDetalleRel()->getPlantillaRel();
                 }
                 $arPlantillaDetalles = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
@@ -189,10 +195,10 @@ class TurProgramacionDetalleRepository extends EntityRepository {
                     $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
                     $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
                     $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPlantilla->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getServicioDetalleRel()->getFechaIniciaPlantilla());
-                    $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);                    
+                    $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);
                     $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurServicioDetalleRecurso();
                     $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurServicioDetalleRecurso')->findBy(array('codigoServicioDetalleFk' => $arPedidoDetalle->getCodigoServicioDetalleFk(), 'posicion' => $arPlantillaDetalle->getPosicion()));
-                    foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {                        
+                    foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {
                         $horasDiurnasProgramacion = 0;
                         $horasNocturnasProgramacion = 0;
                         $intPosicionPlantilla = $intPosicion;
@@ -202,1730 +208,1730 @@ class TurProgramacionDetalleRepository extends EntityRepository {
                         $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
                         $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
                         $arProgramacionDetalle->setAnio($arProgramacion->getFecha()->format('Y'));
-                        $arProgramacionDetalle->setMes($arProgramacion->getFecha()->format('m'));                        
-                        $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());                        
-                        for($i = 1; $i < 32; $i++) {                        
+                        $arProgramacionDetalle->setMes($arProgramacion->getFecha()->format('m'));
+                        $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());
+                        for ($i = 1; $i < 32; $i++) {
                             $strTurno = $arrTurnos[$intPosicionPlantilla];
                             $strFechaDia = $arProgramacion->getFecha()->format('Y-m-') . $i;
                             $dateFechaDia = date_create($strFechaDia);
                             $diaSemana = $dateFechaDia->format('N');
 
                             $boolFestivo = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDia);
-                            if($diaSemana == 1 && isset($arrTurnos['lunes'])) {
+                            if ($diaSemana == 1 && isset($arrTurnos['lunes'])) {
                                 $strTurno = $arrTurnos['lunes'];
                             }
-                            if($diaSemana == 2 && isset($arrTurnos['martes'])) {
+                            if ($diaSemana == 2 && isset($arrTurnos['martes'])) {
                                 $strTurno = $arrTurnos['martes'];
                             }
-                            if($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
+                            if ($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
                                 $strTurno = $arrTurnos['miercoles'];
                             }
-                            if($diaSemana == 4 && isset($arrTurnos['jueves'])) {
+                            if ($diaSemana == 4 && isset($arrTurnos['jueves'])) {
                                 $strTurno = $arrTurnos['jueves'];
                             }
-                            if($diaSemana == 5 && isset($arrTurnos['viernes'])) {
+                            if ($diaSemana == 5 && isset($arrTurnos['viernes'])) {
                                 $strTurno = $arrTurnos['viernes'];
                             }
-                            if($diaSemana == 6 && isset($arrTurnos['sabado'])) {
+                            if ($diaSemana == 6 && isset($arrTurnos['sabado'])) {
                                 $strTurno = $arrTurnos['sabado'];
                             }
-                            if($diaSemana == 7 && isset($arrTurnos['domingo'])) {
+                            if ($diaSemana == 7 && isset($arrTurnos['domingo'])) {
                                 $strTurno = $arrTurnos['domingo'];
                             }
-                            if($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
-                                $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i+1);
-                                $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);                            
-                                $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);                                
-                                if($boolFestivoSiguiente == 1) {
-                                    $strTurno = $arrTurnos['domingoFestivo'];                                
-                                }                                
-                            }                            
-                            if($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
+                            if ($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
+                                $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i + 1);
+                                $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);
+                                $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);
+                                if ($boolFestivoSiguiente == 1) {
+                                    $strTurno = $arrTurnos['domingoFestivo'];
+                                }
+                            }
+                            if ($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
                                 $strTurno = $arrTurnos['festivo'];
                             }
 
-                            if($arPlantilla->getHomologarCodigoTurno() == 1) {
+                            if ($arPlantilla->getHomologarCodigoTurno() == 1) {
                                 $strTurno = $this->devuelveCodigoTurno($arrTurnos[$intPosicionPlantilla]);
                             }
-                            $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);                        
-                            if($arrTurno['aplica'] == TRUE) {
-                                if($i == 1) {
-                                    if($validarHoras == false) {
+                            $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);
+                            if ($arrTurno['aplica'] == TRUE) {
+                                if ($i == 1) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia1($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia1($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia1($arrTurno['turno']);
-                                        }                                     
-                                    }                               
-                                }
-                                if($i == 2) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia2($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia2($arrTurno['turno']);
-                                        }                                    
+                                        }
                                     }
                                 }
-                                if($i == 3) {
-                                    if($validarHoras == false) {
+                                if ($i == 2) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia3($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia2($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                            $arProgramacionDetalle->setDia2($arrTurno['turno']);
+                                        }
+                                    }
+                                }
+                                if ($i == 3) {
+                                    if ($validarHoras == false) {
+                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia3($arrTurno['turno']);
+                                    } else {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                            $horasDiurnas += $arrTurno['horasDiurnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
+                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia3($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 4) {
-                                    if($validarHoras == false) {
+                                if ($i == 4) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia4($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia4($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia4($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 5) {
-                                    if($validarHoras == false) {
+                                if ($i == 5) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia5($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia5($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia5($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 6) {
-                                    if($validarHoras == false) {
+                                if ($i == 6) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia6($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia6($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia6($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 7) {
-                                    if($validarHoras == false) {
+                                if ($i == 7) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia7($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia7($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia7($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 8) {
-                                    if($validarHoras == false) {
+                                if ($i == 8) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia8($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia8($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia8($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 9) {
-                                    if($validarHoras == false) {
+                                if ($i == 9) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia9($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia9($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia9($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 10) {
-                                    if($validarHoras == false) {
+                                if ($i == 10) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia10($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia10($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia10($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 11) {
-                                    if($validarHoras == false) {
+                                if ($i == 11) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia11($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia11($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia11($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 12) {
-                                    if($validarHoras == false) {
+                                if ($i == 12) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia12($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia12($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia12($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 13) {
-                                    if($validarHoras == false) {
+                                if ($i == 13) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia13($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia13($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia13($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 14) {
-                                    if($validarHoras == false) {
+                                if ($i == 14) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia14($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia14($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia14($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 15) {
-                                    if($validarHoras == false) {
+                                if ($i == 15) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia15($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia15($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia15($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 16) {
-                                    if($validarHoras == false) {
+                                if ($i == 16) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia16($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia16($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia16($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 17) {
-                                    if($validarHoras == false) {
+                                if ($i == 17) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia17($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia17($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia17($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 18) {
-                                    if($validarHoras == false) {
+                                if ($i == 18) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia18($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia18($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia18($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 19) {
-                                    if($validarHoras == false) {
+                                if ($i == 19) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia19($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia19($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia19($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 20) {
-                                    if($validarHoras == false) {
+                                if ($i == 20) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia20($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia20($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia20($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 21) {
-                                    if($validarHoras == false) {
+                                if ($i == 21) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia21($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia21($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia21($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 22) {
-                                    if($validarHoras == false) {
+                                if ($i == 22) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia22($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia22($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia22($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 23) {
-                                    if($validarHoras == false) {
+                                if ($i == 23) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia23($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia23($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia23($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 24) {
-                                    if($validarHoras == false) {
+                                if ($i == 24) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia24($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia24($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia24($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 25) {
-                                    if($validarHoras == false) {
+                                if ($i == 25) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia25($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia25($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia25($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 26) {
-                                    if($validarHoras == false) {
+                                if ($i == 26) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia26($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia26($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia26($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 27) {
-                                    if($validarHoras == false) {
+                                if ($i == 27) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia27($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia27($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia27($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 28) {
-                                    if($validarHoras == false) {
+                                if ($i == 28) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia28($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia28($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia28($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 29) {
-                                    if($validarHoras == false) {
+                                if ($i == 29) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia29($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia29($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia29($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 30) {
-                                    if($validarHoras == false) {
+                                if ($i == 30) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia30($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia30($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia30($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
-                                if($i == 31) {
-                                    if($validarHoras == false) {
+                                if ($i == 31) {
+                                    if ($validarHoras == false) {
                                         $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia31($arrTurno['turno']);                                    
+                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+                                        $arProgramacionDetalle->setDia31($arrTurno['turno']);
                                     } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+                                        if ($horasDiurnas + $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas + $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
                                             $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
+                                            $horasNocturnas += $arrTurno['horasNocturnas'];
                                             $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
+                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
                                             $arProgramacionDetalle->setDia31($arrTurno['turno']);
-                                        }                                    
-                                    }                                
+                                        }
+                                    }
                                 }
                             }
                             $intPosicionPlantilla++;
-                            if($intPosicionPlantilla == ($arPlantilla->getDiasSecuencia() + 1)) {
+                            if ($intPosicionPlantilla == ($arPlantilla->getDiasSecuencia() + 1)) {
                                 $intPosicionPlantilla = 1;
                             }
-                        } 
+                        }
 
                         $arProgramacionDetalle->setHoras($horasDiurnasProgramacion + $horasNocturnasProgramacion);
                         $arProgramacionDetalle->setHorasDiurnas($horasDiurnasProgramacion);
                         $arProgramacionDetalle->setHorasNocturnas($horasNocturnasProgramacion);
-                        $em->persist($arProgramacionDetalle);                        
-                    }
-                }
-            }             
-        }
-       
-        
-        /*if($arPedidoDetalle->getPlantillaRel()) {
-            if($arPedidoDetalle->getPlantillaRel()) {
-                $arPlantilla = $arPedidoDetalle->getPlantillaRel();
-            }
-            $arPlantillaDetalles = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
-            $arPlantillaDetalles = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->findBy(array('codigoPlantillaFk' => $arPlantilla->getCodigoPlantillaPk()));
-            foreach ($arPlantillaDetalles as $arPlantillaDetalle) {
-                $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
-                $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
-                $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPlantilla->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getFechaIniciaPlantilla());
-                $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);                    
-                $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso();
-                $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleRecurso')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle, 'posicion' => $arPlantillaDetalle->getPosicion()));
-                foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {                        
-                    $horasDiurnasProgramacion = 0;
-                    $horasNocturnasProgramacion = 0;
-                    $intPosicionPlantilla = $intPosicion;
-                    $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
-                    $arProgramacionDetalle->setProgramacionRel($arProgramacion);
-                    $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
-                    $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
-                    $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
-                    $arProgramacionDetalle->setAnio($arProgramacion->getFecha()->format('Y'));
-                    $arProgramacionDetalle->setMes($arProgramacion->getFecha()->format('m'));                        
-                    $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());
-                    for($i = 1; $i < 32; $i++) {                        
-                        $strTurno = $arrTurnos[$intPosicionPlantilla];
-                        $strFechaDia = $arProgramacion->getFecha()->format('Y-m-') . $i;
-                        $dateFechaDia = date_create($strFechaDia);
-                        $diaSemana = $dateFechaDia->format('N');
-
-                        $boolFestivo = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDia);
-                        if($diaSemana == 1 && isset($arrTurnos['lunes'])) {
-                            $strTurno = $arrTurnos['lunes'];
-                        }
-                        if($diaSemana == 2 && isset($arrTurnos['martes'])) {
-                            $strTurno = $arrTurnos['martes'];
-                        }
-                        if($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
-                            $strTurno = $arrTurnos['miercoles'];
-                        }
-                        if($diaSemana == 4 && isset($arrTurnos['jueves'])) {
-                            $strTurno = $arrTurnos['jueves'];
-                        }
-                        if($diaSemana == 5 && isset($arrTurnos['viernes'])) {
-                            $strTurno = $arrTurnos['viernes'];
-                        }
-                        if($diaSemana == 6 && isset($arrTurnos['sabado'])) {
-                            $strTurno = $arrTurnos['sabado'];
-                        }
-                        if($diaSemana == 7 && isset($arrTurnos['domingo'])) {
-                            $strTurno = $arrTurnos['domingo'];
-                        }
-                        if($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
-                            $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i+1);
-                            $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);                            
-                            $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);                                
-                            if($boolFestivoSiguiente == 1) {
-                                $strTurno = $arrTurnos['domingoFestivo'];                                
-                            }                                
-                        }                            
-                        if($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
-                            $strTurno = $arrTurnos['festivo'];
-                        }
-
-                        if($arPlantilla->getHomologarCodigoTurno() == 1) {
-                            $strTurno = $this->devuelveCodigoTurno($arrTurnos[$intPosicionPlantilla]);
-                        }
-                        $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);                        
-                        if($arrTurno['aplica'] == TRUE) {
-                            if($i == 1) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia1($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia1($arrTurno['turno']);
-                                    }                                     
-                                }                               
-                            }
-                            if($i == 2) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia2($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia2($arrTurno['turno']);
-                                    }                                    
-                                }
-                            }
-                            if($i == 3) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia3($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia3($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 4) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia4($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia4($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 5) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia5($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia5($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 6) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia6($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia6($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 7) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia7($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia7($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 8) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia8($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia8($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 9) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia9($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia9($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 10) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia10($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia10($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 11) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia11($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia11($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 12) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia12($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia12($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 13) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia13($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia13($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 14) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia14($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia14($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 15) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia15($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia15($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 16) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia16($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia16($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 17) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia17($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia17($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 18) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia18($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia18($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 19) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia19($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia19($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 20) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia20($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia20($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 21) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia21($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia21($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 22) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia22($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia22($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 23) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia23($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia23($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 24) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia24($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia24($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 25) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia25($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia25($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 26) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia26($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia26($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 27) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia27($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia27($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 28) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia28($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia28($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 29) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia29($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia29($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 30) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia30($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia30($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                            if($i == 31) {
-                                if($validarHoras == false) {
-                                    $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                    $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                    $arProgramacionDetalle->setDia31($arrTurno['turno']);                                    
-                                } else {
-                                    if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                        $horasDiurnas += $arrTurno['horasDiurnas'];
-                                        $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia31($arrTurno['turno']);
-                                    }                                    
-                                }                                
-                            }
-                        }
-                        $intPosicionPlantilla++;
-                        if($intPosicionPlantilla == ($arPlantilla->getDiasSecuencia() + 1)) {
-                            $intPosicionPlantilla = 1;
-                        }
-                    } 
-                                        
-                    $arProgramacionDetalle->setHoras($horasDiurnasProgramacion + $horasNocturnasProgramacion);
-                    $arProgramacionDetalle->setHorasDiurnas($horasDiurnasProgramacion);
-                    $arProgramacionDetalle->setHorasNocturnas($horasNocturnasProgramacion);
-                    $em->persist($arProgramacionDetalle);                        
-                }
-            }
-        } else {
-            if($arPedidoDetalle->getCodigoServicioDetalleFk()) {
-                $arPlantillaDetalles = new \Brasa\TurnoBundle\Entity\TurServicioDetallePlantilla();
-                $arPlantillaDetalles = $em->getRepository('BrasaTurnoBundle:TurServicioDetallePlantilla')->findBy(array('codigoServicioDetalleFk' => $arPedidoDetalle->getCodigoServicioDetalleFk()));
-                foreach ($arPlantillaDetalles as $arPlantillaDetalle) {
-                    $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
-                    $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
-                    $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPedidoDetalle->getServicioDetalleRel()->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getFechaIniciaPlantilla());
-                    $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);                        
-                    $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso();
-                    $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleRecurso')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle, 'posicion' => $arPlantillaDetalle->getPosicion()));
-                    foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {
-                        $intPosicionPlantilla = $intPosicion;
-                        $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
-                        $arProgramacionDetalle->setProgramacionRel($arProgramacion);
-                        $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
-                        $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
-                        $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());                                                        
-                        $arProgramacionDetalle->setAnio($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y'));
-                        $arProgramacionDetalle->setMes($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('m'));                        
-                        $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());                            
-                        for($i = 1; $i < 32; $i++) {                            
-                            $strTurno = $arrTurnos[$intPosicionPlantilla];
-                            $strFechaDia = $arProgramacion->getFecha()->format('Y-m-') . $i;
-                            $dateFechaDia = date_create($strFechaDia);
-                            $diaSemana = $dateFechaDia->format('N');
-
-                            $boolFestivo = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDia);
-                            if($diaSemana == 1 && isset($arrTurnos['lunes'])) {
-                                $strTurno = $arrTurnos['lunes'];
-                            }
-                            if($diaSemana == 2 && isset($arrTurnos['martes'])) {
-                                $strTurno = $arrTurnos['martes'];
-                            }
-                            if($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
-                                $strTurno = $arrTurnos['miercoles'];
-                            }
-                            if($diaSemana == 4 && isset($arrTurnos['jueves'])) {
-                                $strTurno = $arrTurnos['jueves'];
-                            }
-                            if($diaSemana == 5 && isset($arrTurnos['viernes'])) {
-                                $strTurno = $arrTurnos['viernes'];
-                            }
-                            if($diaSemana == 6 && isset($arrTurnos['sabado'])) {
-                                $strTurno = $arrTurnos['sabado'];
-                            }
-                            if($diaSemana == 7 && isset($arrTurnos['domingo'])) {
-                                $strTurno = $arrTurnos['domingo'];
-                            }
-                            if($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
-                                $strTurno = $arrTurnos['festivo'];
-                            }                 
-                            if($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
-                                $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i+1);
-                                $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);                            
-                                $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);                                
-                                if($boolFestivoSiguiente == 1) {
-                                    $strTurno = $arrTurnos['domingoFestivo'];                                
-                                }                                
-                            }                                
-                            $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);
-                            if($arrTurno['aplica'] == TRUE) {
-                                if($i == 1) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia1($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia1($arrTurno['turno']);
-                                        }                                     
-                                    }                               
-                                }
-                                if($i == 2) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia2($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia2($arrTurno['turno']);
-                                        }                                    
-                                    }
-                                }
-                                if($i == 3) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia3($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia3($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 4) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia4($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia4($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 5) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia5($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia5($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 6) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia6($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia6($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 7) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia7($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia7($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 8) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia8($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia8($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 9) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia9($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia9($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 10) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia10($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia10($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 11) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia11($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia11($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 12) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia12($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia12($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 13) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia13($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia13($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 14) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia14($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia14($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 15) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia15($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia15($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 16) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia16($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia16($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 17) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia17($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia17($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 18) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia18($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia18($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 19) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia19($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia19($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 20) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia20($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia20($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 21) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia21($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia21($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 22) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia22($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia22($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 23) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia23($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia23($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 24) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia24($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia24($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 25) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia25($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia25($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 26) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia26($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia26($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 27) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia27($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia27($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 28) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia28($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia28($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 29) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia29($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia29($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 30) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia30($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia30($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                                if($i == 31) {
-                                    if($validarHoras == false) {
-                                        $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                        $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                        $arProgramacionDetalle->setDia31($arrTurno['turno']);                                    
-                                    } else {
-                                        if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
-                                            $horasDiurnas += $arrTurno['horasDiurnas'];
-                                            $horasNocturnas +=  $arrTurno['horasNocturnas'];
-                                            $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
-                                            $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];                        
-                                            $arProgramacionDetalle->setDia31($arrTurno['turno']);
-                                        }                                    
-                                    }                                
-                                }
-                            }
-                            $intPosicionPlantilla++;
-                            if($intPosicionPlantilla == ($arPedidoDetalle->getServicioDetalleRel()->getDiasSecuencia() + 1)) {
-                                $intPosicionPlantilla = 1;
-                            }
-                        }
-                        
-                        
-                        
-                        $em->persist($arProgramacionDetalle);                            
-                    }
-
-
-                }
-            } else {
-                if($arPedidoDetalle->getCantidadRecurso() != 0) {
-                    $intCantidad = $arPedidoDetalle->getCantidadRecurso();
-                    for($k = 1; $k <= $intCantidad; $k++) {
-                        $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
-                        $arProgramacionDetalle->setProgramacionRel($arProgramacion);
-                        $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
-                        $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
-                        $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());                        
-                        $arProgramacionDetalle->setAnio($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y'));
-                        $arProgramacionDetalle->setMes($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('m'));
                         $em->persist($arProgramacionDetalle);
                     }
                 }
             }
-        }*/
-                
+        }
+
+
+        /* if($arPedidoDetalle->getPlantillaRel()) {
+          if($arPedidoDetalle->getPlantillaRel()) {
+          $arPlantilla = $arPedidoDetalle->getPlantillaRel();
+          }
+          $arPlantillaDetalles = new \Brasa\TurnoBundle\Entity\TurPlantillaDetalle();
+          $arPlantillaDetalles = $em->getRepository('BrasaTurnoBundle:TurPlantillaDetalle')->findBy(array('codigoPlantillaFk' => $arPlantilla->getCodigoPlantillaPk()));
+          foreach ($arPlantillaDetalles as $arPlantillaDetalle) {
+          $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
+          $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
+          $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPlantilla->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getFechaIniciaPlantilla());
+          $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);
+          $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso();
+          $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleRecurso')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle, 'posicion' => $arPlantillaDetalle->getPosicion()));
+          foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {
+          $horasDiurnasProgramacion = 0;
+          $horasNocturnasProgramacion = 0;
+          $intPosicionPlantilla = $intPosicion;
+          $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+          $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+          $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+          $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
+          $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+          $arProgramacionDetalle->setAnio($arProgramacion->getFecha()->format('Y'));
+          $arProgramacionDetalle->setMes($arProgramacion->getFecha()->format('m'));
+          $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());
+          for($i = 1; $i < 32; $i++) {
+          $strTurno = $arrTurnos[$intPosicionPlantilla];
+          $strFechaDia = $arProgramacion->getFecha()->format('Y-m-') . $i;
+          $dateFechaDia = date_create($strFechaDia);
+          $diaSemana = $dateFechaDia->format('N');
+
+          $boolFestivo = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDia);
+          if($diaSemana == 1 && isset($arrTurnos['lunes'])) {
+          $strTurno = $arrTurnos['lunes'];
+          }
+          if($diaSemana == 2 && isset($arrTurnos['martes'])) {
+          $strTurno = $arrTurnos['martes'];
+          }
+          if($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
+          $strTurno = $arrTurnos['miercoles'];
+          }
+          if($diaSemana == 4 && isset($arrTurnos['jueves'])) {
+          $strTurno = $arrTurnos['jueves'];
+          }
+          if($diaSemana == 5 && isset($arrTurnos['viernes'])) {
+          $strTurno = $arrTurnos['viernes'];
+          }
+          if($diaSemana == 6 && isset($arrTurnos['sabado'])) {
+          $strTurno = $arrTurnos['sabado'];
+          }
+          if($diaSemana == 7 && isset($arrTurnos['domingo'])) {
+          $strTurno = $arrTurnos['domingo'];
+          }
+          if($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
+          $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i+1);
+          $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);
+          $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);
+          if($boolFestivoSiguiente == 1) {
+          $strTurno = $arrTurnos['domingoFestivo'];
+          }
+          }
+          if($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
+          $strTurno = $arrTurnos['festivo'];
+          }
+
+          if($arPlantilla->getHomologarCodigoTurno() == 1) {
+          $strTurno = $this->devuelveCodigoTurno($arrTurnos[$intPosicionPlantilla]);
+          }
+          $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);
+          if($arrTurno['aplica'] == TRUE) {
+          if($i == 1) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia1($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia1($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 2) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia2($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia2($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 3) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia3($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia3($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 4) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia4($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia4($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 5) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia5($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia5($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 6) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia6($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia6($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 7) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia7($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia7($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 8) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia8($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia8($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 9) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia9($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia9($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 10) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia10($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia10($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 11) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia11($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia11($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 12) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia12($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia12($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 13) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia13($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia13($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 14) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia14($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia14($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 15) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia15($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia15($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 16) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia16($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia16($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 17) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia17($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia17($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 18) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia18($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia18($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 19) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia19($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia19($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 20) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia20($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia20($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 21) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia21($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia21($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 22) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia22($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia22($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 23) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia23($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia23($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 24) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia24($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia24($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 25) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia25($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia25($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 26) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia26($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia26($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 27) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia27($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia27($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 28) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia28($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia28($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 29) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia29($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia29($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 30) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia30($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia30($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 31) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia31($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia31($arrTurno['turno']);
+          }
+          }
+          }
+          }
+          $intPosicionPlantilla++;
+          if($intPosicionPlantilla == ($arPlantilla->getDiasSecuencia() + 1)) {
+          $intPosicionPlantilla = 1;
+          }
+          }
+
+          $arProgramacionDetalle->setHoras($horasDiurnasProgramacion + $horasNocturnasProgramacion);
+          $arProgramacionDetalle->setHorasDiurnas($horasDiurnasProgramacion);
+          $arProgramacionDetalle->setHorasNocturnas($horasNocturnasProgramacion);
+          $em->persist($arProgramacionDetalle);
+          }
+          }
+          } else {
+          if($arPedidoDetalle->getCodigoServicioDetalleFk()) {
+          $arPlantillaDetalles = new \Brasa\TurnoBundle\Entity\TurServicioDetallePlantilla();
+          $arPlantillaDetalles = $em->getRepository('BrasaTurnoBundle:TurServicioDetallePlantilla')->findBy(array('codigoServicioDetalleFk' => $arPedidoDetalle->getCodigoServicioDetalleFk()));
+          foreach ($arPlantillaDetalles as $arPlantillaDetalle) {
+          $strFechaDesde = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y/m') . "/" . $arPedidoDetalle->getDiaDesde();
+          $strAnio = $arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y');
+          $intPosicion = $this->devuelvePosicionInicialMatrizPlantilla($strAnio, $arPedidoDetalle->getServicioDetalleRel()->getDiasSecuencia(), $strFechaDesde, $arPedidoDetalle->getFechaIniciaPlantilla());
+          $arrTurnos = $this->devuelveTurnosMes($arPlantillaDetalle);
+          $arPedidoDetalleRecursos = new \Brasa\TurnoBundle\Entity\TurPedidoDetalleRecurso();
+          $arPedidoDetalleRecursos = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalleRecurso')->findBy(array('codigoPedidoDetalleFk' => $codigoPedidoDetalle, 'posicion' => $arPlantillaDetalle->getPosicion()));
+          foreach ($arPedidoDetalleRecursos as $arPedidoDetalleRecurso) {
+          $intPosicionPlantilla = $intPosicion;
+          $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+          $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+          $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+          $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
+          $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+          $arProgramacionDetalle->setAnio($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y'));
+          $arProgramacionDetalle->setMes($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('m'));
+          $arProgramacionDetalle->setRecursoRel($arPedidoDetalleRecurso->getRecursoRel());
+          for($i = 1; $i < 32; $i++) {
+          $strTurno = $arrTurnos[$intPosicionPlantilla];
+          $strFechaDia = $arProgramacion->getFecha()->format('Y-m-') . $i;
+          $dateFechaDia = date_create($strFechaDia);
+          $diaSemana = $dateFechaDia->format('N');
+
+          $boolFestivo = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDia);
+          if($diaSemana == 1 && isset($arrTurnos['lunes'])) {
+          $strTurno = $arrTurnos['lunes'];
+          }
+          if($diaSemana == 2 && isset($arrTurnos['martes'])) {
+          $strTurno = $arrTurnos['martes'];
+          }
+          if($diaSemana == 3 && isset($arrTurnos['miercoles'])) {
+          $strTurno = $arrTurnos['miercoles'];
+          }
+          if($diaSemana == 4 && isset($arrTurnos['jueves'])) {
+          $strTurno = $arrTurnos['jueves'];
+          }
+          if($diaSemana == 5 && isset($arrTurnos['viernes'])) {
+          $strTurno = $arrTurnos['viernes'];
+          }
+          if($diaSemana == 6 && isset($arrTurnos['sabado'])) {
+          $strTurno = $arrTurnos['sabado'];
+          }
+          if($diaSemana == 7 && isset($arrTurnos['domingo'])) {
+          $strTurno = $arrTurnos['domingo'];
+          }
+          if($boolFestivo == 1 && isset($arrTurnos['festivo'])) {
+          $strTurno = $arrTurnos['festivo'];
+          }
+          if($diaSemana == 7 && isset($arrTurnos['domingoFestivo'])) {
+          $strFechaDiaSiguiente = $arProgramacion->getFecha()->format('Y-m-') . ($i+1);
+          $dateFechaDiaSiguiente = date_create($strFechaDiaSiguiente);
+          $boolFestivoSiguiente = $em->getRepository('BrasaTurnoBundle:TurCotizacion')->festivo($arFestivos, $dateFechaDiaSiguiente);
+          if($boolFestivoSiguiente == 1) {
+          $strTurno = $arrTurnos['domingoFestivo'];
+          }
+          }
+          $arrTurno = $this->aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $boolFestivo);
+          if($arrTurno['aplica'] == TRUE) {
+          if($i == 1) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia1($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia1($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 2) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia2($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia2($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 3) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia3($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia3($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 4) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia4($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia4($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 5) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia5($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia5($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 6) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia6($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia6($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 7) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia7($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia7($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 8) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia8($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia8($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 9) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia9($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia9($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 10) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia10($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia10($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 11) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia11($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia11($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 12) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia12($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia12($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 13) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia13($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia13($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 14) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia14($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia14($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 15) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia15($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia15($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 16) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia16($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia16($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 17) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia17($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia17($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 18) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia18($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia18($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 19) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia19($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia19($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 20) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia20($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia20($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 21) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia21($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia21($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 22) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia22($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia22($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 23) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia23($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia23($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 24) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia24($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia24($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 25) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia25($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia25($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 26) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia26($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia26($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 27) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia27($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia27($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 28) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia28($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia28($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 29) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia29($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia29($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 30) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia30($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia30($arrTurno['turno']);
+          }
+          }
+          }
+          if($i == 31) {
+          if($validarHoras == false) {
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia31($arrTurno['turno']);
+          } else {
+          if($horasDiurnas +  $arrTurno['horasDiurnas'] <= $horasDiurnasContratadas && $horasNocturnas +  $arrTurno['horasNocturnas'] <= $horasNocturnasContratadas) {
+          $horasDiurnas += $arrTurno['horasDiurnas'];
+          $horasNocturnas +=  $arrTurno['horasNocturnas'];
+          $horasDiurnasProgramacion += $arrTurno['horasDiurnas'];
+          $horasNocturnasProgramacion += $arrTurno['horasNocturnas'];
+          $arProgramacionDetalle->setDia31($arrTurno['turno']);
+          }
+          }
+          }
+          }
+          $intPosicionPlantilla++;
+          if($intPosicionPlantilla == ($arPedidoDetalle->getServicioDetalleRel()->getDiasSecuencia() + 1)) {
+          $intPosicionPlantilla = 1;
+          }
+          }
+
+
+
+          $em->persist($arProgramacionDetalle);
+          }
+
+
+          }
+          } else {
+          if($arPedidoDetalle->getCantidadRecurso() != 0) {
+          $intCantidad = $arPedidoDetalle->getCantidadRecurso();
+          for($k = 1; $k <= $intCantidad; $k++) {
+          $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+          $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+          $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+          $arProgramacionDetalle->setProyectoRel($arPedidoDetalle->getProyectoRel());
+          $arProgramacionDetalle->setPuestoRel($arPedidoDetalle->getPuestoRel());
+          $arProgramacionDetalle->setAnio($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('Y'));
+          $arProgramacionDetalle->setMes($arPedidoDetalle->getPedidoRel()->getFechaProgramacion()->format('m'));
+          $em->persist($arProgramacionDetalle);
+          }
+          }
+          }
+          } */
+
         $arPedidoDetalle->setHorasDiurnasProgramadas($horasDiurnas);
         $arPedidoDetalle->setHorasNocturnasProgramadas($horasNocturnas);
-        $arPedidoDetalle->setHorasProgramadas($horasDiurnas+$horasNocturnas);        
+        $arPedidoDetalle->setHorasProgramadas($horasDiurnas + $horasNocturnas);
         $arPedidoDetalle->setEstadoProgramado(1);
         $em->persist($arPedidoDetalle);
         $em->flush();
     }
 
-    private function aplicaPlantilla ($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $festivo) {
+    private function aplicaPlantilla($i, $intDiaInicial, $intDiaFinal, $strMesAnio, $arPedidoDetalle, $strTurno, $festivo) {
         $em = $this->getEntityManager();
-        $arrTurno = array('turno' => null, 'horasDiurnas' => 0, 'horasNocturnas' => 0, 'aplica' => false);        
-        if($strTurno != '') {
+        $arrTurno = array('turno' => null, 'horasDiurnas' => 0, 'horasNocturnas' => 0, 'aplica' => false);
+        if ($strTurno != '') {
             $arTurno = new \Brasa\TurnoBundle\Entity\TurTurno();
             $arTurno = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($strTurno);
-            if($arTurno->getDescanso() == 1 && ($i >= $intDiaInicial && $i <= $intDiaFinal)) {
-                $arrTurno['aplica'] = true; 
+            if ($arTurno->getDescanso() == 1 && ($i >= $intDiaInicial && $i <= $intDiaFinal)) {
+                $arrTurno['aplica'] = true;
                 $arrTurno['turno'] = $strTurno;
                 $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();                
+                $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
             } else {
-                if($i >= $intDiaInicial && $i <= $intDiaFinal) {
+                if ($i >= $intDiaInicial && $i <= $intDiaFinal) {
                     $strFecha = $strMesAnio . '/' . $i;
                     $dateNuevaFecha = date_create($strFecha);
                     $diaSemana = $dateNuevaFecha->format('N');
-                    if($diaSemana == 1) {
-                        if($arPedidoDetalle->getLunes() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 1) {
+                        if ($arPedidoDetalle->getLunes() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 2) {
-                        if($arPedidoDetalle->getMartes() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 2) {
+                        if ($arPedidoDetalle->getMartes() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 3) {
-                        if($arPedidoDetalle->getMiercoles() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 3) {
+                        if ($arPedidoDetalle->getMiercoles() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 4) {
-                        if($arPedidoDetalle->getJueves() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 4) {
+                        if ($arPedidoDetalle->getJueves() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 5) {
-                        if($arPedidoDetalle->getViernes() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 5) {
+                        if ($arPedidoDetalle->getViernes() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 6) {
-                        if($arPedidoDetalle->getSabado() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 6) {
+                        if ($arPedidoDetalle->getSabado() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($diaSemana == 7) {
-                        if($arPedidoDetalle->getDomingo() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($diaSemana == 7) {
+                        if ($arPedidoDetalle->getDomingo() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
                         }
                     }
-                    if($festivo == 1) {
-                        if($arPedidoDetalle->getFestivo() == 1) {
-                            $arrTurno['aplica'] = true; 
+                    if ($festivo == 1) {
+                        if ($arPedidoDetalle->getFestivo() == 1) {
+                            $arrTurno['aplica'] = true;
                             $arrTurno['turno'] = $strTurno;
                             $arrTurno['horasDiurnas'] = $arTurno->getHorasDiurnas();
-                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas(); 
-                        }                        
+                            $arrTurno['horasNocturnas'] = $arTurno->getHorasNocturnas();
+                        }
                     }
-                }                            
+                }
             }
         }
 
@@ -1933,7 +1939,7 @@ class TurProgramacionDetalleRepository extends EntityRepository {
     }
 
     private function devuelvePosicionInicialMatrizPlantilla($strAnio, $intPosiciones, $strFechaHasta, $dateFechaDesde) {
-        if($intPosiciones == 0) {
+        if ($intPosiciones == 0) {
             $intPosiciones = 1;
         }
         $intPos = 1;
@@ -1941,14 +1947,14 @@ class TurProgramacionDetalleRepository extends EntityRepository {
         $dateFechaHasta = date_create($strFechaHasta);
         //$strFecha = $strAnio."/01/1";
         $strFecha = $dateFechaDesde->format('Y/m/j');
-        if($dateFechaDesde < $dateFechaHasta) {
-            while($strFecha != $strFechaHasta) {
+        if ($dateFechaDesde < $dateFechaHasta) {
+            while ($strFecha != $strFechaHasta) {
                 //$dateFecha = date_create($strAnio."/01/01");
-                $nuevafecha = strtotime ( '+1 day' , strtotime ( $strFecha ) ) ;
-                $strFecha = date ( 'Y/m/j' , $nuevafecha );
+                $nuevafecha = strtotime('+1 day', strtotime($strFecha));
+                $strFecha = date('Y/m/j', $nuevafecha);
 
                 $intPos++;
-                if($intPos == ($intPosiciones+1)) {
+                if ($intPos == ($intPosiciones + 1)) {
                     $intPos = 1;
                 }
             }
@@ -2001,63 +2007,62 @@ class TurProgramacionDetalleRepository extends EntityRepository {
         return $arrTurnos;
     }
 
-    private function devuelveCodigoTurno ($strCodigo) {
+    private function devuelveCodigoTurno($strCodigo) {
         $strCodigoReal = "";
-        if($strCodigo == 'A') {
+        if ($strCodigo == 'A') {
             $strCodigoReal = '1';
         }
-        if($strCodigo == 'B') {
+        if ($strCodigo == 'B') {
             $strCodigoReal = '2';
         }
-        if($strCodigo == 'D') {
+        if ($strCodigo == 'D') {
             $strCodigoReal = 'D';
         }
         return $strCodigoReal;
     }
 
-    public function detallesPedido ($codigoPedidoDetalle, $strAnio, $strMes) {
+    public function detallesPedido($codigoPedidoDetalle, $strAnio, $strMes) {
         $em = $this->getEntityManager();
         $strSql = "SELECT
                     COUNT(codigo_programacion_detalle_pk) as numeroRegistros,
                     SUM(horas) as horas,                    
                     SUM(horas * vr_hora_recurso) as vrRecurso
                     FROM tur_programacion_detalle
-                    WHERE codigo_pedido_detalle_fk = $codigoPedidoDetalle AND anio = $strAnio AND mes = $strMes";        
+                    WHERE codigo_pedido_detalle_fk = $codigoPedidoDetalle AND anio = $strAnio AND mes = $strMes";
         $connection = $em->getConnection();
         $statement = $connection->prepare($strSql);
         $statement->execute();
         $results = $statement->fetchAll();
-        return $results[0];        
+        return $results[0];
     }
-    
-    public function detallesRecurso ($codigoRecurso, $strAnio, $strMes) {
+
+    public function detallesRecurso($codigoRecurso, $strAnio, $strMes) {
         $em = $this->getEntityManager();
         $strSql = "SELECT
                     COUNT(codigo_programacion_detalle_pk) as numeroRegistros,
                     SUM(horas) as horas
                     FROM tur_programacion_detalle
-                    WHERE codigo_recurso_fk = $codigoRecurso AND anio = $strAnio AND mes = $strMes";        
+                    WHERE codigo_recurso_fk = $codigoRecurso AND anio = $strAnio AND mes = $strMes";
         $connection = $em->getConnection();
         $statement = $connection->prepare($strSql);
         $statement->execute();
         $results = $statement->fetchAll();
-        return $results[0];        
+        return $results[0];
     }
-    
-    public function marcarSeleccionados($arrSeleccionados) {        
-        if(count($arrSeleccionados) > 0) {
+
+    public function marcarSeleccionados($arrSeleccionados) {
+        if (count($arrSeleccionados) > 0) {
             $em = $this->getEntityManager();
-            foreach ($arrSeleccionados AS $codigo) {                
-                $arProgramacionDetalle = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->find($codigo);                
-                if($arProgramacionDetalle->getMarca() == 1) {
+            foreach ($arrSeleccionados AS $codigo) {
+                $arProgramacionDetalle = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->find($codigo);
+                if ($arProgramacionDetalle->getMarca() == 1) {
                     $arProgramacionDetalle->setMarca(0);
                 } else {
                     $arProgramacionDetalle->setMarca(1);
-                }                
-            }                                         
-            $em->flush();       
+                }
+            }
+            $em->flush();
         }
-        
-    }                       
-    
+    }
+
 }
