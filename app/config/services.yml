@@ -77,6 +77,12 @@ services:
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Poligrafia tipo }
+
+    admin.recursohumano.reclamoconcepto:
+        class: Brasa\RecursoHumanoBundle\Admin\ReclamoConceptoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuReclamoConcepto, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Reclamo concepto }          
             
     # .................. administracion modulo programacion de turnos .................................................................
     

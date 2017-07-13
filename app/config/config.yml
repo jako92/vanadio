@@ -129,6 +129,7 @@ sonata_admin:
                     - admin.recursohumano.facturaservicio
                     - admin.recursohumano.estudiotipo
                     - admin.recursohumano.seleccionrequisicionexperiencia
+                    - admin.recursohumano.reclamoconcepto
                     
             app.admin.group.turno:
                 label: Programacion turno

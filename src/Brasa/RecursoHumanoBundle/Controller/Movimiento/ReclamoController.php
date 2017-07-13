@@ -254,11 +254,14 @@ class ReclamoController extends Controller
         }        
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID')
-                    ->setCellValue('B1', 'DOCUMENTO')
-                    ->setCellValue('C1', 'EMPLEADO')
-                    ->setCellValue('D1', 'FECHA')
-                    ->setCellValue('E1', 'CIERRE')
-                    ->setCellValue('F1', 'CERRADO');
+                    ->setCellValue('B1', 'CONCEPTO')
+                    ->setCellValue('C1', 'DOCUMENTO')
+                    ->setCellValue('D1', 'EMPLEADO')
+                    ->setCellValue('E1', 'FECHA')
+                    ->setCellValue('F1', 'CIERRE')
+                    ->setCellValue('G1', 'RESPONSABLE')
+                    ->setCellValue('H1', 'PUESTO')
+                    ->setCellValue('I1', 'CERRADO');
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
         $arReclamoes = new \Brasa\RecursoHumanoBundle\Entity\RhuReclamo();
@@ -266,11 +269,16 @@ class ReclamoController extends Controller
         foreach ($arReclamoes as $arReclamo) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arReclamo->getCodigoReclamoPk())
-                    ->setCellValue('B' . $i, $arReclamo->getEmpleadoRel()->getnumeroIdentificacion())
-                    ->setCellValue('C' . $i, $arReclamo->getEmpleadoRel()->getNombreCorto())
-                    ->setCellValue('D' . $i, $arReclamo->getFecha()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arReclamo->getFechaCierre()->format('Y/m/d'))                    
-                    ->setCellValue('F' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoCerrado()));           
+                    ->setCellValue('C' . $i, $arReclamo->getEmpleadoRel()->getnumeroIdentificacion())
+                    ->setCellValue('D' . $i, $arReclamo->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('E' . $i, $arReclamo->getFecha()->format('Y/m/d'))
+                    ->setCellValue('F' . $i, $arReclamo->getFechaCierre()->format('Y/m/d'))                    
+                    ->setCellValue('G' . $i, $arReclamo->getResponsable())                    
+                    ->setCellValue('H' . $i, $arReclamo->getPuesto())                    
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arReclamo->getEstadoCerrado()));           
+            if($arReclamo->getCodigoReclamoConceptoFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $i, $arReclamo->getReclamoConceptoRel()->getNombre());   
+            }
             $i++;
         }
 

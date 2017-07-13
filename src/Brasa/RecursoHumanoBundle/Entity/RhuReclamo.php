@@ -23,6 +23,11 @@ class RhuReclamo
     private $codigoEmpleadoFk;              
     
     /**
+     * @ORM\Column(name="codigo_reclamo_concepto_fk", type="integer", nullable=true)
+     */    
+    private $codigoReclamoConceptoFk;     
+    
+    /**
      * @ORM\Column(name="fecha_registro", type="date", nullable=true)
      */         
     private $fechaRegistro;
@@ -56,6 +61,16 @@ class RhuReclamo
      * @ORM\Column(name="estado_cerrado", type="boolean")
      */    
     private $estadoCerrado = false;    
+
+    /**
+     * @ORM\Column(name="responsable", type="string", length=100, nullable=true)
+     */    
+    private $responsable; 
+    
+    /**
+     * @ORM\Column(name="puesto", type="string", length=100, nullable=true)
+     */    
+    private $puesto;     
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
@@ -67,7 +82,14 @@ class RhuReclamo
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
     protected $empleadoRel;    
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuReclamoConcepto", inversedBy="reclamosReclamoConceptoRel")
+     * @ORM\JoinColumn(name="codigo_reclamo_concepto_fk", referencedColumnName="codigo_reclamo_concepto_pk")
+     */
+    protected $reclamoConceptoRel;     
+
+
 
     /**
      * Get codigoReclamoPk
@@ -101,6 +123,30 @@ class RhuReclamo
     public function getCodigoEmpleadoFk()
     {
         return $this->codigoEmpleadoFk;
+    }
+
+    /**
+     * Set codigoReclamoConceptoFk
+     *
+     * @param integer $codigoReclamoConceptoFk
+     *
+     * @return RhuReclamo
+     */
+    public function setCodigoReclamoConceptoFk($codigoReclamoConceptoFk)
+    {
+        $this->codigoReclamoConceptoFk = $codigoReclamoConceptoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoReclamoConceptoFk
+     *
+     * @return integer
+     */
+    public function getCodigoReclamoConceptoFk()
+    {
+        return $this->codigoReclamoConceptoFk;
     }
 
     /**
@@ -152,6 +198,30 @@ class RhuReclamo
     }
 
     /**
+     * Set fechaCierre
+     *
+     * @param \DateTime $fechaCierre
+     *
+     * @return RhuReclamo
+     */
+    public function setFechaCierre($fechaCierre)
+    {
+        $this->fechaCierre = $fechaCierre;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCierre
+     *
+     * @return \DateTime
+     */
+    public function getFechaCierre()
+    {
+        return $this->fechaCierre;
+    }
+
+    /**
      * Set fechaSolucion
      *
      * @param \DateTime $fechaSolucion
@@ -173,6 +243,30 @@ class RhuReclamo
     public function getFechaSolucion()
     {
         return $this->fechaSolucion;
+    }
+
+    /**
+     * Set reclamo
+     *
+     * @param string $reclamo
+     *
+     * @return RhuReclamo
+     */
+    public function setReclamo($reclamo)
+    {
+        $this->reclamo = $reclamo;
+
+        return $this;
+    }
+
+    /**
+     * Get reclamo
+     *
+     * @return string
+     */
+    public function getReclamo()
+    {
+        return $this->reclamo;
     }
 
     /**
@@ -224,30 +318,6 @@ class RhuReclamo
     }
 
     /**
-     * Set empleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
-     *
-     * @return RhuReclamo
-     */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
-        $this->empleadoRel = $empleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get empleadoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
-     */
-    public function getEmpleadoRel()
-    {
-        return $this->empleadoRel;
-    }
-
-    /**
      * Set codigoUsuario
      *
      * @param string $codigoUsuario
@@ -272,50 +342,98 @@ class RhuReclamo
     }
 
     /**
-     * Set reclamo
+     * Set empleadoRel
      *
-     * @param string $reclamo
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
      *
      * @return RhuReclamo
      */
-    public function setReclamo($reclamo)
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
     {
-        $this->reclamo = $reclamo;
+        $this->empleadoRel = $empleadoRel;
 
         return $this;
     }
 
     /**
-     * Get reclamo
+     * Get empleadoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
+     */
+    public function getEmpleadoRel()
+    {
+        return $this->empleadoRel;
+    }
+
+    /**
+     * Set reclamoConceptoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuReclamoConcepto $reclamoConceptoRel
+     *
+     * @return RhuReclamo
+     */
+    public function setReclamoConceptoRel(\Brasa\RecursoHumanoBundle\Entity\RhuReclamoConcepto $reclamoConceptoRel = null)
+    {
+        $this->reclamoConceptoRel = $reclamoConceptoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get reclamoConceptoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuReclamoConcepto
+     */
+    public function getReclamoConceptoRel()
+    {
+        return $this->reclamoConceptoRel;
+    }
+
+    /**
+     * Set responsable
+     *
+     * @param string $responsable
+     *
+     * @return RhuReclamo
+     */
+    public function setResponsable($responsable)
+    {
+        $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    /**
+     * Get responsable
      *
      * @return string
      */
-    public function getReclamo()
+    public function getResponsable()
     {
-        return $this->reclamo;
+        return $this->responsable;
     }
 
     /**
-     * Set fechaCierre
+     * Set puesto
      *
-     * @param \DateTime $fechaCierre
+     * @param string $puesto
      *
      * @return RhuReclamo
      */
-    public function setFechaCierre($fechaCierre)
+    public function setPuesto($puesto)
     {
-        $this->fechaCierre = $fechaCierre;
+        $this->puesto = $puesto;
 
         return $this;
     }
 
     /**
-     * Get fechaCierre
+     * Get puesto
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getFechaCierre()
+    public function getPuesto()
     {
-        return $this->fechaCierre;
+        return $this->puesto;
     }
 }
