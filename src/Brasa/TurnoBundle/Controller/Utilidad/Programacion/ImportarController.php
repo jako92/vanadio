@@ -107,23 +107,23 @@ class ImportarController extends Controller {
 
         foreach ($arrCargas as $arrCarga) {
             $error = false;
+            $arPuesto = "";
             $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arrCarga['codigoPedidoDetalle']);
-            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arPedidoDetalle->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arrCarga['codigoRecurso']);
             $validar = $this->validarHoras($arrCarga);
             if (!$arPedidoDetalle) {
                 $error = true;
                 $objMensaje->Mensaje("error", 'El codigo pedido detalle '.$arrCarga['codigoPedidoDetalle'].' no esxiste');
+            }else{
+                $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arPedidoDetalle->getCodigoPuestoFk());
             }
             if (!$arPuesto) {
                 $error = true;
-                $objMensaje->Mensaje("error", $validar['mensaje']);
-                $objMensaje->Mensaje("error", 'El codigo puesto '.$arPedidoDetalle->getCodigoPuestoFk().' no esxiste');
+                $objMensaje->Mensaje("error", 'El codigo puesto del pedido detalle '. $arrCarga['codigoPedidoDetalle'].' no existe');
             }
             if (!$arRecurso) {
                 $error = true;
-                $objMensaje->Mensaje("error", $validar['mensaje']);
                 $objMensaje->Mensaje("error", 'El codigo recurso '.$arrCarga['codigoRecurso'].' no esxiste');
             }
             if ($error == false) {
