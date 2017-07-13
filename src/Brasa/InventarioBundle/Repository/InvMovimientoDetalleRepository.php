@@ -26,11 +26,11 @@ class InvMovimientoDetalleRepository extends EntityRepository
     }
     
     public function consultaKardexDql($strCodigoItem = '') {
-        $dql   = "SELECT md FROM BrasaInventarioBundle:InvMovimientoDetalle md WHERE md.codigoDetalleMovimientoPk <> 0 ";        
+        $dql   = "SELECT md FROM BrasaInventarioBundle:InvMovimientoDetalle md WHERE md.estadoAutorizado = 1 ";        
         if($strCodigoItem != "" ) {
             $dql .= " AND md.codigoItemFk = " . $strCodigoItem;
         }
-        $dql .= " ORDER BY md.codigoItemFk";
+        $dql .= " ORDER BY md.fecha";
         return $dql;
     }
     
@@ -99,6 +99,9 @@ class InvMovimientoDetalleRepository extends EntityRepository
                     $objMensaje->Mensaje("error", "Cantidad del item " . $arMovimientoDetalle->getItemRel()->getNombre() . " no tiene existencia suficiente");
                     $validado = FALSE;
                 }
+            } else {
+                    $objMensaje->Mensaje("error", "El item con lote " . $arMovimientoDetalle->getLoteFk() . " nunca ha tenido ingresos a bodega");
+                    $validado = FALSE;                
             }
         }        
         return $validado;     

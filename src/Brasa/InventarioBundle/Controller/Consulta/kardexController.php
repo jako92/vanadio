@@ -43,7 +43,7 @@ class kardexController extends Controller {
         }
         $arMovimientoDetalles = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
         return $this->render('BrasaInventarioBundle:Consultas/kardex:kardex.html.twig', array(
-                    'arKardex' => $arMovimientoDetalles,
+                    'arMovimientosDetalles' => $arMovimientoDetalles,
                     'form' => $form->createView()));
     }
 

@@ -23,6 +23,11 @@ class InvMovimientoDetalle
     private $codigoMovimientoFk;    
     
     /**
+     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     */    
+    private $fecha;    
+    
+    /**
      * @ORM\Column(name="codigo_item_fk", type="integer", nullable=true)
      */     
     private $codigoItemFk;    
@@ -899,5 +904,29 @@ class InvMovimientoDetalle
     public function getItemRel()
     {
         return $this->itemRel;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return InvMovimientoDetalle
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
     }
 }

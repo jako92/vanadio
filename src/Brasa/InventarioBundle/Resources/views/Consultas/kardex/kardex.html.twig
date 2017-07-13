@@ -50,24 +50,34 @@
         </div>
         <table class="table table-striped table-bordered table-condensed">
             <tr>
-                <th>CODIGO</th>
+                <th>ID</th>
+                <th>NUMERO</th>
+                <th>FECHA</th>
+                <th>DOCUMENTO</th>                
                 <th>ITEM</th>
+                <th>LOTE</th>
+                <th>BODEGA</th>
                 <th>CANTIDAD</th>
                 <th>PRECIO</th>                                                
             </tr>
-            {% for arKardex in arKardex %}
+            {% for arMovimientosDetalles in arMovimientosDetalles %}
                 <tr>                    
-                    <td>{{ arKardex.codigoDetalleMovimientoPk }}</td>                       
-                    <td>{{ arKardex.itemRel.nombre | default('')  }}</td>
-                    <td style="text-align: right">{{ arKardex.cantidadOperada }}</td>                    
-                    <td style="text-align: right">{{ arKardex.valor | number_format(0, '.', ',') }}</td>                                                                                    
+                    <td>{{ arMovimientosDetalles.codigoDetalleMovimientoPk }}</td>                    
+                    <td>{{ arMovimientosDetalles.movimientoRel.numero | default('') }}</td>
+                    <td>{{ arMovimientosDetalles.fecha | date('Y-m-d') }}</td>                    
+                    <td>{{ arMovimientosDetalles.movimientoRel.documentoRel.nombre | default('') }}</td>                    
+                    <td>{{ arMovimientosDetalles.itemRel.nombre | default('')  }}</td>
+                    <td>{{ arMovimientosDetalles.loteFk }}</td>
+                    <td>{{ arMovimientosDetalles.codigoBodegaFk }}</td>
+                    <td style="text-align: right">{{ arMovimientosDetalles.cantidadOperada }}</td>                    
+                    <td style="text-align: right">{{ arMovimientosDetalles.valor | number_format(0, '.', ',') }}</td>                                                                                    
                 </tr>
             {% endfor %}
         </table>
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">                
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arKardex.getTotalItemCount }}</span></div>                        
+            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arMovimientosDetalles.getTotalItemCount }}</span></div>                        
         </div>
         <div class="btn-toolbar" style="float: right">            
             <div class="btn-group">
