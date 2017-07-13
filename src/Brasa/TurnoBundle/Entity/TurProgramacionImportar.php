@@ -8,210 +8,249 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tur_programacion_importar")
  * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurProgramacionImportarRepository")
  */
-class TurProgramacionImportar
-{
+class TurProgramacionImportar {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_programacion_importar_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoProgramacionImportarPk;      
+    private $codigoProgramacionImportarPk;
+
+    /**
+     * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
+     */
+    private $codigoClienteFk;
+
+    /**
+     * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
+     */
+    private $codigoPuestoFk;
+
+    /**
+     * @ORM\Column(name="codigo_recurso_fk", type="integer", nullable=true)
+     */
+    private $codigoRecursoFk;
+
+    /**
+     * @ORM\Column(name="codigo_pedido_detalle_fk", type="integer", nullable=true)
+     */
+    private $codigoPedidoDetalleFk;
+
+    /**
+     * @ORM\Column(name="nombre_cliente", type="string", length=120, nullable=true)
+     */
+    private $nombreCliente;
+
+    /**
+     * @ORM\Column(name="nombre_puesto", type="string", length=300, nullable=true)
+     */
+    private $nombrePuesto;
+
+    /**
+     * @ORM\Column(name="nombre_recurso", type="string", length=120, nullable=true)
+     */
+    private $nombreRecurso;
 
     /**
      * @ORM\Column(name="anio", type="integer")
-     */    
-    private $anio = 0;    
-    
+     */
+    private $anio = 0;
+
     /**
      * @ORM\Column(name="mes", type="integer")
-     */    
-    private $mes = 0;     
-    
-    /**
-     * @ORM\Column(name="codigo_pedido_detalle_fk", type="integer", nullable=true)
-     */    
-    private $codigoPedidoDetalleFk;     
-    
-    /**
-     * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
-     */    
-    private $codigoPuestoFk;    
-    
-    /**
-     * @ORM\Column(name="codigo_recurso_fk", type="integer", nullable=true)
-     */    
-    private $codigoRecursoFk;    
-    
+     */
+    private $mes = 0;
+
     /**
      * @ORM\Column(name="dia_1", type="string", length=5, nullable=true)
-     */    
-    private $dia1;    
+     */
+    private $dia1;
 
     /**
      * @ORM\Column(name="dia_2", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia2;
-    
+
     /**
      * @ORM\Column(name="dia_3", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia3;
-    
+
     /**
      * @ORM\Column(name="dia_4", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia4;
-    
+
     /**
      * @ORM\Column(name="dia_5", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia5;
-    
+
     /**
      * @ORM\Column(name="dia_6", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia6;
-    
+
     /**
      * @ORM\Column(name="dia_7", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia7;
-    
+
     /**
      * @ORM\Column(name="dia_8", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia8;
-    
+
     /**
      * @ORM\Column(name="dia_9", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia9;
-    
+
     /**
      * @ORM\Column(name="dia_10", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia10;
-    
+
     /**
      * @ORM\Column(name="dia_11", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia11;
-    
+
     /**
      * @ORM\Column(name="dia_12", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia12;
-    
+
     /**
      * @ORM\Column(name="dia_13", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia13;
-    
+
     /**
      * @ORM\Column(name="dia_14", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia14;
-    
+
     /**
      * @ORM\Column(name="dia_15", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia15;
-    
+
     /**
      * @ORM\Column(name="dia_16", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia16;
-    
+
     /**
      * @ORM\Column(name="dia_17", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia17;
-    
+
     /**
      * @ORM\Column(name="dia_18", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia18;
-    
+
     /**
      * @ORM\Column(name="dia_19", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia19;
-    
+
     /**
      * @ORM\Column(name="dia_20", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia20;
-    
+
     /**
      * @ORM\Column(name="dia_21", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia21;
-    
+
     /**
      * @ORM\Column(name="dia_22", type="string", length=5, nullable=true)
-     */    
+     */
     private $dia22;
-    
+
     /**
      * @ORM\Column(name="dia_23", type="string", length=5, nullable=true)
-     */    
-    private $dia23;    
+     */
+    private $dia23;
 
     /**
      * @ORM\Column(name="dia_24", type="string", length=5, nullable=true)
-     */    
-    private $dia24;    
-    
+     */
+    private $dia24;
+
     /**
      * @ORM\Column(name="dia_25", type="string", length=5, nullable=true)
-     */    
-    private $dia25;    
-    
+     */
+    private $dia25;
+
     /**
      * @ORM\Column(name="dia_26", type="string", length=5, nullable=true)
-     */    
-    private $dia26;    
-    
+     */
+    private $dia26;
+
     /**
      * @ORM\Column(name="dia_27", type="string", length=5, nullable=true)
-     */    
-    private $dia27;    
-    
+     */
+    private $dia27;
+
     /**
      * @ORM\Column(name="dia_28", type="string", length=5, nullable=true)
-     */    
-    private $dia28;    
-    
+     */
+    private $dia28;
+
     /**
      * @ORM\Column(name="dia_29", type="string", length=5, nullable=true)
-     */    
-    private $dia29;    
-    
+     */
+    private $dia29;
+
     /**
      * @ORM\Column(name="dia_30", type="string", length=5, nullable=true)
-     */    
-    private $dia30;    
-    
+     */
+    private $dia30;
+
     /**
      * @ORM\Column(name="dia_31", type="string", length=5, nullable=true)
-     */    
-    private $dia31;    
-    
+     */
+    private $dia31;
+
     /**
      * @ORM\Column(name="horas", type="float")
-     */    
-    private $horas = 0;    
+     */
+    private $horas = 0;
 
     /**
      * @ORM\Column(name="horas_diurnas", type="float")
-     */    
-    private $horasDiurnas = 0; 
+     */
+    private $horasDiurnas = 0;
 
     /**
      * @ORM\Column(name="horas_nocturnas", type="float")
-     */    
-    private $horasNocturnas = 0; 
-    
+     */
+    private $horasNocturnas = 0;
+
+    /**
+     * @ORM\Column(name="horas_pedido", type="float")
+     */
+    private $horasPedido = 0;
+
+    /**
+     * @ORM\Column(name="horas_diurnas_pedido", type="float")
+     */
+    private $horasDiurnasPedido = 0;
+
+    /**
+     * @ORM\Column(name="horas_nocturnas_pedido", type="float")
+     */
+    private $horasNocturnasPedido = 0;
+
+    /**
+     * @ORM\Column(name="estado_programado", type="boolean")
+     */
+    private $estadoProgramado = false;
 
 
     /**
@@ -225,75 +264,27 @@ class TurProgramacionImportar
     }
 
     /**
-     * Set anio
+     * Set codigoClienteFk
      *
-     * @param integer $anio
+     * @param integer $codigoClienteFk
      *
      * @return TurProgramacionImportar
      */
-    public function setAnio($anio)
+    public function setCodigoClienteFk($codigoClienteFk)
     {
-        $this->anio = $anio;
+        $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
     }
 
     /**
-     * Get anio
+     * Get codigoClienteFk
      *
      * @return integer
      */
-    public function getAnio()
+    public function getCodigoClienteFk()
     {
-        return $this->anio;
-    }
-
-    /**
-     * Set mes
-     *
-     * @param integer $mes
-     *
-     * @return TurProgramacionImportar
-     */
-    public function setMes($mes)
-    {
-        $this->mes = $mes;
-
-        return $this;
-    }
-
-    /**
-     * Get mes
-     *
-     * @return integer
-     */
-    public function getMes()
-    {
-        return $this->mes;
-    }
-
-    /**
-     * Set codigoPedidoDetalleFk
-     *
-     * @param integer $codigoPedidoDetalleFk
-     *
-     * @return TurProgramacionImportar
-     */
-    public function setCodigoPedidoDetalleFk($codigoPedidoDetalleFk)
-    {
-        $this->codigoPedidoDetalleFk = $codigoPedidoDetalleFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPedidoDetalleFk
-     *
-     * @return integer
-     */
-    public function getCodigoPedidoDetalleFk()
-    {
-        return $this->codigoPedidoDetalleFk;
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -342,6 +333,150 @@ class TurProgramacionImportar
     public function getCodigoRecursoFk()
     {
         return $this->codigoRecursoFk;
+    }
+
+    /**
+     * Set codigoPedidoDetalleFk
+     *
+     * @param integer $codigoPedidoDetalleFk
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setCodigoPedidoDetalleFk($codigoPedidoDetalleFk)
+    {
+        $this->codigoPedidoDetalleFk = $codigoPedidoDetalleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPedidoDetalleFk
+     *
+     * @return integer
+     */
+    public function getCodigoPedidoDetalleFk()
+    {
+        return $this->codigoPedidoDetalleFk;
+    }
+
+    /**
+     * Set nombreCliente
+     *
+     * @param string $nombreCliente
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setNombreCliente($nombreCliente)
+    {
+        $this->nombreCliente = $nombreCliente;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreCliente
+     *
+     * @return string
+     */
+    public function getNombreCliente()
+    {
+        return $this->nombreCliente;
+    }
+
+    /**
+     * Set nombrePuesto
+     *
+     * @param string $nombrePuesto
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setNombrePuesto($nombrePuesto)
+    {
+        $this->nombrePuesto = $nombrePuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get nombrePuesto
+     *
+     * @return string
+     */
+    public function getNombrePuesto()
+    {
+        return $this->nombrePuesto;
+    }
+
+    /**
+     * Set nombreRecurso
+     *
+     * @param string $nombreRecurso
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setNombreRecurso($nombreRecurso)
+    {
+        $this->nombreRecurso = $nombreRecurso;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreRecurso
+     *
+     * @return string
+     */
+    public function getNombreRecurso()
+    {
+        return $this->nombreRecurso;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param integer $anio
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return integer
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
+     * Set mes
+     *
+     * @param integer $mes
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setMes($mes)
+    {
+        $this->mes = $mes;
+
+        return $this;
+    }
+
+    /**
+     * Get mes
+     *
+     * @return integer
+     */
+    public function getMes()
+    {
+        return $this->mes;
     }
 
     /**
@@ -1158,5 +1293,101 @@ class TurProgramacionImportar
     public function getHorasNocturnas()
     {
         return $this->horasNocturnas;
+    }
+
+    /**
+     * Set horasPedido
+     *
+     * @param float $horasPedido
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setHorasPedido($horasPedido)
+    {
+        $this->horasPedido = $horasPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get horasPedido
+     *
+     * @return float
+     */
+    public function getHorasPedido()
+    {
+        return $this->horasPedido;
+    }
+
+    /**
+     * Set horasDiurnasPedido
+     *
+     * @param float $horasDiurnasPedido
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setHorasDiurnasPedido($horasDiurnasPedido)
+    {
+        $this->horasDiurnasPedido = $horasDiurnasPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get horasDiurnasPedido
+     *
+     * @return float
+     */
+    public function getHorasDiurnasPedido()
+    {
+        return $this->horasDiurnasPedido;
+    }
+
+    /**
+     * Set horasNocturnasPedido
+     *
+     * @param float $horasNocturnasPedido
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setHorasNocturnasPedido($horasNocturnasPedido)
+    {
+        $this->horasNocturnasPedido = $horasNocturnasPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get horasNocturnasPedido
+     *
+     * @return float
+     */
+    public function getHorasNocturnasPedido()
+    {
+        return $this->horasNocturnasPedido;
+    }
+
+    /**
+     * Set estadoProgramado
+     *
+     * @param boolean $estadoProgramado
+     *
+     * @return TurProgramacionImportar
+     */
+    public function setEstadoProgramado($estadoProgramado)
+    {
+        $this->estadoProgramado = $estadoProgramado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoProgramado
+     *
+     * @return boolean
+     */
+    public function getEstadoProgramado()
+    {
+        return $this->estadoProgramado;
     }
 }

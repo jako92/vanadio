@@ -121,15 +121,15 @@
                                     {% if (intPuesto != arProgramacionDetalle.codigoPuestoFk or arProgramacionDetalle.codigoPuestoFk == '') or (intPedidoDetalle != arProgramacionDetalle.codigoPedidoDetalleFk or arProgramacionDetalle.codigoPedidoDetalleFk == '') %}                                                                
                                         <tr >
                                             <td id="suptipo" colspan="33" bgcolor= "#F2F5A9"><b>{{ arProgramacionDetalle.puestoRel.nombre | default('') }} [{{ arProgramacionDetalle.pedidoDetalleRel.conceptoServicioRel.nombre | default('') }} - H.D {{ arProgramacionDetalle.pedidoDetalleRel.horasDiurnas | default('') }}({{ arProgramacionDetalle.pedidoDetalleRel.horasDiurnasProgramadas | default('') }}) H.N {{ arProgramacionDetalle.pedidoDetalleRel.horasNocturnas | default('') }}({{ arProgramacionDetalle.pedidoDetalleRel.horasNocturnasProgramadas | default('') }})]<b/>
-                                                    {% if arProgramacion.estadoAutorizado == 0 %}
-                                                        {% if arProgramacionDetalle.codigoPuestoFk is not null %}
-                                                            <a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_editar', {'codigoPuesto': arProgramacionDetalle.codigoPuestoFk, 'codigoPedidoDetalle': arProgramacionDetalle.codigoPedidoDetalleFk, 'codigoProgramacion': arProgramacion.codigoProgramacionPk }) }}', 'Editar puesto', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar programacion puesto"></a>
-                                                            {% else %}
-                                                            <b>SIN PUESTO (Error)<b/>
-                                                                <a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_editar', {'codigoPuesto': 0, 'codigoPedidoDetalle': 0, 'codigoProgramacion': arProgramacion.codigoProgramacionPk }) }}', 'Editar puesto', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar programacion puesto"></a>                                            
-                                                                {% endif %}
-                                                            {% endif %}
-                                                        </td>                                                                        
+                                                {% if arProgramacion.estadoAutorizado == 0 %}
+                                                    {% if arProgramacionDetalle.codigoPuestoFk is not null %}
+                                                        <a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_editar', {'codigoPuesto': arProgramacionDetalle.codigoPuestoFk, 'codigoPedidoDetalle': arProgramacionDetalle.codigoPedidoDetalleFk, 'codigoProgramacion': arProgramacion.codigoProgramacionPk }) }}', 'Editar puesto', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar programacion puesto"></a>
+                                                    {% else %}
+                                                        <b>SIN PUESTO (Error)<b/>
+                                                        <a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_editar', {'codigoPuesto': 0, 'codigoPedidoDetalle': 0, 'codigoProgramacion': arProgramacion.codigoProgramacionPk }) }}', 'Editar puesto', 600, 1200)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar programacion puesto"></a>                                            
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>                                                                        
                                                         <td id="suptipo" colspan="3" bgcolor= "#F2F5A9"><b>PED:{{ arProgramacionDetalle.codigoPedidoDetalleFk | default('') }}</b></td>
 
 
@@ -140,87 +140,84 @@
                                                         {% set floHorasNocturnasPedido = arProgramacionDetalle.pedidoDetalleRel.horasNocturnas %}                                 
                                                         {% set floHorasDiurnasProgramadasPedido = arProgramacionDetalle.pedidoDetalleRel.horasDiurnasProgramadas %} 
                                                         {% set floHorasNocturnasProgramadasPedido = arProgramacionDetalle.pedidoDetalleRel.horasNocturnasProgramadas %} 
-                                                    {% endif %}  
-                                                    {% set floHorasDiurnasProgramadas = floHorasDiurnasProgramadas + arProgramacionDetalle.horasDiurnas %} 
-                                                    {% set floHorasNocturnasProgramadas = floHorasNocturnasProgramadas + arProgramacionDetalle.horasNocturnas %}                                 
-                                                    <tr style='height: 10px' width="250">
-                                                        <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_resumen', {'codigoProgramacionDetalle': arProgramacionDetalle.codigoProgramacionDetallePk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arProgramacionDetalle.codigoProgramacionDetallePk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arProgramacionDetalle.codigoProgramacionDetallePk }}"></td>
-                                                            {% if arProgramacionDetalle.codigoRecursoFk is not null %}
-                                                                {% if arProgramacion.estadoAutorizado == 0 %}
-                                                                <td><a href="javascript:abrirVentana3('{{ path('brs_tur_utilidad_recurso_programacion_masiva', { 'anio': arProgramacionDetalle.anio, 'mes': arProgramacionDetalle.mes, 'codigoRecurso': arProgramacionDetalle.codigoRecursoFk }) }}', 'VerProgramaciones', 600, 1200)">{{ arProgramacionDetalle.recursoRel.nombreCorto | default('') }}</a></td>
-                                                                {% else %}
-                                                                <td>{{ arProgramacionDetalle.recursoRel.nombreCorto | default('') }}</td>
-                                                            {% endif %}                                                                    
-                                                        {% else %}
-                                                            <td></td>
-                                                        {% endif %}
-                                                        <td>{{ arProgramacionDetalle.dia1  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia2  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia3  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia4  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia5  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia6  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia7  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia8  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia9  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia10  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia11  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia12  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia13  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia14  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia15  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia16  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia17  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia18  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia19  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia20  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia21  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia22  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia23  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia24  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia25  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia26  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia27  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia28  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia29  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia30  }}</td>
-                                                        <td>{{ arProgramacionDetalle.dia31  }}</td>
-                                                        <td style="text-align: right">{{ arProgramacionDetalle.horasDiurnas | number_format(1, '.', ',') }}</td>
-                                                        <td style="text-align: right">{{ arProgramacionDetalle.horasNocturnas | number_format(1, '.', ',') }}</td>                                
-                                                        <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProgramacionDetalle.codigoProgramacionDetallePk }}" /></td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                                </table>                                                            
-                                                </div>
-                                                </div>
-                                                <div class="btn-toolbar" style="float: right">
-                                                    <div class="btn-group">
-                                                        {% if arProgramacion.estadoAutorizado == 0 %}
-                                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_pedido_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoProgramacionDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>
-                                                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoPuesto': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo libre</a>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="btn-group">                                                        
-                                                        {{ form_widget(form.BtnDetalleMarcar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                                            
-                                                        {{ form_widget(form.BtnDetalleEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
-                                                    </div>
-                                                </div>
-                                                </div>
-
-
-                                                {{ form_rest(form) }}
-                                                {{ form_end(form) }}
-                                                <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_programacion') }}">Volver</a>
-                                                <script src="{{ asset('js/jquery-1.10.2.min.js') }}"></script>
-                                                <script src="{{ asset('js/jquery.stickytableheaders.js') }}"></script>
-
-                                                <script>
-                                        var offset = $('.navbar').height();
-                                        $("html:not(.legacy) table").stickyTableHeaders({fixedOffset: offset});
-                                                </script> 
-
-                                                </section> 
-                                                <br/><br/><br/><br/>
-                                                </section>
-                                            {% endblock %}
+                                    {% endif %}  
+                                    {% set floHorasDiurnasProgramadas = floHorasDiurnasProgramadas + arProgramacionDetalle.horasDiurnas %} 
+                                    {% set floHorasNocturnasProgramadas = floHorasNocturnasProgramadas + arProgramacionDetalle.horasNocturnas %}                                 
+                                    <tr style='height: 10px' width="250">
+                                        <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_resumen', {'codigoProgramacionDetalle': arProgramacionDetalle.codigoProgramacionDetallePk }) }}', 'pedidoDetalleResumen', 600, 900)">{{ arProgramacionDetalle.codigoProgramacionDetallePk }}</a><input type="hidden" name="LblCodigo[]" value="{{ arProgramacionDetalle.codigoProgramacionDetallePk }}"></td>
+                                            {% if arProgramacionDetalle.codigoRecursoFk is not null %}
+                                                {% if arProgramacion.estadoAutorizado == 0 %}
+                                                    <td><a href="javascript:abrirVentana3('{{ path('brs_tur_utilidad_recurso_programacion_masiva', { 'anio': arProgramacionDetalle.anio, 'mes': arProgramacionDetalle.mes, 'codigoRecurso': arProgramacionDetalle.codigoRecursoFk }) }}', 'VerProgramaciones', 600, 1200)">{{ arProgramacionDetalle.recursoRel.nombreCorto | default('') }}</a></td>
+                                                {% else %}
+                                                    <td>{{ arProgramacionDetalle.recursoRel.nombreCorto | default('') }}</td>
+                                                {% endif %}                                                                    
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                            <td>{{ arProgramacionDetalle.dia1  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia2  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia3  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia4  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia5  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia6  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia7  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia8  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia9  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia10  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia11  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia12  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia13  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia14  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia15  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia16  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia17  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia18  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia19  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia20  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia21  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia22  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia23  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia24  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia25  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia26  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia27  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia28  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia29  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia30  }}</td>
+                                            <td>{{ arProgramacionDetalle.dia31  }}</td>
+                                            <td style="text-align: right">{{ arProgramacionDetalle.horasDiurnas | number_format(1, '.', ',') }}</td>
+                                            <td style="text-align: right">{{ arProgramacionDetalle.horasNocturnas | number_format(1, '.', ',') }}</td>                                
+                                            <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arProgramacionDetalle.codigoProgramacionDetallePk }}" /></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>                                                            
+                    </div>
+                </div>
+                <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                        {% if arProgramacion.estadoAutorizado == 0 %}
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_importar_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoCliente': arProgramacion.codigoClienteFk }) }}', 'AgregarNuevoDetalle', 600, 1400)">Nuevo importado</a>
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_pedido_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoProgramacionDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo</a>
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_programacion_detalle_nuevo', {'codigoProgramacion': arProgramacion.codigoProgramacionPk, 'codigoPuesto': 0 }) }}', 'AgregarNuevoDetalle', 600, 1200)">Nuevo libre</a>
+                        {% endif %}
+                    </div>
+                    <div class="btn-group">                                                        
+                        {{ form_widget(form.BtnDetalleMarcar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}                                                                            
+                        {{ form_widget(form.BtnDetalleEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+            <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_programacion') }}">Volver</a>
+            <script src="{{ asset('js/jquery-1.10.2.min.js') }}"></script>
+            <script src="{{ asset('js/jquery.stickytableheaders.js') }}"></script>
+            <script>
+                var offset = $('.navbar').height();
+                $("html:not(.legacy) table").stickyTableHeaders({fixedOffset: offset});
+            </script> 
+        </section> 
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

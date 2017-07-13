@@ -1,42 +1,15 @@
-{% extends '::base2.html.twig' %}
-{% block title %}Importar programacion - Soga App{% endblock %}
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Programacion detalle nuevo - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Programacion turnos
-            <small>Programacion: importar</small>
+            <small>Programacion: nuevo detalle importado</small>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programacion turnos</a></li>
-            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Utilidades</a></li>
-            <li class="active">Importar</li>
-        </ol>
     </section>    
-    <section class="content">  
-        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
-        {{ form_errors(form) }}
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Cargar archivo</div>
-            <div class="panel-body">
-                <div>                      
-                    <div class="form-group form-group-sm">
-                        <label for="form_numeroIdentificacón" class="col-sm-2 control-label">Cargar:</label>
-                        <div class="col-sm-10">
-                            {{ form_widget(form.attachment, { 'attr': {'class': 'btn btn-sm btn-default'} }) }}            
-                        </div>
-                    </div>                                
-                </div>
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnCargar, { 'attr': {'class': 'btn btn-primary btn-sm', 'style':'float:right'} }) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="detalles" style="width: 100%"><br>
-            <table style='table-layout:fixed' class="table table-striped table-bordered table-condensed">
+    <section class="content"> 
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+             <table style='table-layout:fixed' class="table table-striped table-bordered table-condensed">
                 <thead style="background-color:  #3c8dbc">
                     <tr>
                         <th>COD</th>
@@ -86,9 +59,9 @@
                     {% for arProgramacionesImportar in arProgramacionesImportar %}
                         {% if (intPuestoImportado != arProgramacionesImportar.codigoPuestoFk or intPedidoDetalleImportado != arProgramacionesImportar.codigoPedidoDetalleFk) and intPuestoImportado != '' %}                                                                                            
                             <tr>
-                                <td id="suptipo" colspan="33" style="text-align: right">{% if floTotalHorasProgramadas >= arProgramacionesImportar.horasPedido or floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido or floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido %}<b class="text-danger"> LA PROGRAMACION SUPERA LAS HORAS DEL PEDIDO {% endif %}</b</td>                                     
-                                <td id="suptipo" colspan="1" {% if floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido %} class="danger" {% endif %}>{{ floHorasDiurnasProgramadas }}</td>                                     
-                                <td id="suptipo" colspan="1" {% if floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido %} class="danger" {% endif %}>{{ floHorasNocturnasProgramadas }}</td> 
+                                <td id="suptipo" colspan="33" style="text-align: right">{% if floTotalHorasProgramadas >= arProgramacionesImportar.horasPedido %}<b class="text-danger"> LA PROGRAMACION SUPERA LAS HORAS DEL PEDIDO {% endif %}</b</td>                                     
+                                <td id="suptipo" colspan="1" {% if floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido%} class="danger" {% endif %}>{{ floHorasDiurnasProgramadas }}</td>                                     
+                                <td id="suptipo" colspan="1" {% if floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido%} class="danger" {% endif %}>{{ floHorasNocturnasProgramadas }}</td> 
                                 <td id="suptipo" colspan="1"></td>
                             </tr>
                             {% set floHorasDiurnasProgramadas = 0 %} 
@@ -154,23 +127,10 @@
                     {% endfor %}
                 </tbody>
             </table>
+        <div class="modal-footer">            
+            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
         </div>
-        <div class="btn-group" style="float: left">
-            <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arProgramacionesImportar.getTotalItemCount }}</span></div>                        
-        </div>
-        <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-            {{ knp_pagination_render(arProgramacionesImportar) }}       
-        </div>
-        <div class="btn-toolbar" style="float: right">
-            <div class="btn-group">
-                {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-sm btn-default'} }) }}
-            </div>
-            <div class="btn-group">
-                {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-sm btn-danger'} }) }}
-            </div>
-        </div>        
-        <!-- Fin Botones Menu Items -->
-        {{ form_rest(form) }}
+
         {{ form_end(form) }}
         <script src="{{ asset('js/jquery-1.10.2.min.js') }}"></script>
         <script src="{{ asset('js/jquery.stickytableheaders.js') }}"></script>

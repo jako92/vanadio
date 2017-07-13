@@ -249,7 +249,7 @@ class ProgramacionController extends Controller {
     public function detalleNuevoAction(Request $request, $codigoProgramacion, $codigoPuesto) {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
-        $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();        
+        $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
         $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $arProgramacion->getFecha()->format('m') + 1, 1, $arProgramacion->getFecha()->format('Y')) - 1));
         $form = $this->createFormBuilder()
@@ -455,6 +455,38 @@ class ProgramacionController extends Controller {
         return $this->render('BrasaTurnoBundle:Movimientos/Programacion:detalleNuevoPedido.html.twig', array(
                     'arProgramacion' => $arProgramacion,
                     'arPedidosDetalle' => $arPedidosDetalle,
+                    'form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/tur/movimiento/programacion/detalle/importar/nuevo/{codigoProgramacion}/{codigoCliente}", name="brs_tur_movimiento_programacion_detalle_importar_nuevo")
+     */
+    public function detalleNuevoImportadoAction(Request $request, $codigoProgramacion, $codigoCliente) {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+        $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacion();
+        $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);
+        $form = $this->createFormBuilder()
+                ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigo) {
+                        $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->nuevoProgramacion($codigo, $arProgramacion);
+                    }
+                    $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
+                    $em->flush();
+                }
+            }
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+        }
+        $dql = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->listaPendienteProgramar($codigoCliente);
+        $arProgramacionesImportar = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
+        return $this->render('BrasaTurnoBundle:Movimientos/Programacion:detalleNuevoImportado.html.twig', array(
+                    'arProgramacionesImportar' => $arProgramacionesImportar,
                     'form' => $form->createView()));
     }
 
