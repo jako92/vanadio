@@ -524,7 +524,7 @@ class FacturaController extends Controller {
             }
         }
         $dql = $em->getRepository('BrasaTurnoBundle:TurFacturaDetalle')->listaCliente($arFactura->getCodigoClienteFk(), "", $tipoCruce);
-        $arFacturaDetalles = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
+        $arFacturaDetalles = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 1000);
         return $this->render('BrasaTurnoBundle:Movimientos/Factura:detalleNuevoFactura.html.twig', array(
                     'arFactura' => $arFactura,
                     'arFacturaDetalles' => $arFacturaDetalles,
