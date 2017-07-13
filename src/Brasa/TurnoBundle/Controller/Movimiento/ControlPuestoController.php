@@ -33,7 +33,7 @@ class ControlPuestoController extends Controller {
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 140, 1)) {
-          //  return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
+            //  return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');
         $this->estadoAnulado = 0;
@@ -48,7 +48,7 @@ class ControlPuestoController extends Controller {
                     $codigoControlPuesto = $request->request->get('OpGenerar');
                     $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
                     $arPuestos = new \Brasa\TurnoBundle\Entity\TurPuesto();
-                    $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->findBy(array('controlPuesto' => 1));
+                    $arPuestos = $em->getRepository('BrasaTurnoBundle:TurPuesto')->findBy(array('controlPuesto' => 1, 'codigoCentroOperacionFk' => $arControlPuesto->getcodigoCentroOperacionFk()));
                     foreach ($arPuestos as $arPuesto) {
                         $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
                         $arControlPuestoDetalle->setControlPuestoRel($arControlPuesto);
@@ -121,32 +121,32 @@ class ControlPuestoController extends Controller {
         $arControlPuesto = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->find($codigoControlPuesto);
         $form = $this->formularioDetalle($arControlPuesto);
         $form->handleRequest($request);
-        if($form->isSubmitted()){
-        if ($form->isValid()) {
-            if ($request->request->get('OpCerrar')) {
-                $codigoControlPuestoDetalle = $request->request->get('OpCerrar');
-                $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-                $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
-                $arControlPuestoDetalle->setFecha(new \DateTime('now'));
-                $arControlPuestoDetalle->setEstadoCerrado(1);
-                $em->persist($arControlPuestoDetalle);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)));
-            }
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($request->request->get('OpCerrar')) {
+                    $codigoControlPuestoDetalle = $request->request->get('OpCerrar');
+                    $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+                    $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+                    $arControlPuestoDetalle->setFecha(new \DateTime('now'));
+                    $arControlPuestoDetalle->setEstadoCerrado(1);
+                    $em->persist($arControlPuestoDetalle);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)));
+                }
 
-            if ($form->get('BtnImprimir')->isClicked()) {
-                $objFormatoControlPuesto = new \Brasa\TurnoBundle\Formatos\ControlPuesto();
-                $objFormatoControlPuesto->Generar($em, $codigoControlPuesto);
-            }
+                if ($form->get('BtnImprimir')->isClicked()) {
+                    $objFormatoControlPuesto = new \Brasa\TurnoBundle\Formatos\ControlPuesto();
+                    $objFormatoControlPuesto->Generar($em, $codigoControlPuesto);
+                }
 
 
-            if ($form->get('BtnDetalleEliminar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
+                if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->eliminar($arrSeleccionados);
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto)));
+                }
             }
         }
-    }
         $dql = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->listaDql($codigoControlPuesto);
         $arControlPuestoDetalle = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 150);
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:detalle.html.twig', array(
@@ -170,24 +170,24 @@ class ControlPuestoController extends Controller {
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $form->handleRequest($request);
-        if($form->isSubmitted()){
-        if ($form->isValid()) {
-            if ($form->get('BtnGuardar')->isClicked()) {
-                $novedad = $form->get('novedad')->getData();
-                $numeroComunicacion = $form->get('numeroComunicacion')->getData();
-                $arControlPuestoDetalle->setNovedad($novedad);
-                $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
-                if($novedad != "") {
-                    $arControlPuestoDetalle->setEstadoNovedad(1);
-                } else {
-                    $arControlPuestoDetalle->setEstadoNovedad(0);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                if ($form->get('BtnGuardar')->isClicked()) {
+                    $novedad = $form->get('novedad')->getData();
+                    $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                    $arControlPuestoDetalle->setNovedad($novedad);
+                    $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                    if ($novedad != "") {
+                        $arControlPuestoDetalle->setEstadoNovedad(1);
+                    } else {
+                        $arControlPuestoDetalle->setEstadoNovedad(0);
+                    }
+                    $em->persist($arControlPuestoDetalle);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
                 }
-                $em->persist($arControlPuestoDetalle);
-                $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
             }
         }
-    }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:novedad.html.twig', array(
                     'form' => $form->createView()
         ));
@@ -203,8 +203,9 @@ class ControlPuestoController extends Controller {
         $form = $this->createFormBuilder()
                 ->getForm();
         $form->handleRequest($request);
-        if($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                
             }
         }
         $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
@@ -213,8 +214,8 @@ class ControlPuestoController extends Controller {
                     'arProgramacionDetalles' => $arProgramacionDetalles,
                     'form' => $form->createView()
         ));
-    }    
-    
+    }
+
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();

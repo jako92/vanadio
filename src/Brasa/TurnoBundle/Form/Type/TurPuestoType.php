@@ -63,7 +63,7 @@ class TurPuestoType extends AbstractType
                     return $er->createQueryBuilder('co')
                     ->orderBy('co.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))
+                'required' => false))
             ->add('nombre', TextType::class, array('required'  => true))
             ->add('direccion', TextType::class, array('required'  => false))
             ->add('telefono', TextType::class, array('required'  => false))

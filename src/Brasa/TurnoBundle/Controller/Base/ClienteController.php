@@ -166,16 +166,22 @@ class ClienteController extends Controller {
      */
     public function puestoNuevoAction(Request $request, $codigoCliente, $codigoPuesto) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
         $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($codigoCliente);
         $arPuesto = new \Brasa\TurnoBundle\Entity\TurPuesto();
+        $arPuesto->setCentroOperacionRel(null);
         if ($codigoPuesto != '' && $codigoPuesto != '0') {
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
         }
         $form = $this->createForm(TurClientePuestoType::class, $arPuesto);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $controlPuesto = $form->get('controlPuesto')->getData();
+            $centralOperacion = $form->get('centroOperacionRel')->getData();
+            if ($controlPuesto == true && $centralOperacion == null) {
+                $objMensaje->Mensaje("error", "Seleccionar la central de operacion para el control de puesto");
+            } else {
                 $arPuesto = $form->getData();
                 $arPuesto->setClienteRel($arCliente);
                 $em->persist($arPuesto);

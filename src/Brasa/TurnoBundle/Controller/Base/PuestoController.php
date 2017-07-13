@@ -62,16 +62,23 @@ class PuestoController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPuesto = new \Brasa\TurnoBundle\Entity\TurPuesto();
+        $arPuesto->setCentroOperacionRel(null);
         if ($codigoPuesto != '' && $codigoPuesto != '0') {
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($codigoPuesto);
         }
         $form = $this->createForm(TurPuestoType::class, $arPuesto);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $arPuesto = $form->getData();
-            $em->persist($arPuesto);
-            $em->flush();
-            return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
+            $controlPuesto = $form->get('controlPuesto')->getData();
+            $centralOperacion = $form->get('centroOperacionRel')->getData();
+            if ($controlPuesto == true && $centralOperacion == null) {
+                $objMensaje->Mensaje("error", "Seleccionar la central de operacion para el control de puesto");
+            } else {
+                $arPuesto = $form->getData();
+                $em->persist($arPuesto);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
+            }
         }
         return $this->render('BrasaTurnoBundle:Base/Puesto:nuevo.html.twig', array(
                     'arPuesto' => $arPuesto,
