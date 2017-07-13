@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuLicenciaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -186,7 +188,22 @@ class LicenciasController extends Controller {
                 $session->set('filtroIdentificacion', null);
             }
         }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuLicenciaFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuLicenciaFechaDesde');
+        }
+        if ($session->get('filtroRhuLicenciaFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuLicenciaFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuLicenciaFiltrarFecha')))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
                 ->add('licenciaTipoRel', EntityType::class, $arrayPropiedadesLicenciaTipo)
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
@@ -201,9 +218,19 @@ class LicenciasController extends Controller {
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuLicenciaFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuLicenciaFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuLicenciaFechaHasta');
+        }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLicencia')->listaDQL(
-                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroLicenciaTipo')
-        );
+                $session->get('filtroCodigoCentroCosto'), 
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroLicenciaTipo'),
+                $strFechaDesde,
+                $strFechaHasta);
     }
 
     private function filtrarLista($form) {
@@ -219,6 +246,11 @@ class LicenciasController extends Controller {
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroLicenciaTipo', $codigoLicenciaTipo);
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroRhuLicenciaFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuLicenciaFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuLicenciaFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function generarExcel() {

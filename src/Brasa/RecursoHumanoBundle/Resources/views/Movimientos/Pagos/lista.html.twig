@@ -45,36 +45,37 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="form-group form-group-sm">  
-                    <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
-                    <div class="col-sm-2">                  
-                        {{ form_widget(form.fechaDesde, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                    <label for="form_centroCostoRel" class="col-sm-4 control-label">Grupo pago:</label>
+                    <label for="form_centroCostoRel" class="col-sm-2 control-label">Grupo pago:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.centroCostoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
-                    <div class="col-sm-2">                  
-                        {{ form_widget(form.fechaHasta, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                    <label for="form_pagoTipoRel" class="col-sm-4 control-label">Tipo:</label>
+                    <label for="form_pagoTipoRel" class="col-sm-2 control-label">Tipo:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.pagoTipoRel, { 'attr': {'class': 'form-control'} }) }}
                     </div>
-                </div>    
+                </div>
                 <div class="form-group form-group-sm">  
-                    <label for="form_TxtNumero" class="col-sm-8 control-label">Numero:</label>
+                    <label for="form_TxtNumero" class="col-sm-2 control-label">Numero:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.TxtNumero, { 'attr': {'class': 'form-control'} }) }}
-                    </div>    
-                </div>   
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label for="form_fechaDesde" class="col-sm-2 control-label">Desde:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.fechaDesde) }}
+                    </div>                    
+                </div>                    
+                <div class="form-group form-group-sm">  
+                    <label for="form_fechaHasta" class="col-sm-2 control-label">Hasta:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.fechaHasta) }}
+                    </div>                     
+                </div>
+                <div class="form-group form-group-sm">
+                    {{ form_row(form.filtrarFecha) }}
+                </div>
                 <div class="form-group form-group-sm">
                     <div class="col-sm-offset-2 col-sm-10">
                         {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}

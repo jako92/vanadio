@@ -9,6 +9,7 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuAdicionalPagoType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoAdicionalPeriodoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -396,26 +397,26 @@ class PagosAdicionalesController extends Controller {
                     $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findBy(array('numeroIdentificacion' => $carga['identificacion']));
                     $arProgramacionPagoHorasExtra = $em->getRepository('BrasaRecursoHumanoBundle:RhuProgramacionPagoHoraExtra')->findOneBy(array('codigoProgramacionPagoFk' => $codigoProgramacionPago,
                         'empleadoRel' => $arEmpleado));
-                    if($arProgramacionPagoHorasExtra){
-                    $arProgramacionPagoHorasExtra->setHorasDiurnas($carga['horasDiurnas']);
-                    $arProgramacionPagoHorasExtra->setHorasNocturnas($carga['horasNocturnas']);
-                    $arProgramacionPagoHorasExtra->setHorasFestivasDiurnas($carga['horasFestivasDiurnas']);
-                    $arProgramacionPagoHorasExtra->setHorasFestivasNocturnas($carga['horasFestivasNocturnas']);
-                    $arProgramacionPagoHorasExtra->sethorasExtrasOrdinariasDiurnas($carga['horasExtrasOrdinariasDiurnas']);
-                    $arProgramacionPagoHorasExtra->sethorasExtrasOrdinariasNocturnas($carga['horasExtrasOrdinariasNocturnas']);
-                    $arProgramacionPagoHorasExtra->sethorasExtrasFestivasDiurnas($carga['horasExtrasFestivasDiurnas']);
-                    $arProgramacionPagoHorasExtra->sethorasExtrasFestivasNocturnas($carga['horasExtrasFestivasNocturnas']);
-                    $arProgramacionPagoHorasExtra->sethorasRecargoNocturno($carga['horasRecargoNocturno']);
-                    $arProgramacionPagoHorasExtra->sethorasRecargoFestivoDiurno($carga['horasRecargoFestivoDiurno']);
-                    $arProgramacionPagoHorasExtra->sethorasRecargoFestivoNocturno($carga['horasRecargoFestivoNocturno']);
-                    $arProgramacionPagoHorasExtra->sethorasDomingoNoCompensado($carga['horasDomingoNoCompensado']);
-                    $arProgramacionPagoHorasExtra->sethorasDomingoCompensado($carga['horasDomingoCompensado']);
-                    $arProgramacionPagoHorasExtra->sethorasRecargoNocturnoFestivoCompensado($carga['horasRecargoNocturnoFestivoCompensado']);
-                    $arProgramacionPagoHorasExtra->sethorasRecargoNocturnoFestivoNoCompensado($carga['horasRecargoNocturnoFestivoNoCompensado']);
-                    $arProgramacionPagoHorasExtra->sethorasExtraDominicalDiurna($carga['horasExtraDominicalDiurna']);
-                    $em->persist($arProgramacionPagoHorasExtra);
-                    }else{
-                        $error = " El empleado no corresponde a la programacion de pago " .$carga['nombreCorto'];
+                    if ($arProgramacionPagoHorasExtra) {
+                        $arProgramacionPagoHorasExtra->setHorasDiurnas($carga['horasDiurnas']);
+                        $arProgramacionPagoHorasExtra->setHorasNocturnas($carga['horasNocturnas']);
+                        $arProgramacionPagoHorasExtra->setHorasFestivasDiurnas($carga['horasFestivasDiurnas']);
+                        $arProgramacionPagoHorasExtra->setHorasFestivasNocturnas($carga['horasFestivasNocturnas']);
+                        $arProgramacionPagoHorasExtra->sethorasExtrasOrdinariasDiurnas($carga['horasExtrasOrdinariasDiurnas']);
+                        $arProgramacionPagoHorasExtra->sethorasExtrasOrdinariasNocturnas($carga['horasExtrasOrdinariasNocturnas']);
+                        $arProgramacionPagoHorasExtra->sethorasExtrasFestivasDiurnas($carga['horasExtrasFestivasDiurnas']);
+                        $arProgramacionPagoHorasExtra->sethorasExtrasFestivasNocturnas($carga['horasExtrasFestivasNocturnas']);
+                        $arProgramacionPagoHorasExtra->sethorasRecargoNocturno($carga['horasRecargoNocturno']);
+                        $arProgramacionPagoHorasExtra->sethorasRecargoFestivoDiurno($carga['horasRecargoFestivoDiurno']);
+                        $arProgramacionPagoHorasExtra->sethorasRecargoFestivoNocturno($carga['horasRecargoFestivoNocturno']);
+                        $arProgramacionPagoHorasExtra->sethorasDomingoNoCompensado($carga['horasDomingoNoCompensado']);
+                        $arProgramacionPagoHorasExtra->sethorasDomingoCompensado($carga['horasDomingoCompensado']);
+                        $arProgramacionPagoHorasExtra->sethorasRecargoNocturnoFestivoCompensado($carga['horasRecargoNocturnoFestivoCompensado']);
+                        $arProgramacionPagoHorasExtra->sethorasRecargoNocturnoFestivoNoCompensado($carga['horasRecargoNocturnoFestivoNoCompensado']);
+                        $arProgramacionPagoHorasExtra->sethorasExtraDominicalDiurna($carga['horasExtraDominicalDiurna']);
+                        $em->persist($arProgramacionPagoHorasExtra);
+                    } else {
+                        $error = " El empleado no corresponde a la programacion de pago " . $carga['nombreCorto'];
                     }
                 }
                 if ($error != "") {
@@ -875,8 +876,23 @@ class PagosAdicionalesController extends Controller {
         } else {
             $session->set('filtroNumeroIdentificacion', null);
         }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuPagoBancoFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuPagoBancoFechaDesde');
+        }
+        if ($session->get('filtroRhuPagoBancoFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuPagoBancoFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
 
         $form = $this->createFormBuilder()
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuPagoBancoFiltrarFecha')))
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Numero Identificacion', 'data' => $session->get('filtroNumeroIdentificacion'), 'required' => false))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'NombreCorto', 'data' => $strNombreCorto))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
@@ -905,8 +921,23 @@ class PagosAdicionalesController extends Controller {
     private function listar($form, $modalidad, $periodo) {
         $session = new Session;
         $em = $this->getDoctrine()->getManager();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuPagoAdicionalFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuPagoAdicionalFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuPagoAdicionalFechaHasta');
+        }
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoAdicional')->listaAdicionalesDql(
-                $session->get('filtroNumeroIdentificacion'), $session->get('filtroAplicarDiaLaborado'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroCodigoPagoConcepto'), $session->get('filtroPagoAdicionalEstadoInactivo'), $modalidad, $periodo
+                $session->get('filtroNumeroIdentificacion'), 
+                $session->get('filtroAplicarDiaLaborado'),
+                $session->get('filtroCodigoCentroCosto'), 
+                $session->get('filtroCodigoPagoConcepto'), 
+                $session->get('filtroPagoAdicionalEstadoInactivo'), 
+                $modalidad, 
+                $periodo,
+                $strFechaDesde,
+                $strFechaHasta
         );
     }
 
@@ -918,9 +949,7 @@ class PagosAdicionalesController extends Controller {
     }
 
     private function filtrarLista($form) {
-
         $session = new Session;
-
         $codigoCentroCosto = '';
         if ($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
@@ -934,6 +963,11 @@ class PagosAdicionalesController extends Controller {
         $session->set('filtroAplicarDiaLaborado', $form->get('aplicarDiaLaborado')->getData());
         $session->set('filtroCodigoPagoConcepto', $codigoPagoConcepto);
         $session->set('filtroPagoAdicionalEstadoInactivo', $form->get('estadoInactivo')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroRhuPagoAdicionalFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuPagoAdicionalFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuPagoAdicionalFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function filtrarListaPeriodo($form) {

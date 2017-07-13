@@ -390,13 +390,20 @@ class LiquidacionController extends Controller {
     private function listar() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuLiquidacionFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuLiquidacionFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuLiquidacionFechaHasta');
+        }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->listaDql(
                 $session->get('filtroIdentificacion'),
                 $session->get('filtroGenerado'),
                 $session->get('filtroCodigoCentroCosto'),
                 $session->get('filtroPagado'),
-                $session->get('filtroDesde'),
-                $session->get('filtroHasta'));
+                $strFechaDesde,
+                $strFechaHasta);
     }
 
     private function formularioLista() {
@@ -431,9 +438,22 @@ class LiquidacionController extends Controller {
         if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedadesCentroCosto['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuLiquidacionFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuLiquidacionFechaDesde');
+        }
+        if ($session->get('filtroRhuLiquidacionFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuLiquidacionFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
-                ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-                ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuLiquidacionFiltrarFecha')))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
@@ -496,13 +516,9 @@ class LiquidacionController extends Controller {
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaHasta')->getData() == null){
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }
+        $session->set('filtroRhuLiquidacionFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuLiquidacionFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuLiquidacionFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function generarExcel() {

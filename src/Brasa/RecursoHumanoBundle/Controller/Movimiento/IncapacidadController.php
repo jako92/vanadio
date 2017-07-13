@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuIncapacidadType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -34,7 +36,6 @@ class IncapacidadController extends Controller {
         if ($form->isValid()) {
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrarLista($form);
-                $this->formularioLista();
                 $this->listar();
             }
 
@@ -291,7 +292,22 @@ class IncapacidadController extends Controller {
         if ($session->get('filtroRhuIncapacidadTipo')) {
             $arrayPropiedadesIncapacidadTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuIncapacidadTipo", $session->get('filtroRhuIncapacidadTipo'));
         }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuIncapadidadFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuIncapadidadFechaDesde');
+        }
+        if ($session->get('filtroRhuIncapacidadFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuIncapacidadFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuIncapacidadFiltrarFecha')))
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
                 ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
@@ -317,8 +333,23 @@ class IncapacidadController extends Controller {
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
+                $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuIncapacidadFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuIncapacidadFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuIncapacidadFechaHasta');
+        }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaDQL(
-                "", $session->get('filtroCodigoCentroCosto'), $session->get('filtroIncapacidadEstadoTranscripcion'), $session->get('filtroIdentificacion'), $session->get('filtroIncapacidadNumeroEps'), $session->get('filtroRhuIncapacidadTipo'), $session->get('filtroIncapacidadEstadoLegalizado')
+                "", 
+                $session->get('filtroCodigoCentroCosto'),
+                $session->get('filtroIncapacidadEstadoTranscripcion'),
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroIncapacidadNumeroEps'),
+                $session->get('filtroRhuIncapacidadTipo'),
+                $session->get('filtroIncapacidadEstadoLegalizado'),
+                $strFechaDesde,
+                $strFechaHasta
         );
     }
 
@@ -338,6 +369,11 @@ class IncapacidadController extends Controller {
         $session->set('filtroIncapacidadNumeroEps', $form->get('TxtNumeroEps')->getData());
         $session->set('filtroIncapacidadEstadoTranscripcion', $form->get('estadoTranscripcion')->getData());
         $session->set('filtroIncapacidadEstadoLegalizado', $form->get('estadoLegalizado')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroRhuIncapadidadFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuIncapacidadFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuIncapacidadFiltrarFecha', $form->get('filtrarFecha')->getData());
     }
 
     private function generarExcel() {

@@ -45,7 +45,7 @@ class RhuPagoAdicionalRepository extends EntityRepository {
         return $dql;
     } 
         
-    public function listaAdicionalesDql($strIdentificacion = "", $aplicarDiaLaborado = "", $codigoCentroCosto = "", $codigoPagoConcepto = "", $estadoInactivo = "", $modalidad = "", $periodo = "") {        
+    public function listaAdicionalesDql($strIdentificacion = "", $aplicarDiaLaborado = "", $codigoCentroCosto = "", $codigoPagoConcepto = "", $estadoInactivo = "", $modalidad = "", $periodo = "", $strFechaDesde = "", $strFechaHasta = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT pa,e FROM BrasaRecursoHumanoBundle:RhuPagoAdicional pa JOIN pa.empleadoRel e WHERE pa.codigoPagoAdicionalPk <> 0 ";   
         if($periodo != "" && $periodo != '0') {
@@ -78,7 +78,13 @@ class RhuPagoAdicionalRepository extends EntityRepository {
         }
         if($estadoInactivo == '0' ) {
             $dql .= " AND pa.estadoInactivo = 0";
-        }        
+        }   
+        if($strFechaDesde != "" || $strFechaDesde != 0){
+            $dql .= " AND pa.fecha >= '" . $strFechaDesde . "'";
+        }
+        if($strFechaHasta != "" || $strFechaHasta != 0) {
+            $dql .= " AND pa.fecha <= '" . $strFechaHasta . "'";
+        }
         $dql .= " ORDER BY pa.codigoPagoAdicionalPk DESC";
         return $dql;
     }

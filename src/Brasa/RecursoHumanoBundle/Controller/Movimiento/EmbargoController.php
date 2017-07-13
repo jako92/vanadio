@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuEmbargoType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -126,8 +127,23 @@ class EmbargoController extends Controller
             }
         } else {
             $session->set('filtroRhuCodigoEmpleado', null);
-        }          
+        }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuEmbargoFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuEmbargoFechaDesde');
+        }
+        if ($session->get('filtroRhuEmbargoFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuEmbargoFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuEmbargoFiltrarFecha')))
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
             ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))    
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroEmbargoNumero')))                                                                                
@@ -141,16 +157,29 @@ class EmbargoController extends Controller
     private function listar() {
         $em = $this->getDoctrine()->getManager();                
         $session = new session;
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuEmbargoFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuEmbargoFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuEmbargoFechaHasta');
+        }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmbargo')->listaDQL(
                 $session->get('filtroEmbargoNumero'),
-                $session->get('filtroIdentificacion')
-                );  
+                $session->get('filtroIdentificacion'),
+                $strFechaDesde,
+                $strFechaHasta);  
     }         
     
     private function filtrarLista($form) {
         $session = new session;
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());        
         $session->set('filtroEmbargoNumero', $form->get('TxtNumero')->getData());
+        $dateFechaDesde = $form->get('fechaDesde')->getData();
+        $dateFechaHasta = $form->get('fechaHasta')->getData();
+        $session->set('filtroRhuEmbargoFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuEmbargoFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuEmbargoFiltrarFecha', $form->get('filtrarFecha')->getData());
         
     }         
     

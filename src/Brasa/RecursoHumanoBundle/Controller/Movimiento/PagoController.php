@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -258,8 +260,8 @@ class PagoController extends Controller
     }    
     
     private function formularioLista() {
-        $em = $this->getDoctrine()->getManager();        
-        $session = $this->get('session');
+        $em = $this->getDoctrine()->getManager();
+        $session = new session;
         $arrayPropiedadesCentroCosto = array(
                 'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
                 'query_builder' => function (EntityRepository $er) {
@@ -301,12 +303,24 @@ class PagoController extends Controller
         } else {
             $session->set('filtroRhuCodigoEmpleado', null);
         }
-        
-        $form = $this->createFormBuilder()                        
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        if ($session->get('filtroRhuPagoFechaDesde') != "") {
+            $strFechaDesde = $session->get('filtroRhuPagoFechaDesde');
+        }
+        if ($session->get('filtroRhuPagoFechaHasta') != "") {
+            $strFechaHasta = $session->get('filtroRhuPagoFechaHasta');
+        }
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
+        $form = $this->createFormBuilder()                       
             ->add('centroCostoRel', EntityType::class, $arrayPropiedadesCentroCosto)
             ->add('pagoTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
-            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))    
+            ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+            ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+            ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuPagoFiltrarFecha')))    
             ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))                            
             ->add('TxtNumero', TextType::class, array('label'  => 'Numero','data' => $session->get('filtroPagoNumero')))                                                   
             ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
@@ -336,20 +350,26 @@ class PagoController extends Controller
     }     
     
     private function listar() {
-        $em = $this->getDoctrine()->getManager();                
-        $session = $this->get('session');
+        $session = new session;
+        $em = $this->getDoctrine()->getManager();
+        $strFechaDesde = "";
+        $strFechaHasta = "";
+        $filtrarFecha = $session->get('filtroRhuPagoFiltrarFecha');
+        if ($filtrarFecha) {
+            $strFechaDesde = $session->get('filtroRhuPagoFechaDesde');
+            $strFechaHasta = $session->get('filtroRhuPagoFechaHasta');
+        }
         $this->strDqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->listaDql(
                     $this->intNumero,
                     $session->get('filtroCodigoCentroCosto'),
                     $session->get('filtroIdentificacion'),
                     $session->get('filtroCodigoPagoTipo'),
-                    $session->get('filtroDesde'),
-                    $session->get('filtroHasta')
-                    );  
+                    $strFechaDesde,
+                    $strFechaHasta);  
     }         
     
-    private function filtrarLista($form, Request $request) {
-        $session = $this->get('session'); 
+    private function filtrarLista($form) {
+        $session = new session; 
         $codigoCentroCosto = '';
         if($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
@@ -364,13 +384,9 @@ class PagoController extends Controller
         $this->intNumero = $form->get('TxtNumero')->getData();
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
-        if ($form->get('fechaHasta')->getData() == null){
-            $session->set('filtroDesde', $form->get('fechaDesde')->getData());
-            $session->set('filtroHasta', $form->get('fechaHasta')->getData());
-        } else {
-            $session->set('filtroDesde', $dateFechaDesde->format('Y-m-d'));
-            $session->set('filtroHasta', $dateFechaHasta->format('Y-m-d')); 
-        }
+        $session->set('filtroRhuPagoFechaDesde', $dateFechaDesde->format('Y/m/d'));
+        $session->set('filtroRhuPagoFechaHasta', $dateFechaHasta->format('Y/m/d'));
+        $session->set('filtroRhuPagoFiltrarFecha', $form->get('filtrarFecha')->getData());
     }         
     
     private function generarExcel() {
