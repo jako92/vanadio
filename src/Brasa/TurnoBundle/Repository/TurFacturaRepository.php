@@ -158,7 +158,7 @@ class TurFacturaRepository extends EntityRepository {
         }
         $retencionIva = 0;
         if ($arFactura->getClienteRel()->getRetencionIva()) {
-            if ($iva > 0) {
+            if ($iva > $topeMinimoRetencionFuente) {
                 $retencionIva = ($iva * 15) / 100;
                 $retencionIva = round($retencionIva);
             }
