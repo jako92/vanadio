@@ -32,6 +32,7 @@ class ServicioController extends Controller {
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 26, 1)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
@@ -43,8 +44,12 @@ class ServicioController extends Controller {
             if ($form->isValid()) {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurServicio')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio'));
+                    $respuesta = $em->getRepository('BrasaTurnoBundle:TurServicio')->eliminar($arrSeleccionados);
+                    if ($respuesta != "") {
+                        $objMensaje->Mensaje("error", $respuesta);
+                    } else {
+                        return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio'));
+                    }
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -94,7 +99,7 @@ class ServicioController extends Controller {
                         $nuevafecha = date('Y/m/', $nuevafecha);
                         $dateFechaGeneracion = date_create($nuevafecha . '01');
                         $arServicio->setFechaGeneracion($dateFechaGeneracion);
-                        $arServicio->setClienteRel($arCliente);                        
+                        $arServicio->setClienteRel($arCliente);
                         $arUsuario = $this->getUser();
                         $arServicio->setUsuario($arUsuario->getUserName());
                         $em->persist($arServicio);
@@ -135,10 +140,10 @@ class ServicioController extends Controller {
                     if ($arServicio->getEstadoAutorizado() == 0) {
                         $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
                         $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('codigoServicioFk' => $codigoServicio, 'codigoPuestoFk' => NULL));
-                        if(!$arServicioDetalle) {
+                        if (!$arServicioDetalle) {
                             $arServicio->setEstadoAutorizado(1);
                             $em->persist($arServicio);
-                            $em->flush();                            
+                            $em->flush();
                         } else {
                             $objMensaje->Mensaje('error', "No se puede autorizar el servicio, tiene detalles sin puesto");
                         }
@@ -406,12 +411,12 @@ class ServicioController extends Controller {
                     $em->persist($arServicioDetalle);
                     $em->flush();
 
-                if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle_nuevo', array('codigoServicio' => $codigoServicio, 'codigoServicioDetalle' => 0)));
-                } else {
-                    $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
-                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
-                }
+                    if ($form->get('guardarnuevo')->isClicked()) {
+                        return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle_nuevo', array('codigoServicio' => $codigoServicio, 'codigoServicioDetalle' => 0)));
+                    } else {
+                        $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
+                        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                    }
                 }
             }
         }
