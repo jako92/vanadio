@@ -919,27 +919,22 @@ class ProgramacionController extends Controller {
         foreach ($arrSeleccionados AS $codigo) {
             $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
             $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->find($codigo);
-            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();            
+            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionImportar->getCodigoPedidoDetalleFk());
-            
-            $horasDiurnasDisponibles = $arPedidoDetalle->getHorasDiurnas() - $arPedidoDetalle->getHorasDiurnasProgramadas();
-            $horasNocturnasDisponibles = $arPedidoDetalle->getHorasNocturnas() - $arPedidoDetalle->getHorasNocturnasProgramadas();
-            
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionImportar->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arProgramacionImportar->getCodigoRecursoFk());
-            //horas de la programacion actual en el pedido detalle
-            $horasDiurnasProgramadas = $arPedidoDetalle->getHorasDiurnasProgramadas();
-            $horasNocturnasProgramadas = $arPedidoDetalle->getHorasNocturnasProgramadas();
-            $horasProgramadas = $arPedidoDetalle->getHorasProgramadas();
-            //horas de la programacion importada
-            $horasDiurnasProgramacionImportar = $arProgramacionImportar->getHorasDiurnas();
-            $horasNocturnasProgramacionImportar = $arProgramacionImportar->getHorasNocturnas();
-            $horasProgramacionImportar = $arProgramacionImportar->getHoras();
-            //total horas programadas
-            $totalHorasDiurnasProgramadas = $horasDiurnasProgramadas + $horasDiurnasProgramacionImportar;
-            $totalHorasNocturnasProgramadas = $horasNocturnasProgramadas + $horasNocturnasProgramacionImportar;
-            $totalHorasProgramadas = $horasProgramadas + $horasProgramacionImportar;
-
+            $horasDiurnasDisponibles = $arPedidoDetalle->getHorasDiurnas() - $arPedidoDetalle->getHorasDiurnasProgramadas();
+            $horasNocturnasDisponibles = $arPedidoDetalle->getHorasNocturnas() - $arPedidoDetalle->getHorasNocturnasProgramadas();
+            if ($validarHoras) {
+                if ($horasDiurnasDisponibles < 0) {
+                    $error = TRUE;
+                    $objMensaje->Mensaje("error", "Las horas diurnas de los turnos ingresadas [" . $arrTotalHoras['horasDiurnas'] . "], superan las horas del pedido disponibles para programar [" . $horasDiurnasPendientes . "]");
+                }
+                if ($horasNocturnasDisponibles < 0) {
+                    $error = TRUE;
+                    $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arrTotalHoras['horasNocturnas'] . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasPendientes . "]");
+                }
+            }
             if ($error == false) {
                 //Empezar a guardar los valores para la programacion.
                 $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
@@ -990,6 +985,11 @@ class ProgramacionController extends Controller {
                 //Cambiar el estado en el pedido detalle de la programacion
                 $arPedidoDetalle->setEstadoProgramado(1);
                 $em->persist($arProgramacionImportar);
+                
+                //total horas programadas
+                $totalHorasDiurnasProgramadas = $arPedidoDetalle->getHorasDiurnasProgramadas() + $arProgramacionImportar->getHorasDiurnas();
+                $totalHorasNocturnasProgramadas = $arPedidoDetalle->getHorasNocturnasProgramadas() + $arProgramacionImportar->getHorasNocturnas();
+                $totalHorasProgramadas = $arPedidoDetalle->getHorasProgramadas() + $arProgramacionImportar->getHoras();
             }
 
             $arPedidoDetalle->setHorasDiurnasProgramadas($totalHorasDiurnasProgramadas);
