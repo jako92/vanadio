@@ -475,7 +475,7 @@ class ProgramacionController extends Controller {
                 if ($arProgramacion->getEstadoAutorizado() == 0) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $resultado = $this->actualizarProgramacionImportar($arrSeleccionados, $arProgramacion);
-                    if ($resultado == false) {
+                    if ($resultado == FALSE) {
                         $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
                         $em->flush();
                         echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
@@ -909,17 +909,11 @@ class ProgramacionController extends Controller {
     private function actualizarProgramacionImportar($arrSeleccionados, $arProgramacion) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $error = false;
-        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+        $error = FALSE;
         $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
         $validarHoras = $arConfiguracion->getValidarHorasProgramacion();
-        $horasDiurnasProgramacionImportar = 0;
-        $horasNocturnasProgramacionImportar = 0;
-        $horasProgramacionImportar = 0;
         foreach ($arrSeleccionados AS $codigo) {
-            $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
             $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->find($codigo);
-            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionImportar->getCodigoPedidoDetalleFk());
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionImportar->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arProgramacionImportar->getCodigoRecursoFk());
@@ -935,7 +929,15 @@ class ProgramacionController extends Controller {
                     $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arProgramacionImportar->getHorasNocturnas() . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasDisponibles . "]");
                 }
             }
-            if ($error == false) {
+            if ($arProgramacion->getAnio() != $arProgramacionImportar->getAnio()) {
+                $error = TRUE;
+                $objMensaje->Mensaje("error", "El año de la programacion importada de " . $arProgramacionImportar->getNombreRecurso() . " no corresponde al periodo de la programacion " . $arProgramacion->getCodigoProgramacionPk());
+            }
+            if ($arProgramacion->getFecha()->format('m') != $arProgramacionImportar->getMes()) {
+                $error = TRUE;
+                $objMensaje->Mensaje("error", "El mes de la programacion importada de " . $arProgramacionImportar->getNombreRecurso() . " no corresponde al periodo de la programacion " . $arProgramacion->getCodigoProgramacionPk());
+            }
+            if ($error == FALSE) {
                 //Empezar a guardar los valores para la programacion.
                 $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
                 $arProgramacionDetalle->setProgramacionRel($arProgramacion);
@@ -996,8 +998,6 @@ class ProgramacionController extends Controller {
                 $em->flush();
             }
         }
-
-
         return $error;
     }
 
