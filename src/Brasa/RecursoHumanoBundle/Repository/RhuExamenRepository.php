@@ -153,9 +153,9 @@ class RhuExamenRepository extends EntityRepository {
     
     public function pendienteCobrarConsulta($strIdentificacion = "", $fechaDesde = "", $fechaHasta = "", $codigoExamenClase = "") {        
         $em = $this->getEntityManager();
-        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e JOIN e.empleadoRel em WHERE e.estadoPagado = 0 ";
+        $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.estadoPagado = 0 ";
         if($strIdentificacion != "" ) {
-            $dql .= " AND em.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
+            $dql .= " AND e.identificacion LIKE '%" . $strIdentificacion . "%'";
         }
         if($fechaDesde != ""){
             $dql .= " AND e.fecha >= '" .$fechaDesde. "'";
