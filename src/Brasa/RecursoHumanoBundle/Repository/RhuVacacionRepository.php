@@ -358,10 +358,10 @@ class RhuVacacionRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT v FROM BrasaRecursoHumanoBundle:RhuVacacion v WHERE v.estadoContabilizado = 1 AND v.estadoPagoGenerado = 1";
         if($intNumeroDesde != "" || $intNumeroDesde != 0) {
-            $dql .= " AND v.codigoVacacionPk >= " . $intNumeroDesde;
+            $dql .= " AND v.numero >= " . $intNumeroDesde;
         }
         if($intNumeroHasta != "" || $intNumeroHasta != 0) {
-            $dql .= " AND v.codigoVacacionPk <= " . $intNumeroHasta;
+            $dql .= " AND v.numero <= " . $intNumeroHasta;
         }   
         if($strDesde != "" || $strDesde != 0){
             $dql .= " AND v.fecha >='" . date_format($strDesde, ('Y-m-d')) . "'";

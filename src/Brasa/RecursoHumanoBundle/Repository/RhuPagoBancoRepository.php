@@ -53,10 +53,10 @@ class RhuPagoBancoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.estadoContabilizado = 1";
         if($intPagoDesde != "" || $intPagoDesde != 0) {
-            $dql .= " AND pb.codigoPagoFk >= " . $intPagoDesde;
+            $dql .= " AND pb.numero >= " . $intPagoDesde;
         }
         if($intPagoHasta != "" || $intPagoHasta != 0) {
-            $dql .= " AND pb.codigoPagoFk <= " . $intPagoHasta;
+            $dql .= " AND pb.numero <= " . $intPagoHasta;
         }   
         if($strDesde != "" || $strDesde != 0){
             $dql .= " AND pb.fecha >='" . date_format($strDesde, ('Y-m-d')) . "'";

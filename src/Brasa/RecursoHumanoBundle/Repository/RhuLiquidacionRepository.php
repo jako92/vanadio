@@ -661,16 +661,16 @@ class RhuLiquidacionRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $dql   = "SELECT l FROM BrasaRecursoHumanoBundle:RhuLiquidacion l WHERE l.estadoContabilizado = 1 AND l.estadoPagoGenerado = 1";
         if($intNumeroDesde != "" || $intNumeroDesde != 0) {
-            $dql .= " AND l.codigoLiquidacionPk >= " . $intNumeroDesde;
+            $dql .= " AND l.numero >= " . $intNumeroDesde;
         }
         if($intNumeroHasta != "" || $intNumeroHasta != 0) {
-            $dql .= " AND l.codigoLiquidacionPk <= " . $intNumeroHasta;
+            $dql .= " AND l.numero <= " . $intNumeroHasta;
         }   
         if($strDesde != "" || $strDesde != 0){
-            $dql .= " AND l.fechaHasta >='" . date_format($strDesde, ('Y-m-d')) . "'";
+            $dql .= " AND l.fecha >='" . date_format($strDesde, ('Y-m-d')) . "'";
         }
         if($strHasta != "" || $strHasta != 0) {
-            $dql .= " AND l.fechaHasta <='" . date_format($strHasta, ('Y-m-d')) . "'";
+            $dql .= " AND l.fecha <='" . date_format($strHasta, ('Y-m-d')) . "'";
         }
         $query = $em->createQuery($dql);
         $arrayResultado = $query->getResult();

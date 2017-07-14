@@ -194,7 +194,8 @@ class RegistroController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $form = $this->createFormBuilder()
-                ->add('TxtNumeroRegistro', 'text', array('label' => 'Codigo'))
+                ->add('TxtNumeroDesde', 'text', array())
+                ->add('TxtNumeroHasta', 'text', array())
                 ->add('comprobanteRel', 'entity', array(
                     'class' => 'BrasaContabilidadBundle:CtbComprobante',
                     'query_builder' => function (EntityRepository $er) {
@@ -214,7 +215,8 @@ class RegistroController extends Controller {
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 if ($form->get('BtnEliminar')->isClicked()) {
-                    $intNumeroRegistro = $form->get('TxtNumeroRegistro')->getData();
+                    $intNumeroDesde = $form->get('TxtNumeroDesde')->getData();
+                    $intNumeroHasta = $form->get('TxtNumeroHasta')->getData();
                     $arComprobante = $form->get('comprobanteRel')->getData();
                     if ($arComprobante == null) {
                         $codigoComprobante = "";
@@ -224,9 +226,9 @@ class RegistroController extends Controller {
 
                     $dateFechaDesde = $form->get('fechaDesde')->getData();
                     $dateFechaHasta = $form->get('fechaHasta')->getData();
-                    if ($intNumeroRegistro != "" || $codigoComprobante != "") {
+                    if (($intNumeroDesde != "" && $intNumeroHasta != "") || $codigoComprobante != "") {
                         $arRegistros = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
-                        $arRegistros = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaEliminarRegistrosMasivosDql($intNumeroRegistro, $codigoComprobante, $dateFechaDesde, $dateFechaHasta);
+                        $arRegistros = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->listaEliminarRegistrosMasivosDql($intNumeroDesde, $intNumeroHasta, $codigoComprobante, $dateFechaDesde, $dateFechaHasta);
                         foreach ($arRegistros as $codigoRegistro) {
                             $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                             $arRegistro = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->find($codigoRegistro);

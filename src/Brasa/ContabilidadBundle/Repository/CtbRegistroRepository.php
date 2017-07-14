@@ -76,11 +76,11 @@ class CtbRegistroRepository extends EntityRepository
         return $dql;
     }    
     
-    public function listaEliminarRegistrosMasivosDql($intNumero = 0, $comprobante = "", $strDesde = "", $strHasta = "") {        
+    public function listaEliminarRegistrosMasivosDql($intNumeroDesde = 0, $intNumeroHasta = 0, $comprobante = "", $strDesde = "", $strHasta = "") {        
         $em = $this->getEntityManager();
         $dql   = "SELECT r FROM BrasaContabilidadBundle:CtbRegistro r WHERE r.codigoRegistroPk <> 0";
-        if($intNumero != "") {
-            $dql .= " AND r.numero = " . $intNumero;
+        if($intNumeroDesde != "" && $intNumeroHasta != "") {
+            $dql .= " AND r.numero >= " . $intNumeroDesde . " AND r.numero <=" . $intNumeroHasta;
         }
         if($comprobante != "") {
             $dql .= " AND r.codigoComprobanteFk = " . $comprobante;
