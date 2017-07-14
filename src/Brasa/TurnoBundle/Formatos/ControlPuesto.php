@@ -37,14 +37,14 @@ class ControlPuesto extends \FPDF_FPDF {
     public function EncabezadoDetalles() {
         $this->SetXY(10, 35);
         //$this->Ln(45);
-        $header = array('ID', 'CLIENTE', 'PUESTO', 'NUMERO-C', 'NOVEDAD', 'FECHA');
+        $header = array('ID', 'CLIENTE', 'PUESTO', 'T_NOVEDAD', 'NOVEDAD','SOLUCION', 'FECHA');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(.2);
         $this->SetFont('', 'B', 6.8);
         //creamos la cabecera de la tabla.
-        $w = array(10, 42, 51, 18, 50, 25,);
+        $w = array(5, 40, 51, 20, 33, 33, 15);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -96,12 +96,13 @@ class ControlPuesto extends \FPDF_FPDF {
             $cliente= substr($arControlPuestoDetalle->getPuestoRel()->getClienteRel()->getNombreCorto(),0,30);
             $puesto = substr($arControlPuestoDetalle->getPuestoRel()->getNombre(),0,40);
             $pdf->SetFont('Arial', '', 6);
-            $pdf->Cell(10, 4, $arControlPuestoDetalle->getCodigoControlPuestoDetallePk(), 1, 0, 'L');
-            $pdf->Cell(42, 4, $cliente, 1, 0, 'L');
+            $pdf->Cell(5, 4, $arControlPuestoDetalle->getCodigoControlPuestoDetallePk(), 1, 0, 'L');
+            $pdf->Cell(40, 4, $cliente, 1, 0, 'L');
             $pdf->Cell(51, 4, $puesto, 1, 0, 'L');
-            $pdf->Cell(18, 4, $arControlPuestoDetalle->getNumeroComunicacion(), 1, 0, 'L');
-            $pdf->Cell(50, 4, $arControlPuestoDetalle->getNovedad(), 1, 0, 'L');
-            $pdf->Cell(25, 4, $fecha, 1, 0, 'L');
+            $pdf->Cell(20, 4, utf8_decode($arControlPuestoDetalle->getTipoNovedadRel()->getNombre()), 1, 0, 'L');
+            $pdf->Cell(33, 4, $arControlPuestoDetalle->getNovedad(), 1, 0, 'L');
+            $pdf->Cell(33, 4, $arControlPuestoDetalle->getSolucion(), 1, 0, 'L');
+            $pdf->Cell(15, 4, $fecha, 1, 0, 'L');
             //$pdf->Cell(20, 4, number_format($arPagoDetalle->getPorcentaje(), 0, '.', ','), 1, 0, 'R');
             // $w = array(10, 25, 15, 28, 28, 65, 25,);
             $pdf->Ln();

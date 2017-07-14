@@ -104,6 +104,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Servicio tipo }
             
+    admin.turno.controlpuestodetalletiponovedad:
+        class: Brasa\TurnoBundle\Admin\ControlPuestoDetalleTipoNovedadAdmin
+        arguments: [~, Brasa\TurnoBundle\Entity\TurControlPuestoDetalleTipoNovedad, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Control puesto tipo novedad }
+            
     # .................. administracion modulo contabilidad .................................................................
     
     admin.contabilidad.sucursales:

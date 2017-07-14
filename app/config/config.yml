@@ -139,6 +139,7 @@ sonata_admin:
                     - admin.turno.centrooperacion
                     - admin.turno.modalidadservicio
                     - admin.turno.serviciotipo
+                    - admin.turno.controlpuestodetalletiponovedad
                     
             app.admin.group.inventario:
                 label: Inventario

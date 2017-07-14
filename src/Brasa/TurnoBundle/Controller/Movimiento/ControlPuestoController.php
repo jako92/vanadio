@@ -157,6 +157,42 @@ class ControlPuestoController extends Controller {
     }
 
     /**
+     * @Route("/tur/movimiento/control/puesto/detalle/solucion/{codigoControlPuestoDetalle}", name="brs_tur_movimiento_control_puesto_detalle_solucion")
+     */
+    public function detalleSolucionAction(Request $request, $codigoControlPuestoDetalle) {
+        $em = $this->getDoctrine()->getManager();
+        $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+        $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('brs_tur_movimiento_control_puesto_detalle_solucion', array('codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)))
+                ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
+                ->add('solucion', TextareaType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getSolucion()))
+                ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->get('BtnGuardar')->isClicked()) {
+                    $solucion = $form->get('solucion')->getData();
+                    $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                    $arControlPuestoDetalle->setSolucion($solucion);
+                    $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                    if ($solucion != "") {
+                        $arControlPuestoDetalle->setFechaSolucion(new \DateTime('now'));
+                        $arControlPuestoDetalle->setEstadoSolucionado(1);
+                    } else {
+                        $arControlPuestoDetalle->setEstadoSolucionado(0);
+                    }
+                    $em->persist($arControlPuestoDetalle);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
+                }
+        }
+        return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:solucion.html.twig', array(
+                    'form' => $form->createView()
+        ));
+    }
+    
+    /**
      * @Route("/tur/movimiento/control/puesto/detalle/novedad/{codigoControlPuestoDetalle}", name="brs_tur_movimiento_control_puesto_detalle_novedad")
      */
     public function detalleNovedadAction(Request $request, $codigoControlPuestoDetalle) {
@@ -165,6 +201,13 @@ class ControlPuestoController extends Controller {
         $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
         $form = $this->createFormBuilder()
                 ->setAction($this->generateUrl('brs_tur_movimiento_control_puesto_detalle_novedad', array('codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)))
+                ->add('tipoNovedadRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurControlPuestoDetalleTipoNovedad',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('tn')
+                    ->orderBy('tn.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))
                 ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
                 ->add('novedad', TextareaType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNovedad()))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
@@ -175,6 +218,8 @@ class ControlPuestoController extends Controller {
                 if ($form->get('BtnGuardar')->isClicked()) {
                     $novedad = $form->get('novedad')->getData();
                     $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                    $tipoNovedad = $form->get('tipoNovedadRel')->getData();
+                    $arControlPuestoDetalle->setTipoNovedadRel($tipoNovedad);
                     $arControlPuestoDetalle->setNovedad($novedad);
                     $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
                     if ($novedad != "") {

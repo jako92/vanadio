@@ -20,12 +20,22 @@ class TurControlPuestoDetalle
     /**
      * @ORM\Column(name="codigo_control_puesto_fk", type="integer")
      */    
-    private $codigoControlPuestoFk; 
+    private $codigoControlPuestoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_recurso_fk", type="integer", nullable=true)
+     */    
+    private $codigoRecursoFk;
     
     /**
      * @ORM\Column(name="codigo_puesto_fk", type="integer", nullable=true)
      */    
-    private $codigoPuestoFk;     
+    private $codigoPuestoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_tipo_novedad_fk", type="integer", nullable=true)
+     */    
+    private $codigoTipoNovedadFk;
     
     /**     
      * @ORM\Column(name="estado_cerrado", type="boolean")
@@ -35,12 +45,22 @@ class TurControlPuestoDetalle
     /**     
      * @ORM\Column(name="estado_novedad", type="boolean")
      */    
-    private $estadoNovedad = false;     
+    private $estadoNovedad = false;
+    
+    /**     
+     * @ORM\Column(name="estado_solucionado", type="boolean")
+     */    
+    private $estadoSolucionado = false;
     
     /**
      * @ORM\Column(name="novedad", type="string", length=1000, nullable=true)
      */    
-    private $novedad;    
+    private $novedad;
+
+    /**
+     * @ORM\Column(name="solucion", type="string", length=1000, nullable=true)
+     */    
+    private $solucion;    
     
     /**
      * @ORM\Column(name="numero_comunicacion", type="string", length=30, nullable=true)
@@ -52,10 +72,15 @@ class TurControlPuestoDetalle
      */    
     private $usuario;   
     
-     /**
+    /**
      * @ORM\Column(name="fecha", type="datetime", nullable=true)
      */    
-    private $fecha;  
+    private $fecha;
+    
+    /**
+     * @ORM\Column(name="fecha_solucion", type="datetime", nullable=true)
+     */    
+    private $fechaSolucion;
     
     /**
      * @ORM\ManyToOne(targetEntity="TurPuesto", inversedBy="controlesPuestosDetallesPuestoRel")
@@ -67,9 +92,14 @@ class TurControlPuestoDetalle
      * @ORM\ManyToOne(targetEntity="TurControlPuesto", inversedBy="controlesPuestosDetallesControlPuestoRel")
      * @ORM\JoinColumn(name="codigo_control_puesto_fk", referencedColumnName="codigo_control_puesto_pk")
      */
-    protected $controlPuestoRel;       
-
-
+    protected $controlPuestoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TurControlPuestoDetalleTipoNovedad", inversedBy="controlesPuestosDetallesTipoNovedadRel")
+     * @ORM\JoinColumn(name="codigo_tipo_novedad_fk", referencedColumnName="codigo_tipo_novedad_pk")
+     */
+    protected $tipoNovedadRel;
+    
 
     /**
      * Get codigoControlPuestoDetallePk
@@ -103,6 +133,30 @@ class TurControlPuestoDetalle
     public function getCodigoControlPuestoFk()
     {
         return $this->codigoControlPuestoFk;
+    }
+
+    /**
+     * Set codigoRecursoFk
+     *
+     * @param integer $codigoRecursoFk
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setCodigoRecursoFk($codigoRecursoFk)
+    {
+        $this->codigoRecursoFk = $codigoRecursoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoRecursoFk
+     *
+     * @return integer
+     */
+    public function getCodigoRecursoFk()
+    {
+        return $this->codigoRecursoFk;
     }
 
     /**
@@ -154,6 +208,54 @@ class TurControlPuestoDetalle
     }
 
     /**
+     * Set estadoNovedad
+     *
+     * @param boolean $estadoNovedad
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setEstadoNovedad($estadoNovedad)
+    {
+        $this->estadoNovedad = $estadoNovedad;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoNovedad
+     *
+     * @return boolean
+     */
+    public function getEstadoNovedad()
+    {
+        return $this->estadoNovedad;
+    }
+
+    /**
+     * Set estadoSolucionado
+     *
+     * @param boolean $estadoSolucionado
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setEstadoSolucionado($estadoSolucionado)
+    {
+        $this->estadoSolucionado = $estadoSolucionado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoSolucionado
+     *
+     * @return boolean
+     */
+    public function getEstadoSolucionado()
+    {
+        return $this->estadoSolucionado;
+    }
+
+    /**
      * Set novedad
      *
      * @param string $novedad
@@ -175,6 +277,30 @@ class TurControlPuestoDetalle
     public function getNovedad()
     {
         return $this->novedad;
+    }
+
+    /**
+     * Set solucion
+     *
+     * @param string $solucion
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setSolucion($solucion)
+    {
+        $this->solucion = $solucion;
+
+        return $this;
+    }
+
+    /**
+     * Get solucion
+     *
+     * @return string
+     */
+    public function getSolucion()
+    {
+        return $this->solucion;
     }
 
     /**
@@ -250,6 +376,30 @@ class TurControlPuestoDetalle
     }
 
     /**
+     * Set fechaSolucion
+     *
+     * @param \DateTime $fechaSolucion
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setFechaSolucion($fechaSolucion)
+    {
+        $this->fechaSolucion = $fechaSolucion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaSolucion
+     *
+     * @return \DateTime
+     */
+    public function getFechaSolucion()
+    {
+        return $this->fechaSolucion;
+    }
+
+    /**
      * Set puestoRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurPuesto $puestoRel
@@ -298,26 +448,50 @@ class TurControlPuestoDetalle
     }
 
     /**
-     * Set estadoNovedad
+     * Set codigoTipoNovedadFk
      *
-     * @param boolean $estadoNovedad
+     * @param integer $codigoTipoNovedadFk
      *
      * @return TurControlPuestoDetalle
      */
-    public function setEstadoNovedad($estadoNovedad)
+    public function setCodigoTipoNovedadFk($codigoTipoNovedadFk)
     {
-        $this->estadoNovedad = $estadoNovedad;
+        $this->codigoTipoNovedadFk = $codigoTipoNovedadFk;
 
         return $this;
     }
 
     /**
-     * Get estadoNovedad
+     * Get codigoTipoNovedadFk
      *
-     * @return boolean
+     * @return integer
      */
-    public function getEstadoNovedad()
+    public function getCodigoTipoNovedadFk()
     {
-        return $this->estadoNovedad;
+        return $this->codigoTipoNovedadFk;
+    }
+
+    /**
+     * Set tipoNovedadRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurControlPuestoDetalleTipoNovedad $tipoNovedadRel
+     *
+     * @return TurControlPuestoDetalle
+     */
+    public function setTipoNovedadRel(\Brasa\TurnoBundle\Entity\TurControlPuestoDetalleTipoNovedad $tipoNovedadRel = null)
+    {
+        $this->tipoNovedadRel = $tipoNovedadRel;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoNovedadRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurControlPuestoDetalleTipoNovedad
+     */
+    public function getTipoNovedadRel()
+    {
+        return $this->tipoNovedadRel;
     }
 }

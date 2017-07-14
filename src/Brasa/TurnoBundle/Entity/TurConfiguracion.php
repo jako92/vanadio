@@ -144,7 +144,7 @@ class TurConfiguracion
     private $tipoAjusteDevengado = 1;
 
     /**     
-     * @ORM\Column(name="contabilizar_factura_ingreso_centro_costo", type="boolean")
+     * @ORM\Column(name="contabilizar_factura_ingreso_centro_costo", type="boolean", nullable=true)
      */    
     private $contabilizarFacturaIngresoCentroCosto = false;
     
