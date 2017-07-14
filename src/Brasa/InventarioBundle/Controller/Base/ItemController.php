@@ -121,6 +121,7 @@ class ItemController extends Controller {
     }
 
     private function generarExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
@@ -151,7 +152,8 @@ class ItemController extends Controller {
                 ->setCellValue('F1', '% IVA')
                 ->setCellValue('G1', 'EXI')
                 ->setCellValue('H1', 'REM')
-                ->setCellValue('I1', 'DIS');
+                ->setCellValue('I1', 'DIS')
+                ->setCellValue('J1', 'A_I');
 
         $i = 2;
 
@@ -169,7 +171,8 @@ class ItemController extends Controller {
                     ->setCellValue('F' . $i, $arItem->getPorcentajeIva())
                     ->setCellValue('G' . $i, $arItem->getCantidadExistencia())
                     ->setCellValue('H' . $i, $arItem->getCantidadRemisionada())
-                    ->setCellValue('I' . $i, $arItem->getCantidadDisponible());
+                    ->setCellValue('I' . $i, $arItem->getCantidadDisponible())
+                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arItem->getAfectaInventario()));
             $i++;
         }
 
