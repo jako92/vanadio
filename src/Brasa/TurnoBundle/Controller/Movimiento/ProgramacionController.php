@@ -923,16 +923,16 @@ class ProgramacionController extends Controller {
             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionImportar->getCodigoPedidoDetalleFk());
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionImportar->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arProgramacionImportar->getCodigoRecursoFk());
-            $horasDiurnasDisponibles = $arPedidoDetalle->getHorasDiurnas() - $arPedidoDetalle->getHorasDiurnasProgramadas();
-            $horasNocturnasDisponibles = $arPedidoDetalle->getHorasNocturnas() - $arPedidoDetalle->getHorasNocturnasProgramadas();
+            $horasDiurnasDisponibles = $arPedidoDetalle->getHorasDiurnas() - ($arPedidoDetalle->getHorasDiurnasProgramadas() + $arProgramacionImportar->getHorasDiurnas());
+            $horasNocturnasDisponibles = $arPedidoDetalle->getHorasNocturnas() - ($arPedidoDetalle->getHorasNocturnasProgramadas() + $arProgramacionImportar->getHorasNocturnas());
             if ($validarHoras) {
                 if ($horasDiurnasDisponibles < 0) {
                     $error = TRUE;
-                    $objMensaje->Mensaje("error", "Las horas diurnas de los turnos ingresadas [" . $arrTotalHoras['horasDiurnas'] . "], superan las horas del pedido disponibles para programar [" . $horasDiurnasPendientes . "]");
+                    $objMensaje->Mensaje("error", "Las horas diurnas de los turnos ingresadas [" . $arProgramacionImportar->getHorasDiurnas() . "], superan las horas del pedido disponibles para programar [" . $horasDiurnasDisponibles . "]");
                 }
                 if ($horasNocturnasDisponibles < 0) {
                     $error = TRUE;
-                    $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arrTotalHoras['horasNocturnas'] . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasPendientes . "]");
+                    $objMensaje->Mensaje("error", "Las horas nocturnas de los turnos ingresadas [" . $arProgramacionImportar->getHorasNocturnas() . "], superan las horas del pedido disponibles para programar [" . $horasNocturnasDisponibles . "]");
                 }
             }
             if ($error == false) {
@@ -985,17 +985,16 @@ class ProgramacionController extends Controller {
                 //Cambiar el estado en el pedido detalle de la programacion
                 $arPedidoDetalle->setEstadoProgramado(1);
                 $em->persist($arProgramacionImportar);
-                
+
                 //total horas programadas
                 $totalHorasDiurnasProgramadas = $arPedidoDetalle->getHorasDiurnasProgramadas() + $arProgramacionImportar->getHorasDiurnas();
                 $totalHorasNocturnasProgramadas = $arPedidoDetalle->getHorasNocturnasProgramadas() + $arProgramacionImportar->getHorasNocturnas();
                 $totalHorasProgramadas = $arPedidoDetalle->getHorasProgramadas() + $arProgramacionImportar->getHoras();
+                $arPedidoDetalle->setHorasDiurnasProgramadas($totalHorasDiurnasProgramadas);
+                $arPedidoDetalle->setHorasNocturnasProgramadas($totalHorasNocturnasProgramadas);
+                $arPedidoDetalle->setHorasProgramadas($totalHorasProgramadas);
+                $em->flush();
             }
-
-            $arPedidoDetalle->setHorasDiurnasProgramadas($totalHorasDiurnasProgramadas);
-            $arPedidoDetalle->setHorasNocturnasProgramadas($totalHorasNocturnasProgramadas);
-            $arPedidoDetalle->setHorasProgramadas($totalHorasProgramadas);
-            $em->flush();
         }
 
 
