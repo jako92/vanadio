@@ -5958,6 +5958,8 @@ INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) 
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('95','DOTACION TIPO','ADMINISTRACION','RECURSO HUMANO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('96','ENTIDAD EXAMEN','ADMINISTRACION','RECURSO HUMANO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('97','SEDE','ADMINISTRACION','RECURSO HUMANO');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('98','EMBARGO','MOVIMIENTO','RECURSO HUMANO');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('99','INDUCCION','MOVIMIENTO','RECURSO HUMANO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('100','ASESORES','ADMINISTRACION','GENERAL');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('101','TERCEROS','ADMINISTRACION','GENERAL');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('102','BANCOS','ADMINISTRACION','GENERAL');
@@ -5977,6 +5979,7 @@ INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) 
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('116','RECIBO','MOVIMIENTO','CARTERA');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('117','NOTA CREDITO','MOVIMIENTO','CARTERA');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('118','NOTA DEBITO','MOVIMIENTO','CARTERA');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('119','TIPO FACTURA','ADMINISTRACION','TURNO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('120','VISITAS','MOVIMIENTO','RECURSO HUMANO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('121','CLIENTE','ADMINISTRACION','AFILIACION');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('122','EMPLEADO','ADMINISTRACION','AFILIACION');
@@ -5998,6 +6001,8 @@ INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) 
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('138','CONTENIDO','ADMINISTRACION','GENERAL');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('139','ACREDITACION','MOVIMIENTO','RECURSO HUMANO');
 INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('140','CONTROL PUESTO','MOVIMIENTO','TURNO');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('141','POLIGRAFIA','MOVIMIENTO','RECURSO HUMANO');
+INSERT INTO `seg_documento` (`codigo_documento_pk`, `nombre`, `tipo`, `modulo`) VALUES('142','PRUEBA','MOVIMIENTO','RECURSO HUMANO');
 
 INSERT INTO `seg_roles` (`codigo_rol_pk`, `nombre`) VALUES('ROLE_ADMIN','ADMINISTRADOR');
 INSERT INTO `seg_roles` (`codigo_rol_pk`, `nombre`) VALUES('ROLE_USER','USUARIO');
