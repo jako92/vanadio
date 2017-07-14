@@ -39,6 +39,8 @@
             <table style='table-layout:fixed' class="table table-striped table-bordered table-condensed">
                 <thead style="background-color:  #3c8dbc">
                     <tr>
+                        <th>AÑO</th>
+                        <th>MES</th>
                         <th>COD</th>
                         <th width="250">RECURSO</th>
                         <th>1</th>
@@ -86,7 +88,7 @@
                     {% for arProgramacionesImportar in arProgramacionesImportar %}
                         {% if (intPuestoImportado != arProgramacionesImportar.codigoPuestoFk or intPedidoDetalleImportado != arProgramacionesImportar.codigoPedidoDetalleFk) and intPuestoImportado != '' %}                                                                                            
                             <tr>
-                                <td id="suptipo" colspan="33" style="text-align: right">{% if floTotalHorasProgramadas >= arProgramacionesImportar.horasPedido or floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido or floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido %}<b class="text-danger"> LA PROGRAMACION SUPERA LAS HORAS DEL PEDIDO {% endif %}</b</td>                                     
+                                <td id="suptipo" colspan="35" style="text-align: right">{% if floTotalHorasProgramadas >= arProgramacionesImportar.horasPedido or floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido or floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido %}<b class="text-danger"> LA PROGRAMACION SUPERA LAS HORAS DEL PEDIDO {% endif %}</b</td>                                     
                                 <td id="suptipo" colspan="1" {% if floHorasDiurnasProgramadas >= arProgramacionesImportar.horasDiurnasPedido %} class="danger" {% endif %}>{{ floHorasDiurnasProgramadas }}</td>                                     
                                 <td id="suptipo" colspan="1" {% if floHorasNocturnasProgramadas >= arProgramacionesImportar.horasNocturnasPedido %} class="danger" {% endif %}>{{ floHorasNocturnasProgramadas }}</td> 
                                 <td id="suptipo" colspan="1"></td>
@@ -97,7 +99,7 @@
                         {% endif %}
                         {% if (intPuestoImportado != arProgramacionesImportar.codigoPuestoFk or arProgramacionesImportar.codigoPuestoFk == '') or (intPedidoDetalleImportado != arProgramacionesImportar.codigoPedidoDetalleFk or arProgramacionesImportar.codigoPedidoDetalleFk == '') %}                                                                
                             <tr>
-                                <td id="suptipo" colspan="33" bgcolor= "#F2F5A9"><b>CLIENTE: {{ arProgramacionesImportar.nombreCliente | default('') }},  PUESTO:  {{ arProgramacionesImportar.nombrePuesto | default('') }}<b/>
+                                <td id="suptipo" colspan="35" bgcolor= "#F2F5A9"><b>CLIENTE: {{ arProgramacionesImportar.nombreCliente | default('') }},  PUESTO:  {{ arProgramacionesImportar.nombrePuesto | default('') }}<b/>
                                 {% if arProgramacionesImportar.codigoPuestoFk is not null %}
                                     <b>[{{ arProgramacionesImportar.codigoPuestoFk }}]<b/>
                                 {% else %}
@@ -114,6 +116,8 @@
                         {% set floTotalHorasProgramadas = floTotalHorasProgramadas + arProgramacionesImportar.horas %}
                         
                         <tr style='height: 10px' width="250">
+                            <td>{{ arProgramacionesImportar.anio }}</td>
+                            <td>{{ arProgramacionesImportar.mes }}</td>
                             <td>{{ arProgramacionesImportar.codigoRecursoFk }}</td>
                             <td>{{ arProgramacionesImportar.nombreRecurso }}</td>
                             <td>{{ arProgramacionesImportar.dia1  }}</td>

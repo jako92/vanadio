@@ -919,8 +919,12 @@ class ProgramacionController extends Controller {
         foreach ($arrSeleccionados AS $codigo) {
             $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
             $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->find($codigo);
-            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();            
             $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionImportar->getCodigoPedidoDetalleFk());
+            
+            $horasDiurnasDisponibles = $arPedidoDetalle->getHorasDiurnas() - $arPedidoDetalle->getHorasDiurnasProgramadas();
+            $horasNocturnasDisponibles = $arPedidoDetalle->getHorasNocturnas() - $arPedidoDetalle->getHorasNocturnasProgramadas();
+            
             $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionImportar->getCodigoPuestoFk());
             $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arProgramacionImportar->getCodigoRecursoFk());
             //horas de la programacion actual en el pedido detalle
