@@ -472,16 +472,16 @@ class ProgramacionController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('BtnGuardar')->isClicked()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if (count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigo) {
-                        $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->nuevoProgramacion($codigo, $arProgramacion);
+                if ($arProgramacion->getEstadoAutorizado() == 0) {
+                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                    $resultado = $this->actualizarProgramacionImportar($arrSeleccionados, $arProgramacion);
+                    if ($resultado == false) {
+                        $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
+                        $em->flush();
+                        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                     }
-                    $em->getRepository('BrasaTurnoBundle:TurProgramacion')->liquidar($codigoProgramacion);
-                    $em->flush();
                 }
             }
-            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
         $dql = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->listaPendienteProgramar($codigoCliente);
         $arProgramacionesImportar = $paginator->paginate($em->createQuery($dql), $request->query->get('page', 1), 500);
@@ -903,6 +903,98 @@ class ProgramacionController extends Controller {
             $arPedidoDetalle->setHorasProgramadas($horasProgramadasDiurnasPedidoTotales + $horasProgramadasNocturnasPedidoTotales);
             $em->persist($arPedidoDetalle);
         }
+        return $error;
+    }
+
+    private function actualizarProgramacionImportar($arrSeleccionados, $arProgramacion) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $error = false;
+        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
+        $validarHoras = $arConfiguracion->getValidarHorasProgramacion();
+        $horasDiurnasProgramacionImportar = 0;
+        $horasNocturnasProgramacionImportar = 0;
+        $horasProgramacionImportar = 0;
+        foreach ($arrSeleccionados AS $codigo) {
+            $arProgramacionImportar = new \Brasa\TurnoBundle\Entity\TurProgramacionImportar();
+            $arProgramacionImportar = $em->getRepository('BrasaTurnoBundle:TurProgramacionImportar')->find($codigo);
+            $arPedidoDetalle = new \Brasa\TurnoBundle\Entity\TurPedidoDetalle();
+            $arPedidoDetalle = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->find($arProgramacionImportar->getCodigoPedidoDetalleFk());
+            $arPuesto = $em->getRepository('BrasaTurnoBundle:TurPuesto')->find($arProgramacionImportar->getCodigoPuestoFk());
+            $arRecurso = $em->getRepository('BrasaTurnoBundle:TurRecurso')->find($arProgramacionImportar->getCodigoRecursoFk());
+            //horas de la programacion actual en el pedido detalle
+            $horasDiurnasProgramadas = $arPedidoDetalle->getHorasDiurnasProgramadas();
+            $horasNocturnasProgramadas = $arPedidoDetalle->getHorasNocturnasProgramadas();
+            $horasProgramadas = $arPedidoDetalle->getHorasProgramadas();
+            //horas de la programacion importada
+            $horasDiurnasProgramacionImportar = $arProgramacionImportar->getHorasDiurnas();
+            $horasNocturnasProgramacionImportar = $arProgramacionImportar->getHorasNocturnas();
+            $horasProgramacionImportar = $arProgramacionImportar->getHoras();
+            //total horas programadas
+            $totalHorasDiurnasProgramadas = $horasDiurnasProgramadas + $horasDiurnasProgramacionImportar;
+            $totalHorasNocturnasProgramadas = $horasNocturnasProgramadas + $horasNocturnasProgramacionImportar;
+            $totalHorasProgramadas = $horasProgramadas + $horasProgramacionImportar;
+
+            if ($error == false) {
+                //Empezar a guardar los valores para la programacion.
+                $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+                $arProgramacionDetalle->setProgramacionRel($arProgramacion);
+                $arProgramacionDetalle->setPedidoDetalleRel($arPedidoDetalle);
+                $arProgramacionDetalle->setRecursoRel($arRecurso);
+                $arProgramacionDetalle->setPuestoRel($arPuesto);
+                $arProgramacionDetalle->setAnio($arProgramacionImportar->getAnio());
+                $arProgramacionDetalle->setMes($arProgramacionImportar->getMes());
+                $arProgramacionDetalle->setDia1($arProgramacionImportar->getDia1());
+                $arProgramacionDetalle->setDia2($arProgramacionImportar->getDia2());
+                $arProgramacionDetalle->setDia3($arProgramacionImportar->getDia3());
+                $arProgramacionDetalle->setDia4($arProgramacionImportar->getDia4());
+                $arProgramacionDetalle->setDia5($arProgramacionImportar->getDia5());
+                $arProgramacionDetalle->setDia6($arProgramacionImportar->getDia6());
+                $arProgramacionDetalle->setDia7($arProgramacionImportar->getDia7());
+                $arProgramacionDetalle->setDia8($arProgramacionImportar->getDia8());
+                $arProgramacionDetalle->setDia9($arProgramacionImportar->getDia9());
+                $arProgramacionDetalle->setDia10($arProgramacionImportar->getDia10());
+                $arProgramacionDetalle->setDia11($arProgramacionImportar->getDia11());
+                $arProgramacionDetalle->setDia12($arProgramacionImportar->getDia12());
+                $arProgramacionDetalle->setDia13($arProgramacionImportar->getDia13());
+                $arProgramacionDetalle->setDia14($arProgramacionImportar->getDia14());
+                $arProgramacionDetalle->setDia15($arProgramacionImportar->getDia15());
+                $arProgramacionDetalle->setDia16($arProgramacionImportar->getDia16());
+                $arProgramacionDetalle->setDia17($arProgramacionImportar->getDia17());
+                $arProgramacionDetalle->setDia18($arProgramacionImportar->getDia18());
+                $arProgramacionDetalle->setDia19($arProgramacionImportar->getDia19());
+                $arProgramacionDetalle->setDia20($arProgramacionImportar->getDia20());
+                $arProgramacionDetalle->setDia21($arProgramacionImportar->getDia21());
+                $arProgramacionDetalle->setDia22($arProgramacionImportar->getDia22());
+                $arProgramacionDetalle->setDia23($arProgramacionImportar->getDia23());
+                $arProgramacionDetalle->setDia24($arProgramacionImportar->getDia24());
+                $arProgramacionDetalle->setDia25($arProgramacionImportar->getDia25());
+                $arProgramacionDetalle->setDia26($arProgramacionImportar->getDia26());
+                $arProgramacionDetalle->setDia27($arProgramacionImportar->getDia27());
+                $arProgramacionDetalle->setDia28($arProgramacionImportar->getDia28());
+                $arProgramacionDetalle->setDia29($arProgramacionImportar->getDia29());
+                $arProgramacionDetalle->setDia30($arProgramacionImportar->getDia30());
+                $arProgramacionDetalle->setDia31($arProgramacionImportar->getDia31());
+                $arProgramacionDetalle->setHoras($arProgramacionImportar->getHoras());
+                $arProgramacionDetalle->setHorasDiurnas($arProgramacionImportar->getHorasDiurnas());
+                $arProgramacionDetalle->setHorasNocturnas($arProgramacionImportar->getHorasNocturnas());
+                $em->persist($arProgramacionDetalle);
+                //Cambiar el estado de la programacion de los importados
+                $arProgramacionImportar->setEstadoProgramado(1);
+                $em->persist($arProgramacionImportar);
+                //Cambiar el estado en el pedido detalle de la programacion
+                $arPedidoDetalle->setEstadoProgramado(1);
+                $em->persist($arProgramacionImportar);
+            }
+
+            $arPedidoDetalle->setHorasDiurnasProgramadas($totalHorasDiurnasProgramadas);
+            $arPedidoDetalle->setHorasNocturnasProgramadas($totalHorasNocturnasProgramadas);
+            $arPedidoDetalle->setHorasProgramadas($totalHorasProgramadas);
+            $em->flush();
+        }
+
+
         return $error;
     }
 
