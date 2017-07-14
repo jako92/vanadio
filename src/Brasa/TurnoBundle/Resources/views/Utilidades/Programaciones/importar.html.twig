@@ -97,7 +97,7 @@
                         {% endif %}
                         {% if (intPuestoImportado != arProgramacionesImportar.codigoPuestoFk or arProgramacionesImportar.codigoPuestoFk == '') or (intPedidoDetalleImportado != arProgramacionesImportar.codigoPedidoDetalleFk or arProgramacionesImportar.codigoPedidoDetalleFk == '') %}                                                                
                             <tr>
-                                <td id="suptipo" colspan="33" bgcolor= "#F2F5A9"><b>{{ arProgramacionesImportar.nombrePuesto | default('') }}<b/>
+                                <td id="suptipo" colspan="33" bgcolor= "#F2F5A9"><b>CLIENTE: {{ arProgramacionesImportar.nombreCliente | default('') }},  PUESTO:  {{ arProgramacionesImportar.nombrePuesto | default('') }}<b/>
                                 {% if arProgramacionesImportar.codigoPuestoFk is not null %}
                                     <b>[{{ arProgramacionesImportar.codigoPuestoFk }}]<b/>
                                 {% else %}
