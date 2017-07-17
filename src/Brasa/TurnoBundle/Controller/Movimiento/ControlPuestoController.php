@@ -171,27 +171,27 @@ class ControlPuestoController extends Controller {
                 ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-                if ($form->get('BtnGuardar')->isClicked()) {
-                    $solucion = $form->get('solucion')->getData();
-                    $numeroComunicacion = $form->get('numeroComunicacion')->getData();
-                    $arControlPuestoDetalle->setSolucion($solucion);
-                    $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
-                    if ($solucion != "") {
-                        $arControlPuestoDetalle->setFechaSolucion(new \DateTime('now'));
-                        $arControlPuestoDetalle->setEstadoSolucionado(1);
-                    } else {
-                        $arControlPuestoDetalle->setEstadoSolucionado(0);
-                    }
-                    $em->persist($arControlPuestoDetalle);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $solucion = $form->get('solucion')->getData();
+                $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                $arControlPuestoDetalle->setSolucion($solucion);
+                $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                if ($solucion != "") {
+                    $arControlPuestoDetalle->setFechaSolucion(new \DateTime('now'));
+                    $arControlPuestoDetalle->setEstadoSolucionado(1);
+                } else {
+                    $arControlPuestoDetalle->setEstadoSolucionado(0);
                 }
+                $em->persist($arControlPuestoDetalle);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
+            }
         }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:solucion.html.twig', array(
                     'form' => $form->createView()
         ));
     }
-    
+
     /**
      * @Route("/tur/movimiento/control/puesto/detalle/novedad/{codigoControlPuestoDetalle}", name="brs_tur_movimiento_control_puesto_detalle_novedad")
      */
@@ -202,12 +202,13 @@ class ControlPuestoController extends Controller {
         $form = $this->createFormBuilder()
                 ->setAction($this->generateUrl('brs_tur_movimiento_control_puesto_detalle_novedad', array('codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)))
                 ->add('tipoNovedadRel', EntityType::class, array(
-                'class' => 'BrasaTurnoBundle:TurControlPuestoDetalleTipoNovedad',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('tn')
-                    ->orderBy('tn.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => true))
+                    'class' => 'BrasaTurnoBundle:TurControlPuestoDetalleTipoNovedad',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('tn')
+                                ->orderBy('tn.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => true))
                 ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
                 ->add('novedad', TextareaType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNovedad()))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
@@ -264,17 +265,40 @@ class ControlPuestoController extends Controller {
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
-        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->listaDQL();
+        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->listaDQL($session->get('filtroTurnosCodigoCentroOperacion'));
     }
 
     private function filtrar($form) {
-        
+        $session = new session;
+        $arCentroOperacion = $form->get('centroOperacionRel')->getData();
+        if ($arCentroOperacion) {
+            $session->set('filtroTurnosCodigoCentroOperacion', $arCentroOperacion->getCodigoCentroOperacionPk());
+        } else {
+            $session->set('filtroTurnosCodigoCentroOperacion', null);
+        }
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
+        $arrayPropiedadesCentroOperacion = array(
+            'class' => 'BrasaTurnoBundle:TurCentroOperacion',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('co')
+                                ->orderBy('co.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroTurnosCodigoCentroOperacion')) {
+            $arrayPropiedadesCentroOperacion['data'] = $em->getReference("BrasaTurnoBundle:TurCentroOperacion", $session->get('filtroTurnosCodigoCentroOperacion'));
+        }
+
         $form = $this->createFormBuilder()
+                ->add('centroOperacionRel', EntityType::class, $arrayPropiedadesCentroOperacion)
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
