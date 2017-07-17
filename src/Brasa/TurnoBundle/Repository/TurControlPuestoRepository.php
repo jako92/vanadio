@@ -6,9 +6,12 @@ use Doctrine\ORM\EntityRepository;
 
 class TurControlPuestoRepository extends EntityRepository {
 
-    public function listaDql($codigoCentroOperacion) {
+    public function listaDql($codigoControlPuesto,$codigoCentroOperacion) {
         $em = $this->getEntityManager();
         $dql = "SELECT cp FROM BrasaTurnoBundle:TurControlPuesto cp WHERE cp.codigoControlPuestoPk <> 0 ";
+        if ($codigoControlPuesto != "") {
+            $dql .= " AND cp.codigoControlPuestoPk = " . $codigoControlPuesto;
+        }
         if ($codigoCentroOperacion != "") {
             $dql .= " AND cp.codigoCentroOperacionFk = " . $codigoCentroOperacion;
         }

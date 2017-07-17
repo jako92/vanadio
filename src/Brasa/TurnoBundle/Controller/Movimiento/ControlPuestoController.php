@@ -134,11 +134,24 @@ class ControlPuestoController extends Controller {
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)));
                 }
 
+                if ($request->request->get('OpAbrir')) {
+                    $codigoControlPuestoDetalle = $request->request->get('OpAbrir');
+                    $arControlPuestoDetalle = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+                    $arControlPuestoDetalle = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->find($codigoControlPuestoDetalle);
+                    $arControlPuestoDetalle->setEstadoCerrado(0);
+                    $em->persist($arControlPuestoDetalle);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $codigoControlPuesto, 'codigoControlPuestoDetalle' => $codigoControlPuestoDetalle)));
+                }
+
                 if ($form->get('BtnImprimir')->isClicked()) {
                     $objFormatoControlPuesto = new \Brasa\TurnoBundle\Formatos\ControlPuesto();
                     $objFormatoControlPuesto->Generar($em, $codigoControlPuesto);
                 }
 
+                if ($form->get('BtnDetalleExcel')->isClicked()) {
+                    $this->generarExcelDetalle();
+                }
 
                 if ($form->get('BtnDetalleEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -208,30 +221,30 @@ class ControlPuestoController extends Controller {
                                 ->orderBy('tn.nombre', 'ASC');
                     },
                     'choice_label' => 'nombre',
-                    'required' => true))
+                    'required' => false,
+                    'placeholder' => '',
+                    'data' => $arControlPuestoDetalle->getTipoNovedadRel()))
                 ->add('numeroComunicacion', TextType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNumeroComunicacion()))
                 ->add('novedad', TextareaType::class, array('required' => false, 'data' => $arControlPuestoDetalle->getNovedad()))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar'))
                 ->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                if ($form->get('BtnGuardar')->isClicked()) {
-                    $novedad = $form->get('novedad')->getData();
-                    $numeroComunicacion = $form->get('numeroComunicacion')->getData();
-                    $tipoNovedad = $form->get('tipoNovedadRel')->getData();
-                    $arControlPuestoDetalle->setTipoNovedadRel($tipoNovedad);
-                    $arControlPuestoDetalle->setNovedad($novedad);
-                    $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
-                    if ($novedad != "") {
-                        $arControlPuestoDetalle->setEstadoNovedad(1);
-                    } else {
-                        $arControlPuestoDetalle->setEstadoNovedad(0);
-                    }
-                    $em->persist($arControlPuestoDetalle);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnGuardar')->isClicked()) {
+                $novedad = $form->get('novedad')->getData();
+                $numeroComunicacion = $form->get('numeroComunicacion')->getData();
+                $tipoNovedad = $form->get('tipoNovedadRel')->getData();
+                $arControlPuestoDetalle->setTipoNovedadRel($tipoNovedad);
+                $arControlPuestoDetalle->setNovedad($novedad);
+                $arControlPuestoDetalle->setNumeroComunicacion($numeroComunicacion);
+                if ($novedad != "") {
+                    $arControlPuestoDetalle->setEstadoNovedad(1);
+                } else {
+                    $arControlPuestoDetalle->setEstadoNovedad(0);
                 }
+                $em->persist($arControlPuestoDetalle);
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_control_puesto_detalle', array('codigoControlPuesto' => $arControlPuestoDetalle->getCodigoControlPuestoFk())));
             }
         }
         return $this->render('BrasaTurnoBundle:Movimientos/ControlPuesto:novedad.html.twig', array(
@@ -265,17 +278,20 @@ class ControlPuestoController extends Controller {
     private function lista() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
-        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->listaDQL($session->get('filtroTurnosCodigoCentroOperacion'));
+        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurControlPuesto')->listaDQL(
+                $session->get('filtroTurnosCodigoControlPuesto'), $session->get('filtroTurnosCodigoCentroOperacion'));
     }
 
     private function filtrar($form) {
         $session = new session;
         $arCentroOperacion = $form->get('centroOperacionRel')->getData();
+        $codigoControlPuesto = $form->get('codigoControlPuestoPk')->getData();
         if ($arCentroOperacion) {
             $session->set('filtroTurnosCodigoCentroOperacion', $arCentroOperacion->getCodigoCentroOperacionPk());
         } else {
             $session->set('filtroTurnosCodigoCentroOperacion', null);
         }
+        $session->set('filtroTurnosCodigoControlPuesto', $codigoControlPuesto);
     }
 
     private function formularioFiltro() {
@@ -298,6 +314,7 @@ class ControlPuestoController extends Controller {
         }
 
         $form = $this->createFormBuilder()
+                ->add('codigoControlPuestoPk', TextType::class, array('data' => $session->get('filtroTurnosCodigoControlPuesto')))
                 ->add('centroOperacionRel', EntityType::class, $arrayPropiedadesCentroOperacion)
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
@@ -309,7 +326,9 @@ class ControlPuestoController extends Controller {
     private function formularioDetalle($ar) {
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
+        $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);
         $form = $this->createFormBuilder()
+                ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
                 ->getForm();
@@ -340,24 +359,11 @@ class ControlPuestoController extends Controller {
         }
 
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CÓDIG0')
-                ->setCellValue('B1', 'TIPO')
-                ->setCellValue('C1', 'NÚMERO')
-                ->setCellValue('D1', 'FECHA')
-                ->setCellValue('E1', 'AÑO')
-                ->setCellValue('F1', 'MES')
-                ->setCellValue('G1', 'CLIENTE')
-                ->setCellValue('H1', 'SECTOR')
-                ->setCellValue('I1', 'AUT')
-                ->setCellValue('J1', 'PRO')
-                ->setCellValue('K1', 'FAC')
-                ->setCellValue('L1', 'ANU')
-                ->setCellValue('M1', 'HORAS')
-                ->setCellValue('N1', 'H.DIURNAS')
-                ->setCellValue('O1', 'H.NOCTURNAS')
-                ->setCellValue('P1', 'P.MINIMO')
-                ->setCellValue('Q1', 'P.AJUSTADO')
-                ->setCellValue('R1', 'TOTAL');
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'CENTRO OPERACION')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'COMENTARIO')
+                ->setCellValue('E1', 'USUARIO');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -367,32 +373,92 @@ class ControlPuestoController extends Controller {
         foreach ($arControlPuestos as $arControlPuesto) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arControlPuesto->getCodigoControlPuestoPk())
-                    ->setCellValue('B' . $i, $arControlPuesto->getPedidoTipoRel()->getNombre())
-                    ->setCellValue('C' . $i, $arControlPuesto->getNumero())
-                    ->setCellValue('D' . $i, $arControlPuesto->getFecha()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arControlPuesto->getFechaProgramacion()->format('Y'))
-                    ->setCellValue('F' . $i, $arControlPuesto->getFechaProgramacion()->format('F'))
-                    ->setCellValue('G' . $i, $arControlPuesto->getClienteRel()->getNombreCorto())
-                    ->setCellValue('H' . $i, $arControlPuesto->getSectorRel()->getNombre())
-                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arControlPuesto->getEstadoAutorizado()))
-                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arControlPuesto->getEstadoProgramado()))
-                    ->setCellValue('K' . $i, $objFunciones->devuelveBoolean($arControlPuesto->getEstadoFacturado()))
-                    ->setCellValue('L' . $i, $objFunciones->devuelveBoolean($arControlPuesto->getEstadoAnulado()))
-                    ->setCellValue('M' . $i, $arControlPuesto->getHoras())
-                    ->setCellValue('N' . $i, $arControlPuesto->getHorasDiurnas())
-                    ->setCellValue('O' . $i, $arControlPuesto->getHorasNocturnas())
-                    ->setCellValue('P' . $i, $arControlPuesto->getVrTotalPrecioMinimo())
-                    ->setCellValue('Q' . $i, $arControlPuesto->getVrTotalPrecioAjustado())
-                    ->setCellValue('R' . $i, $arControlPuesto->getVrTotal());
+                    ->setCellValue('B' . $i, $arControlPuesto->getCentroOperacionRel()->getNombre())
+                    ->setCellValue('C' . $i, $arControlPuesto->getFecha()->format('Y/m/d H:i:s'))
+                    ->setCellValue('D' . $i, $arControlPuesto->getComentarios())
+                    ->setCellValue('E' . $i, $arControlPuesto->getUsuario());
 
             $i++;
         }
 
-        $objPHPExcel->getActiveSheet()->setTitle('Pedidos');
+        $objPHPExcel->getActiveSheet()->setTitle('ControlPuesto');
         $objPHPExcel->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Pedidos.xlsx"');
+        header('Content-Disposition: attachment;filename="ControlPuesto.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    private function generarExcelDetalle() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'M'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'CLIENTE')
+                ->setCellValue('C1', 'PUESTO')
+                ->setCellValue('D1', 'NUMERO_C')
+                ->setCellValue('E1', 'TIPO NOVEDAD')
+                ->setCellValue('F1', 'NOVEDAD')
+                ->setCellValue('G1', 'SOLUCION')
+                ->setCellValue('H1', 'FECHA CIERRE')
+                ->setCellValue('I1', 'FECHA SOLUCION')
+                ->setCellValue('J1', 'USUARIO');
+
+        $i = 2;
+        $arControlPuestosDetalles = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
+        $arControlPuestosDetalles = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->findAll();
+        foreach ($arControlPuestosDetalles as $arControlPuestoDetalle) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arControlPuestoDetalle->getCodigoControlPuestoDetallePk())
+                    ->setCellValue('B' . $i, $arControlPuestoDetalle->getPuestoRel()->getClienteRel()->getNombreCorto())
+                    ->setCellValue('C' . $i, $arControlPuestoDetalle->getPuestoRel()->getNombre())
+                    ->setCellValue('D' . $i, $arControlPuestoDetalle->getNumeroComunicacion())
+                    ->setCellValue('F' . $i, $arControlPuestoDetalle->getNovedad())
+                    ->setCellValue('G' . $i, $arControlPuestoDetalle->getSolucion())
+                    ->setCellValue('H' . $i, $arControlPuestoDetalle->getFecha()->format('Y/m/d H:i:s'))
+                    ->setCellValue('I' . $i, $arControlPuestoDetalle->getFechaSolucion()->format('Y/m/d H:i:s'))
+                    ->setCellValue('J' . $i, $arControlPuestoDetalle->getUsuario());
+            if ($arControlPuestoDetalle->getCodigoTipoNovedadFk()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arControlPuestoDetalle->getTipoNovedadRel()->getNombre());
+            }
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('ControlPuestoDetalle');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ControlPuestoDetalle.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
