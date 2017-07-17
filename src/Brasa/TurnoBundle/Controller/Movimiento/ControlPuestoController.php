@@ -445,11 +445,15 @@ class ControlPuestoController extends Controller {
                     ->setCellValue('D' . $i, $arControlPuestoDetalle->getNumeroComunicacion())
                     ->setCellValue('F' . $i, $arControlPuestoDetalle->getNovedad())
                     ->setCellValue('G' . $i, $arControlPuestoDetalle->getSolucion())
-                    ->setCellValue('H' . $i, $arControlPuestoDetalle->getFecha()->format('Y/m/d H:i:s'))
-                    ->setCellValue('I' . $i, $arControlPuestoDetalle->getFechaSolucion()->format('Y/m/d H:i:s'))
                     ->setCellValue('J' . $i, $arControlPuestoDetalle->getUsuario());
             if ($arControlPuestoDetalle->getCodigoTipoNovedadFk()) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $i, $arControlPuestoDetalle->getTipoNovedadRel()->getNombre());
+            }
+            if ($arControlPuestoDetalle->getFecha()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H' . $i, $arControlPuestoDetalle->getFecha()->format('Y/m/d H:i:s'));
+            }
+            if ($arControlPuestoDetalle->getFechaSolucion()) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $i, $arControlPuestoDetalle->getFechaSolucion()->format('Y/m/d H:i:s'));
             }
             $i++;
         }
