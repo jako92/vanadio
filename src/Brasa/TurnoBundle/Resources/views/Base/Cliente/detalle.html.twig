@@ -169,6 +169,9 @@
                     </table>
                     <div class="btn-toolbar" style="float: right">
                         <div class="btn-group">            
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_puesto_importar', {'codigoCliente': arCliente.codigoClientePk }) }}', 'ImportarPuestos', 600, 900)">Importar</a>            
+                        </div>
+                        <div class="btn-group">            
                             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_puesto_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoPuesto': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
                         </div>
                         <div class="btn-group">

@@ -1,0 +1,36 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Cliente importar puestos - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Programacion turnos
+            <small>Clientes: importar puestos</small>
+        </h1>
+    </section>    
+    <section class="content">        	
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Cargar archivo</div>
+            <div class="panel-body">
+                <div>                      
+                    <div class="form-group form-group-sm">
+                        <label for="form_archivo" class="col-sm-2 control-label">Cargar:</label>
+                        <div class="col-sm-10">
+                            {{ form_widget(form.attachment, { 'attr': {'class': 'btn btn-sm btn-default'} }) }}            
+                        </div>
+                    </div>                                
+                </div>                                            
+            </div>
+        </div>                   
+        <div class="modal-footer">
+            {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-sm btn-default'} }) }} 
+            {{ form_widget(form.BtnCargar, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}            
+        </div>    
+        <blockquote>
+            <p>Recuerde: El formato del archivo debe ser *.xls y debe ser maximo de 5mb</p>
+            <footer>Tipo <cite title="Source Title">archivos</cite></footer>
+        </blockquote>     
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

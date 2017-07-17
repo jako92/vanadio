@@ -16,6 +16,7 @@ use Brasa\TurnoBundle\Form\Type\TurGrupoFacturacionType;
 use Brasa\TurnoBundle\Form\Type\TurClienteDireccionType;
 use Brasa\TurnoBundle\Form\Type\TurClienteContratoType;
 use Brasa\TurnoBundle\Form\Type\TurClienteContactoType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
 
@@ -360,6 +361,34 @@ class ClienteController extends Controller {
                     'form' => $form->createView()));
     }
 
+    /**
+     * @Route("/tur/base/cliente/puesto/importar/{codigoCliente}", name="brs_tur_base_cliente_puesto_importar")
+     */
+    public function puestoImportarAction(Request $request, $codigoCliente) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $form = $this->createFormBuilder()
+                ->add('attachment', FileType::class, array('required' => false))
+                ->add('BtnCargar', SubmitType::class, array('label' => 'Cargar'))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel'))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnCargar')->isClicked()) {
+                if ($form->get('attachment')->getData() != "") {
+                    $this->importarPuestos($form, $codigoCliente);
+                } else {
+                    $objMensaje->Mensaje("error", "Por favor cargar un archivo");
+                }
+            }
+            if ($form->get('BtnExcel')->isClicked()) {
+                $this->generarPlantillaExcelPuesto();
+            }
+        }
+
+        return $this->render('BrasaTurnoBundle:Base/Cliente:puestoImportar.html.twig', array('form' => $form->createView()));
+    }
+
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurCliente')->listaDQL(
@@ -611,6 +640,137 @@ class ClienteController extends Controller {
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
+    }
+
+    private function generarPlantillaExcelPuesto() {
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'U'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'NOMBRE')
+                ->setCellValue('B1', 'CODIGO CIUDAD FK')
+                ->setCellValue('C1', 'CODIGO CENTRO OPERACION FK')
+                ->setCellValue('D1', 'CODIGO PROGRAMADOR FK')
+                ->setCellValue('E1', 'CODIGO ZONA FK')
+                ->setCellValue('F1', 'CODIGO CENTRO COSTO FK')
+                ->setCellValue('G1', 'CONTROL PUESTO')
+                ->setCellValue('H1', 'DIRECCION')
+                ->setCellValue('I1', 'TELEFONO')
+                ->setCellValue('J1', 'CELULAR')
+                ->setCellValue('K1', 'NUMERO COMUNICACION')
+                ->setCellValue('L1', 'CODIGO INTERFAZ');
+
+        $objPHPExcel->getActiveSheet(0)
+                ->getComment('G1')
+                ->getText()->createTextRun('0: NO, 1: SI.');
+
+        $objPHPExcel->getActiveSheet()->setTitle('ImportarPuestos');
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ImportarPuestos.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    private function importarPuestos($form, $codigoCliente) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaGeneralBundle:GenConfiguracion')->find(1);
+        $arCliente = new \Brasa\TurnoBundle\Entity\TurCliente();
+        $arCliente = $em->getRepository('BrasaTurnoBundle:TurCliente')->find($codigoCliente);
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+        $error = "";
+        $form['attachment']->getData()->move($arConfiguracion->getRutaTemporal(), "archivo.xls");
+        $ruta = $arConfiguracion->getRutaTemporal() . "archivo.xls";
+        $objPHPExcel = \PHPExcel_IOFactory::load($ruta);
+        //Cargar informacion
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+            $worksheetTitle = $worksheet->getTitle();
+            $highestRow = $worksheet->getHighestRow(); // e.g. 10
+            $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+            $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+            $nrColumns = ord($highestColumn) - 64;
+            for ($row = 2; $row <= $highestRow; ++$row) {
+                $arCiudad = null;
+                $arCentroOperacion = null;
+                $arProgramador = null;
+                $arZona = null;
+                $arCentroCosto = null;
+
+                //Empezar a recorrer cada campo ingresado en la fila y asignar un valor a las variables
+                $nombre = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
+                $codigoCiudadFk = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+                $codigoCentroOperacionFk = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
+                $codigoProgramadorFk = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+                $codigoZonaFk = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+                $codigoCentroCostoFk = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+                $controlPuesto = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+                $direccion = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
+                $telefono = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
+                $celular = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
+                $numeroComunicacion = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+                $codigoInterfaz = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
+
+                //Consultar las relaciones de los valores ingresados si no son vacios
+                if ($codigoCiudadFk) {
+                    $arCiudad = $em->getRepository('BrasaGeneralBundle:GenCiudad')->find($codigoCiudadFk);
+                }
+                if ($codigoCentroOperacionFk) {
+                    $arCentroOperacion = $em->getRepository('BrasaTurnoBundle:TurCentroOperacion')->find($codigoCentroOperacionFk);
+                }
+                if ($codigoProgramadorFk) {
+                    $arProgramador = $em->getRepository('BrasaTurnoBundle:TurProgramador')->find($codigoProgramadorFk);
+                }
+                if ($codigoZonaFk) {
+                    $arZona = $em->getRepository('BrasaTurnoBundle:TurZona')->find($codigoZonaFk);
+                }
+                if ($codigoCentroCostoFk) {
+                    $arCentroCosto = $em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find($codigoCentroCostoFk);
+                }
+
+                //empezar a guardar cada registro que se esta importando.
+                $arPuesto = new \Brasa\TurnoBundle\Entity\TurPuesto();
+                $arPuesto->setClienteRel($arCliente);
+                $arPuesto->setNombre($nombre);
+                $arPuesto->setCiudadRel($arCiudad);
+                $arPuesto->setCentroOperacionRel($arCentroOperacion);
+                $arPuesto->setProgramadorRel($arProgramador);
+                $arPuesto->setZonaRel($arZona);
+                $arPuesto->setCentroCostoContabilidadRel($arCentroCosto);
+                $arPuesto->setControlPuesto($controlPuesto);
+                $arPuesto->setDireccion($direccion);
+                $arPuesto->setTelefono($telefono);
+                $arPuesto->setCelular($celular);
+                $arPuesto->setNumeroComunicacion($numeroComunicacion);
+                $arPuesto->setCodigoInterface($codigoInterfaz);
+            }
+        }
     }
 
 }
