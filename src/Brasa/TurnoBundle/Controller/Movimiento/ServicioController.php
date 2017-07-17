@@ -132,88 +132,90 @@ class ServicioController extends Controller {
         $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
         $form = $this->formularioDetalle($arServicio);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                if ($form->get('BtnAutorizar')->isClicked()) {
-                    $arrControles = $request->request->All();
-                    $this->actualizarDetalle($arrControles, $codigoServicio);
-                    if ($arServicio->getEstadoAutorizado() == 0) {
-                        $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
-                        $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('codigoServicioFk' => $codigoServicio, 'codigoPuestoFk' => NULL));
-                        if (!$arServicioDetalle) {
-                            $arServicio->setEstadoAutorizado(1);
-                            $em->persist($arServicio);
-                            $em->flush();
-                        } else {
-                            $objMensaje->Mensaje('error', "No se puede autorizar el servicio, tiene detalles sin puesto");
-                        }
-                    }
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
-                if ($form->get('BtnDesAutorizar')->isClicked()) {
-                    if ($arServicio->getEstadoAutorizado() == 1) {
-                        $arServicio->setEstadoAutorizado(0);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnAutorizar')->isClicked()) {
+                $arrControles = $request->request->All();
+                $this->actualizarDetalle($arrControles, $codigoServicio);
+                if ($arServicio->getEstadoAutorizado() == 0) {
+                    $arServicioDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
+                    $arServicioDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('codigoServicioFk' => $codigoServicio, 'codigoPuestoFk' => NULL));
+                    if (!$arServicioDetalle) {
+                        $arServicio->setEstadoAutorizado(1);
                         $em->persist($arServicio);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+                    } else {
+                        $objMensaje->Mensaje('error', "No se puede autorizar el servicio, tiene detalles sin puesto");
                     }
                 }
-                if ($form->get('BtnCerrar')->isClicked()) {
-                    if ($arServicio->getEstadoAutorizado() == 1) {
-                        $arServicio->setEstadoCerrado(1);
-                        $em->persist($arServicio);
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                    }
-                }
-                if ($form->get('BtnDetalleActualizar')->isClicked()) {
-                    $arrControles = $request->request->All();
-                    $this->actualizarDetalle($arrControles, $codigoServicio);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDesAutorizar')->isClicked()) {
+                if ($arServicio->getEstadoAutorizado() == 1) {
+                    $arServicio->setEstadoAutorizado(0);
+                    $em->persist($arServicio);
+                    $em->flush();
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
                 }
-                if ($form->get('BtnDetalleEliminar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->eliminarSeleccionados($arrSeleccionados);
+            }
+            if ($form->get('BtnCerrar')->isClicked()) {
+                if ($arServicio->getEstadoAutorizado() == 1) {
+                    $arServicio->setEstadoCerrado(1);
+                    $em->persist($arServicio);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+                }
+            }
+            if ($form->get('BtnDetalleActualizar')->isClicked()) {
+                $arrControles = $request->request->All();
+                $this->actualizarDetalle($arrControles, $codigoServicio);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $respuesta = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->eliminarSeleccionados($arrSeleccionados);
+                if ($respuesta == "") {
                     $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
                     return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+                } else {
+                    $objMensaje->Mensaje('error', $respuesta);
                 }
-                if ($form->get('BtnDetalleCerrar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->cerrarSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
-                if ($form->get('BtnDetalleAbrir')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionarCerrado');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->AbrirSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
-                if ($form->get('BtnDetalleMarcar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->marcarSeleccionados($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
-                if ($form->get('BtnDetalleConceptoActualizar')->isClicked()) {
-                    $arrControles = $request->request->All();
-                    $this->actualizarDetalleConcepto($arrControles, $codigoServicio);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
-                if ($form->get('BtnDetalleConceptoEliminar')->isClicked()) {
-                    $arrSeleccionados = $request->request->get('ChkSeleccionarServicioConcepto');
-                    $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->eliminar($arrSeleccionados);
-                    $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
-                    return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
-                }
+            }
+            if ($form->get('BtnDetalleCerrar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->cerrarSeleccionados($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDetalleAbrir')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionarCerrado');
+                $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->AbrirSeleccionados($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDetalleMarcar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionar');
+                $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->marcarSeleccionados($arrSeleccionados);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDetalleConceptoActualizar')->isClicked()) {
+                $arrControles = $request->request->All();
+                $this->actualizarDetalleConcepto($arrControles, $codigoServicio);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
+            if ($form->get('BtnDetalleConceptoEliminar')->isClicked()) {
+                $arrSeleccionados = $request->request->get('ChkSeleccionarServicioConcepto');
+                $em->getRepository('BrasaTurnoBundle:TurServicioDetalleConcepto')->eliminar($arrSeleccionados);
+                $em->getRepository('BrasaTurnoBundle:TurServicio')->liquidar($codigoServicio);
+                return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle', array('codigoServicio' => $codigoServicio)));
+            }
 
-                if ($form->get('BtnImprimir')->isClicked()) {
-                    /* if($arServicio->getEstadoAutorizado() == 1) {
-                      $objServicio = new \Brasa\TurnoBundle\Formatos\FormatoServicio();
-                      $objServicio->Generar($this, $codigoServicio);
-                      } else {
-                      $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
-                      }
-                     * 
-                     */
-                }
+            if ($form->get('BtnImprimir')->isClicked()) {
+                /* if($arServicio->getEstadoAutorizado() == 1) {
+                  $objServicio = new \Brasa\TurnoBundle\Formatos\FormatoServicio();
+                  $objServicio->Generar($this, $codigoServicio);
+                  } else {
+                  $objMensaje->Mensaje("error", "No puede imprimir una cotizacion sin estar autorizada");
+                  }
+                 * 
+                 */
             }
         }
 
