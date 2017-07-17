@@ -366,7 +366,7 @@ class TurFacturaRepository extends EntityRepository {
 
     public function anular($codigoFactura) {
         $em = $this->getEntityManager();
-        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();          
+        $arFactura = new \Brasa\TurnoBundle\Entity\TurFactura();           
         $arFactura = $em->getRepository('BrasaTurnoBundle:TurFactura')->find($codigoFactura);
 
         $strResultado = "";
@@ -401,6 +401,7 @@ class TurFacturaRepository extends EntityRepository {
             
             $arFactura->setVrSubtotal(0);
             $arFactura->setVrRetencionFuente(0);
+            $arFactura->setVrRetencionRenta(0);            
             $arFactura->setVrRetencionIva(0);            
             $arFactura->setVrBaseAIU(0);
             $arFactura->setVrIva(0);
