@@ -8,165 +8,167 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tur_servicio")
  * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurServicioRepository")
  */
-class TurServicio
-{
+class TurServicio {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_servicio_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoServicioPk;                      
-    
+    private $codigoServicioPk;
+
     /**
      * @ORM\Column(name="fecha_generacion", type="date", nullable=true)
-     */    
-    private $fechaGeneracion;    
-    
+     */
+    private $fechaGeneracion;
+
     /**
      * @ORM\Column(name="soporte", type="string", length=50, nullable=true)
      */
-    private $soporte;     
-    
+    private $soporte;
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoClienteFk;
-    
+
     /**
      * @ORM\Column(name="codigo_sector_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoSectorFk;
-    
+
     /**
      * @ORM\Column(name="codigo_servicio_tipo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoServicioTipoFk;
-    
-    /**     
+
+    /**
+     * @ORM\Column(name="cantidad_personal", type="integer", options={"default":0}, nullable=true)
+     */
+    private $cantidadPersonal = 0;
+
+    /**
      * @ORM\Column(name="estado_autorizado", type="boolean", options={"default":false})
-     */    
-    private $estadoAutorizado = false;                 
-    
-    /**     
+     */
+    private $estadoAutorizado = false;
+
+    /**
      * @ORM\Column(name="estado_cerrado", type="boolean", options={"default":false})
-     */    
-    private $estadoCerrado = false;    
-    
-    
+     */
+    private $estadoCerrado = false;
+
     /**
      * @ORM\Column(name="cantidad", type="integer", options={"default":0})
-     */    
-    private $cantidad = 0;    
-    
+     */
+    private $cantidad = 0;
+
     /**
      * @ORM\Column(name="horas", type="integer", options={"default":0})
-     */    
-    private $horas = 0;    
-    
+     */
+    private $horas = 0;
+
     /**
      * @ORM\Column(name="horas_diurnas", type="integer", options={"default":0})
-     */    
-    private $horasDiurnas = 0;     
-    
+     */
+    private $horasDiurnas = 0;
+
     /**
      * @ORM\Column(name="horas_nocturnas", type="integer", options={"default":0})
-     */    
-    private $horasNocturnas = 0;    
-  
+     */
+    private $horasNocturnas = 0;
+
     /**
      * @ORM\Column(name="vr_total_costo", type="float", options={"default":0})
      */
     private $vrTotalCosto = 0;
-    
+
     /**
      * @ORM\Column(name="vr_total_otros", type="float", options={"default":0})
      */
-    private $vrTotalOtros = 0;    
-    
+    private $vrTotalOtros = 0;
+
     /**
      * @ORM\Column(name="vr_total_servicio", type="float", options={"default":0})
      */
-    private $vrTotalServicio = 0;     
-    
+    private $vrTotalServicio = 0;
+
     /**
      * @ORM\Column(name="vr_total_precio_ajustado", type="float", options={"default":0})
      */
-    private $vrTotalPrecioAjustado = 0;            
+    private $vrTotalPrecioAjustado = 0;
 
     /**
      * @ORM\Column(name="vr_total_precio_minimo", type="float", options={"default":0})
      */
-    private $vrTotalPrecioMinimo = 0;        
+    private $vrTotalPrecioMinimo = 0;
 
     /**
      * @ORM\Column(name="vr_subtotal", type="float", options={"default":0})
      */
-    private $vrSubtotal = 0; 
+    private $vrSubtotal = 0;
 
     /**
      * @ORM\Column(name="vr_iva", type="float", options={"default":0})
      */
-    private $vrIva = 0;    
-    
+    private $vrIva = 0;
+
     /**
      * @ORM\Column(name="vr_base_aiu", type="float", options={"default":0})
      */
-    private $vrBaseAiu = 0; 
-    
+    private $vrBaseAiu = 0;
+
     /**
      * @ORM\Column(name="vr_total", type="float", options={"default":0})
      */
-    private $vrTotal = 0;    
-    
+    private $vrTotal = 0;
+
     /**
      * @ORM\Column(name="usuario", type="string", length=50, nullable=true)
-     */    
-    private $usuario;     
-    
+     */
+    private $usuario;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
-    private $comentarios;                       
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\Column(name="vr_salario_base", type="float", options={"default":0}))
      */
-    private $vrSalarioBase = 0;     
-    
+    private $vrSalarioBase = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="serviciosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
-    protected $clienteRel;    
-    
+    protected $clienteRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="serviciosSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
      */
     protected $sectorRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="TurServicioTipo", inversedBy="serviciosServicioTipoRel")
      * @ORM\JoinColumn(name="codigo_servicio_tipo_fk", referencedColumnName="codigo_servicio_tipo_pk")
      */
     protected $servicioTipoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="TurServicioDetalle", mappedBy="servicioRel", cascade={"persist", "remove"})
      */
-    protected $serviciosDetallesServicioRel; 
+    protected $serviciosDetallesServicioRel;
 
     /**
      * @ORM\OneToMany(targetEntity="TurServicioDetalleConcepto", mappedBy="servicioRel", cascade={"persist", "remove"})
      */
     protected $serviciosDetallesConceptosServicioRel;
-    
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->serviciosDetallesServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosDetallesConceptosServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -176,8 +178,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getCodigoServicioPk()
-    {
+    public function getCodigoServicioPk() {
         return $this->codigoServicioPk;
     }
 
@@ -188,8 +189,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setFechaGeneracion($fechaGeneracion)
-    {
+    public function setFechaGeneracion($fechaGeneracion) {
         $this->fechaGeneracion = $fechaGeneracion;
 
         return $this;
@@ -200,8 +200,7 @@ class TurServicio
      *
      * @return \DateTime
      */
-    public function getFechaGeneracion()
-    {
+    public function getFechaGeneracion() {
         return $this->fechaGeneracion;
     }
 
@@ -212,8 +211,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setSoporte($soporte)
-    {
+    public function setSoporte($soporte) {
         $this->soporte = $soporte;
 
         return $this;
@@ -224,8 +222,7 @@ class TurServicio
      *
      * @return string
      */
-    public function getSoporte()
-    {
+    public function getSoporte() {
         return $this->soporte;
     }
 
@@ -236,8 +233,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
+    public function setCodigoClienteFk($codigoClienteFk) {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -248,8 +244,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
-    {
+    public function getCodigoClienteFk() {
         return $this->codigoClienteFk;
     }
 
@@ -260,8 +255,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setCodigoSectorFk($codigoSectorFk)
-    {
+    public function setCodigoSectorFk($codigoSectorFk) {
         $this->codigoSectorFk = $codigoSectorFk;
 
         return $this;
@@ -272,8 +266,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getCodigoSectorFk()
-    {
+    public function getCodigoSectorFk() {
         return $this->codigoSectorFk;
     }
 
@@ -284,8 +277,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
+    public function setEstadoAutorizado($estadoAutorizado) {
         $this->estadoAutorizado = $estadoAutorizado;
 
         return $this;
@@ -296,8 +288,7 @@ class TurServicio
      *
      * @return boolean
      */
-    public function getEstadoAutorizado()
-    {
+    public function getEstadoAutorizado() {
         return $this->estadoAutorizado;
     }
 
@@ -308,8 +299,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setEstadoCerrado($estadoCerrado)
-    {
+    public function setEstadoCerrado($estadoCerrado) {
         $this->estadoCerrado = $estadoCerrado;
 
         return $this;
@@ -320,8 +310,7 @@ class TurServicio
      *
      * @return boolean
      */
-    public function getEstadoCerrado()
-    {
+    public function getEstadoCerrado() {
         return $this->estadoCerrado;
     }
 
@@ -332,8 +321,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setCantidad($cantidad)
-    {
+    public function setCantidad($cantidad) {
         $this->cantidad = $cantidad;
 
         return $this;
@@ -344,8 +332,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getCantidad()
-    {
+    public function getCantidad() {
         return $this->cantidad;
     }
 
@@ -356,8 +343,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setHoras($horas)
-    {
+    public function setHoras($horas) {
         $this->horas = $horas;
 
         return $this;
@@ -368,8 +354,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getHoras()
-    {
+    public function getHoras() {
         return $this->horas;
     }
 
@@ -380,8 +365,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setHorasDiurnas($horasDiurnas)
-    {
+    public function setHorasDiurnas($horasDiurnas) {
         $this->horasDiurnas = $horasDiurnas;
 
         return $this;
@@ -392,8 +376,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getHorasDiurnas()
-    {
+    public function getHorasDiurnas() {
         return $this->horasDiurnas;
     }
 
@@ -404,8 +387,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setHorasNocturnas($horasNocturnas)
-    {
+    public function setHorasNocturnas($horasNocturnas) {
         $this->horasNocturnas = $horasNocturnas;
 
         return $this;
@@ -416,8 +398,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getHorasNocturnas()
-    {
+    public function getHorasNocturnas() {
         return $this->horasNocturnas;
     }
 
@@ -428,8 +409,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotalCosto($vrTotalCosto)
-    {
+    public function setVrTotalCosto($vrTotalCosto) {
         $this->vrTotalCosto = $vrTotalCosto;
 
         return $this;
@@ -440,8 +420,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotalCosto()
-    {
+    public function getVrTotalCosto() {
         return $this->vrTotalCosto;
     }
 
@@ -452,8 +431,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotalOtros($vrTotalOtros)
-    {
+    public function setVrTotalOtros($vrTotalOtros) {
         $this->vrTotalOtros = $vrTotalOtros;
 
         return $this;
@@ -464,8 +442,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotalOtros()
-    {
+    public function getVrTotalOtros() {
         return $this->vrTotalOtros;
     }
 
@@ -476,8 +453,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotalServicio($vrTotalServicio)
-    {
+    public function setVrTotalServicio($vrTotalServicio) {
         $this->vrTotalServicio = $vrTotalServicio;
 
         return $this;
@@ -488,8 +464,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotalServicio()
-    {
+    public function getVrTotalServicio() {
         return $this->vrTotalServicio;
     }
 
@@ -500,8 +475,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotalPrecioAjustado($vrTotalPrecioAjustado)
-    {
+    public function setVrTotalPrecioAjustado($vrTotalPrecioAjustado) {
         $this->vrTotalPrecioAjustado = $vrTotalPrecioAjustado;
 
         return $this;
@@ -512,8 +486,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotalPrecioAjustado()
-    {
+    public function getVrTotalPrecioAjustado() {
         return $this->vrTotalPrecioAjustado;
     }
 
@@ -524,8 +497,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotalPrecioMinimo($vrTotalPrecioMinimo)
-    {
+    public function setVrTotalPrecioMinimo($vrTotalPrecioMinimo) {
         $this->vrTotalPrecioMinimo = $vrTotalPrecioMinimo;
 
         return $this;
@@ -536,8 +508,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotalPrecioMinimo()
-    {
+    public function getVrTotalPrecioMinimo() {
         return $this->vrTotalPrecioMinimo;
     }
 
@@ -548,8 +519,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrTotal($vrTotal)
-    {
+    public function setVrTotal($vrTotal) {
         $this->vrTotal = $vrTotal;
 
         return $this;
@@ -560,8 +530,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrTotal()
-    {
+    public function getVrTotal() {
         return $this->vrTotal;
     }
 
@@ -572,8 +541,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setUsuario($usuario)
-    {
+    public function setUsuario($usuario) {
         $this->usuario = $usuario;
 
         return $this;
@@ -584,8 +552,7 @@ class TurServicio
      *
      * @return string
      */
-    public function getUsuario()
-    {
+    public function getUsuario() {
         return $this->usuario;
     }
 
@@ -596,8 +563,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -608,8 +574,7 @@ class TurServicio
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -620,8 +585,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null)
-    {
+    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null) {
         $this->clienteRel = $clienteRel;
 
         return $this;
@@ -632,8 +596,7 @@ class TurServicio
      *
      * @return \Brasa\TurnoBundle\Entity\TurCliente
      */
-    public function getClienteRel()
-    {
+    public function getClienteRel() {
         return $this->clienteRel;
     }
 
@@ -644,8 +607,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setSectorRel(\Brasa\TurnoBundle\Entity\TurSector $sectorRel = null)
-    {
+    public function setSectorRel(\Brasa\TurnoBundle\Entity\TurSector $sectorRel = null) {
         $this->sectorRel = $sectorRel;
 
         return $this;
@@ -656,8 +618,7 @@ class TurServicio
      *
      * @return \Brasa\TurnoBundle\Entity\TurSector
      */
-    public function getSectorRel()
-    {
+    public function getSectorRel() {
         return $this->sectorRel;
     }
 
@@ -668,8 +629,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function addServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel)
-    {
+    public function addServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel) {
         $this->serviciosDetallesServicioRel[] = $serviciosDetallesServicioRel;
 
         return $this;
@@ -680,8 +640,7 @@ class TurServicio
      *
      * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel
      */
-    public function removeServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel)
-    {
+    public function removeServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel) {
         $this->serviciosDetallesServicioRel->removeElement($serviciosDetallesServicioRel);
     }
 
@@ -690,8 +649,7 @@ class TurServicio
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServiciosDetallesServicioRel()
-    {
+    public function getServiciosDetallesServicioRel() {
         return $this->serviciosDetallesServicioRel;
     }
 
@@ -702,8 +660,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function addServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel)
-    {
+    public function addServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel) {
         $this->serviciosDetallesConceptosServicioRel[] = $serviciosDetallesConceptosServicioRel;
 
         return $this;
@@ -714,8 +671,7 @@ class TurServicio
      *
      * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel
      */
-    public function removeServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel)
-    {
+    public function removeServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel) {
         $this->serviciosDetallesConceptosServicioRel->removeElement($serviciosDetallesConceptosServicioRel);
     }
 
@@ -724,8 +680,7 @@ class TurServicio
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServiciosDetallesConceptosServicioRel()
-    {
+    public function getServiciosDetallesConceptosServicioRel() {
         return $this->serviciosDetallesConceptosServicioRel;
     }
 
@@ -736,8 +691,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrSubtotal($vrSubtotal)
-    {
+    public function setVrSubtotal($vrSubtotal) {
         $this->vrSubtotal = $vrSubtotal;
 
         return $this;
@@ -748,8 +702,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrSubtotal()
-    {
+    public function getVrSubtotal() {
         return $this->vrSubtotal;
     }
 
@@ -760,8 +713,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrBaseAiu($vrBaseAiu)
-    {
+    public function setVrBaseAiu($vrBaseAiu) {
         $this->vrBaseAiu = $vrBaseAiu;
 
         return $this;
@@ -772,8 +724,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrBaseAiu()
-    {
+    public function getVrBaseAiu() {
         return $this->vrBaseAiu;
     }
 
@@ -784,8 +735,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrIva($vrIva)
-    {
+    public function setVrIva($vrIva) {
         $this->vrIva = $vrIva;
 
         return $this;
@@ -796,8 +746,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrIva()
-    {
+    public function getVrIva() {
         return $this->vrIva;
     }
 
@@ -808,8 +757,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setVrSalarioBase($vrSalarioBase)
-    {
+    public function setVrSalarioBase($vrSalarioBase) {
         $this->vrSalarioBase = $vrSalarioBase;
 
         return $this;
@@ -820,8 +768,7 @@ class TurServicio
      *
      * @return float
      */
-    public function getVrSalarioBase()
-    {
+    public function getVrSalarioBase() {
         return $this->vrSalarioBase;
     }
 
@@ -832,8 +779,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setCodigoServicioTipoFk($codigoServicioTipoFk)
-    {
+    public function setCodigoServicioTipoFk($codigoServicioTipoFk) {
         $this->codigoServicioTipoFk = $codigoServicioTipoFk;
 
         return $this;
@@ -844,8 +790,7 @@ class TurServicio
      *
      * @return integer
      */
-    public function getCodigoServicioTipoFk()
-    {
+    public function getCodigoServicioTipoFk() {
         return $this->codigoServicioTipoFk;
     }
 
@@ -856,8 +801,7 @@ class TurServicio
      *
      * @return TurServicio
      */
-    public function setServicioTipoRel(\Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel = null)
-    {
+    public function setServicioTipoRel(\Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel = null) {
         $this->servicioTipoRel = $servicioTipoRel;
 
         return $this;
@@ -868,8 +812,32 @@ class TurServicio
      *
      * @return \Brasa\TurnoBundle\Entity\TurServicioTipo
      */
-    public function getServicioTipoRel()
-    {
+    public function getServicioTipoRel() {
         return $this->servicioTipoRel;
+    }
+
+
+    /**
+     * Set cantidadPersonal
+     *
+     * @param integer $cantidadPersonal
+     *
+     * @return TurServicio
+     */
+    public function setCantidadPersonal($cantidadPersonal)
+    {
+        $this->cantidadPersonal = $cantidadPersonal;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadPersonal
+     *
+     * @return integer
+     */
+    public function getCantidadPersonal()
+    {
+        return $this->cantidadPersonal;
     }
 }

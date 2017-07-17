@@ -69,8 +69,8 @@
                     <tr>
                         <td class="titulo">TIPO:</td>
                         <td class="td-in-well">{{ arServicio.servicioTipoRel.nombre | default('') }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>                                                
+                        <td class="titulo">CANTIDAD PERSONAL</td>
+                        <td class="td-in-well" align="right">{{ arServicio.cantidadPersonal }}</td>                                                
                         <td class="titulo" >TOTAL OTROS:</td>
                         <td align="right">{{ arServicio.vrTotalOtros | number_format(0, '.', ',')}}</td>
                     </tr>                 
