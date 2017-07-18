@@ -107,6 +107,9 @@ class EstadoCuenta extends \FPDF_FPDF {
         $statement = $connection->prepare($strSql);
         $statement->execute();
         $resultados = $statement->fetchAll();
+        $valorTotal = 0;
+        $abonoTotal = 0;
+        $saldoTotal = 0;
 
         foreach ($resultados as $resultado) {
             $pdf->Cell(28, 4, utf8_decode($resultado['tipoCuentaCobrar']), 1, 0, 'L');
@@ -124,7 +127,26 @@ class EstadoCuenta extends \FPDF_FPDF {
 
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
+            $valorTotal += $resultado['valorOriginal'];
+            $abonoTotal += $resultado['abono'];
+            $saldoTotal += $resultado['saldo'];
         }
+                //TOTALES
+                $pdf->Ln(2);
+                $pdf->Cell(151, 4, "", 0, 0, 'R');
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetFillColor(236, 236, 236);
+                $pdf->Cell(20, 4, "VALOR:", 1, 0, 'R',true);
+                $pdf->Cell(25, 4, number_format($valorTotal, 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln();
+                $pdf->Cell(151, 4, "", 0, 0, 'R');
+                $pdf->Cell(20, 4, "ABONO:", 1, 0, 'R',true);
+                $pdf->Cell(25, 4, number_format($abonoTotal, 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln();
+                $pdf->Cell(151, 4, "", 0, 0, 'R');
+                $pdf->Cell(20, 4, "SALDO", 1, 0, 'R',true);
+                $pdf->Cell(25, 4, number_format($saldoTotal, 0, '.', ','), 1, 0, 'R');
+                $pdf->Ln(-8);
     }
 
     public function Footer() {
