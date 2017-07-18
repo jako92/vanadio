@@ -250,6 +250,24 @@ class NovedadController extends Controller {
         ));
     }
 
+    /**
+     * @Route("/tur/movimiento/novedad/ver/programacion/{codigoNovedad}", name="brs_tur_movimiento_novedad_ver_programacion")
+     */
+    public function verProgramacionRecursoAction(Request $request, $codigoNovedad) {
+        $em = $this->getDoctrine()->getManager();
+        $arNovedad = new \Brasa\TurnoBundle\Entity\TurNovedad();
+        $arNovedad = $em->getRepository('BrasaTurnoBundle:TurNovedad')->find($codigoNovedad);
+        $strFecha = $arNovedad->getFechaDesde();
+        $strAnio = $strFecha->format('Y');
+        $strMes = $strFecha->format('m');
+        //Consulta de las programaciones detalles del recurso.
+        $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+        $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findBy(array('codigoRecursoFk' => $arNovedad->getCodigoRecursoFk(), 'anio' => $strAnio, 'mes' => $strMes));
+        return $this->render('BrasaTurnoBundle:Movimientos/Novedad:verProgramacion.html.twig', array(
+                    'arProgramacionDetalles' => $arProgramacionDetalles
+        ));
+    }
+
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;

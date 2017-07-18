@@ -89,6 +89,7 @@
                 <th>TIPO</th>
                 <th>DESDE</th>
                 <th>HASTA</th>
+                <th>IDENTIFICACION</th>
                 <th>RECURSO</th>
                 <th>REEMPLAZO</th>
                 <th>USUARIO</th>
@@ -104,6 +105,7 @@
                     <td>{{ arNovedades.novedadTipoRel.nombre |default('')  }}</td>                                              
                     <td>{{ arNovedades.fechaDesde |date("Y/m/d")  }}</td>
                     <td>{{ arNovedades.fechaHasta |date("Y/m/d")  }}</td>
+                    <td><a href="javascript:abrirVentana3('{{ path('brs_tur_movimiento_novedad_ver_programacion', {'codigoNovedad': arNovedades.codigoNovedadPk}) }}', 'VerDetallePuesto', 600, 1200)">{{ arNovedades.RecursoRel.numeroIdentificacion }}</a></td> 
                     <td>{{ arNovedades.recursoRel.nombreCorto |default('')  }}</td>                              
                     <td>{{ arNovedades.recursoReemplazoRel.nombreCorto |default('')  }}</td> 
                     <td>{{ arNovedades.usuario  }}</td> 
