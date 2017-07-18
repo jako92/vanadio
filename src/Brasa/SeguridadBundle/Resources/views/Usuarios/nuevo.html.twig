@@ -43,10 +43,12 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.username) }}
                     </div>
-                    <label for="form_password" class="col-sm-2 control-label">Clave:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.password) }}
-                    </div>
+                    {% if codigoUsuario == 0 %}
+                        <label for="form_password" class="col-sm-2 control-label">Clave:</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.password) }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_cargo" class="col-sm-2 control-label">Actividad:</label>

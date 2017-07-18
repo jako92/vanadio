@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\SecurityContext;
 use Brasa\SeguridadBundle\Form\Type\UserType;
+use Brasa\SeguridadBundle\Form\Type\UserEditarType;
 use Brasa\SeguridadBundle\Form\Type\SegPermisoDocumentoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -45,20 +46,23 @@ class SegUsuariosController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
+        $form = $this->createForm(UserType::class, $arUsuario);
         if ($codigoUsuario != 0) {
             $arUsuario = $em->getRepository('BrasaSeguridadBundle:User')->find($codigoUsuario);
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($arUsuario);
             $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
+            $form = $this->createForm(UserEditarType::class, $arUsuario);
         }
-        $form = $this->createForm(UserType::class, $arUsuario);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arUsuario = $form->getData();
-            $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($arUsuario);
-            $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
-            $arUsuario->setPassword($password);
+            if ($codigoUsuario == 0) {
+                $factory = $this->get('security.encoder_factory');
+                $encoder = $factory->getEncoder($arUsuario);
+                $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
+                $arUsuario->setPassword($password);
+            }
             $arSegPermisoGrupo = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->asignarPermisosUsuario($arUsuario->getCodigoGrupoFk(), $arUsuario);
             $em->persist($arUsuario);
             $em->flush();
@@ -66,6 +70,7 @@ class SegUsuariosController extends Controller {
         }
         return $this->render('BrasaSeguridadBundle:Usuarios:nuevo.html.twig', array(
                     'form' => $form->createView(),
+                    'codigoUsuario' => $codigoUsuario
         ));
     }
 
