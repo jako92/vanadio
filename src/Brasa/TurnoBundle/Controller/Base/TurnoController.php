@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Brasa\TurnoBundle\Form\Type\TurTurnoType;
@@ -92,16 +94,42 @@ class TurnoController extends Controller {
 
     private function lista() {
         $em = $this->getDoctrine()->getManager();
-        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurTurno')->listaDQL();
+        $session = new session;
+        $strHoraDesde = "";
+        $strHoraHasta = "";
+        $filtrarHoras = $session->get('filtrarHoras');
+        if($filtrarHoras) {
+            $strHoraDesde = $session->get('filtroHoraDesde')->format('H:i:s');
+            $strHoraHasta = $session->get('filtroHoraHasta')->format('H:i:s');
+        }
+        $this->strListaDql = $em->getRepository('BrasaTurnoBundle:TurTurno')->listaDQL(
+        $session->get('filtroCodigoTurno'),
+        $session->get('filtroTurnoNombre'),
+        $strHoraDesde,
+        $strHoraHasta);
     }
 
     private function filtrar($form) {
         $session = new session;
+        $session->set('filtroCodigoTurno', $form->get('TxtCodigo')->getData());
+        $session->set('filtroTurnoNombre', $form->get('TxtNombre')->getData());
+        $session->set('filtrarHoras', $form->get('filtrarHoras')->getData());
+        $dateHoraDesde = $form->get('horaDesde')->getData();
+        $dateHoraHasta = $form->get('horaHasta')->getData();
+        $session->set('filtroHoraDesde', $dateHoraDesde);
+        $session->set('filtroHoraHasta', $dateHoraHasta);                 
+        $session->set('filtrarHoras', $form->get('filtrarHoras')->getData());
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
+        $session = new session;
         $form = $this->createFormBuilder()
+                ->add('filtrarHoras', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtrarHoras')))
+                ->add('horaDesde', TimeType::class, array('data'=> $session->get('filtroHoraDesde')))
+                ->add('horaHasta', TimeType::class, array('data'=> $session->get('filtroHoraHasta')))
+                ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $session->get('filtroTurnoNombre')))
+                ->add('TxtCodigo', TextType::class, array('data' => $session->get('filtroCodigoTurno')))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))

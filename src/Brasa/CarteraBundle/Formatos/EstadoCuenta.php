@@ -54,14 +54,14 @@ class EstadoCuenta extends \FPDF_FPDF {
     public function EncabezadoDetalles() {
         $this->Ln(14);
 
-        $header = array('NIT', 'NOMBRE', 'CIUDAD', 'TELEFONO');
+        $header = array();
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(.2);
         $this->SetFont('', 'B', 6.8);
 
-        $w = array(28, 73, 26, 30);
+        $w = array();
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -78,7 +78,7 @@ class EstadoCuenta extends \FPDF_FPDF {
     public function Body($pdf) {
 
 
-        $header = array('TIPO', 'NUMERO', 'FECHA', 'VENCE', 'ASESOR', 'PLAZO', 'DIAS', 'RANGO', 'VALOR', 'ABONO', 'SALDO');
+        $header = array('TIPO', 'NUMERO', 'NIT', 'NOMBRE', 'FECHA', 'VENCE', 'PLAZO', 'DIAS', 'RANGO', 'VALOR', 'ABONO', 'SALDO');
         $pdf->SetFillColor(236, 236, 236);
         $pdf->SetTextColor(0);
         $pdf->SetDrawColor(0, 0, 0);
@@ -86,7 +86,7 @@ class EstadoCuenta extends \FPDF_FPDF {
         $pdf->SetFont('Arial', 'B', 6);
 
         //creamos la cabecera de la tabla.
-        $w = array(28, 13, 15, 15, 30, 13, 13, 13, 17, 17, 17);
+        $w = array(28, 11, 15, 48, 13, 13, 8, 8, 13, 13, 13, 13);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $pdf->Cell($w[$i], 4, $header[$i], 1, 0, 'L', 1);
@@ -110,16 +110,17 @@ class EstadoCuenta extends \FPDF_FPDF {
 
         foreach ($resultados as $resultado) {
             $pdf->Cell(28, 4, utf8_decode($resultado['tipoCuentaCobrar']), 1, 0, 'L');
-            $pdf->Cell(13, 4, $resultado['numeroDocumento'], 1, 0, 'L');
-            $pdf->Cell(15, 4, $resultado['fecha'], 1, 0, 'L');
-            $pdf->Cell(15, 4, $resultado['fechaVence'], 1, 0, 'L');
-            $pdf->Cell(30, 4, $resultado['nombreAsesor'], 1, 0, 'L');
-            $pdf->Cell(13, 4, $resultado['plazo'], 1, 0, 'R');
-            $pdf->Cell(13, 4, $resultado['diasVencida'], 1, 0, 'R');
+            $pdf->Cell(11, 4, $resultado['numeroDocumento'], 1, 0, 'L');
+            $pdf->Cell(15, 4, $resultado['nitCliente'], 1, 0, 'L');
+            $pdf->Cell(48, 4, $resultado['nombreCliente'], 1, 0, 'L');
+            $pdf->Cell(13, 4, $resultado['fecha'], 1, 0, 'L');
+            $pdf->Cell(13, 4, $resultado['fechaVence'], 1, 0, 'L');
+            $pdf->Cell(8, 4, $resultado['plazo'], 1, 0, 'R');
+            $pdf->Cell(8, 4, $resultado['diasVencida'], 1, 0, 'R');
             $pdf->Cell(13, 4, $resultado['rango'], 1, 0, 'L');
-            $pdf->Cell(17, 4, number_format($resultado['valorOriginal'], 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(17, 4, number_format($resultado['abono'], 0, '.', ','), 1, 0, 'R');
-            $pdf->Cell(17, 4, number_format($resultado['saldo'], 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(13, 4, number_format($resultado['valorOriginal'], 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(13, 4, number_format($resultado['abono'], 0, '.', ','), 1, 0, 'R');
+            $pdf->Cell(13, 4, number_format($resultado['saldo'], 0, '.', ','), 1, 0, 'R');
 
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 15);
