@@ -59,6 +59,7 @@
             <th>SALARIO</th>
             <th>VIGENTE</th>
             <th></th>
+            <th></th>
         </tr>
         {% for arContratos in arContratos %}
             <tr>
@@ -81,6 +82,7 @@
                         <button class="btn btn-default btn-xs" type="submit" name="OpImprimir" value="{{ arContratos.codigoContratoPk }}">Imprimir</button>
                     {% endif %}    
                 </td>
+                <td><button class="btn btn-default btn-xs" type="submit" name="OpImprimirHistorico" value="{{ arContratos.codigoContratoPk }}">Historico</button></td>
             </tr>
         {% endfor %}
     </table>

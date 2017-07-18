@@ -104,6 +104,26 @@ class GenContenido implements FixtureInterface {
                                        #5 = Cargo empleado
                                        #6 = Documento empleado");
         }
+        
+        $arContenido = $manager->getRepository('BrasaGeneralBundle:GenContenido')->find(5);
+        if (!$arContenido) {
+            $arContenido = new \Brasa\GeneralBundle\Entity\GenContenido();
+            $arContenido->setCodigoContenidoPk(5);
+            $arContenido->setTitulo("CERTIFICADO LABORAL HISTORICO");
+            $arContenido->setNombre("CERTIFICADO LABORAL HISTORICO");
+            $arContenido->setEtiqueta("#1 = NOMBRE EMPRESA
+                                       #2 = NOMBRE EMPLEADO
+                                       #3 = IDENTIFICACION EMPLEADO
+                                       #4 = CIUDAD EXPEDIDICON");
+            $manager->persist($arContenido);
+        } else {
+            $arContenido->setTitulo("CERTIFICADO LABORAL HISTORICO");
+            $arContenido->setNombre("CERTIFICADO LABORAL HISTORICO");
+            $arContenido->setEtiqueta("#1 = NOMBRE EMPRESA
+                                       #2 = NOMBRE EMPLEADO
+                                       #3 = IDENTIFICACION EMPLEADO
+                                       #4 = CIUDAD EXPEDIDICON");
+        }
 
         $manager->flush();
     }
