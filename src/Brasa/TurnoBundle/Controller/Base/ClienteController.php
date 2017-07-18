@@ -377,6 +377,7 @@ class ClienteController extends Controller {
             if ($form->get('BtnCargar')->isClicked()) {
                 if ($form->get('attachment')->getData() != "") {
                     $this->importarPuestos($form, $codigoCliente);
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 } else {
                     $objMensaje->Mensaje("error", "Por favor cargar un archivo");
                 }
@@ -769,8 +770,10 @@ class ClienteController extends Controller {
                 $arPuesto->setCelular($celular);
                 $arPuesto->setNumeroComunicacion($numeroComunicacion);
                 $arPuesto->setCodigoInterface($codigoInterfaz);
+                $em->persist($arPuesto);
             }
         }
+        $em->flush();
     }
 
 }
