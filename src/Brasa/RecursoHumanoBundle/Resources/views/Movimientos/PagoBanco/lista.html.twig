@@ -63,6 +63,7 @@
                 <th>APLICACIÓN</th>
                 <th>SEC</th>
                 <th>AUT</th>
+                <th>GEN</th>
                 <th>TOTAL</th>
                 <th>USUARIO</th>
                 <th></th>
@@ -81,6 +82,7 @@
                     <td>{{ arPagoBancos.fechaAplicacion|date('Y/m/d') }}</td>                
                     <td>{{ arPagoBancos.secuencia  }}</td>                
                     <td>{% if arPagoBancos.estadoAutorizado == 1 %} SI {% else %} NO {% endif %}</td>                                
+                    <td>{% if arPagoBancos.estadoGenerado == 1 %} SI {% else %} NO {% endif %}</td>                                
                     <td style="text-align: right">{{ arPagoBancos.vrTotalPago | number_format(0, '.', ',') }}</td>
                     <td>{{ arPagoBancos.codigoUsuario  }}</td>                                                    
                     <td style="text-align: center">{% if arPagoBancos.estadoAutorizado == 0 %}<a href="{{ path('brs_rhu_movimiento_pago_banco_nuevo', {'codigoPagoBanco': arPagoBancos.codigoPagoBancoPk }) }}" ><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a>{% endif %}</td>                                            

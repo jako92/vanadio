@@ -689,6 +689,7 @@ class PagoBancoController extends Controller {
     }
 
     private function generarExcel() {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         set_time_limit(0);
         ini_set("memory_limit", -1);
@@ -704,13 +705,20 @@ class PagoBancoController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'K'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
+        }
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'CÓDIGO')
-                ->setCellValue('B1', 'DESCRIPCIÓN')
-                ->setCellValue('C1', 'CUENTA')
-                ->setCellValue('D1', 'FECHA TRANSMISIÓN')
-                ->setCellValue('E1', 'FECHA APLICACIÓN')
-                ->setCellValue('F1', 'SECUENCIA');
+                ->setCellValue('A1', 'ID')
+                ->setCellValue('B1', 'NUMERO')
+                ->setCellValue('C1', 'FECHA')
+                ->setCellValue('D1', 'DESCRIPCIÓN')
+                ->setCellValue('E1', 'CUENTA')
+                ->setCellValue('F1', 'FECHA_TRANS')
+                ->setCellValue('G1', 'FECHA_APLIC')
+                ->setCellValue('H1', 'AUT')
+                ->setCellValue('I1', 'GEN')
+                ->setCellValue('J1', 'SECUENCIA');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -719,11 +727,15 @@ class PagoBancoController extends Controller {
 
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPagoBanco->getCodigoPagoBancoPk())
-                    ->setCellValue('B' . $i, $arPagoBanco->getDescripcion())
-                    ->setCellValue('C' . $i, $arPagoBanco->getCuentaRel()->getNombre())
-                    ->setCellValue('D' . $i, $arPagoBanco->getFechaTrasmision())
-                    ->setCellValue('E' . $i, $arPagoBanco->getFechaAplicacion())
-                    ->setCellValue('F' . $i, $arPagoBanco->getSecuencia());
+                    ->setCellValue('B' . $i, $arPagoBanco->getNumero())
+                    ->setCellValue('C' . $i, $arPagoBanco->getFecha()->format('Y-m-d'))
+                    ->setCellValue('D' . $i, $arPagoBanco->getDescripcion())
+                    ->setCellValue('E' . $i, $arPagoBanco->getCuentaRel()->getNombre())
+                    ->setCellValue('F' . $i, $arPagoBanco->getFechaTrasmision()->format('Y-m-d'))
+                    ->setCellValue('G' . $i, $arPagoBanco->getFechaAplicacion()->format('Y-m-d'))
+                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arPagoBanco->getEstadoAutorizado()))
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arPagoBanco->getEstadoGenerado()))
+                    ->setCellValue('J' . $i, $arPagoBanco->getSecuencia());
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('PagoBancos');
