@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PagoBancoController extends Controller {
 
@@ -647,7 +648,12 @@ class PagoBancoController extends Controller {
             $strFechaHasta = $session->get('filtroRhuPagoBancoFechaHasta');
         }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->listaDQL(
-                $strFechaDesde, $strFechaHasta, $session->get('filtroCodigoPagoBancoTipo')
+                $strFechaDesde, 
+                $strFechaHasta, 
+                $session->get('filtroCodigoPagoBancoTipo'),
+                $session->get('filtroRhuPagoBancoAutorizado'),
+                $session->get('filtroRhuPagoBancoGenerado')
+                
         );
     }
 
@@ -664,6 +670,8 @@ class PagoBancoController extends Controller {
         if ($form->get('pagoBancoTipoRel')->getData()) {
             $codigoPagoTipo = $form->get('pagoBancoTipoRel')->getData()->getCodigoPagoBancoTipoPk();
         }
+        $session->set('filtroRhuPagoBancoGenerado', $form->get('estadoGenerado')->getData());
+        $session->set('filtroRhuPagoBancoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroCodigoPagoBancoTipo', $codigoPagoTipo);
         $dateFechaDesde = $form->get('fechaDesde')->getData();
         $dateFechaHasta = $form->get('fechaHasta')->getData();
@@ -863,6 +871,8 @@ class PagoBancoController extends Controller {
                 //->add('entidadExamenRel', EntityType::class, $arrayPropiedades) 
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroRhuPagoBancoAutorizado')))                
+                ->add('estadoGenerado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroRhuPagoBancoGenerado')))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuPagoBancoFiltrarFecha')))
                 ->add('pagoBancoTipoRel', EntityType::class, $arrayPropiedadesTipo)
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))

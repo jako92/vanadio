@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuPagoBancoRepository extends EntityRepository {        
         
-    public function listaDQL($strFechaDesde = "",$strFechaHasta = "", $codigoPagoBancoTipo = "") {                
+    public function listaDQL($strFechaDesde = "",$strFechaHasta = "", $codigoPagoBancoTipo = "", $estadoAutorizado = "", $estadoGenerado = "") {                
         $dql   = "SELECT pb FROM BrasaRecursoHumanoBundle:RhuPagoBanco pb WHERE pb.codigoPagoBancoPk <> 0";
         if($strFechaDesde != "") {
             $dql .= " AND pb.fechaAplicacion >= '" .$strFechaDesde. "'";
@@ -22,7 +22,18 @@ class RhuPagoBancoRepository extends EntityRepository {
         if($codigoPagoBancoTipo != "") {
             $dql .= " AND pb.codigoPagoBancoTipoFk = " .$codigoPagoBancoTipo;
         }   
-        
+        if($estadoGenerado == 1 ) {
+            $dql .= " AND pb.estadoGenerado = 1";
+        } 
+        if($estadoGenerado == '0') {
+            $dql .= " AND pb.estadoGenerado = 0";
+        }        
+        if($estadoAutorizado == 1 ) {
+            $dql .= " AND pb.estadoAutorizado = 1";
+        } 
+        if($estadoAutorizado == '0') {
+            $dql .= " AND pb.estadoAutorizado = 0";
+        }        
         $dql .= " ORDER BY pb.codigoPagoBancoPk DESC";
         return $dql;
     }                            
