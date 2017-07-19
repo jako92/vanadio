@@ -15,7 +15,8 @@ class DefaultController extends Controller {
     public function indexAction() {
         $session = $this->get('session');
         $em = $this->getDoctrine()->getManager();
-        $arFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findAll();
+        $arUsuario = $this->getUser();
+        $arFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findBy(array('usuario' => $arUsuario->getUsername()));
         $session->set('arFavoritos', $arFavoritos);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
 

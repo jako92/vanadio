@@ -15,11 +15,12 @@ class FavoritoController extends Controller {
      * @Route("/general/utilidad/favorito/lista", name="brs_gen_utilidad_favorito")
      */
     public function listaAction(Request $request) {
+        $session = $this->get('session');
         $em = $this->getDoctrine()->getManager();
         $arUsuario = $this->getUser();
         $paginator = $this->get('knp_paginator');
         $form = $this->createFormBuilder()
-                ->add('nombre', TextType::class, array('required' => 'false'))
+                ->add('nombre', TextType::class, array('required' => false))
                 ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
                 ->getForm();
@@ -33,6 +34,7 @@ class FavoritoController extends Controller {
         }
         $queryFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findBy(array('usuario' => $arUsuario->getUsername()));
         $arFavoritos = $paginator->paginate($queryFavoritos, $request->query->getInt('page', 1), 200);
+        $session->set('arFavoritos', $arFavoritos);
         return $this->render('BrasaGeneralBundle:Utilidades/Favorito:lista.html.twig', array(
                     'arFavoritos' => $arFavoritos,
                     'form' => $form->createView()
@@ -43,6 +45,7 @@ class FavoritoController extends Controller {
      * @Route("/general/utilidad/favorito/nuevo/{codigoFavorito}", name="brs_gen_utilidad_favorito_nuevo")
      */
     public function nuevoAction(Request $request, $codigoFavorito) {
+        $session = $this->get('session');
         $em = $this->getDoctrine()->getManager();
         $arUsuario = $this->getUser();
         $arFavorito = new \Brasa\GeneralBundle\Entity\GenFavorito();
@@ -61,6 +64,7 @@ class FavoritoController extends Controller {
             } else {
                 return $this->redirect($this->generateUrl('brs_gen_utilidad_favorito'));
             }
+            $session->set('arFavoritos', $arFavoritos);
         }
         return $this->render('BrasaGeneralBundle:Utilidades/Favorito:nuevo.html.twig', array(
                     'arFavorito' => $arFavorito,
@@ -71,6 +75,7 @@ class FavoritoController extends Controller {
      * @Route("/general/utilidad/favorito/menu/{route}", name="brs_gen_utilidad_favorito_menu")
      */
     public function nuevoMenuAction(Request $request, $route) {
+        $session = $this->get('session');
         $em = $this->getDoctrine()->getManager();
         $arUsuario = $this->getUser();
         $arFavorito = new \Brasa\GeneralBundle\Entity\GenFavorito();
@@ -81,7 +86,6 @@ class FavoritoController extends Controller {
         $em->flush();
         //enviar los favoritos del usuario en el menu
         $arFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findBy(array('usuario' => $arUsuario->getUsername()));
-        $session = $this->get('session');
         $session->set('arFavoritos', $arFavoritos);
         return $this->redirect($this->generateUrl($route));
     }
