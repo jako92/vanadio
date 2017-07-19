@@ -44,7 +44,7 @@ class ContabilizarPagoBancoController extends Controller
                     $arCentroCosto = new \Brasa\ContabilidadBundle\Entity\CtbCentroCosto();
                     $arCentroCosto =$em->getRepository('BrasaContabilidadBundle:CtbCentroCosto')->find(1);
                     foreach ($arrSeleccionados AS $codigo) {
-                        $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();                        
+                        $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();                                 
                         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigo);
                         $arPagoBancoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
                         $arPagoBancoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->findBy(array('codigoPagoBancoFk' => $codigo));
@@ -95,7 +95,7 @@ class ContabilizarPagoBancoController extends Controller
                                             $arRegistro->setDebito($arPagoBancoDetalle->getVrPago());
                                             $arRegistro->setSucursalRel($arSucursal);
                                             $arRegistro->setCodigoAreaFk($area);
-                                            $arRegistro->setDescripcionContable('PAGO');
+                                            $arRegistro->setDescripcionContable($arPagoBanco->getDescripcion());
                                             $em->persist($arRegistro);                                    
 
 
@@ -111,7 +111,7 @@ class ContabilizarPagoBancoController extends Controller
                                                     $arRegistro->setNumeroReferencia($docRerefencia);
                                                     $arRegistro->setFecha($arPagoBanco->getFecha());
                                                     $arRegistro->setCredito($arPagoBancoDetalle->getVrPago());
-                                                    $arRegistro->setDescripcionContable('');
+                                                    $arRegistro->setDescripcionContable($arPagoBanco->getDescripcion());
                                                     $arRegistro->setSucursalRel($arSucursal);
                                                     $arRegistro->setCodigoAreaFk($area);                                                    
                                                     $em->persist($arRegistro);                                                                                                                                            
