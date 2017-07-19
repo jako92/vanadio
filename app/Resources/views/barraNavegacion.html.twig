@@ -16,6 +16,32 @@
             <!-- Messages: style can be found in dropdown.less-->
             <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-star"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">Favoritos</li>
+                    <li>
+                        <!-- inner menu: contains the actual data -->
+                        <ul class="menu">
+                            {% set route = app.request.attributes.get('_route') %}
+                            {% for arFavorito in app.session.get('arFavoritos') %}
+                                <li>
+                                    <a href="{{ path(arFavorito.urlDocumento) }}">
+                                        <h4>
+                                            {{arFavorito.nombre}}
+                                        </h4>
+                                        <p>{{arFavorito.nombre}}</p>
+                                    </a>
+                                </li>
+                            {%  endfor  %}
+                        </ul>
+                    </li>
+                    <li class="footer"><a href="{{ path('brs_gen_utilidad_favorito') }}">Ver todos los favoritos</a></li>
+                    <li class="footer"><a href="{{ path('brs_gen_utilidad_favorito_menu', { 'route': route }) }}">Agregar</a></li>
+                </ul>
+            </li>
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-envelope-o"></i>
                     <span class="label label-success">1</span>
                 </a>
@@ -66,7 +92,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-flag-o"></i>
                     {% if (app.user.tareasPendientes) %}
-                    <span class="label label-warning">{{ app.user.tareasPendientes }}</span>
+                        <span class="label label-warning">{{ app.user.tareasPendientes }}</span>
                     {% endif %}
                 </a>
                 <ul class="dropdown-menu">

@@ -1,0 +1,42 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Favorito nuevo - Soga App{% endblock %}
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            General
+            <small>Favorito: nuevo</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> General</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Favoritos</a></li>
+            <li class="active">Nuevo</li>
+        </ol>
+    </section>   
+    <section class="content">  
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacion</div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label for="form_nombre" class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.nombre, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label for="form_urlModulo" class="col-sm-2 control-label">Url (Direccion web):</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.urlDocumento, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div> 
+            </div>
+        </div>                   
+        <div class="modal-footer">
+            <a class="btn btn-default btn-sm" href="{{ path('brs_gen_utilidad_favorito') }}">Cancelar</a>        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+            {{ form_widget(form.guardarnuevo, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
+        </div>   
+        {{ form_end(form) }}
+        <br/><br/><br/><br/>
+    </section>
+{% endblock %}

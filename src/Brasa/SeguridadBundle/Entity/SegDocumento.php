@@ -8,51 +8,53 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="seg_documento")
  * @ORM\Entity(repositoryClass="Brasa\SeguridadBundle\Repository\SegDocumentoRepository")
  */
-class SegDocumento
-{
+class SegDocumento {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_documento_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoDocumentoPk;
-    
+
     /**
      * @ORM\Column(name="nombre", type="string", length=50, nullable=true)
-     */    
+     */
     private $nombre;
-    
+
     /**
      * @ORM\Column(name="tipo", type="string", length=30, nullable=true)
-     */    
+     */
     private $tipo;
-    
+
     /**
      * @ORM\Column(name="modulo", type="string", length=30, nullable=true)
-     */    
+     */
     private $modulo;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="SegPermisoDocumento", mappedBy="documentoRel")
      */
     protected $permisosDocumentosDocumentoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="documentoRel")
      */
-    protected $permisosGruposDocumentoRel; 
-    
+    protected $permisosGruposDocumentoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="Brasa\GeneralBundle\Entity\GenLog", mappedBy="documentoRel")
      */
-    protected $logsDocumentoRel;    
-    
+    protected $logsDocumentoRel;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->permisosDocumentosDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->permisosGruposDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->logsDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -172,40 +174,6 @@ class SegDocumento
     }
 
     /**
-     * Add logsDocumentoRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
-     *
-     * @return SegDocumento
-     */
-    public function addLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
-    {
-        $this->logsDocumentoRel[] = $logsDocumentoRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove logsDocumentoRel
-     *
-     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
-     */
-    public function removeLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
-    {
-        $this->logsDocumentoRel->removeElement($logsDocumentoRel);
-    }
-
-    /**
-     * Get logsDocumentoRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLogsDocumentoRel()
-    {
-        return $this->logsDocumentoRel;
-    }
-
-    /**
      * Add permisosGruposDocumentoRel
      *
      * @param \Brasa\SeguridadBundle\Entity\SegPermisoGrupo $permisosGruposDocumentoRel
@@ -237,5 +205,39 @@ class SegDocumento
     public function getPermisosGruposDocumentoRel()
     {
         return $this->permisosGruposDocumentoRel;
+    }
+
+    /**
+     * Add logsDocumentoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
+     *
+     * @return SegDocumento
+     */
+    public function addLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
+    {
+        $this->logsDocumentoRel[] = $logsDocumentoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove logsDocumentoRel
+     *
+     * @param \Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel
+     */
+    public function removeLogsDocumentoRel(\Brasa\GeneralBundle\Entity\GenLog $logsDocumentoRel)
+    {
+        $this->logsDocumentoRel->removeElement($logsDocumentoRel);
+    }
+
+    /**
+     * Get logsDocumentoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLogsDocumentoRel()
+    {
+        return $this->logsDocumentoRel;
     }
 }
