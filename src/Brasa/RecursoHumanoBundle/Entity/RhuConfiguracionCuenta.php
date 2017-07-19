@@ -19,7 +19,12 @@ class RhuConfiguracionCuenta
     /**
      * @ORM\Column(name="nombre", type="string", length=80, nullable=true)
      */    
-    private $nombre;     
+    private $nombre; 
+
+    /**
+     * @ORM\Column(name="tipo", type="string", length=80, nullable=true)
+     */    
+    private $tipo;     
     
     /**
      * @ORM\Column(name="codigo_cuenta_fk", type="string", length=20, nullable=true)
@@ -97,5 +102,29 @@ class RhuConfiguracionCuenta
     public function getCodigoCuentaFk()
     {
         return $this->codigoCuentaFk;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     *
+     * @return RhuConfiguracionCuenta
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return string
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 }
