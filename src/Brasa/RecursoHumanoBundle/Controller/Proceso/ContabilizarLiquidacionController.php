@@ -94,7 +94,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrCesantias()); 
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);             
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('CESANTIAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -113,7 +116,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantias()); 
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);   
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('INTERESES CESANTIAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -132,7 +138,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrCesantiasAnterior()); 
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);   
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('CESANTIAS AÑO ANTERIOR');
                                     $em->persist($arRegistro);
                                 }             
@@ -151,7 +160,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrInteresesCesantiasAnterior());      
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);       
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('INTERESES CESANTIAS AÑO ANTERIOR');
                                     $em->persist($arRegistro);
                                 }             
@@ -170,7 +182,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrPrima()); 
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);  
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('PRIMAS');
                                     $em->persist($arRegistro);
                                 }             
@@ -189,7 +204,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrVacaciones());  
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);   
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('VACACIONES');
                                     $em->persist($arRegistro);
                                 }             
@@ -209,7 +227,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setDebito($arLiquidacion->getVrIndemnizacion());   
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);  
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('VACACIONES');
                                     $em->persist($arRegistro);
                                 }             
@@ -267,7 +288,10 @@ class ContabilizarLiquidacionController extends Controller
                                     $arRegistro->setFecha($arLiquidacion->getFechaHasta());
                                     $arRegistro->setCredito($arLiquidacion->getVrTotal());  
                                     $arRegistro->setSucursalRel($arSucursal);
-                                    $arRegistro->setCodigoAreaFk($area);                                    
+                                    $arRegistro->setCodigoAreaFk($area);
+                                    if ($arCuenta->getExigeCentroCostos() == 1) {
+                                        $arRegistro->setCentroCostoRel($arCentroCosto);
+                                    }                                    
                                     $arRegistro->setDescripcionContable('LIQUIDACION POR PAGAR');
                                     $em->persist($arRegistro);
                                 }             
