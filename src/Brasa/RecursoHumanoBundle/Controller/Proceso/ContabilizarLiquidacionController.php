@@ -23,7 +23,11 @@ class ContabilizarLiquidacionController extends Controller
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
         }
         $paginator  = $this->get('knp_paginator');
-        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();        
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();  
+        $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);        
+        $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
+        $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteLiquidacion());        
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -34,10 +38,6 @@ class ContabilizarLiquidacionController extends Controller
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if(count($arrSeleccionados) > 0) {
                     $respuesta = '';
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                    $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
-                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteLiquidacion());
                     $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(1);
                     $codigoCuentaCesantias = $arCuenta->getCodigoCuentaFk();
                     $arCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find(2);                    
@@ -322,6 +322,7 @@ class ContabilizarLiquidacionController extends Controller
         $arLiquidaciones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);                               
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:liquidacion.html.twig', array(
             'arLiquidaciones' => $arLiquidaciones,
+            'arComprobante' => $arComprobanteContable,            
             'form' => $form->createView()));
     }          
     
