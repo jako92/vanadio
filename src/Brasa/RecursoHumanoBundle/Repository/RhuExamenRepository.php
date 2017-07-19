@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class RhuExamenRepository extends EntityRepository {
 
-    public function listaDQL($codigoCentroCosto = "", $strIdentificacion = "", $boolAprobado = "", $boolControlPago = "", $boolAutorizado = "") {
+    public function listaDQL($codigoCentroCosto = "", $strIdentificacion = "", $boolAprobado = "", $boolControlPago = "", $boolAutorizado = "", $codigoExamenClase = "") {
         $em = $this->getEntityManager();
         $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuExamen e WHERE e.codigoExamenPk <> 0";
         if($codigoCentroCosto != "" ) {
@@ -29,6 +29,9 @@ class RhuExamenRepository extends EntityRepository {
             $dql .= " AND e.controlPago = 1";
         } elseif($boolControlPago == '0') {
             $dql .= " AND e.controlPago = 0";
+        }
+        if($codigoExamenClase != "" ) {
+            $dql .= " AND e.codigoExamenClaseFk = " . $codigoExamenClase;
         }
         $dql .= " ORDER BY e.codigoExamenPk DESC";
         return $dql;

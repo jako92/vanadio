@@ -63,8 +63,8 @@
                         <td class="td-in-well"></td>
                     </tr>
                     <tr>
-                        <td class="titulo">FECHA:</td>
-                        <td class="td-in-well">{{ arExamen.fecha | date('Y/m/d') }}</td>
+                        <td class="titulo">FECHA Y HORA:</td>
+                        <td class="td-in-well">{{ arExamen.fecha | date('Y/m/d H:i:s') }}</td>
                         <td class="titulo">COBRO:</td>
                         <td class="td-in-well">{%if arExamen.cobro == 'E' %} EMPLEADO {%endif%} {% if arExamen.cobro == 'C' %}CLIENTE {%endif%} {% if arExamen.cobro == 'N' %} NO COBRAR {%endif%}</td>
                     </tr>
@@ -149,6 +149,9 @@
                     </table>
                 </div>
                 <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                        {{ form_widget(form.BtnDetalleExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+                    </div>
                     {% if arExamen.estadoAutorizado == 0 %}
                         <div class="btn-group">
                             <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_examen_detalle_nuevo', {'codigoExamen': arExamen.codigoExamenPk}) }}', 'AgregarNuevo', 600, 900)">Nuevo</a>
@@ -205,7 +208,7 @@
                             <div class="btn-group">
                                 <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_examen_restriccion_medica_agregar', {'codigoExamen': arExamen.codigoExamenPk, 'codigoRestriccionMedica': 0 }) }}', 'AgregarRestriccionMedica', 600, 900)">Nuevo</a>
                             </div>
-                        {% endif %}        
+                        {% endif %}  
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarRestriccion, { 'attr': {'class': 'btn btn-danger btn-sm', 'onclick': 'return confirm("Esta seguro de eliminar el registro?")'} }) }}
                         </div>

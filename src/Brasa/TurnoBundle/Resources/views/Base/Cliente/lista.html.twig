@@ -49,8 +49,9 @@
         </div>
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
-                <th>{{ knp_pagination_sortable(arClientes, 'CÓDIGO', 'p.codigoClientePk') }}</th>
+                <th>{{ knp_pagination_sortable(arClientes, 'ID', 'p.codigoClientePk') }}</th>
                 <th>NIT</th>
+                <th>DIGITO</th>
                 <th>NOMBRE</th>
                 <th>ASESOR</th>
                 <th>SECTOR</th>
@@ -64,6 +65,7 @@
                 <tr>
                     <td>{{ arClientes.codigoClientePk  }}</td>
                     <td>{{ arClientes.nit }}</td>
+                    <td>{{ arClientes.digitoVerificacion }}</td>
                     <td>{{ arClientes.nombreCorto }}</td>
                     <td>{{ arClientes.asesorRel.nombre | default('') }}</td>
                     <td>{{ arClientes.sectorRel.nombre }}</td>

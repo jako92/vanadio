@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,7 +46,7 @@ class RhuExamenType extends AbstractType {
                     'class' => 'BrasaGeneralBundle:GenCiudad',
                     'choice_label' => 'nombre',
                 ))
-                ->add('fecha', DateType::class)
+                ->add('fecha', DateTimeType::class)
                 ->add('codigoSexoFk', ChoiceType::class, array('choices' => array('MASCULINO' => 'M', 'FEMENINO' => 'F')))
                 ->add('comentarios', TextareaType::class, array('required' => false))
                 ->add('identificacion', NumberType::class, array('required' => true))

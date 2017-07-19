@@ -53,7 +53,7 @@ class RhuExamen
     private $codigoCargoFk;
 
     /**
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="datetime")
      */    
     private $fecha;                   
     

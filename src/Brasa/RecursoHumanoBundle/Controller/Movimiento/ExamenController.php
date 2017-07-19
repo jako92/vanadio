@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenControlType;
 use Brasa\RecursoHumanoBundle\Form\Type\RhuExamenDetalleType;
@@ -224,7 +225,9 @@ class ExamenController extends Controller {
                     }
                 }
             }
-
+            if ($form->get('BtnDetalleExcel')->isClicked()) {
+                    $this->generarExcelDetalle($codigoExamen);
+                }
             if ($form->get('BtnCerrar')->isClicked()) {
                 $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->cerrarExamen($codigoExamen);
                 if ($strRespuesta == '') {
@@ -549,12 +552,22 @@ class ExamenController extends Controller {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamen')->listaDQL(
-                $session->get('filtroCodigoCentroCosto'), $session->get('filtroIdentificacion'), $session->get('filtroRhuExamenEstadoAprobado'), $session->get('filtroControlPago'), $session->get('filtroRhuExamenEstadoAutorizado')
+                $session->get('filtroCodigoCentroCosto'),
+                $session->get('filtroIdentificacion'),
+                $session->get('filtroRhuExamenEstadoAprobado'),
+                $session->get('filtroControlPago'), 
+                $session->get('filtroRhuExamenEstadoAutorizado'),
+                $session->get('filtroCodigoExamenClase')
         );
     }
 
     private function filtrar($form) {
         $session = new session;
+        $codigoExamenClase = '';
+        if ($form->get('examenClaseRel')->getData()) {
+            $codigoExamenClase = $form->get('examenClaseRel')->getData()->getCodigoExamenClasePk();
+        }
+        $session->set('filtroCodigoExamenClase', $codigoExamenClase);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroRhuExamenEstadoAutorizado', $form->get('estadoAutorizado')->getData());
         $session->set('filtroRhuExamenEstadoAprobado', $form->get('estadoAprobado')->getData());
@@ -577,8 +590,23 @@ class ExamenController extends Controller {
         } else {
             $session->set('filtroRhuCodigoEmpleado', null);
         }
-
+        $arrayPropiedadesExamenClase = array(
+            'class' => 'BrasaRecursoHumanoBundle:RhuExamenClase',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('ec')
+                                ->orderBy('ec.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoExamenClase')) {
+            $arrayPropiedadesExamenClase['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuExamenClase", $session->get('filtroCodigoExamenClase'));
+        }
         $form = $this->createFormBuilder()
+                ->add('examenClaseRel', EntityType::class, $arrayPropiedadesExamenClase)
                 ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
                 ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
                 ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'AUTORIZADOS' => '1', 'SIN AUTORIZAR' => '0'), 'data' => $session->get('filtroRhuExamenEstadoAutorizado')))
@@ -602,6 +630,7 @@ class ExamenController extends Controller {
         $arrBotonAprobarDetalle = array('label' => 'Aprobar', 'disabled' => false);
         $arrBotonCerrarDetalle = array('label' => 'Cerrar', 'disabled' => true);
         $arrBotonEliminarRestriccion = array('label' => 'Eliminar', 'disabled' => false);
+        $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);
         if ($ar->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarDetalle['disabled'] = true;
@@ -630,6 +659,7 @@ class ExamenController extends Controller {
             $arrBotonEliminarRestriccion['disabled'] = true;
         }
         $form = $this->createFormBuilder()
+                ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
                 ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
                 ->add('BtnAprobar', SubmitType::class, $arrBotonAprobar)
@@ -754,6 +784,85 @@ class ExamenController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Examenes.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+    private function generarExcelDetalle($codigoExamen) {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'M'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+         //Examen Detalle
+        $objPHPExcel->createSheet(0)->setTitle('ExamenDetalle')
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'EXAMEN')
+                ->setCellValue('C1', 'PRECIO')
+                ->setCellValue('D1', 'FECHA EXAMEN')
+                ->setCellValue('E1', 'VENCIMIENTO')
+                ->setCellValue('F1', 'VALIDA VENCIMIENTO')
+                ->setCellValue('G1', 'APROBADO')
+                ->setCellValue('H1', 'CERRADO')
+                ->setCellValue('I1', 'COMENTARIOS');
+
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet(1)->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'I'; $col++) {
+            $objPHPExcel->getActiveSheet(0)->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'F'; $col !== 'I'; $col++) {
+            $objPHPExcel->getActiveSheet(0)->getStyle($col)->getAlignment()->setHorizontal('right');
+            $objPHPExcel->getActiveSheet(0)->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+
+        $i = 2;
+        $arExamenDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuExamenDetalle();
+        $arExamenDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuExamenDetalle')->findBy(array('codigoExamenFk'=> $codigoExamen));
+        foreach ($arExamenDetalles as $arExamenDetalle) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arExamenDetalle->getCodigoExamenDetallePk())
+                    ->setCellValue('B' . $i, $arExamenDetalle->getExamenTipoRel()->getNombre())
+                    ->setCellValue('C' . $i, $arExamenDetalle->getVrPrecio())
+                    ->setCellValue('D' . $i, $arExamenDetalle->getFechaExamen())
+                    ->setCellValue('E' . $i, $arExamenDetalle->getFechaVence()->format('Y/m/d'))
+                    ->setCellValue('F' . $i, $arExamenDetalle->getValidarVencimiento())
+                    ->setCellValue('G' . $i, $arExamenDetalle->getEstadoAprobado())
+                    ->setCellValue('H' . $i, $arExamenDetalle->getEstadoCerrado())
+                    ->setCellValue('I' . $i, $arExamenDetalle->getComentarios());
+
+            $i++;
+        }
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ExamenDetalle.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

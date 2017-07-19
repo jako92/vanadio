@@ -84,6 +84,11 @@ class ClienteController extends Controller {
                 $objMensaje->Mensaje("error", "El cliente con ese nit ya existe");
             } else {
                 $arUsuario = $this->getUser();
+                $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+                $digito = $objFunciones->devuelveDigitoVerificacion($arCliente->getNit());
+                if ($digito != $arCliente->getDigitoVerificacion() || $arCliente->getDigitoVerificacion() == null) {
+                $arCliente->setDigitoVerificacion($digito);
+                }
                 $arCliente->setUsuario($arUsuario->getUserName());
                 $em->persist($arCliente);
                 $em->flush();

@@ -101,7 +101,6 @@ class TurClienteType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))                             
             ->add('nit', TextType::class, array('required' => true))
-            ->add('digitoVerificacion', TextType::class, array('required' => false))  
             ->add('nombreCorto', TextType::class, array('required' => true)) 
             ->add('nombreCompleto', TextType::class, array('required' => true))
             ->add('nombre1', TextType::class, array('required' => false))

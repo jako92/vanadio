@@ -150,7 +150,7 @@ class ControlPuestoController extends Controller {
                 }
 
                 if ($form->get('BtnDetalleExcel')->isClicked()) {
-                    $this->generarExcelDetalle();
+                    $this->generarExcelDetalle($codigoControlPuesto);
                 }
 
                 if ($form->get('BtnDetalleEliminar')->isClicked()) {
@@ -399,7 +399,7 @@ class ControlPuestoController extends Controller {
         exit;
     }
 
-    private function generarExcelDetalle() {
+    private function generarExcelDetalle($codigoControlPuesto) {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
         $em = $this->getDoctrine()->getManager();
@@ -436,7 +436,7 @@ class ControlPuestoController extends Controller {
 
         $i = 2;
         $arControlPuestosDetalles = new \Brasa\TurnoBundle\Entity\TurControlPuestoDetalle();
-        $arControlPuestosDetalles = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->findAll();
+        $arControlPuestosDetalles = $em->getRepository('BrasaTurnoBundle:TurControlPuestoDetalle')->findBy(array('codigoControlPuestoFk'=> $codigoControlPuesto));
         foreach ($arControlPuestosDetalles as $arControlPuestoDetalle) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arControlPuestoDetalle->getCodigoControlPuestoDetallePk())
