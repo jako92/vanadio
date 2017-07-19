@@ -23,9 +23,10 @@
                 <table width="100%" class="table table-condensed table-bordered">
                     <tr>
                         <td class="titulo">COMPROBANTE:</td>
-                        <td class="td-in-well">{{ arComprobante.codigoComprobantePk |default('') }}-{{ arComprobante.nombre |default('') }}</td>
+                        <td class="td-in-well">{{ arComprobante.codigoComprobantePk |default('') }}-{{ arComprobante.nombre |default('') }}</td>                        
                     </tr>                 
                 </table>
+                <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_proceso_contabilizar_liquidacion_configurar') }}', 'Archivos', 500, 800)" >Configurar</a>
             </div>
         </div>    
     <div class="panel panel-default">
