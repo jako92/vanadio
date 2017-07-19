@@ -648,7 +648,9 @@ class ProgramacionController extends Controller {
                 ->setCellValue('D1', 'CLIENTE')
                 ->setCellValue('E1', 'AUT')
                 ->setCellValue('F1', 'ANU')
-                ->setCellValue('G1', 'HORAS');
+                ->setCellValue('G1', 'HORAS')
+                ->setCellValue('H1', 'H DIURNAS')
+                ->setCellValue('I1', 'H NOCTURNAS');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -659,11 +661,13 @@ class ProgramacionController extends Controller {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arProgramacion->getCodigoProgramacionPk())
                     ->setCellValue('B' . $i, $arProgramacion->getFecha()->format('Y'))
-                    ->setCellValue('C' . $i, $arProgramacion->getFecha()->format('F'))
+                    ->setCellValue('C' . $i, $arProgramacion->getFecha()->format('m'))
                     ->setCellValue('D' . $i, $arProgramacion->getClienteRel()->getNombreCorto())
                     ->setCellValue('E' . $i, $objFunciones->devuelveBoolean($arProgramacion->getEstadoAutorizado()))
                     ->setCellValue('F' . $i, $objFunciones->devuelveBoolean($arProgramacion->getEstadoAnulado()))
-                    ->setCellValue('G' . $i, $arProgramacion->getHoras());
+                    ->setCellValue('G' . $i, $arProgramacion->getHoras())
+                    ->setCellValue('H' . $i, $arProgramacion->getHorasDiurnas())
+                    ->setCellValue('I' . $i, $arProgramacion->getHorasNocturnas());
 
             $i++;
         }
