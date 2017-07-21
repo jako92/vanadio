@@ -27,6 +27,12 @@ class ContabilizarPagoController extends Controller {
         }
         $paginator = $this->get('knp_paginator');
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+                            $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
+                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                    $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion;
+                    $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
+                    $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobantePagoNomina());
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
@@ -37,12 +43,6 @@ class ContabilizarPagoController extends Controller {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
                     $respuesta = '';
-                    $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();
-                    $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                    $arConfiguracionNomina = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion;
-                    $arConfiguracionNomina = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1);
-                    $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobantePagoNomina());
                     foreach ($arrSeleccionados AS $codigo) {
                         $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
                         $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($codigo);
@@ -91,8 +91,54 @@ class ContabilizarPagoController extends Controller {
         $arPagos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);
         return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:pago.html.twig', array(
                     'arPagos' => $arPagos,
+                    'arComprobante' => $arComprobanteContable,
                     'form' => $form->createView()));
     }
+    
+    /**
+     * @Route("/rhu/proceso/contabilizar/pago/configurar/", name="brs_rhu_proceso_contabilizar_pago_configurar")
+     */     
+    public function configurarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();       
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1); 
+        $form = $this->createFormBuilder()          
+            ->add('TxtCodigoComprobante', TextType::class, array('data' => $arConfiguracion->getCodigoComprobantePagoNomina()))    
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->getForm(); 
+        $form->handleRequest($request);
+        if($form->isValid()) {            
+            if ($form->get('BtnGuardar')->isClicked()) { 
+                $arrControles = $request->request->All();
+                $codigoComprobante = $form->get('TxtCodigoComprobante')->getData();
+                $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
+                $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);  
+                if($arComprobanteContable) {
+                    $intCodigoCuenta = 0;
+                    foreach ($arrControles['LblCodigoCuenta'] as $intCodigoCuenta) {
+                        $arConfiguracionPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoTipo();
+                        $arConfiguracionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoTipo')->find($intCodigoCuenta);
+                        if (count($arConfiguracionPago) > 0) {
+                            $intConfiguracionCuenta = $arrControles['TxtCodigoCuenta' . $intCodigoCuenta];
+                            $arConfiguracionPago->setCodigoCuentaFk($intConfiguracionCuenta);
+                            $em->persist($arConfiguracionPago);
+                        }
+                        $intCodigoCuenta++;
+                    }
+                    $em->flush();                    
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                } else {
+                    $objMensaje->Mensaje("error", "El comprobante no existe");
+                }                
+            }    
+        }       
+        $arConfiguracionPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoTipo')->findAll();        
+        //$arLiquidaciones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);                               
+        return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:pagoConfigurar.html.twig', array(
+            'arConfiguracionPago' => $arConfiguracionPago,
+            'form' => $form->createView()));
+    }   
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();

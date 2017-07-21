@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -282,6 +283,51 @@ class ContabilizarPagoBancoController extends Controller
             'arComprobante' => $arComprobanteContable,
             'form' => $form->createView()));
     }
+    
+    /**
+     * @Route("/rhu/proceso/contabilizar/pago/banco/configurar/", name="brs_rhu_proceso_contabilizar_pago_banco_configurar")
+     */     
+    public function configurarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();       
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracion();                    
+        $arConfiguracion = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracion')->find(1); 
+        $form = $this->createFormBuilder()          
+            ->add('TxtCodigoComprobante', TextType::class, array('data' => $arConfiguracion->getCodigoComprobantePagoBanco()))    
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->getForm(); 
+        $form->handleRequest($request);
+        if($form->isValid()) {            
+            if ($form->get('BtnGuardar')->isClicked()) { 
+                $arrControles = $request->request->All();
+                $codigoComprobante = $form->get('TxtCodigoComprobante')->getData();
+                $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
+                $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);  
+                if($arComprobanteContable) {
+                    $intCodigoCuenta = 0;
+                    foreach ($arrControles['LblCodigoCuenta'] as $intCodigoCuenta) {
+                        $arConfiguracionCuenta = new \Brasa\RecursoHumanoBundle\Entity\RhuConfiguracionCuenta();
+                        $arConfiguracionCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->find($intCodigoCuenta);
+                        if (count($arConfiguracionCuenta) > 0) {
+                            $intConfiguracionCuenta = $arrControles['TxtCodigoCuenta' . $intCodigoCuenta];
+                            $arConfiguracionCuenta->setCodigoCuentaFk($intConfiguracionCuenta);
+                            $em->persist($arConfiguracionCuenta);
+                        }
+                        $intCodigoCuenta++;
+                    }
+                    $em->flush();                    
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                } else {
+                    $objMensaje->Mensaje("error", "El comprobante no existe");
+                }                
+            }    
+        }       
+        $arConfiguracionCuenta = $em->getRepository('BrasaRecursoHumanoBundle:RhuConfiguracionCuenta')->findBy(array('tipo' => 'EGRESO SS'));        
+        //$arLiquidaciones = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 300);                               
+        return $this->render('BrasaRecursoHumanoBundle:Procesos/Contabilizar:pagoBancoConfigurar.html.twig', array(
+            'arConfiguracionCuenta' => $arConfiguracionCuenta,
+            'form' => $form->createView()));
+    }   
 
     /**
      * @Route("/rhu/proceso/descontabilizar/pago/banco/", name="brs_rhu_proceso_descontabilizar_pago_banco")

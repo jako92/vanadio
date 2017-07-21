@@ -1,10 +1,10 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block title %}Configurar liquidacion - Soga App{% endblock %}
+{% block title %}Configurar pago - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Configurar liquidacion</small>
+            <small>Pago</small>
         </h1>
     </section>    
     <section class="content">        	
@@ -19,13 +19,13 @@
                             <th>NOMBRE</th>
                             <th>CUENTA</th>
                         </tr>
-                        {% for arConfiguracionCuenta in arConfiguracionCuenta %}
+                        {% for arConfiguracionPago in arConfiguracionPago %}
                             <tr>
                                 <td>
-                                    <input type="hidden" name="LblCodigoCuenta[]" value="{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}"><span class="badge">{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}</span>
+                                    <input type="hidden" name="LblCodigoCuenta[]" value="{{ arConfiguracionPago.codigoPagoTipoPk }}"><span class="badge">{{ arConfiguracionPago.codigoPagoTipoPk }}</span>
                                 </td>
-                                <td>{{ arConfiguracionCuenta.nombre }}</td>
-                                <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuenta{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}" value="{{ arConfiguracionCuenta.codigoCuentaFk }}" size="10" style="text-align: right; width:100px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                <td>{{ arConfiguracionPago.nombre }}</td>
+                                <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuenta{{ arConfiguracionPago.codigoPagoTipoPk }}" value="{{ arConfiguracionPago.codigoCuentaFk }}" size="10" style="text-align: right; width:100px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                             </tr>
                         {% endfor %}
                     </table>                                
@@ -34,7 +34,7 @@
                         <div class="col-sm-2">
                             {{ form_widget(form.TxtCodigoComprobante) }}
                         </div>
-                    </div>                    
+                    </div>
                 </div>                      
             </div>
         </div>                   

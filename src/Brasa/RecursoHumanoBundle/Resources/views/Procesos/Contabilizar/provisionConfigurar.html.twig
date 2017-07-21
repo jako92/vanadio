@@ -1,10 +1,10 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block title %}Configurar liquidacion - Soga App{% endblock %}
+{% block title %}Configurar vacacion - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Configurar liquidacion</small>
+            <small>Provision</small>
         </h1>
     </section>    
     <section class="content">        	
@@ -17,15 +17,19 @@
                         <tr>
                             <th>CÓDIGO</th>
                             <th>NOMBRE</th>
+                            <th>EMPLEADO TIPO</th>
                             <th>CUENTA</th>
+                            <th>NATURALEZA</th>
                         </tr>
-                        {% for arConfiguracionCuenta in arConfiguracionCuenta %}
+                        {% for arConfiguracionProvision in arConfiguracionProvision %}
                             <tr>
                                 <td>
-                                    <input type="hidden" name="LblCodigoCuenta[]" value="{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}"><span class="badge">{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}</span>
+                                    <input type="hidden" name="LblCodigoCuenta[]" value="{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}"><span class="badge">{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}</span>
                                 </td>
-                                <td>{{ arConfiguracionCuenta.nombre }}</td>
-                                <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuenta{{ arConfiguracionCuenta.codigoConfiguracionCuentaPk }}" value="{{ arConfiguracionCuenta.codigoCuentaFk }}" size="10" style="text-align: right; width:100px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                                <td>{{ arConfiguracionProvision.nombre }}</td>
+                                <td>{{ arConfiguracionProvision.empleadoTipoRel.nombre }}</td>
+                                <td style="text-align: left"><input class="input-grid" type="text" name="TxtCodigoCuenta{{ arConfiguracionProvision.codigoConfiguracionProvisionPk }}" value="{{ arConfiguracionProvision.codigoCuentaFk }}" size="10" style="text-align: right; width:100px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                               
+                                <td>{{ arConfiguracionProvision.tipoCuenta }}</td>
                             </tr>
                         {% endfor %}
                     </table>                                
