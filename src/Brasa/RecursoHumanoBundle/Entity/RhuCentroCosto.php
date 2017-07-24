@@ -393,8 +393,6 @@ class RhuCentroCosto
      * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="centroCostoRel")
      */
     protected $cobrosCentroCostoRel;
-    
-    
     /**
      * Constructor
      */

@@ -386,7 +386,9 @@ class GenerarSoportePagoController extends Controller {
                     }
                     $arSoportePagoPeriodo->setPagarDia31($arSoportePagoPeriodo->getCentroCostoRel()->getPagarDia31());
                     $arSoportePagoPeriodo->setHorasRecargoAgrupadas($arSoportePagoPeriodo->getCentroCostoRel()->getHorasRecargoAgrupadas());
-                    $arSoportePagoPeriodo->setTipoCompensacion($arSoportePagoPeriodo->getCentroCostoRel()->getCodigoCompensacionTipoFk());
+                    if ($arSoportePagoPeriodo->getCentroCostoRel()->getCodigoCompensacionTipoFk()){
+                    $arSoportePagoPeriodo->setTipoCompensacion($arSoportePagoPeriodo->getCentroCostoRel()->getCodigoCompensacionTipoFk());    
+                    }
                 }
 
                 $arSoportePagoPeriodo->setAnio($arSoportePagoPeriodo->getFechaDesde()->format('Y'));
