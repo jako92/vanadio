@@ -35,7 +35,12 @@ class RhuCentroCosto
     /**
      * @ORM\Column(name="codigo_periodo_pago_fk", type="integer", nullable=true)
      */    
-    private $codigoPeriodoPagoFk;       
+    private $codigoPeriodoPagoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_compensacion_tipo_fk", type="integer", nullable=true)
+     */    
+    private $codigoCompensacionTipoFk; 
 
     /**
      * @ORM\Column(name="fecha_ultimo_pago", type="date", nullable=true)
@@ -256,6 +261,12 @@ class RhuCentroCosto
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\TurnoBundle\Entity\TurCompensacionTipo", inversedBy="rhuCentroCostoCompensacionTipoRel")
+     * @ORM\JoinColumn(name="codigo_compensacion_TurCompensacionTipotipo_fk", referencedColumnName="codigo_compensacion_tipo_pk")
+     */
+    protected $compensacionTipoRel;
     
     /**
      * @ORM\ManyToOne(targetEntity="RhuSsoSucursal", inversedBy="centrosCostosSucursalRel")
@@ -2390,5 +2401,53 @@ class RhuCentroCosto
     public function getTipoCompensacion()
     {
         return $this->tipoCompensacion;
+    }
+
+    /**
+     * Set codigoCompensacionTipoFk
+     *
+     * @param integer $codigoCompensacionTipoFk
+     *
+     * @return RhuCentroCosto
+     */
+    public function setCodigoCompensacionTipoFk($codigoCompensacionTipoFk)
+    {
+        $this->codigoCompensacionTipoFk = $codigoCompensacionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCompensacionTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCompensacionTipoFk()
+    {
+        return $this->codigoCompensacionTipoFk;
+    }
+
+    /**
+     * Set compensacionTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function setCompensacionTipoRel(\Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel = null)
+    {
+        $this->compensacionTipoRel = $compensacionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get compensacionTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCompensacionTipo
+     */
+    public function getCompensacionTipoRel()
+    {
+        return $this->compensacionTipoRel;
     }
 }

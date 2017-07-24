@@ -40,6 +40,13 @@ class RhuCentroCostoType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuSsoSucursal',
                 'choice_label' => 'nombre',
                 'required' => true))
+            ->add('compensacionTipoRel', EntityType::class, array(
+                'class' => 'BrasaTurnoBundle:TurCompensacionTipo',
+                'query_builder' => function (EntityRepository $er)  {
+                    return $er->createQueryBuilder('ct')
+                    ->orderBy('ct.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => false))
             ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {
@@ -77,8 +84,7 @@ class RhuCentroCostoType extends AbstractType
             ->add('porcentajePrimas', NumberType::class, array('required' => false))                
             ->add('porcentajeCaja', NumberType::class, array('required' => false))
             ->add('aplicaPorcentajeAdministracion', CheckboxType::class, array('required'  => false))                
-            ->add('horasRecargoAgrupadas', CheckboxType::class, array('required'  => false))                
-            ->add('tipoCompensacion', NumberType::class, array('required' => false))
+            ->add('horasRecargoAgrupadas', CheckboxType::class, array('required'  => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }
