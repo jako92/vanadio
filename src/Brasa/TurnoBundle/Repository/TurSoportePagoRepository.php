@@ -643,7 +643,7 @@ class TurSoportePagoRepository extends EntityRepository {
                 }
             }
 
-            $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 21);
+            $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 22);
             $intHorasExtrasDiurnas = 0;
             $intTotalHoras = $intHoras + $intHorasNocturnas + $intHorasExtrasNocturnas + $intHorasDiurnas;
             if($intTotalHoras > 8) {
@@ -658,7 +658,7 @@ class TurSoportePagoRepository extends EntityRepository {
                 }
             }
 
-            $intHorasNocturnasNoche = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 21, 24);
+            $intHorasNocturnasNoche = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 22, 24);
             $intHorasExtrasNocturnasNoche = 0;
             $intTotalHoras = $intHorasDiurnas + $intHorasExtrasDiurnas + $intHorasNocturnas + $intHorasNocturnasNoche;
             if($intTotalHoras > 8) {
