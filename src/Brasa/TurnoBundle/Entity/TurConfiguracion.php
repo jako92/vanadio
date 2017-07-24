@@ -8,146 +8,150 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tur_configuracion")
  * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurConfiguracionRepository")
  */
-class TurConfiguracion
-{
-     /**
+class TurConfiguracion {
+
+    /**
      * @ORM\Id
      * @ORM\Column(name="codigo_configuracion_pk", type="integer")
      */
     private $codigoConfiguracionPk;
-    
+
     /**
      * @ORM\Column(name="informacion_legal_factura", type="text", nullable=true)
-     */    
-    private $informacionLegalFactura; 
+     */
+    private $informacionLegalFactura;
 
     /**
      * @ORM\Column(name="informacion_pago_factura", type="text", nullable=true)
-     */    
-    private $informacionPagoFactura;     
-    
+     */
+    private $informacionPagoFactura;
+
     /**
      * @ORM\Column(name="informacion_contacto_factura", type="text", nullable=true)
-     */    
-    private $informacionContactoFactura;    
-    
+     */
+    private $informacionContactoFactura;
+
     /**
      * @ORM\Column(name="informacion_resolucion_dian_factura", type="text", nullable=true)
-     */    
-    private $informacionResolucionDianFactura;    
-    
+     */
+    private $informacionResolucionDianFactura;
+
     /**
      * @ORM\Column(name="informacion_resolucion_supervigilancia_factura", type="text", nullable=true)
-     */    
-    private $informacionResolucionSupervigilanciaFactura;    
-    
+     */
+    private $informacionResolucionSupervigilanciaFactura;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_descanso_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasDescansoFk;     
-    
+     */
+    private $codigoConceptoHorasDescansoFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_diurnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasDiurnasFk;    
+     */
+    private $codigoConceptoHorasDiurnasFk;
 
     /**
      * @ORM\Column(name="codigo_concepto_horas_nocturnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasNocturnasFk; 
-    
+     */
+    private $codigoConceptoHorasNocturnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_festivas_diurnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasFestivasDiurnasFk;     
-    
+     */
+    private $codigoConceptoHorasFestivasDiurnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_festivas_nocturnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasFestivasNocturnasFk;     
-    
+     */
+    private $codigoConceptoHorasFestivasNocturnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_extras_ordinarias_diurnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasExtrasOrdinariasDiurnasFk;     
-    
+     */
+    private $codigoConceptoHorasExtrasOrdinariasDiurnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_extras_ordinarias_nocturnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasExtrasOrdinariasNocturnasFk;   
-    
+     */
+    private $codigoConceptoHorasExtrasOrdinariasNocturnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_extras_festivas_diurnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasExtrasFestivasDiurnasFk;     
-    
+     */
+    private $codigoConceptoHorasExtrasFestivasDiurnasFk;
+
     /**
      * @ORM\Column(name="codigo_concepto_horas_extras_festivas_nocturnas_fk", type="integer", nullable=true)
-     */    
-    private $codigoConceptoHorasExtrasFestivasNocturnasFk;     
-    
+     */
+    private $codigoConceptoHorasExtrasFestivasNocturnasFk;
+
     /**
      * @ORM\Column(name="fecha_ultima_simulacion", type="date", nullable=true)
-     */    
-    private $fechaUltimaSimulacion;    
-    
-    /**     
+     */
+    private $fechaUltimaSimulacion;
+
+    /**
      * @ORM\Column(name="validar_horas_programacion", type="boolean")
-     */    
-    private $validarHorasProgramacion = false;    
-    
-    /**     
+     */
+    private $validarHorasProgramacion = false;
+
+    /**
      * @ORM\Column(name="habilitar_compensacion", type="boolean")
-     */    
-    private $habilitarCompesacion = false;     
-    
-    /**     
+     */
+    private $habilitarCompesacion = false;
+
+    /**
      * @ORM\Column(name="habilitar_programacion_alterna", type="boolean")
-     */    
-    private $habilitarProgramacionAlterna = false;      
-    
-    /**     
+     */
+    private $habilitarProgramacionAlterna = false;
+
+    /**
      * @ORM\Column(name="habilitar_ajustar_devengado", type="boolean")
-     */    
-    private $habilitarAjustarDevengado = false;     
-    
+     */
+    private $habilitarAjustarDevengado = false;
+
     /**
      * @ORM\Column(name="codigo_formato_factura", type="integer")
-     */    
-    private $codigoFormatoFactura = 0;    
+     */
+    private $codigoFormatoFactura = 0;
 
     /**
      * @ORM\Column(name="codigo_formato_nota_credito", type="integer")
-     */    
-    private $codigoFormatoNotaCredito = 0;    
-    
+     */
+    private $codigoFormatoNotaCredito = 0;
+
     /**
      * @ORM\Column(name="codigo_formato_programacion", type="integer")
-     */    
+     */
     private $codigoFormatoProgramacion = 0;
-    
+
     /**
      * Determina el tipo de compensacion 1-Seracis, 2-Galaxia
      * @ORM\Column(name="tipo_compensacion", type="integer")
-     */    
+     */
     private $tipoCompensacion = 0;
-    
-    /**     
+
+    /**
+     * @ORM\Column(name="hora_inicio_nocturna", type="integer", nullable=true)
+     */
+    private $horaInicioNocturna;
+
+    /**
      * @ORM\Column(name="omitir_auxilio_transporte_devengado_pactado", type="boolean")
-     */    
-    private $omitirAuxilioTransporteDevengadoPactado = false;  
-    
-    /**     
+     */
+    private $omitirAuxilioTransporteDevengadoPactado = false;
+
+    /**
      * Determina el tipo de ajuste a devengado 1-todos, 2-coordinar
      * @ORM\Column(name="tipo_ajuste_devengado", type="integer", nullable=true)
-     */    
+     */
     private $tipoAjusteDevengado = 1;
 
-    /**     
+    /**
      * @ORM\Column(name="contabilizar_factura_ingreso_centro_costo", type="boolean", nullable=true)
-     */    
+     */
     private $contabilizarFacturaIngresoCentroCosto = false;
-    
 
     /**
      * Set codigoConfiguracionPk
@@ -156,8 +160,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConfiguracionPk($codigoConfiguracionPk)
-    {
+    public function setCodigoConfiguracionPk($codigoConfiguracionPk) {
         $this->codigoConfiguracionPk = $codigoConfiguracionPk;
 
         return $this;
@@ -168,8 +171,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConfiguracionPk()
-    {
+    public function getCodigoConfiguracionPk() {
         return $this->codigoConfiguracionPk;
     }
 
@@ -180,8 +182,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setInformacionLegalFactura($informacionLegalFactura)
-    {
+    public function setInformacionLegalFactura($informacionLegalFactura) {
         $this->informacionLegalFactura = $informacionLegalFactura;
 
         return $this;
@@ -192,8 +193,7 @@ class TurConfiguracion
      *
      * @return string
      */
-    public function getInformacionLegalFactura()
-    {
+    public function getInformacionLegalFactura() {
         return $this->informacionLegalFactura;
     }
 
@@ -204,8 +204,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setInformacionPagoFactura($informacionPagoFactura)
-    {
+    public function setInformacionPagoFactura($informacionPagoFactura) {
         $this->informacionPagoFactura = $informacionPagoFactura;
 
         return $this;
@@ -216,8 +215,7 @@ class TurConfiguracion
      *
      * @return string
      */
-    public function getInformacionPagoFactura()
-    {
+    public function getInformacionPagoFactura() {
         return $this->informacionPagoFactura;
     }
 
@@ -228,8 +226,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setInformacionContactoFactura($informacionContactoFactura)
-    {
+    public function setInformacionContactoFactura($informacionContactoFactura) {
         $this->informacionContactoFactura = $informacionContactoFactura;
 
         return $this;
@@ -240,8 +237,7 @@ class TurConfiguracion
      *
      * @return string
      */
-    public function getInformacionContactoFactura()
-    {
+    public function getInformacionContactoFactura() {
         return $this->informacionContactoFactura;
     }
 
@@ -252,8 +248,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura)
-    {
+    public function setInformacionResolucionDianFactura($informacionResolucionDianFactura) {
         $this->informacionResolucionDianFactura = $informacionResolucionDianFactura;
 
         return $this;
@@ -264,8 +259,7 @@ class TurConfiguracion
      *
      * @return string
      */
-    public function getInformacionResolucionDianFactura()
-    {
+    public function getInformacionResolucionDianFactura() {
         return $this->informacionResolucionDianFactura;
     }
 
@@ -276,8 +270,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura)
-    {
+    public function setInformacionResolucionSupervigilanciaFactura($informacionResolucionSupervigilanciaFactura) {
         $this->informacionResolucionSupervigilanciaFactura = $informacionResolucionSupervigilanciaFactura;
 
         return $this;
@@ -288,8 +281,7 @@ class TurConfiguracion
      *
      * @return string
      */
-    public function getInformacionResolucionSupervigilanciaFactura()
-    {
+    public function getInformacionResolucionSupervigilanciaFactura() {
         return $this->informacionResolucionSupervigilanciaFactura;
     }
 
@@ -300,8 +292,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasDescansoFk($codigoConceptoHorasDescansoFk)
-    {
+    public function setCodigoConceptoHorasDescansoFk($codigoConceptoHorasDescansoFk) {
         $this->codigoConceptoHorasDescansoFk = $codigoConceptoHorasDescansoFk;
 
         return $this;
@@ -312,8 +303,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasDescansoFk()
-    {
+    public function getCodigoConceptoHorasDescansoFk() {
         return $this->codigoConceptoHorasDescansoFk;
     }
 
@@ -324,8 +314,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasDiurnasFk($codigoConceptoHorasDiurnasFk)
-    {
+    public function setCodigoConceptoHorasDiurnasFk($codigoConceptoHorasDiurnasFk) {
         $this->codigoConceptoHorasDiurnasFk = $codigoConceptoHorasDiurnasFk;
 
         return $this;
@@ -336,8 +325,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasDiurnasFk()
-    {
+    public function getCodigoConceptoHorasDiurnasFk() {
         return $this->codigoConceptoHorasDiurnasFk;
     }
 
@@ -348,8 +336,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasNocturnasFk($codigoConceptoHorasNocturnasFk)
-    {
+    public function setCodigoConceptoHorasNocturnasFk($codigoConceptoHorasNocturnasFk) {
         $this->codigoConceptoHorasNocturnasFk = $codigoConceptoHorasNocturnasFk;
 
         return $this;
@@ -360,8 +347,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasNocturnasFk()
-    {
+    public function getCodigoConceptoHorasNocturnasFk() {
         return $this->codigoConceptoHorasNocturnasFk;
     }
 
@@ -372,8 +358,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasFestivasDiurnasFk($codigoConceptoHorasFestivasDiurnasFk)
-    {
+    public function setCodigoConceptoHorasFestivasDiurnasFk($codigoConceptoHorasFestivasDiurnasFk) {
         $this->codigoConceptoHorasFestivasDiurnasFk = $codigoConceptoHorasFestivasDiurnasFk;
 
         return $this;
@@ -384,8 +369,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasFestivasDiurnasFk()
-    {
+    public function getCodigoConceptoHorasFestivasDiurnasFk() {
         return $this->codigoConceptoHorasFestivasDiurnasFk;
     }
 
@@ -396,8 +380,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasFestivasNocturnasFk($codigoConceptoHorasFestivasNocturnasFk)
-    {
+    public function setCodigoConceptoHorasFestivasNocturnasFk($codigoConceptoHorasFestivasNocturnasFk) {
         $this->codigoConceptoHorasFestivasNocturnasFk = $codigoConceptoHorasFestivasNocturnasFk;
 
         return $this;
@@ -408,8 +391,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasFestivasNocturnasFk()
-    {
+    public function getCodigoConceptoHorasFestivasNocturnasFk() {
         return $this->codigoConceptoHorasFestivasNocturnasFk;
     }
 
@@ -420,8 +402,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasExtrasOrdinariasDiurnasFk($codigoConceptoHorasExtrasOrdinariasDiurnasFk)
-    {
+    public function setCodigoConceptoHorasExtrasOrdinariasDiurnasFk($codigoConceptoHorasExtrasOrdinariasDiurnasFk) {
         $this->codigoConceptoHorasExtrasOrdinariasDiurnasFk = $codigoConceptoHorasExtrasOrdinariasDiurnasFk;
 
         return $this;
@@ -432,8 +413,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasExtrasOrdinariasDiurnasFk()
-    {
+    public function getCodigoConceptoHorasExtrasOrdinariasDiurnasFk() {
         return $this->codigoConceptoHorasExtrasOrdinariasDiurnasFk;
     }
 
@@ -444,8 +424,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasExtrasOrdinariasNocturnasFk($codigoConceptoHorasExtrasOrdinariasNocturnasFk)
-    {
+    public function setCodigoConceptoHorasExtrasOrdinariasNocturnasFk($codigoConceptoHorasExtrasOrdinariasNocturnasFk) {
         $this->codigoConceptoHorasExtrasOrdinariasNocturnasFk = $codigoConceptoHorasExtrasOrdinariasNocturnasFk;
 
         return $this;
@@ -456,8 +435,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasExtrasOrdinariasNocturnasFk()
-    {
+    public function getCodigoConceptoHorasExtrasOrdinariasNocturnasFk() {
         return $this->codigoConceptoHorasExtrasOrdinariasNocturnasFk;
     }
 
@@ -468,8 +446,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasExtrasFestivasDiurnasFk($codigoConceptoHorasExtrasFestivasDiurnasFk)
-    {
+    public function setCodigoConceptoHorasExtrasFestivasDiurnasFk($codigoConceptoHorasExtrasFestivasDiurnasFk) {
         $this->codigoConceptoHorasExtrasFestivasDiurnasFk = $codigoConceptoHorasExtrasFestivasDiurnasFk;
 
         return $this;
@@ -480,8 +457,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasExtrasFestivasDiurnasFk()
-    {
+    public function getCodigoConceptoHorasExtrasFestivasDiurnasFk() {
         return $this->codigoConceptoHorasExtrasFestivasDiurnasFk;
     }
 
@@ -492,8 +468,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoConceptoHorasExtrasFestivasNocturnasFk($codigoConceptoHorasExtrasFestivasNocturnasFk)
-    {
+    public function setCodigoConceptoHorasExtrasFestivasNocturnasFk($codigoConceptoHorasExtrasFestivasNocturnasFk) {
         $this->codigoConceptoHorasExtrasFestivasNocturnasFk = $codigoConceptoHorasExtrasFestivasNocturnasFk;
 
         return $this;
@@ -504,8 +479,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoConceptoHorasExtrasFestivasNocturnasFk()
-    {
+    public function getCodigoConceptoHorasExtrasFestivasNocturnasFk() {
         return $this->codigoConceptoHorasExtrasFestivasNocturnasFk;
     }
 
@@ -516,8 +490,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setFechaUltimaSimulacion($fechaUltimaSimulacion)
-    {
+    public function setFechaUltimaSimulacion($fechaUltimaSimulacion) {
         $this->fechaUltimaSimulacion = $fechaUltimaSimulacion;
 
         return $this;
@@ -528,8 +501,7 @@ class TurConfiguracion
      *
      * @return \DateTime
      */
-    public function getFechaUltimaSimulacion()
-    {
+    public function getFechaUltimaSimulacion() {
         return $this->fechaUltimaSimulacion;
     }
 
@@ -540,8 +512,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setValidarHorasProgramacion($validarHorasProgramacion)
-    {
+    public function setValidarHorasProgramacion($validarHorasProgramacion) {
         $this->validarHorasProgramacion = $validarHorasProgramacion;
 
         return $this;
@@ -552,8 +523,7 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getValidarHorasProgramacion()
-    {
+    public function getValidarHorasProgramacion() {
         return $this->validarHorasProgramacion;
     }
 
@@ -564,8 +534,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setHabilitarCompesacion($habilitarCompesacion)
-    {
+    public function setHabilitarCompesacion($habilitarCompesacion) {
         $this->habilitarCompesacion = $habilitarCompesacion;
 
         return $this;
@@ -576,8 +545,7 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getHabilitarCompesacion()
-    {
+    public function getHabilitarCompesacion() {
         return $this->habilitarCompesacion;
     }
 
@@ -588,8 +556,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setHabilitarProgramacionAlterna($habilitarProgramacionAlterna)
-    {
+    public function setHabilitarProgramacionAlterna($habilitarProgramacionAlterna) {
         $this->habilitarProgramacionAlterna = $habilitarProgramacionAlterna;
 
         return $this;
@@ -600,8 +567,7 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getHabilitarProgramacionAlterna()
-    {
+    public function getHabilitarProgramacionAlterna() {
         return $this->habilitarProgramacionAlterna;
     }
 
@@ -612,8 +578,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setHabilitarAjustarDevengado($habilitarAjustarDevengado)
-    {
+    public function setHabilitarAjustarDevengado($habilitarAjustarDevengado) {
         $this->habilitarAjustarDevengado = $habilitarAjustarDevengado;
 
         return $this;
@@ -624,8 +589,7 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getHabilitarAjustarDevengado()
-    {
+    public function getHabilitarAjustarDevengado() {
         return $this->habilitarAjustarDevengado;
     }
 
@@ -636,8 +600,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoFormatoFactura($codigoFormatoFactura)
-    {
+    public function setCodigoFormatoFactura($codigoFormatoFactura) {
         $this->codigoFormatoFactura = $codigoFormatoFactura;
 
         return $this;
@@ -648,8 +611,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoFormatoFactura()
-    {
+    public function getCodigoFormatoFactura() {
         return $this->codigoFormatoFactura;
     }
 
@@ -660,8 +622,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoFormatoNotaCredito($codigoFormatoNotaCredito)
-    {
+    public function setCodigoFormatoNotaCredito($codigoFormatoNotaCredito) {
         $this->codigoFormatoNotaCredito = $codigoFormatoNotaCredito;
 
         return $this;
@@ -672,8 +633,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoFormatoNotaCredito()
-    {
+    public function getCodigoFormatoNotaCredito() {
         return $this->codigoFormatoNotaCredito;
     }
 
@@ -684,8 +644,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setCodigoFormatoProgramacion($codigoFormatoProgramacion)
-    {
+    public function setCodigoFormatoProgramacion($codigoFormatoProgramacion) {
         $this->codigoFormatoProgramacion = $codigoFormatoProgramacion;
 
         return $this;
@@ -696,8 +655,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getCodigoFormatoProgramacion()
-    {
+    public function getCodigoFormatoProgramacion() {
         return $this->codigoFormatoProgramacion;
     }
 
@@ -708,8 +666,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setTipoCompensacion($tipoCompensacion)
-    {
+    public function setTipoCompensacion($tipoCompensacion) {
         $this->tipoCompensacion = $tipoCompensacion;
 
         return $this;
@@ -720,8 +677,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getTipoCompensacion()
-    {
+    public function getTipoCompensacion() {
         return $this->tipoCompensacion;
     }
 
@@ -732,8 +688,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setOmitirAuxilioTransporteDevengadoPactado($omitirAuxilioTransporteDevengadoPactado)
-    {
+    public function setOmitirAuxilioTransporteDevengadoPactado($omitirAuxilioTransporteDevengadoPactado) {
         $this->omitirAuxilioTransporteDevengadoPactado = $omitirAuxilioTransporteDevengadoPactado;
 
         return $this;
@@ -744,8 +699,7 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getOmitirAuxilioTransporteDevengadoPactado()
-    {
+    public function getOmitirAuxilioTransporteDevengadoPactado() {
         return $this->omitirAuxilioTransporteDevengadoPactado;
     }
 
@@ -756,8 +710,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setTipoAjusteDevengado($tipoAjusteDevengado)
-    {
+    public function setTipoAjusteDevengado($tipoAjusteDevengado) {
         $this->tipoAjusteDevengado = $tipoAjusteDevengado;
 
         return $this;
@@ -768,8 +721,7 @@ class TurConfiguracion
      *
      * @return integer
      */
-    public function getTipoAjusteDevengado()
-    {
+    public function getTipoAjusteDevengado() {
         return $this->tipoAjusteDevengado;
     }
 
@@ -780,8 +732,7 @@ class TurConfiguracion
      *
      * @return TurConfiguracion
      */
-    public function setContabilizarFacturaIngresoCentroCosto($contabilizarFacturaIngresoCentroCosto)
-    {
+    public function setContabilizarFacturaIngresoCentroCosto($contabilizarFacturaIngresoCentroCosto) {
         $this->contabilizarFacturaIngresoCentroCosto = $contabilizarFacturaIngresoCentroCosto;
 
         return $this;
@@ -792,8 +743,32 @@ class TurConfiguracion
      *
      * @return boolean
      */
-    public function getContabilizarFacturaIngresoCentroCosto()
-    {
+    public function getContabilizarFacturaIngresoCentroCosto() {
         return $this->contabilizarFacturaIngresoCentroCosto;
+    }
+
+
+    /**
+     * Set horaInicioNocturna
+     *
+     * @param integer $horaInicioNocturna
+     *
+     * @return TurConfiguracion
+     */
+    public function setHoraInicioNocturna($horaInicioNocturna)
+    {
+        $this->horaInicioNocturna = $horaInicioNocturna;
+
+        return $this;
+    }
+
+    /**
+     * Get horaInicioNocturna
+     *
+     * @return integer
+     */
+    public function getHoraInicioNocturna()
+    {
+        return $this->horaInicioNocturna;
     }
 }
