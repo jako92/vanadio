@@ -263,8 +263,8 @@ class RhuCentroCosto
     protected $ciudadRel;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Brasa\TurnoBundle\Entity\TurCompensacionTipo", inversedBy="rhuCentroCostoCompensacionTipoRel")
-     * @ORM\JoinColumn(name="codigo_compensacion_TurCompensacionTipotipo_fk", referencedColumnName="codigo_compensacion_tipo_pk")
+     * @ORM\ManyToOne(targetEntity="Brasa\TurnoBundle\Entity\TurCompensacionTipo", inversedBy="rhuCentroCostosCompensacionTipoRel")
+     * @ORM\JoinColumn(name="codigo_compensacion_tipo_fk", referencedColumnName="codigo_compensacion_tipo_pk")
      */
     protected $compensacionTipoRel;
     
@@ -392,8 +392,9 @@ class RhuCentroCosto
     /**
      * @ORM\OneToMany(targetEntity="RhuCobro", mappedBy="centroCostoRel")
      */
-    protected $cobrosCentroCostoRel;    
-
+    protected $cobrosCentroCostoRel;
+    
+    
     /**
      * Constructor
      */
@@ -529,6 +530,30 @@ class RhuCentroCosto
     public function getCodigoPeriodoPagoFk()
     {
         return $this->codigoPeriodoPagoFk;
+    }
+
+    /**
+     * Set codigoCompensacionTipoFk
+     *
+     * @param integer $codigoCompensacionTipoFk
+     *
+     * @return RhuCentroCosto
+     */
+    public function setCodigoCompensacionTipoFk($codigoCompensacionTipoFk)
+    {
+        $this->codigoCompensacionTipoFk = $codigoCompensacionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCompensacionTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCompensacionTipoFk()
+    {
+        return $this->codigoCompensacionTipoFk;
     }
 
     /**
@@ -1276,6 +1301,54 @@ class RhuCentroCosto
     }
 
     /**
+     * Set horasRecargoAgrupadas
+     *
+     * @param boolean $horasRecargoAgrupadas
+     *
+     * @return RhuCentroCosto
+     */
+    public function setHorasRecargoAgrupadas($horasRecargoAgrupadas)
+    {
+        $this->horasRecargoAgrupadas = $horasRecargoAgrupadas;
+
+        return $this;
+    }
+
+    /**
+     * Get horasRecargoAgrupadas
+     *
+     * @return boolean
+     */
+    public function getHorasRecargoAgrupadas()
+    {
+        return $this->horasRecargoAgrupadas;
+    }
+
+    /**
+     * Set tipoCompensacion
+     *
+     * @param integer $tipoCompensacion
+     *
+     * @return RhuCentroCosto
+     */
+    public function setTipoCompensacion($tipoCompensacion)
+    {
+        $this->tipoCompensacion = $tipoCompensacion;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCompensacion
+     *
+     * @return integer
+     */
+    public function getTipoCompensacion()
+    {
+        return $this->tipoCompensacion;
+    }
+
+    /**
      * Set porcentajeCesantias
      *
      * @param float $porcentajeCesantias
@@ -1420,6 +1493,30 @@ class RhuCentroCosto
     }
 
     /**
+     * Set omitirExtras
+     *
+     * @param boolean $omitirExtras
+     *
+     * @return RhuCentroCosto
+     */
+    public function setOmitirExtras($omitirExtras)
+    {
+        $this->omitirExtras = $omitirExtras;
+
+        return $this;
+    }
+
+    /**
+     * Get omitirExtras
+     *
+     * @return boolean
+     */
+    public function getOmitirExtras()
+    {
+        return $this->omitirExtras;
+    }
+
+    /**
      * Set clienteRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
@@ -1489,6 +1586,30 @@ class RhuCentroCosto
     public function getCiudadRel()
     {
         return $this->ciudadRel;
+    }
+
+    /**
+     * Set compensacionTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel
+     *
+     * @return RhuCentroCosto
+     */
+    public function setCompensacionTipoRel(\Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel = null)
+    {
+        $this->compensacionTipoRel = $compensacionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get compensacionTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCompensacionTipo
+     */
+    public function getCompensacionTipoRel()
+    {
+        return $this->compensacionTipoRel;
     }
 
     /**
@@ -1586,11 +1707,11 @@ class RhuCentroCosto
     /**
      * Add examenesCentroCostoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCentroCostoRel
      *
      * @return RhuCentroCosto
      */
-    public function addExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
+    public function addExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCentroCostoRel)
     {
         $this->examenesCentroCostoRel[] = $examenesCentroCostoRel;
 
@@ -1600,9 +1721,9 @@ class RhuCentroCosto
     /**
      * Remove examenesCentroCostoRel
      *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCentroCostoRel
      */
-    public function removeExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $examenesCentroCostoRel)
+    public function removeExamenesCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuExamen $examenesCentroCostoRel)
     {
         $this->examenesCentroCostoRel->removeElement($examenesCentroCostoRel);
     }
@@ -2329,125 +2450,5 @@ class RhuCentroCosto
     public function getCobrosCentroCostoRel()
     {
         return $this->cobrosCentroCostoRel;
-    }
-
-    /**
-     * Set omitirExtras
-     *
-     * @param boolean $omitirExtras
-     *
-     * @return RhuCentroCosto
-     */
-    public function setOmitirExtras($omitirExtras)
-    {
-        $this->omitirExtras = $omitirExtras;
-
-        return $this;
-    }
-
-    /**
-     * Get omitirExtras
-     *
-     * @return boolean
-     */
-    public function getOmitirExtras()
-    {
-        return $this->omitirExtras;
-    }
-
-    /**
-     * Set horasRecargoAgrupadas
-     *
-     * @param boolean $horasRecargoAgrupadas
-     *
-     * @return RhuCentroCosto
-     */
-    public function setHorasRecargoAgrupadas($horasRecargoAgrupadas)
-    {
-        $this->horasRecargoAgrupadas = $horasRecargoAgrupadas;
-
-        return $this;
-    }
-
-    /**
-     * Get horasRecargoAgrupadas
-     *
-     * @return boolean
-     */
-    public function getHorasRecargoAgrupadas()
-    {
-        return $this->horasRecargoAgrupadas;
-    }
-
-    /**
-     * Set tipoCompensacion
-     *
-     * @param integer $tipoCompensacion
-     *
-     * @return RhuCentroCosto
-     */
-    public function setTipoCompensacion($tipoCompensacion)
-    {
-        $this->tipoCompensacion = $tipoCompensacion;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoCompensacion
-     *
-     * @return integer
-     */
-    public function getTipoCompensacion()
-    {
-        return $this->tipoCompensacion;
-    }
-
-    /**
-     * Set codigoCompensacionTipoFk
-     *
-     * @param integer $codigoCompensacionTipoFk
-     *
-     * @return RhuCentroCosto
-     */
-    public function setCodigoCompensacionTipoFk($codigoCompensacionTipoFk)
-    {
-        $this->codigoCompensacionTipoFk = $codigoCompensacionTipoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCompensacionTipoFk
-     *
-     * @return integer
-     */
-    public function getCodigoCompensacionTipoFk()
-    {
-        return $this->codigoCompensacionTipoFk;
-    }
-
-    /**
-     * Set compensacionTipoRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel
-     *
-     * @return RhuCentroCosto
-     */
-    public function setCompensacionTipoRel(\Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel = null)
-    {
-        $this->compensacionTipoRel = $compensacionTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get compensacionTipoRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurCompensacionTipo
-     */
-    public function getCompensacionTipoRel()
-    {
-        return $this->compensacionTipoRel;
     }
 }

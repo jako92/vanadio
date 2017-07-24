@@ -66,6 +66,11 @@ class RhuContrato {
      * @ORM\Column(name="codigo_empleado_fk", type="integer")
      */
     private $codigoEmpleadoFk;
+    
+    /**
+     * @ORM\Column(name="codigo_compensacion_tipo_fk", type="integer", nullable=true)
+     */
+    private $codigoCompensacionTipoFk;
 
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
@@ -544,6 +549,12 @@ class RhuContrato {
      * @ORM\OneToMany(targetEntity="RhuRequisito", mappedBy="contratoRel")
      */
     protected $requisitosContratoRel;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\TurnoBundle\Entity\TurCompensacionTipo", inversedBy="rhuContratosCompensacionTipoRel")
+     * @ORM\JoinColumn(name="codigo_compensacion_fk", referencedColumnName="codigo_compensacion_tipo_pk")
+     */
+    protected $compensacionTipoRel;
 
     /**
      * Constructor
@@ -3013,5 +3024,53 @@ class RhuContrato {
     public function getRequisitosContratoRel()
     {
         return $this->requisitosContratoRel;
+    }
+
+    /**
+     * Set codigoCompensacionTipoFk
+     *
+     * @param integer $codigoCompensacionTipoFk
+     *
+     * @return RhuContrato
+     */
+    public function setCodigoCompensacionTipoFk($codigoCompensacionTipoFk)
+    {
+        $this->codigoCompensacionTipoFk = $codigoCompensacionTipoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCompensacionTipoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCompensacionTipoFk()
+    {
+        return $this->codigoCompensacionTipoFk;
+    }
+
+    /**
+     * Set compensacionTipoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel
+     *
+     * @return RhuContrato
+     */
+    public function setCompensacionTipoRel(\Brasa\TurnoBundle\Entity\TurCompensacionTipo $compensacionTipoRel = null)
+    {
+        $this->compensacionTipoRel = $compensacionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get compensacionTipoRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCompensacionTipo
+     */
+    public function getCompensacionTipoRel()
+    {
+        return $this->compensacionTipoRel;
     }
 }

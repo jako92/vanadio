@@ -31,7 +31,11 @@ class TurCompensacionTipo
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto", mappedBy="compensacionTipoRel")
      */
     protected $rhuCentroCostosCompensacionTipoRel;
-
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuContrato", mappedBy="compensacionTipoRel")
+     */
+    protected $rhuContratosCompensacionTipoRel;
     
     /**
      * Constructor
@@ -39,6 +43,7 @@ class TurCompensacionTipo
     public function __construct()
     {
         $this->rhuCentroCostosCompensacionTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rhuContratosCompensacionTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -121,5 +126,39 @@ class TurCompensacionTipo
     public function getRhuCentroCostosCompensacionTipoRel()
     {
         return $this->rhuCentroCostosCompensacionTipoRel;
+    }
+
+    /**
+     * Add rhuContratosCompensacionTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $rhuContratosCompensacionTipoRel
+     *
+     * @return TurCompensacionTipo
+     */
+    public function addRhuContratosCompensacionTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $rhuContratosCompensacionTipoRel)
+    {
+        $this->rhuContratosCompensacionTipoRel[] = $rhuContratosCompensacionTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhuContratosCompensacionTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuContrato $rhuContratosCompensacionTipoRel
+     */
+    public function removeRhuContratosCompensacionTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $rhuContratosCompensacionTipoRel)
+    {
+        $this->rhuContratosCompensacionTipoRel->removeElement($rhuContratosCompensacionTipoRel);
+    }
+
+    /**
+     * Get rhuContratosCompensacionTipoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhuContratosCompensacionTipoRel()
+    {
+        return $this->rhuContratosCompensacionTipoRel;
     }
 }

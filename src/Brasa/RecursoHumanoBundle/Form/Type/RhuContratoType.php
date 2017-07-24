@@ -116,6 +116,14 @@ class RhuContratoType extends AbstractType {
                     },
                     'choice_label' => 'nombre',
                     'required' => true))
+                ->add('compensacionTipoRel', EntityType::class, array(
+                    'class' => 'BrasaTurnoBundle:TurCompensacionTipo',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('cp')
+                                ->orderBy('cp.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
+                    'required' => true))
                 //->add('fechaDesde', 'date', array('required' => true))
                 ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
                 //->add('fechaHasta', 'date', array('required' => true))                
