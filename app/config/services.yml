@@ -110,6 +110,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Control puesto tipo novedad }
             
+    admin.turno.compensaciontipo:
+        class: Brasa\TurnoBundle\Admin\CompensacionTipoAdmin
+        arguments: [~, Brasa\TurnoBundle\Entity\TurCompensacionTipo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Compensacion tipo }
+            
     # .................. administracion modulo contabilidad .................................................................
     
     admin.contabilidad.sucursales:
