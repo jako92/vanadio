@@ -23,7 +23,6 @@
                     <li>
                         <!-- inner menu: contains the actual data -->
                         <ul class="menu">
-                            {% set route = app.request.attributes.get('_route') %}
                             {% for arFavorito in app.session.get('arFavoritos') %}
                                 <li>
                                     <a href="{{ path(arFavorito.urlDocumento) }}">

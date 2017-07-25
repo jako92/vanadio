@@ -25,7 +25,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MENU PRINCIPAL</li>
-            <li class="treeview">
+            <li class="{% if route starts with 'brs_rhu' %}active treeview menu-open{% else %}treeview{%endif%}">
                 <a href="#">
                     <i class="fa fa-group"></i> <span>Recurso humano</span>
                     <span class="pull-right-container">
@@ -242,7 +242,7 @@
                                     <li><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li>
                                     <li><a href="{{ path('brs_rhu_consulta_empleado_centro_costo_mes') }}"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
                                     <li><a href="{{ path('brs_rhu_consulta_empleado_grupo_familiar') }}"><i class="fa fa-circle-o"></i> Grupo familiar</a></li>
-                                 <li><a href="{{ path('brs_rhu_consulta_empleado_cumpleanos') }}"><i class="fa fa-circle-o"></i> Cumpleaños</a></li>
+                                    <li><a href="{{ path('brs_rhu_consulta_empleado_cumpleanos') }}"><i class="fa fa-circle-o"></i> Cumpleaños</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -381,7 +381,7 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="{{ path('brs_rhu_consultas_pago_pendientes_banco') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
-                                 <li><a href="{{ path('brs_rhu_consultas_pago_banco_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_pago_banco_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -788,7 +788,7 @@
                     </li>                    
                 </ul>                 
             </li>
-            <li class="treeview">
+            <li class="{% if route starts with 'brs_tur' %}active treeview menu-open{% else %}treeview{%endif%}">
                 <a href="#">
                     <i class="fa fa-calendar"></i> <span>Programacion turnos</span>
                     <span class="pull-right-container">
@@ -796,21 +796,21 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_movimiento' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Movimientos
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_cotizacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Cotizacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_cotizacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route starts with 'brs_tur_movimiento_cotizacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_cotizacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -996,7 +996,7 @@
                                     <li><a href="{{ path('brs_tur_consulta_soporte_pago_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>                                    
                             </li>
                         </ul> 
-                            
+
                     </li>
                 </ul> 
             <li>
@@ -1186,7 +1186,7 @@
             </li>                    
         </ul>                  
         </li>
-        <li class="treeview">
+        <li class="{% if route starts with 'brs_cartera' %}active treeview menu-open{% else %}treeview{%endif%}">
             <a href="#">
                 <i class="fa fa-credit-card"></i> <span>Cartera</span>
                 <span class="pull-right-container">
@@ -1357,7 +1357,7 @@
                         </li>                            
                         <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank"><i class="fa fa-circle-o"></i> Otros</a></li>
                     </ul>
-                            
+
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-circle-o"></i> Procesos
@@ -1400,7 +1400,7 @@
                 </li>                
             </ul>                 
         </li>            
-        <li class="treeview">
+        <li class="{% if route starts with 'brs_inv' %}active treeview menu-open{% else %}treeview{%endif%}">
             <a href="#">
                 <i class="fa fa-cube"></i> <span>Inventario</span>
                 <span class="pull-right-container">
@@ -1408,14 +1408,14 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li>
+                <li {% if route starts with 'brs_inv_movimiento' %}class="active treeview menu-open"{% endif %}>
                     <a href="#"><i class="fa fa-circle-o"></i> Movimiento
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">                            
-                        <li><a href="{{ path('brs_inv_movimiento_movimiento_ingreso', {'codigoDocumentoClase': 1 }) }}">Entrada</a></li>
+                        <li {% if route == 'brs_inv_movimiento_movimiento_ingreso' %}class="active"{% endif %}><a href="{{ path('brs_inv_movimiento_movimiento_ingreso', {'codigoDocumentoClase': 1 }) }}">Entrada</a></li>
                         <li><a href="{{ path('brs_inv_movimiento_movimiento_ingreso', {'codigoDocumentoClase': 2 }) }}">Salida</a></li>
                         <li><a href="{{ path('brs_inv_movimiento_movimiento_ingreso', {'codigoDocumentoClase': 3 }) }}">Factura</a></li>
                         <li><a href="{{ path('brs_inv_movimiento_solicitud_lista') }}">Solicitud</a></li>
@@ -1459,9 +1459,9 @@
                         <li><a href="{{ path('brs_inv_proceso_regenerar') }}">Regenerar</a></li>
                     </ul>
                 </li>                  
-        </ul>                 
+            </ul>                 
         </li>  
-        <li class="treeview">
+        <li class="{% if route starts with 'brs_ctb' %}active treeview menu-open{% else %}treeview{%endif%}">
             <a href="#">
                 <i class="fa fa-map-o"></i> <span>Contabilidad</span>
                 <span class="pull-right-container">
@@ -1557,7 +1557,7 @@
                 </li>
             </ul>                  
         </li>    
-        <li class="treeview">
+        <li class="{% if route starts with 'brs_gen' %}active treeview menu-open{% else %}treeview{%endif%}">
             <a href="#">
                 <i class="fa fa-bookmark"></i> <span>General</span>
                 <span class="pull-right-container">
