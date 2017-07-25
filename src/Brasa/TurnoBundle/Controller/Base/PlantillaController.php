@@ -25,6 +25,7 @@ class PlantillaController extends Controller {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');
+        $objMensaje = $this->get('mensajes_brasa');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $this->lista();
@@ -33,8 +34,12 @@ class PlantillaController extends Controller {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                    $em->getRepository('BrasaTurnoBundle:TurPlantilla')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_plantilla_lista'));
+                    $respuesta = $em->getRepository('BrasaTurnoBundle:TurPlantilla')->eliminar($arrSeleccionados);
+                    if ($respuesta != "") {
+                        $objMensaje->Mensaje('error', $respuesta);
+                    } else {
+                        return $this->redirect($this->generateUrl('brs_tur_base_plantilla_lista'));
+                    }
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -132,7 +137,7 @@ class PlantillaController extends Controller {
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     if ($arPlantilla->getEstadoAutorizado() == 0) {
                         $this->actualizarDetalle($arrControles);
-                        return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));                        
+                        return $this->redirect($this->generateUrl('brs_tur_base_plantilla_detalle', array('codigoPlantilla' => $codigoPlantilla)));
                     }
                 }
                 if ($form->get('BtnDetalleNuevo')->isClicked()) {
