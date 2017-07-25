@@ -7,8 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\ContabilidadBundle\Form\Type\CtbTerceroType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TerceroController extends Controller {
+
+    var $strDqlLista = "";
+    var $strCodigo = "";
+    var $strNombre = "";
+    var $strNit = "";
 
     /**
      * @Route("/ctb/base/terceros/lista", name="brs_ctb_base_terceros_lista")
@@ -19,47 +25,45 @@ class TerceroController extends Controller {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');
-        $form = $this->createFormBuilder() //
-                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel'))
-                ->add('BtnCorregirDigitosVerificacion', SubmitType::class, array('label' => 'Corregir digitos verificacion'))
-                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))
-                ->getForm();
+        $form = $this->formularioFiltro();
         $form->handleRequest($request);
+        $this->lista();
         $arTerceros = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $arrSeleccionados = $request->request->get('ChkSeleccionar');
-                if (count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoTercero) {
-                        $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
-                        $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($codigoTercero);
-                        $em->remove($arTercero);
-                        $em->flush();
-                    }
-                }
-                if ($form->get('BtnExcel')->isClicked()) {
-                    $this->generarExcel();
-                }
-                if ($form->get('BtnCorregirDigitosVerificacion')->isClicked()) {
-                    $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
-                    $arTercerosVerificar = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
-                    $arTercerosVerificar = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findAll();
-                    foreach ($arTercerosVerificar as $arTercero) {
-                        $digito = $objFunciones->devuelveDigitoVerificacion($arTercero->getNumeroIdentificacion());
-                        if ($digito != $arTercero->getDigitoVerificacion() || $arTercero->getDigitoVerificacion() == null) {
-                            $arTerceroActualizar = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
-                            $arTerceroActualizar = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($arTercero->getCodigoTerceroPk());
-                            $arTerceroActualizar->setDigitoVerificacion($digito);
-                            $em->persist($arTerceroActualizar);
-                        }
-                    }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if (count($arrSeleccionados) > 0) {
+                foreach ($arrSeleccionados AS $codigoTercero) {
+                    $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
+                    $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($codigoTercero);
+                    $em->remove($arTercero);
                     $em->flush();
                 }
             }
+            if ($form->get('BtnExcel')->isClicked()) {
+                $this->generarExcel();
+            }
+            if ($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrar($form);
+            }
+            if ($form->get('BtnCorregirDigitosVerificacion')->isClicked()) {
+                $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+                $arTercerosVerificar = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
+                $arTercerosVerificar = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findAll();
+                foreach ($arTercerosVerificar as $arTercero) {
+                    $digito = $objFunciones->devuelveDigitoVerificacion($arTercero->getNumeroIdentificacion());
+                    if ($digito != $arTercero->getDigitoVerificacion() || $arTercero->getDigitoVerificacion() == null) {
+                        $arTerceroActualizar = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
+                        $arTerceroActualizar = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($arTercero->getCodigoTerceroPk());
+                        $arTerceroActualizar->setDigitoVerificacion($digito);
+                        $em->persist($arTerceroActualizar);
+                    }
+                }
+                $em->flush();
+            }
         }
         $arTerceros = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
-        $query = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findAll();
-        $arTerceros = $paginator->paginate($query, $request->query->getInt('page', 1)/* page number */, 20/* limit per page */);
+        //$query = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findAll();
+        $arTerceros = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->getInt('page', 1)/* page number */, 20/* limit per page */);
 
 
         return $this->render('BrasaContabilidadBundle:Base/Terceros:lista.html.twig', array(
@@ -76,6 +80,7 @@ class TerceroController extends Controller {
         $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
         if ($codigoTercero != 0) {
             $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->find($codigoTercero);
+            $arTercero->setRazonSocial($arTercero->getNombreCorto());
         }
         $form = $this->createForm(CtbTerceroType::class, $arTercero);
         $form->handleRequest($request);
@@ -92,6 +97,31 @@ class TerceroController extends Controller {
         return $this->render('BrasaContabilidadBundle:Base/Terceros:nuevo.html.twig', array(
                     'form' => $form->createView(),
         ));
+    }
+
+    private function lista() {
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->listaDQL(
+                $this->strNombre, $this->strNit
+        );
+    }
+
+    private function filtrar($form) {
+        $this->strNit = $form->get('TxtNit')->getData();
+        $this->strNombre = $form->get('TxtNombre')->getData();
+        $this->lista();
+    }
+
+    private function formularioFiltro() {
+        $form = $this->createFormBuilder()
+                ->add('TxtNombre', TextType::class, array('label' => 'Nombre', 'data' => $this->strNombre))
+                ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $this->strNit))
+                ->add('BtnCorregirDigitosVerificacion', SubmitType::class, array('label' => 'Corregir digitos verificacion'))
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
+        return $form;
     }
 
     public function generarExcel() {
