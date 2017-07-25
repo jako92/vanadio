@@ -10,6 +10,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 class TurCompensacionTipo implements FixtureInterface {
 
     public function load(ObjectManager $manager) {
+        $arCompensacionTipo = $manager->getRepository('BrasaTurnoBundle:TurCompensacionTipo')->find(0);
+        if (!$arCompensacionTipo) {
+            $arCompensacionTipo = new \Brasa\TurnoBundle\Entity\TurCompensacionTipo();
+            $arCompensacionTipo->setCodigoCompensacionTipoPk(0);
+            $arCompensacionTipo->setNombre('SIN COMPENSACION');
+            $manager->persist($arCompensacionTipo);
+        }
+        
         $arCompensacionTipo = $manager->getRepository('BrasaTurnoBundle:TurCompensacionTipo')->find(1);
         if (!$arCompensacionTipo) {
             $arCompensacionTipo = new \Brasa\TurnoBundle\Entity\TurCompensacionTipo();
