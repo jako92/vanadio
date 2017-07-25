@@ -642,7 +642,7 @@ class TurSoportePagoRepository extends EntityRepository {
                     $intHorasNocturnas = 0;
                 }
             }
-            $fechaDecreto = date_create('2017-07-18');
+            $fechaDecreto = date_create('2017-07-19');
             if($dateFecha >= $fechaDecreto) {
                 $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 21);
             } else {
