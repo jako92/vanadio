@@ -2,7 +2,7 @@
 {% block title %}Tercero nuevo - Soga App{% endblock %}
 {% block content %}
     <!-- Content Header (Page header) -->
- <section class="content-header">
+    <section class="content-header">
         <h1>
             Contabilidad
             <small>Tercero: nuevo</small>
@@ -31,6 +31,7 @@
                     <label class="col-sm-3 control-label">Número de identificación:</label>
                     <div class="col-sm-9">
                         {{ form_widget(form.numeroIdentificacion, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                        <div class="text-danger">{{ form_errors(form.numeroIdentificacion) }}</div>
                     </div>
                 </div>    
                 <div class="form-group form-group-sm">
@@ -67,6 +68,7 @@
                     <label class="col-sm-3 control-label">Razón social:</label>
                     <div class="col-sm-9">
                         {{ form_widget(form.razonSocial, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','class': 'form-control','autofocus':'autofocus'} }) }}
+                        <div class="text-danger">{{ form_errors(form.razonSocial) }}</div>
                     </div>
                 </div>    
                 <div class="form-group form-group-sm">

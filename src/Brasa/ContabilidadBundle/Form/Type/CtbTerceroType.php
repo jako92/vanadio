@@ -31,7 +31,7 @@ class CtbTerceroType extends AbstractType
             ->add('nombre2', TextType::class, array('required' => false))
             ->add('apellido1', TextType::class, array('required' => false))    
             ->add('apellido2', TextType::class, array('required' => false))
-            ->add('razonSocial', TextType::class, array('required' => false))
+            ->add('razonSocial', TextType::class, array('required' => true))
             ->add('ciudadRel', EntityType::class, array(
                 'class' => 'BrasaGeneralBundle:GenCiudad',
                 'query_builder' => function (EntityRepository $er)  {

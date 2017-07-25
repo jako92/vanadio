@@ -20,7 +20,7 @@ class CtbTercero {
 
     /**
      * @ORM\Column(name="numero_identificacion", type="string", length=20, nullable=false)
-     * 
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $numeroIdentificacion;
 
@@ -61,6 +61,7 @@ class CtbTercero {
 
     /**
      * @ORM\Column(name="razon_social", type="string", length=300, nullable=true)
+     * @Assert\NotBlank(message="Este campo no puede estar vacio")
      */
     private $razonSocial;
 
