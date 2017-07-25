@@ -468,11 +468,11 @@ class TurSoportePagoRepository extends EntityRepository {
         //if(($intHoraInicio + $intMinutoInicio) < ($intHoraFinal+$intMinutoFinal)){
 
         if(($intHoraInicio + $intMinutoInicio) <= $intHoraFinal && $arTurno->getTurnoCompleto() == 0){
-            $arrHoras = $this->turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $horasIniciales, $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas);
+            $arrHoras = $this->turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $horasIniciales, $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas, $dateFecha);
             $horasTotales = $arrHoras['horas']+$arrHoras1['horas'];
         } else {
-            $arrHoras = $this->turnoHoras($intHoraInicio, $intMinutoInicio, 24, $boolFestivo, $horasIniciales, $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas);
-            $arrHoras1 = $this->turnoHoras(0, 0, $intHoraFinal, $boolFestivo2, $arrHoras['horas'], $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas);
+            $arrHoras = $this->turnoHoras($intHoraInicio, $intMinutoInicio, 24, $boolFestivo, $horasIniciales, $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas, $dateFecha);
+            $arrHoras1 = $this->turnoHoras(0, 0, $intHoraFinal, $boolFestivo2, $arrHoras['horas'], $arTurno->getNovedad(), $arTurno->getDescanso(), $horasRecargoAgrupadas, $dateFecha);
             $horasTotales = $arrHoras1['horas'];
         }
         if($arTurno->getDescanso() == 1) {
@@ -626,7 +626,7 @@ class TurSoportePagoRepository extends EntityRepository {
         return $horasTotales;
     }
 
-    private function turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $intHoras, $boolNovedad = 0, $boolDescanso = 0, $agrupada = true) {
+    private function turnoHoras($intHoraInicio, $intMinutoInicio, $intHoraFinal, $boolFestivo, $intHoras, $boolNovedad = 0, $boolDescanso = 0, $agrupada = true, $dateFecha) {
         if($boolNovedad == 0) {
             $intHorasNocturnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 0, 6);
             $intHorasExtrasNocturnas = 0;
@@ -642,8 +642,13 @@ class TurSoportePagoRepository extends EntityRepository {
                     $intHorasNocturnas = 0;
                 }
             }
-
-            $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 21);
+            $fechaDecreto = date_create('2017-07-18');
+            if($dateFecha >= $fechaDecreto) {
+                $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 21);
+            } else {
+                $intHorasDiurnas = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 6, 22);
+            }
+            
             $intHorasExtrasDiurnas = 0;
             $intTotalHoras = $intHoras + $intHorasNocturnas + $intHorasExtrasNocturnas + $intHorasDiurnas;
             if($intTotalHoras > 8) {
@@ -657,8 +662,12 @@ class TurSoportePagoRepository extends EntityRepository {
                     $intHorasDiurnas = 0;
                 }
             }
-
-            $intHorasNocturnasNoche = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 21, 24);
+            if($dateFecha >= $fechaDecreto) {
+                $intHorasNocturnasNoche = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 21, 24);
+            } else {
+                $intHorasNocturnasNoche = $this->calcularTiempo($intHoraInicio, $intHoraFinal, 22, 24);
+            }
+            
             $intHorasExtrasNocturnasNoche = 0;
             $intTotalHoras = $intHorasDiurnas + $intHorasExtrasDiurnas + $intHorasNocturnas + $intHorasNocturnasNoche;
             if($intTotalHoras > 8) {
