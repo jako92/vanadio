@@ -644,7 +644,7 @@ class FacturaController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $strDql = $em->getRepository('BrasaTurnoBundle:TurPedidoDetalle')->pendientesFacturarDql(
-                $codigoCliente, $this->boolMostrarTodo, $session->get('filtroPedidoNumero')
+                $codigoCliente, $this->boolMostrarTodo, $session->get('filtroPedidoNumero'),$session->get('filtroPedidoGrupoFacturacion')
         );
         return $strDql;
     }
@@ -672,6 +672,7 @@ class FacturaController extends Controller {
         $session = new session;
         $this->boolMostrarTodo = $form->get('mostrarTodo')->getData();
         $session->set('filtroPedidoNumero', $form->get('TxtNumero')->getData());
+        $session->set('filtroPedidoGrupoFacturacion', $form->get('TxtGrupoFacturacion')->getData());
     }
 
     private function formularioFiltro() {
@@ -774,6 +775,7 @@ class FacturaController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('mostrarTodo', CheckboxType::class, array('required' => false))
                 ->add('TxtNumero', TextType::class, array('label' => 'Codigo', 'data' => $session->get('filtroPedidoNumero'), 'required' => false))
+                ->add('TxtGrupoFacturacion', TextType::class, array('label' => 'Nombre', 'data' => $session->get('filtroPedidoGrupoFacturacion'), 'required' => false))
                 ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar',))
                 ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar',))
                 ->getForm();

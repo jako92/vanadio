@@ -405,15 +405,18 @@ class TurPedidoDetalleRepository extends EntityRepository {
         return $arResultado;                
     }    
     
-    public function pendientesFacturarDql($codigoCliente, $boolMostrarTodo = 0, $numero = '') {
+    public function pendientesFacturarDql($codigoCliente, $boolMostrarTodo = 0, $numero = '', $nombreGrupoFacturacion = "") {
         $em = $this->getEntityManager();
-        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p "
+        $dql   = "SELECT pd FROM BrasaTurnoBundle:TurPedidoDetalle pd JOIN pd.pedidoRel p LEFT JOIN pd.grupoFacturacionRel gf "
                 . "WHERE p.estadoAutorizado = 1 AND p.estadoAnulado = 0 AND pd.vrTotalDetallePendiente > 0 ";
         if($boolMostrarTodo == 0) {
             $dql .= " AND p.codigoClienteFk = " . $codigoCliente;
         } 
         if($numero != '') {
             $dql .= " AND p.numero = " . $numero;
+        }
+        if($nombreGrupoFacturacion != '') {
+            $dql .= " AND gf.nombre like '%" . $nombreGrupoFacturacion."%'";
         }
         return $dql;                
     }    
