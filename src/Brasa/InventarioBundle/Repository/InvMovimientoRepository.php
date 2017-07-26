@@ -56,10 +56,11 @@ class InvMovimientoRepository extends EntityRepository {
         $arMovimiento = $em->getRepository('BrasaInventarioBundle:InvMovimiento')->find($codigoMovimiento);
         if($arMovimiento->getOperacionInventario() == 1) {
             $respuesta = $this->validarEntrada($codigoMovimiento);
-        } 
+        }
         if($arMovimiento->getOperacionInventario() == -1) {
             $respuesta = $this->validarSalida($codigoMovimiento);
         }
+        
         
         if($respuesta == "") {
 

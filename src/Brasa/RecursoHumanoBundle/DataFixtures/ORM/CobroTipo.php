@@ -2,7 +2,7 @@
 
 // src/AppBundle/DataFixtures/ORM/LoadUserData.php
 
-namespace Brasa\SeguridadBundle\DataFixtures\ORM;
+namespace Brasa\RecursoHumanoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
