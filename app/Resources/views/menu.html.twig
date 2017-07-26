@@ -810,376 +810,376 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li {% if route starts with 'brs_tur_movimiento_cotizacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_cotizacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_cotizacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_cotizacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_servicio' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Servicio
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_servicio') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_servicio') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_pedido' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Pedido
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_pedido') }}"><i class="fa fa-circle-o"></i> Pedido</a></li>
-                                    <li><a href="{{ path('brs_tur_movimiento_pedido_devolucion') }}"><i class="fa fa-circle-o"></i> Devolucion / Adicion</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_pedido' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_pedido') }}"><i class="fa fa-circle-o"></i> Pedido</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_pedido_devolucion' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_pedido_devolucion') }}"><i class="fa fa-circle-o"></i> Devolucion / Adicion</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_programacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Programacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_programacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_programacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_programacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_factura' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Factura
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_factura') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_factura' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_factura') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_novedad' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Novedad
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_novedad') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_novedad' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_novedad') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_movimiento_control_puesto' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Control puesto
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_movimiento_control_puesto') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_tur_movimiento_control_puesto' %}class="active"{%endif%}><a href="{{ path('brs_tur_movimiento_control_puesto') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li {% if route starts with 'brs_tur_consulta' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Consultas
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_recursos' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Recursos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_recursos_disponibles') }}"><i class="fa fa-circle-o"></i> Disponibles</a></li>
+                                    <li {% if route == 'brs_tur_consulta_recursos_disponibles' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_recursos_disponibles') }}"><i class="fa fa-circle-o"></i> Disponibles</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_servicios' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Servicios
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_servicios_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_servicios_detalles_recursos') }}"><i class="fa fa-circle-o"></i> Detalles y recursos</a></li>
+                                    <li {% if route == 'brs_tur_consulta_servicios_detalles' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_servicios_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
+                                    <li {% if route == 'brs_tur_consulta_servicios_detalles_recursos' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_servicios_detalles_recursos') }}"><i class="fa fa-circle-o"></i> Detalles y recursos</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_pedidos' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Pedidos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_pedidos_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_pedidos_pendientes_facturar') }}"><i class="fa fa-circle-o"></i> Pendiente facturar servicios</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_pedidos_pendientes_facturar_conceptos') }}"><i class="fa fa-circle-o"></i> Pendiente facturar conceptos</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_ingreso_pendiente') }}"><i class="fa fa-circle-o"></i> Ingreso pendiente</a></li>
+                                    <li {% if route == 'brs_tur_consulta_pedidos_detalles' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_pedidos_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
+                                    <li {% if route == 'brs_tur_consulta_pedidos_pendientes_facturar' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_pedidos_pendientes_facturar') }}"><i class="fa fa-circle-o"></i> Pendiente facturar servicios</a></li>
+                                    <li {% if route == 'brs_tur_consulta_pedidos_pendientes_facturar_conceptos' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_pedidos_pendientes_facturar_conceptos') }}"><i class="fa fa-circle-o"></i> Pendiente facturar conceptos</a></li>
+                                    <li {% if route == 'brs_tur_consulta_ingreso_pendiente' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_ingreso_pendiente') }}"><i class="fa fa-circle-o"></i> Ingreso pendiente</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_programaciones' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Programaciones
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_programaciones_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
+                                    <li {% if route == 'brs_tur_consulta_programaciones_detalles' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_programaciones_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_facturas' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Facturas
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_facturas_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
+                                    <li {% if route == 'brs_tur_consulta_facturas_detalles' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_facturas_detalles') }}"><i class="fa fa-circle-o"></i> Detalles</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_costo' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Costos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_costo_recurso') }}"><i class="fa fa-circle-o"></i> Recursos</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_costo_servicio') }}"><i class="fa fa-circle-o"></i> Servicio</a></li>
+                                    <li {% if route == 'brs_tur_consulta_costo_recurso' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_costo_recurso') }}"><i class="fa fa-circle-o"></i> Recursos</a></li>
+                                    <li {% if route == 'brs_tur_consulta_costo_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_costo_servicio') }}"><i class="fa fa-circle-o"></i> Servicio</a></li>
                                 </ul>
                             </li>
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_puesto' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Puesto
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_puesto_costo') }}"><i class="fa fa-circle-o"></i> Costo</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_puesto_dotacion') }}"><i class="fa fa-circle-o"></i> Dotacion</a></li>
+                                    <li {% if route == 'brs_tur_consulta_puesto_costo' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_puesto_costo') }}"><i class="fa fa-circle-o"></i> Costo</a></li>
+                                    <li {% if route == 'brs_tur_consulta_puesto_dotacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_puesto_dotacion') }}"><i class="fa fa-circle-o"></i> Dotacion</a></li>
                                 </ul>
                             </li>
                         </ul>                                
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_tur_consulta_soporte_pago' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Soporte de pago
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_tur_consulta_soporte_pago') }}"><i class="fa fa-circle-o"></i> Soporte pago</a></li>
-                                    <li><a href="{{ path('brs_tur_consulta_soporte_pago_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>                                    
+                                    <li {% if route == 'brs_tur_consulta_soporte_pago' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_soporte_pago') }}"><i class="fa fa-circle-o"></i> Soporte pago</a></li>
+                                    <li {% if route == 'brs_tur_consulta_soporte_pago_detalle' %}class="active"{%endif%}><a href="{{ path('brs_tur_consulta_soporte_pago_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>                                    
                             </li>
                         </ul> 
 
                     </li>
                 </ul> 
-            <li>
+            <li {% if route starts with 'brs_tur_base' %}class="active treeview menu-open"{%endif%}>
                 <a href="#"><i class="fa fa-circle-o"></i> Administracion
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_base_cliente' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Cliente
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
-                            <li><a href="{{ path('brs_tur_base_prospecto_lista') }}"><i class="fa fa-circle-o"></i> Prospecto</a></li>
-                            <li><a href="{{ path('brs_tur_base_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li>
-                            <li><a href="{{ path('brs_tur_base_puesto') }}"><i class="fa fa-circle-o"></i> Puesto</a></li>
-                            <li><a href="{{ path('brs_tur_base_lista_precio') }}"><i class="fa fa-circle-o"></i> Lista precio</a></li>
+                            <li {% if route == 'brs_tur_base_cliente' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
+                            <li {% if route == 'brs_tur_base_cliente_prospecto_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_prospecto_lista') }}"><i class="fa fa-circle-o"></i> Prospecto</a></li><!-- Pendiente ruta-->
+                            <li {% if route == 'brs_tur_base_cliente_contrato' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li><!-- Pendiente ruta-->
+                            <li {% if route == 'brs_tur_base_cliente_puesto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_puesto') }}"><i class="fa fa-circle-o"></i> Puesto</a></li><!-- Pendiente ruta-->
+                            <li {% if route == 'brs_tur_base_cliente_lista_precio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_lista_precio') }}"><i class="fa fa-circle-o"></i> Lista precio</a></li><!-- Pendiente ruta-->
 
                         </ul>
                     </li>                            
-                    <li>
+                    <li {% if route starts with 'brs_tur_base_recurso' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Recurso
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_base_recurso_lista') }}"><i class="fa fa-circle-o"></i> Recurso</a></li>
-                            <li><a href="{{ path('brs_tur_base_recurso_grupo') }}"><i class="fa fa-circle-o"></i> Grupo</a></li>
-                            <li><a href="{{ path('brs_tur_base_recurso_tipo') }}"><i class="fa fa-circle-o"></i> Tipo recurso</a></li>
+                            <li {% if route == 'brs_tur_base_recurso_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_recurso_lista') }}"><i class="fa fa-circle-o"></i> Recurso</a></li>
+                            <li {% if route == 'brs_tur_base_recurso_grupo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_recurso_grupo') }}"><i class="fa fa-circle-o"></i> Grupo</a></li>
+                            <li {% if route == 'brs_tur_base_recurso_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_recurso_tipo') }}"><i class="fa fa-circle-o"></i> Tipo recurso</a></li>
                         </ul>
                     </li>
-                    <li>
+                    <li {% if route starts with 'brs_tur_base_turno' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Turno
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_base_turno') }}"><i class="fa fa-circle-o"></i> Turno</a></li>
-                            <li><a href="{{ path('brs_tur_base_plantilla_lista') }}"><i class="fa fa-circle-o"></i> Plantilla</a></li>
-                            <li><a href="{{ path('brs_tur_base_secuencia_lista') }}"><i class="fa fa-circle-o"></i> Secuencia</a></li>
+                            <li {% if route == 'brs_tur_base_turno' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_turno') }}"><i class="fa fa-circle-o"></i> Turno</a></li>
+                            <li {% if route == 'brs_tur_base_turno_plantilla_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_plantilla_lista') }}"><i class="fa fa-circle-o"></i> Plantilla</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_turno_secuencia_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_secuencia_lista') }}"><i class="fa fa-circle-o"></i> Secuencia</a></li><!-- Pendiente ruta -->
                         </ul>
                     </li>
-                    <li>
+                    <li {% if route starts with 'brs_tur_base_operacion' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Operacion
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_base_proyecto') }}"><i class="fa fa-circle-o"></i> Proyecto</a></li>
-                            <li><a href="{{ path('brs_tur_base_operacion') }}"><i class="fa fa-circle-o"></i> Operacion</a></li>
+                            <li {% if route == 'brs_tur_base_operacion_proyecto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_proyecto') }}"><i class="fa fa-circle-o"></i> Proyecto</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_operacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_operacion') }}"><i class="fa fa-circle-o"></i> Operacion</a></li>
                         </ul>
                     </li>
-                    <li>
+                    <li {% if route starts with 'brs_tur_base_general' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> General
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_base_concepto_servicio_lista') }}"><i class="fa fa-circle-o"></i> Concepto servicio</a></li>
-                            <li><a href="{{ path('brs_tur_base_pedido_tipo') }}"><i class="fa fa-circle-o"></i> Tipo pedido</a></li>
-                            <li><a href="{{ path('brs_tur_base_factura_tipo') }}"><i class="fa fa-circle-o"></i> Tipo factura</a></li>
-                            <li><a href="{{ path('brs_tur_base_factura_servicio') }}"><i class="fa fa-circle-o"></i> Tipo servicio factura</a></li>
-                            <li><a href="{{ path('brs_tur_base_novedad_tipo') }}"><i class="fa fa-circle-o"></i> Tipo novedad</a></li>
-                            <li><a href="{{ path('brs_tur_base_elemento_dotacion') }}"><i class="fa fa-circle-o"></i> Elemento dotacion</a></li>
-                            <li><a href="{{ path('brs_tur_base_pedido_devolucion_concepto') }}"><i class="fa fa-circle-o"></i> Concepto pedido devolucion</a></li>
+                            <li {% if route == 'brs_tur_base_general_concepto_servicio_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_concepto_servicio_lista') }}"><i class="fa fa-circle-o"></i> Concepto servicio</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_pedido_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_pedido_tipo') }}"><i class="fa fa-circle-o"></i> Tipo pedido</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_factura_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_factura_tipo') }}"><i class="fa fa-circle-o"></i> Tipo factura</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_factura_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_factura_servicio') }}"><i class="fa fa-circle-o"></i> Tipo servicio factura</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_novedad_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_novedad_tipo') }}"><i class="fa fa-circle-o"></i> Tipo novedad</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_elemento_dotacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_elemento_dotacion') }}"><i class="fa fa-circle-o"></i> Elemento dotacion</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_pedido_devolucion_concepto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_pedido_devolucion_concepto') }}"><i class="fa fa-circle-o"></i> Concepto pedido devolucion</a></li><!-- Pendiente ruta -->
                         </ul>
                     </li>
                     <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank"><i class="fa fa-circle-o"></i> Otros</a></li>
                 </ul>
             </li>
-            <li>
+            <li {% if route starts with 'brs_tur_utilidad' %}class="active treeview menu-open"{%endif%}>
                 <a href="#"><i class="fa fa-circle-o"></i> Utilidades
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_utilidad_programacion' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Programaciones
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_utilidad_programacion_inconsistencias') }}"><i class="fa fa-circle-o"></i> Analizar inconsistencias</a></li>
-                            <li><a href="{{ path('brs_tur_utilidad_programacion_importar') }}"><i class="fa fa-circle-o"></i> Importar</a></li>
-                            <li><a href="{{ path('brs_tur_utilidad_programacion_descarga_masiva') }}"><i class="fa fa-circle-o"></i> Descarga masiva (pdf)</a></li>
+                            <li {% if route == 'brs_tur_utilidad_programacion_inconsistencias' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_programacion_inconsistencias') }}"><i class="fa fa-circle-o"></i> Analizar inconsistencias</a></li>
+                            <li {% if route == 'brs_tur_utilidad_programacion_importar' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_programacion_importar') }}"><i class="fa fa-circle-o"></i> Importar</a></li>
+                            <li {% if route == 'brs_tur_utilidad_programacion_descarga_masiva' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_programacion_descarga_masiva') }}"><i class="fa fa-circle-o"></i> Descarga masiva (pdf)</a></li>
                         </ul>
                     </li>                            
                 </ul>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_utilidad_servicio' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Servicios
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_utilidad_servicio_inconsistencias') }}"><i class="fa fa-circle-o"></i> Analizar inconsistencias</a></li>
-                            <li><a href="{{ path('brs_tur_utilidad_servicio_actualizar_precio') }}"><i class="fa fa-circle-o"></i> Actualizar precios (masivo)</a></li>
+                            <li {% if route == 'brs_tur_utilidad_servicio_inconsistencias' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_servicio_inconsistencias') }}"><i class="fa fa-circle-o"></i> Analizar inconsistencias</a></li>
+                            <li {% if route == 'brs_tur_utilidad_servicio_actualizar_precio' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_servicio_actualizar_precio') }}"><i class="fa fa-circle-o"></i> Actualizar precios (masivo)</a></li>
                         </ul>
                     </li>                            
                 </ul>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_utilidad_editar_factura' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Facturas
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_utilidad_editar_factura') }}"><i class="fa fa-circle-o"></i> Editar factura</a></li>
-                            <li><a href="{{ path('brs_tur_utilidad_editar_factura_detalle') }}"><i class="fa fa-circle-o"></i> Editar factura detalle</a></li>
+                            <li {% if route == 'brs_tur_utilidad_editar_factura' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_editar_factura') }}"><i class="fa fa-circle-o"></i> Editar factura</a></li>
+                            <li {% if route == 'brs_tur_utilidad_editar_factura_detalle' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_editar_factura_detalle') }}"><i class="fa fa-circle-o"></i> Editar factura detalle</a></li>
                         </ul>
                     </li>                            
                 </ul>                         
             </li>
-            <li>
+            <li {% if route starts with 'brs_tur_proceso' %}class="active treeview menu-open"{%endif%}>
                 <a href="#"><i class="fa fa-circle-o"></i> Procesos
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ path('brs_tur_proceso_generar_pedido_lista') }}"><i class="fa fa-circle-o"></i> Generar pedidos</a></li>
-                    <li><a href="{{ path('brs_tur_proceso_generar_factura') }}"><i class="fa fa-circle-o"></i> Generar facturas</a></li>
-                    <li><a href="{{ path('brs_tur_proceso_generar_programacion_lista') }}"><i class="fa fa-circle-o"></i> Generar programacion</a></li>
-                    <li><a href="{{ path('brs_tur_proceso_generar_programacion_detalle_lista') }}"><i class="fa fa-circle-o"></i> Generar programacion detalle</a></li>
-                    <li><a href="{{ path('brs_tur_proceso_generar_soporte_pago') }}"><i class="fa fa-circle-o"></i> Generar soporte pago</a></li>                            
-                    <li><a href="{{ path('brs_tur_proceso_cierre_mes') }}"><i class="fa fa-circle-o"></i> Cierre mes</a></li>                                                                                    
+                    <li {% if route == 'brs_tur_proceso_generar_pedido_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_generar_pedido_lista') }}"><i class="fa fa-circle-o"></i> Generar pedidos</a></li>
+                    <li {% if route == 'brs_tur_proceso_generar_factura' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_generar_factura') }}"><i class="fa fa-circle-o"></i> Generar facturas</a></li>
+                    <li {% if route == 'brs_tur_proceso_generar_programacion_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_generar_programacion_lista') }}"><i class="fa fa-circle-o"></i> Generar programacion</a></li>
+                    <li {% if route == 'brs_tur_proceso_generar_programacion_detalle_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_generar_programacion_detalle_lista') }}"><i class="fa fa-circle-o"></i> Generar programacion detalle</a></li>
+                    <li {% if route == 'brs_tur_proceso_generar_soporte_pago' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_generar_soporte_pago') }}"><i class="fa fa-circle-o"></i> Generar soporte pago</a></li>                            
+                    <li {% if route == 'brs_tur_proceso_cierre_mes' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_cierre_mes') }}"><i class="fa fa-circle-o"></i> Cierre mes</a></li>                                                                                    
                 </ul>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_proceso_mantenimiento' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Mantenimiento
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_proceso_mantenimiento_pedido') }}"><i class="fa fa-circle-o"></i> Pedido</a></li>
-                            <li><a href="{{ path('brs_tur_proceso_mantenimiento_programacion') }}"><i class="fa fa-circle-o"></i> Programacion</a></li>
+                            <li {% if route == 'brs_tur_proceso_mantenimiento_pedido' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_mantenimiento_pedido') }}"><i class="fa fa-circle-o"></i> Pedido</a></li>
+                            <li {% if route == 'brs_tur_proceso_mantenimiento_programacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_mantenimiento_programacion') }}"><i class="fa fa-circle-o"></i> Programacion</a></li>
                         </ul>
                     </li>                            
                 </ul>                         
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_proceso_contabilizar' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Contabilizar
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_proceso_contabilizar_pedido') }}"><i class="fa fa-circle-o"></i> Ingresos pendientes</a></li>
-                            <li><a href="{{ path('brs_tur_proceso_contabilizar_factura') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
+                            <li {% if route == 'brs_tur_proceso_contabilizar_pedido' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_contabilizar_pedido') }}"><i class="fa fa-circle-o"></i> Ingresos pendientes</a></li>
+                            <li {% if route == 'brs_tur_proceso_contabilizar_factura' %}class="active"{%endif%}><a href="{{ path('brs_tur_proceso_contabilizar_factura') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
                         </ul>
                     </li>                            
                 </ul>                                                                  
             </li>
-            <li>
+            <li {% if route starts with 'brs_tur_reporte' %}class="active treeview menu-open"{%endif%}>
                 <a href="#"><i class="fa fa-circle-o"></i> Reportes
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li {% if route starts with 'brs_tur_reporte_factura' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Facturacion
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_tur_reporte_factura_fecha_servicio') }}"><i class="fa fa-circle-o"></i> Fecha servicio</a></li>
-                            <li><a href="{{ path('brs_tur_reporte_factura_retencion_ica') }}"><i class="fa fa-circle-o"></i> Retencion Ica</a></li>
-                            <li><a href="{{ path('brs_tur_reporte_factura_resumen_anio') }}"><i class="fa fa-circle-o"></i> Resumen año</a></li>
+                            <li {% if route == 'brs_tur_reporte_factura_fecha_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_reporte_factura_fecha_servicio') }}"><i class="fa fa-circle-o"></i> Fecha servicio</a></li>
+                            <li {% if route == 'brs_tur_reporte_factura_retencion_ica' %}class="active"{%endif%}><a href="{{ path('brs_tur_reporte_factura_retencion_ica') }}"><i class="fa fa-circle-o"></i> Retencion Ica</a></li>
+                            <li {% if route == 'brs_tur_reporte_factura_resumen_anio' %}class="active"{%endif%}><a href="{{ path('brs_tur_reporte_factura_resumen_anio') }}"><i class="fa fa-circle-o"></i> Resumen año</a></li>
                         </ul>
                     </li>                            
                 </ul>                                                                                          
