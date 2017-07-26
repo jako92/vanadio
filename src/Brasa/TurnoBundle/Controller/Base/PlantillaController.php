@@ -252,7 +252,6 @@ class PlantillaController extends Controller {
     private function generarExcel() {
         ob_clean();
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -266,7 +265,8 @@ class PlantillaController extends Controller {
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'CÓDIG0')
-                ->setCellValue('B1', 'NOMBRE');
+                ->setCellValue('B1', 'NOMBRE')
+                ->setCellValue('C1', 'DIAS SECUENCIA');
 
         $i = 2;
 
@@ -277,7 +277,8 @@ class PlantillaController extends Controller {
         foreach ($arPlantillas as $arPlantilla) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPlantilla->getCodigoPlantillaPk())
-                    ->setCellValue('B' . $i, $arPlantilla->getNombreCorto());
+                    ->setCellValue('B' . $i, $arPlantilla->getNombre())
+                    ->setCellValue('C' . $i, $arPlantilla->getDiasSecuencia());
 
             $i++;
         }
