@@ -20,7 +20,7 @@ class AnticipoController extends Controller {
     var $strFechaHasta = "";
 
     /**
-     * @Route("/cartera/consulta/anticipo/lista", name="brs_cartera_consulta_anticipo_lista")
+     * @Route("/cartera/consulta/anticipo/lista", name="brs_car_consulta_anticipo_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -52,7 +52,7 @@ class AnticipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/consulta/anticipo/detalle", name="brs_cartera_consulta_anticipo_detalle")
+     * @Route("/cartera/consulta/anticipo/detalle", name="brs_car_consulta_anticipo_detalle")
      */
     public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

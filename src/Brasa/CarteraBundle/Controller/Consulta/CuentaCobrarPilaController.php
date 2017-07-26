@@ -20,7 +20,7 @@ class CuentaCobrarPilaController extends Controller {
     var $strFechaHasta = "";
 
     /**
-     * @Route("/cartera/consulta/cuentacobrarpila/lista", name="brs_cartera_consulta_cuentacobrarpila_lista")
+     * @Route("/cartera/consulta/cuentacobrarpila/lista", name="brs_car_consulta_cuentacobrarpila_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

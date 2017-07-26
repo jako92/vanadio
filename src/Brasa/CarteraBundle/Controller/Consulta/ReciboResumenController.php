@@ -17,7 +17,7 @@ class ReciboResumenController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/consulta/recibo/resumen/", name="brs_cartera_consulta_recibo_resumen")
+     * @Route("/cartera/consulta/recibo/resumen/", name="brs_car_consulta_recibo_resumen")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

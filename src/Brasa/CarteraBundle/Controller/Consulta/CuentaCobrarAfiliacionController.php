@@ -20,7 +20,7 @@ class CuentaCobrarAfiliacionController extends Controller {
     var $strFechaHasta = "";
 
     /**
-     * @Route("/cartera/consulta/cuentacobrarafiliacion/lista", name="brs_cartera_consulta_cuentacobrarafiliacion_lista")
+     * @Route("/cartera/consulta/cuentacobrarafiliacion/lista", name="brs_car_consulta_cuentacobrarafiliacion_lista")
      */
     public function listaAction(Request $request) {
         $request = $this->getRequest();

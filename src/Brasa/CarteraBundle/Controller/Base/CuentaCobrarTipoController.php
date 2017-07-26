@@ -18,7 +18,7 @@ class CuentaCobrarTipoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_cartera_base_cuentacobrar_tipo_listar")
+     * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_car_base_cuentacobrar_tipo_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class CuentaCobrarTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_base_cuentacobrar_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -53,7 +53,7 @@ class CuentaCobrarTipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/base/cuentacobrar/tipo/nuevo/{codigoCuentaCobrarTipo}", name="brs_cartera_base_cuentacobrar_tipo_nuevo")
+     * @Route("/cartera/base/cuentacobrar/tipo/nuevo/{codigoCuentaCobrarTipo}", name="brs_car_base_cuentacobrar_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoCuentaCobrarTipo = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,9 +70,9 @@ class CuentaCobrarTipoController extends Controller {
                 $em->persist($arCuentaCobrarTipo);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_cuentacobrar_tipo_nuevo', array('codigoCuentaCobroTipo' => 0)));
+                    return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_nuevo', array('codigoCuentaCobroTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_cuentacobrar_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_listar'));
                 }
             }
         }

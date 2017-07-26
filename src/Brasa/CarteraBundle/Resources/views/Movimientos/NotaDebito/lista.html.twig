@@ -39,7 +39,7 @@
                                 <div class="input-group">     
                                     {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
                                     <span class="input-group-btn">                                        
-                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_car_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
                                     </span>
                                 </div>
                             </div>
@@ -97,11 +97,11 @@
                     <td>{% if arNotasDebitos.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
                     <td>{% if arNotasDebitos.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
                     {% if arNotasDebitos.estadoAutorizado == 0 %}
-                        <td style="text-align: center"><a href="{{ path('brs_cartera_movimiento_notadebito_nuevo', {'codigoNotaDebito': arNotasDebitos.codigoNotaDebitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                        <td style="text-align: center"><a href="{{ path('brs_car_movimiento_notadebito_nuevo', {'codigoNotaDebito': arNotasDebitos.codigoNotaDebitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                             {% else %}
                         <td style="text-align: center"><a href="#" onClick="alert('No se puede editar el registro, ha sido autorizado')"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                             {% endif %}    
-                    <td style="text-align: center"><a href="{{ path('brs_cartera_movimiento_notadebito_detalle', { 'codigoNotaDebito': arNotasDebitos.codigoNotaDebitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_car_movimiento_notadebito_detalle', { 'codigoNotaDebito': arNotasDebitos.codigoNotaDebitoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arNotasDebitos.codigoNotaDebitoPk }}" /></td>
                 </tr>
 
@@ -120,7 +120,7 @@
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_notadebito_nuevo', {'codigoNotaDebito': 0}) }}">Nuevo</a>
+                <a class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_notadebito_nuevo', {'codigoNotaDebito': 0}) }}">Nuevo</a>
             </div>
             <div class="btn-group">
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}

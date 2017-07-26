@@ -18,7 +18,7 @@ class CorregirController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/utilidad/recibo/corregir", name="brs_cartera_utilidad_recibo_corregir")
+     * @Route("/cartera/utilidad/recibo/corregir", name="brs_car_utilidad_recibo_corregir")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -46,7 +46,7 @@ class CorregirController extends Controller {
     }
 
     /**
-     * @Route("/cartera/utilidad/recibo/corregir/nuevo/{codigoRecibo}", name="brs_cartera_utilidad_recibo_corregir_nuevo")
+     * @Route("/cartera/utilidad/recibo/corregir/nuevo/{codigoRecibo}", name="brs_car_utilidad_recibo_corregir_nuevo")
      */
     public function nuevoAction(Request $request, $codigoRecibo) {
         $em = $this->getDoctrine()->getManager();
@@ -61,7 +61,7 @@ class CorregirController extends Controller {
                 $arRecibo = $form->getData();
                 $em->persist($arRecibo);
                 $em->flush();                
-                return $this->redirect($this->generateUrl('brs_cartera_utilidad_recibo_corregir'));
+                return $this->redirect($this->generateUrl('brs_car_utilidad_recibo_corregir'));
             }
         }
         return $this->render('BrasaCarteraBundle:Utilidad/Recibo:corregir.html.twig', array(

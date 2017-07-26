@@ -20,7 +20,7 @@ class NotaCreditoController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/movimiento/notacredito/lista", name="brs_cartera_movimiento_notacredito_listar")
+     * @Route("/cartera/movimiento/notacredito/lista", name="brs_car_movimiento_notacredito_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -41,7 +41,7 @@ class NotaCreditoController extends Controller {
                     }
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarNotaCredito')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -63,7 +63,7 @@ class NotaCreditoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/notacredito/nuevo/{codigoNotaCredito}", name="brs_cartera_movimiento_notacredito_nuevo")
+     * @Route("/cartera/movimiento/notacredito/nuevo/{codigoNotaCredito}", name="brs_car_movimiento_notacredito_nuevo")
      */
     public function nuevoAction(Request $request, $codigoNotaCredito) {
 
@@ -102,12 +102,12 @@ class NotaCreditoController extends Controller {
                         $em->persist($arNotaCredito);
                         $em->flush();
                         if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_nuevo', array('codigoNotaCredito' => 0)));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_nuevo', array('codigoNotaCredito' => 0)));
                         } else {
                             if ($codigoNotaCredito != 0) {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_listar'));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_listar'));
                             } else {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $arNotaCredito->getCodigoNotaCreditoPk())));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $arNotaCredito->getCodigoNotaCreditoPk())));
                             }
                         }
                     } else {
@@ -119,12 +119,12 @@ class NotaCreditoController extends Controller {
                     $em->persist($arNotaCredito);
                     $em->flush();
                     if ($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_nuevo', array('codigoNotaCredito' => 0)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_nuevo', array('codigoNotaCredito' => 0)));
                     } else {
                         if ($codigoNotaCredito != 0) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_listar'));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_listar'));
                         } else {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $arNotaCredito->getCodigoNotaCreditoPk())));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $arNotaCredito->getCodigoNotaCreditoPk())));
                         }
                     }
                 }
@@ -136,7 +136,7 @@ class NotaCreditoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/notacredito/detalle/{codigoNotaCredito}", name="brs_cartera_movimiento_notacredito_detalle")
+     * @Route("/cartera/movimiento/notacredito/detalle/{codigoNotaCredito}", name="brs_car_movimiento_notacredito_detalle")
      */
     public function detalleAction(Request $request, $codigoNotaCredito) {
         $em = $this->getDoctrine()->getManager();
@@ -177,7 +177,7 @@ class NotaCreditoController extends Controller {
                         } else {
                             $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
                         }
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
                     } else {
                         $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado');
                     }
@@ -198,7 +198,7 @@ class NotaCreditoController extends Controller {
                         }
                         $em->persist($arNotaCredito);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
                     } else {
                         $objMensaje->Mensaje('error', "La nota credito debe estar autorizado y no puede estar impreso");
                     }
@@ -224,14 +224,14 @@ class NotaCreditoController extends Controller {
                         }
                         $em->persist($arNotaCredito);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
                     }
                 }
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     if ($arNotaCredito->getEstadoAutorizado() == 0) {
                         $arrControles = $request->request->All();
                         $this->actualizarDetalle($arrControles, $codigoNotaCredito);
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
                     } else {
                         $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado");
                     }
@@ -241,7 +241,7 @@ class NotaCreditoController extends Controller {
                         $arrSeleccionados = $request->request->get('ChkSeleccionar');
                         $em->getRepository('BrasaCarteraBundle:CarNotaCreditoDetalle')->eliminarSeleccionados($arrSeleccionados);
                         $em->getRepository('BrasaCarteraBundle:CarNotaCreditoDetalle')->liquidar($codigoNotaCredito);
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_notacredito_detalle', array('codigoNotaCredito' => $codigoNotaCredito)));
                     } else {
                         $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                     }
@@ -274,7 +274,7 @@ class NotaCreditoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/notacredito/detalle/nuevo/{codigoNotaCredito}/{codigoNotaCreditoDetalle}", name="brs_cartera_movimiento_notacredito_detalle_nuevo")
+     * @Route("/cartera/movimiento/notacredito/detalle/nuevo/{codigoNotaCredito}/{codigoNotaCreditoDetalle}", name="brs_car_movimiento_notacredito_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoNotaCredito, $codigoNotaCreditoDetalle = 0) {
 

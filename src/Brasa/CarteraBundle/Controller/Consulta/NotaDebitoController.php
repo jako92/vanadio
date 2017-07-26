@@ -20,7 +20,7 @@ class NotaDebitoController extends Controller {
     var $strFechaHasta = "";
 
     /**
-     * @Route("/cartera/consulta/notadebito/lista", name="brs_cartera_consulta_notadebito_lista")
+     * @Route("/cartera/consulta/notadebito/lista", name="brs_car_consulta_notadebito_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -54,7 +54,7 @@ class NotaDebitoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/consulta/notadebito/detalle", name="brs_cartera_consulta_notadebito_detalle")
+     * @Route("/cartera/consulta/notadebito/detalle", name="brs_car_consulta_notadebito_detalle")
      */
     public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

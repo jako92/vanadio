@@ -26,9 +26,9 @@
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">
             <div class="btn-group">                
-                <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_recibo_nuevo', {'codigoRecibo': 0 }) }}">Nuevo</a>                
+                <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_recibo_nuevo', {'codigoRecibo': 0 }) }}">Nuevo</a>                
                 {% if arRecibo.estadoAutorizado == 0 %}                    
-                    <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_recibo_nuevo', {'codigoRecibo': arRecibo.codigoReciboPk }) }}">Editar</a>                
+                    <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_recibo_nuevo', {'codigoRecibo': arRecibo.codigoReciboPk }) }}">Editar</a>                
                 {% endif %}                    
                 {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
                 {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
@@ -144,7 +144,7 @@
         <div class="btn-toolbar" style="float: right">
             {% if arRecibo.estadoAutorizado == 0 %}
                 <div class="btn-group">
-                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_movimiento_recibo_detalle_nuevo', {'codigoRecibo': arRecibo.codigoReciboPk, 'codigoReciboDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
+                    <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_car_movimiento_recibo_detalle_nuevo', {'codigoRecibo': arRecibo.codigoReciboPk, 'codigoReciboDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
                 </div>
             {% endif %}       
             <div class="btn-group">
@@ -157,7 +157,7 @@
         {{ form_rest(form) }}
         {{ form_end(form) }}
         <div class="btn-group">
-            <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_recibo_listar') }}">Volver</a>
+            <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_recibo_listar') }}">Volver</a>
         </div>
         <br/><br/><br/><br/>
     </section>

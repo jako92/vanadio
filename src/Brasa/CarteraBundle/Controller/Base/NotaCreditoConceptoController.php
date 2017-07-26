@@ -18,7 +18,7 @@ class NotaCreditoConceptoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/cartera/base/notacredito/concepto/lista", name="brs_cartera_base_notacredito_concepto_listar")
+     * @Route("/cartera/base/notacredito/concepto/lista", name="brs_car_base_notacredito_concepto_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class NotaCreditoConceptoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarNotaCreditoConcepto')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_base_notacredito_concepto_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_notacredito_concepto_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -53,7 +53,7 @@ class NotaCreditoConceptoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/base/notacredito/concepto/nuevo/{codigoNotaCreditoConcepto}", name="brs_cartera_base_notacredito_concepto_nuevo")
+     * @Route("/cartera/base/notacredito/concepto/nuevo/{codigoNotaCreditoConcepto}", name="brs_car_base_notacredito_concepto_nuevo")
      */
     public function nuevoAction(Request $request, $codigoNotaCreditoConcepto = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,9 +70,9 @@ class NotaCreditoConceptoController extends Controller {
                 $em->persist($arNotaCreditoConcepto);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_notacredito_concepto_nuevo', array('codigoNotaCreditoConcepto' => 0)));
+                    return $this->redirect($this->generateUrl('brs_car_base_notacredito_concepto_nuevo', array('codigoNotaCreditoConcepto' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_notacredito_concepto_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_notacredito_concepto_listar'));
                 }
             }
         }

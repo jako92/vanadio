@@ -34,7 +34,7 @@
                                 <div class="input-group">     
                                     {{ form_widget(form.TxtNombreCliente, { 'attr': {'class': 'form-control', 'readOnly': 'ReadOnly'} }) }}                              
                                     <span class="input-group-btn">                                        
-                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_car_buscar_cliente', { 'campoCodigo': 'form_TxtNit', 'campoNombre': 'form_TxtNombreCliente' }) }}', 'buscarCliente', 600, 900)">Buscar</a>
                                     </span>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                     <td>{% if arRecibos.estadoAnulado == 1 %}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoAutorizado == 1 %}SI{% else %}NO{% endif %}</td>
                     <td>{% if arRecibos.estadoImpreso == 1 %}SI{% else %}NO{% endif %}</td>
-                        <td style="text-align: center"><a href="{{ path('brs_cartera_utilidad_recibo_corregir_nuevo', {'codigoRecibo': arRecibos.codigoReciboPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                        <td style="text-align: center"><a href="{{ path('brs_car_utilidad_recibo_corregir_nuevo', {'codigoRecibo': arRecibos.codigoReciboPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     
                 </tr>
 

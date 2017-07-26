@@ -19,7 +19,7 @@ class RegenerarController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/proceso/regenerar", name="brs_cartera_proceso_regenerar")
+     * @Route("/cartera/proceso/regenerar", name="brs_car_proceso_regenerar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -45,7 +45,7 @@ class RegenerarController extends Controller {
                     }
                     $em->flush();
                     $objMensaje->Mensaje('informacion', "El proceso se ejecuto con exito");
-                    return $this->redirect($this->generateUrl('brs_cartera_proceso_regenerar'));
+                    return $this->redirect($this->generateUrl('brs_car_proceso_regenerar'));
                 }
             }
         }

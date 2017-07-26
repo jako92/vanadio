@@ -16,7 +16,7 @@ class AnticipoResumenController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/consulta/anticipo/resumen/", name="brs_cartera_consulta_anticipo_resumen")
+     * @Route("/cartera/consulta/anticipo/resumen/", name="brs_car_consulta_anticipo_resumen")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

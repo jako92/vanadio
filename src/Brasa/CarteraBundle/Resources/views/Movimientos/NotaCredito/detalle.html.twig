@@ -26,9 +26,9 @@
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">
             <div class="btn-group">                
-                <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_notacredito_nuevo', {'codigoNotaCredito': 0 }) }}">Nuevo</a>                
+                <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_notacredito_nuevo', {'codigoNotaCredito': 0 }) }}">Nuevo</a>                
                 {% if arNotaCredito.estadoAutorizado == 0 %}                    
-                    <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_notacredito_nuevo', {'codigoNotaCredito': arNotaCredito.codigoNotaCreditoPk }) }}">Editar</a>                
+                    <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_notacredito_nuevo', {'codigoNotaCredito': arNotaCredito.codigoNotaCreditoPk }) }}">Editar</a>                
                 {% endif %}                    
                 {{ form_widget(form.BtnAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
                 {{ form_widget(form.BtnDesAutorizar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
@@ -122,7 +122,7 @@
 <div class="btn-toolbar" style="float: right">
     {% if arNotaCredito.estadoAutorizado == 0 %}
         <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_cartera_movimiento_notacredito_detalle_nuevo', {'codigoNotaCredito': arNotaCredito.codigoNotaCreditoPk, 'codigoNotaCreditoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_car_movimiento_notacredito_detalle_nuevo', {'codigoNotaCredito': arNotaCredito.codigoNotaCreditoPk, 'codigoNotaCreditoDetalle': 0 }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>
         </div>
     {% endif %}       
     <div class="btn-group">
@@ -135,7 +135,7 @@
 {{ form_rest(form) }}
 {{ form_end(form) }}
 <div class="btn-group">
-    <a  class="btn btn-default btn-sm" href="{{ path('brs_cartera_movimiento_notacredito_listar') }}">Volver</a>
+    <a  class="btn btn-default btn-sm" href="{{ path('brs_car_movimiento_notacredito_listar') }}">Volver</a>
 </div>
 <br/><br/><br/><br/>
 </section>

@@ -18,7 +18,7 @@ class ReciboTipoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/cartera/base/recibo/tipo/lista", name="brs_cartera_base_recibo_tipo_listar")
+     * @Route("/cartera/base/recibo/tipo/lista", name="brs_car_base_recibo_tipo_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class ReciboTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarReciboTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_base_recibo_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_recibo_tipo_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -53,7 +53,7 @@ class ReciboTipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/base/recibo/tipo/nuevo/{codigoReciboTipo}", name="brs_cartera_base_recibo_tipo_nuevo")
+     * @Route("/cartera/base/recibo/tipo/nuevo/{codigoReciboTipo}", name="brs_car_base_recibo_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoReciboTipo = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,9 +70,9 @@ class ReciboTipoController extends Controller {
                 $em->persist($arReciboTipo);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_recibo_tipo_nuevo', array('codigoReciboTipo' => 0)));
+                    return $this->redirect($this->generateUrl('brs_car_base_recibo_tipo_nuevo', array('codigoReciboTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_cartera_base_recibo_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_recibo_tipo_listar'));
                 }
             }
         }

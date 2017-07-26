@@ -19,7 +19,7 @@ class AnticipoController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/movimiento/anticipo/lista", name="brs_cartera_movimiento_anticipo_listar")
+     * @Route("/cartera/movimiento/anticipo/lista", name="brs_car_movimiento_anticipo_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -40,7 +40,7 @@ class AnticipoController extends Controller {
                     }
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarAnticipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -62,7 +62,7 @@ class AnticipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/anticipo/nuevo/{codigoAnticipo}", name="brs_cartera_movimiento_anticipo_nuevo")
+     * @Route("/cartera/movimiento/anticipo/nuevo/{codigoAnticipo}", name="brs_car_movimiento_anticipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoAnticipo) {
 
@@ -102,12 +102,12 @@ class AnticipoController extends Controller {
                         $em->persist($arAnticipo);
                         $em->flush();
                         if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_nuevo', array('codigoAnticipo' => 0)));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_nuevo', array('codigoAnticipo' => 0)));
                         } else {
                             if ($codigoAnticipo != 0) {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_listar'));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_listar'));
                             } else {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $arAnticipo->getCodigoAnticipoPk())));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $arAnticipo->getCodigoAnticipoPk())));
                             }
                         }
                     } else {
@@ -123,14 +123,14 @@ class AnticipoController extends Controller {
                         $em->persist($arAnticipo);
                         $em->flush();
                         if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_nuevo', array('codigoAnticipo' => 0)));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_nuevo', array('codigoAnticipo' => 0)));
                         } else {
                             if ($codigoAnticipo != 0) {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_listar'));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_listar'));
                             } else {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $arAnticipo->getCodigoAnticipoPk())));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $arAnticipo->getCodigoAnticipoPk())));
                             }
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_listar'));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_listar'));
                         }
                     } else {
                         $objMensaje->Mensaje("error", "El valor del anticipo debe ser mayor a cero");
@@ -144,7 +144,7 @@ class AnticipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/anticipo/detalle/{codigoAnticipo}", name="brs_cartera_movimiento_anticipo_detalle")
+     * @Route("/cartera/movimiento/anticipo/detalle/{codigoAnticipo}", name="brs_car_movimiento_anticipo_detalle")
      */
     public function detalleAction(Request $request, $codigoAnticipo) {
         $em = $this->getDoctrine()->getManager();
@@ -187,7 +187,7 @@ class AnticipoController extends Controller {
                         } else {
                             $objMensaje->Mensaje('error', 'No se puede autorizar, hay inconsistencias');
                         }
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                     } else {
                         $objMensaje->Mensaje('error', 'No se puede autorizar, ya esta autorizado');
                     }
@@ -208,7 +208,7 @@ class AnticipoController extends Controller {
                         }
                         $em->persist($arAnticipo);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                     } else {
                         $objMensaje->Mensaje('error', "El anticipo debe estar autorizado y no puede estar impreso");
                     }
@@ -244,14 +244,14 @@ class AnticipoController extends Controller {
                         }
                         $em->persist($arAnticipo);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                     }
                 }
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     if ($arAnticipo->getEstadoAutorizado() == 0) {
                         $arrControles = $request->request->All();
                         $this->actualizarDetalle($arrControles, $codigoAnticipo);
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                     } else {
                         $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado");
                     }
@@ -264,7 +264,7 @@ class AnticipoController extends Controller {
                     } else {
                         $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                     }
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                 }
                 if ($form->get('BtnImprimir')->isClicked()) {
                     if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 115, 10)) {
@@ -289,9 +289,9 @@ class AnticipoController extends Controller {
                         }
                         $em->persist($arAnticipo);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                     }
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_anticipo_detalle', array('codigoAnticipo' => $codigoAnticipo)));
                 }
             }
         }
@@ -306,7 +306,7 @@ class AnticipoController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/anticipo/detalle/nuevo/{codigoAnticipo}/{codigoAnticipoDetalle}", name="brs_cartera_movimiento_anticipo_detalle_nuevo")
+     * @Route("/cartera/movimiento/anticipo/detalle/nuevo/{codigoAnticipo}/{codigoAnticipoDetalle}", name="brs_car_movimiento_anticipo_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoAnticipo, $codigoAnticipoDetalle = 0) {
 

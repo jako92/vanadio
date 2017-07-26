@@ -20,7 +20,7 @@ class ReciboController extends Controller {
     var $strFechaHasta = "";
 
     /**
-     * @Route("/cartera/consulta/recibo/lista", name="brs_cartera_consulta_recibo_lista")
+     * @Route("/cartera/consulta/recibo/lista", name="brs_car_consulta_recibo_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -54,7 +54,7 @@ class ReciboController extends Controller {
     }
 
     /**
-     * @Route("/cartera/consulta/recibo/detalle", name="brs_cartera_consulta_recibo_detalle")
+     * @Route("/cartera/consulta/recibo/detalle", name="brs_car_consulta_recibo_detalle")
      */
     public function detalleAction(Request $request) {
         $em = $this->getDoctrine()->getManager();

@@ -16,7 +16,7 @@ class ClienteController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/cartera/buscar/cliente/{campoCodigo}/{campoNombre}", name="brs_cartera_buscar_cliente")
+     * @Route("/cartera/buscar/cliente/{campoCodigo}/{campoNombre}", name="brs_car_buscar_cliente")
      */
     public function listaAction(Request $request, $campoCodigo, $campoNombre) {
         $em = $this->getDoctrine()->getManager();

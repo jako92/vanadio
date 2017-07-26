@@ -19,7 +19,7 @@ class ClienteController extends Controller {
     var $strIdentificacion = "";
 
     /**
-     * @Route("/cartera/base/cliente/lista", name="brs_cartera_base_cliente_listar")
+     * @Route("/cartera/base/cliente/lista", name="brs_car_base_cliente_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -36,7 +36,7 @@ class ClienteController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarCliente')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_base_cliente_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_cliente_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -54,7 +54,7 @@ class ClienteController extends Controller {
     }
 
     /**
-     * @Route("/cartera/base/cliente/nuevo/{codigoCliente}", name="brs_cartera_base_cliente_nuevo")
+     * @Route("/cartera/base/cliente/nuevo/{codigoCliente}", name="brs_car_base_cliente_nuevo")
      */
     public function nuevoAction(Request $request, $codigoCliente = '') {
         $em = $this->getDoctrine()->getManager();
@@ -78,9 +78,9 @@ class ClienteController extends Controller {
                     $em->persist($arCliente);
                     $em->flush();
                     if ($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_cartera_base_cliente_nuevo', array('codigoCliente' => 0)));
+                        return $this->redirect($this->generateUrl('brs_car_base_cliente_nuevo', array('codigoCliente' => 0)));
                     } else {
-                        return $this->redirect($this->generateUrl('brs_cartera_base_cliente_listar'));
+                        return $this->redirect($this->generateUrl('brs_car_base_cliente_listar'));
                     }
                 }
             }

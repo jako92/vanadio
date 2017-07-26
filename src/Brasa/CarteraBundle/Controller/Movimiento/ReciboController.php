@@ -19,7 +19,7 @@ class ReciboController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/cartera/movimiento/recibo/lista", name="brs_cartera_movimiento_recibo_listar")
+     * @Route("/cartera/movimiento/recibo/lista", name="brs_car_movimiento_recibo_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -40,7 +40,7 @@ class ReciboController extends Controller {
                     }
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarRecibo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -62,7 +62,7 @@ class ReciboController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/recibo/nuevo/{codigoRecibo}", name="brs_cartera_movimiento_recibo_nuevo")
+     * @Route("/cartera/movimiento/recibo/nuevo/{codigoRecibo}", name="brs_car_movimiento_recibo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoRecibo) {
 
@@ -102,12 +102,12 @@ class ReciboController extends Controller {
                         $em->persist($arRecibo);
                         $em->flush();
                         if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_nuevo', array('codigoRecibo' => 0)));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_nuevo', array('codigoRecibo' => 0)));
                         } else {
                             if ($codigoRecibo != 0) {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_listar'));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_listar'));
                             } else {
-                                return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $arRecibo->getCodigoReciboPk())));
+                                return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $arRecibo->getCodigoReciboPk())));
                             }
                         }
                     } else {
@@ -119,12 +119,12 @@ class ReciboController extends Controller {
                     $em->persist($arRecibo);
                     $em->flush();
                     if ($form->get('guardarnuevo')->isClicked()) {
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_nuevo', array('codigoRecibo' => 0)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_nuevo', array('codigoRecibo' => 0)));
                     } else {
                         if ($codigoRecibo != 0) {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_listar'));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_listar'));
                         } else {
-                            return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $arRecibo->getCodigoReciboPk())));
+                            return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $arRecibo->getCodigoReciboPk())));
                         }
                     }
                 }
@@ -136,7 +136,7 @@ class ReciboController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/recibo/detalle/{codigoRecibo}", name="brs_cartera_movimiento_recibo_detalle")
+     * @Route("/cartera/movimiento/recibo/detalle/{codigoRecibo}", name="brs_car_movimiento_recibo_detalle")
      */
     public function detalleAction(Request $request, $codigoRecibo) {
         $em = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class ReciboController extends Controller {
                                 $objMensaje->Mensaje('error', 'Debe adicionar detalles al recibo de caja');
                             }
                         }
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                     } else {
                         $objMensaje->Mensaje('error', 'No se puede autorizar, el documento ya esta autorizado');
                     }
@@ -245,7 +245,7 @@ class ReciboController extends Controller {
                         $arRecibo->setEstadoAutorizado(0);
                         $em->persist($arRecibo);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                     } else {
                         $objMensaje->Mensaje('error', "El recibo debe estar autorizado y no puede estar impreso");
                     }
@@ -283,14 +283,14 @@ class ReciboController extends Controller {
                         $arRecibo->setVrPagoTotal(0);
                         $em->persist($arRecibo);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                     }
                 }
                 if ($form->get('BtnDetalleActualizar')->isClicked()) {
                     if ($arRecibo->getEstadoAutorizado() == 0) {
                         $arrControles = $request->request->All();
                         $this->actualizarDetalle($arrControles, $codigoRecibo);
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                     } else {
                         $objMensaje->Mensaje("error", "No se puede actualizar el registro, esta autorizado");
                     }
@@ -303,7 +303,7 @@ class ReciboController extends Controller {
                     } else {
                         $objMensaje->Mensaje("error", "No se puede eliminar el registro, esta autorizado");
                     }
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                 }
                 if ($form->get('BtnImprimir')->isClicked()) {
                     if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 116, 10)) {
@@ -320,7 +320,7 @@ class ReciboController extends Controller {
                     } else {
                         $objMensaje->Mensaje("error", "No se puede imprimir el registro, no esta autorizado");
                     }
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                 }
                 if ($form->get('BtnVistaPrevia')->isClicked()) {
                     /* if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 116, 10)) {
@@ -332,7 +332,7 @@ class ReciboController extends Controller {
                     $objRecibo = new \Brasa\CarteraBundle\Formatos\FormatoRecibo();
                     $objRecibo->Generar($em, $codigoRecibo);
 
-                    return $this->redirect($this->generateUrl('brs_cartera_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
+                    return $this->redirect($this->generateUrl('brs_car_movimiento_recibo_detalle', array('codigoRecibo' => $codigoRecibo)));
                 }
             }
         }
@@ -347,7 +347,7 @@ class ReciboController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/recibo/detalle/nuevo/{codigoRecibo}", name="brs_cartera_movimiento_recibo_detalle_nuevo")
+     * @Route("/cartera/movimiento/recibo/detalle/nuevo/{codigoRecibo}", name="brs_car_movimiento_recibo_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoRecibo) {
         $em = $this->getDoctrine()->getManager();
@@ -398,7 +398,7 @@ class ReciboController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/recibo/detalle/aplicar/{codigoReciboDetalle}", name="brs_cartera_movimiento_recibo_detalle_aplicar")
+     * @Route("/cartera/movimiento/recibo/detalle/aplicar/{codigoReciboDetalle}", name="brs_car_movimiento_recibo_detalle_aplicar")
      */
     public function detalleAplicarAction(Request $request, $codigoReciboDetalle) {
         $em = $this->getDoctrine()->getManager();

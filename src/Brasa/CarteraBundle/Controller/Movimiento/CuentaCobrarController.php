@@ -22,7 +22,7 @@ class CuentaCobrarController extends Controller {
     var $estadoAutorizado = "";
 
     /**
-     * @Route("/cartera/movimiento/cuentacobrar/lista", name="brs_cartera_movimiento_cuentacobrar_listar")
+     * @Route("/cartera/movimiento/cuentacobrar/lista", name="brs_car_movimiento_cuentacobrar_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -40,7 +40,7 @@ class CuentaCobrarController extends Controller {
                 /* if ($form->get('BtnEliminar')->isClicked()) {
                   $arrSeleccionados = $request->request->get('ChkSeleccionar');
                   $em->getRepository('BrasaCarteraBundle:CarCuentaCobrar')->eliminar($arrSeleccionados);
-                  return $this->redirect($this->generateUrl('brs_cartera_movimiento_cuentacobrar_listar'));
+                  return $this->redirect($this->generateUrl('brs_car_movimiento_cuentacobrar_listar'));
                   } */
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -62,7 +62,7 @@ class CuentaCobrarController extends Controller {
     }
 
     /**
-     * @Route("/cartera/movimiento/cuentacobrar/nuevo/{codigoCuentaCobrar}", name="brs_cartera_movimiento_cuentacobrar_nuevo")
+     * @Route("/cartera/movimiento/cuentacobrar/nuevo/{codigoCuentaCobrar}", name="brs_car_movimiento_cuentacobrar_nuevo")
      */
     public function nuevoAction(Request $request, $codigoCuentaCobrar) {
         $em = $this->getDoctrine()->getManager();
@@ -82,7 +82,7 @@ class CuentaCobrarController extends Controller {
                         $arCuentasCobrar->setSaldo($saldo);
                         $em->persist($arCuentasCobrar);
                         $em->flush();
-                        return $this->redirect($this->generateUrl('brs_cartera_movimiento_cuentacobrar_listar'));
+                        return $this->redirect($this->generateUrl('brs_car_movimiento_cuentacobrar_listar'));
                     } else {
                         $objMensaje->Mensaje('error', 'El valor del saldo inicial no puede ser menor al valor del abono');
                     }
