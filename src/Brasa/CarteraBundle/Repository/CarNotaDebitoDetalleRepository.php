@@ -11,84 +11,83 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class CarNotaDebitoDetalleRepository extends EntityRepository {
-        
+
     public function detalleConsultaDql($numero = "", $codigoCliente = "", $codigoCuentaCobrarTipo = "", $strFechaDesde = "", $strFechaHasta = "") {
-        $dql   = "SELECT ndd FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd JOIN ndd.notaDebitoRel nd  WHERE ndd.codigoNotaDebitoDetallePk <> 0 ";
-        if($numero != "") {
-            $dql .= " AND ndd.numeroFactura = " . $numero;  
+        $dql = "SELECT ndd FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd JOIN ndd.notaDebitoRel nd  WHERE ndd.codigoNotaDebitoDetallePk <> 0 ";
+        if ($numero != "") {
+            $dql .= " AND ndd.numeroFactura = " . $numero;
         }
-        if($codigoCliente != "") {
-            $dql .= " AND nd.codigoClienteFk = " . $codigoCliente;  
+        if ($codigoCliente != "") {
+            $dql .= " AND nd.codigoClienteFk = " . $codigoCliente;
         }
-        if($codigoCuentaCobrarTipo != "") {
-            $dql .= " AND ndd.codigoCuentaCobrarTipoFk = " . $codigoCuentaCobrarTipo;  
+        if ($codigoCuentaCobrarTipo != "") {
+            $dql .= " AND ndd.codigoCuentaCobrarTipoFk = " . $codigoCuentaCobrarTipo;
         }
-        if ($strFechaDesde != ""){
-            $dql .= " AND nd.fecha >='" . date_format($strFechaDesde, ('Y-m-d')). "'";
+        if ($strFechaDesde != "") {
+            $dql .= " AND nd.fecha >='" . $strFechaDesde . "'";
         }
-        if($strFechaHasta != "") {
-            $dql .= " AND nd.fecha <='" . date_format($strFechaHasta, ('Y-m-d')) . "'";
-        }        
+        if ($strFechaHasta != "") {
+            $dql .= " AND nd.fecha <='" . $strFechaHasta . "'";
+        }
         return $dql;
-    } 
-    
-    public function eliminarSeleccionados($arrSeleccionados) {        
-        if(count($arrSeleccionados) > 0) {
+    }
+
+    public function eliminarSeleccionados($arrSeleccionados) {
+        if (count($arrSeleccionados) > 0) {
             $em = $this->getEntityManager();
-            foreach ($arrSeleccionados AS $codigo) {                
-                $arNotaDebitoDetalle = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->find($codigo);                
-                $em->remove($arNotaDebitoDetalle);                  
-            }                                         
-            $em->flush();       
+            foreach ($arrSeleccionados AS $codigo) {
+                $arNotaDebitoDetalle = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->find($codigo);
+                $em->remove($arNotaDebitoDetalle);
+            }
+            $em->flush();
         }
-        
-    }        
-    
-    public function numeroRegistros($codigo) {        
+    }
+
+    public function numeroRegistros($codigo) {
         $em = $this->getEntityManager();
         $intNumeroRegistros = 0;
-        $dql   = "SELECT COUNT(ndd.codigoNotaDebitoDetallePk) as numeroRegistros FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd "
+        $dql = "SELECT COUNT(ndd.codigoNotaDebitoDetallePk) as numeroRegistros FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd "
                 . "WHERE ndd.codigoNotaDebitoFk = " . $codigo;
         $query = $em->createQuery($dql);
-        $arrNotaDebitoDetalles = $query->getSingleResult(); 
-        if($arrNotaDebitoDetalles) {
+        $arrNotaDebitoDetalles = $query->getSingleResult();
+        if ($arrNotaDebitoDetalles) {
             $intNumeroRegistros = $arrNotaDebitoDetalles['numeroRegistros'];
         }
         return $intNumeroRegistros;
-    }  
+    }
 
-    public function liquidar($codigoNotaDebito) {        
-        $em = $this->getEntityManager();        
-        $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();        
-        $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigoNotaDebito); 
+    public function liquidar($codigoNotaDebito) {
+        $em = $this->getEntityManager();
+        $arNotaDebito = new \Brasa\CarteraBundle\Entity\CarNotaDebito();
+        $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigoNotaDebito);
         $intCantidad = 0;
         $floValor = 0;
-        $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigoNotaDebito);         
-        $arNotaDebitosDetalle = new \Brasa\CarteraBundle\Entity\CarNotaDebitoDetalle();        
-        $arNotaDebitosDetalle = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito));         
-        foreach ($arNotaDebitosDetalle as $arNotaDebitoDetalle) {         
+        $arNotaDebito = $em->getRepository('BrasaCarteraBundle:CarNotaDebito')->find($codigoNotaDebito);
+        $arNotaDebitosDetalle = new \Brasa\CarteraBundle\Entity\CarNotaDebitoDetalle();
+        $arNotaDebitosDetalle = $em->getRepository('BrasaCarteraBundle:CarNotaDebitoDetalle')->findBy(array('codigoNotaDebitoFk' => $codigoNotaDebito));
+        foreach ($arNotaDebitosDetalle as $arNotaDebitoDetalle) {
             $floValor += $arNotaDebitoDetalle->getValor();
-        }                 
+        }
         $arNotaDebito->setValor($floValor);
         $em->persist($arNotaDebito);
         $em->flush();
         return true;
     }
-    
-    public function validarCuenta($codigoCuenta, $codigoNotaDebito) {        
+
+    public function validarCuenta($codigoCuenta, $codigoNotaDebito) {
         $em = $this->getEntityManager();
-        $boolValidar = TRUE;        
-        $dql   = "SELECT COUNT(ndd.codigoNotaDebitoDetallePk) as numeroRegistros FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd "
+        $boolValidar = TRUE;
+        $dql = "SELECT COUNT(ndd.codigoNotaDebitoDetallePk) as numeroRegistros FROM BrasaCarteraBundle:CarNotaDebitoDetalle ndd "
                 . "WHERE ndd.codigoCuentaCobrarFk = " . $codigoCuenta . " AND ndd.codigoNotaDebitoFk = " . $codigoNotaDebito;
         $query = $em->createQuery($dql);
-        $arrNotaDebitoDetalles = $query->getSingleResult(); 
-        if($arrNotaDebitoDetalles) {
+        $arrNotaDebitoDetalles = $query->getSingleResult();
+        if ($arrNotaDebitoDetalles) {
             $intNumeroRegistros = $arrNotaDebitoDetalles['numeroRegistros'];
-            if($intNumeroRegistros > 0) {
+            if ($intNumeroRegistros > 0) {
                 $boolValidar = FALSE;
             }
         }
         return $boolValidar;
     }
-           
+
 }

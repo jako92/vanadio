@@ -73,7 +73,7 @@ class AsientoController extends Controller {
             }
         }
         $arAsientos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 20);
-        return $this->render('BrasaContabilidadBundle:Movimientos/Asientos:lista.html.twig', array('arAsientos' => $arAsientos, 'form' => $form->createView()));
+        return $this->render('BrasaContabilidadBundle:Movimiento/Asiento:lista.html.twig', array('arAsientos' => $arAsientos, 'form' => $form->createView()));
     }
 
     /**
@@ -106,7 +106,7 @@ class AsientoController extends Controller {
                 }
             }
         }
-        return $this->render('BrasaContabilidadBundle:Movimientos/Asientos:nuevo.html.twig', array(
+        return $this->render('BrasaContabilidadBundle:Movimiento/Asiento:nuevo.html.twig', array(
                     'arAsiento' => $arAsiento,
                     'form' => $form->createView()));
     }
@@ -340,7 +340,7 @@ class AsientoController extends Controller {
         }
         $arAsientoDetalles = new \Brasa\ContabilidadBundle\Entity\CtbAsientoDetalle();
         $arAsientoDetalles = $em->getRepository('BrasaContabilidadBundle:CtbAsientoDetalle')->FindBy(array('codigoAsientoFk' => $codigoAsiento));
-        return $this->render('BrasaContabilidadBundle:Movimientos/Asientos:detalle.html.twig', array(
+        return $this->render('BrasaContabilidadBundle:Movimiento/Asiento:detalle.html.twig', array(
                     'arAsiento' => $arAsiento,
                     'arAsientoDetalles' => $arAsientoDetalles,
                     'arAsientoDetalleNew' => $arAsientoDetalleNew,

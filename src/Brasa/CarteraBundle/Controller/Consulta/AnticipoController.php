@@ -182,7 +182,7 @@ class AnticipoController extends Controller {
 
     private function formularioFiltroDetalle() {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getRequest()->getSession();
+        $session = new session;
         $strNombreCliente = "";
         if ($session->get('filtroNit')) {
             $arCliente = $em->getRepository('BrasaCarteraBundle:CarCliente')->findOneBy(array('nit' => $session->get('filtroNit')));
