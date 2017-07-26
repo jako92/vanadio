@@ -16,7 +16,7 @@ class IngresoPendienteController extends Controller {
     var $strListaDetalleDql = "";
 
     /**
-     * @Route("/tur/consulta/ingreso/pendiente", name="brs_tur_consulta_ingreso_pendiente")
+     * @Route("/tur/consulta/pedidos/ingreso/pendiente", name="brs_tur_consulta_pedidos_ingreso_pendiente")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
