@@ -33,41 +33,41 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">                    
-                    <li>
+                    <li {% if route starts with 'brs_rhu_movimiento' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Movimientos
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_seleccion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seleccion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_requisicion_lista') }}"><i class="fa fa-circle-o"></i> Requisicion</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_aspirante_lista') }}"><i class="fa fa-circle-o"></i> Aspirante</a></li>
-                                    <li><a href="{{ path('brs_rhu_seleccion_lista') }}"><i class="fa fa-circle-o"></i> Seleccion</a></li>
+                                    <li><a href="{{ path('brs_rhu_requisicion_lista') }}"><i class="fa fa-circle-o"></i> Requisicion</a></li><!-- Pendiente ruta  -->
+                                    <li><a href="{{ path('brs_rhu_movimiento_aspirante_lista') }}"><i class="fa fa-circle-o"></i> Aspirante</a></li><!-- Pendiente ruta  -->
+                                    <li><a href="{{ path('brs_rhu_seleccion_lista') }}"><i class="fa fa-circle-o"></i> Seleccion</a></li><!-- Pendiente ruta  -->
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_seguridad_social' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_examen_listar') }}"><i class="fa fa-circle-o"></i> Examen</a></li>
-                                    <li><a href="{{ path('brs_rhu_pago_examen_lista') }}"><i class="fa fa-circle-o"></i> Pago examen</a></li>
+                                    <li><a href="{{ path('brs_rhu_examen_listar') }}"><i class="fa fa-circle-o"></i> Examen</a></li><!-- Pendiente ruta -->
+                                    <li><a href="{{ path('brs_rhu_pago_examen_lista') }}"><i class="fa fa-circle-o"></i> Pago examen</a></li><!-- Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_requisito' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Contratacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -79,7 +79,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_nomina' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Nomina
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -103,7 +103,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_comercial' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Comercial
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -116,7 +116,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_dotacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Dotacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -128,7 +128,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_salud_ocupacional' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Salud ocupacional
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -140,7 +140,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_informacion_interna' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Informacion interna
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -152,7 +152,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_recurso_humano' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Recurso humano
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -173,7 +173,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_movimiento_control_acceso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Control acceso
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -185,14 +185,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li  {% if route starts with 'brs_rhu_consulta' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Consultas
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_aspirantes' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Aspirantes inconsistencias
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -204,7 +204,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_adicionales' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Adicionales al pago
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -216,7 +216,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_costo' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Costos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -228,7 +228,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_empleado' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Empleados
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -236,10 +236,10 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="{{ path('brs_rhu_consulta_empleado') }}"><i class="fa fa-circle-o"></i> General</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado') }}"><i class="fa fa-circle-o"></i> Completo</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_pagos_deducciones_empleado') }}"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado_estudios_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado') }}"><i class="fa fa-circle-o"></i> Completo</a></li><!-- Pendiente ruta -->
+                                    <li><a href="{{ path('brs_rhu_consultas_pagos_deducciones_empleado') }}"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li><!-- Pendiente ruta -->
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado_estudios_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li><!-- Pendiente ruta -->
+                                    <li><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li><!-- Pendiente ruta -->
                                     <li><a href="{{ path('brs_rhu_consulta_empleado_centro_costo_mes') }}"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
                                     <li><a href="{{ path('brs_rhu_consulta_empleado_grupo_familiar') }}"><i class="fa fa-circle-o"></i> Grupo familiar</a></li>
                                     <li><a href="{{ path('brs_rhu_consulta_empleado_cumpleanos') }}"><i class="fa fa-circle-o"></i> Cumpleaños</a></li>
@@ -247,7 +247,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_incapacidades' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Incapacidades
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -259,7 +259,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_creditos' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Creditos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -271,7 +271,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_servicios' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Servicios
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -283,20 +283,20 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_pago' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Pagos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_pago') }}"><i class="fa fa-circle-o"></i> Pagos</a></li>
+                                    <li><a href="{{ path('brs_rhu_consultas_pago') }}"><i class="fa fa-circle-o"></i> Pagos</a></li><!-- Pendiente ruta -->
                                     <li><a href="{{ path('brs_rhu_consulta_pago_detalle') }}"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_pago_concepto' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Concepto pago
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -308,7 +308,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_sso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -320,7 +320,7 @@
                             </li>
                         </ul>                                 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_prestacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Prestaciones
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -332,19 +332,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
-                                <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_sso_aportes') }}"><i class="fa fa-circle-o"></i> Aportes</a></li>
-                                </ul>
-                            </li>
-                        </ul> 
-                        <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_contrato' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Contratos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -361,7 +349,7 @@
                             </li>
                         </ul>   
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_liquidacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Liquidacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -373,7 +361,7 @@
                             </li>
                         </ul>                                
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_pago' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Pago banco
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -386,7 +374,7 @@
                             </li>
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_dotacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Dotaciones
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -398,7 +386,7 @@
                             </li>
                         </ul>  
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_examen' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Examenes
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -411,7 +399,7 @@
                             </li>
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_proceso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Procesos disciplinarios
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -423,7 +411,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_control_acceso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Control acceso
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -436,7 +424,7 @@
                             </li>
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_permisos' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Permisos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -448,7 +436,7 @@
                             </li>
                         </ul>     
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consulta_visita' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Visitas
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -460,7 +448,7 @@
                             </li>
                         </ul>   
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_consultas_capacitacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Capacitaciones
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -473,7 +461,7 @@
                             </li>
                         </ul>                         
                     </li>  
-                    <li>
+                    <li {% if route starts with 'brs_rhu_base' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Administracion
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -484,7 +472,7 @@
                             <li><a href="{{ path('brs_rhu_base_centro_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Centro trabajo</a></li>
                             <li><a href="{{ path('brs_rhu_base_sucursal_lista') }}"><i class="fa fa-circle-o"></i> Sucursal</a></li>
                             <li><a href="{{ path('brs_rhu_base_centros_costos_lista') }}"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_empleado' %}class="active treeview menu-open"{%endif%}>
                                 <a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -497,7 +485,7 @@
                                 </ul>
                             </li>
                             <li><a href="{{ path('brs_rhu_base_contratos_lista') }}"><i class="fa fa-circle-o"></i> Contratos</a></li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_general' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> General
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -521,7 +509,7 @@
                                     <li><a href="{{ path('brs_rhu_base_examentipo_listar') }}"><i class="fa fa-circle-o"></i> Examen por cargo</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_contratacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Contratacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -537,7 +525,7 @@
                                     <li><a href="{{ path('brs_rhu_base_turno_listar') }}"><i class="fa fa-circle-o"></i> Turno</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_sso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -552,7 +540,7 @@
                                     <li><a href="{{ path('brs_rhu_base_pension_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo pension</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_salud_ocupacional' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Salud ocupacional
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -564,7 +552,7 @@
                                     <li><a href="{{ path('brs_rhu_base_incapacidaddiagnostico') }}"><i class="fa fa-circle-o"></i> Incapacidad diagnostico</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_seleccion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seleccion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -577,7 +565,7 @@
                                     <li><a href="{{ path('brs_rhu_base_motivodescarte_aspirante_listar') }}"><i class="fa fa-circle-o"></i> Motivo descarte</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_acreditacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Acreditacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -588,7 +576,7 @@
                                     <li><a href="{{ path('brs_rhu_base_acreditacion_tipo_lista') }}"><i class="fa fa-circle-o"></i> Tipo acreditacion</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li {% if route starts with 'brs_rhu_base_dotacion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Dotacion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -605,14 +593,14 @@
                             <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank"><i class="fa fa-circle-o"></i> Otros</a></li>
                         </ul>
                     </li>  
-                    <li>
+                    <li {% if route starts with 'brs_rhu_utilidad' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Utilidades
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_programacion_pago' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Programacion pago
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -626,7 +614,7 @@
                             </li>                            
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_notificaciones' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Notificaciones
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -638,7 +626,7 @@
                             </li>                            
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidad_seguridad_social' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -653,135 +641,135 @@
                             </li>                            
                         </ul>  
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_medios_magneticos' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Medios magneticos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidades_medios_magneticos_informe') }}"><i class="fa fa-circle-o"></i> Dian</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_medios_magneticos_informe' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_medios_magneticos_informe') }}"><i class="fa fa-circle-o"></i> Dian</a></li>
                                 </ul>
                             </li>                            
                         </ul>                        
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_informacion_dane' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Informacion DANE
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidades_informacion_dane_informe') }}"><i class="fa fa-circle-o"></i> DANE</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_informacion_dane_informe' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_informacion_dane_informe') }}"><i class="fa fa-circle-o"></i> DANE</a></li>
                                 </ul>
                             </li>                            
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_proyeccion' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Proyeccion
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidades_proyeccion') }}"><i class="fa fa-circle-o"></i> Proyeccion</a></li>
-                                    <li><a href="{{ path('brs_rhu_utilidades_proyeccion_parametro') }}"><i class="fa fa-circle-o"></i> Proyeccion (Parametros)</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_proyeccion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_proyeccion') }}"><i class="fa fa-circle-o"></i> Proyeccion</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_proyeccion_parametro' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_proyeccion_parametro') }}"><i class="fa fa-circle-o"></i> Proyeccion (Parametros)</a></li>
                                 </ul>
                             </li>                            
                         </ul>  
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_supervigilancia' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Supervigilancia
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidades_supervigilancia_parafiscales') }}"><i class="fa fa-circle-o"></i> Pago parafiscales</a></li>                                    
+                                    <li {% if route == 'brs_rhu_utilidades_supervigilancia_parafiscales' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_supervigilancia_parafiscales') }}"><i class="fa fa-circle-o"></i> Pago parafiscales</a></li>                                    
                                 </ul>
                             </li>                            
                         </ul> 
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidades_carta' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Cartas
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidades_cartas_generar') }}"><i class="fa fa-circle-o"></i> Notificaciones</a></li>
-                                    <li><a href="{{ path('brs_rhu_utilidades_carta_laboral') }}"><i class="fa fa-circle-o"></i> Carta laboral</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_cartas_generar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_cartas_generar') }}"><i class="fa fa-circle-o"></i> Notificaciones</a></li>
+                                    <li {% if route == 'brs_rhu_utilidades_carta_laboral' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_carta_laboral') }}"><i class="fa fa-circle-o"></i> Carta laboral</a></li>
                                 </ul>
                             </li>                                                        
                         </ul>                        
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_rhu_utilidades_certificado_ingreso_retencion') }}"><i class="fa fa-circle-o"></i> Certificado ingresos retenciones</a></li>
+                            <li {% if route == 'brs_rhu_utilidades_certificado_ingreso_retencion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_certificado_ingreso_retencion') }}"><i class="fa fa-circle-o"></i> Certificado ingresos retenciones</a></li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidad_horario_acceso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Horario acceso
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_utilidad_horario_acceso_empleado') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
-                                    <li><a href="{{ path('brs_rhu_utilidades_control_acceso_visitante') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                    <li {% if route == 'brs_rhu_utilidad_horario_acceso_empleado' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidad_horario_acceso_empleado') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li {% if route == 'brs_rhu_utilidad_horario_acceso_visitante' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidades_control_acceso_visitante') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li><!-- Pendiente ruta -->
                                 </ul>
                             </li>                                                        
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_utilidad_intercambio' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Intercambio datos
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li>
+                                    <li {% if route starts with 'brs_rhu_utilidad_intercambio_ardid' %}class="active treeview menu-open"{%endif%}>
                                         <a href="#"><i class="fa fa-circle-o"></i> Ardid
                                             <span class="pull-right-container">
                                                 <i class="fa fa-angle-left pull-right"></i>
                                             </span>
                                         </a>
                                         <ul class="treeview-menu">
-                                            <li><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_programacion') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
-                                            <li><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li>
+                                            <li {% if route == 'brs_rhu_utilidad_intercambio_ardid_programacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_programacion') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
+                                            <li {% if route == 'brs_rhu_utilidad_intercambio_ardid_contrato' %}class="active"{%endif%}><a href="{{ path('brs_rhu_utilidad_intercambio_ardid_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li>
                                         </ul>
                                     </li>                                                        
                                 </ul>
                             </li>                                                        
                         </ul>                        
                     </li> 
-                    <li>
+                    <li {% if route starts with 'brs_rhu_proceso' %}class="active treeview menu-open"{%endif%}>
                         <a href="#"><i class="fa fa-circle-o"></i> Procesos
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_rhu_proceso_cierre_anio') }}"><i class="fa fa-circle-o"></i> Cierre de año</a></li>
-                            <li><a href="{{ path('brs_rhu_proceso_cierre_mes') }}"><i class="fa fa-circle-o"></i> Cierre de mes</a></li>
-                            <li><a href="{{ path('brs_rhu_proceso_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
-                            <li><a href="{{ path('brs_rhu_proceso_soporte_pago_horario') }}"><i class="fa fa-circle-o"></i> Generar soporte pago horario</a></li>
-                            <li><a href="{{ path('brs_rhu_proceso_control_acceso_horario_periodo_listar') }}"><i class="fa fa-circle-o"></i> Control acceso</a></li>                            
-                            <li><a href="{{ path('brs_rhu_proceso_generar_servicio') }}"><i class="fa fa-circle-o"></i> Generar servicio</a></li>
-                            <li><a href="{{ path('brs_rhu_proceso_generar_informacion_turno') }}"><i class="fa fa-circle-o"></i> Generar informacion turnos</a></li>                            
+                            <li {% if route == 'brs_rhu_proceso_cierre_anio' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_cierre_anio') }}"><i class="fa fa-circle-o"></i> Cierre de año</a></li>
+                            <li {% if route == 'brs_rhu_proceso_cierre_mes' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_cierre_mes') }}"><i class="fa fa-circle-o"></i> Cierre de mes</a></li>
+                            <li {% if route == 'brs_rhu_proceso_provision' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
+                            <li {% if route == 'brs_rhu_proceso_soporte_pago_horario' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_soporte_pago_horario') }}"><i class="fa fa-circle-o"></i> Generar soporte pago horario</a></li>
+                            <li {% if route == 'brs_rhu_proceso_control_acceso_horario_periodo_listar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_control_acceso_horario_periodo_listar') }}"><i class="fa fa-circle-o"></i> Control acceso</a></li>                            
+                            <li {% if route == 'brs_rhu_proceso_generar_servicio' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_generar_servicio') }}"><i class="fa fa-circle-o"></i> Generar servicio</a></li>
+                            <li {% if route == 'brs_rhu_proceso_generar_informacion_turno' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_generar_informacion_turno') }}"><i class="fa fa-circle-o"></i> Generar informacion turnos</a></li>                            
                         </ul>
                         <ul class="treeview-menu">
-                            <li>
+                            <li {% if route starts with 'brs_rhu_proceso_contabilizar' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Contabilizar
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_pago') }}"><i class="fa fa-circle-o"></i> Pago</a></li>
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_vacacion') }}"><i class="fa fa-circle-o"></i> Vacacion</a></li>
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li>
-                                    <li><a href="{{ path('brs_rhu_proceso_contabilizar_factura') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_pago' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_pago') }}"><i class="fa fa-circle-o"></i> Pago</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_provision' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_provision') }}"><i class="fa fa-circle-o"></i> Provision</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_liquidacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_vacacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_vacacion') }}"><i class="fa fa-circle-o"></i> Vacacion</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_pago_banco' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li>
+                                    <li {% if route == 'brs_rhu_proceso_contabilizar_factura' %}class="active"{%endif%}><a href="{{ path('brs_rhu_proceso_contabilizar_factura') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
                                 </ul>
                             </li>                            
                         </ul>                                                                  
