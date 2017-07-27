@@ -84,6 +84,41 @@ class CarReciboRepository extends EntityRepository {
         }
     }
     
+    public function contabilizar($arrSeleccionados) {
+        $em = $this->getEntityManager();
+        $respuesta = "";
+        if (count($arrSeleccionados) > 0) {
+            $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();            
+            $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
+            foreach ($arrSeleccionados AS $codigo) {
+                $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
+                $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigo);
+                if ($arRecibo->getEstadoAutorizado == 1 && $arRecibo->getEstadoContabilizado() == 0 && $arRecibo->getNumero() != 0) {
+                    $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arRecibo->getClienteRel()->getNit()));
+                    if (count($arTercero) <= 0) {
+                        $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
+                        $arTercero->setCiudadRel($arRecibo->getClienteRel()->getCiudadRel());
+                        $arTercero->setTipoIdentificacionRel($arRecibo->getClienteRel()->getTipoIdentificacionRel());
+                        $arTercero->setNumeroIdentificacion($arRecibo->getClienteRel()->getNit());
+                        $arTercero->setDigitoVerificacion($arRecibo->getClienteRel()->getDigitoVerificacion());
+                        $arTercero->setNombreCorto($arRecibo->getClienteRel()->getNombreCorto());
+                        $arTercero->setNombre1($arRecibo->getClienteRel()->getNombre1());
+                        $arTercero->setNombre2($arRecibo->getClienteRel()->getNombre2());
+                        $arTercero->setApellido1($arRecibo->getClienteRel()->getApellido1());
+                        $arTercero->setApellido2($arRecibo->getClienteRel()->getApellido2());
+                        $arTercero->setDireccion($arRecibo->getClienteRel()->getDireccion());
+                        $arTercero->setTelefono($arRecibo->getClienteRel()->getTelefono());
+                        $arTercero->setCelular($arRecibo->getClienteRel()->getCelular());
+                        $arTercero->setEmail($arFactura->getClienteRel()->getEmail());
+                        $em->persist($arTercero);
+                    }
+                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find('');
+                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                }
+            }
+        }
+    }
+    
     public function listaPendienteContabilizarDql($numeroRecibo = "", $boolEstadoAutorizado = "", $strFechaDesde = "", $strFechaHasta = "", $boolEstadoAnulado = "") {
         $dql = "SELECT r FROM BrasaCarteraBundle:CarRecibo r WHERE r.estadoContabilizado = 0 AND r.numero > 0";
         if ($numeroRecibo != "") {
