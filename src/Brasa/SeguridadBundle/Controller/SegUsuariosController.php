@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Brasa\SeguridadBundle\Form\Type\SegGrupoType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SegUsuariosController extends Controller {
@@ -429,18 +430,6 @@ class SegUsuariosController extends Controller {
                     'form' => $form->createView()));
     }
 
-    public function recuperarAction() {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->formularioRecuperar();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            return $this->redirect($this->generateUrl('login'));
-        }
-        return $this->render('BrasaSeguridadBundle:Usuarios:recuperar.html.twig', array(
-                    'form' => $form->createView(),
-        ));
-    }
-
     /**
      * @Route("/admin/usuario/cambiar/clave/admin/{codigoUsuario}", name="brs_seg_admin_usuario_cambiar_clave")
      */
@@ -505,40 +494,78 @@ class SegUsuariosController extends Controller {
     }
 
     /**
+     * @Route("/user/usuario/nuevo/permiso/grupo/{codigoGrupo}/", name="brs_seg_admin_permiso_grupo_nuevo")
+     */
+    public function nuevoPermisoGrupoAction(Request $request, $codigoGrupo) {
+        $em = $this->getDoctrine()->getManager();
+        $arGrupo = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
+        if ($codigoGrupo != "" || $codigoGrupo != 0) {
+            $arGrupo = $em->getRepository('BrasaSeguridadBundle:SegGrupo')->find($codigoGrupo);
+        }
+        $form = $this->createForm(SegGrupoType::class, $arGrupo);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $arGrupo = $form->getData();
+            $em->persist($arGrupo);
+            $em->flush();
+            return $this->redirect($this->generateUrl('brs_seg_admin_usuario_lista'));
+        }
+        return $this->render("BrasaSeguridadBundle:Usuarios:nuevoGrupo.html.twig", array(
+                    'arGrupo' => $arGrupo,
+                    'form' => $form->createView()));
+    }
+
+    /**
      * @Route("/user/usuario/detalle/permiso/grupo/{codigoGrupo}/", name="brs_seg_admin_permiso_grupo_detalle")
      */
     public function detallePermisoGrupoAction(Request $request, $codigoGrupo) {
         $em = $this->getDoctrine()->getManager();
         $arGrupo = $em->getRepository('BrasaSeguridadBundle:SegGrupo')->find($codigoGrupo);
         $paginator = $this->get('knp_paginator');
-        $form = $this->formularioSegDocumento();
+        $form = $this->createFormBuilder()
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar'))
+                ->getForm();
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('BtnEliminar')->isClicked()) {
+                $arrSeleccionadosPermisoEspecial = $request->request->get('ChkSeleccionarPermisoEspecial');
+                $arrSeleccionadosPermisoDocumento = $request->request->get('ChkSeleccionarPermisoDocumento');
+                if (count($arrSeleccionadosPermisoEspecial) > 0) {
+                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoEspecial);
+                }
+                if (count($arrSeleccionadosPermisoDocumento) > 0) {
+                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoDocumento);
+                }
+                return $this->redirect($this->generateUrl('brs_seg_admin_permiso_grupo_detalle',array('codigoGrupo'=>$codigoGrupo)));
+            }
+        }
+
+        $arPermisosGrupo = $paginator->paginate($em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo)), $request->query->get('page', 1), 500);
+        return $this->render("BrasaSeguridadBundle:Usuarios:detallePermisoGrupo.html.twig", array(
+                    'arPermisosGrupo' => $arPermisosGrupo,
+                    'arGrupo' => $arGrupo,
+                    'form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/user/usuario/detalle/permiso/grupo/documento/nuevo/{codigoGrupo}/", name="brs_seg_admin_permiso_grupo_detalle_documento_nuevo")
+     */
+    public function detalleNuevoPermisoGrupoDocumentoAction(Request $request, $codigoGrupo) {
+        $em = $this->getDoctrine()->getManager();
+        $arGrupo = $em->getRepository('BrasaSeguridadBundle:SegGrupo')->find($codigoGrupo);
+        $paginator = $this->get('knp_paginator');
+        $form = $this->formularioSegDocumento();
+        $this->filtrarListaSegDocumento($form);
         $this->listarSegDocumento();
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('BtnFiltrar')) {
                 $this->filtrarListaSegDocumento($form);
                 $this->listarSegDocumento();
             }
             if ($form->get('BtnGuardar')->isClicked()) {
-                $arrSeleccionadosPermisoEspecial = $request->request->get('ChkSeleccionarPermisoEspecial');
-                $arrSeleccionadosDocumentos = $request->request->get('ChkSeleccionarDocumento');
+                $arrSeleccionadosDocumentos = $request->request->get('ChkSeleccionar');
                 $arDatos = $form->getData();
-                if (count($arrSeleccionadosPermisoEspecial) > 0) {
-                    foreach ($arrSeleccionadosPermisoEspecial AS $codigoPermisoEspecial) {
-                        $arUsuarioPermisoGrupoValidarPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
-                        $arUsuarioPermisoGrupoValidarPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo, 'codigoPermisoEspecialFk' => $codigoPermisoEspecial));
-                        if (!$arUsuarioPermisoGrupoValidarPermisoEspecial) {
-                            $arPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->find($codigoPermisoEspecial);
-                            $arPermisoGrupo = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
-                            $arPermisoGrupo->setCodigoPermisoEspecialFk($arPermisoEspecial->getCodigoPermisoEspecialPk());
-                            $arPermisoGrupo->setGrupoRel($arGrupo);
-                            $arPermisoGrupo->setPermisoEspecialRel($arPermisoEspecial);
-                            $arPermisoGrupo->setPermitir(1);
-                            $em->persist($arPermisoGrupo);
-                            $em->flush();
-                        }
-                    }
-                }
                 if (count($arrSeleccionadosDocumentos) > 0) {
                     foreach ($arrSeleccionadosDocumentos AS $codigoDocumento) {
                         $arPermisoGrupoValidarPermisoDocumento = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
@@ -563,15 +590,67 @@ class SegUsuariosController extends Controller {
                             $em->flush();
                         }
                     }
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
         }
+
         $arDocumentos = $paginator->paginate($em->createQuery($this->strDqlListaSegDocumento), $request->query->get('page', 1), 500);
-        $arPermisosEspeciales = $em->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->findBy(array(), array('modulo' => 'ASC'));
-        return $this->render("BrasaSeguridadBundle:Usuarios:detallePermisoGrupo.html.twig", array(
-                    'arPermisosEspeciales' => $arPermisosEspeciales,
+        return $this->render("BrasaSeguridadBundle:Usuarios:detalleNuevoPermisoDocumento.html.twig", array(
                     'arDocumentos' => $arDocumentos,
                     'form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/user/usuario/detalle/permiso/grupo/especial/nuevo/{codigoGrupo}/", name="brs_seg_admin_permiso_grupo_detalle_especial_nuevo")
+     */
+    public function detalleNuevoPermisoGrupoEspecialAction(Request $request, $codigoGrupo) {
+        $em = $this->getDoctrine()->getManager();
+        $arGrupo = $em->getRepository('BrasaSeguridadBundle:SegGrupo')->find($codigoGrupo);
+        $paginator = $this->get('knp_paginator');
+        $form = $this->createFormBuilder()
+                ->add('guardar', SubmitType::class, array('label' => 'Guardar'))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('guardar')->isClicked()) {
+                $arrSeleccionadosPermisoEspecial = $request->request->get('ChkSeleccionar');
+                $arDatos = $form->getData();
+                if (count($arrSeleccionadosPermisoEspecial) > 0) {
+                    foreach ($arrSeleccionadosPermisoEspecial AS $codigoPermisoEspecial) {
+                        $arUsuarioPermisoGrupoValidarPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
+                        $arUsuarioPermisoGrupoValidarPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo, 'codigoPermisoEspecialFk' => $codigoPermisoEspecial));
+                        if (!$arUsuarioPermisoGrupoValidarPermisoEspecial) {
+                            $arPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->find($codigoPermisoEspecial);
+                            $arPermisoGrupo = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
+                            $arPermisoGrupo->setCodigoPermisoEspecialFk($arPermisoEspecial->getCodigoPermisoEspecialPk());
+                            $arPermisoGrupo->setGrupoRel($arGrupo);
+                            $arPermisoGrupo->setPermisoEspecialRel($arPermisoEspecial);
+                            $arPermisoGrupo->setPermitir(1);
+                            $em->persist($arPermisoGrupo);
+                            $em->flush();
+                        }
+                    }
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                }
+            }
+        }
+        $arPermisosEspeciales = $em->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->findBy(array(), array('modulo' => 'ASC'));
+        return $this->render("BrasaSeguridadBundle:Usuarios:detalleNuevoPermisoEspecial.html.twig", array(
+                    'arPermisosEspeciales' => $arPermisosEspeciales,
+                    'form' => $form->createView()));
+    }
+
+    public function recuperarAction() {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->formularioRecuperar();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            return $this->redirect($this->generateUrl('login'));
+        }
+        return $this->render('BrasaSeguridadBundle:Usuarios:recuperar.html.twig', array(
+                    'form' => $form->createView(),
+        ));
     }
 
     private function listar() {

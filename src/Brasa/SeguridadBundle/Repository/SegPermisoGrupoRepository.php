@@ -52,8 +52,6 @@ class SegPermisoGrupoRepository extends EntityRepository {
                     $arUsuarioPermisoEspecial->setUsuarioRel($arUsuario);
                     $arUsuarioPermisoEspecial->setPermitir($arPermisoGrupoPermisoEspecial->getPermitir());
                     $em->persist($arUsuarioPermisoEspecial);
-                    $em->flush();
-                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
             $em->flush();
@@ -61,6 +59,18 @@ class SegPermisoGrupoRepository extends EntityRepository {
             $respuesta = "Ocurrio un error asignando los permisos";
         }
         return $repuesta;
+    }
+
+    public function eliminar($arrSeleccionados) {
+        $respuesta = "";
+        $em = $this->getEntityManager();
+        foreach ($arrSeleccionados as $codigo) {
+            $arPermisoGrupo = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->find($codigo);
+            $em->remove($arPermisoGrupo);
+        }
+        $em->flush();
+
+        return $respuesta;
     }
 
 }

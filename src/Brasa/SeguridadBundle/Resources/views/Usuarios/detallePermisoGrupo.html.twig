@@ -4,147 +4,127 @@
     <section class="content-header">
         <h1>
             Seguridad
-            <small>Permiso: nuevo</small>
+            <small>Grupo: detalle</small>
         </h1>
     </section>
     <section class="content">
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
         <div class="panel panel-default">
-            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-heading">Información</div>
             <div class="panel-body">
-                <label class="col-sm-2 control-label">Tipo:</label>
-                <div class="col-sm-4">
-                    {{form_widget(form.TxtTipo, { 'attr': {'class': 'form-control'} }) }}
-                </div>  
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Modulo:</label>
-                    <div class="col-sm-4">   
-                        {{form_widget(form.TxtModulo, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
-                    </div>
-                </div>     
-            </div>
-        </div>        
-        <div class="panel panel-default">
-            <div class="panel-heading">Información general</div>
-            <div class="panel-body">
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Ingreso:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.ingreso) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Nuevo:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.nuevo) }}
-                    </div>                    
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Editar:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.editar) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Eliminar:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.eliminar) }}
-                    </div>                    
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Autorizar:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.autorizar) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Desautorizar:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.desautorizar) }}
-                    </div>                    
-                </div>                
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Aprobar:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.aprobar) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Desaprobar:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.desaprobar) }}
-                    </div>                    
-                </div> 
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Anular:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.anular) }}
-                    </div>
-                    <label class="col-sm-2 control-label">Imprimir:</label>
-                    <div class="col-sm-4">                  
-                        {{ form_widget(form.imprimir) }}
-                    </div>                    
-                </div>  
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Desanular:</label>
-                    <div class="col-sm-4">
-                        {{ form_widget(form.desanular) }}
-                    </div>                   
-                </div>                
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">CODIGO:</td>
+                        <td class="td-in-well">{{ arGrupo.codigoGrupoPk }}</td>
+                        <td class="titulo">NOMBRE</td>
+                        <td class="td-in-well">{{ arGrupo.nombre }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
+
         <!-- Fin Encabezado Movimiento -->
+
         <ul class="nav nav-tabs">
             <li class="active"><a href="#documentos" data-toggle="tab">Documentos</a></li>
-            <li><a href="#permisosespeciales" data-toggle="tab">Permisos especiales</a></li>
+            <li><a href="#especiales" data-toggle="tab">Especiales</a></li>
         </ul>
+
         <div class="tab-content">
             <div class="tab-pane active" id="documentos">
                 <!-- Menu Encabezado Movimiento -->
                 <div id="documentos" style="width: 100%"><br>
-                    <table class="table table-striped table-bordered table-condensed table-hover">
+                    <table class="table table-striped table-bordered table-condensed">
                         <tr>
-                            <th>ID</th>            
+                            <th>ID</th>
                             <th>TIPO</th>
                             <th>MODULO</th>
-                            <th>NOMBRE</th>            
-                            <th><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarDocumento[]');"/></th>
+                            <th>PERMISO</th>
+                            <th>INGRESO</th>
+                            <th>NUEVO</th>
+                            <th>EDITAR</th>
+                            <th>ELIMINAR</th>
+                            <th>AUTORIZAR</th>
+                            <th>DESAUTORIZAR</th>
+                            <th>APROBAR</th>
+                            <th>ANULAR</th>
+                            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPermisoDocumento[]');"/></th>
                         </tr>
-                        {%for arDocumentos in arDocumentos %}
-                            <tr>      
-                                <td>{{arDocumentos.codigoDocumentoPk}}</td>
-                                <td>{{arDocumentos.tipo}}</td>
-                                <td>{{arDocumentos.modulo}}</td>
-                                <td>{{arDocumentos.nombre}}</td>                    
-                                <td><input type="checkbox" name="ChkSeleccionarDocumento[]"  value="{{ arDocumentos.codigoDocumentoPk }}" /></td>
-                            </tr>
-                        {%endfor%} 
+                        {% for arPermisosGrupo in arPermisosGrupo %}
+                            {%if arPermisosGrupo.codigoDocumentoFk %}
+                                <tr>
+                                    <td><span class="badge">{{ arPermisosGrupo.codigoDocumentoFk }}</span></td>
+                                    <td>{{ arPermisosGrupo.documentoRel.tipo  }}</td>
+                                    <td>{{ arPermisosGrupo.documentoRel.modulo  }}</td>
+                                    <td>{{ arPermisosGrupo.documentoRel.nombre  }}</td>
+                                    <td>{% if arPermisosGrupo.ingreso  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.nuevo  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.editar  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.eliminar  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.autorizar  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.desautorizar  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.aprobar  == 1%} SI {% else %}NO{% endif%}</td>
+                                    <td>{% if arPermisosGrupo.anular  == 1%} SI {% else %}NO{% endif%}</td>                                                                      
+                                    <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarPermisoDocumento[]" value="{{ arPermisosGrupo.codigoPermisoGrupoPk }}" /></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                     </table>
                 </div>
+                <!-- Botones Menu Items -->
+                <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_seg_admin_permiso_grupo_detalle_documento_nuevo', {'codigoGrupo': arGrupo.codigoGrupoPk }) }}', 'Archivos', 680, 800)" >Nuevo</a>
+                    </div>
+                </div>
+                <!-- Fin Botones Menu Items -->    
             </div>
-            <div class="tab-pane" id="permisosespeciales">
+            <div class="tab-pane" id="especiales">
                 <!-- Menu Encabezado Movimiento -->
-                <div id="permisosespeciales" style="width: 100%"><br></div>
-                <table class="table table-striped table-bordered table-condensed table-hover">
-                    <tr>            
-                        <th>MODULO</th>
-                        <th>TIPO</th>
-                        <th>NOMBRE</th>            
-                        <th><input type="checkbox" name="ChkSeleccionarTodosPermisosEspeciales" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPermisoEspecial[]');"/></th>
-                    </tr>
-                    {% for arPermisosEspeciales in arPermisosEspeciales %}
+                <div id="especiales" style="width: 100%"><br>
+                    <table class="table table-striped table-bordered table-condensed">
                         <tr>
-                            <td>{{ arPermisosEspeciales.modulo }} </td>
-                            <td>{{ arPermisosEspeciales.tipo  }}</td>
-                            <td>{{ arPermisosEspeciales.nombre  }}</td>  
-                            <td><input type="checkbox" name="ChkSeleccionarPermisoEspecial[]" value="{{ arPermisosEspeciales.codigoPermisoEspecialPk }}" /></td>
+                            <th>CODIGO</th>
+                            <th>MODULO</th>
+                            <th>TIPO</th>
+                            <th>PERMISO</th>
+                            <th align="center"><input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodosTabla(this, 'ChkSeleccionarPermisoEspecial[]');"/></th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for arPermisosGrupo in arPermisosGrupo %}
+                            {%if arPermisosGrupo.codigoPermisoEspecialFk %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="LblCodigoGuiaEspecial[]" value="{{ arPermisosGrupo.codigoPermisoEspecialFk }}">
+                                        <span class="badge">{{ arPermisosGrupo.codigoPermisoEspecialFk }}</span>
+                                    </td>
+                                    <td>{{ arPermisosGrupo.permisoEspecialRel.modulo }}</td>
+                                    <td>{{ arPermisosGrupo.permisoEspecialRel.tipo }}</td>
+                                    <td>{{ arPermisosGrupo.permisoEspecialRel.nombre }}</td>
+                                    <td style="text-align: center"><input type="checkbox" name="ChkSeleccionarPermisoEspecial[]" value="{{ arPermisosGrupo.codigoPermisoGrupoPk }}" /></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+                <!-- Botones Menu Items -->
+                <div class="btn-toolbar" style="float: right">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_seg_admin_permiso_grupo_detalle_especial_nuevo', {'codigoGrupo': arGrupo.codigoGrupoPk }) }}', 'Archivos', 500, 800)" >Nuevo</a>
+                    </div>
+                </div>
+                <!-- Fin Botones Menu Items -->
             </div>
-        </div>
-        <div class="modal-footer">      
-            <a class="btn btn-default btn-sm" href="{{ path('brs_seg_admin_usuario_lista')}}">Cancelar</a>        
-            {{ form_widget(form.BtnGuardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
-        </div>
-        {{ form_end(form) }}
-        <br/><br/><br/><br/>
+            <div class="btn-toolbar" style="float: left">
+                <div class="btn-group">
+                    <a href="" class="btn btn-default btn-sm">Volver</a>
+                </div>
+            </div> 
+            <div class="btn-toolbar" style="float: right">
+                <div class="btn-group">
+                    {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
+                </div>
+            </div>        
+            {{ form_end(form) }}
+            <br/><br/><br/><br/>
     </section> 
 {% endblock %}

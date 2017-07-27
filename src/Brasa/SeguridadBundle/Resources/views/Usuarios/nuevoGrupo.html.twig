@@ -1,0 +1,34 @@
+{% extends '::base2.html.twig' %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Seguridad
+            <small>Grupo: nuevo</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Seguridad</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Grupo</a></li>            
+            <li class="active">Nuevo</li>
+        </ol>
+    </section>    
+    <section class="content">     
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Información general</div>
+            <div class="panel-body">           
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-12">
+                        {{ form_row(form.nombre, { 'attr': {'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()','autofocus':'autofocus'} }) }}
+                    </div>
+                </div>
+        </div>                
+        <div class="modal-footer">     
+            <a class="btn btn-default btn-sm" href="{{ path('brs_seg_admin_usuario_lista') }}">Cancelar</a>        
+            {{ form_widget(form.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}            
+        </div>    
+        {{ form_end(form) }}
+    </div>
+    <br/><br/><br/><br/>
+</section> 
+{% endblock %}

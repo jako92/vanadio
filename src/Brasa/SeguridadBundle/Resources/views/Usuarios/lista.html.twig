@@ -101,7 +101,7 @@
                             <tr>
                                 <td><input type="hidden" name="LblCodigo[]" value="{{ arGrupos.codigoGrupoPk }}">{{ arGrupos.codigoGrupoPk }} </td>
                                 <td>{{ arGrupos.nombre  }}</td>
-                                <td style="text-align: center"><a href="#"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
+                                <td style="text-align: center"><a href="{{ path('brs_seg_admin_permiso_grupo_nuevo',{'codigoGrupo': arGrupos.codigoGrupoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
                                 <td style="text-align: center"><a href="{{ path('brs_seg_admin_permiso_grupo_detalle',{'codigoGrupo': arGrupos.codigoGrupoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
                             </tr>
                         {% endfor %}
@@ -112,6 +112,11 @@
                         </div>
                         <div class="btn-group">
                             <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arGrupos.getTotalItemCount }}</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-toolbar" style="float: right">
+                        <div class="btn-group">
+                            <a class="btn btn-default btn-sm" href="{{ path('brs_seg_admin_permiso_grupo_nuevo',{'codigoGrupo': 0})}}">Nuevo</a>
                         </div>
                     </div>
                 </div>
