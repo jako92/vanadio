@@ -253,8 +253,8 @@ class ProgramacionController extends Controller {
         $arProgramacion = $em->getRepository('BrasaTurnoBundle:TurProgramacion')->find($codigoProgramacion);
         $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $arProgramacion->getFecha()->format('m') + 1, 1, $arProgramacion->getFecha()->format('Y')) - 1));
         $form = $this->createFormBuilder()
-                ->add('secuenciaDetalleRel', EntityType::class, array(
-                    'class' => 'BrasaTurnoBundle:TurSecuenciaDetalle',
+                ->add('secuenciaRel', EntityType::class, array(
+                    'class' => 'BrasaTurnoBundle:TurSecuencia',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('s')
                                 ->orderBy('s.nombre', 'ASC');
@@ -297,10 +297,10 @@ class ProgramacionController extends Controller {
                                     $arProgramacionDetalle->setRecursoRel($arRecurso);
                                 }
 
-                                $arSecuenciaDetalle = $form->get('secuenciaDetalleRel')->getData();
+                                $arSecuenciaDetalle = $form->get('secuenciaRel')->getData();
                                 if ($arSecuenciaDetalle) {
                                     $posicionInicial = $form->get('TxtPosicion')->getData();
-                                    $arrSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->convertirArray($arSecuenciaDetalle);
+                                    $arrSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuencia')->convertirArray($arSecuenciaDetalle);
                                     $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $arProgramacion->getFecha()->format('m') + 1, 1, $arProgramacion->getFecha()->format('Y')) - 1));
                                     $j = 1;
                                     if ($posicionInicial <= $arrSecuenciaDetalle) {
