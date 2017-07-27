@@ -16,7 +16,7 @@ class ElementoDotacionController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/elemento/dotacion", name="brs_tur_base_elemento_dotacion")
+     * @Route("/tur/base/elemento/dotacion", name="brs_tur_base_general_elemento_dotacion")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class ElementoDotacionController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurElementoDotacion')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_elemento_dotacion'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_elemento_dotacion'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class ElementoDotacionController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/elemento/dotacion/nuevo/{codigoElementoDotacion}", name="brs_tur_base_elemento_dotacion_nuevo")
+     * @Route("/tur/base/elemento/dotacion/nuevo/{codigoElementoDotacion}", name="brs_tur_base_general_elemento_dotacion_nuevo")
      */
     public function nuevoAction(Request $request, $codigoElementoDotacion = '') {
         $em = $this->getDoctrine()->getManager();
@@ -68,9 +68,9 @@ class ElementoDotacionController extends Controller {
                 $em->persist($arElementoDotacion);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_tur_base_elemento_dotacion_nuevo', array('codigoElementoDotacion' => 0)));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_elemento_dotacion_nuevo', array('codigoElementoDotacion' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_elemento_dotacion'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_elemento_dotacion'));
                 }
             }
         }

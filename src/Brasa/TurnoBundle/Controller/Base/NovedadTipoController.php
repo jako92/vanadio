@@ -16,7 +16,7 @@ class NovedadTipoController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/novedad/tipo", name="brs_tur_base_novedad_tipo")
+     * @Route("/tur/base/novedad/tipo", name="brs_tur_base_general_novedad_tipo")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class NovedadTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurNovedadTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_novedad_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_novedad_tipo'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class NovedadTipoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/novedad/tipo/nuevo/{codigoNovedadTipo}", name="brs_tur_base_novedad_tipo_nuevo")
+     * @Route("/tur/base/novedad/tipo/nuevo/{codigoNovedadTipo}", name="brs_tur_base_general_novedad_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoNovedadTipo = '') {
         $em = $this->getDoctrine()->getManager();
@@ -68,9 +68,9 @@ class NovedadTipoController extends Controller {
                 $em->persist($arNovedadTipo);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_tur_base_novedad_tipo_nuevo', array('codigoNovedadTipo' => 0)));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_novedad_tipo_nuevo', array('codigoNovedadTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_novedad_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_novedad_tipo'));
                 }
             }
         }

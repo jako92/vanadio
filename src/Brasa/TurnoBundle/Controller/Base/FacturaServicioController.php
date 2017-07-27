@@ -16,7 +16,7 @@ class FacturaServicioController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/factura/servicio", name="brs_tur_base_factura_servicio")
+     * @Route("/tur/base/factura/servicio", name="brs_tur_base_general_factura_servicio")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class FacturaServicioController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurFacturaServicio')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_factura_servicio'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_factura_servicio'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class FacturaServicioController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/factura/servicio/nuevo/{codigoFacturaServicio}", name="brs_tur_base_factura_servicio_nuevo")
+     * @Route("/tur/base/factura/servicio/nuevo/{codigoFacturaServicio}", name="brs_tur_base_general_factura_servicio_nuevo")
      */
     public function nuevoAction(Request $request, $codigoFacturaServicio = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,7 +70,7 @@ class FacturaServicioController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_factura_conceto_nuevo', array('codigoFacturaServicio' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_factura_servicio'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_factura_servicio'));
                 }
             }
         }

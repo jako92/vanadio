@@ -16,7 +16,7 @@ class ProyectoController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/proyecto", name="brs_tur_base_proyecto")
+     * @Route("/tur/base/proyecto", name="brs_tur_base_operacion_proyecto")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class ProyectoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurProyecto')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_proyecto'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_operacion_proyecto'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class ProyectoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/proyecto/nuevo/{codigoProyecto}", name="brs_tur_base_proyecto_nuevo")
+     * @Route("/tur/base/proyecto/nuevo/{codigoProyecto}", name="brs_tur_base_operacion_proyecto_nuevo")
      */
     public function nuevoAction(Request $request, $codigoProyecto = '') {
         $em = $this->getDoctrine()->getManager();
@@ -68,9 +68,9 @@ class ProyectoController extends Controller {
                 $em->persist($arProyecto);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
-                    return $this->redirect($this->generateUrl('brs_tur_base_proyecto_nuevo', array('codigoProyecto' => 0)));
+                    return $this->redirect($this->generateUrl('brs_tur_base_operacion_proyecto_nuevo', array('codigoProyecto' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_proyecto'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_operacion_proyecto'));
                 }
             }
         }

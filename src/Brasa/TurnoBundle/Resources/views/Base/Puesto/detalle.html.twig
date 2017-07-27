@@ -132,7 +132,7 @@
                     </table>
                     <div class="btn-toolbar" style="float: right">
                         <div class="btn-group">            
-                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_base_puesto_dotacion_nuevo', {'codigoPuesto': arPuesto.codigoPuestoPk }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
+                            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_puesto_dotacion_nuevo', {'codigoPuesto': arPuesto.codigoPuestoPk }) }}', 'AgregarNuevoDetalle', 600, 900)">Nuevo</a>            
                         </div>
                         <div class="btn-group">
                             {{ form_widget(form.BtnEliminarPuestoDotacion, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
@@ -167,7 +167,7 @@
 
         {{ form_rest(form) }}
         {{ form_end(form) }}
-        <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_base_puesto') }}">Volver</a>
+        <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_base_cliente_puesto') }}">Volver</a>
         <br/><br/><br/><br/>
     </section>
 {% endblock %}

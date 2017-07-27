@@ -17,7 +17,7 @@ class PlantillaController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/tur/base/plantilla/lista", name="brs_tur_base_plantilla_lista")
+     * @Route("/tur/base/plantilla/lista", name="brs_tur_base_turno_plantilla_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -38,7 +38,7 @@ class PlantillaController extends Controller {
                     if ($respuesta != "") {
                         $objMensaje->Mensaje('error', $respuesta);
                     } else {
-                        return $this->redirect($this->generateUrl('brs_tur_base_plantilla_lista'));
+                        return $this->redirect($this->generateUrl('brs_tur_base_turno_plantilla_lista'));
                     }
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {

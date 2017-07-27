@@ -162,7 +162,7 @@
                                 <td>{{ arPuestos.codigoCentroCostoContabilidadFk }}</td>
                                 <td style="text-align: right">{{ arPuestos.costoDotacion | number_format(0, '.', ',') }}</td>
                                 <td><a href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_puesto_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoPuesto': arPuestos.codigoPuestoPk }) }}', 'AgregarNuevoDetalle', 700, 1000)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                        
-                                <td style="text-align: center"><a href="{{ path('brs_tur_base_puesto_detalle', { 'codigoPuesto': arPuestos.codigoPuestoPk }) }}" target="_blanck"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                                
+                                <td style="text-align: center"><a href="{{ path('brs_tur_base_cliente_puesto_detalle', { 'codigoPuesto': arPuestos.codigoPuestoPk }) }}" target="_blanck"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>                                
                                 <td><input type="checkbox" name="ChkSeleccionarPuesto[]" value="{{ arPuestos.codigoPuestoPk }}" /></td>
                             </tr>
                         {% endfor %}
@@ -295,7 +295,7 @@
                                 <td>{{ arContratos.soporte  }}</td>
                                 <td>{{ arContratos.valor  }}</td>
                                 <td><a href="javascript:abrirVentana3('{{ path('brs_tur_base_cliente_contrato_nuevo', {'codigoCliente': arCliente.codigoClientePk, 'codigoContrato': arContratos.codigoContratoPk }) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
-                                <td style="text-align: center"><a href="{{ path('brs_tur_base_contrato_detalle', { 'codigoContrato': arContratos.codigoContratoPk }) }}" target="_blanck"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
+                                <td style="text-align: center"><a href="{{ path('brs_tur_base_cliente_contrato_detalle', { 'codigoContrato': arContratos.codigoContratoPk }) }}" target="_blanck"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
                                 <td><input type="checkbox" name="ChkSeleccionarContrato[]" value="{{ arContratos.codigoContratoPk }}" /></td>
                             </tr>
                         {% endfor %}

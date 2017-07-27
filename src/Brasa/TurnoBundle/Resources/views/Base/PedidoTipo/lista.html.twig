@@ -61,7 +61,7 @@
                     <td>{{ arPedidoTipos.codigoCuentaIngresoFk }}</td>
                     <td>{{ arPedidoTipos.tipoCuentaIva }}</td>
                     <td>{{ arPedidoTipos.codigoCuentaIvaFk }}</td>
-                    <td style="text-align: center"><a href="{{ path('brs_tur_base_pedido_tipo_nuevo', {'codigoPedidoTipo': arPedidoTipos.codigoPedidoTipoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
+                    <td style="text-align: center"><a href="{{ path('brs_tur_base_general_pedido_tipo_nuevo', {'codigoPedidoTipo': arPedidoTipos.codigoPedidoTipoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>                
                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPedidoTipos.codigoPedidoTipoPk }}" /></td>
                 </tr>
 
@@ -80,7 +80,7 @@
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="{{ path('brs_tur_base_pedido_tipo_nuevo', {'codigoPedidoTipo': 0}) }}">Nuevo</a>
+                <a class="btn btn-default btn-sm" href="{{ path('brs_tur_base_general_pedido_tipo_nuevo', {'codigoPedidoTipo': 0}) }}">Nuevo</a>
             </div>
             <div class="btn-group">
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}

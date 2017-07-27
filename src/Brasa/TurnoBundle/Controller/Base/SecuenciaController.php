@@ -18,7 +18,7 @@ class SecuenciaController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/tur/base/secuencia/lista", name="brs_tur_base_secuencia_lista")
+     * @Route("/tur/base/secuencia/lista", name="brs_tur_base_turno_secuencia_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class SecuenciaController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_turno_secuencia_lista'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     //$this->filtrar($form);
@@ -44,7 +44,7 @@ class SecuenciaController extends Controller {
                     $arSecuenciaDetalleNuevo = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
                     $em->persist($arSecuenciaDetalleNuevo);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_tur_base_secuencia_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_turno_secuencia_lista'));
                 }
             }
         }

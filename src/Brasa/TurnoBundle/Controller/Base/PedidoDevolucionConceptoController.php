@@ -16,7 +16,7 @@ class PedidoDevolucionConceptoController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/pedido/devolucion/concepto", name="brs_tur_base_pedido_devolucion_concepto")
+     * @Route("/tur/base/pedido/devolucion/concepto", name="brs_tur_base_general_pedido_devolucion_concepto")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class PedidoDevolucionConceptoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurPedidoDevolucionConcepto')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_pedido_devolucion_concepto'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_pedido_devolucion_concepto'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class PedidoDevolucionConceptoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/pedido/devolucion/concepto/nuevo/{codigoPedidoDevolucionConcepto}", name="brs_tur_base_pedido_devolucion_concepto_nuevo")
+     * @Route("/tur/base/pedido/devolucion/concepto/nuevo/{codigoPedidoDevolucionConcepto}", name="brs_tur_base_general_pedido_devolucion_concepto_nuevo")
      */
     public function nuevoAction(Request $request, $codigoPedidoDevolucionConcepto = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,7 +70,7 @@ class PedidoDevolucionConceptoController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_factura_conceto_nuevo', array('codigoPedidoDevolucionConcepto' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_pedido_devolucion_concepto'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_pedido_devolucion_concepto'));
                 }
             }
         }

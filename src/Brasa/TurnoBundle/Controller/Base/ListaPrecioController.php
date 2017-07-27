@@ -16,7 +16,7 @@ class ListaPrecioController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/lista/precio", name="brs_tur_base_lista_precio")
+     * @Route("/tur/base/lista/precio", name="brs_tur_base_cliente_lista_precio")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class ListaPrecioController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurListaPrecio')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_lista_precio'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_lista_precio'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class ListaPrecioController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/lista/precio/nuevo/{codigoListaPrecio}", name="brs_tur_base_lista_precio_nuevo")
+     * @Route("/tur/base/lista/precio/nuevo/{codigoListaPrecio}", name="brs_tur_base_cliente_lista_precio_nuevo")
      */
     public function nuevoAction(Request $request, $codigoListaPrecio = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,7 +70,7 @@ class ListaPrecioController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_factura_conceto_nuevo', array('codigoListaPrecio' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_lista_precio'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_lista_precio'));
                 }
             }
         }

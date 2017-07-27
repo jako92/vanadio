@@ -17,7 +17,7 @@ class ProspectoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/tur/base/prospecto/lista", name="brs_tur_base_prospecto_lista")
+     * @Route("/tur/base/prospecto/lista", name="brs_tur_base_cliente_prospecto_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -34,7 +34,7 @@ class ProspectoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurProspecto')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_prospecto_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_prospecto_lista'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -74,7 +74,7 @@ class ProspectoController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_prospecto_nuevo', array('codigoProspecto' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_prospecto_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_prospecto_lista'));
                 }
             }
         }

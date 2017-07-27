@@ -18,7 +18,7 @@ class ConceptoServicioController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/tur/base/concepto/servicio/lista", name="brs_tur_base_concepto_servicio_lista")
+     * @Route("/tur/base/concepto/servicio/lista", name="brs_tur_base_general_concepto_servicio_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class ConceptoServicioController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurConceptoServicio')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_concepto_servicio_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_concepto_servicio_lista'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -77,7 +77,7 @@ class ConceptoServicioController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_concepto_servicio_nuevo', array('codigoConceptoServicio' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_concepto_servicio_lista'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_concepto_servicio_lista'));
                 }
             }else{
                 $objMensaje->Mensaje("error", "El total de horas no es igual a la sumas entre las horas dirunas y nocturnas");

@@ -16,7 +16,7 @@ class FacturaTipoController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/factura/tipo", name="brs_tur_base_factura_tipo")
+     * @Route("/tur/base/factura/tipo", name="brs_tur_base_general_factura_tipo")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -33,7 +33,7 @@ class FacturaTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurFacturaTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_factura_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_factura_tipo'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -51,7 +51,7 @@ class FacturaTipoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/factura/tipo/nuevo/{codigoFacturaTipo}", name="brs_tur_base_factura_tipo_nuevo")
+     * @Route("/tur/base/factura/tipo/nuevo/{codigoFacturaTipo}", name="brs_tur_base_general_factura_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoFacturaTipo = '') {
         $em = $this->getDoctrine()->getManager();
@@ -70,7 +70,7 @@ class FacturaTipoController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_factura_conceto_nuevo', array('codigoFacturaTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_factura_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_factura_tipo'));
                 }
             }
         }

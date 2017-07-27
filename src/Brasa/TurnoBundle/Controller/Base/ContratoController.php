@@ -18,7 +18,7 @@ class ContratoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/tur/base/contrato/", name="brs_tur_base_contrato")
+     * @Route("/tur/base/contrato/", name="brs_tur_base_cliente_contrato")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class ContratoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurContrato')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_contrato'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_cliente_contrato'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -53,7 +53,7 @@ class ContratoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/contrato/nuevo/{codigoContrato}", name="brs_tur_base_contrato_nuevo")
+     * @Route("/tur/base/contrato/nuevo/{codigoContrato}", name="brs_tur_base_cliente_contrato_nuevo")
      */
     public function nuevoAction(Request $request, $codigoContrato = '') {
         $em = $this->getDoctrine()->getManager();
@@ -78,9 +78,9 @@ class ContratoController extends Controller {
                         $em->persist($arContrato);
                         $em->flush();
                         if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_tur_base_contrato_nuevo', array('codigoContrato' => 0)));
+                            return $this->redirect($this->generateUrl('brs_tur_base_cliente_contrato_nuevo', array('codigoContrato' => 0)));
                         } else {
-                            return $this->redirect($this->generateUrl('brs_tur_base_contrato'));
+                            return $this->redirect($this->generateUrl('brs_tur_base_cliente_contrato'));
                         }
                     }
                 }
@@ -92,7 +92,7 @@ class ContratoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/contrato/detalle/{codigoContrato}", name="brs_tur_base_contrato_detalle")
+     * @Route("/tur/base/contrato/detalle/{codigoContrato}", name="brs_tur_base_cliente_contrato_detalle")
      */
     public function detalleAction(Request $request, $codigoContrato) {
         $em = $this->getDoctrine()->getManager();

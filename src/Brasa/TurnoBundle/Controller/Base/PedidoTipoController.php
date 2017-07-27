@@ -16,7 +16,7 @@ class PedidoTipoController extends Controller {
     var $strDqlLista = "";
 
     /**
-     * @Route("/tur/base/pedido/tipo", name="brs_tur_base_pedido_tipo")
+     * @Route("/tur/base/pedido/tipo", name="brs_tur_base_general_pedido_tipo")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -30,7 +30,7 @@ class PedidoTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaTurnoBundle:TurPedidoTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_tur_base_pedido_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_pedido_tipo'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -48,7 +48,7 @@ class PedidoTipoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/pedido/tipo/nuevo/{codigoPedidoTipo}", name="brs_tur_base_pedido_tipo_nuevo")
+     * @Route("/tur/base/pedido/tipo/nuevo/{codigoPedidoTipo}", name="brs_tur_base_general_pedido_tipo_nuevo")
      */
     public function nuevoAction(Request $request, $codigoPedidoTipo = '') {
         $em = $this->getDoctrine()->getManager();
@@ -67,7 +67,7 @@ class PedidoTipoController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_tur_base_pedido_conceto_nuevo', array('codigoPedidoTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_tur_base_pedido_tipo'));
+                    return $this->redirect($this->generateUrl('brs_tur_base_general_pedido_tipo'));
                 }
             }
         }

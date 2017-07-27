@@ -20,7 +20,7 @@ class PuestoController extends Controller {
     var $codigoCliente = "";
 
     /**
-     * @Route("/tur/base/puesto/", name="brs_tur_base_puesto")
+     * @Route("/tur/base/puesto/", name="brs_tur_base_cliente_puesto")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -36,7 +36,7 @@ class PuestoController extends Controller {
             if ($form->get('BtnEliminar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $em->getRepository('BrasaTurnoBundle:TurPuesto')->eliminar($arrSeleccionados);
-                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
+                return $this->redirect($this->generateUrl('brs_tur_base_cliente_puesto'));
             }
             if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
@@ -56,7 +56,7 @@ class PuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/puesto/nuevo/{codigoPuesto}", name="brs_tur_base_puesto_nuevo")
+     * @Route("/tur/base/puesto/nuevo/{codigoPuesto}", name="brs_tur_base_cliente_puesto_nuevo")
      */
     public function nuevoAction(Request $request, $codigoPuesto = '') {
         $em = $this->getDoctrine()->getManager();
@@ -77,7 +77,7 @@ class PuestoController extends Controller {
                 $arPuesto = $form->getData();
                 $em->persist($arPuesto);
                 $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
+                return $this->redirect($this->generateUrl('brs_tur_base_cliente_puesto'));
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Puesto:nuevo.html.twig', array(
@@ -86,7 +86,7 @@ class PuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/puesto/detalle/{codigoPuesto}", name="brs_tur_base_puesto_detalle")
+     * @Route("/tur/base/puesto/detalle/{codigoPuesto}", name="brs_tur_base_cliente_puesto_detalle")
      */
     public function detalleAction(Request $request, $codigoPuesto) {
         $em = $this->getDoctrine()->getManager();
@@ -100,7 +100,7 @@ class PuestoController extends Controller {
                 $arrSeleccionados = $request->request->get('ChkSeleccionarPuestoDotacion');
                 $em->getRepository('BrasaTurnoBundle:TurPuestoDotacion')->eliminar($arrSeleccionados);
                 $em->getRepository('BrasaTurnoBundle:TurPuesto')->liquidar($codigoPuesto);
-                return $this->redirect($this->generateUrl('brs_tur_base_puesto_detalle', array('codigoPuesto' => $codigoPuesto)));
+                return $this->redirect($this->generateUrl('brs_tur_base_cliente_puesto_detalle', array('codigoPuesto' => $codigoPuesto)));
             }
         }
         $arPuestoDotaciones = new \Brasa\TurnoBundle\Entity\TurPuestoDotacion();
@@ -116,7 +116,7 @@ class PuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/puesto/dotacion/nuevo/{codigoPuesto}", name="brs_tur_base_puesto_dotacion_nuevo")
+     * @Route("/tur/base/puesto/dotacion/nuevo/{codigoPuesto}", name="brs_tur_base_cliente_puesto_dotacion_nuevo")
      */
     public function dotacionNuevoAction(Request $request, $codigoPuesto) {
         $paginator = $this->get('knp_paginator');
