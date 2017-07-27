@@ -1735,10 +1735,10 @@ class TurSoportePagoRepository extends EntityRepository {
             if($arSoportePago->getSecuencia()) {
                 $intDiaInicial= $arSoportePago->getFechaDesde()->format('j');
                 $intDiaFinal = $arSoportePago->getFechaHasta()->format('j');
-                $arSecuencia = new \Brasa\TurnoBundle\Entity\TurSecuencia();
-                $arSecuencia = $em->getRepository('BrasaTurnoBundle:TurSecuencia')->find($arSoportePago->getSecuencia());                
-                $arSecuenciaDetalle = new \Brasa\TurnoBundle\Entity\TurSecuenciaDetalle();
-                $arSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaDetalle')->findBy(array('codigoSecuenciaFk' => $arSoportePago->getSecuencia()));                                        
+                $arSecuencia = new \Brasa\TurnoBundle\Entity\TurSecuenciaPago();
+                $arSecuencia = $em->getRepository('BrasaTurnoBundle:TurSecuenciaPago')->find($arSoportePago->getSecuencia());                
+                $arSecuenciaDetalle = new \Brasa\TurnoBundle\Entity\TurSecuenciaPagoDetalle();
+                $arSecuenciaDetalle = $em->getRepository('BrasaTurnoBundle:TurSecuenciaPagoDetalle')->findBy(array('codigoSecuenciaPagoFk' => $arSoportePago->getSecuencia()));                                        
 
                 $arProgramacionDetalles = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
                 $arProgramacionDetalles = $em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->periodoDias($arSoportePago->getAnio(), $arSoportePago->getMes(), $arSoportePago->getCodigoRecursoFk());        

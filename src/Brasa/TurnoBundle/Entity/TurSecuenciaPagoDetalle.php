@@ -5,22 +5,22 @@ namespace Brasa\TurnoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="tur_secuencia_detalle")
- * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurSecuenciaDetalleRepository")
+ * @ORM\Table(name="tur_secuencia_pago_detalle")
+ * @ORM\Entity(repositoryClass="Brasa\TurnoBundle\Repository\TurSecuenciaPagoDetalleRepository")
  */
-class TurSecuenciaDetalle
+class TurSecuenciaPagoDetalle
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_secuencia_detalle_pk", type="integer")
+     * @ORM\Column(name="codigo_secuencia_pago_detalle_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoSecuenciaDetallePk;         
+    private $codigoSecuenciaPagoDetallePk;         
     
     /**
-     * @ORM\Column(name="codigo_secuencia_fk", type="integer", nullable=true)
+     * @ORM\Column(name="codigo_secuencia_pago_fk", type="integer", nullable=true)
      */    
-    private $codigoSecuenciaFk;    
+    private $codigoSecuenciaPagoFk;    
     
     /**
      * @ORM\Column(name="nombre", type="string", length=60, nullable=true)
@@ -237,14 +237,39 @@ class TurSecuenciaDetalle
      */    
     private $dias = 0;    
 
+
     /**
-     * Get codigoSecuenciaPk
+     * Get codigoSecuenciaPagoDetallePk
      *
      * @return integer
      */
-    public function getCodigoSecuenciaPk()
+    public function getCodigoSecuenciaPagoDetallePk()
     {
-        return $this->codigoSecuenciaPk;
+        return $this->codigoSecuenciaPagoDetallePk;
+    }
+
+    /**
+     * Set codigoSecuenciaPagoFk
+     *
+     * @param integer $codigoSecuenciaPagoFk
+     *
+     * @return TurSecuenciaPagoDetalle
+     */
+    public function setCodigoSecuenciaPagoFk($codigoSecuenciaPagoFk)
+    {
+        $this->codigoSecuenciaPagoFk = $codigoSecuenciaPagoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSecuenciaPagoFk
+     *
+     * @return integer
+     */
+    public function getCodigoSecuenciaPagoFk()
+    {
+        return $this->codigoSecuenciaPagoFk;
     }
 
     /**
@@ -252,7 +277,7 @@ class TurSecuenciaDetalle
      *
      * @param string $nombre
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setNombre($nombre)
     {
@@ -276,7 +301,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia1
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia1($dia1)
     {
@@ -300,7 +325,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia2
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia2($dia2)
     {
@@ -324,7 +349,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia3
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia3($dia3)
     {
@@ -348,7 +373,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia4
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia4($dia4)
     {
@@ -372,7 +397,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia5
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia5($dia5)
     {
@@ -396,7 +421,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia6
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia6($dia6)
     {
@@ -420,7 +445,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia7
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia7($dia7)
     {
@@ -444,7 +469,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia8
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia8($dia8)
     {
@@ -468,7 +493,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia9
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia9($dia9)
     {
@@ -492,7 +517,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia10
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia10($dia10)
     {
@@ -516,7 +541,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia11
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia11($dia11)
     {
@@ -540,7 +565,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia12
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia12($dia12)
     {
@@ -564,7 +589,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia13
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia13($dia13)
     {
@@ -588,7 +613,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia14
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia14($dia14)
     {
@@ -612,7 +637,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia15
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia15($dia15)
     {
@@ -636,7 +661,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia16
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia16($dia16)
     {
@@ -660,7 +685,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia17
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia17($dia17)
     {
@@ -684,7 +709,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia18
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia18($dia18)
     {
@@ -708,7 +733,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia19
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia19($dia19)
     {
@@ -732,7 +757,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia20
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia20($dia20)
     {
@@ -756,7 +781,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia21
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia21($dia21)
     {
@@ -780,7 +805,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia22
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia22($dia22)
     {
@@ -804,7 +829,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia23
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia23($dia23)
     {
@@ -828,7 +853,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia24
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia24($dia24)
     {
@@ -852,7 +877,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia25
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia25($dia25)
     {
@@ -876,7 +901,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia26
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia26($dia26)
     {
@@ -900,7 +925,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia27
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia27($dia27)
     {
@@ -924,7 +949,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia28
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia28($dia28)
     {
@@ -948,7 +973,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia29
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia29($dia29)
     {
@@ -972,7 +997,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia30
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia30($dia30)
     {
@@ -996,7 +1021,7 @@ class TurSecuenciaDetalle
      *
      * @param string $dia31
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDia31($dia31)
     {
@@ -1020,7 +1045,7 @@ class TurSecuenciaDetalle
      *
      * @param string $lunes
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setLunes($lunes)
     {
@@ -1044,7 +1069,7 @@ class TurSecuenciaDetalle
      *
      * @param string $martes
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setMartes($martes)
     {
@@ -1068,7 +1093,7 @@ class TurSecuenciaDetalle
      *
      * @param string $miercoles
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setMiercoles($miercoles)
     {
@@ -1092,7 +1117,7 @@ class TurSecuenciaDetalle
      *
      * @param string $jueves
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setJueves($jueves)
     {
@@ -1116,7 +1141,7 @@ class TurSecuenciaDetalle
      *
      * @param string $viernes
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setViernes($viernes)
     {
@@ -1140,7 +1165,7 @@ class TurSecuenciaDetalle
      *
      * @param string $sabado
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setSabado($sabado)
     {
@@ -1164,7 +1189,7 @@ class TurSecuenciaDetalle
      *
      * @param string $domingo
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDomingo($domingo)
     {
@@ -1188,7 +1213,7 @@ class TurSecuenciaDetalle
      *
      * @param string $festivo
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setFestivo($festivo)
     {
@@ -1212,7 +1237,7 @@ class TurSecuenciaDetalle
      *
      * @param string $domingoFestivo
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDomingoFestivo($domingoFestivo)
     {
@@ -1236,7 +1261,7 @@ class TurSecuenciaDetalle
      *
      * @param integer $horas
      *
-     * @return TurSecuencia
+     * @return TurSecuenciaPagoDetalle
      */
     public function setHoras($horas)
     {
@@ -1256,45 +1281,11 @@ class TurSecuenciaDetalle
     }
 
     /**
-     * Get codigoSecuenciaDetallePk
-     *
-     * @return integer
-     */
-    public function getCodigoSecuenciaDetallePk()
-    {
-        return $this->codigoSecuenciaDetallePk;
-    }
-
-    /**
-     * Set codigoSecuenciaFk
-     *
-     * @param integer $codigoSecuenciaFk
-     *
-     * @return TurSecuenciaDetalle
-     */
-    public function setCodigoSecuenciaFk($codigoSecuenciaFk)
-    {
-        $this->codigoSecuenciaFk = $codigoSecuenciaFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoSecuenciaFk
-     *
-     * @return integer
-     */
-    public function getCodigoSecuenciaFk()
-    {
-        return $this->codigoSecuenciaFk;
-    }
-
-    /**
      * Set dias
      *
      * @param integer $dias
      *
-     * @return TurSecuenciaDetalle
+     * @return TurSecuenciaPagoDetalle
      */
     public function setDias($dias)
     {
