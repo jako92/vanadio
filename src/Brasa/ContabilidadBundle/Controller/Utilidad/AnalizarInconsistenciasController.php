@@ -33,21 +33,21 @@ class AnalizarInconsistenciasController extends Controller {
         $this->listar();
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('BtnGenerar')->isClicked()) {
-                $arRegistros = $em->createQuery($em->getRepository('BrasaContabilidadBundle:CtbRegistro')->generarInconsistencias($session->get('filtroCtbRegistroFechaDesde'), $session->get('filtroCtbRegistroFechaHasta')));
+                $arRegistros = $em->getRepository('BrasaContabilidadBundle:CtbRegistro')->generarInconsistencias($session->get('filtroCtbRegistroFechaDesde'), $session->get('filtroCtbRegistroFechaHasta'));
                 foreach ($arRegistros as $arRegistro) {
                     if ($arRegistro['debito'] != $arRegistro['credito']) {
-                        $descripcionInconsistencia = "El registro contable con numero".$arRegistro['numero']."y comprobante".$arRegistro['CodigoComprobanteFk']." contiene inconsistencias en los valores";
+                        $descripcionInconsistencia = "El registro contable con numero " . $arRegistro['numero'] . " y comprobante" . $arRegistro['codigoComprobanteFk'] . " contiene inconsistencias en los valores";
                         $arInconsistencia = new \Brasa\ContabilidadBundle\Entity\CtbInconsistencia();
                         $arInconsistencia->setDescripcion($descripcionInconsistencia);
                         $em->persist($arInconsistencia);
-                        $em->flush();
                     }
+                    $em->flush();
                 }
                 $this->filtrar($form);
                 $this->listar();
             }
         }
-        $arInconsistencias = $this->strDqlLista;
+        $arInconsistencias = $em->getRepository('BrasaContabilidadBundle:CtbInconsistencia')->findAll();
         return $this->render('BrasaContabilidadBundle:Utilidad/AnalizarInconsistencias:lista.html.twig', array(
                     'arInconsistencias' => $arInconsistencias,
                     'form' => $form->createView()

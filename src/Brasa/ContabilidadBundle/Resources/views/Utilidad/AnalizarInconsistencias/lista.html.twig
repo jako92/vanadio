@@ -46,10 +46,10 @@
                 <th>DESCRIPCION</th>
             </tr>
             {% for arInconsistencias in arInconsistencias %}
-                    <tr class="danger">
-                        <td>{{ arRegistros.codigoInconsistenciaPk }}</td>
-                        <td>{{ arRegistros.descripcion  }}</td>
-                    </tr>
+                <tr class="danger">
+                    <td>{{ arInconsistencias.codigoInconsistenciaPk }}</td>
+                    <td>{{ arInconsistencias.descripcion  }}</td>
+                </tr>
             {% endfor %}           
         </table>
 
