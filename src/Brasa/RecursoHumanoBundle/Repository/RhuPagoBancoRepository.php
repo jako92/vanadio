@@ -97,6 +97,7 @@ class RhuPagoBancoRepository extends EntityRepository {
                         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
                         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($arPagoBancoDetalle->getCodigoVacacionFk());
                         $arVacacion->setEstadoPagoBanco(0);
+                        $arVacacion->setEstadoPagoGenerado(0);
                     }
                     $arPagoBancoDetalle->setVrPago(0);
                     $em->persist($arPagoBancoDetalle);

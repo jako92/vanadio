@@ -215,7 +215,7 @@ class RhuVacacionRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($codigoVacacion);
-        if ($arVacacion->getEstadoContabilizado() == 0 && $arVacacion->getEstadoAutorizado() == 1 && $arVacacion->getEstadoAnulado() == 0 && $arVacacion->getEstadoPagoBanco() == 0) {
+        if ($arVacacion->getEstadoContabilizado() == 0 && $arVacacion->getEstadoAutorizado() == 1 && $arVacacion->getEstadoPagoGenerado() == 0 && $arVacacion->getEstadoAnulado() == 0 && $arVacacion->getEstadoPagoBanco() == 0) {
             $arVacacionAdicionales = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacionAdicional();
             $arVacacionAdicionales = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacionAdicional')->findBy(array('codigoVacacionFk' => $codigoVacacion));
             if ($arVacacionAdicionales) {
@@ -243,7 +243,7 @@ class RhuVacacionRepository extends EntityRepository {
             $em->persist($arVacacion);
             $em->flush();
         } else {
-            $strResultado = "La vacacion debe estar autorizada, no puede estar previamente anulada ni contabilizada ni en un pago banco";
+            $strResultado = "La vacacion debe estar autorizada y generada, no puede estar previamente anulada ni contabilizada y no puede estar en un pago banco";
         }
 
         return $strResultado;
