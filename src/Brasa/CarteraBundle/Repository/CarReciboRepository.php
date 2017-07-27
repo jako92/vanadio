@@ -83,13 +83,15 @@ class CarReciboRepository extends EntityRepository {
             $em->flush();
         }
     }
-    
+
     public function contabilizar($arrSeleccionados) {
         $em = $this->getEntityManager();
         $respuesta = "";
         if (count($arrSeleccionados) > 0) {
-            $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();            
+            $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();
             $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
+            $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+            $arComprobanteContable =$em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteRecibo());
             foreach ($arrSeleccionados AS $codigo) {
                 $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
                 $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigo);
@@ -109,16 +111,38 @@ class CarReciboRepository extends EntityRepository {
                         $arTercero->setDireccion($arRecibo->getClienteRel()->getDireccion());
                         $arTercero->setTelefono($arRecibo->getClienteRel()->getTelefono());
                         $arTercero->setCelular($arRecibo->getClienteRel()->getCelular());
-                        $arTercero->setEmail($arFactura->getClienteRel()->getEmail());
+                        $arTercero->setEmail($arRecibo->getClienteRel()->getEmail());
                         $em->persist($arTercero);
                     }
-                    $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find('');
+                    //Banco
                     $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                    $codigoCuenta = $arRecibo->getCuentaRel()->getCodigoCuentaFk();
+                    if ($codigoCuenta) {
+                        $arCuentaBanco = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                        if ($arCuentaBanco) {
+                            $arRegistro->setComprobanteRel($arComprobanteContable);
+                            $arRegistro->setCuentaRel($arCuentaBanco);
+                            $arRegistro->setNumero($arRecibo->getNumero());
+                            $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                            $arRegistro->setFecha($arRecibo->getFecha());
+                            $arRegistro->setCredito($arRecibo->getVrPago());
+                            $arRegistro->setDescripcionContable($arRecibo->getComentarios());
+                            $arRegistro->setSucursalRel('');
+                            $arRegistro->setCodigoAreaFk('');
+                            $em->persist($arRegistro);
+                        } else {
+                            $mensajeError = "La cuenta contable de la cuenta bancaria no existe";
+                            break;
+                        }
+                    } else {
+                        $mensajeError = "La cuenta contable de la cuenta bancaria no esta configurada";
+                        break;
+                    }
                 }
             }
         }
     }
-    
+
     public function listaPendienteContabilizarDql($numeroRecibo = "", $boolEstadoAutorizado = "", $strFechaDesde = "", $strFechaHasta = "", $boolEstadoAnulado = "") {
         $dql = "SELECT r FROM BrasaCarteraBundle:CarRecibo r WHERE r.estadoContabilizado = 0 AND r.numero > 0";
         if ($numeroRecibo != "") {
