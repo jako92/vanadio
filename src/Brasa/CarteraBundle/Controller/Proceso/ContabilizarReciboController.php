@@ -58,6 +58,40 @@ class ContabilizarReciboController extends Controller {
                     'form' => $form->createView()));
     }
     
+    /**
+     * @Route("/car/proceso/contabilizar/recibo/configurar/", name="brs_car_proceso_contabilizar_recibo_configurar")
+     */     
+    public function configurarAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();       
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();                    
+        $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1); 
+        $form = $this->createFormBuilder()          
+            ->add('TxtCodigoComprobante', TextType::class, array('data' => $arConfiguracion->getCodigoComprobanteRecibo()))    
+            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
+            ->getForm(); 
+        $form->handleRequest($request);
+        if($form->isValid()) {            
+            if ($form->get('BtnGuardar')->isClicked()) { 
+                $arrControles = $request->request->All();
+                $codigoComprobante = $form->get('TxtCodigoComprobante')->getData();
+                $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
+                $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);  
+                if($arComprobanteContable) {
+                    $intCodigoCuenta = 0;
+                    $em->flush();                    
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                } else {
+                    $objMensaje->Mensaje("error", "El comprobante no existe");
+                }                
+            }    
+        }       
+        $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->findAll();                                      
+        return $this->render('BrasaCarteraBundle:Proceso/Contabilizar:reciboConfigurar.html.twig', array(
+            'arConfiguracion' => $arConfiguracion,
+            'form' => $form->createView()));
+    }      
+    
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
