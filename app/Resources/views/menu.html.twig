@@ -47,9 +47,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_requisicion_lista') }}"><i class="fa fa-circle-o"></i> Requisicion</a></li><!-- Pendiente ruta  -->
-                                    <li><a href="{{ path('brs_rhu_movimiento_aspirante_lista') }}"><i class="fa fa-circle-o"></i> Aspirante</a></li><!-- Pendiente ruta  -->
-                                    <li><a href="{{ path('brs_rhu_seleccion_lista') }}"><i class="fa fa-circle-o"></i> Seleccion</a></li><!-- Pendiente ruta  -->
+                                    <li {% if route == 'brs_rhu_movimiento_seleccion_requisicion_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_requisicion_lista') }}"><i class="fa fa-circle-o"></i> Requisicion</a></li><!-- Pendiente ruta  -->
+                                    <li {% if route == 'brs_rhu_movimiento_seleccion_aspirante_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_aspirante_lista') }}"><i class="fa fa-circle-o"></i> Aspirante</a></li><!-- Pendiente ruta  -->
+                                    <li {% if route == 'brs_rhu_movimiento_seleccion_seleccion_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_seleccion_lista') }}"><i class="fa fa-circle-o"></i> Seleccion</a></li><!-- Pendiente ruta  -->
                                 </ul>
                             </li>
                         </ul>
@@ -61,8 +61,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_examen_listar') }}"><i class="fa fa-circle-o"></i> Examen</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_pago_examen_lista') }}"><i class="fa fa-circle-o"></i> Pago examen</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_sso_examen_listar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_examen_listar') }}"><i class="fa fa-circle-o"></i> Examen</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_sso_pago_examen_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_pago_examen_lista') }}"><i class="fa fa-circle-o"></i> Pago examen</a></li><!-- Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -74,7 +74,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_requisito_lista') }}"><i class="fa fa-circle-o"></i> Requisitos</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_requisito_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_requisito_lista') }}"><i class="fa fa-circle-o"></i> Requisitos</a></li><!--Pendiente ruta-->
                                 </ul>
                             </li>
                         </ul>
