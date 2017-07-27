@@ -327,7 +327,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_prestacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li {% if route == 'brs_rhu_consulta_prestacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_prestacion') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>
@@ -339,12 +339,12 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_contrato_fecha_ingreso') }}"><i class="fa fa-circle-o"></i> Por fecha ingreso</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_contrato_fecha_terminacion') }}"><i class="fa fa-circle-o"></i> Por fecha terminacion (Inactivos)</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_contrato_periodo') }}"><i class="fa fa-circle-o"></i> Por periodo</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_contrato_vacaciones_pagar') }}"><i class="fa fa-circle-o"></i> Vacaciones por pagar</a></li>
-                                    <li><a href="{{ path('brs_rhu_consulta_contrato_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Por fecha vencimiento (activos)</a></li>
-                                    <li><a href="{{ path('brs_rhu_consulta_contrato_cambio_salario') }}"><i class="fa fa-circle-o"></i> Cambio salario</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_contrato_fecha_ingreso' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_contrato_fecha_ingreso') }}"><i class="fa fa-circle-o"></i> Por fecha ingreso</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_contrato_fecha_terminacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_contrato_fecha_terminacion') }}"><i class="fa fa-circle-o"></i> Por fecha terminacion (Inactivos)</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_contrato_periodo' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_contrato_periodo') }}"><i class="fa fa-circle-o"></i> Por periodo</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_contrato_vacaciones_pagar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_contrato_vacaciones_pagar') }}"><i class="fa fa-circle-o"></i> Vacaciones por pagar</a></li>
+                                    <li {% if route == 'brs_rhu_consulta_contrato_fechavencimiento' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_contrato_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Por fecha vencimiento (activos)</a></li>
+                                    <li {% if route == 'brs_rhu_consulta_contrato_cambio_salario' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_contrato_cambio_salario') }}"><i class="fa fa-circle-o"></i> Cambio salario</a></li>
                                 </ul>
                             </li>
                         </ul>   
@@ -356,7 +356,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
+                                    <li {% if route == 'brs_rhu_consulta_liquidacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
                                 </ul>
                             </li>
                         </ul>                                
@@ -368,8 +368,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_pago_pendientes_banco') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_pago_banco_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_pago_pendientes_banco' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_pago_pendientes_banco') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_pago_banco_detalle' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_pago_banco_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -381,7 +381,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_dotacion_pendiente') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_dotacion_pendiente' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_dotacion_pendiente') }}"><i class="fa fa-circle-o"></i> Pendientes</a></li>
                                 </ul>
                             </li>
                         </ul>  
@@ -393,8 +393,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_examenes_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_examen_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_examenes_vencimiento' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_examenes_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_examen_cobrar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_examen_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -406,7 +406,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_procesos_disciplinarios') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li {% if route == 'brs_rhu_consultas_procesos_disciplinarios' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_procesos_disciplinarios') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>
@@ -418,8 +418,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_control_acceso_empleados') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_control_acceso_visitantes') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_control_acceso_empleados' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_control_acceso_empleados') }}"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_control_acceso_visitantes' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_control_acceso_visitantes') }}"><i class="fa fa-circle-o"></i> Visitantes</a></li>
                                 </ul>
                             </li>
                         </ul> 
@@ -431,7 +431,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_permisos') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
+                                    <li {% if route == 'brs_rhu_consultas_permisos' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_permisos') }}"><i class="fa fa-circle-o"></i> Lista</a></li>                                    
                                 </ul>
                             </li>
                         </ul>     
@@ -443,7 +443,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_visita_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Fecha vencimiento</a></li>                                    
+                                    <li {% if route == 'brs_rhu_consulta_visita_fechavencimiento' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_visita_fechavencimiento') }}"><i class="fa fa-circle-o"></i> Fecha vencimiento</a></li>                                    
                                 </ul>
                             </li>
                         </ul>   
@@ -455,8 +455,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_capacitacion_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_capacitacion_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_capacitacion_detalle' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_capacitacion_detalle') }}"><i class="fa fa-circle-o"></i> Detalle</a></li>
                                 </ul>
                             </li>
                         </ul>                         
@@ -468,10 +468,10 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ path('brs_rhu_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
-                            <li><a href="{{ path('brs_rhu_base_centro_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Centro trabajo</a></li>
-                            <li><a href="{{ path('brs_rhu_base_sucursal_lista') }}"><i class="fa fa-circle-o"></i> Sucursal</a></li>
-                            <li><a href="{{ path('brs_rhu_base_centros_costos_lista') }}"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
+                            <li {% if route == 'brs_rhu_base_cliente' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
+                            <li {% if route == 'brs_rhu_base_centro_trabajo_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_centro_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Centro trabajo</a></li>
+                            <li {% if route == 'brs_rhu_base_sucursal_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_sucursal_lista') }}"><i class="fa fa-circle-o"></i> Sucursal</a></li>
+                            <li {% if route == 'brs_rhu_base_centros_costos_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_centros_costos_lista') }}"><i class="fa fa-circle-o"></i> Grupo pago</a></li>
                             <li {% if route starts with 'brs_rhu_base_empleado' %}class="active treeview menu-open"{%endif%}>
                                 <a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado
                                     <span class="pull-right-container">
@@ -479,9 +479,9 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li>
-                                    <li><a href="{{ path('brs_rhu_base_zona') }}"><i class="fa fa-circle-o"></i> Zona</a></li>
-                                    <li><a href="{{ path('brs_rhu_base_subzona') }}"><i class="fa fa-circle-o"></i> Subzona</a></li>
+                                    <li {% if route == 'brs_rhu_base_empleados_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_empleados_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                    <li {% if route == 'brs_rhu_base_empleado_zona' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_zona') }}"><i class="fa fa-circle-o"></i> Zona</a></li><!--Pendiente ruta  -->
+                                    <li {% if route == 'brs_rhu_base_empleado_subzona' %}class="active"{%endif%}><a href="{{ path('brs_rhu_base_subzona') }}"><i class="fa fa-circle-o"></i> Subzona</a></li><!--Pendiente ruta  -->
                                 </ul>
                             </li>
                             <li><a href="{{ path('brs_rhu_base_contratos_lista') }}"><i class="fa fa-circle-o"></i> Contratos</a></li>
@@ -1002,10 +1002,10 @@
                         </a>
                         <ul class="treeview-menu">
                             <li {% if route == 'brs_tur_base_cliente' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente') }}"><i class="fa fa-circle-o"></i> Cliente</a></li>
-                            <li {% if route == 'brs_tur_base_cliente_prospecto_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_prospecto_lista') }}"><i class="fa fa-circle-o"></i> Prospecto</a></li><!-- Pendiente ruta-->
-                            <li {% if route == 'brs_tur_base_cliente_contrato' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li><!-- Pendiente ruta-->
-                            <li {% if route == 'brs_tur_base_cliente_puesto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_puesto') }}"><i class="fa fa-circle-o"></i> Puesto</a></li><!-- Pendiente ruta-->
-                            <li {% if route == 'brs_tur_base_cliente_lista_precio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_lista_precio') }}"><i class="fa fa-circle-o"></i> Lista precio</a></li><!-- Pendiente ruta-->
+                            <li {% if route == 'brs_tur_base_cliente_prospecto_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente_prospecto_lista') }}"><i class="fa fa-circle-o"></i> Prospecto</a></li>
+                            <li {% if route == 'brs_tur_base_cliente_contrato' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente_contrato') }}"><i class="fa fa-circle-o"></i> Contrato</a></li>
+                            <li {% if route == 'brs_tur_base_cliente_puesto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente_puesto') }}"><i class="fa fa-circle-o"></i> Puesto</a></li>
+                            <li {% if route == 'brs_tur_base_cliente_lista_precio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_cliente_lista_precio') }}"><i class="fa fa-circle-o"></i> Lista precio</a></li>
 
                         </ul>
                     </li>                            
