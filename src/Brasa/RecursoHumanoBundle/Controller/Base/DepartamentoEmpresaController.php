@@ -19,7 +19,7 @@ class DepartamentoEmpresaController extends Controller
 {
 
     /**
-     * @Route("/rhu/base/departamento/empresa/listar", name="brs_rhu_base_departamento_empresa_listar")
+     * @Route("/rhu/base/departamento/empresa/listar", name="brs_rhu_base_contratacion_departamento_empresa_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -44,7 +44,7 @@ class DepartamentoEmpresaController extends Controller
                         $em->remove($arDepartamentosEmpresa);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_departamento_empresa_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_departamento_empresa_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el departamento empresa porque esta siendo utilizado', $this);
                   }    
@@ -126,7 +126,7 @@ class DepartamentoEmpresaController extends Controller
             $em->persist($arDepartamentoEmpresa);
             $arDepartamentoEmpresa = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_departamento_empresa_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_departamento_empresa_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/DepartamentosEmpresa:nuevo.html.twig', array(
             'formDepartamentoEmpresa' => $form->createView(),

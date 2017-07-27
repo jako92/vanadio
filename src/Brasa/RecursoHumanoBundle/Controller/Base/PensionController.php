@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class PensionController extends Controller
 {
     /**
-     * @Route("/rhu/base/pension/listar", name="brs_rhu_base_pension_listar")
+     * @Route("/rhu/base/pension/listar", name="brs_rhu_base_sso_pension_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -152,7 +152,7 @@ class PensionController extends Controller
             $em->persist($arPension);
             $arPension = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_pension_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_pension_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Pension:nuevo.html.twig', array(
             'formPension' => $form->createView(),

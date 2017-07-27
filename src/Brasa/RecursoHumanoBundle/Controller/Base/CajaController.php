@@ -16,7 +16,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class CajaController extends Controller
 {
     /**
-     * @Route("/rhu/base/caja/listar", name="brs_rhu_base_caja_listar")
+     * @Route("/rhu/base/caja/listar", name="brs_rhu_base_sso_caja_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -44,7 +44,7 @@ class CajaController extends Controller
                         $em->remove($arCaja);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_caja_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_sso_salud_tipo_lista'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar la caja de compensacion porque esta siendo utilizado', $this);
                   }    
@@ -135,7 +135,7 @@ class CajaController extends Controller
             $em->persist($arCaja);
             $arCaja = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_caja_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_salud_tipo_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/CajaCompensacion:nuevo.html.twig', array(
             'formCaja' => $form->createView(),

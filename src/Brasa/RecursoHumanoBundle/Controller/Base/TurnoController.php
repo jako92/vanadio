@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class TurnoController extends Controller
 {
     /**
-     * @Route("/rhu/base/turno/listar", name="brs_rhu_base_turno_listar")
+     * @Route("/rhu/base/turno/listar", name="brs_rhu_base_contratacion_turno_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -43,7 +43,7 @@ class TurnoController extends Controller
                         $em->remove($arTurno);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_turno_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_turno_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el turno porque esta siendo utilizado', $this);
                   }    
@@ -143,7 +143,7 @@ class TurnoController extends Controller
             $arTurno = $form->getData();
             $em->persist($arTurno);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_turno_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_turno_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Turno:nuevo.html.twig', array(
             'formTurno' => $form->createView(),

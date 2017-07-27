@@ -18,7 +18,7 @@ class RequisitoConceptoController extends Controller
     var $strDqlLista = "";
     
     /**
-     * @Route("/rhu/base/requisito/concepto/lista", name="brs_rhu_base_requisito_concepto_lista")
+     * @Route("/rhu/base/requisito/concepto/lista", name="brs_rhu_base_contratacion_requisito_concepto_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -73,7 +73,7 @@ class RequisitoConceptoController extends Controller
             $arRequisitoConcepto = $form->getData();
             $em->persist($arRequisitoConcepto);            
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_requisito_concepto_lista'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_requisito_concepto_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/RequisitoConcepto:nuevo.html.twig', array(
             'form' => $form->createView(),

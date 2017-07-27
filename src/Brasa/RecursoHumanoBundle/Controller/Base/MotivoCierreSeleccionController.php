@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class MotivoCierreSeleccionController extends Controller
 {
     /**
-     * @Route("/rhu/base/motivocierre/seleccion/listar", name="brs_rhu_base_motivocierre_seleccion_listar")
+     * @Route("/rhu/base/motivocierre/seleccion/listar", name="brs_rhu_base_seleccion_motivocierre_seleccion_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -47,7 +47,7 @@ class MotivoCierreSeleccionController extends Controller
                         $em->remove($arMotivo);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_motivocierre_seleccion_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_seleccion_motivocierre_seleccion_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el motivo porque esta siendo utilizado', $this);
                   }     
@@ -136,7 +136,7 @@ class MotivoCierreSeleccionController extends Controller
             $arMotivo = $form->getData();
             $em->persist($arMotivo);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_motivocierre_seleccion_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_seleccion_motivocierre_seleccion_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/MotivoCierreSeleccion:nuevo.html.twig', array(
             'formMotivo' => $form->createView(),

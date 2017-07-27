@@ -22,7 +22,7 @@ class IncapacidadDiagnosticoController extends Controller
     var $strCodigo = "";
     
     /**
-     * @Route("/rhu/base/incapacidadDiagnostico/", name="brs_rhu_base_incapacidaddiagnostico")
+     * @Route("/rhu/base/incapacidadDiagnostico/", name="brs_rhu_base_salud_ocupacional_incapacidad_diagnostico")
      */     
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -46,7 +46,7 @@ class IncapacidadDiagnosticoController extends Controller
                             $em->remove($arIncapacidadDiagnostico);                        
                         }                    
                         $em->flush();                                            
-                        return $this->redirect($this->generateUrl('brs_rhu_base_incapacidaddiagnostico'));                        
+                        return $this->redirect($this->generateUrl('brs_rhu_base_salud_ocupacional_incapacidad_diagnostico'));                        
                     } catch (ForeignKeyConstraintViolationException $e) {
                         $objMensaje->Mensaje('error', 'No se puede eliminar el registro porque esta siendo utilizado', $this);
                     }
@@ -78,7 +78,7 @@ class IncapacidadDiagnosticoController extends Controller
     }
 
     /**
-     * @Route("/rhu/base/incapacidaddiagnostico/nuevo/{codigoIncapacidadDiagnosticoPk}", name="brs_rhu_base_incapacidaddiagnostico_nuevo")
+     * @Route("/rhu/base/incapacidaddiagnostico/nuevo/{codigoIncapacidadDiagnosticoPk}", name="brs_rhu_base_salud_ocupacional_incapacidad_diagnostico_nuevo")
      */    
     public function nuevoAction(Request $request, $codigoIncapacidadDiagnosticoPk) {
         $em = $this->getDoctrine()->getManager();
@@ -95,7 +95,7 @@ class IncapacidadDiagnosticoController extends Controller
             $em->persist($arIncapacidadDiagnostico);
             $arIncapacidadDiagnostico = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_incapacidaddiagnostico'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_salud_ocupacional_incapacidad_diagnostico'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/IncapacidadDiagnostico:nuevo.html.twig', array(
             'formIncapacidadDiagnostico' => $form->createView(),

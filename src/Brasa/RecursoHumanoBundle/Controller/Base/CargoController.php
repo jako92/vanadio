@@ -20,7 +20,7 @@ class CargoController extends Controller
     var $strNombre = "";
     
     /**
-     * @Route("/rhu/base/cargo/", name="brs_rhu_base_cargo")
+     * @Route("/rhu/base/cargo/", name="brs_rhu_base_contratacion_cargo")
      */     
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -44,7 +44,7 @@ class CargoController extends Controller
                             $em->remove($arCargo);                        
                         }                    
                         $em->flush();                                            
-                        return $this->redirect($this->generateUrl('brs_rhu_base_cargo'));                        
+                        return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_cargo'));                        
                     } catch (ForeignKeyConstraintViolationException $e) {
                         $objMensaje->Mensaje('error', 'No se puede eliminar el cargo porque esta siendo utilizado', $this);
                     }
@@ -76,7 +76,7 @@ class CargoController extends Controller
     }
 
     /**
-     * @Route("/rhu/base/cargo/nuevo/{codigoCargoPk}", name="brs_rhu_base_cargo_nuevo")
+     * @Route("/rhu/base/cargo/nuevo/{codigoCargoPk}", name="brs_rhu_base_contratacion_cargo_nuevo")
      */    
     public function nuevoAction(Request $request, $codigoCargoPk) {
         $em = $this->getDoctrine()->getManager();
@@ -93,7 +93,7 @@ class CargoController extends Controller
             $em->persist($arCargo);
             $arCargo = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_cargo'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_cargo'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Cargo:nuevo.html.twig', array(
             'formCargo' => $form->createView(),

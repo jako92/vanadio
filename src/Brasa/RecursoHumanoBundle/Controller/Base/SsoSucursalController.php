@@ -14,7 +14,7 @@ class SsoSucursalController extends Controller
 {
     
     /**
-     * @Route("/rhu/base/ssosucursal/listar", name="brs_rhu_base_ssosucursal_listar")
+     * @Route("/rhu/base/ssosucursal/listar", name="brs_rhu_base_sso_sucursal_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -129,7 +129,7 @@ class SsoSucursalController extends Controller
             $em->persist($arSsoSucursal);
             $arSsoSucursal = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_ssosucursal_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_sucursal_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/SsoSucursal:nuevo.html.twig', array(
             'formSsoSucursal' => $form->createView(),

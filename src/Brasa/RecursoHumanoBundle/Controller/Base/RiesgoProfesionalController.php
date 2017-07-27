@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class RiesgoProfesionalController extends Controller
 {
     /**
-     * @Route("/rhu/base/riesgoProfesional/listar", name="brs_rhu_base_riesgoProfesional_listar")
+     * @Route("/rhu/base/riesgoProfesional/listar", name="brs_rhu_base_salud_ocupacional_riesgo_profesional_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -133,7 +133,7 @@ class RiesgoProfesionalController extends Controller
             $em->persist($arEntidadRiesgoProfesional);
             $arCaja = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_riesgoProfesional_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_salud_ocupacional_riesgo_profesional_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/RiesgoProfesional:nuevo.html.twig', array(
             'formEntidadRiesgoProfesional' => $form->createView(),

@@ -20,7 +20,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class BancoController extends Controller
 {
     /**
-     * @Route("/rhu/base/banco/listar", name="brs_rhu_base_banco_listar")
+     * @Route("/rhu/base/banco/listar", name="brs_rhu_base_contratacion_banco_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -48,7 +48,7 @@ class BancoController extends Controller
                         $em->remove($arBanco);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_banco_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_banco_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el banco porque esta siendo utilizado', $this);
                   }     
@@ -154,7 +154,7 @@ class BancoController extends Controller
             $arBanco = $form->getData();
             $em->persist($arBanco);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_banco_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_banco_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Banco:nuevo.html.twig', array(
             'formBanco' => $form->createView(),

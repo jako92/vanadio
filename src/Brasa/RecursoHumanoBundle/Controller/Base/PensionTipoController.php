@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class PensionTipoController extends Controller
 {
     /**
-     * @Route("/rhu/base/pension/tipo/lista", name="brs_rhu_base_pension_tipo_lista")
+     * @Route("/rhu/base/pension/tipo/lista", name="brs_rhu_base_sso_pension_tipo_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -41,7 +41,7 @@ class PensionTipoController extends Controller
                         $em->remove($arPensionTipo);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_pension_tipo_lista'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_sso_pension_tipo_lista'));
                } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el tipo de pension porque esta siendo utilizado', $this);
                  }     
@@ -80,7 +80,7 @@ class PensionTipoController extends Controller
             // guardar la tarea en la base de datos
             $em->persist($form);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_pension_tipo_lista'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_pension_tipo_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/PensionTipo:nuevo.html.twig', array(
             'form' => $form->createView(),

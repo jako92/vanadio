@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SaludController extends Controller {
 
     /**
-     * @Route("/rhu/base/salud/listar", name="brs_rhu_base_salud_listar")
+     * @Route("/rhu/base/salud/listar", name="brs_rhu_base_sso_salud_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -142,7 +142,7 @@ class SaludController extends Controller {
             $em->persist($arSalud);
             $arSalud = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_salud_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_salud_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Salud:nuevo.html.twig', array(
                     'formSalud' => $form->createView(),

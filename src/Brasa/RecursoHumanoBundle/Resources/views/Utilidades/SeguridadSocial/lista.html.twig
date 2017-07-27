@@ -58,7 +58,7 @@
                         <button class="btn btn-default btn-xs" type="submit" name="OpCerrar" value="{{ arSsoPeriodos.codigoPeriodoPk }}">Cerrar</button> 
                     {% endif %} 
                 </td>
-                <td style="text-align: center">{% if arSsoPeriodos.estadoGenerado == 1 %}<a href="{{ path('brs_rhu_utilidad_seguridad_social_detalle', { 'codigoPeriodo': arSsoPeriodos.codigoPeriodoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a>{% endif %}</td>                
+                <td style="text-align: center">{% if arSsoPeriodos.estadoGenerado == 1 %}<a href="{{ path('brs_rhu_utilidades_seguridad_social_detalle', { 'codigoPeriodo': arSsoPeriodos.codigoPeriodoPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a>{% endif %}</td>                
                 <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arSsoPeriodos.codigoPeriodoPk }}" /></td>
             </tr>
         {% endfor %}                        
@@ -70,7 +70,7 @@
     <!-- Botones Menu Items -->
     <div class="btn-toolbar" style="float:right">
         <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_nuevo', { 'codigoPeriodo': 0 }) }}', 'AgregarNuevoPeriodo', 600, 1200)" style="float:left">Nuevo</a>
+            <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_utilidades_seguridad_social_nuevo', { 'codigoPeriodo': 0 }) }}', 'AgregarNuevoPeriodo', 600, 1200)" style="float:left">Nuevo</a>
         </div>
         <div class="btn-group">
             <button class="btn btn-danger btn-sm" type="submit" name="OpEliminar" value="{{ 1 }}">Eliminar</button>

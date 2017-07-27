@@ -20,7 +20,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class AcademiaController extends Controller
 {
     /**
-     * @Route("/rhu/base/academia/listar", name="brs_rhu_base_academia_listar")
+     * @Route("/rhu/base/academia/listar", name="brs_rhu_base_acreditacion_academia_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -47,7 +47,7 @@ class AcademiaController extends Controller
                         $em->remove($arAcademia);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_academia_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_acreditacion_academia_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar la academia porque esta siendo utilizado', $this);
                   }     
@@ -145,7 +145,7 @@ class AcademiaController extends Controller
             $arAcademia = $form->getData();
             $em->persist($arAcademia);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_academia_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_acreditacion_academia_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Academia:nuevo.html.twig', array(
             'formAcademia' => $form->createView(),

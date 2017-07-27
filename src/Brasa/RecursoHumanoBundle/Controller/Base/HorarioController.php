@@ -16,7 +16,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class HorarioController extends Controller
 {
     /**
-     * @Route("/rhu/base/horario/listar", name="brs_rhu_base_horario_listar")
+     * @Route("/rhu/base/horario/listar", name="brs_rhu_base_contratacion_horario_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -43,7 +43,7 @@ class HorarioController extends Controller
                         $em->remove($arHorario);
                     }
                      $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_horario_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_horario_listar'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el horario porque esta siendo utilizado', $this);
                   }    
@@ -150,7 +150,7 @@ class HorarioController extends Controller
             $arHorario = $form->getData();
             $em->persist($arHorario);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_horario_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_horario_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Horario:nuevo.html.twig', array(
             'formHorario' => $form->createView(),

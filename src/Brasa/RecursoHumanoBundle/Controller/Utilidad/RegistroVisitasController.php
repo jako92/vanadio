@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class RegistroVisitasController extends Controller
 {
     /**
-     * @Route("/rhu/utilidades/control/acceso/visitante", name="brs_rhu_utilidades_control_acceso_visitante")
+     * @Route("/rhu/utilidades/control/acceso/visitante", name="brs_rhu_utilidad_horario_acceso_visitante")
      */
     public function registroAction(Request $request) {        
         $paginator  = $this->get('knp_paginator');
@@ -71,7 +71,7 @@ class RegistroVisitasController extends Controller
                                 $em->persist($arVisitante);
                             }
                             $em->flush();
-                            return $this->redirect($this->generateUrl('brs_rhu_utilidades_control_acceso_visitante'));
+                            return $this->redirect($this->generateUrl('brs_rhu_utilidad_horario_acceso_visitante'));
                         }
                 }
             }
@@ -115,7 +115,7 @@ class RegistroVisitasController extends Controller
             $arRegistroVisita->setDuracionRegistro($diferencia);
             $em->persist($arRegistroVisita);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_utilidades_control_acceso_visitante'));
+            return $this->redirect($this->generateUrl('brs_rhu_utilidad_horario_acceso_visitante'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Utilidades/RegistroVisitas:salida.html.twig', array(
             'arRegistroVisita' => $arRegistroVisita,

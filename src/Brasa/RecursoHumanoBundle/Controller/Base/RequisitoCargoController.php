@@ -21,7 +21,7 @@ class RequisitoCargoController extends Controller
     var $strDqlLista = "";
     
     /**
-     * @Route("/rhu/base/requisito/cargo/lista", name="brs_rhu_base_requisito_cargo_lista")
+     * @Route("/rhu/base/requisito/cargo/lista", name="brs_rhu_base_contratacion_requisito_cargo_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -80,7 +80,7 @@ class RequisitoCargoController extends Controller
             $arRequisitoCargo = $form->getData();
             $em->persist($arRequisitoCargo);            
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_requisito_cargo_lista'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_requisito_cargo_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/RequisitoCargo:nuevo.html.twig', array(
             'form' => $form->createView(),
@@ -117,7 +117,7 @@ class RequisitoCargoController extends Controller
                     }
                     $em->flush();
                 }
-                return $this->redirect($this->generateUrl('brs_rhu_base_requisito_cargo_lista'));
+                return $this->redirect($this->generateUrl('brs_rhu_base_contratacion_requisito_cargo_lista'));
             }
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/RequisitoCargo:nuevoMultiple.html.twig', array(

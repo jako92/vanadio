@@ -18,7 +18,7 @@ class CuentaCobrarTipoController extends Controller {
     var $strNombre = "";
 
     /**
-     * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_car_base_cuentacobrar_tipo_listar")
+     * @Route("/cartera/base/cuentacobrar/tipo/lista", name="brs_car_base_general_cuentacobrar_tipo_listar")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -35,7 +35,7 @@ class CuentaCobrarTipoController extends Controller {
                 if ($form->get('BtnEliminar')->isClicked()) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
                     $em->getRepository('BrasaCarteraBundle:CarCuentaCobrarTipo')->eliminar($arrSeleccionados);
-                    return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_general_cuentacobrar_tipo_listar'));
                 }
                 if ($form->get('BtnFiltrar')->isClicked()) {
                     $this->filtrar($form);
@@ -72,7 +72,7 @@ class CuentaCobrarTipoController extends Controller {
                 if ($form->get('guardarnuevo')->isClicked()) {
                     return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_nuevo', array('codigoCuentaCobroTipo' => 0)));
                 } else {
-                    return $this->redirect($this->generateUrl('brs_car_base_cuentacobrar_tipo_listar'));
+                    return $this->redirect($this->generateUrl('brs_car_base_general_cuentacobrar_tipo_listar'));
                 }
             }
         }

@@ -82,7 +82,7 @@
             <tr>
                 <td style="text-align: center"><a href="javascript:abrirVentana3('{{ path('brs_rhu_seguridadsocial_periodo_detalle_aporte_editar', { 'codigoAporte':  arSsoAportes.codigoAportePk }) }}', 'EditarAporte', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                 <td>{{ arSsoAportes.codigoAportePk }} </td>
-                <td><a href="javascript:abrirVentana3('{{ path('brs_rhu_utilidad_seguridad_social_resumen_pago', {'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePK, 'codigoEmpleado': arSsoAportes.codigoEmpleadoFK}) }}', 'resumenPagos', 600, 900)">{{ arSsoAportes.empleadoRel.numeroIdentificacion  }}</a></td>
+                <td><a href="javascript:abrirVentana3('{{ path('brs_rhu_utilidades_seguridad_social_resumen_pago', {'codigoPeriodoDetalle': arPeriodoDetalle.codigoPeriodoDetallePK, 'codigoEmpleado': arSsoAportes.codigoEmpleadoFK}) }}', 'resumenPagos', 600, 900)">{{ arSsoAportes.empleadoRel.numeroIdentificacion  }}</a></td>
                 <td>{{ arSsoAportes.empleadoRel.nombreCorto  }}</td>
                 <td>{{ arSsoAportes.empleadoRel.centroCostoRel.nombre |default('')  }}</td>
                 <td>{{ arSsoAportes.codigoContratoFk  }}</td>
@@ -140,7 +140,7 @@
     <!-- Botones Menu Items -->
     <div class="btn-toolbar" style="float:left">
         <div class="btn-group">
-            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_utilidad_seguridad_social_detalle', { 'codigoPeriodo': arPeriodoDetalle.codigoPeriodoFk }) }}" style="float:left">Volver</a>
+            <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_utilidades_seguridad_social_detalle', { 'codigoPeriodo': arPeriodoDetalle.codigoPeriodoFk }) }}" style="float:left">Volver</a>
         </div>
     </div>
     <!-- Fin Botones Menu Items -->

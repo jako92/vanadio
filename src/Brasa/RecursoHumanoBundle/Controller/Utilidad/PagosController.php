@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 class PagosController extends Controller
 {
     /**
-     * @Route("/rhu/utilidades/pagos/generar/periodo", name="brs_rhu_utilidades_pagos_generar_periodo")
+     * @Route("/rhu/utilidades/pagos/generar/periodo", name="brs_rhu_utilidades_programacion_pago_generar_periodo")
      */
     public function generarPeriodoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();        

@@ -18,7 +18,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class ClasificacionRiesgosController extends Controller
 {
     /**
-     * @Route("/rhu/base/clasificacion/listar", name="brs_rhu_base_clasificacion_listar")
+     * @Route("/rhu/base/clasificacion/listar", name="brs_rhu_base_salud_ocupacional_clasificacion_listar")
      */
     public function listarAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -44,7 +44,7 @@ class ClasificacionRiesgosController extends Controller
                         $em->remove($arClasificacion);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_clasificacion_listar'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_salud_ocupacional_riesgo_profesional_listar'));
                     } catch (ForeignKeyConstraintViolationException $e) { 
                         $objMensaje->Mensaje('error', 'No se puede eliminar clasificacion de riesgos porque esta siendo utilizado', $this);
                       }
@@ -133,7 +133,7 @@ class ClasificacionRiesgosController extends Controller
             $em->persist($arClasificacion);
             $arClasificacion = $form->getData();
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_clasificacion_listar'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_salud_ocupacional_riesgo_profesional_listar'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/Clasificacion:nuevo.html.twig', array(
             'formClasificacion' => $form->createView(),

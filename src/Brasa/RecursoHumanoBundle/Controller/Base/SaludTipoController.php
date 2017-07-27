@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SaludTipoController extends Controller
 {
     /**
-     * @Route("/rhu/base/salud/tipo/lista", name="brs_rhu_base_salud_tipo_lista")
+     * @Route("/rhu/base/salud/tipo/lista", name="brs_rhu_base_sso_salud_tipo_lista")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -41,7 +41,7 @@ class SaludTipoController extends Controller
                         $em->remove($arSaludTipo);
                     }
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_base_salud_tipo_lista'));
+                    return $this->redirect($this->generateUrl('brs_rhu_base_sso_salud_tipo_lista'));
                 } catch (ForeignKeyConstraintViolationException $e) { 
                     $objMensaje->Mensaje('error', 'No se puede eliminar el tipo de salud porque esta siendo utilizado', $this);
                   }    
@@ -80,7 +80,7 @@ class SaludTipoController extends Controller
             $arSaludTipo = $form->getData();
             $em->persist($arSaludTipo);
             $em->flush();
-            return $this->redirect($this->generateUrl('brs_rhu_base_salud_tipo_lista'));
+            return $this->redirect($this->generateUrl('brs_rhu_base_sso_salud_tipo_lista'));
         }
         return $this->render('BrasaRecursoHumanoBundle:Base/SaludTipo:nuevo.html.twig', array(
             'form' => $form->createView(),
