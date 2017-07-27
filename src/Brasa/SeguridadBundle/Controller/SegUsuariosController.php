@@ -64,8 +64,10 @@ class SegUsuariosController extends Controller {
                 $password = $encoder->encodePassword($arUsuario->getPassword(), $arUsuario->getSalt());
                 $arUsuario->setPassword($password);
             }
-            $arSegPermisoGrupo = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->asignarPermisosUsuario($arUsuario->getCodigoGrupoFk(), $arUsuario);
             $em->persist($arUsuario);
+            if ($arUsuario->getGrupoRel()) {
+                $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->asignarPermisosUsuario($arUsuario->getGrupoRel()->getCodigoGrupoPk(), $arUsuario);
+            }
             $em->flush();
             return $this->redirect($this->generateUrl('brs_seg_admin_usuario_lista'));
         }
@@ -536,7 +538,7 @@ class SegUsuariosController extends Controller {
                 if (count($arrSeleccionadosPermisoDocumento) > 0) {
                     $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoDocumento);
                 }
-                return $this->redirect($this->generateUrl('brs_seg_admin_permiso_grupo_detalle',array('codigoGrupo'=>$codigoGrupo)));
+                return $this->redirect($this->generateUrl('brs_seg_admin_permiso_grupo_detalle', array('codigoGrupo' => $codigoGrupo)));
             }
         }
 

@@ -8,65 +8,65 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_pago_banco")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuPagoBancoRepository")
  */
-class RhuPagoBanco
-{
+class RhuPagoBanco {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_pago_banco_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoPagoBancoPk;         
-    
+    private $codigoPagoBancoPk;
+
     /**
      * @ORM\Column(name="codigo_pago_banco_tipo_fk", type="integer", nullable=true)
-     */    
-    private $codigoPagoBancoTipoFk;    
-    
+     */
+    private $codigoPagoBancoTipoFk;
+
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
-     */    
-    private $fecha;     
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="numero", type="integer")
-     */    
-    private $numero = 0;     
-    
+     */
+    private $numero = 0;
+
     /**
      * @ORM\Column(name="fecha_trasmision", type="date", nullable=true)
-     */    
-    private $fechaTrasmision;    
-    
+     */
+    private $fechaTrasmision;
+
     /**
      * @ORM\Column(name="fecha_aplicacion", type="date", nullable=true)
-     */    
-    private $fechaAplicacion;    
-    
+     */
+    private $fechaAplicacion;
+
     /**
      * @ORM\Column(name="secuencia", type="string", length=1, nullable=true)
-     */    
-    private $secuencia;    
-    
+     */
+    private $secuencia;
+
     /**
      * @ORM\Column(name="descripcion", type="string", length=50, nullable=true)
-     */    
-    private $descripcion;     
-    
+     */
+    private $descripcion;
+
     /**
      * @ORM\Column(name="codigo_cuenta_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCuentaFk;
-    
+
     /**
      * @ORM\Column(name="vr_total_pago", type="float")
      */
-    private $vrTotalPago = 0;     
+    private $vrTotalPago = 0;
 
     /**
      * @ORM\Column(name="numero_registros", type="integer")
      */
-    private $numeroRegistros = 0;    
-    
+    private $numeroRegistros = 0;
+
     /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */
@@ -75,41 +75,44 @@ class RhuPagoBanco
     /**
      * @ORM\Column(name="estado_impreso", type="boolean")
      */
-    private $estadoImpreso = 0;    
+    private $estadoImpreso = 0;
 
     /**
      * @ORM\Column(name="estado_generado", type="boolean")
      */
     private $estadoGenerado = 0;
-    
+
     /**
      * @ORM\Column(name="estado_contabilizado", type="boolean")
      */
-    private $estadoContabilizado = 0;     
-    
+    private $estadoContabilizado = 0;
+
+    /**
+     * @ORM\Column(name="estado_anulado", type="boolean")
+     */
+    private $estadoAnulado = 0;
+
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
-    private $codigoUsuario;    
-    
+     */
+    private $codigoUsuario;
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCuenta", inversedBy="rhuPagosBancosCuentaRel")
      * @ORM\JoinColumn(name="codigo_cuenta_fk", referencedColumnName="codigo_cuenta_pk")
      */
-    protected $cuentaRel;     
+    protected $cuentaRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuPagoBancoTipo", inversedBy="pagosBancosPagoBancoTipoRel")
      * @ORM\JoinColumn(name="codigo_pago_banco_tipo_fk", referencedColumnName="codigo_pago_banco_tipo_pk")
      */
-    protected $pagoBancoTipoRel;    
-    
+    protected $pagoBancoTipoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoBancoDetalle", mappedBy="pagoBancoRel")
      */
-    protected $pagosBancosDetallesPagoBancoRel;     
-    
-
+    protected $pagosBancosDetallesPagoBancoRel;
     /**
      * Constructor
      */
@@ -417,6 +420,30 @@ class RhuPagoBanco
     }
 
     /**
+     * Set estadoGenerado
+     *
+     * @param boolean $estadoGenerado
+     *
+     * @return RhuPagoBanco
+     */
+    public function setEstadoGenerado($estadoGenerado)
+    {
+        $this->estadoGenerado = $estadoGenerado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoGenerado
+     *
+     * @return boolean
+     */
+    public function getEstadoGenerado()
+    {
+        return $this->estadoGenerado;
+    }
+
+    /**
      * Set estadoContabilizado
      *
      * @param boolean $estadoContabilizado
@@ -438,6 +465,30 @@ class RhuPagoBanco
     public function getEstadoContabilizado()
     {
         return $this->estadoContabilizado;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuPagoBanco
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
     }
 
     /**
@@ -544,29 +595,5 @@ class RhuPagoBanco
     public function getPagosBancosDetallesPagoBancoRel()
     {
         return $this->pagosBancosDetallesPagoBancoRel;
-    }
-
-    /**
-     * Set estadoGenerado
-     *
-     * @param boolean $estadoGenerado
-     *
-     * @return RhuPagoBanco
-     */
-    public function setEstadoGenerado($estadoGenerado)
-    {
-        $this->estadoGenerado = $estadoGenerado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoGenerado
-     *
-     * @return boolean
-     */
-    public function getEstadoGenerado()
-    {
-        return $this->estadoGenerado;
     }
 }

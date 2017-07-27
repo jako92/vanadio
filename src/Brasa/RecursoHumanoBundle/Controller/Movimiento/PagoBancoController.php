@@ -160,6 +160,13 @@ class PagoBancoController extends Controller {
                     $objMensaje->Mensaje("error", "No puede imprimir el archivo sin estar autorizada");
                 }
             }
+            if ($form->get('BtnAnular')->isClicked()) {
+                $strResultado = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->anular($codigoPagoBanco);
+                if ($strResultado != "") {
+                    $objMensaje->Mensaje('error', $strResultado);
+                }
+                return $this->redirectToRoute('brs_rhu_movimiento_pago_banco_detalle', array('codigoPagoBanco' => $codigoPagoBanco));
+            }
             if ($form->get('BtnEliminarDetalle')->isClicked()) {
                 if ($arPagoBanco->getEstadoAutorizado() == 0) {
                     $arrSeleccionados = $request->request->get('ChkSeleccionar');
@@ -648,12 +655,7 @@ class PagoBancoController extends Controller {
             $strFechaHasta = $session->get('filtroRhuPagoBancoFechaHasta');
         }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->listaDQL(
-                $strFechaDesde, 
-                $strFechaHasta, 
-                $session->get('filtroCodigoPagoBancoTipo'),
-                $session->get('filtroRhuPagoBancoAutorizado'),
-                $session->get('filtroRhuPagoBancoGenerado')
-                
+                $strFechaDesde, $strFechaHasta, $session->get('filtroCodigoPagoBancoTipo'), $session->get('filtroRhuPagoBancoAutorizado'), $session->get('filtroRhuPagoBancoGenerado')
         );
     }
 
@@ -714,7 +716,7 @@ class PagoBancoController extends Controller {
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         for ($col = 'A'; $col !== 'K'; $col++) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);            
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'ID')
@@ -866,12 +868,12 @@ class PagoBancoController extends Controller {
         }
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
-        
+
         $form = $this->createFormBuilder()
                 //->add('entidadExamenRel', EntityType::class, $arrayPropiedades) 
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
-                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroRhuPagoBancoAutorizado')))                
+                ->add('estadoAutorizado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroRhuPagoBancoAutorizado')))
                 ->add('estadoGenerado', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroRhuPagoBancoGenerado')))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuPagoBancoFiltrarFecha')))
                 ->add('pagoBancoTipoRel', EntityType::class, $arrayPropiedadesTipo)
@@ -888,6 +890,7 @@ class PagoBancoController extends Controller {
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonGenerar = array('label' => 'Generar', 'disabled' => false);
+        $arrBotonAnular = array('label' => 'Anular', 'disabled' => true);
         $arrBotonArchivoBancolombiaPab = array('label' => 'Bancolombia Pab', 'disabled' => false);
         $arrBotonArchivoBancolombiaSap = array('label' => 'Bancolombia Sap', 'disabled' => false);
         $arrBotonArchivoAvvillasInterno = array('label' => 'Av Villas Interno', 'disabled' => false);
@@ -899,6 +902,11 @@ class PagoBancoController extends Controller {
         if ($ar->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarDetalle['disabled'] = true;
+            $arrBotonAnular['disabled'] = false;
+            if ($ar->getEstadoAnulado() == 1) {
+                $arrBotonDesAutorizar['disabled'] = true;
+                $arrBotonAnular['disabled'] = true;
+            }
         } else {
             $arrBotonGenerar['disabled'] = true;
             $arrBotonDesAutorizar['disabled'] = true;
@@ -912,6 +920,7 @@ class PagoBancoController extends Controller {
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnGenerar', SubmitType::class, $arrBotonGenerar)
+                ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
                 ->add('BtnArchivoBancolombiaPab', SubmitType::class, $arrBotonArchivoBancolombiaPab)
                 ->add('BtnArchivoBancolombiaSap', SubmitType::class, $arrBotonArchivoBancolombiaSap)
                 ->add('BtnArchivoAvvillasInterno', SubmitType::class, $arrBotonArchivoAvvillasInterno)

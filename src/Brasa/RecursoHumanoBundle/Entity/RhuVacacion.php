@@ -175,7 +175,12 @@ class RhuVacacion
     /**
      * @ORM\Column(name="estado_contabilizado", type="boolean")
      */
-    private $estadoContabilizado = 0;     
+    private $estadoContabilizado = 0;
+    
+    /**
+     * @ORM\Column(name="estado_anulado", type="boolean")
+     */
+    private $estadoAnulado = 0;
     
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
@@ -1316,5 +1321,29 @@ class RhuVacacion
     public function getPagosDetallesVacacionRel()
     {
         return $this->pagosDetallesVacacionRel;
+    }
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuVacacion
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
     }
 }
