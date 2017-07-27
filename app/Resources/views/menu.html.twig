@@ -235,14 +235,14 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_empleado') }}"><i class="fa fa-circle-o"></i> General</a></li>
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado') }}"><i class="fa fa-circle-o"></i> Completo</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_consultas_pagos_deducciones_empleado') }}"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado_estudios_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_consulta_empleado_centro_costo_mes') }}"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li>
-                                    <li><a href="{{ path('brs_rhu_consulta_empleado_grupo_familiar') }}"><i class="fa fa-circle-o"></i> Grupo familiar</a></li>
-                                    <li><a href="{{ path('brs_rhu_consulta_empleado_cumpleanos') }}"><i class="fa fa-circle-o"></i> Cumpleaños</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_empleado' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_empleado') }}"><i class="fa fa-circle-o"></i> General</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_completo' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_empleado') }}"><i class="fa fa-circle-o"></i> Completo</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_pagos_deducciones' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_pagos_deducciones_empleado') }}"><i class="fa fa-circle-o"></i> Pagos y deducciones</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_estudios_vencimiento' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_empleado_estudios_vencimiento') }}"><i class="fa fa-circle-o"></i> Vencimiento estudios</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_requisitos_pendientes' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_empleado_requisitos_pendientes') }}"><i class="fa fa-circle-o"></i> Requisitos pendientes</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_centro_costo_mes' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_empleado_centro_costo_mes') }}"><i class="fa fa-circle-o"></i> Centro costo (mes)</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_grupo_familiar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_empleado_grupo_familiar') }}"><i class="fa fa-circle-o"></i> Grupo familiar</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consultas_empleado_cumpleanos' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_empleado_cumpleanos') }}"><i class="fa fa-circle-o"></i> Cumpleaños</a></li><!-- Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -254,7 +254,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_incapacidades_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_incapacidades_cobrar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_incapacidades_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -266,7 +266,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_creditos_general') }}"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_creditos_general' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_creditos_general') }}"><i class="fa fa-circle-o"></i> General</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -278,7 +278,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_servicios_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_servicios_cobrar' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_servicios_cobrar') }}"><i class="fa fa-circle-o"></i> Por cobrar</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -290,8 +290,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_pago') }}"><i class="fa fa-circle-o"></i> Pagos</a></li><!-- Pendiente ruta -->
-                                    <li><a href="{{ path('brs_rhu_consulta_pago_detalle') }}"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_pago' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_pago') }}"><i class="fa fa-circle-o"></i> Pagos</a></li><!-- Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_consulta_pago_detalle' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_pago_detalle') }}"><i class="fa fa-circle-o"></i> Pagos detalle</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -303,7 +303,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_pago_concepto') }}"><i class="fa fa-circle-o"></i> Consolidado (nom, vac, liq)</a></li>
+                                    <li {% if route == 'brs_rhu_consulta_pago_concepto' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_pago_concepto') }}"><i class="fa fa-circle-o"></i> Consolidado (nom, vac, liq)</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -315,7 +315,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_sso_aportes') }}"><i class="fa fa-circle-o"></i> Aportes</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_sso_aportes' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_sso_aportes') }}"><i class="fa fa-circle-o"></i> Aportes</a></li>
                                 </ul>
                             </li>
                         </ul>                                 
@@ -1029,8 +1029,8 @@
                         </a>
                         <ul class="treeview-menu">
                             <li {% if route == 'brs_tur_base_turno' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_turno') }}"><i class="fa fa-circle-o"></i> Turno</a></li>
-                            <li {% if route == 'brs_tur_base_turno_plantilla_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_plantilla_lista') }}"><i class="fa fa-circle-o"></i> Plantilla</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_turno_secuencia_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_secuencia_lista') }}"><i class="fa fa-circle-o"></i> Secuencia</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_turno_plantilla_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_turno_plantilla_lista') }}"><i class="fa fa-circle-o"></i> Plantilla</a></li>
+                            <li {% if route == 'brs_tur_base_turno_secuencia_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_turno_secuencia_lista') }}"><i class="fa fa-circle-o"></i> Secuencia</a></li>
                         </ul>
                     </li>
                     <li {% if route starts with 'brs_tur_base_operacion' %}class="active treeview menu-open"{%endif%}>
@@ -1040,7 +1040,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li {% if route == 'brs_tur_base_operacion_proyecto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_proyecto') }}"><i class="fa fa-circle-o"></i> Proyecto</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_operacion_proyecto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_operacion_proyecto') }}"><i class="fa fa-circle-o"></i> Proyecto</a></li>
                             <li {% if route == 'brs_tur_base_operacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_operacion') }}"><i class="fa fa-circle-o"></i> Operacion</a></li>
                         </ul>
                     </li>
