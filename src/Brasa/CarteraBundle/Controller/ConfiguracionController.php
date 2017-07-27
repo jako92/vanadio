@@ -24,6 +24,8 @@ class ConfiguracionController extends Controller {
         }
         $arConsecutivo = new \Brasa\CarteraBundle\Entity\CarConsecutivo();
         $arConsecutivo = $em->getRepository('BrasaCarteraBundle:CarConsecutivo')->findAll();
+        $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->findAll();
 
         $formConfiguracion = $this->createFormBuilder()
                 //->add('informacionLegalFactura', 'textarea', array('data' => $arConfiguracion->getInformacionLegalFactura(), 'required' => false)) 
@@ -66,7 +68,8 @@ class ConfiguracionController extends Controller {
         }
         return $this->render('BrasaCarteraBundle:Configuracion:Configuracion.html.twig', array(
                     'formConfiguracion' => $formConfiguracion->createView(),
-                    'arConsecutivo' => $arConsecutivo
+                    'arConsecutivo' => $arConsecutivo,
+                    'arConfiguracion' => $arConfiguracion
         ));
     }
 

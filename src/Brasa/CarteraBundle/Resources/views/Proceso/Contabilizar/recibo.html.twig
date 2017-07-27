@@ -18,6 +18,17 @@
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="panel panel-default">
+            <div class="panel-heading">Información</div>
+            <div class="panel-body">
+                <table width="100%" class="table table-condensed table-bordered">
+                    <tr>
+                        <td class="titulo">COMPROBANTE:</td>
+                        <td class="td-in-well">{{ arComprobante.codigoComprobantePk |default('') }}-{{ arComprobante.nombre |default('') }}</td>                        
+                    </tr>                 
+                </table>
+            </div>
+        </div>   
+        <div class="panel panel-default">
             <div class="panel-heading">Filtros de busqueda</div>
             <div class="panel-body">
                 <div class="form-group form-group-sm">  
@@ -99,9 +110,9 @@
 
         <!-- Botones Menu Items -->
         <div class="btn-group" style="float: left">
-           </div>
+        </div>
         <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
-                  
+
         </div>
 
         <div class="btn-toolbar" style="float: right">

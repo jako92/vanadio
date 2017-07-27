@@ -26,9 +26,12 @@ class CarConfiguracion
      */    
     private $codigoFormatoResumenAnticipo = 0;
         
-    
+     /**
+     * @ORM\Column(name="codigo_comprobante_recibo", type="integer")
+     */
+    private $codigoComprobanteRecibo;   
 
-    
+   
 
     /**
      * Set codigoConfiguracionPk
@@ -100,5 +103,29 @@ class CarConfiguracion
     public function getCodigoFormatoResumenAnticipo()
     {
         return $this->codigoFormatoResumenAnticipo;
+    }
+
+    /**
+     * Set codigoComprobanteRecibo
+     *
+     * @param integer $codigoComprobanteRecibo
+     *
+     * @return CarConfiguracion
+     */
+    public function setCodigoComprobanteRecibo($codigoComprobanteRecibo)
+    {
+        $this->codigoComprobanteRecibo = $codigoComprobanteRecibo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoComprobanteRecibo
+     *
+     * @return integer
+     */
+    public function getCodigoComprobanteRecibo()
+    {
+        return $this->codigoComprobanteRecibo;
     }
 }

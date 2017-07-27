@@ -26,6 +26,10 @@ class ContabilizarReciboController extends Controller {
           return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
           } */
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
+        $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
+        $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteRecibo());  
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
@@ -50,9 +54,10 @@ class ContabilizarReciboController extends Controller {
         $arRecibos = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 100);
         return $this->render('BrasaCarteraBundle:Proceso/Contabilizar:recibo.html.twig', array(
                     'arRecibos' => $arRecibos,
+                    'arComprobante' => $arComprobanteContable,
                     'form' => $form->createView()));
     }
-
+    
     private function lista() {
         $em = $this->getDoctrine()->getManager();
         $session = new Session;
