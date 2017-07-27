@@ -54,7 +54,7 @@
                             </li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li {% if route starts with 'brs_rhu_movimiento_seguridad_social' %}class="active treeview menu-open"{%endif%}>
+                            <li {% if route starts with 'brs_rhu_movimiento_sso' %}class="active treeview menu-open"{%endif%}>
                                 <a href="#"><i class="fa fa-circle-o"></i> Seguridad social
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -86,19 +86,19 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_programaciones_pago_lista') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li>
-                                    <li><a href="{{ path('brs_rhu_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li>
-                                    <li><a href="{{ path('brs_rhu_pagos_adicionales_lista', { 'modalidad': 1, 'periodo': 0 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Permanente)</a></li>
-                                    <li><a href="{{ path('brs_rhu_pagos_adicionales_lista_fecha', { 'modalidad': 2 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Fecha)</a></li>
-                                    <li><a href="{{ path('brs_rhu_licencias_lista') }}"><i class="fa fa-circle-o"></i> Licencia</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_incapacidad') }}"><i class="fa fa-circle-o"></i> Incapacidad</a></li>
-                                    <li><a href="{{ path('brs_rhu_incapacidades_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago incapacidad</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_vacacion') }}"><i class="fa fa-circle-o"></i> Vacaciones</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_embargo') }}"><i class="fa fa-circle-o"></i> Embargos</a></li>
-                                    <li><a href="{{ path('brs_rhu_creditos_lista') }}"><i class="fa fa-circle-o"></i> Creditos</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_reclamo') }}"><i class="fa fa-circle-o"></i> Reclamaciones</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_programaciones_pago_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_programaciones_pago_lista') }}"><i class="fa fa-circle-o"></i> Programacion pago</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_pagos_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_pago_banco' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_pago_banco') }}"><i class="fa fa-circle-o"></i> Pago banco</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_liquidacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_liquidacion') }}"><i class="fa fa-circle-o"></i> Liquidacion</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_pagos_adicionales_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_pagos_adicionales_lista', { 'modalidad': 1, 'periodo': 0 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Permanente)</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_pagos_adicionales_lista_fecha' %}class="active"{%endif%}><a href="{{ path('brs_rhu_pagos_adicionales_lista_fecha', { 'modalidad': 2 }) }}"><i class="fa fa-circle-o"></i> Adicional pago (Fecha)</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_licencias_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_licencias_lista') }}"><i class="fa fa-circle-o"></i> Licencia</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_incapacidad' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_incapacidad') }}"><i class="fa fa-circle-o"></i> Incapacidad</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_incapacidades_pagos_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_incapacidades_pagos_lista') }}"><i class="fa fa-circle-o"></i> Pago incapacidad</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_vacacion' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_vacacion') }}"><i class="fa fa-circle-o"></i> Vacaciones</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_embargo' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_embargo') }}"><i class="fa fa-circle-o"></i> Embargos</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_creditos_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_creditos_lista') }}"><i class="fa fa-circle-o"></i> Creditos</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_nomina_reclamo' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_reclamo') }}"><i class="fa fa-circle-o"></i> Reclamaciones</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -110,8 +110,8 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_facturas_lista') }}"><i class="fa fa-circle-o"></i> Factura</a></li>
-                                    <li><a href="{{ path('brs_rhu_cobro_lista') }}"><i class="fa fa-circle-o"></i> Relacion cobro</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_comercial_facturas_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_facturas_lista') }}"><i class="fa fa-circle-o"></i> Factura</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_comercial_cobro_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_cobro_lista') }}"><i class="fa fa-circle-o"></i> Relacion cobro</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -123,7 +123,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_dotacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_dotacion_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_dotacion_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -135,7 +135,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_movimiento_accidente_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Accidente trabajo</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_salud_ocupacional_accidente_trabajo_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_accidente_trabajo_lista') }}"><i class="fa fa-circle-o"></i> Accidente trabajo</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -147,7 +147,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_empleado_informacion_interna_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_informacion_interna_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_empleado_informacion_interna_lista') }}"><i class="fa fa-circle-o"></i> Lista</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -159,16 +159,16 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_movimiento_disciplinario') }}"><i class="fa fa-circle-o"></i> Proceso disciplinario</a></li>
-                                    <li><a href="{{ path('brs_rhu_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Capacitacion</a></li>
-                                    <li><a href="{{ path('brs_rhu_desempeno_lista') }}"><i class="fa fa-circle-o"></i> Gestion desempeño</a></li>
-                                    <li><a href="{{ path('brs_rhu_permiso_lista') }}"><i class="fa fa-circle-o"></i> Permiso</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_acreditacion') }}"><i class="fa fa-circle-o"></i> Acreditacion</a></li>
-                                    <li><a href="{{ path('brs_rhu_estudio_lista') }}"><i class="fa fa-circle-o"></i> Estudio</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_visita') }}"><i class="fa fa-circle-o"></i> Visitas</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_prueba') }}"><i class="fa fa-circle-o"></i> Pruebas psicotecnicas</a></li>
-                                    <li><a href="{{ path('brs_rhu_movimiento_poligrafia') }}"><i class="fa fa-circle-o"></i> Poligrafias</a></li>
-                                    <li><a href="{{ path('brs_rhu_induccion_lista') }}"><i class="fa fa-circle-o"></i> Induccion</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_disciplinario') }}"><i class="fa fa-circle-o"></i> Proceso disciplinario</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_capacitacion_lista') }}"><i class="fa fa-circle-o"></i> Capacitacion</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_desempeno_lista') }}"><i class="fa fa-circle-o"></i> Gestion desempeño</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_permiso_lista') }}"><i class="fa fa-circle-o"></i> Permiso</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_acreditacion') }}"><i class="fa fa-circle-o"></i> Acreditacion</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_estudio_lista') }}"><i class="fa fa-circle-o"></i> Estudio</a></li><!--Pendiente ruta -->
+                                    <li {% if route == 'brs_rhu_movimiento_visita' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_visita') }}"><i class="fa fa-circle-o"></i> Visitas</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_prueba' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_prueba') }}"><i class="fa fa-circle-o"></i> Pruebas psicotecnicas</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_poligrafia' %}class="active"{%endif%}><a href="{{ path('brs_rhu_movimiento_poligrafia') }}"><i class="fa fa-circle-o"></i> Poligrafias</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_induccion_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_induccion_lista') }}"><i class="fa fa-circle-o"></i> Induccion</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -180,7 +180,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_control_acceso_empleado_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                                    <li {% if route == 'brs_rhu_movimiento_control_acceso_empleado_lista' %}class="active"{%endif%}><a href="{{ path('brs_rhu_control_acceso_empleado_lista') }}"><i class="fa fa-circle-o"></i> Empleado</a></li><!--Pendiente ruta -->
                                 </ul>
                             </li>
                         </ul>
@@ -199,7 +199,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_aspirantes_inconsistencias') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_aspirantes_inconsistencias' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_aspirantes_inconsistencias') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -211,7 +211,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consultas_adicionales_pago') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
+                                    <li {% if route == 'brs_rhu_consultas_adicionales_pago' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consultas_adicionales_pago') }}"><i class="fa fa-circle-o"></i> Lista</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -223,7 +223,7 @@
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="{{ path('brs_rhu_consulta_costo') }}"><i class="fa fa-circle-o"></i> General</a></li>
+                                    <li {% if route == 'brs_rhu_consulta_costo' %}class="active"{%endif%}><a href="{{ path('brs_rhu_consulta_costo') }}"><i class="fa fa-circle-o"></i> General</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -1051,13 +1051,13 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li {% if route == 'brs_tur_base_general_concepto_servicio_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_concepto_servicio_lista') }}"><i class="fa fa-circle-o"></i> Concepto servicio</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_pedido_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_pedido_tipo') }}"><i class="fa fa-circle-o"></i> Tipo pedido</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_factura_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_factura_tipo') }}"><i class="fa fa-circle-o"></i> Tipo factura</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_factura_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_factura_servicio') }}"><i class="fa fa-circle-o"></i> Tipo servicio factura</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_novedad_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_novedad_tipo') }}"><i class="fa fa-circle-o"></i> Tipo novedad</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_elemento_dotacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_elemento_dotacion') }}"><i class="fa fa-circle-o"></i> Elemento dotacion</a></li><!-- Pendiente ruta -->
-                            <li {% if route == 'brs_tur_base_general_pedido_devolucion_concepto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_pedido_devolucion_concepto') }}"><i class="fa fa-circle-o"></i> Concepto pedido devolucion</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_concepto_servicio_lista' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_concepto_servicio_lista') }}"><i class="fa fa-circle-o"></i> Concepto servicio</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_pedido_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_pedido_tipo') }}"><i class="fa fa-circle-o"></i> Tipo pedido</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_factura_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_factura_tipo') }}"><i class="fa fa-circle-o"></i> Tipo factura</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_factura_servicio' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_factura_servicio') }}"><i class="fa fa-circle-o"></i> Tipo servicio factura</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_novedad_tipo' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_novedad_tipo') }}"><i class="fa fa-circle-o"></i> Tipo novedad</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_elemento_dotacion' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_elemento_dotacion') }}"><i class="fa fa-circle-o"></i> Elemento dotacion</a></li><!-- Pendiente ruta -->
+                            <li {% if route == 'brs_tur_base_general_pedido_devolucion_concepto' %}class="active"{%endif%}><a href="{{ path('brs_tur_base_general_pedido_devolucion_concepto') }}"><i class="fa fa-circle-o"></i> Concepto pedido devolucion</a></li><!-- Pendiente ruta -->
                         </ul>
                     </li>
                     <li><a href="{{ path('sonata_admin_dashboard') }}" target="_blank"><i class="fa fa-circle-o"></i> Otros</a></li>
