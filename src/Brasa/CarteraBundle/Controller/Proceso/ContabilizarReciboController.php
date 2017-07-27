@@ -78,7 +78,8 @@ class ContabilizarReciboController extends Controller {
                 $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();                    
                 $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($codigoComprobante);  
                 if($arComprobanteContable) {
-                    $intCodigoCuenta = 0;
+                    $arConfiguracion->setCodigoComprobanteRecibo($codigoComprobante);
+                    $em->persist($arConfiguracion);
                     $em->flush();                    
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 } else {
