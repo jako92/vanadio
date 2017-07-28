@@ -340,7 +340,12 @@ class RhuLiquidacionRepository extends EntityRepository {
                         $dateFechaHasta = $arLiquidacion->getContratoRel()->getFechaHasta();
                         $recargosNocturnos = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoDetalle')->recargosNocturnosFecha($dateFechaDesde, $dateFechaHasta, $arLiquidacion->getContratoRel()->getCodigoContratoPk());
                         if($arLiquidacion->getCodigoMotivoTerminacionContratoFk() == 5 || $arLiquidacion->getCodigoMotivoTerminacionContratoFk() == 4) {                        
-                            $salarioVacaciones = $salarioPromedioCesantias - $auxilioTransporte;           
+                            if($arContrato->getAuxilioTransporte() == 1) {
+                                $salarioVacaciones = $salarioPromedioCesantias - $auxilioTransporte;           
+                            } else {
+                                $salarioVacaciones = $salarioPromedioCesantias;           
+                            }
+                            
                         } else {
                             $salarioVacaciones = $douSalario;
                         }   
