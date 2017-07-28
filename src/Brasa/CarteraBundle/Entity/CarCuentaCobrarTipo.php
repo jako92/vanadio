@@ -31,7 +31,12 @@ class CarCuentaCobrarTipo
     /**
      * @ORM\Column(name="saldo_inicial", type="boolean")
      */    
-    private $saldoInicial = false;     
+    private $saldoInicial = false;  
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_cliente_fk", type="string", length=20, nullable=true)
+     */     
+    private $codigoCuentaClienteFk;     
     
     /**
      * @ORM\OneToMany(targetEntity="CarCuentaCobrar", mappedBy="cuentaCobrarTipoRel")
@@ -323,5 +328,29 @@ class CarCuentaCobrarTipo
     public function getCuentasCobrarTiposNotaCreditoDetalleRel()
     {
         return $this->cuentasCobrarTiposNotaCreditoDetalleRel;
+    }
+
+    /**
+     * Set codigoCuentaClienteFk
+     *
+     * @param string $codigoCuentaClienteFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaClienteFk($codigoCuentaClienteFk)
+    {
+        $this->codigoCuentaClienteFk = $codigoCuentaClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaClienteFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaClienteFk()
+    {
+        return $this->codigoCuentaClienteFk;
     }
 }

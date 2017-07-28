@@ -95,12 +95,12 @@ class CarReciboRepository extends EntityRepository {
             foreach ($arrSeleccionados AS $codigo) {
                 $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
                 $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigo);
-                if ($arRecibo->getEstadoAutorizado == 1 && $arRecibo->getEstadoContabilizado() == 0 && $arRecibo->getNumero() != 0) {
+                if ($arRecibo->getEstadoAutorizado() == 1 && $arRecibo->getEstadoContabilizado() == 0 && $arRecibo->getNumero() != 0) {
                     $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arRecibo->getClienteRel()->getNit()));
                     if (count($arTercero) <= 0) {
                         $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
                         $arTercero->setCiudadRel($arRecibo->getClienteRel()->getCiudadRel());
-                        $arTercero->setTipoIdentificacionRel($arRecibo->getClienteRel()->getTipoIdentificacionRel());
+                        $arTercero->setCodigoTipoIdentificacionFk('31');
                         $arTercero->setNumeroIdentificacion($arRecibo->getClienteRel()->getNit());
                         $arTercero->setDigitoVerificacion($arRecibo->getClienteRel()->getDigitoVerificacion());
                         $arTercero->setNombreCorto($arRecibo->getClienteRel()->getNombreCorto());

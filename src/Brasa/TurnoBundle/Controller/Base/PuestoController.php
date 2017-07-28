@@ -20,7 +20,7 @@ class PuestoController extends Controller {
     var $codigoCliente = "";
 
     /**
-     * @Route("/tur/base/puesto/", name="brs_tur_base_cliente_puesto")
+     * @Route("/tur/base/puesto/", name="brs_tur_base_puesto")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -56,7 +56,7 @@ class PuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/puesto/nuevo/{codigoPuesto}", name="brs_tur_base_cliente_puesto_nuevo")
+     * @Route("/tur/base/puesto/nuevo/{codigoPuesto}", name="brs_tur_base_puesto_nuevo")
      */
     public function nuevoAction(Request $request, $codigoPuesto = '') {
         $em = $this->getDoctrine()->getManager();
@@ -77,7 +77,7 @@ class PuestoController extends Controller {
                 $arPuesto = $form->getData();
                 $em->persist($arPuesto);
                 $em->flush();
-                return $this->redirect($this->generateUrl('brs_tur_base_cliente_puesto'));
+                return $this->redirect($this->generateUrl('brs_tur_base_puesto'));
             }
         }
         return $this->render('BrasaTurnoBundle:Base/Puesto:nuevo.html.twig', array(
@@ -86,7 +86,7 @@ class PuestoController extends Controller {
     }
 
     /**
-     * @Route("/tur/base/puesto/detalle/{codigoPuesto}", name="brs_tur_base_cliente_puesto_detalle")
+     * @Route("/tur/base/puesto/detalle/{codigoPuesto}", name="brs_tur_base_puesto_detalle")
      */
     public function detalleAction(Request $request, $codigoPuesto) {
         $em = $this->getDoctrine()->getManager();
