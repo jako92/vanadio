@@ -1274,6 +1274,7 @@ class SegDocumento implements FixtureInterface
         $arSegDocumento = $manager->getRepository('BrasaSeguridadBundle:SegDocumento')->find(141);
         if(!$arSegDocumento) {
             $arSegDocumento = new \Brasa\SeguridadBundle\Entity\SegDocumento();          
+            $arSegDocumento->setCodigoDocumentoPk(141);
             $arSegDocumento->setNombre("POLIGRAFIA");
             $arSegDocumento->setTipo("MOVIMIENTO");
             $arSegDocumento->setModulo("RECURSO HUMANO");
@@ -1282,6 +1283,7 @@ class SegDocumento implements FixtureInterface
         $arSegDocumento = $manager->getRepository('BrasaSeguridadBundle:SegDocumento')->find(142);
         if(!$arSegDocumento) {
             $arSegDocumento = new \Brasa\SeguridadBundle\Entity\SegDocumento();          
+            $arSegDocumento->setCodigoDocumentoPk(142);
             $arSegDocumento->setNombre("PRUEBA");
             $arSegDocumento->setTipo("MOVIMIENTO");
             $arSegDocumento->setModulo("RECURSO HUMANO");
