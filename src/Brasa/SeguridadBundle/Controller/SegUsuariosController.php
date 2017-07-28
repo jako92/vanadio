@@ -570,6 +570,7 @@ class SegUsuariosController extends Controller {
                 $arDatos = $form->getData();
                 if (count($arrSeleccionadosDocumentos) > 0) {
                     foreach ($arrSeleccionadosDocumentos AS $codigoDocumento) {
+                        //Actualizar los permisos del grupo
                         $arPermisoGrupoValidarPermisoDocumento = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
                         $arPermisoGrupoValidarPermisoDocumento = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo, 'codigoDocumentoFk' => $codigoDocumento));
                         if (!$arPermisoGrupoValidarPermisoDocumento) {
@@ -589,9 +590,35 @@ class SegUsuariosController extends Controller {
                             $arPermisoGrupo->setDesanular($arDatos['desanular']);
                             $arPermisoGrupo->setImprimir($arDatos['imprimir']);
                             $em->persist($arPermisoGrupo);
-                            $em->flush();
+                        }
+                        //Actualizar los permisos documentos de los usuarios de el grupo seleccionado
+                        $arUsuarios = $em->getRepository('BrasaSeguridadBundle:User')->findBy(array('codigoGrupoFk' => $codigoGrupo));
+                        if ($arUsuarios) {
+                            foreach ($arUsuarios as $arUsuario) {
+                                $arUsuarioPermisoDocumentoValidar = new \Brasa\SeguridadBundle\Entity\SegPermisoDocumento();
+                                $arUsuarioPermisoDocumentoValidar = $em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->findBy(array('codigoUsuarioFk' => $arUsuario->getId(), 'codigoDocumentoFk' => $codigoDocumento));
+                                if (!$arUsuarioPermisoDocumentoValidar) {
+                                    $arDocumento = $em->getRepository('BrasaSeguridadBundle:SegDocumento')->find($codigoDocumento);
+                                    $arUsuarioPermisoDocumento = new \Brasa\SeguridadBundle\Entity\SegPermisoDocumento();
+                                    $arUsuarioPermisoDocumento->setDocumentoRel($arDocumento);
+                                    $arUsuarioPermisoDocumento->setUsuarioRel($arUsuario);
+                                    $arUsuarioPermisoDocumento->setIngreso($arDatos['ingreso']);
+                                    $arUsuarioPermisoDocumento->setNuevo($arDatos['nuevo']);
+                                    $arUsuarioPermisoDocumento->setEditar($arDatos['editar']);
+                                    $arUsuarioPermisoDocumento->setEliminar($arDatos['eliminar']);
+                                    $arUsuarioPermisoDocumento->setAutorizar($arDatos['autorizar']);
+                                    $arUsuarioPermisoDocumento->setDesautorizar($arDatos['desautorizar']);
+                                    $arUsuarioPermisoDocumento->setAprobar($arDatos['aprobar']);
+                                    $arUsuarioPermisoDocumento->setDesaprobar($arDatos['desaprobar']);
+                                    $arUsuarioPermisoDocumento->setAnular($arDatos['anular']);
+                                    $arUsuarioPermisoDocumento->setDesanular($arDatos['desanular']);
+                                    $arUsuarioPermisoDocumento->setImprimir($arDatos['imprimir']);
+                                    $em->persist($arUsuarioPermisoDocumento);
+                                }
+                            }
                         }
                     }
+                    $em->flush();
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
@@ -620,6 +647,7 @@ class SegUsuariosController extends Controller {
                 $arDatos = $form->getData();
                 if (count($arrSeleccionadosPermisoEspecial) > 0) {
                     foreach ($arrSeleccionadosPermisoEspecial AS $codigoPermisoEspecial) {
+                        //Actualizar los permisos especiales del grupo
                         $arUsuarioPermisoGrupoValidarPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
                         $arUsuarioPermisoGrupoValidarPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo, 'codigoPermisoEspecialFk' => $codigoPermisoEspecial));
                         if (!$arUsuarioPermisoGrupoValidarPermisoEspecial) {
@@ -630,9 +658,26 @@ class SegUsuariosController extends Controller {
                             $arPermisoGrupo->setPermisoEspecialRel($arPermisoEspecial);
                             $arPermisoGrupo->setPermitir(1);
                             $em->persist($arPermisoGrupo);
-                            $em->flush();
+                        }
+                        //Actualizar los permisos especiales de los usuarios del grupo
+                        $arUsuarios = $em->getRepository('BrasaSeguridadBundle:User')->findBy(array('codigoGrupoFk' => $codigoGrupo));
+                        if ($arUsuarios) {
+                            foreach ($arUsuarios as $arUsuario) {
+                                $arUsuarioPermisoEspecialValidar = new \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial();
+                                $arUsuarioPermisoEspecialValidar = $em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->findBy(array('codigoUsuarioFk' => $arUsuario->getId(), 'codigoPermisoEspecialFk' => $codigoPermisoEspecial));
+                                if (!$arUsuarioPermisoEspecialValidar) {
+                                    $arPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoEspecial();
+                                    $arPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->find($codigoPermisoEspecial);
+                                    $arUsuarioPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial();
+                                    $arUsuarioPermisoEspecial->setPermisoEspecialRel($arPermisoEspecial);
+                                    $arUsuarioPermisoEspecial->setUsuarioRel($arUsuario);
+                                    $arUsuarioPermisoEspecial->setPermitir(1);
+                                    $em->persist($arUsuarioPermisoEspecial);
+                                }
+                            }
                         }
                     }
+                    $em->flush();
                     echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
                 }
             }
