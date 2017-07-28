@@ -12,8 +12,7 @@ class SegPermisoEspecial
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="codigo_permiso_especial_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="codigo_permiso_especial_pk", type="integer")     
      */
     private $codigoPermisoEspecialPk;
     
@@ -41,12 +40,29 @@ class SegPermisoEspecial
      * @ORM\OneToMany(targetEntity="SegPermisoGrupo", mappedBy="permisoEspecialRel")
      */
     protected $permisosGruposPermisoEspecialRel;
+    
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->segPermisoEspecialSegUsuarioPermisoEspecialRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->permisosGruposPermisoEspecialRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoPermisoEspecialPk
+     *
+     * @param integer $codigoPermisoEspecialPk
+     *
+     * @return SegPermisoEspecial
+     */
+    public function setCodigoPermisoEspecialPk($codigoPermisoEspecialPk)
+    {
+        $this->codigoPermisoEspecialPk = $codigoPermisoEspecialPk;
+
+        return $this;
     }
 
     /**
@@ -81,40 +97,6 @@ class SegPermisoEspecial
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Add segPermisoEspecialSegUsuarioPermisoEspecialRel
-     *
-     * @param \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel
-     *
-     * @return SegPermisoEspecial
-     */
-    public function addSegPermisoEspecialSegUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel)
-    {
-        $this->segPermisoEspecialSegUsuarioPermisoEspecialRel[] = $segPermisoEspecialSegUsuarioPermisoEspecialRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove segPermisoEspecialSegUsuarioPermisoEspecialRel
-     *
-     * @param \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel
-     */
-    public function removeSegPermisoEspecialSegUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel)
-    {
-        $this->segPermisoEspecialSegUsuarioPermisoEspecialRel->removeElement($segPermisoEspecialSegUsuarioPermisoEspecialRel);
-    }
-
-    /**
-     * Get segPermisoEspecialSegUsuarioPermisoEspecialRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSegPermisoEspecialSegUsuarioPermisoEspecialRel()
-    {
-        return $this->segPermisoEspecialSegUsuarioPermisoEspecialRel;
     }
 
     /**
@@ -163,6 +145,40 @@ class SegPermisoEspecial
     public function getModulo()
     {
         return $this->modulo;
+    }
+
+    /**
+     * Add segPermisoEspecialSegUsuarioPermisoEspecialRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel
+     *
+     * @return SegPermisoEspecial
+     */
+    public function addSegPermisoEspecialSegUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel)
+    {
+        $this->segPermisoEspecialSegUsuarioPermisoEspecialRel[] = $segPermisoEspecialSegUsuarioPermisoEspecialRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove segPermisoEspecialSegUsuarioPermisoEspecialRel
+     *
+     * @param \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel
+     */
+    public function removeSegPermisoEspecialSegUsuarioPermisoEspecialRel(\Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial $segPermisoEspecialSegUsuarioPermisoEspecialRel)
+    {
+        $this->segPermisoEspecialSegUsuarioPermisoEspecialRel->removeElement($segPermisoEspecialSegUsuarioPermisoEspecialRel);
+    }
+
+    /**
+     * Get segPermisoEspecialSegUsuarioPermisoEspecialRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSegPermisoEspecialSegUsuarioPermisoEspecialRel()
+    {
+        return $this->segPermisoEspecialSegUsuarioPermisoEspecialRel;
     }
 
     /**

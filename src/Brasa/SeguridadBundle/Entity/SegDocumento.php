@@ -13,7 +13,6 @@ class SegDocumento {
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_documento_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoDocumentoPk;
 
@@ -47,6 +46,7 @@ class SegDocumento {
      */
     protected $logsDocumentoRel;
 
+   
     /**
      * Constructor
      */
@@ -55,6 +55,20 @@ class SegDocumento {
         $this->permisosDocumentosDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->permisosGruposDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->logsDocumentoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoDocumentoPk
+     *
+     * @param integer $codigoDocumentoPk
+     *
+     * @return SegDocumento
+     */
+    public function setCodigoDocumentoPk($codigoDocumentoPk)
+    {
+        $this->codigoDocumentoPk = $codigoDocumentoPk;
+
+        return $this;
     }
 
     /**
