@@ -87,7 +87,6 @@ class RhuPagoBancoRepository extends EntityRepository {
         $arPagoBanco = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBanco();
         $arPagoBanco = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBanco')->find($codigoPagoBanco);
         if ($arPagoBanco->getEstadoAutorizado() == 1 && $arPagoBanco->getEstadoAnulado() == 0 && $arPagoBanco->getNumero() != 0 && $arPagoBanco->getEstadoContabilizado() == 0) {
-
             $arPagoBancoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle();
             $arPagoBancoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->findBy(array('codigoPagoBancoFk' => $codigoPagoBanco));
             if ($arPagoBancoDetalles) {
@@ -98,6 +97,15 @@ class RhuPagoBancoRepository extends EntityRepository {
                         $arVacacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuVacacion')->find($arPagoBancoDetalle->getCodigoVacacionFk());
                         $arVacacion->setEstadoPagoBanco(0);
                         $arVacacion->setEstadoPagoGenerado(0);
+                        $em->persist($arVacacion);
+                    }
+                    //Validar que el tipo de pago banco sea de tipo liquidacion
+                    if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 3) {
+                        $arLiquidacion = new \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacion();
+                        $arLiquidacion = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->find($arPagoBancoDetalle->getCodigoLiquidacionFk());
+                        $arLiquidacion->setEstadoPagoBanco(0);
+                        $arLiquidacion->setEstadoPagoGenerado(0);
+                        $em->persist($arLiquidacion);
                     }
                     $arPagoBancoDetalle->setVrPago(0);
                     $em->persist($arPagoBancoDetalle);

@@ -8,388 +8,393 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_liquidacion")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuLiquidacionRepository")
  */
-class RhuLiquidacion
-{
+class RhuLiquidacion {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_liquidacion_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoLiquidacionPk;            
+    private $codigoLiquidacionPk;
 
     /**
      * @ORM\Column(name="fecha", type="date", nullable=true)
-     */    
-    private $fecha;               
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="numero", type="integer")
-     */    
-    private $numero = 0;     
-    
+     */
+    private $numero = 0;
+
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer")
-     */    
+     */
     private $codigoEmpleadoFk;
 
     /**
      * @ORM\Column(name="codigo_contrato_fk", type="integer")
-     */    
-    private $codigoContratoFk;    
-    
+     */
+    private $codigoContratoFk;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer")
-     */    
+     */
     private $codigoCentroCostoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_motivo_terminacion_contrato_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoMotivoTerminacionContratoFk;
-    
+
     /**
      * @ORM\Column(name="fecha_desde", type="date", nullable=true)
-     */    
-    private $fechaDesde;    
-    
+     */
+    private $fechaDesde;
+
     /**
      * @ORM\Column(name="fecha_hasta", type="date", nullable=true)
-     */    
-    private $fechaHasta; 
-    
+     */
+    private $fechaHasta;
+
     /**
      * @ORM\Column(name="numero_dias", type="string", length=30, nullable=true)
-     */    
-    private $numeroDias;                 
-    
+     */
+    private $numeroDias;
+
     /**
      * @ORM\Column(name="vr_cesantias", type="float")
      */
-    private $VrCesantias = 0;    
+    private $VrCesantias = 0;
 
     /**
      * @ORM\Column(name="vr_intereses_cesantias", type="float")
      */
-    private $VrInteresesCesantias = 0;        
+    private $VrInteresesCesantias = 0;
 
     /**
      * @ORM\Column(name="vr_cesantias_anterior", type="float")
      */
-    private $VrCesantiasAnterior = 0;    
+    private $VrCesantiasAnterior = 0;
 
     /**
      * @ORM\Column(name="vr_intereses_cesantias_anterior", type="float")
      */
-    private $VrInteresesCesantiasAnterior = 0;    
-    
+    private $VrInteresesCesantiasAnterior = 0;
+
     /**
      * @ORM\Column(name="vr_prima", type="float")
      */
-    private $VrPrima = 0;    
+    private $VrPrima = 0;
 
     /**
      * @ORM\Column(name="vr_deduccion_prima", type="float")
      */
-    private $VrDeduccionPrima = 0;    
-    
+    private $VrDeduccionPrima = 0;
+
     /**
      * @ORM\Column(name="vr_vacaciones", type="float")
      */
-    private $VrVacaciones = 0;    
-    
+    private $VrVacaciones = 0;
+
     /**
      * @ORM\Column(name="vr_indemnizacion", type="float")
      */
-    private $VrIndemnizacion = 0;     
-    
+    private $VrIndemnizacion = 0;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
-    private $comentarios;        
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\Column(name="dias_cesantias", type="integer")
-     */    
-    private $diasCesantias = 0;     
+     */
+    private $diasCesantias = 0;
 
     /**
      * @ORM\Column(name="dias_cesantias_ausentismo", type="integer")
-     */    
+     */
     private $diasCesantiasAusentismo = 0;
 
     /**
      * @ORM\Column(name="dias_cesantias_anterior", type="integer")
-     */    
-    private $diasCesantiasAnterior = 0;     
+     */
+    private $diasCesantiasAnterior = 0;
 
     /**
      * @ORM\Column(name="dias_cesantias_ausentismo_anterior", type="integer")
-     */    
+     */
     private $diasCesantiasAusentismo_anterior = 0;
-    
+
     /**
      * @ORM\Column(name="dias_vacaciones", type="integer")
-     */    
-    private $diasVacaciones = 0;                
+     */
+    private $diasVacaciones = 0;
 
     /**
      * @ORM\Column(name="dias_vacaciones_ausentismo", type="integer")
-     */    
-    private $diasVacacionesAusentismo = 0; 
-    
+     */
+    private $diasVacacionesAusentismo = 0;
+
     /**
      * @ORM\Column(name="dias_primas", type="integer")
-     */    
-    private $diasPrimas = 0;           
+     */
+    private $diasPrimas = 0;
 
     /**
      * @ORM\Column(name="dias_primas_ausentismo", type="integer")
-     */    
-    private $diasPrimasAusentismo = 0; 
-    
+     */
+    private $diasPrimasAusentismo = 0;
+
     /**
      * @ORM\Column(name="dias_laborados", type="integer")
-     */    
-    private $diasLaborados = 0;    
-    
+     */
+    private $diasLaborados = 0;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago", type="date", nullable=true)
-     */    
-    private $fechaUltimoPago;        
-    
+     */
+    private $fechaUltimoPago;
+
     /**
      * @ORM\Column(name="vr_ingreso_base_prestacion_adicional", type="float")
      */
-    private $VrIngresoBasePrestacionAdicional = 0;        
-    
+    private $VrIngresoBasePrestacionAdicional = 0;
+
     /**
      * @ORM\Column(name="vr_ingreso_base_prestacion_cesantias", type="float")
      */
-    private $VrIngresoBasePrestacionCesantias = 0;     
+    private $VrIngresoBasePrestacionCesantias = 0;
 
     /**
      * @ORM\Column(name="vr_ingreso_base_prestacion_primas", type="float")
      */
-    private $VrIngresoBasePrestacionPrimas = 0; 
-    
+    private $VrIngresoBasePrestacionPrimas = 0;
+
     /**
      * @ORM\Column(name="vr_ingreso_base_prestacion_cesantias_inicial", type="float")
      */
-    private $VrIngresoBasePrestacionCesantiasInicial = 0;     
+    private $VrIngresoBasePrestacionCesantiasInicial = 0;
 
     /**
      * @ORM\Column(name="vr_ingreso_base_prestacion_primas_inicial", type="float")
      */
-    private $VrIngresoBasePrestacionPrimasInicial = 0;    
-    
+    private $VrIngresoBasePrestacionPrimasInicial = 0;
+
     /**
      * @ORM\Column(name="dias_adicionales_ibp", type="integer")
-     */    
-    private $diasAdicionalesIBP = 0;            
-    
+     */
+    private $diasAdicionalesIBP = 0;
+
     /**
      * @ORM\Column(name="vr_base_prestaciones", type="float")
      */
-    private $VrBasePrestaciones = 0;    
+    private $VrBasePrestaciones = 0;
 
     /**
      * @ORM\Column(name="vr_base_prestaciones_total", type="float")
      */
-    private $VrBasePrestacionesTotal = 0;    
-    
+    private $VrBasePrestacionesTotal = 0;
+
     /**
      * @ORM\Column(name="vr_auxilio_transporte", type="float")
      */
-    private $VrAuxilioTransporte = 0;    
-    
+    private $VrAuxilioTransporte = 0;
+
     /**
      * @ORM\Column(name="vr_salario", type="float")
      */
-    private $VrSalario = 0;     
+    private $VrSalario = 0;
 
     /**
      * @ORM\Column(name="vr_salario_promedio_cesantias", type="float")
      */
-    private $VrSalarioPromedioCesantias = 0;    
+    private $VrSalarioPromedioCesantias = 0;
 
     /**
      * @ORM\Column(name="vr_salario_promedio_cesantias_anterior", type="float")
      */
-    private $VrSalarioPromedioCesantiasAnterior = 0;     
-    
+    private $VrSalarioPromedioCesantiasAnterior = 0;
+
     /**
      * @ORM\Column(name="vr_salario_promedio_primas", type="float")
      */
     private $VrSalarioPromedioPrimas = 0;
-    
+
     /**
      * @ORM\Column(name="vr_salario_vacaciones", type="float")
      */
-    private $VrSalarioVacaciones = 0;     
-    
+    private $VrSalarioVacaciones = 0;
+
     /**
      * @ORM\Column(name="vr_total", type="float")
      */
-    private $VrTotal = 0;    
-    
-    /**     
+    private $VrTotal = 0;
+
+    /**
      * @ORM\Column(name="liquidar_cesantias", type="boolean")
-     */    
+     */
     private $liquidarCesantias = 0;
 
-    /**     
+    /**
      * @ORM\Column(name="liquidar_vacaciones", type="boolean")
-     */    
-    private $liquidarVacaciones = 0;    
+     */
+    private $liquidarVacaciones = 0;
 
-    /**     
+    /**
      * @ORM\Column(name="liquidar_prima", type="boolean")
-     */    
-    private $liquidarPrima = 0;        
-    
+     */
+    private $liquidarPrima = 0;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_primas", type="date", nullable=true)
-     */    
+     */
     private $fechaUltimoPagoPrimas;
-    
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_vacaciones", type="date", nullable=true)
-     */    
+     */
     private $fechaUltimoPagoVacaciones;
-    
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_cesantias", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoCesantias;    
-    
+     */
+    private $fechaUltimoPagoCesantias;
+
     /**
      * @ORM\Column(name="fecha_ultimo_pago_cesantias_anterior", type="date", nullable=true)
-     */    
-    private $fechaUltimoPagoCesantiasAnterior;     
-    
+     */
+    private $fechaUltimoPagoCesantiasAnterior;
+
     /**
      * @ORM\Column(name="vr_deducciones", type="float")
      */
-    private $VrDeducciones = 0; 
-    
+    private $VrDeducciones = 0;
+
     /**
      * @ORM\Column(name="vr_bonificaciones", type="float")
      */
     private $VrBonificaciones = 0;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_autorizado", type="boolean")
-     */    
+     */
     private $estadoAutorizado = false;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_generado", type="boolean")
-     */    
+     */
     private $estadoGenerado = 0;
-    
+
+    /**
+     * @ORM\Column(name="estado_anulado", type="boolean")
+     */
+    private $estadoAnulado = 0;
+
     /**
      * @ORM\Column(name="fecha_inicio_contrato", type="date", nullable=true)
-     */    
+     */
     private $fechaInicioContrato;
-    
+
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
+     */
     private $codigoUsuario;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="liquidar_manual", type="boolean")
-     */    
+     */
     private $liquidarManual = 0;
 
     /**
      * @ORM\Column(name="estado_pago_generado", type="boolean")
      */
     private $estadoPagoGenerado = 0;
-    
+
     /**
      * @ORM\Column(name="estado_pago_banco", type="boolean")
      */
-    private $estadoPagoBanco = 0;    
-    
-    /**     
+    private $estadoPagoBanco = 0;
+
+    /**
      * @ORM\Column(name="liquidar_salario", type="boolean")
-     */    
-    private $liquidarSalario = 0;    
-    
+     */
+    private $liquidarSalario = 0;
+
     /**
      * @ORM\Column(name="porcentaje_ibp", type="float")
      */
-    private $porcentajeIbp = 100;    
-    
-    /**     
+    private $porcentajeIbp = 100;
+
+    /**
      * @ORM\Column(name="estado_contabilizado", type="boolean")
-     */    
-    private $estadoContabilizado = false;    
-    
+     */
+    private $estadoContabilizado = false;
+
     /**
      * @ORM\Column(name="dias_ausentismo_adicional", type="integer")
-     */    
-    private $diasAusentismoAdicional = 0;    
-    
+     */
+    private $diasAusentismoAdicional = 0;
+
     /**
      * @ORM\Column(name="vr_salario_vacacion_propuesto", type="float")
      */
-    private $VrSalarioVacacionPropuesto = 0;    
+    private $VrSalarioVacacionPropuesto = 0;
 
     /**
      * @ORM\Column(name="vr_salario_prima_propuesto", type="float")
      */
-    private $VrSalarioPrimaPropuesto = 0; 
+    private $VrSalarioPrimaPropuesto = 0;
 
     /**
      * @ORM\Column(name="vr_salario_cesantias_propuesto", type="float")
      */
     private $VrSalarioCesantiasPropuesto = 0;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="eliminar_ausentismo", type="boolean")
-     */    
-    private $eliminarAusentismo = false;    
-    
+     */
+    private $eliminarAusentismo = false;
+
     /**
      * @ORM\Column(name="dias_ausentismo_propuesto", type="integer")
-     */    
-    private $diasAusentismoPropuesto = 0;     
-    
+     */
+    private $diasAusentismoPropuesto = 0;
+
     /**
      * @ORM\Column(name="codigo_programacion_pago_detalle_fk", type="integer", nullable=true)
-     */    
-    private $codigoProgramacionPagoDetalleFk;    
+     */
+    private $codigoProgramacionPagoDetalleFk;
 
     /**
      * @ORM\Column(name="codigo_pago_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoPagoFk;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="omitir_cesantias_anterior", type="boolean")
-     */    
-    private $omitirCesantiasAnterior = false;     
-    
+     */
+    private $omitirCesantiasAnterior = false;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="liquidacionesEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
-    protected $empleadoRel;        
-    
+    protected $empleadoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="liquidacionesCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
-    protected $centroCostoRel;     
+    protected $centroCostoRel;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="liquidacionesContratoRel")
      * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
      */
-    protected $contratoRel;    
-    
+    protected $contratoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuMotivoTerminacionContrato", inversedBy="liquidacionesMotivoTerminacionContratoRel")
      * @ORM\JoinColumn(name="codigo_motivo_terminacion_contrato_fk", referencedColumnName="codigo_motivo_terminacion_contrato_pk")
@@ -399,19 +404,17 @@ class RhuLiquidacion
     /**
      * @ORM\OneToMany(targetEntity="RhuLiquidacionAdicionales", mappedBy="liquidacionRel")
      */
-    protected $liquidacionesAdicionalesLiquidacionRel;  
-   
+    protected $liquidacionesAdicionalesLiquidacionRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoBancoDetalle", mappedBy="liquidacionRel")
      */
-    protected $pagosBancosDetallesLiquidacionRel;     
-    
+    protected $pagosBancosDetallesLiquidacionRel;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->liquidacionesAdicionalesLiquidacionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosBancosDetallesLiquidacionRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -421,8 +424,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoLiquidacionPk()
-    {
+    public function getCodigoLiquidacionPk() {
         return $this->codigoLiquidacionPk;
     }
 
@@ -433,8 +435,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -445,8 +446,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -457,8 +457,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setNumero($numero)
-    {
+    public function setNumero($numero) {
         $this->numero = $numero;
 
         return $this;
@@ -469,8 +468,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getNumero()
-    {
+    public function getNumero() {
         return $this->numero;
     }
 
@@ -481,8 +479,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
+    public function setCodigoEmpleadoFk($codigoEmpleadoFk) {
         $this->codigoEmpleadoFk = $codigoEmpleadoFk;
 
         return $this;
@@ -493,8 +490,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoEmpleadoFk()
-    {
+    public function getCodigoEmpleadoFk() {
         return $this->codigoEmpleadoFk;
     }
 
@@ -505,8 +501,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoContratoFk($codigoContratoFk)
-    {
+    public function setCodigoContratoFk($codigoContratoFk) {
         $this->codigoContratoFk = $codigoContratoFk;
 
         return $this;
@@ -517,8 +512,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoContratoFk()
-    {
+    public function getCodigoContratoFk() {
         return $this->codigoContratoFk;
     }
 
@@ -529,8 +523,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
+    public function setCodigoCentroCostoFk($codigoCentroCostoFk) {
         $this->codigoCentroCostoFk = $codigoCentroCostoFk;
 
         return $this;
@@ -541,8 +534,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoCentroCostoFk()
-    {
+    public function getCodigoCentroCostoFk() {
         return $this->codigoCentroCostoFk;
     }
 
@@ -553,8 +545,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoMotivoTerminacionContratoFk($codigoMotivoTerminacionContratoFk)
-    {
+    public function setCodigoMotivoTerminacionContratoFk($codigoMotivoTerminacionContratoFk) {
         $this->codigoMotivoTerminacionContratoFk = $codigoMotivoTerminacionContratoFk;
 
         return $this;
@@ -565,8 +556,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoMotivoTerminacionContratoFk()
-    {
+    public function getCodigoMotivoTerminacionContratoFk() {
         return $this->codigoMotivoTerminacionContratoFk;
     }
 
@@ -577,8 +567,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaDesde($fechaDesde)
-    {
+    public function setFechaDesde($fechaDesde) {
         $this->fechaDesde = $fechaDesde;
 
         return $this;
@@ -589,8 +578,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaDesde()
-    {
+    public function getFechaDesde() {
         return $this->fechaDesde;
     }
 
@@ -601,8 +589,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaHasta($fechaHasta)
-    {
+    public function setFechaHasta($fechaHasta) {
         $this->fechaHasta = $fechaHasta;
 
         return $this;
@@ -613,8 +600,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaHasta()
-    {
+    public function getFechaHasta() {
         return $this->fechaHasta;
     }
 
@@ -625,8 +611,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setNumeroDias($numeroDias)
-    {
+    public function setNumeroDias($numeroDias) {
         $this->numeroDias = $numeroDias;
 
         return $this;
@@ -637,8 +622,7 @@ class RhuLiquidacion
      *
      * @return string
      */
-    public function getNumeroDias()
-    {
+    public function getNumeroDias() {
         return $this->numeroDias;
     }
 
@@ -649,8 +633,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrCesantias($vrCesantias)
-    {
+    public function setVrCesantias($vrCesantias) {
         $this->VrCesantias = $vrCesantias;
 
         return $this;
@@ -661,8 +644,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrCesantias()
-    {
+    public function getVrCesantias() {
         return $this->VrCesantias;
     }
 
@@ -673,8 +655,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrInteresesCesantias($vrInteresesCesantias)
-    {
+    public function setVrInteresesCesantias($vrInteresesCesantias) {
         $this->VrInteresesCesantias = $vrInteresesCesantias;
 
         return $this;
@@ -685,8 +666,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrInteresesCesantias()
-    {
+    public function getVrInteresesCesantias() {
         return $this->VrInteresesCesantias;
     }
 
@@ -697,8 +677,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrCesantiasAnterior($vrCesantiasAnterior)
-    {
+    public function setVrCesantiasAnterior($vrCesantiasAnterior) {
         $this->VrCesantiasAnterior = $vrCesantiasAnterior;
 
         return $this;
@@ -709,8 +688,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrCesantiasAnterior()
-    {
+    public function getVrCesantiasAnterior() {
         return $this->VrCesantiasAnterior;
     }
 
@@ -721,8 +699,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior)
-    {
+    public function setVrInteresesCesantiasAnterior($vrInteresesCesantiasAnterior) {
         $this->VrInteresesCesantiasAnterior = $vrInteresesCesantiasAnterior;
 
         return $this;
@@ -733,8 +710,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrInteresesCesantiasAnterior()
-    {
+    public function getVrInteresesCesantiasAnterior() {
         return $this->VrInteresesCesantiasAnterior;
     }
 
@@ -745,8 +721,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrPrima($vrPrima)
-    {
+    public function setVrPrima($vrPrima) {
         $this->VrPrima = $vrPrima;
 
         return $this;
@@ -757,8 +732,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrPrima()
-    {
+    public function getVrPrima() {
         return $this->VrPrima;
     }
 
@@ -769,8 +743,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrDeduccionPrima($vrDeduccionPrima)
-    {
+    public function setVrDeduccionPrima($vrDeduccionPrima) {
         $this->VrDeduccionPrima = $vrDeduccionPrima;
 
         return $this;
@@ -781,8 +754,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrDeduccionPrima()
-    {
+    public function getVrDeduccionPrima() {
         return $this->VrDeduccionPrima;
     }
 
@@ -793,8 +765,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrVacaciones($vrVacaciones)
-    {
+    public function setVrVacaciones($vrVacaciones) {
         $this->VrVacaciones = $vrVacaciones;
 
         return $this;
@@ -805,8 +776,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrVacaciones()
-    {
+    public function getVrVacaciones() {
         return $this->VrVacaciones;
     }
 
@@ -817,8 +787,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIndemnizacion($vrIndemnizacion)
-    {
+    public function setVrIndemnizacion($vrIndemnizacion) {
         $this->VrIndemnizacion = $vrIndemnizacion;
 
         return $this;
@@ -829,8 +798,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIndemnizacion()
-    {
+    public function getVrIndemnizacion() {
         return $this->VrIndemnizacion;
     }
 
@@ -841,8 +809,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -853,8 +820,7 @@ class RhuLiquidacion
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -865,8 +831,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasCesantias($diasCesantias)
-    {
+    public function setDiasCesantias($diasCesantias) {
         $this->diasCesantias = $diasCesantias;
 
         return $this;
@@ -877,8 +842,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasCesantias()
-    {
+    public function getDiasCesantias() {
         return $this->diasCesantias;
     }
 
@@ -889,8 +853,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasCesantiasAusentismo($diasCesantiasAusentismo)
-    {
+    public function setDiasCesantiasAusentismo($diasCesantiasAusentismo) {
         $this->diasCesantiasAusentismo = $diasCesantiasAusentismo;
 
         return $this;
@@ -901,8 +864,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasCesantiasAusentismo()
-    {
+    public function getDiasCesantiasAusentismo() {
         return $this->diasCesantiasAusentismo;
     }
 
@@ -913,8 +875,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasCesantiasAnterior($diasCesantiasAnterior)
-    {
+    public function setDiasCesantiasAnterior($diasCesantiasAnterior) {
         $this->diasCesantiasAnterior = $diasCesantiasAnterior;
 
         return $this;
@@ -925,8 +886,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasCesantiasAnterior()
-    {
+    public function getDiasCesantiasAnterior() {
         return $this->diasCesantiasAnterior;
     }
 
@@ -937,8 +897,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior)
-    {
+    public function setDiasCesantiasAusentismoAnterior($diasCesantiasAusentismoAnterior) {
         $this->diasCesantiasAusentismo_anterior = $diasCesantiasAusentismoAnterior;
 
         return $this;
@@ -949,8 +908,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasCesantiasAusentismoAnterior()
-    {
+    public function getDiasCesantiasAusentismoAnterior() {
         return $this->diasCesantiasAusentismo_anterior;
     }
 
@@ -961,8 +919,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasVacaciones($diasVacaciones)
-    {
+    public function setDiasVacaciones($diasVacaciones) {
         $this->diasVacaciones = $diasVacaciones;
 
         return $this;
@@ -973,8 +930,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasVacaciones()
-    {
+    public function getDiasVacaciones() {
         return $this->diasVacaciones;
     }
 
@@ -985,8 +941,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasVacacionesAusentismo($diasVacacionesAusentismo)
-    {
+    public function setDiasVacacionesAusentismo($diasVacacionesAusentismo) {
         $this->diasVacacionesAusentismo = $diasVacacionesAusentismo;
 
         return $this;
@@ -997,8 +952,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasVacacionesAusentismo()
-    {
+    public function getDiasVacacionesAusentismo() {
         return $this->diasVacacionesAusentismo;
     }
 
@@ -1009,8 +963,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasPrimas($diasPrimas)
-    {
+    public function setDiasPrimas($diasPrimas) {
         $this->diasPrimas = $diasPrimas;
 
         return $this;
@@ -1021,8 +974,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasPrimas()
-    {
+    public function getDiasPrimas() {
         return $this->diasPrimas;
     }
 
@@ -1033,8 +985,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasPrimasAusentismo($diasPrimasAusentismo)
-    {
+    public function setDiasPrimasAusentismo($diasPrimasAusentismo) {
         $this->diasPrimasAusentismo = $diasPrimasAusentismo;
 
         return $this;
@@ -1045,8 +996,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasPrimasAusentismo()
-    {
+    public function getDiasPrimasAusentismo() {
         return $this->diasPrimasAusentismo;
     }
 
@@ -1057,8 +1007,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasLaborados($diasLaborados)
-    {
+    public function setDiasLaborados($diasLaborados) {
         $this->diasLaborados = $diasLaborados;
 
         return $this;
@@ -1069,8 +1018,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasLaborados()
-    {
+    public function getDiasLaborados() {
         return $this->diasLaborados;
     }
 
@@ -1081,8 +1029,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaUltimoPago($fechaUltimoPago)
-    {
+    public function setFechaUltimoPago($fechaUltimoPago) {
         $this->fechaUltimoPago = $fechaUltimoPago;
 
         return $this;
@@ -1093,8 +1040,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPago()
-    {
+    public function getFechaUltimoPago() {
         return $this->fechaUltimoPago;
     }
 
@@ -1105,8 +1051,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIngresoBasePrestacionAdicional($vrIngresoBasePrestacionAdicional)
-    {
+    public function setVrIngresoBasePrestacionAdicional($vrIngresoBasePrestacionAdicional) {
         $this->VrIngresoBasePrestacionAdicional = $vrIngresoBasePrestacionAdicional;
 
         return $this;
@@ -1117,8 +1062,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIngresoBasePrestacionAdicional()
-    {
+    public function getVrIngresoBasePrestacionAdicional() {
         return $this->VrIngresoBasePrestacionAdicional;
     }
 
@@ -1129,8 +1073,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIngresoBasePrestacionCesantias($vrIngresoBasePrestacionCesantias)
-    {
+    public function setVrIngresoBasePrestacionCesantias($vrIngresoBasePrestacionCesantias) {
         $this->VrIngresoBasePrestacionCesantias = $vrIngresoBasePrestacionCesantias;
 
         return $this;
@@ -1141,8 +1084,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIngresoBasePrestacionCesantias()
-    {
+    public function getVrIngresoBasePrestacionCesantias() {
         return $this->VrIngresoBasePrestacionCesantias;
     }
 
@@ -1153,8 +1095,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIngresoBasePrestacionPrimas($vrIngresoBasePrestacionPrimas)
-    {
+    public function setVrIngresoBasePrestacionPrimas($vrIngresoBasePrestacionPrimas) {
         $this->VrIngresoBasePrestacionPrimas = $vrIngresoBasePrestacionPrimas;
 
         return $this;
@@ -1165,8 +1106,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIngresoBasePrestacionPrimas()
-    {
+    public function getVrIngresoBasePrestacionPrimas() {
         return $this->VrIngresoBasePrestacionPrimas;
     }
 
@@ -1177,8 +1117,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIngresoBasePrestacionCesantiasInicial($vrIngresoBasePrestacionCesantiasInicial)
-    {
+    public function setVrIngresoBasePrestacionCesantiasInicial($vrIngresoBasePrestacionCesantiasInicial) {
         $this->VrIngresoBasePrestacionCesantiasInicial = $vrIngresoBasePrestacionCesantiasInicial;
 
         return $this;
@@ -1189,8 +1128,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIngresoBasePrestacionCesantiasInicial()
-    {
+    public function getVrIngresoBasePrestacionCesantiasInicial() {
         return $this->VrIngresoBasePrestacionCesantiasInicial;
     }
 
@@ -1201,8 +1139,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrIngresoBasePrestacionPrimasInicial($vrIngresoBasePrestacionPrimasInicial)
-    {
+    public function setVrIngresoBasePrestacionPrimasInicial($vrIngresoBasePrestacionPrimasInicial) {
         $this->VrIngresoBasePrestacionPrimasInicial = $vrIngresoBasePrestacionPrimasInicial;
 
         return $this;
@@ -1213,8 +1150,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrIngresoBasePrestacionPrimasInicial()
-    {
+    public function getVrIngresoBasePrestacionPrimasInicial() {
         return $this->VrIngresoBasePrestacionPrimasInicial;
     }
 
@@ -1225,8 +1161,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasAdicionalesIBP($diasAdicionalesIBP)
-    {
+    public function setDiasAdicionalesIBP($diasAdicionalesIBP) {
         $this->diasAdicionalesIBP = $diasAdicionalesIBP;
 
         return $this;
@@ -1237,8 +1172,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasAdicionalesIBP()
-    {
+    public function getDiasAdicionalesIBP() {
         return $this->diasAdicionalesIBP;
     }
 
@@ -1249,8 +1183,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrBasePrestaciones($vrBasePrestaciones)
-    {
+    public function setVrBasePrestaciones($vrBasePrestaciones) {
         $this->VrBasePrestaciones = $vrBasePrestaciones;
 
         return $this;
@@ -1261,8 +1194,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrBasePrestaciones()
-    {
+    public function getVrBasePrestaciones() {
         return $this->VrBasePrestaciones;
     }
 
@@ -1273,8 +1205,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrBasePrestacionesTotal($vrBasePrestacionesTotal)
-    {
+    public function setVrBasePrestacionesTotal($vrBasePrestacionesTotal) {
         $this->VrBasePrestacionesTotal = $vrBasePrestacionesTotal;
 
         return $this;
@@ -1285,8 +1216,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrBasePrestacionesTotal()
-    {
+    public function getVrBasePrestacionesTotal() {
         return $this->VrBasePrestacionesTotal;
     }
 
@@ -1297,8 +1227,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrAuxilioTransporte($vrAuxilioTransporte)
-    {
+    public function setVrAuxilioTransporte($vrAuxilioTransporte) {
         $this->VrAuxilioTransporte = $vrAuxilioTransporte;
 
         return $this;
@@ -1309,8 +1238,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrAuxilioTransporte()
-    {
+    public function getVrAuxilioTransporte() {
         return $this->VrAuxilioTransporte;
     }
 
@@ -1321,8 +1249,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalario($vrSalario)
-    {
+    public function setVrSalario($vrSalario) {
         $this->VrSalario = $vrSalario;
 
         return $this;
@@ -1333,8 +1260,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalario()
-    {
+    public function getVrSalario() {
         return $this->VrSalario;
     }
 
@@ -1345,8 +1271,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioPromedioCesantias($vrSalarioPromedioCesantias)
-    {
+    public function setVrSalarioPromedioCesantias($vrSalarioPromedioCesantias) {
         $this->VrSalarioPromedioCesantias = $vrSalarioPromedioCesantias;
 
         return $this;
@@ -1357,8 +1282,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioPromedioCesantias()
-    {
+    public function getVrSalarioPromedioCesantias() {
         return $this->VrSalarioPromedioCesantias;
     }
 
@@ -1369,8 +1293,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior)
-    {
+    public function setVrSalarioPromedioCesantiasAnterior($vrSalarioPromedioCesantiasAnterior) {
         $this->VrSalarioPromedioCesantiasAnterior = $vrSalarioPromedioCesantiasAnterior;
 
         return $this;
@@ -1381,8 +1304,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioPromedioCesantiasAnterior()
-    {
+    public function getVrSalarioPromedioCesantiasAnterior() {
         return $this->VrSalarioPromedioCesantiasAnterior;
     }
 
@@ -1393,8 +1315,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioPromedioPrimas($vrSalarioPromedioPrimas)
-    {
+    public function setVrSalarioPromedioPrimas($vrSalarioPromedioPrimas) {
         $this->VrSalarioPromedioPrimas = $vrSalarioPromedioPrimas;
 
         return $this;
@@ -1405,8 +1326,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioPromedioPrimas()
-    {
+    public function getVrSalarioPromedioPrimas() {
         return $this->VrSalarioPromedioPrimas;
     }
 
@@ -1417,8 +1337,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioVacaciones($vrSalarioVacaciones)
-    {
+    public function setVrSalarioVacaciones($vrSalarioVacaciones) {
         $this->VrSalarioVacaciones = $vrSalarioVacaciones;
 
         return $this;
@@ -1429,8 +1348,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioVacaciones()
-    {
+    public function getVrSalarioVacaciones() {
         return $this->VrSalarioVacaciones;
     }
 
@@ -1441,8 +1359,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrTotal($vrTotal)
-    {
+    public function setVrTotal($vrTotal) {
         $this->VrTotal = $vrTotal;
 
         return $this;
@@ -1453,8 +1370,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrTotal()
-    {
+    public function getVrTotal() {
         return $this->VrTotal;
     }
 
@@ -1465,8 +1381,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setLiquidarCesantias($liquidarCesantias)
-    {
+    public function setLiquidarCesantias($liquidarCesantias) {
         $this->liquidarCesantias = $liquidarCesantias;
 
         return $this;
@@ -1477,8 +1392,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getLiquidarCesantias()
-    {
+    public function getLiquidarCesantias() {
         return $this->liquidarCesantias;
     }
 
@@ -1489,8 +1403,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setLiquidarVacaciones($liquidarVacaciones)
-    {
+    public function setLiquidarVacaciones($liquidarVacaciones) {
         $this->liquidarVacaciones = $liquidarVacaciones;
 
         return $this;
@@ -1501,8 +1414,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getLiquidarVacaciones()
-    {
+    public function getLiquidarVacaciones() {
         return $this->liquidarVacaciones;
     }
 
@@ -1513,8 +1425,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setLiquidarPrima($liquidarPrima)
-    {
+    public function setLiquidarPrima($liquidarPrima) {
         $this->liquidarPrima = $liquidarPrima;
 
         return $this;
@@ -1525,8 +1436,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getLiquidarPrima()
-    {
+    public function getLiquidarPrima() {
         return $this->liquidarPrima;
     }
 
@@ -1537,8 +1447,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas)
-    {
+    public function setFechaUltimoPagoPrimas($fechaUltimoPagoPrimas) {
         $this->fechaUltimoPagoPrimas = $fechaUltimoPagoPrimas;
 
         return $this;
@@ -1549,8 +1458,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoPrimas()
-    {
+    public function getFechaUltimoPagoPrimas() {
         return $this->fechaUltimoPagoPrimas;
     }
 
@@ -1561,8 +1469,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones)
-    {
+    public function setFechaUltimoPagoVacaciones($fechaUltimoPagoVacaciones) {
         $this->fechaUltimoPagoVacaciones = $fechaUltimoPagoVacaciones;
 
         return $this;
@@ -1573,8 +1480,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoVacaciones()
-    {
+    public function getFechaUltimoPagoVacaciones() {
         return $this->fechaUltimoPagoVacaciones;
     }
 
@@ -1585,8 +1491,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias)
-    {
+    public function setFechaUltimoPagoCesantias($fechaUltimoPagoCesantias) {
         $this->fechaUltimoPagoCesantias = $fechaUltimoPagoCesantias;
 
         return $this;
@@ -1597,8 +1502,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoCesantias()
-    {
+    public function getFechaUltimoPagoCesantias() {
         return $this->fechaUltimoPagoCesantias;
     }
 
@@ -1609,8 +1513,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior)
-    {
+    public function setFechaUltimoPagoCesantiasAnterior($fechaUltimoPagoCesantiasAnterior) {
         $this->fechaUltimoPagoCesantiasAnterior = $fechaUltimoPagoCesantiasAnterior;
 
         return $this;
@@ -1621,8 +1524,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaUltimoPagoCesantiasAnterior()
-    {
+    public function getFechaUltimoPagoCesantiasAnterior() {
         return $this->fechaUltimoPagoCesantiasAnterior;
     }
 
@@ -1633,8 +1535,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrDeducciones($vrDeducciones)
-    {
+    public function setVrDeducciones($vrDeducciones) {
         $this->VrDeducciones = $vrDeducciones;
 
         return $this;
@@ -1645,8 +1546,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrDeducciones()
-    {
+    public function getVrDeducciones() {
         return $this->VrDeducciones;
     }
 
@@ -1657,8 +1557,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrBonificaciones($vrBonificaciones)
-    {
+    public function setVrBonificaciones($vrBonificaciones) {
         $this->VrBonificaciones = $vrBonificaciones;
 
         return $this;
@@ -1669,8 +1568,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrBonificaciones()
-    {
+    public function getVrBonificaciones() {
         return $this->VrBonificaciones;
     }
 
@@ -1681,8 +1579,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
+    public function setEstadoAutorizado($estadoAutorizado) {
         $this->estadoAutorizado = $estadoAutorizado;
 
         return $this;
@@ -1693,8 +1590,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEstadoAutorizado()
-    {
+    public function getEstadoAutorizado() {
         return $this->estadoAutorizado;
     }
 
@@ -1705,8 +1601,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEstadoGenerado($estadoGenerado)
-    {
+    public function setEstadoGenerado($estadoGenerado) {
         $this->estadoGenerado = $estadoGenerado;
 
         return $this;
@@ -1717,8 +1612,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEstadoGenerado()
-    {
+    public function getEstadoGenerado() {
         return $this->estadoGenerado;
     }
 
@@ -1729,8 +1623,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setFechaInicioContrato($fechaInicioContrato)
-    {
+    public function setFechaInicioContrato($fechaInicioContrato) {
         $this->fechaInicioContrato = $fechaInicioContrato;
 
         return $this;
@@ -1741,8 +1634,7 @@ class RhuLiquidacion
      *
      * @return \DateTime
      */
-    public function getFechaInicioContrato()
-    {
+    public function getFechaInicioContrato() {
         return $this->fechaInicioContrato;
     }
 
@@ -1753,8 +1645,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoUsuario($codigoUsuario)
-    {
+    public function setCodigoUsuario($codigoUsuario) {
         $this->codigoUsuario = $codigoUsuario;
 
         return $this;
@@ -1765,8 +1656,7 @@ class RhuLiquidacion
      *
      * @return string
      */
-    public function getCodigoUsuario()
-    {
+    public function getCodigoUsuario() {
         return $this->codigoUsuario;
     }
 
@@ -1777,8 +1667,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setLiquidarManual($liquidarManual)
-    {
+    public function setLiquidarManual($liquidarManual) {
         $this->liquidarManual = $liquidarManual;
 
         return $this;
@@ -1789,8 +1678,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getLiquidarManual()
-    {
+    public function getLiquidarManual() {
         return $this->liquidarManual;
     }
 
@@ -1801,8 +1689,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEstadoPagoGenerado($estadoPagoGenerado)
-    {
+    public function setEstadoPagoGenerado($estadoPagoGenerado) {
         $this->estadoPagoGenerado = $estadoPagoGenerado;
 
         return $this;
@@ -1813,8 +1700,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEstadoPagoGenerado()
-    {
+    public function getEstadoPagoGenerado() {
         return $this->estadoPagoGenerado;
     }
 
@@ -1825,8 +1711,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEstadoPagoBanco($estadoPagoBanco)
-    {
+    public function setEstadoPagoBanco($estadoPagoBanco) {
         $this->estadoPagoBanco = $estadoPagoBanco;
 
         return $this;
@@ -1837,8 +1722,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEstadoPagoBanco()
-    {
+    public function getEstadoPagoBanco() {
         return $this->estadoPagoBanco;
     }
 
@@ -1849,8 +1733,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setLiquidarSalario($liquidarSalario)
-    {
+    public function setLiquidarSalario($liquidarSalario) {
         $this->liquidarSalario = $liquidarSalario;
 
         return $this;
@@ -1861,8 +1744,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getLiquidarSalario()
-    {
+    public function getLiquidarSalario() {
         return $this->liquidarSalario;
     }
 
@@ -1873,8 +1755,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setPorcentajeIbp($porcentajeIbp)
-    {
+    public function setPorcentajeIbp($porcentajeIbp) {
         $this->porcentajeIbp = $porcentajeIbp;
 
         return $this;
@@ -1885,8 +1766,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getPorcentajeIbp()
-    {
+    public function getPorcentajeIbp() {
         return $this->porcentajeIbp;
     }
 
@@ -1897,8 +1777,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEstadoContabilizado($estadoContabilizado)
-    {
+    public function setEstadoContabilizado($estadoContabilizado) {
         $this->estadoContabilizado = $estadoContabilizado;
 
         return $this;
@@ -1909,8 +1788,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEstadoContabilizado()
-    {
+    public function getEstadoContabilizado() {
         return $this->estadoContabilizado;
     }
 
@@ -1921,8 +1799,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasAusentismoAdicional($diasAusentismoAdicional)
-    {
+    public function setDiasAusentismoAdicional($diasAusentismoAdicional) {
         $this->diasAusentismoAdicional = $diasAusentismoAdicional;
 
         return $this;
@@ -1933,8 +1810,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasAusentismoAdicional()
-    {
+    public function getDiasAusentismoAdicional() {
         return $this->diasAusentismoAdicional;
     }
 
@@ -1945,8 +1821,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioVacacionPropuesto($vrSalarioVacacionPropuesto)
-    {
+    public function setVrSalarioVacacionPropuesto($vrSalarioVacacionPropuesto) {
         $this->VrSalarioVacacionPropuesto = $vrSalarioVacacionPropuesto;
 
         return $this;
@@ -1957,8 +1832,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioVacacionPropuesto()
-    {
+    public function getVrSalarioVacacionPropuesto() {
         return $this->VrSalarioVacacionPropuesto;
     }
 
@@ -1969,8 +1843,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioPrimaPropuesto($vrSalarioPrimaPropuesto)
-    {
+    public function setVrSalarioPrimaPropuesto($vrSalarioPrimaPropuesto) {
         $this->VrSalarioPrimaPropuesto = $vrSalarioPrimaPropuesto;
 
         return $this;
@@ -1981,8 +1854,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioPrimaPropuesto()
-    {
+    public function getVrSalarioPrimaPropuesto() {
         return $this->VrSalarioPrimaPropuesto;
     }
 
@@ -1993,8 +1865,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setVrSalarioCesantiasPropuesto($vrSalarioCesantiasPropuesto)
-    {
+    public function setVrSalarioCesantiasPropuesto($vrSalarioCesantiasPropuesto) {
         $this->VrSalarioCesantiasPropuesto = $vrSalarioCesantiasPropuesto;
 
         return $this;
@@ -2005,8 +1876,7 @@ class RhuLiquidacion
      *
      * @return float
      */
-    public function getVrSalarioCesantiasPropuesto()
-    {
+    public function getVrSalarioCesantiasPropuesto() {
         return $this->VrSalarioCesantiasPropuesto;
     }
 
@@ -2017,8 +1887,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEliminarAusentismo($eliminarAusentismo)
-    {
+    public function setEliminarAusentismo($eliminarAusentismo) {
         $this->eliminarAusentismo = $eliminarAusentismo;
 
         return $this;
@@ -2029,8 +1898,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getEliminarAusentismo()
-    {
+    public function getEliminarAusentismo() {
         return $this->eliminarAusentismo;
     }
 
@@ -2041,8 +1909,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setDiasAusentismoPropuesto($diasAusentismoPropuesto)
-    {
+    public function setDiasAusentismoPropuesto($diasAusentismoPropuesto) {
         $this->diasAusentismoPropuesto = $diasAusentismoPropuesto;
 
         return $this;
@@ -2053,8 +1920,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getDiasAusentismoPropuesto()
-    {
+    public function getDiasAusentismoPropuesto() {
         return $this->diasAusentismoPropuesto;
     }
 
@@ -2065,8 +1931,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk)
-    {
+    public function setCodigoProgramacionPagoDetalleFk($codigoProgramacionPagoDetalleFk) {
         $this->codigoProgramacionPagoDetalleFk = $codigoProgramacionPagoDetalleFk;
 
         return $this;
@@ -2077,8 +1942,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoProgramacionPagoDetalleFk()
-    {
+    public function getCodigoProgramacionPagoDetalleFk() {
         return $this->codigoProgramacionPagoDetalleFk;
     }
 
@@ -2089,8 +1953,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCodigoPagoFk($codigoPagoFk)
-    {
+    public function setCodigoPagoFk($codigoPagoFk) {
         $this->codigoPagoFk = $codigoPagoFk;
 
         return $this;
@@ -2101,8 +1964,7 @@ class RhuLiquidacion
      *
      * @return integer
      */
-    public function getCodigoPagoFk()
-    {
+    public function getCodigoPagoFk() {
         return $this->codigoPagoFk;
     }
 
@@ -2113,8 +1975,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior)
-    {
+    public function setOmitirCesantiasAnterior($omitirCesantiasAnterior) {
         $this->omitirCesantiasAnterior = $omitirCesantiasAnterior;
 
         return $this;
@@ -2125,8 +1986,7 @@ class RhuLiquidacion
      *
      * @return boolean
      */
-    public function getOmitirCesantiasAnterior()
-    {
+    public function getOmitirCesantiasAnterior() {
         return $this->omitirCesantiasAnterior;
     }
 
@@ -2137,8 +1997,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null) {
         $this->empleadoRel = $empleadoRel;
 
         return $this;
@@ -2149,8 +2008,7 @@ class RhuLiquidacion
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
      */
-    public function getEmpleadoRel()
-    {
+    public function getEmpleadoRel() {
         return $this->empleadoRel;
     }
 
@@ -2161,8 +2019,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
-    {
+    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null) {
         $this->centroCostoRel = $centroCostoRel;
 
         return $this;
@@ -2173,8 +2030,7 @@ class RhuLiquidacion
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
      */
-    public function getCentroCostoRel()
-    {
+    public function getCentroCostoRel() {
         return $this->centroCostoRel;
     }
 
@@ -2185,8 +2041,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel = null)
-    {
+    public function setContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel = null) {
         $this->contratoRel = $contratoRel;
 
         return $this;
@@ -2197,8 +2052,7 @@ class RhuLiquidacion
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuContrato
      */
-    public function getContratoRel()
-    {
+    public function getContratoRel() {
         return $this->contratoRel;
     }
 
@@ -2209,8 +2063,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function setMotivoTerminacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato $motivoTerminacionRel = null)
-    {
+    public function setMotivoTerminacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato $motivoTerminacionRel = null) {
         $this->motivoTerminacionRel = $motivoTerminacionRel;
 
         return $this;
@@ -2221,8 +2074,7 @@ class RhuLiquidacion
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuMotivoTerminacionContrato
      */
-    public function getMotivoTerminacionRel()
-    {
+    public function getMotivoTerminacionRel() {
         return $this->motivoTerminacionRel;
     }
 
@@ -2233,8 +2085,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function addLiquidacionesAdicionalesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales $liquidacionesAdicionalesLiquidacionRel)
-    {
+    public function addLiquidacionesAdicionalesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales $liquidacionesAdicionalesLiquidacionRel) {
         $this->liquidacionesAdicionalesLiquidacionRel[] = $liquidacionesAdicionalesLiquidacionRel;
 
         return $this;
@@ -2245,8 +2096,7 @@ class RhuLiquidacion
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales $liquidacionesAdicionalesLiquidacionRel
      */
-    public function removeLiquidacionesAdicionalesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales $liquidacionesAdicionalesLiquidacionRel)
-    {
+    public function removeLiquidacionesAdicionalesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuLiquidacionAdicionales $liquidacionesAdicionalesLiquidacionRel) {
         $this->liquidacionesAdicionalesLiquidacionRel->removeElement($liquidacionesAdicionalesLiquidacionRel);
     }
 
@@ -2255,8 +2105,7 @@ class RhuLiquidacion
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLiquidacionesAdicionalesLiquidacionRel()
-    {
+    public function getLiquidacionesAdicionalesLiquidacionRel() {
         return $this->liquidacionesAdicionalesLiquidacionRel;
     }
 
@@ -2267,8 +2116,7 @@ class RhuLiquidacion
      *
      * @return RhuLiquidacion
      */
-    public function addPagosBancosDetallesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle $pagosBancosDetallesLiquidacionRel)
-    {
+    public function addPagosBancosDetallesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle $pagosBancosDetallesLiquidacionRel) {
         $this->pagosBancosDetallesLiquidacionRel[] = $pagosBancosDetallesLiquidacionRel;
 
         return $this;
@@ -2279,8 +2127,7 @@ class RhuLiquidacion
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle $pagosBancosDetallesLiquidacionRel
      */
-    public function removePagosBancosDetallesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle $pagosBancosDetallesLiquidacionRel)
-    {
+    public function removePagosBancosDetallesLiquidacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoBancoDetalle $pagosBancosDetallesLiquidacionRel) {
         $this->pagosBancosDetallesLiquidacionRel->removeElement($pagosBancosDetallesLiquidacionRel);
     }
 
@@ -2289,8 +2136,32 @@ class RhuLiquidacion
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPagosBancosDetallesLiquidacionRel()
-    {
+    public function getPagosBancosDetallesLiquidacionRel() {
         return $this->pagosBancosDetallesLiquidacionRel;
+    }
+
+
+    /**
+     * Set estadoAnulado
+     *
+     * @param boolean $estadoAnulado
+     *
+     * @return RhuLiquidacion
+     */
+    public function setEstadoAnulado($estadoAnulado)
+    {
+        $this->estadoAnulado = $estadoAnulado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAnulado
+     *
+     * @return boolean
+     */
+    public function getEstadoAnulado()
+    {
+        return $this->estadoAnulado;
     }
 }

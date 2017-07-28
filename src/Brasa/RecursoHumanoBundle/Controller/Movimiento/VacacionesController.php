@@ -236,6 +236,7 @@ class VacacionesController extends Controller {
                 if ($strRespuesta != "") {
                     $objMensaje->Mensaje('error', $strRespuesta);
                 }
+                return $this->redirect($this->generateUrl('brs_rhu_movimiento_vacacion_detalle', array('codigoVacacion' => $codigoVacacion)));
             }
             if ($form->get('BtnGenerarPago')->isClicked()) {
                 if ($arVacacion->getEstadoAutorizado() == 1) {

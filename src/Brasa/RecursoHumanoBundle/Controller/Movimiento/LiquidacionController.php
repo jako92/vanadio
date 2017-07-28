@@ -161,6 +161,15 @@ class LiquidacionController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                 }
             }
+            
+            if ($form->get('BtnAnular')->isclicked()){
+                $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->anular($codigoLiquidacion);
+                if($strRespuesta != ""){
+                    $objMensaje->Mensaje('error', $strRespuesta);
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
+            }
+            
             if ($form->get('BtnLiquidar')->isClicked()) {
                 if ($arLiquidacion->getEstadoAutorizado() == 0) {
                     $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($codigoLiquidacion);
@@ -470,6 +479,7 @@ class LiquidacionController extends Controller {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonEliminarAdicional = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
+        $arrBotonAnular = array('label' => 'Anular', 'disabled' => false);    
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonImprimirCartaRetiro = array('label' => 'Carta retiro', 'disabled' => false);
         $arrBotonImprimirCartaExamenEgreso = array('label' => 'Carta examen egreso', 'disabled' => false);
@@ -480,6 +490,11 @@ class LiquidacionController extends Controller {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarAdicional['disabled'] = true;
             $arrBotonLiquidar['disabled'] = true;
+            if($ar->getEstadoAnulado() == 1){
+                $arrBotonDesAutorizar['disabled'] = true;
+                $arrBotonAnular['disabled'] = true;
+                $arrBotonGenerarPago['disabled'] = true;
+            }
         } else {
             $arrBotonDesAutorizar['disabled'] = true;
             $arrBotonGenerarPago['disabled'] = true;
@@ -493,6 +508,7 @@ class LiquidacionController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                ->add('BtnAnular', SubmitType::class,$arrBotonAnular)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnImprimirCartaRetiro', SubmitType::class, $arrBotonImprimirCartaRetiro)
                 ->add('BtnImprimirCartaExamenEgreso', SubmitType::class, $arrBotonImprimirCartaExamenEgreso)

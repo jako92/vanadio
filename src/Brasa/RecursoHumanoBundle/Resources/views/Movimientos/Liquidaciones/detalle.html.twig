@@ -23,6 +23,7 @@
             {{ form_widget(form.BtnImprimir, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             {{ form_widget(form.BtnLiquidar, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             {{ form_widget(form.BtnGenerarPago, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
+            {{ form_widget(form.BtnAnular, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             {% if arLiquidacion.estadoPagoGenerado == 0 %}
                 <a class="btn btn-default btn-sm" id="{{ path('brs_rhu_movimiento_liquidacion_parametros', { 'codigoLiquidacion': arLiquidacion.codigoLiquidacionPk}) }}" style="float:left">Parametros</a>                        
             {% endif %}
@@ -43,6 +44,9 @@
               </ul>
             </div>
 
+        </div>
+                <div style="float:right">
+            {% if arLiquidacion.estadoAnulado == 1 %}<span class="label label-danger">Anulado</span>{% endif %}
         </div>
         <br /> <br />
         <div class="panel panel-default">
