@@ -533,10 +533,10 @@ class SegUsuariosController extends Controller {
                 $arrSeleccionadosPermisoEspecial = $request->request->get('ChkSeleccionarPermisoEspecial');
                 $arrSeleccionadosPermisoDocumento = $request->request->get('ChkSeleccionarPermisoDocumento');
                 if (count($arrSeleccionadosPermisoEspecial) > 0) {
-                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoEspecial);
+                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoEspecial, $codigoGrupo);
                 }
                 if (count($arrSeleccionadosPermisoDocumento) > 0) {
-                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoDocumento);
+                    $respuesta = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->eliminar($arrSeleccionadosPermisoDocumento, $codigoGrupo);
                 }
                 return $this->redirect($this->generateUrl('brs_seg_admin_permiso_grupo_detalle', array('codigoGrupo' => $codigoGrupo)));
             }

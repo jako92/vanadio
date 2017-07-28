@@ -13,7 +13,7 @@ class SegPermisoGrupoRepository extends EntityRepository {
 
     public function asignarPermisosUsuario($codigoGrupo = "", $arUsuario = "") {
         $repuesta = "";
-        if ($arUsuario->getCodigoGrupoFk() != "") {
+        if ($codigoGrupo != "") {
             $em = $this->getEntityManager();
             $arPermisosGrupoDocumentos = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
             $arPermisosGrupoDocumentos = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->findBy(array('codigoGrupoFk' => $codigoGrupo, 'codigoPermisoEspecialFk' => null));
@@ -61,11 +61,36 @@ class SegPermisoGrupoRepository extends EntityRepository {
         return $repuesta;
     }
 
-    public function eliminar($arrSeleccionados) {
+    public function eliminar($arrSeleccionados, $codigoGrupo = "") {
         $respuesta = "";
         $em = $this->getEntityManager();
         foreach ($arrSeleccionados as $codigo) {
+            $arPermisoGrupo = new \Brasa\SeguridadBundle\Entity\SegPermisoGrupo();
             $arPermisoGrupo = $em->getRepository('BrasaSeguridadBundle:SegPermisoGrupo')->find($codigo);
+            if ($codigoGrupo != "") {
+                $arUsuario = new \Brasa\SeguridadBundle\Entity\User();
+                $arUsuarios = $em->getRepository('BrasaSeguridadBundle:User')->findBy(array('codigoGrupoFk' => $codigoGrupo));
+                if ($arUsuarios) {
+                    foreach ($arUsuarios as $arUsuario) {
+                        //eliminar los permisos documentos del usuario
+                        if ($arPermisoGrupo->getCodigoDocumentoFk()) {
+                            $arPermisoDocumento = new \Brasa\SeguridadBundle\Entity\SegPermisoDocumento();
+                            $arPermisoDocumento = $em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->findOneBy(array('codigoDocumentoFk' => $arPermisoGrupo->getCodigoDocumentoFk(), 'codigoUsuarioFk' => $arUsuario->getId()));
+                            if ($arPermisoDocumento) {
+                                $em->remove($arPermisoDocumento);
+                            }
+                        }
+                        //eliminar los permisos especiales del usuario
+                        if ($arPermisoGrupo->getCodigoPermisoEspecialFk()) {
+                            $arUsuarioPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegUsuarioPermisoEspecial();
+                            $arUsuarioPermisoEspecial = $em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->findOneBy(array('codigoPermisoEspecialFk' => $arPermisoGrupo->getCodigoPermisoEspecialFk(), 'codigoUsuarioFk' => $arUsuario->getId()));
+                            if ($arUsuarioPermisoEspecial) {
+                                $em->remove($arUsuarioPermisoEspecial);
+                            }
+                        }
+                    }
+                }
+            }
             $em->remove($arPermisoGrupo);
         }
         $em->flush();
