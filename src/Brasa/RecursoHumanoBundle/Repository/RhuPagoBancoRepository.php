@@ -91,6 +91,14 @@ class RhuPagoBancoRepository extends EntityRepository {
             $arPagoBancoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuPagoBancoDetalle')->findBy(array('codigoPagoBancoFk' => $codigoPagoBanco));
             if ($arPagoBancoDetalles) {
                 foreach ($arPagoBancoDetalles as $arPagoBancoDetalle) {
+                    //Validar que el tipo de pago banco sea de tipo nomina
+                    if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 1) {
+                        $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+                        $arPago->setEstadoPagadoBanco(0);
+                        $arPago->setEstadoPagado(0);
+                        $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arPagoBancoDetalle->getCodigoPagoFk());
+                        $em->persist($arPago);
+                    }
                     //Validar que el tipo de pago banco sea de tipo vacacion
                     if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 2) {
                         $arVacacion = new \Brasa\RecursoHumanoBundle\Entity\RhuVacacion();
@@ -106,6 +114,29 @@ class RhuPagoBancoRepository extends EntityRepository {
                         $arLiquidacion->setEstadoPagoBanco(0);
                         $arLiquidacion->setEstadoPagoGenerado(0);
                         $em->persist($arLiquidacion);
+                    }
+                    //Validar que el tipo de pago banco sea de tipo seguridad social
+                     if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 4) {
+                        $arSsoPeriodoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
+                        $arSsoPeriodoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($arPagoBancoDetalle->getCodigoPeriodoDetalleFk());
+                        $arSsoPeriodoDetalle->setEstadoPagoBanco(0);
+                        $em->persist($arSsoPeriodoDetalle);
+                    }
+                    
+                    //Validar que el tipo de pago banco sea de tipo prima
+                   if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 5) {
+                        $arPago = new \Brasa\RecursoHumanoBundle\Entity\RhuPago();
+                        $arPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuPago')->find($arPagoBancoDetalle->getCodigoPagoFk());
+                        $arPago->setEstadoPagadoBanco(0);
+                        $arPago->setEstadoPagado(0);
+                        $em->persist($arPago);
+                    }
+                    //Validar que el tipo de pago banco sea de tipo cesantias e intereses
+                    if ($arPagoBanco->getCodigoPagoBancoTipoFk() == 6) {
+                        $arSsoAporte = new \Brasa\RecursoHumanoBundle\Entity\RhuSsoPeriodoDetalle();
+                        $arSsoAporte = $em->getRepository('BrasaRecursoHumanoBundle:RhuSsoPeriodoDetalle')->find($arPagoBancoDetalle->getCodigoAporteFk());
+                        $arSsoAporte->setEstadoPagoBanco(0);
+                        $em->persist($arSsoAporte);
                     }
                     $arPagoBancoDetalle->setVrPago(0);
                     $em->persist($arPagoBancoDetalle);

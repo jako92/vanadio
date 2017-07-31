@@ -1181,4 +1181,38 @@ class TurRecurso
         $nombre = $partes[0];
         return "({$this->codigoRecursoPk}) {$nombre}";
     }
+
+    /**
+     * Add programacionSumulacionesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionSimulador $programacionSumulacionesRecursoRel
+     *
+     * @return TurRecurso
+     */
+    public function addProgramacionSumulacionesRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionSimulador $programacionSumulacionesRecursoRel)
+    {
+        $this->programacionSumulacionesRecursoRel[] = $programacionSumulacionesRecursoRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove programacionSumulacionesRecursoRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurProgramacionSimulador $programacionSumulacionesRecursoRel
+     */
+    public function removeProgramacionSumulacionesRecursoRel(\Brasa\TurnoBundle\Entity\TurProgramacionSimulador $programacionSumulacionesRecursoRel)
+    {
+        $this->programacionSumulacionesRecursoRel->removeElement($programacionSumulacionesRecursoRel);
+    }
+
+    /**
+     * Get programacionSumulacionesRecursoRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramacionSumulacionesRecursoRel()
+    {
+        return $this->programacionSumulacionesRecursoRel;
+    }
 }

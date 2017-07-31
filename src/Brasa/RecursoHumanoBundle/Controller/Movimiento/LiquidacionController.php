@@ -34,7 +34,7 @@ class LiquidacionController extends Controller {
         $form = $this->formularioLista();
         $form->handleRequest($request);
         $this->listar();
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('BtnLiquidar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 if (count($arrSeleccionados) > 0) {
@@ -161,15 +161,15 @@ class LiquidacionController extends Controller {
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
                 }
             }
-            
-            if ($form->get('BtnAnular')->isclicked()){
+
+            if ($form->get('BtnAnular')->isclicked()) {
                 $strRespuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->anular($codigoLiquidacion);
-                if($strRespuesta != ""){
+                if ($strRespuesta != "") {
                     $objMensaje->Mensaje('error', $strRespuesta);
                 }
                 return $this->redirect($this->generateUrl('brs_rhu_movimiento_liquidacion_detalle', array('codigoLiquidacion' => $codigoLiquidacion)));
             }
-            
+
             if ($form->get('BtnLiquidar')->isClicked()) {
                 if ($arLiquidacion->getEstadoAutorizado() == 0) {
                     $respuesta = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->liquidar($codigoLiquidacion);
@@ -407,12 +407,7 @@ class LiquidacionController extends Controller {
             $strFechaHasta = $session->get('filtroRhuLiquidacionFechaHasta');
         }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuLiquidacion')->listaDql(
-                $session->get('filtroIdentificacion'),
-                $session->get('filtroGenerado'),
-                $session->get('filtroCodigoCentroCosto'),
-                $session->get('filtroPagado'),
-                $strFechaDesde,
-                $strFechaHasta);
+                $session->get('filtroIdentificacion'), $session->get('filtroGenerado'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroPagado'), $strFechaDesde, $strFechaHasta,$session->get('filtroNumero'));
     }
 
     private function formularioLista() {
@@ -460,6 +455,7 @@ class LiquidacionController extends Controller {
         $dateFechaDesde = date_create($strFechaDesde);
         $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
+                ->add('numero', NumberType::class, array('data' => $session->get('filtroNumero')))
                 ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
                 ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
                 ->add('filtrarFecha', CheckboxType::class, array('required' => false, 'data' => $session->get('filtroRhuLiquidacionFiltrarFecha')))
@@ -479,7 +475,7 @@ class LiquidacionController extends Controller {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonEliminarAdicional = array('label' => 'Eliminar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
-        $arrBotonAnular = array('label' => 'Anular', 'disabled' => false);    
+        $arrBotonAnular = array('label' => 'Anular', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonImprimirCartaRetiro = array('label' => 'Carta retiro', 'disabled' => false);
         $arrBotonImprimirCartaExamenEgreso = array('label' => 'Carta examen egreso', 'disabled' => false);
@@ -490,7 +486,7 @@ class LiquidacionController extends Controller {
             $arrBotonAutorizar['disabled'] = true;
             $arrBotonEliminarAdicional['disabled'] = true;
             $arrBotonLiquidar['disabled'] = true;
-            if($ar->getEstadoAnulado() == 1){
+            if ($ar->getEstadoAnulado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonAnular['disabled'] = true;
                 $arrBotonGenerarPago['disabled'] = true;
@@ -508,7 +504,7 @@ class LiquidacionController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
-                ->add('BtnAnular', SubmitType::class,$arrBotonAnular)
+                ->add('BtnAnular', SubmitType::class, $arrBotonAnular)
                 ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
                 ->add('BtnImprimirCartaRetiro', SubmitType::class, $arrBotonImprimirCartaRetiro)
                 ->add('BtnImprimirCartaExamenEgreso', SubmitType::class, $arrBotonImprimirCartaExamenEgreso)
@@ -535,6 +531,7 @@ class LiquidacionController extends Controller {
         $session->set('filtroRhuLiquidacionFechaDesde', $dateFechaDesde->format('Y/m/d'));
         $session->set('filtroRhuLiquidacionFechaHasta', $dateFechaHasta->format('Y/m/d'));
         $session->set('filtroRhuLiquidacionFiltrarFecha', $form->get('filtrarFecha')->getData());
+        $session->set('filtroNumero', $form->get('numero')->getData());
     }
 
     private function generarExcel() {
