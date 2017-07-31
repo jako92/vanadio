@@ -356,6 +356,7 @@ class SegPermisoEspecial implements FixtureInterface {
         $arSegPermisoEspecial = $manager->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->find(39);
         if (!$arSegPermisoEspecial) {
             $arSegPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoEspecial();
+            $arSegPermisoEspecial->setCodigoPermisoEspecialPk(39);
             $arSegPermisoEspecial->setNombre("DOTACION PENDIENTE");
             $arSegPermisoEspecial->setTipo("CONSULTA");
             $arSegPermisoEspecial->setModulo("RECURSO HUMANO");
