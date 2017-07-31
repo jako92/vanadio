@@ -1,0 +1,31 @@
+{% extends '::base_sin_menu.html.twig' %}
+{% block title %}Simulador costos - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>            
+            <small>Agregar recurso</small>
+        </h1>
+    </section>    
+    <section class="content">  
+        {{form_start(form, {attr: {role:'form', class: 'form-inline'} })}}
+        <div class="panel panel-default">
+            <div class="panel-heading">Recurso</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="col-sm-4">
+                            <label>Código del recurso</label>
+                            <input class="" placeholder="" style="width:100%" type="text" name="TxtCodigoRecurso" id="TxtCodigoRecurso" value="" onkeyup="javascript:this.value = this.value.toUpperCase();" onclick="this.select()"/>
+                        </div>
+                        <div class="col-sm-8">
+                            <label>Código del recurso</label>
+                            <input class="" style="width:90%" name="TxtNombreRecurso" id="TxtNombreRecurso" value="" onkeyup="javascript:this.value = this.value.toUpperCase();" onclick="this.select()"/>
+                            <a href="javascript:abrirVentana3('{{ path('brs_tur_buscar_recurso', {'campoCodigo': 'TxtCodigoRecurso', 'campoNombre': 'TxtNombreRecurso'}) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_027_search.png') }}" width=20 height=20 title="Buscar"></a>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        {{form_end(form)}}
+    </section>
+{% endblock %}

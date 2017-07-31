@@ -197,7 +197,10 @@ class TurRecurso
      */
     protected $programacionesAlternasRecursoRel;     
     
-
+    /**
+     * @ORM\OneToMany(targetEntity="TurProgramacionSimulador", mappedBy="recursoRel")
+     */
+    protected $programacionSumulacionesRecursoRel;
     /**
      * Constructor
      */
@@ -1166,5 +1169,16 @@ class TurRecurso
     public function getProgramacionesAlternasRecursoRel()
     {
         return $this->programacionesAlternasRecursoRel;
+    }
+    
+    /**
+     * Esta funciónpermite obtener el nombre concatenado al código.
+     * @return string
+     */
+    public function getNombreMasCodigo()
+    {
+        $partes = explode(" ", $this->nombreCorto);
+        $nombre = $partes[0];
+        return "({$this->codigoRecursoPk}) {$nombre}";
     }
 }

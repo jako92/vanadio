@@ -1109,7 +1109,20 @@
                         </ul>
                     </li>                            
                 </ul>                         
+                <ul class="treeview-menu">
+                    <li {% if route starts with 'brs_tur_utilidad_costo' %}class="active treeview menu-open"{%endif%}>
+                        <a href="#"><i class="fa fa-circle-o"></i> Costos
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li {% if route == 'brs_tur_utilidad_costo_simulador' %}class="active"{%endif%}><a href="{{ path('brs_tur_utilidad_costo_simulador') }}"><i class="fa fa-circle-o"></i> Simulador</a></li>
+                        </ul>
+                    </li>                            
+                </ul>
             </li>
+            
             <li {% if route starts with 'brs_tur_proceso' %}class="active treeview menu-open"{%endif%}>
                 <a href="#"><i class="fa fa-circle-o"></i> Procesos
                     <span class="pull-right-container">

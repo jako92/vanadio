@@ -1,0 +1,93 @@
+{% extends '::base2.html.twig' %}
+{% block title %}Programacion turnos - Soga App{% endblock %}
+{% block content %}
+    <section class="content-header">
+        <h1>
+            Programación de turnos
+            <small>Simulador de costos</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-calendar"></i> Programación de turnos</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-bars"></i> Utilidades</a></li>
+            <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-money"></i> Costos</a></li>
+            <li class="active">Simulador</li>
+        </ol>
+    </section>
+    <section class="content">
+        {{form_start(form)}}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Filtros de búsqueda
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group form-group-sm">
+                                <label class="control-label col-sm-2">Mes</label>
+                                <div class="col-sm-4">
+                                    {{form_widget(form.mes, {attr: {class : 'fix-input'} })}}
+                                </div>                            
+                                <label class="control-label col-sm-2">Año</label>
+                                <div class="col-sm-4">
+                                    {{form_widget(form.anio)}}
+                                </div>
+                            </div>
+                            <div class="text-right">                                
+                                {{form_widget(form.BtnSimular, {attr: {class: 'btn-sm'} } )}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover tabla-turnos table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    {% for dia in diasMes %}
+                                    <th>{{dia.nombre|slice(0, 1)|upper}}</th>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <th>Recurso</th>
+                                    {% for numero, dia in diasMes %}
+                                    <th>{{numero}}</th>
+                                    {% endfor %}
+                                </tr>
+                                {% set contador = 1000 %}
+                                {% for arProgramacionSimulador in arProgramacionSimulador %}
+                                <tr>
+                                    <td>{{arProgramacionSimulador.recursoRel.nombreCorto}}</td>
+                                    {% for numero, dia in diasMes %}
+                                        <td class="turno"><input name="dias[{{arProgramacionSimulador.codigoSimulacionPk}}][{{dia.numero}}]" tabindex="{{contador}}" class="input-grid" value="{{arProgramacionSimulador.getDia(dia.numero)}}"></td>
+                                        {% set contador = contador + 1 %}
+                                    {% endfor %}
+                                    {% if mostrarDetalles is defined %}
+                                    <td>
+                                        
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group" style="float: right">
+                {{form_widget(form.BtnAgregar, {attr: {class: 'btn-sm'} })}}
+                {{form_widget(form.BtnActualizar, {attr: {class: 'btn-sm'} })}}
+            </div>
+        {{form_end(form)}}
+    </section>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script>
+        jQuery(function(){
+            $("#form_BtnAgregar").click(function(){
+                abrirVentana('{{ path('brs_tur_utilidad_costo_simulador_agregar_recurso') }}');
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

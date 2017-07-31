@@ -23,3 +23,19 @@ td.titulo {
     margin-bottom: 5px; 
     border: 1px solid #3c8dbc;
 }
+
+/**
+ * Estilos para tabla de simulador.
+ */
+.tabla-turnos td.turno{
+    text-align: center;
+    padding: 2px 0px;
+}
+.input-grid{
+    width: 25px;
+    text-align: center;
+}
+
+.fix-input{
+    width: 100% !important;
+}
