@@ -34,7 +34,7 @@ class FavoritoController extends Controller {
         }
         $queryFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findBy(array('usuario' => $arUsuario->getUsername()));
         $arFavoritos = $paginator->paginate($queryFavoritos, $request->query->getInt('page', 1), 200);
-        $session->set('arFavoritos', $arFavoritos);
+        //$session->set('arFavoritos', $arFavoritos);
         return $this->render('BrasaGeneralBundle:Utilidades/Favorito:lista.html.twig', array(
                     'arFavoritos' => $arFavoritos,
                     'form' => $form->createView()

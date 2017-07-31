@@ -49,8 +49,7 @@
                     <td>{{arFavoritos.codigoFavoritoPk}}</td>
                     <td>{{arFavoritos.usuario}}</td>
                     <td>{{arFavoritos.nombre}}</td>
-                    <td style="text-align: center"><a href="{{ path('brs_gen_utilidad_favorito_nuevo',{'codigoFavorito': arFavoritos.codigoFavoritoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>               
-                    <td style="text-align: center"><a target="_blank" href="#"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22 title="Detalles del registro"></a></td>
+                    <td style="text-align: center"><a href="{{ path('brs_gen_utilidad_favorito_nuevo',{'codigoFavorito': arFavoritos.codigoFavoritoPk})}}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
                     <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arFavoritos.codigoFavoritoPk }}" /></td>
                 </tr> 
             {%endfor%}
