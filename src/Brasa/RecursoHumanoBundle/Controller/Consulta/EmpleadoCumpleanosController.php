@@ -30,8 +30,6 @@ class EmpleadoCumpleanosController extends Controller {
         $paginator = $this->get('knp_paginator');
         $form = $this->formularioLista();
         $form->handleRequest($request);
-        //$this->filtrarLista($form);
-        //$this->listar();
         if ($form->isValid()) {
             $arrSeleccionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnExcel')->isClicked()) {
@@ -41,8 +39,6 @@ class EmpleadoCumpleanosController extends Controller {
                 $this->generarExcel();
             }
         }
-        //$arEmpleadosCumpleanos = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 40);
-
         return $this->render('BrasaRecursoHumanoBundle:Consultas/Empleados:cumpleanos.html.twig', array(
                     'form' => $form->createView()
         ));
