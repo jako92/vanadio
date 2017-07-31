@@ -43,12 +43,18 @@ class GenFavorito {
     private $urlDocumento;
 
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="parametros", type="text", nullable=true)
+     */
+    private $parametros;
+
+    /**
      * Get codigoFavoritoPk
      *
      * @return integer
      */
-    public function getCodigoFavoritoPk()
-    {
+    public function getCodigoFavoritoPk() {
         return $this->codigoFavoritoPk;
     }
 
@@ -59,8 +65,7 @@ class GenFavorito {
      *
      * @return GenFavorito
      */
-    public function setUsuario($usuario)
-    {
+    public function setUsuario($usuario) {
         $this->usuario = $usuario;
 
         return $this;
@@ -71,8 +76,7 @@ class GenFavorito {
      *
      * @return string
      */
-    public function getUsuario()
-    {
+    public function getUsuario() {
         return $this->usuario;
     }
 
@@ -83,8 +87,7 @@ class GenFavorito {
      *
      * @return GenFavorito
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -95,8 +98,7 @@ class GenFavorito {
      *
      * @return string
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -107,8 +109,7 @@ class GenFavorito {
      *
      * @return GenFavorito
      */
-    public function setUrlDocumento($urlDocumento)
-    {
+    public function setUrlDocumento($urlDocumento) {
         $this->urlDocumento = $urlDocumento;
 
         return $this;
@@ -119,8 +120,32 @@ class GenFavorito {
      *
      * @return string
      */
-    public function getUrlDocumento()
-    {
+    public function getUrlDocumento() {
         return $this->urlDocumento;
+    }
+
+
+    /**
+     * Set parametros
+     *
+     * @param string $parametros
+     *
+     * @return GenFavorito
+     */
+    public function setParametros($parametros)
+    {
+        $this->parametros = $parametros;
+
+        return $this;
+    }
+
+    /**
+     * Get parametros
+     *
+     * @return string
+     */
+    public function getParametros()
+    {
+        return json_decode($this->parametros,true);
     }
 }

@@ -25,18 +25,22 @@
                         <ul class="menu">
                             {% for arFavorito in app.session.get('arFavoritos') %}
                                 <li>
-                                    <a href="{{ path(arFavorito.urlDocumento) }}">
-                                        <h4>
-                                            {{arFavorito.nombre}}
-                                        </h4>
-                                        <p>{{arFavorito.nombre}}</p>
-                                    </a>
+                                    {% if arFavorito is empty %}
+                                        <a href="{{path(arFavorito.urlDocumento) }}">
+                                        {% else%}
+                                            <a href="{{path(arFavorito.urlDocumento, arFavorito.parametros) }}">
+                                            {% endif %}
+                                            <h4>
+                                                {{arFavorito.nombre}}
+                                            </h4>
+                                            <p>{{arFavorito.nombre}}</p>
+                                        </a>
                                 </li>
                             {%  endfor  %}
                         </ul>
                     </li>
                     <li class="footer"><a href="{{ path('brs_gen_utilidad_favorito') }}">Ver todos los favoritos</a></li>
-                    <li class="footer"><a href="{{ path('brs_gen_utilidad_favorito_menu', { 'route': route }) }}">Agregar</a></li>
+                    <li class="footer"><a href="{{ path('brs_gen_utilidad_favorito_menu', { 'route': route, 'parametros' : parametros | json_encode() }) }}">Agregar</a></li>
                 </ul>
             </li>
             <li class="dropdown messages-menu">

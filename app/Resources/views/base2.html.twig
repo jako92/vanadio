@@ -44,6 +44,7 @@
     <body class="hold-transition skin-blue sidebar-mini">
         {% block body %}
             {% set route = app.request.attributes.get('_route') %}
+            {% set parametros = app.request.attributes.get('_route_params') %}
             <div class="wrapper">
                 <header class="main-header">
 

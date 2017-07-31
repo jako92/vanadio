@@ -17,7 +17,7 @@ class DefaultController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $arUsuario = $this->getUser();
         $arFavoritos = $em->getRepository('BrasaGeneralBundle:GenFavorito')->findBy(array('usuario' => $arUsuario->getUsername()));
-        //$session->set('arFavoritos', $arFavoritos);
+        $session->set('arFavoritos', $arFavoritos);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
 
         /* $arConfiguracion = new \Brasa\GeneralBundle\Entity\GenConfiguracion();        
