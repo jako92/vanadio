@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Brasa\TurnoBundle\UtlProgramacion;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\TurnoBundle\Entity\TurProgramacionSimulador;
@@ -74,94 +73,64 @@ class SimuladorController extends Controller {
      * Esta función es la acción inicial de la aplicación.
      * @Route("/tur/utilidad/costos/simulador", name="brs_tur_utilidad_costo_simulador")
      */
-    public function indexAction(){
+    public function listarAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $dql = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")
                    ->getDqlConsultaDetalles();
         $arProgramacionSimulador = $em->createQuery($dql);
-        
-        return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
-            'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),
-            'form' => $this->getFormularioSimulacion()->createView(),
-            'diasMes' => $this->getDiasMes(),
-        ]);
-    }
-    
-    /**
-     * Esta función es la acción para iniciar la simulación.
-     * @Route("/tur/utilidad/costos/simular", name="brs_tur_utilidad_costo_simular")
-     */
-    public function simularAction(Request $request){
-        $em = $this->getDoctrine()->getManager();
-        $dql = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")
-                   ->getDqlConsultaDetalles();
-        
-        $arProgramacionSimulador = $em->createQuery($dql);
-        
         $form = $this->getFormularioSimulacion();
+        
+        # Obtenemos un listado de los días del mes.
+        setlocale(LC_ALL, "es_CO.UTF-8");
+        $diasMes = [];       
+        $arFestivos = $em->getRepository("BrasaGeneralBundle:GenFestivo")
+                        ->festivos(date("Y-01-01"), date("Y-12-31"));
+        
+        foreach($arFestivos AS $festivo) $this->festivos[] = $festivo['fecha']->format("Y-m-d");
+        
+        UtlProgramacion::Util()->setFestivos($this->festivos);
+        
+        $this->totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $this->mesSimulacion, $this->anioSimulacion);
+        for($i = 1; $i <= $this->totalDiasMes; $i ++){
+            $mes = "{$this->anioSimulacion}-{$this->mesSimulacion}-{$i}";
+            $diasMes[($i < 10? '0' . $i : $i)] = (Object)[
+                'numero'    => $i,
+                'nombre'    => strftime("%A", strtotime($mes)),
+                'esFestivo' => UtlProgramacion::Util()->esFestivo($mes),
+            ];
+        }
+        
         $form->handleRequest($request);
-        if(!$form->isSubmitted() && $form->isValid()) 
-            return $this->redirectToRoute ('brs_tur_utilidad_costo_simulador');
         
-        if($form->get("BtnActualizar")->isClicked())
-            $this->actualizar ($request);
-        
-        if($form->get("BtnSimular")->isClicked())
-            $this->ejecutarSimulacion ($request);
+        # Eventos
+        if($form->isSubmitted() && $form->isValid()){
+            if($form->get("BtnActualizar")->isClicked()) $this->actualizar($request);        
+            if($form->get("BtnSimular")->isClicked()) $this->ejecutarSimulacion($request);
+            if($form->get("BtnEliminar")->isClicked()) $this->eliminarRecursos($request);            
+        }
         
         return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
             'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),
             'form' => $form->createView(),
-            'diasMes' => $this->getDiasMes(),
+            'diasMes' => $diasMes,
         ]);
     }
     
     /**
-     * Esta función ejecuta la simulación.
+     * Esta función permite eliminar los recursos seleccionados por el formulario.
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function ejecutarSimulacion(Request $request){
+    private function eliminarRecursos(Request $request){
+        $recursos = $request->get("recursosABorrar");
         $em = $this->getDoctrine()->getManager();
-        $dql = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")
-                   ->getDqlConsultaDetalles();
-        $arProgramacionSimulador = $em->createQuery($dql);
-        $form = $this->getFormularioSimulacion();
-        $form->handleRequest($request);
-        
-        $datos = $this->obtenerDatosSimulacion($request);
-        
-        return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
-            'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),
-            'form' => $form->createView(),
-            'diasMes' => $this->getDiasMes(),
-            'mostrarDetalles' => true,
-        ]);
-    }
-    
-    private function obtenerDatosSimulacion(Request $request){
-        UtlProgramacion::Util()->setFestivos($this->festivos);
-        $form = (Object) $request->get("form");
-        $fecha = "{$form->anio}-{$form->mes}-01";
-        $this->fechaInicial = date("Y-m-d", strtotime($fecha));
-        $this->fechaFinal = date("Y-m-t", strtotime($fecha));
-        $this->getTurnos();
-        $data = [];
-    }
-    
-    private function procesarDetallesTurno(&$data, $detalleId, $dias){
-        
-    }
-    
-    private function getTurnos(){
-        $em = $this->getDoctrine()->getManager();
-        $turnos = $em->getRepository("BrasaTurnoBundle:TurTurno")->findAll();
-        foreach($turnos as $turno){
-            $this->turnos[$turno->getCodigoTurnoPk()] = [
-                'desde' => $turno->getHoraDesde()->format("H:i:s"),
-                'hasta' => $turno->getHoraHasta()->format("H:i:s"),
-            ];
-        }
+        $qb = $em->createQueryBuilder();
+        $query = $qb->delete("BrasaTurnoBundle:TurProgramacionSimulador", "b")
+                    ->where("b.codigoSimulacionPk IN(:ids)")
+                    ->setParameter("ids", $recursos)
+                    ->getQuery();
+        $query->execute();
+        return $this->redirectToRoute("brs_tur_utilidad_costo_simulador");
     }
     
     /**
@@ -183,7 +152,7 @@ class SimuladorController extends Controller {
     }
     
     /**
-     * Esta función permite procesar un detalle (setea cada uno de sus días).
+     * Esta función permite actualizar cada detalle de la programación (setea cada uno de sus días).
      * @param \Doctrine\Common\Persistence\AbstractManagerRegistry $em
      * @param \Brasa\TurnoBundle\Entity\TurProgramacion $arProgramacionSimulacion
      * @param int $dias
@@ -197,32 +166,6 @@ class SimuladorController extends Controller {
     }
     
     /**
-     * Esta función retorna un array con cada uno de los días del mes, dentro del 
-     * array viajan las claves: 
-     * <ul>
-     * <li><b>Número: </b>Contiene el número del día en el mes de 0 a 31</li>
-     * <li><b>Nombre: </b>Contiene el nombre del día en la semana (Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo</li>
-     * <li><b>Es Festivo: </b>Contiene el número del día en el mes de 0 a 31</li>
-     * </ul>
-     * @return array
-     */
-    private function getDiasMes(){
-        setlocale(LC_ALL, "es_CO.UTF-8");
-        UtlProgramacion::Util()->setFestivos($this->festivos);
-        $dias = [];
-        $this->totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $this->mesSimulacion, $this->anioSimulacion);
-        for($i = 1; $i <= $this->totalDiasMes; $i ++){
-            $mes = "{$this->anioSimulacion}-{$this->mesSimulacion}-{$i}";
-            $dias[($i < 10? '0' . $i : $i)] = (Object)[
-                'numero'    => $i,
-                'nombre'    => strftime("%A", strtotime($mes)),
-                'esFestivo' => UtlProgramacion::Util()->esFestivo($mes),
-            ];
-        }
-        return $dias;
-    }
-    
-    /**
      * Esta función crea el formulario de simulación.
      * @return \Symfony\Component\Form\FormInterface
      */
@@ -232,11 +175,11 @@ class SimuladorController extends Controller {
             'anio' => $this->anioSimulacion = intval(date("Y"))
         );
         return $this->createFormBuilder($datos)
-                     ->setAction($this->generateUrl("brs_tur_utilidad_costo_simular"))                
                      ->add("mes", ChoiceType::class, array('choices' => $this->meses))
                      ->add("anio", TextType::class)
                      ->add("BtnAgregar", SubmitType::class, array('label' => 'Agregar'))
                      ->add("BtnActualizar", SubmitType::class, array('label' => 'Actualizar'))
+                     ->add("BtnEliminar", SubmitType::class, array('label' => 'Eliminar'))
                      ->add("BtnSimular", SubmitType::class, array('label' => 'Simular'))
                      ->getForm();
     }

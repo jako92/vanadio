@@ -14,5 +14,5 @@ class TurProgramacionSimuladorRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         $consulta = "SELECT s FROM BrasaTurnoBundle:TurProgramacionSimulador s JOIN s.recursoRel";
         return $consulta;
-    }
+    }    
 }
