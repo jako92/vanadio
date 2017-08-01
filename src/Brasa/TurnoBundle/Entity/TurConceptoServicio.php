@@ -24,17 +24,17 @@ class TurConceptoServicio
     private $tipo = 1;    
     
     /**
-     * @ORM\Column(name="nombre", type="string", length=50, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=500, nullable=true)
      */    
     private $nombre;             
         
     /**
-     * @ORM\Column(name="nombre_facturacion", type="string", length=100, nullable=true)
+     * @ORM\Column(name="nombre_facturacion", type="string", length=500, nullable=true)
      */    
     private $nombreFacturacion; 
     
     /**
-     * @ORM\Column(name="nombre_facturacion_adicional", type="string", length=100, nullable=true)
+     * @ORM\Column(name="nombre_facturacion_adicional", type="string", length=500, nullable=true)
      */    
     private $nombreFacturacionAdicional;    
     
