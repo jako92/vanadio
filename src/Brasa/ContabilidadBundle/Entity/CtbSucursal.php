@@ -24,7 +24,12 @@ class CtbSucursal
     /**
      * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
      */    
-    private $nombre;          
+    private $nombre;
+    
+    /**
+     * @ORM\Column(name="codigo_sucursal_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoSucursalFk;
     
     /**
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuEmpleado", mappedBy="sucursalRel")
@@ -200,5 +205,29 @@ class CtbSucursal
     public function getRegistrosSucursalRel()
     {
         return $this->registrosSucursalRel;
+    }
+
+    /**
+     * Set codigoSucursalFk
+     *
+     * @param string $codigoSucursalFk
+     *
+     * @return CtbSucursal
+     */
+    public function setCodigoSucursalFk($codigoSucursalFk)
+    {
+        $this->codigoSucursalFk = $codigoSucursalFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSucursalFk
+     *
+     * @return string
+     */
+    public function getCodigoSucursalFk()
+    {
+        return $this->codigoSucursalFk;
     }
 }

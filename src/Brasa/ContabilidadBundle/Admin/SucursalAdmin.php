@@ -10,7 +10,8 @@ class SucursalAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('codigoSucursalPk', 'text')
-                ->add('nombre', 'text');
+                ->add('nombre', 'text')
+                ->add('codigoSucursalFk', 'text',array('required'=>false));
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -22,7 +23,8 @@ class SucursalAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('codigoSucursalPk')
-                    ->add('nombre');
+                    ->add('nombre')
+                    ->add('codigoSucursalFk');
     }
     
     public function toString($object)
