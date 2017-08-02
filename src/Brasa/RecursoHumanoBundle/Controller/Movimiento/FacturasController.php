@@ -508,7 +508,7 @@ class FacturasController extends Controller {
                 ->setCellValue('C1', 'FECHA')
                 ->setCellValue('D1', 'VENCE')
                 ->setCellValue('E1', 'CLIENTE')
-                ->setCellValue('F1', 'FACTURA TIPO')
+                ->setCellValue('F1', 'TIPO FACTURA')
                 ->setCellValue('G1', 'SERVICIO')
                 ->setCellValue('H1', 'VR_BRUTO')
                 ->setCellValue('I1', 'VR_NETO')
@@ -517,20 +517,27 @@ class FacturasController extends Controller {
                 ->setCellValue('L1', 'VR_RET_IVA')
                 ->setCellValue('M1', 'VR_BASE AIU')
                 ->setCellValue('N1', 'VR_TOTAL_ADMON')
-                ->setCellValue('O1', 'VR_TOTAL_MISION');
+                ->setCellValue('O1', 'VR_TOTAL_MISION')
+                ->setCellValue('P1', 'VR_TIPO_COBRO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
         $arFacturas = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFacturas = $query->getResult();
         foreach ($arFacturas as $arFactura) {
-
+            $arDetallesFactura = $arFactura->getFacturasDetallesFacturaRel();
+            $tiposCobros = array();
+            foreach($arDetallesFactura AS $detalle){
+                $cobro = $detalle->getCobroRel();
+                if($cobro !== null && !in_array($cobro->getCobroTipoRel()->getNombre(), $tiposCobros)){                    
+                    $tiposCobros[] = $cobro->getCobroTipoRel()->getNombre();
+                }
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arFactura->getCodigoFacturaPk())
                     ->setCellValue('B' . $i, $arFactura->getNumero())
                     ->setCellValue('C' . $i, $arFactura->getFecha()->format('Y/m/d'))
                     ->setCellValue('D' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNombreCorto())
                     ->setCellValue('F' . $i, $arFactura->getFacturaTipoRel()->getNombre())
                     ->setCellValue('G' . $i, $arFactura->getFacturaServicioRel()->getNombre())
                     ->setCellValue('H' . $i, $arFactura->getVrBruto())
@@ -539,8 +546,9 @@ class FacturasController extends Controller {
                     ->setCellValue('K' . $i, $arFactura->getVrRetencionCree())
                     ->setCellValue('L' . $i, $arFactura->getVrRetencionIva())
                     ->setCellValue('M' . $i, $arFactura->getVrBaseAIU())
-                    ->setCellValue('N' . $i, $arFactura->getVrTotalAdministracion())
-                    ->setCellValue('O' . $i, $arFactura->getVrIngresoMision());
+                    ->setCellValue('N' . $i, $arFactura->getVrTotalAdministracion())                    
+                    ->setCellValue('O' . $i, $arFactura->getVrIngresoMision())
+                    ->setCellValue('P' . $i, implode(", ", $tiposCobros));
             $i++;
         }
 
