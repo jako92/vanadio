@@ -570,11 +570,12 @@ class UtlProgramacion {
             $hasta = strtotime(date("Y-m-d H:i:s", strtotime("{$fechaFinal} + 1 days")));
         $diferencia = $hasta - $desde;
         switch ($formatoSalida) {
+            case self::DIA: return round($diferencia / 60 / 60 / 24, 2) + 1;
             case self::MINUTO: return round($diferencia / 60, 2);
             case self::HORA: return round($diferencia / 60 / 60, 2);
             default: return $diferencia;
         }
-    }
+    }    
 
     /**
      * Esta función agrega cualquier faltante a una fecha especificada para devolverla en formato

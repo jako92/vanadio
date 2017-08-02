@@ -31,5 +31,31 @@ class TurTurnoRepository extends EntityRepository {
             }
             $em->flush();
         }
-    }    
+    }
+    
+    /**
+     * Esta función permite obtener la iformación de uno o varios turnos.
+     * @param int $id
+     * @return array
+     */
+    public function getInformacionTurnos($id = null){
+        $em = $this->getEntityManager();
+        if($id !== null){
+            $arTurnos = $em->getRepository('BrasaTurnoBundle:TurTurno')->find($id);
+            return array(
+                    'id' => $arTurnos->getCodigoTurnoPk(),
+                    'desde' => $arTurnos->getHoraDesde()->format("H:i:s"),
+                    'hasta' => $arTurnos->getHoraHasta()->format("H:i:s"),
+                );
+        }
+        $arTurnos = $em->getRepository('BrasaTurnoBundle:TurTurno')->findAll();
+        $info = [];
+        foreach($arTurnos AS $turno){
+            $info[$turno->getCodigoTurnoPk()] = array(
+                'desde' => $turno->getHoraDesde()->format("H:i:s"),
+                'hasta' => $turno->getHoraHasta()->format("H:i:s"),
+            );
+        }
+        return $info;
+    }
 }

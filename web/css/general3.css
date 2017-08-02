@@ -30,6 +30,8 @@ td.titulo {
 .tabla-turnos td.turno{
     text-align: center;
     padding: 2px 0px;
+    box-sizing: border-box;
+    position: relative;
 }
 .input-grid{
     width: 25px;
@@ -38,4 +40,21 @@ td.titulo {
 
 .fix-input{
     width: 100% !important;
+}
+
+.dia-festivo{
+    background-color: rgba(60, 141, 188, 0.62) !important;
+    color: white;
+}
+
+.dia-programacion{
+    text-align: center;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+
+    bottom: 0px;
+    top: 0px;
+    color:black;
 }

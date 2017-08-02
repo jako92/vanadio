@@ -24,17 +24,17 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group form-group-sm">
-                                <label class="control-label col-sm-2">Mes</label>
+                                <label class="control-label col-sm-2">Desde</label>
                                 <div class="col-sm-4">
-                                    {{form_widget(form.mes, {attr: {class : 'fix-input'} })}}
-                                </div>                            
-                                <label class="control-label col-sm-2">Año</label>
+                                    {{form_widget(form.desde, {attr: {class : 'fix-input'} })}}
+                                </div>       
+                                <label class="control-label col-sm-2">Hasta</label>
                                 <div class="col-sm-4">
-                                    {{form_widget(form.anio)}}
+                                    {{form_widget(form.hasta)}}
                                 </div>
                             </div>
                             <div class="text-right">                                
-                                {{form_widget(form.BtnSimular, {attr: {class: 'btn-sm'} } )}}
+                                {{form_widget(form.BtnSimular, {attr: {class: 'btn-sm btn-default'} } )}}
                             </div>
                         </div>
                     </div>
@@ -44,14 +44,14 @@
                                 <tr>
                                     <th>&nbsp;</th>
                                     {% for dia in diasMes %}
-                                    <th>{{dia.nombre|slice(0, 1)|upper}}</th>
+                                    <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>{{dia.nombre|slice(0, 1)|upper}}</th>
                                     {% endfor %}
                                     <th>&nbsp;</th>
                                 </tr>
                                 <tr>
                                     <th>Recurso</th>
                                     {% for numero, dia in diasMes %}
-                                    <th>{{numero}}</th>
+                                    <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>{{numero < 10? '0' ~ numero : numero }}</th>
                                     {% endfor %}
                                     <th>&nbsp;</th>
                                 </tr>
@@ -65,7 +65,9 @@
                                     <tr>
                                         <td>{{arProgramacionSimulador.recursoRel.nombreCorto}}</td>
                                         {% for numero, dia in diasMes %}
-                                            <td class="turno"><input name="dias[{{arProgramacionSimulador.codigoSimulacionPk}}][{{dia.numero}}]" tabindex="{{contador}}" class="input-grid" value="{{arProgramacionSimulador.getDia(dia.numero)}}"></td>
+                                            <td class="turno{{dia.esFestivo? ' dia-festivo' : ''}}">
+                                                <input name="dias[{{arProgramacionSimulador.codigoSimulacionPk}}][{{dia.fecha}}]" tabindex="{{contador}}" class="input-grid dia-programacion" value="{{arProgramacionSimulador.getDia(dia.numero)}}">
+                                            </td>
                                             {% set contador = contador + 1 %}
                                         {% endfor %}
                                         {% if mostrarDetalles is defined %}
@@ -87,10 +89,8 @@
             <div class="row">
                 <div class="col-sm-12 text-right">
                     {{form_widget(form.BtnAgregar, {attr: {class: 'btn-sm btn-default'} })}}
-                    <div class="btn-group">
-                        {{form_widget(form.BtnActualizar, {attr: {class: 'btn-sm btn-default'} })}}
-                        {{form_widget(form.BtnEliminar, {attr: {class: 'btn-sm btn-danger'} })}}
-                    </div>
+                    {{form_widget(form.BtnActualizar, {attr: {class: 'btn-sm btn-default'} })}}
+                    {{form_widget(form.BtnEliminar, {attr: {class: 'btn-sm btn-danger'} })}}
                 </div>
             </div>
         {{form_end(form)}}
