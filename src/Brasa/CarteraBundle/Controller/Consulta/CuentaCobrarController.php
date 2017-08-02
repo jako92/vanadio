@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class CuentaCobrarController extends Controller {
 
@@ -45,7 +46,7 @@ class CuentaCobrarController extends Controller {
                 if ($form->get('BtnExcel2')->isClicked()) {
                     $strWhere .= $this->devFiltro($form);
                     $this->generarExcel2($strWhere);
-                }                
+                }
                 if ($form->get('BtnPdf')->isClicked()) {
                     $strWhere .= $this->devFiltro($form);
                     $objEstadoCuenta = new \Brasa\CarteraBundle\Formatos\EstadoCuenta();
@@ -105,20 +106,24 @@ class CuentaCobrarController extends Controller {
                 $strWhere .= " AND codigo_cliente_fk = " . $arCliente->getCodigoClientePk();
             }
         }
-        $fecha = $form->get('fechaDesde')->getData();
-        if ($fecha) {
-            $fecha = $fecha->format('Y-m-d');
-            $strWhere .= " AND fecha >= " . $fecha;
-        }
-        $fecha = $form->get('fechaHasta')->getData();
-        if ($fecha) {
-            $fecha = $fecha->format('Y-m-d');
-            $strWhere .= " AND fecha <= " . $fecha;
+        $filtrarFecha = $form->get('filtrarFecha')->getData();
+        if ($filtrarFecha == 1) {
+            $fechaDesde = $form->get('fechaDesde')->getData();
+            if ($fechaDesde) {
+                $fechaDesde = $fechaDesde->format('Y-m-d');
+                $strWhere .= " AND fecha >= '" . $fechaDesde."'";
+            }
+            $fechaHasta = $form->get('fechaHasta')->getData();
+            if ($fechaHasta) {
+                $fechaHasta = $fechaHasta->format('Y-m-d');
+                $strWhere .= " AND fecha <= '" . $fechaHasta."'";
+            }
         }
         $numero = $form->get('TxtNumero')->getData();
         if ($numero != "") {
             $strWhere .= " AND numeroDocumento = " . $numero;
         }
+
         return $strWhere;
     }
 
@@ -168,6 +173,12 @@ class CuentaCobrarController extends Controller {
         if ($session->get('filtroAsesor')) {
             $arrayPropiedadesAsesor['data'] = $em->getReference("BrasaGeneralBundle:GenAsesor", $session->get('filtroAsesor'));
         }
+        $dateFecha = new \DateTime('now');
+        $strFechaDesde = $dateFecha->format('Y/m/') . "01";
+        $intUltimoDia = $strUltimoDiaMes = date("d", (mktime(0, 0, 0, $dateFecha->format('m') + 1, 1, $dateFecha->format('Y')) - 1));
+        $strFechaHasta = $dateFecha->format('Y/m/') . $intUltimoDia;
+        $dateFechaDesde = date_create($strFechaDesde);
+        $dateFechaHasta = date_create($strFechaHasta);
         $form = $this->createFormBuilder()
                 ->add('TxtNit', TextType::class, array('label' => 'Nit', 'data' => $session->get('filtroNit')))
                 ->add('TxtNombreCliente', TextType::class, array('label' => 'NombreCliente', 'data' => $strNombreCliente))
@@ -175,8 +186,9 @@ class CuentaCobrarController extends Controller {
                 ->add('cuentaCobrarTipoRel', EntityType::class, $arrayPropiedades)
                 ->add('asesorRel', EntityType::class, $arrayPropiedadesAsesor)
                 ->add('rango', ChoiceType::class, array('choices' => array('TODOS' => '0', '1 - 30' => '30', '31 - 60' => '60', '61 - 90' => '90', '91 - 180' => '180')))
-                ->add('fechaHasta', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
-                ->add('fechaDesde', DateType::class, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date')))
+                ->add('fechaDesde', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaDesde))
+                ->add('fechaHasta', DateType::class, array('format' => 'yyyyMMdd', 'data' => $dateFechaHasta))
+                ->add('filtrarFecha', CheckboxType::class)
                 ->add('BtnPdf', SubmitType::class, array('label' => 'PDF',))
                 ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
                 ->add('BtnExcel2', SubmitType::class, array('label' => 'Excel cobrar',))
@@ -228,7 +240,7 @@ class CuentaCobrarController extends Controller {
                 ->setCellValue('R1', 'GRUPO')
                 ->setCellValue('S1', 'SUBGRUPO')
                 ->setCellValue('T1', 'CONTACTO')
-                ->setCellValue('U1', 'TELEFONO');                
+                ->setCellValue('U1', 'TELEFONO');
         $i = 2;
         $connection = $em->getConnection();
         $strSql = "SELECT  
@@ -380,6 +392,6 @@ class CuentaCobrarController extends Controller {
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
-    }    
-    
+    }
+
 }
