@@ -323,7 +323,7 @@ class RhuIncapacidadRepository extends EntityRepository {
     public function pendienteCobrarCobro($codigoCliente) {        
         $em = $this->getEntityManager();
         $dql   = "SELECT e FROM BrasaRecursoHumanoBundle:RhuIncapacidad e WHERE e.estadoCobrado = 0 "
-                . " AND e.codigoClienteFk = " . $codigoCliente. "AND e.estadoCobrar = 1";
+                . " AND e.codigoClienteFk = " . $codigoCliente. "AND e.estadoCobrarCliente = 1";
         return $dql;
     }
     

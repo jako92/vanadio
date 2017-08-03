@@ -118,7 +118,12 @@ class RhuIncapacidad {
     private $estadoCobrar = 0;
 
     /**
-     * @ORM\Column(name="estado_prorroga", type="boolean")
+     * @ORM\Column(name="estado_cobrar_cliente", type="boolean")
+     */
+    private $estadoCobrarCliente = 0;
+
+    /**
+     * @ORM\Column(name="estado_prorroga", type="boolean", nullable=true)
      */
     private $estadoProrroga = 0;
 
@@ -1091,7 +1096,6 @@ class RhuIncapacidad {
         return $this->clienteRel;
     }
 
-
     /**
      * Set diasReconocidos
      *
@@ -1099,8 +1103,7 @@ class RhuIncapacidad {
      *
      * @return RhuIncapacidad
      */
-    public function setDiasReconocidos($diasReconocidos)
-    {
+    public function setDiasReconocidos($diasReconocidos) {
         $this->diasReconocidos = $diasReconocidos;
 
         return $this;
@@ -1111,8 +1114,7 @@ class RhuIncapacidad {
      *
      * @return integer
      */
-    public function getDiasReconocidos()
-    {
+    public function getDiasReconocidos() {
         return $this->diasReconocidos;
     }
 
@@ -1123,8 +1125,7 @@ class RhuIncapacidad {
      *
      * @return RhuIncapacidad
      */
-    public function setDiasNoReconocidos($diasNoReconocidos)
-    {
+    public function setDiasNoReconocidos($diasNoReconocidos) {
         $this->diasNoReconocidos = $diasNoReconocidos;
 
         return $this;
@@ -1135,8 +1136,32 @@ class RhuIncapacidad {
      *
      * @return integer
      */
-    public function getDiasNoReconocidos()
-    {
+    public function getDiasNoReconocidos() {
         return $this->diasNoReconocidos;
+    }
+
+
+    /**
+     * Set estadoCobrarCliente
+     *
+     * @param boolean $estadoCobrarCliente
+     *
+     * @return RhuIncapacidad
+     */
+    public function setEstadoCobrarCliente($estadoCobrarCliente)
+    {
+        $this->estadoCobrarCliente = $estadoCobrarCliente;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCobrarCliente
+     *
+     * @return boolean
+     */
+    public function getEstadoCobrarCliente()
+    {
+        return $this->estadoCobrarCliente;
     }
 }
