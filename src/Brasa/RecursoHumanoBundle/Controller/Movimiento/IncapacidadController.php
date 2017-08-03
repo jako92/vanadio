@@ -109,7 +109,7 @@ class IncapacidadController extends Controller {
 
         $form = $this->createForm(RhuIncapacidadType::class, $arIncapacidad);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arIncapacidad = $form->getData();
             $arrControles = $request->request->All();
@@ -138,6 +138,9 @@ class IncapacidadController extends Controller {
                                                     $intDias = $intDias->format('%a');
                                                     $intDias = $intDias + 1;
                                                     $intDiasCobro = $this->diasCobro($intDias, $arIncapacidad->getEstadoProrroga(), $arIncapacidad->getIncapacidadTipoRel()->getTipo());
+                                                    $intDiasReconocimiento = $this->diasReconocimiento($intDias, $arIncapacidad->getEstadoProrroga(), $arIncapacidad->getIncapacidadTipoRel()->getTipo());
+                                                    $arIncapacidad->setDiasReconocidos($intDiasReconocimiento['intDiasReconocidos']);
+                                                    $arIncapacidad->setDiasNoReconocidos($intDiasReconocimiento['intDiasNoReconocidos']);
                                                     $arIncapacidad->setDiasCobro($intDiasCobro);
                                                     $arIncapacidad->setCantidad($intDias);
                                                     $arIncapacidad->setEntidadSaludRel($arEmpleado->getEntidadSaludRel());
@@ -333,7 +336,7 @@ class IncapacidadController extends Controller {
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
-                $strFechaDesde = "";
+        $strFechaDesde = "";
         $strFechaHasta = "";
         $filtrarFecha = $session->get('filtroRhuIncapacidadFiltrarFecha');
         if ($filtrarFecha) {
@@ -341,15 +344,7 @@ class IncapacidadController extends Controller {
             $strFechaHasta = $session->get('filtroRhuIncapacidadFechaHasta');
         }
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaDQL(
-                "", 
-                $session->get('filtroCodigoCentroCosto'),
-                $session->get('filtroIncapacidadEstadoTranscripcion'),
-                $session->get('filtroIdentificacion'),
-                $session->get('filtroIncapacidadNumeroEps'),
-                $session->get('filtroRhuIncapacidadTipo'),
-                $session->get('filtroIncapacidadEstadoLegalizado'),
-                $strFechaDesde,
-                $strFechaHasta
+                "", $session->get('filtroCodigoCentroCosto'), $session->get('filtroIncapacidadEstadoTranscripcion'), $session->get('filtroIdentificacion'), $session->get('filtroIncapacidadNumeroEps'), $session->get('filtroRhuIncapacidadTipo'), $session->get('filtroIncapacidadEstadoLegalizado'), $strFechaDesde, $strFechaHasta
         );
     }
 
@@ -408,12 +403,15 @@ class IncapacidadController extends Controller {
                 ->setCellValue('J1', 'DESDE')
                 ->setCellValue('K1', 'HASTA')
                 ->setCellValue('L1', 'DÍAS')
-                ->setCellValue('M1', 'COB')
-                ->setCellValue('N1', 'TRA')
-                ->setCellValue('O1', 'PRO')
-                ->setCellValue('P1', 'LEG')
-                ->setCellValue('Q1', 'COD')
-                ->setCellValue('R1', 'DIAGNOSTICO');
+                ->setCellValue('M1', 'DÍAS RECONICIDOS')
+                ->setCellValue('N1', 'DÍAS NO RECONOCIDOS')
+                ->setCellValue('O1', 'SALARIO')
+                ->setCellValue('P1', 'COB')
+                ->setCellValue('Q1', 'TRA')
+                ->setCellValue('R1', 'PRO')
+                ->setCellValue('S1', 'LEG')
+                ->setCellValue('T1', 'COD')
+                ->setCellValue('U1', 'DIAGNOSTICO');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
@@ -451,13 +449,16 @@ class IncapacidadController extends Controller {
                     ->setCellValue('J' . $i, $arIncapacidad->getFechaDesde()->format('Y-m-d'))
                     ->setCellValue('K' . $i, $arIncapacidad->getFechaHasta()->format('Y-m-d'))
                     ->setCellValue('L' . $i, $arIncapacidad->getCantidad())
-                    ->setCellValue('M' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoCobrar()))
-                    ->setCellValue('N' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoTranscripcion()))
-                    ->setCellValue('O' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoProrroga()))
-                    ->setCellValue('P' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoLegalizado()))
-                    ->setCellValue('Q' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getCodigo());
+                    ->setCellValue('M' . $i, $arIncapacidad->getDiasReconocidos())
+                    ->setCellValue('N' . $i, $arIncapacidad->getDiasNoReconocidos())
+                    ->setCellValue('O' . $i, $arIncapacidad->getEmpleadoRel()->getVrSalario())
+                    ->setCellValue('P' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoCobrar()))
+                    ->setCellValue('Q' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoTranscripcion()))
+                    ->setCellValue('R' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoProrroga()))
+                    ->setCellValue('S' . $i, $objFuncinoes->devuelveBoolean($arIncapacidad->getEstadoLegalizado()))
+                    ->setCellValue('T' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getCodigo());
             if ($arIncapacidad->getCodigoIncapacidadDiagnosticoFk()) {
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getNombre());
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U' . $i, $arIncapacidad->getIncapacidadDiagnosticoRel()->getNombre());
             }
 
             $i++;
@@ -497,6 +498,28 @@ class IncapacidadController extends Controller {
             $dias = $diasIncapacidad;
         }
         return $dias;
+    }
+
+    private function diasReconocimiento($diasIncapacidad = 0, $prorroga = false, $tipo = 1) {
+        $intDiasReconocidos = 0;
+        $intDiasNoReconocidos = 0;
+        if ($tipo == 1) {//si la incapacidad es general
+            if ($diasIncapacidad > 2) {
+                $intDiasReconocidos = $diasIncapacidad - 2;
+                $intDiasNoReconocidos = 2;
+            } else {
+                $intDiasNoReconocidos = $diasIncapacidad;
+            }
+        }
+        if ($tipo == 2) {
+            if ($diasIncapacidad > 1) {
+                $intDiasReconocidos = $diasIncapacidad - 1;
+                $intDiasNoReconocidos = 1;
+            } else {
+                $intDiasNoReconocidos = $diasIncapacidad;
+            }
+        }
+        return array('intDiasReconocidos' => $intDiasReconocidos, 'intDiasNoReconocidos' => $intDiasNoReconocidos);
     }
 
 }

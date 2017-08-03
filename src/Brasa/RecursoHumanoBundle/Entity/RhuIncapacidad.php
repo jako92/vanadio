@@ -8,125 +8,135 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rhu_incapacidad")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuIncapacidadRepository")
  */
-class RhuIncapacidad
-{
+class RhuIncapacidad {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_incapacidad_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoIncapacidadPk;                    
-    
+    private $codigoIncapacidadPk;
+
     /**
      * @ORM\Column(name="numero", type="integer")
-     */    
-    private $numero = 0;     
-    
+     */
+    private $numero = 0;
+
     /**
      * @ORM\Column(name="fecha", type="date")
-     */    
-    private $fecha;    
-    
+     */
+    private $fecha;
+
     /**
      * @ORM\Column(name="fecha_desde", type="date")
-     */    
-    private $fechaDesde;    
-    
+     */
+    private $fechaDesde;
+
     /**
      * @ORM\Column(name="fecha_hasta", type="date")
-     */    
-    private $fechaHasta;    
-    
+     */
+    private $fechaHasta;
+
     /**
      * @ORM\Column(name="numero_eps", type="string", length=30, nullable=true)
-     */    
-    private $numeroEps;     
-    
+     */
+    private $numeroEps;
+
     /**
      * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
-     */    
-    private $codigoEmpleadoFk; 
-    
+     */
+    private $codigoEmpleadoFk;
+
     /**
      * @ORM\Column(name="codigo_contrato_fk", type="integer", nullable=true)
-     */    
-    private $codigoContratoFk;    
-    
+     */
+    private $codigoContratoFk;
+
     /**
      * @ORM\Column(name="codigo_entidad_salud_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoEntidadSaludFk;
-    
+
     /**
      * @ORM\Column(name="cantidad", type="integer")
      */
-    private $cantidad = 0;                       
+    private $cantidad = 0;
 
     /**
      * @ORM\Column(name="dias_cobro", type="integer")
      */
-    private $diasCobro = 0;    
-    
+    private $diasCobro = 0;
+
+    /**
+     * @ORM\Column(name="dias_reconocidos", type="integer")
+     */
+    private $diasReconocidos = 0;
+
+    /**
+     * @ORM\Column(name="dias_no_reconocidos", type="integer")
+     */
+    private $diasNoReconocidos = 0;
+
     /**
      * @ORM\Column(name="vr_cobro", type="float")
      */
-    private $vrCobro = 0;    
-    
+    private $vrCobro = 0;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
-    private $codigoCentroCostoFk;  
-    
+     */
+    private $codigoCentroCostoFk;
+
     /**
      * @ORM\Column(name="codigo_cliente_fk", type="integer", nullable=true)
-     */    
-    private $codigoClienteFk;    
-    
+     */
+    private $codigoClienteFk;
+
     /**
      * @ORM\Column(name="codigo_incapacidad_diagnostico_fk", type="integer", nullable=true)
-     */    
-    private $codigoIncapacidadDiagnosticoFk;    
-    
+     */
+    private $codigoIncapacidadDiagnosticoFk;
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
-     */    
-    private $comentarios;     
-    
+     */
+    private $comentarios;
+
     /**
      * @ORM\Column(name="codigo_incapacidad_tipo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoIncapacidadTipoFk;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_transcripcion", type="boolean")
-     */    
+     */
     private $estadoTranscripcion = 0;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_cobrar", type="boolean")
-     */    
+     */
     private $estadoCobrar = 0;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_prorroga", type="boolean")
-     */    
+     */
     private $estadoProrroga = 0;
-    
+
     /**
      * @ORM\Column(name="vr_incapacidad", type="float")
      */
     private $vrIncapacidad = 0;
-    
+
     /**
      * @ORM\Column(name="vr_pagado", type="float")
      */
     private $vrPagado = 0;
-    
+
     /**
      * @ORM\Column(name="vr_saldo", type="float")
      */
     private $vrSaldo = 0;
-         
+
     /**
      * @ORM\Column(name="porcentaje_pago", type="float")
      */
@@ -134,77 +144,77 @@ class RhuIncapacidad
 
     /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
+     */
     private $codigoUsuario;
-    
+
     /**
      * @ORM\Column(name="codigo_cobro_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCobroFk;
-    
-    /**     
+
+    /**
      * @ORM\Column(name="estado_legalizado", type="boolean")
-     */    
+     */
     private $estadoLegalizado = false;
-    
+
     /**
      * @ORM\Column(name="estado_cobrado", type="boolean")
      */
     private $estadoCobrado = 0;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuIncapacidadTipo", inversedBy="incapacidadesIncapacidadTipoRel")
      * @ORM\JoinColumn(name="codigo_incapacidad_tipo_fk", referencedColumnName="codigo_incapacidad_tipo_pk")
      */
-    protected $incapacidadTipoRel;     
-    
+    protected $incapacidadTipoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="incapacidadesCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCliente", inversedBy="incapacidadesClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
     protected $clienteRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="incapacidadesEntidadSaludRel")
      * @ORM\JoinColumn(name="codigo_entidad_salud_fk", referencedColumnName="codigo_entidad_salud_pk")
      */
     protected $entidadSaludRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleado", inversedBy="incapacidadesEmpleadoRel")
      * @ORM\JoinColumn(name="codigo_empleado_fk", referencedColumnName="codigo_empleado_pk")
      */
-    protected $empleadoRel;    
-    
+    protected $empleadoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="incapacidadesContratoRel")
      * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
      */
-    protected $contratoRel;    
-    
+    protected $contratoRel;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuIncapacidadDiagnostico", inversedBy="incapacidadesIncapacidadDiagnosticoRel")
      * @ORM\JoinColumn(name="codigo_incapacidad_diagnostico_fk", referencedColumnName="codigo_incapacidad_diagnostico_pk")
      */
     protected $incapacidadDiagnosticoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCobro", inversedBy="incapacidadesCobroRel")
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuIncapacidadPagoDetalle", mappedBy="incapacidadRel")
      */
     protected $incapacidadesIncapacidadPagoRel;
-      
+
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="incapacidadRel")
      */
@@ -213,8 +223,7 @@ class RhuIncapacidad
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->pagosDetallesIncapacidadRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesIncapacidadPagoRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -224,8 +233,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoIncapacidadPk()
-    {
+    public function getCodigoIncapacidadPk() {
         return $this->codigoIncapacidadPk;
     }
 
@@ -236,8 +244,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setNumero($numero)
-    {
+    public function setNumero($numero) {
         $this->numero = $numero;
 
         return $this;
@@ -248,8 +255,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getNumero()
-    {
+    public function getNumero() {
         return $this->numero;
     }
 
@@ -260,8 +266,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -272,8 +277,7 @@ class RhuIncapacidad
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -284,8 +288,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setFechaDesde($fechaDesde)
-    {
+    public function setFechaDesde($fechaDesde) {
         $this->fechaDesde = $fechaDesde;
 
         return $this;
@@ -296,8 +299,7 @@ class RhuIncapacidad
      *
      * @return \DateTime
      */
-    public function getFechaDesde()
-    {
+    public function getFechaDesde() {
         return $this->fechaDesde;
     }
 
@@ -308,8 +310,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setFechaHasta($fechaHasta)
-    {
+    public function setFechaHasta($fechaHasta) {
         $this->fechaHasta = $fechaHasta;
 
         return $this;
@@ -320,8 +321,7 @@ class RhuIncapacidad
      *
      * @return \DateTime
      */
-    public function getFechaHasta()
-    {
+    public function getFechaHasta() {
         return $this->fechaHasta;
     }
 
@@ -332,8 +332,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setNumeroEps($numeroEps)
-    {
+    public function setNumeroEps($numeroEps) {
         $this->numeroEps = $numeroEps;
 
         return $this;
@@ -344,8 +343,7 @@ class RhuIncapacidad
      *
      * @return string
      */
-    public function getNumeroEps()
-    {
+    public function getNumeroEps() {
         return $this->numeroEps;
     }
 
@@ -356,8 +354,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoEmpleadoFk($codigoEmpleadoFk)
-    {
+    public function setCodigoEmpleadoFk($codigoEmpleadoFk) {
         $this->codigoEmpleadoFk = $codigoEmpleadoFk;
 
         return $this;
@@ -368,8 +365,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoEmpleadoFk()
-    {
+    public function getCodigoEmpleadoFk() {
         return $this->codigoEmpleadoFk;
     }
 
@@ -380,8 +376,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk)
-    {
+    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk) {
         $this->codigoEntidadSaludFk = $codigoEntidadSaludFk;
 
         return $this;
@@ -392,8 +387,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoEntidadSaludFk()
-    {
+    public function getCodigoEntidadSaludFk() {
         return $this->codigoEntidadSaludFk;
     }
 
@@ -404,8 +398,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCantidad($cantidad)
-    {
+    public function setCantidad($cantidad) {
         $this->cantidad = $cantidad;
 
         return $this;
@@ -416,8 +409,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCantidad()
-    {
+    public function getCantidad() {
         return $this->cantidad;
     }
 
@@ -428,8 +420,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
+    public function setCodigoCentroCostoFk($codigoCentroCostoFk) {
         $this->codigoCentroCostoFk = $codigoCentroCostoFk;
 
         return $this;
@@ -440,8 +431,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoCentroCostoFk()
-    {
+    public function getCodigoCentroCostoFk() {
         return $this->codigoCentroCostoFk;
     }
 
@@ -452,8 +442,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoIncapacidadDiagnosticoFk($codigoIncapacidadDiagnosticoFk)
-    {
+    public function setCodigoIncapacidadDiagnosticoFk($codigoIncapacidadDiagnosticoFk) {
         $this->codigoIncapacidadDiagnosticoFk = $codigoIncapacidadDiagnosticoFk;
 
         return $this;
@@ -464,8 +453,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoIncapacidadDiagnosticoFk()
-    {
+    public function getCodigoIncapacidadDiagnosticoFk() {
         return $this->codigoIncapacidadDiagnosticoFk;
     }
 
@@ -476,8 +464,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setComentarios($comentarios)
-    {
+    public function setComentarios($comentarios) {
         $this->comentarios = $comentarios;
 
         return $this;
@@ -488,8 +475,7 @@ class RhuIncapacidad
      *
      * @return string
      */
-    public function getComentarios()
-    {
+    public function getComentarios() {
         return $this->comentarios;
     }
 
@@ -500,8 +486,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoIncapacidadTipoFk($codigoIncapacidadTipoFk)
-    {
+    public function setCodigoIncapacidadTipoFk($codigoIncapacidadTipoFk) {
         $this->codigoIncapacidadTipoFk = $codigoIncapacidadTipoFk;
 
         return $this;
@@ -512,8 +497,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoIncapacidadTipoFk()
-    {
+    public function getCodigoIncapacidadTipoFk() {
         return $this->codigoIncapacidadTipoFk;
     }
 
@@ -524,8 +508,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEstadoTranscripcion($estadoTranscripcion)
-    {
+    public function setEstadoTranscripcion($estadoTranscripcion) {
         $this->estadoTranscripcion = $estadoTranscripcion;
 
         return $this;
@@ -536,8 +519,7 @@ class RhuIncapacidad
      *
      * @return boolean
      */
-    public function getEstadoTranscripcion()
-    {
+    public function getEstadoTranscripcion() {
         return $this->estadoTranscripcion;
     }
 
@@ -548,8 +530,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEstadoCobrar($estadoCobrar)
-    {
+    public function setEstadoCobrar($estadoCobrar) {
         $this->estadoCobrar = $estadoCobrar;
 
         return $this;
@@ -560,8 +541,7 @@ class RhuIncapacidad
      *
      * @return boolean
      */
-    public function getEstadoCobrar()
-    {
+    public function getEstadoCobrar() {
         return $this->estadoCobrar;
     }
 
@@ -572,8 +552,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEstadoProrroga($estadoProrroga)
-    {
+    public function setEstadoProrroga($estadoProrroga) {
         $this->estadoProrroga = $estadoProrroga;
 
         return $this;
@@ -584,8 +563,7 @@ class RhuIncapacidad
      *
      * @return boolean
      */
-    public function getEstadoProrroga()
-    {
+    public function getEstadoProrroga() {
         return $this->estadoProrroga;
     }
 
@@ -596,8 +574,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setVrIncapacidad($vrIncapacidad)
-    {
+    public function setVrIncapacidad($vrIncapacidad) {
         $this->vrIncapacidad = $vrIncapacidad;
 
         return $this;
@@ -608,8 +585,7 @@ class RhuIncapacidad
      *
      * @return float
      */
-    public function getVrIncapacidad()
-    {
+    public function getVrIncapacidad() {
         return $this->vrIncapacidad;
     }
 
@@ -620,8 +596,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setVrPagado($vrPagado)
-    {
+    public function setVrPagado($vrPagado) {
         $this->vrPagado = $vrPagado;
 
         return $this;
@@ -632,8 +607,7 @@ class RhuIncapacidad
      *
      * @return float
      */
-    public function getVrPagado()
-    {
+    public function getVrPagado() {
         return $this->vrPagado;
     }
 
@@ -644,8 +618,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setVrSaldo($vrSaldo)
-    {
+    public function setVrSaldo($vrSaldo) {
         $this->vrSaldo = $vrSaldo;
 
         return $this;
@@ -656,8 +629,7 @@ class RhuIncapacidad
      *
      * @return float
      */
-    public function getVrSaldo()
-    {
+    public function getVrSaldo() {
         return $this->vrSaldo;
     }
 
@@ -668,8 +640,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setPorcentajePago($porcentajePago)
-    {
+    public function setPorcentajePago($porcentajePago) {
         $this->porcentajePago = $porcentajePago;
 
         return $this;
@@ -680,8 +651,7 @@ class RhuIncapacidad
      *
      * @return float
      */
-    public function getPorcentajePago()
-    {
+    public function getPorcentajePago() {
         return $this->porcentajePago;
     }
 
@@ -692,8 +662,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setIncapacidadTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo $incapacidadTipoRel = null)
-    {
+    public function setIncapacidadTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo $incapacidadTipoRel = null) {
         $this->incapacidadTipoRel = $incapacidadTipoRel;
 
         return $this;
@@ -704,8 +673,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadTipo
      */
-    public function getIncapacidadTipoRel()
-    {
+    public function getIncapacidadTipoRel() {
         return $this->incapacidadTipoRel;
     }
 
@@ -716,8 +684,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null)
-    {
+    public function setCentroCostoRel(\Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto $centroCostoRel = null) {
         $this->centroCostoRel = $centroCostoRel;
 
         return $this;
@@ -728,8 +695,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto
      */
-    public function getCentroCostoRel()
-    {
+    public function getCentroCostoRel() {
         return $this->centroCostoRel;
     }
 
@@ -740,8 +706,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null)
-    {
+    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null) {
         $this->entidadSaludRel = $entidadSaludRel;
 
         return $this;
@@ -752,8 +717,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud
      */
-    public function getEntidadSaludRel()
-    {
+    public function getEntidadSaludRel() {
         return $this->entidadSaludRel;
     }
 
@@ -764,8 +728,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null) {
         $this->empleadoRel = $empleadoRel;
 
         return $this;
@@ -776,8 +739,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
      */
-    public function getEmpleadoRel()
-    {
+    public function getEmpleadoRel() {
         return $this->empleadoRel;
     }
 
@@ -788,8 +750,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setIncapacidadDiagnosticoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadDiagnostico $incapacidadDiagnosticoRel = null)
-    {
+    public function setIncapacidadDiagnosticoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadDiagnostico $incapacidadDiagnosticoRel = null) {
         $this->incapacidadDiagnosticoRel = $incapacidadDiagnosticoRel;
 
         return $this;
@@ -800,8 +761,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadDiagnostico
      */
-    public function getIncapacidadDiagnosticoRel()
-    {
+    public function getIncapacidadDiagnosticoRel() {
         return $this->incapacidadDiagnosticoRel;
     }
 
@@ -812,8 +772,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function addPagosDetallesIncapacidadRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesIncapacidadRel)
-    {
+    public function addPagosDetallesIncapacidadRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesIncapacidadRel) {
         $this->pagosDetallesIncapacidadRel[] = $pagosDetallesIncapacidadRel;
 
         return $this;
@@ -824,8 +783,7 @@ class RhuIncapacidad
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesIncapacidadRel
      */
-    public function removePagosDetallesIncapacidadRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesIncapacidadRel)
-    {
+    public function removePagosDetallesIncapacidadRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoDetalle $pagosDetallesIncapacidadRel) {
         $this->pagosDetallesIncapacidadRel->removeElement($pagosDetallesIncapacidadRel);
     }
 
@@ -834,8 +792,7 @@ class RhuIncapacidad
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPagosDetallesIncapacidadRel()
-    {
+    public function getPagosDetallesIncapacidadRel() {
         return $this->pagosDetallesIncapacidadRel;
     }
 
@@ -846,8 +803,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function addIncapacidadesIncapacidadPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle $incapacidadesIncapacidadPagoRel)
-    {
+    public function addIncapacidadesIncapacidadPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle $incapacidadesIncapacidadPagoRel) {
         $this->incapacidadesIncapacidadPagoRel[] = $incapacidadesIncapacidadPagoRel;
 
         return $this;
@@ -858,8 +814,7 @@ class RhuIncapacidad
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle $incapacidadesIncapacidadPagoRel
      */
-    public function removeIncapacidadesIncapacidadPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle $incapacidadesIncapacidadPagoRel)
-    {
+    public function removeIncapacidadesIncapacidadPagoRel(\Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle $incapacidadesIncapacidadPagoRel) {
         $this->incapacidadesIncapacidadPagoRel->removeElement($incapacidadesIncapacidadPagoRel);
     }
 
@@ -868,8 +823,7 @@ class RhuIncapacidad
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncapacidadesIncapacidadPagoRel()
-    {
+    public function getIncapacidadesIncapacidadPagoRel() {
         return $this->incapacidadesIncapacidadPagoRel;
     }
 
@@ -880,8 +834,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoUsuario($codigoUsuario)
-    {
+    public function setCodigoUsuario($codigoUsuario) {
         $this->codigoUsuario = $codigoUsuario;
 
         return $this;
@@ -892,8 +845,7 @@ class RhuIncapacidad
      *
      * @return string
      */
-    public function getCodigoUsuario()
-    {
+    public function getCodigoUsuario() {
         return $this->codigoUsuario;
     }
 
@@ -904,8 +856,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoContratoFk($codigoContratoFk)
-    {
+    public function setCodigoContratoFk($codigoContratoFk) {
         $this->codigoContratoFk = $codigoContratoFk;
 
         return $this;
@@ -916,8 +867,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoContratoFk()
-    {
+    public function getCodigoContratoFk() {
         return $this->codigoContratoFk;
     }
 
@@ -928,8 +878,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel = null)
-    {
+    public function setContratoRel(\Brasa\RecursoHumanoBundle\Entity\RhuContrato $contratoRel = null) {
         $this->contratoRel = $contratoRel;
 
         return $this;
@@ -940,8 +889,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuContrato
      */
-    public function getContratoRel()
-    {
+    public function getContratoRel() {
         return $this->contratoRel;
     }
 
@@ -952,8 +900,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEstadoLegalizado($estadoLegalizado)
-    {
+    public function setEstadoLegalizado($estadoLegalizado) {
         $this->estadoLegalizado = $estadoLegalizado;
 
         return $this;
@@ -964,8 +911,7 @@ class RhuIncapacidad
      *
      * @return boolean
      */
-    public function getEstadoLegalizado()
-    {
+    public function getEstadoLegalizado() {
         return $this->estadoLegalizado;
     }
 
@@ -976,8 +922,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setDiasCobrados($diasCobrados)
-    {
+    public function setDiasCobrados($diasCobrados) {
         $this->diasCobrados = $diasCobrados;
 
         return $this;
@@ -988,8 +933,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getDiasCobrados()
-    {
+    public function getDiasCobrados() {
         return $this->diasCobrados;
     }
 
@@ -1000,8 +944,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setDiasCobro($diasCobro)
-    {
+    public function setDiasCobro($diasCobro) {
         $this->diasCobro = $diasCobro;
 
         return $this;
@@ -1012,8 +955,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getDiasCobro()
-    {
+    public function getDiasCobro() {
         return $this->diasCobro;
     }
 
@@ -1024,8 +966,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setVrCobro($vrCobro)
-    {
+    public function setVrCobro($vrCobro) {
         $this->vrCobro = $vrCobro;
 
         return $this;
@@ -1036,8 +977,7 @@ class RhuIncapacidad
      *
      * @return float
      */
-    public function getVrCobro()
-    {
+    public function getVrCobro() {
         return $this->vrCobro;
     }
 
@@ -1048,8 +988,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoCobroFk($codigoCobroFk)
-    {
+    public function setCodigoCobroFk($codigoCobroFk) {
         $this->codigoCobroFk = $codigoCobroFk;
 
         return $this;
@@ -1060,8 +999,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoCobroFk()
-    {
+    public function getCodigoCobroFk() {
         return $this->codigoCobroFk;
     }
 
@@ -1072,8 +1010,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setEstadoCobrado($estadoCobrado)
-    {
+    public function setEstadoCobrado($estadoCobrado) {
         $this->estadoCobrado = $estadoCobrado;
 
         return $this;
@@ -1084,8 +1021,7 @@ class RhuIncapacidad
      *
      * @return boolean
      */
-    public function getEstadoCobrado()
-    {
+    public function getEstadoCobrado() {
         return $this->estadoCobrado;
     }
 
@@ -1096,8 +1032,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null)
-    {
+    public function setCobroRel(\Brasa\RecursoHumanoBundle\Entity\RhuCobro $cobroRel = null) {
         $this->cobroRel = $cobroRel;
 
         return $this;
@@ -1108,8 +1043,7 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCobro
      */
-    public function getCobroRel()
-    {
+    public function getCobroRel() {
         return $this->cobroRel;
     }
 
@@ -1120,8 +1054,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setCodigoClienteFk($codigoClienteFk)
-    {
+    public function setCodigoClienteFk($codigoClienteFk) {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -1132,8 +1065,7 @@ class RhuIncapacidad
      *
      * @return integer
      */
-    public function getCodigoClienteFk()
-    {
+    public function getCodigoClienteFk() {
         return $this->codigoClienteFk;
     }
 
@@ -1144,8 +1076,7 @@ class RhuIncapacidad
      *
      * @return RhuIncapacidad
      */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null) {
         $this->clienteRel = $clienteRel;
 
         return $this;
@@ -1156,8 +1087,56 @@ class RhuIncapacidad
      *
      * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
      */
-    public function getClienteRel()
-    {
+    public function getClienteRel() {
         return $this->clienteRel;
+    }
+
+
+    /**
+     * Set diasReconocidos
+     *
+     * @param integer $diasReconocidos
+     *
+     * @return RhuIncapacidad
+     */
+    public function setDiasReconocidos($diasReconocidos)
+    {
+        $this->diasReconocidos = $diasReconocidos;
+
+        return $this;
+    }
+
+    /**
+     * Get diasReconocidos
+     *
+     * @return integer
+     */
+    public function getDiasReconocidos()
+    {
+        return $this->diasReconocidos;
+    }
+
+    /**
+     * Set diasNoReconocidos
+     *
+     * @param integer $diasNoReconocidos
+     *
+     * @return RhuIncapacidad
+     */
+    public function setDiasNoReconocidos($diasNoReconocidos)
+    {
+        $this->diasNoReconocidos = $diasNoReconocidos;
+
+        return $this;
+    }
+
+    /**
+     * Get diasNoReconocidos
+     *
+     * @return integer
+     */
+    public function getDiasNoReconocidos()
+    {
+        return $this->diasNoReconocidos;
     }
 }

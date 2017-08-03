@@ -507,40 +507,51 @@ class FacturasController extends Controller {
                 ->setCellValue('B1', 'NÚMERO')
                 ->setCellValue('C1', 'FECHA')
                 ->setCellValue('D1', 'VENCE')
-                ->setCellValue('E1', 'CLIENTE')
-                ->setCellValue('F1', 'FACTURA TIPO')
-                ->setCellValue('G1', 'SERVICIO')
-                ->setCellValue('H1', 'VR_BRUTO')
-                ->setCellValue('I1', 'VR_NETO')
-                ->setCellValue('J1', 'VR_RET_FTE')
-                ->setCellValue('K1', 'VR_RET_CREE')
-                ->setCellValue('L1', 'VR_RET_IVA')
-                ->setCellValue('M1', 'VR_BASE AIU')
-                ->setCellValue('N1', 'VR_TOTAL_ADMON')
-                ->setCellValue('O1', 'VR_TOTAL_MISION');
+                ->setCellValue('E1', 'NIT')
+                ->setCellValue('F1', 'CLIENTE')
+                ->setCellValue('G1', 'TIPO_COBRO')
+                ->setCellValue('H1', 'TIPO FACTURA')
+                ->setCellValue('I1', 'SERVICIO')
+                ->setCellValue('J1', 'VR_BRUTO')
+                ->setCellValue('K1', 'VR_NETO')
+                ->setCellValue('L1', 'VR_RET_FTE')
+                ->setCellValue('M1', 'VR_RET_CREE')
+                ->setCellValue('N1', 'VR_RET_IVA')
+                ->setCellValue('O1', 'VR_BASE AIU')
+                ->setCellValue('P1', 'VR_TOTAL_ADMON')
+                ->setCellValue('Q1', 'VR_TOTAL_MISION');
 
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
         $arFacturas = new \Brasa\RecursoHumanoBundle\Entity\RhuFactura();
         $arFacturas = $query->getResult();
         foreach ($arFacturas as $arFactura) {
-
+            $arDetallesFactura = $arFactura->getFacturasDetallesFacturaRel();
+            $tiposCobros = array();
+            foreach($arDetallesFactura AS $detalle){
+                $cobro = $detalle->getCobroRel();
+                if($cobro !== null && !in_array($cobro->getCobroTipoRel()->getNombre(), $tiposCobros)){                    
+                    $tiposCobros[] = $cobro->getCobroTipoRel()->getNombre();
+                }
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arFactura->getCodigoFacturaPk())
                     ->setCellValue('B' . $i, $arFactura->getNumero())
                     ->setCellValue('C' . $i, $arFactura->getFecha()->format('Y/m/d'))
                     ->setCellValue('D' . $i, $arFactura->getFechaVence()->format('Y/m/d'))
-                    ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNombreCorto())
-                    ->setCellValue('F' . $i, $arFactura->getFacturaTipoRel()->getNombre())
-                    ->setCellValue('G' . $i, $arFactura->getFacturaServicioRel()->getNombre())
-                    ->setCellValue('H' . $i, $arFactura->getVrBruto())
-                    ->setCellValue('I' . $i, $arFactura->getVrNeto())
-                    ->setCellValue('J' . $i, $arFactura->getVrRetencionFuente())
-                    ->setCellValue('K' . $i, $arFactura->getVrRetencionCree())
-                    ->setCellValue('L' . $i, $arFactura->getVrRetencionIva())
-                    ->setCellValue('M' . $i, $arFactura->getVrBaseAIU())
-                    ->setCellValue('N' . $i, $arFactura->getVrTotalAdministracion())
-                    ->setCellValue('O' . $i, $arFactura->getVrIngresoMision());
+                    ->setCellValue('E' . $i, $arFactura->getClienteRel()->getNit())
+                    ->setCellValue('F' . $i, $arFactura->getClienteRel()->getNombreCorto())
+                    ->setCellValue('G' . $i, $arFactura->getFacturaTipoRel()->getNombre())
+                    ->setCellValue('H' . $i, $arFactura->getFacturaServicioRel()->getNombre())
+                    ->setCellValue('I' . $i, $arFactura->getVrBruto())
+                    ->setCellValue('J' . $i, $arFactura->getVrNeto())
+                    ->setCellValue('K' . $i, $arFactura->getVrRetencionFuente())
+                    ->setCellValue('L' . $i, $arFactura->getVrRetencionCree())
+                    ->setCellValue('M' . $i, $arFactura->getVrRetencionIva())
+                    ->setCellValue('N' . $i, $arFactura->getVrBaseAIU())
+                    ->setCellValue('O' . $i, $arFactura->getVrTotalAdministracion())                    
+                    ->setCellValue('P' . $i, $arFactura->getVrIngresoMision())
+                    ->setCellValue('Q' . $i, implode(", ", $tiposCobros));
             $i++;
         }
 
