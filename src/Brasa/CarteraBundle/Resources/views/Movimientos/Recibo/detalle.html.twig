@@ -48,41 +48,57 @@
                         <td class="td-in-well">{{ arRecibo.codigoReciboPk }}</td>
                         <td class="titulo">NÚMERO:</td>
                         <td class="td-in-well">{{ arRecibo.numero | default('0') }}</td>
-                        <td class="titulo">TOTAL DESCUENTO:</td>
-                        <td align="right">{{ arRecibo.vrTotalDescuento | number_format(2, '.', ',')}}</td>
+                        <td class="titulo">TOTAL CONTRIBUCION</td>
+                        <td align="right">{{ arRecibo.vrTotalContribucion | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo">CLIENTE:</td>
                         <td class="td-in-well">{{ arRecibo.clienteRel.nombreCorto | default('') }}</td>
                         <td class="titulo">NIT:</td>
                         <td class="td-in-well">{{ arRecibo.clienteRel.nit | default('') }}</td>
-                        <td class="titulo">TOTAL AJUSTE PESO:</td>
-                        <td align="right">{{ arRecibo.vrTotalAjustePeso | number_format(2, '.', ',')}}</td>
+                        <td class="titulo">TOTAL ESTAMPILLA:</td>
+                        <td align="right">{{ arRecibo.vrTotalEstampilla| number_format(2, '.', ',')}}</td>
                     </tr>                  
                     <tr>
                         <td class="titulo">CUENTA BANCO:</td>
                         <td class="td-in-well">{{ arRecibo.cuentaRel.nombre }}</td>
                         <td class="titulo" >TIPO RECBO:</td>
                         <td class="td-in-well">{{ arRecibo.reciboTipoRel.nombre }}</td>
-                        <td class="titulo">TOTAL RETE ICA:</td>
-                        <td align="right">{{ arRecibo.vrTotalRetencionIca | number_format(2, '.', ',')}}</td>
+                        <td class="titulo">TOTAL DESCUENTO</td>
+                        <td align="right">{{ arRecibo.vrTotalDescuento | number_format(2, '.', ',')}}</td>
                     </tr>                
                     <tr>
                         <td class="titulo">FECHA:</td>
                         <td class="td-in-well">{{ arRecibo.fecha |date("Y/m/d") }}</td>
                         <td class="titulo" >FECHA PAGO:</td>
                         <td class="td-in-well">{{ arRecibo.fechaPago |date("Y/m/d") }}</td>
-                        <td class="titulo">TOTAL RETE IVA:</td>
-                        <td align="right">{{ arRecibo.vrTotalRetencionIva | number_format(2, '.', ',')}}</td>
+                        <td class="titulo">TOTAL AJUSTE PESO:</td>
+                        <td align="right">{{ arRecibo.vrTotalAjustePeso | number_format(2, '.', ',')}}</td>
                     </tr>
                     <tr>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
-                        <td class="titulo">TOTAL RETE FUENTE:</td>
-                        <td align="right">{{ arRecibo.vrTotalRetencionFuente | number_format(2, '.', ',')}}</td>
+                        <td class="titulo">TOTAL RETENCION ICA:</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionIca | number_format(2, '.', ',')}}</td>
                     </tr>
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL RETENCION IVA:</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionIva | number_format(2, '.', ',')}}</td>
+                    </tr> 
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
+                        <td class="titulo">TOTAL RETENCION FUENTE:</td>
+                        <td align="right">{{ arRecibo.vrTotalRetencionFuente | number_format(2, '.', ',')}}</td>
+                    </tr> 
                     <tr>
                         <td class="titulo"></td>
                         <td class="td-in-well"></td>
@@ -98,7 +114,7 @@
                         <td class="td-in-well"></td>
                         <td class="titulo">TOTAL:</td>
                         <td align="right">{{ arRecibo.vrPagoTotal | number_format(2, '.', ',')}}</td>
-                    </tr>                    
+                    </tr>
                     <tr>
                         <td class="titulo" >COMENTARIOS: </td>
                         <td class="td-in-well" colspan="5">{{ arRecibo.comentarios }}</td>
@@ -113,6 +129,8 @@
                 <th>NUMERO</th>
                 <th>NUMERO_A</th>
                 <th>TIPO</th>
+                <th>CONTRIBUCION</th>
+                <th>ESTAMPILLA</th>
                 <th>DESCUENTO</th>
                 <th>AJUSTE PESO</th>
                 <th>RTE ICA</th>
@@ -130,6 +148,8 @@
                     <td>{{ arReciboDetalle.numeroDocumentoAplicacion  }}</td>
                     <td>{{ arReciboDetalle.cuentaCobrarTipoRel.nombre |default('')  }}</td>
                     {% if arRecibo.estadoAutorizado == 0 %}
+                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrContribucion{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrContribucion }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
+                        <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrEstampilla{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrEstampilla }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrDescuento{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrDescuento  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                            
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrAjustePeso{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrAjustePeso  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtVrRetencionIca{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrRetencionIca  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                        
@@ -138,7 +158,9 @@
                         <td style="text-align: right"><input style="text-align: right" class="input-grid" type="text" name="TxtValorPago{{ arReciboDetalle.codigoReciboDetallePk }}" value="{{ arReciboDetalle.vrPago  }}" size="8" style="width:65px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                                
                         <td style="text-align: right">{{ arReciboDetalle.vrPagoAfectar | number_format(0, '.', ',') }}</td> 
                         <td style="text-align: center"><a class="btn btn-default btn-xs" href="javascript:abrirVentana3('{{ path('brs_car_movimiento_recibo_detalle_aplicar', {'codigoReciboDetalle': arReciboDetalle.codigoReciboDetallePk }) }}', 'AgregarNuevoDetalle', 600, 900)">Aplicar</a></td>                        
-                    {% else %}                        
+                    {% else %}
+                        <td style="text-align: right">{{ arReciboDetalle.vrContribucion | number_format(0, '.', ',') }}</td> 
+                        <td style="text-align: right">{{ arReciboDetalle.vrEstampilla | number_format(0, '.', ',') }}</td>                         
                         <td style="text-align: right">{{ arReciboDetalle.vrDescuento | number_format(0, '.', ',') }}</td> 
                         <td style="text-align: right">{{ arReciboDetalle.vrAjustePeso | number_format(0, '.', ',') }}</td> 
                         <td style="text-align: right">{{ arReciboDetalle.vrRetencionIca | number_format(0, '.', ',') }}</td> 

@@ -94,6 +94,16 @@ class CarReciboDetalle
     private $operacion = 0;    
     
     /**
+     * @ORM\Column(name="vr_contribucion", type="float")
+     */    
+    private $vrContribucion = 0;
+    
+    /**
+     * @ORM\Column(name="vr_estampilla", type="float")
+     */    
+    private $vrEstampilla = 0;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="CarRecibo", inversedBy="recibosDetallesRecibosRel")
      * @ORM\JoinColumn(name="codigo_recibo_fk", referencedColumnName="codigo_recibo_pk")
      */
@@ -606,5 +616,53 @@ class CarReciboDetalle
     public function getOperacion()
     {
         return $this->operacion;
+    }
+
+    /**
+     * Set vrContribucion
+     *
+     * @param float $vrContribucion
+     *
+     * @return CarReciboDetalle
+     */
+    public function setVrContribucion($vrContribucion)
+    {
+        $this->vrContribucion = $vrContribucion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrContribucion
+     *
+     * @return float
+     */
+    public function getVrContribucion()
+    {
+        return $this->vrContribucion;
+    }
+
+    /**
+     * Set vrEstampilla
+     *
+     * @param float $vrEstampilla
+     *
+     * @return CarReciboDetalle
+     */
+    public function setVrEstampilla($vrEstampilla)
+    {
+        $this->vrEstampilla = $vrEstampilla;
+
+        return $this;
+    }
+
+    /**
+     * Get vrEstampilla
+     *
+     * @return float
+     */
+    public function getVrEstampilla()
+    {
+        return $this->vrEstampilla;
     }
 }

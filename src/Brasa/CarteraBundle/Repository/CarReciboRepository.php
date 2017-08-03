@@ -91,7 +91,7 @@ class CarReciboRepository extends EntityRepository {
             $arConfiguracion = new \Brasa\CarteraBundle\Entity\CarConfiguracion();
             $arConfiguracion = $em->getRepository('BrasaCarteraBundle:CarConfiguracion')->find(1);
             $arComprobanteContable = new \Brasa\ContabilidadBundle\Entity\CtbComprobante();
-            $arComprobanteContable =$em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteRecibo());
+            $arComprobanteContable = $em->getRepository('BrasaContabilidadBundle:CtbComprobante')->find($arConfiguracion->getCodigoComprobanteRecibo());
             foreach ($arrSeleccionados AS $codigo) {
                 $arRecibo = new \Brasa\CarteraBundle\Entity\CarRecibo();
                 $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigo);
@@ -99,15 +99,12 @@ class CarReciboRepository extends EntityRepository {
                     $arTercero = $em->getRepository('BrasaContabilidadBundle:CtbTercero')->findOneBy(array('numeroIdentificacion' => $arRecibo->getClienteRel()->getNit()));
                     if (count($arTercero) <= 0) {
                         $arTercero = new \Brasa\ContabilidadBundle\Entity\CtbTercero();
+                        $arTipoIdentificacion = $em->getRepository('BrasaGeneralBundle:GenTipoIdentificacion')->find(31);
                         $arTercero->setCiudadRel($arRecibo->getClienteRel()->getCiudadRel());
-                        $arTercero->setCodigoTipoIdentificacionFk('31');
+                        $arTercero->setTipoIdentificacionRel($arTipoIdentificacion);
                         $arTercero->setNumeroIdentificacion($arRecibo->getClienteRel()->getNit());
                         $arTercero->setDigitoVerificacion($arRecibo->getClienteRel()->getDigitoVerificacion());
                         $arTercero->setNombreCorto($arRecibo->getClienteRel()->getNombreCorto());
-                        $arTercero->setNombre1($arRecibo->getClienteRel()->getNombre1());
-                        $arTercero->setNombre2($arRecibo->getClienteRel()->getNombre2());
-                        $arTercero->setApellido1($arRecibo->getClienteRel()->getApellido1());
-                        $arTercero->setApellido2($arRecibo->getClienteRel()->getApellido2());
                         $arTercero->setDireccion($arRecibo->getClienteRel()->getDireccion());
                         $arTercero->setTelefono($arRecibo->getClienteRel()->getTelefono());
                         $arTercero->setCelular($arRecibo->getClienteRel()->getCelular());
@@ -115,32 +112,230 @@ class CarReciboRepository extends EntityRepository {
                         $em->persist($arTercero);
                     }
                     //Banco
-                    $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                     $codigoCuenta = $arRecibo->getCuentaRel()->getCodigoCuentaFk();
                     if ($codigoCuenta) {
                         $arCuentaBanco = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
                         if ($arCuentaBanco) {
+                            $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
                             $arRegistro->setComprobanteRel($arComprobanteContable);
                             $arRegistro->setCuentaRel($arCuentaBanco);
                             $arRegistro->setNumero($arRecibo->getNumero());
                             $arRegistro->setNumeroReferencia($arRecibo->getNumero());
                             $arRegistro->setFecha($arRecibo->getFecha());
-                            $arRegistro->setCredito($arRecibo->getVrPago());
-                            $arRegistro->setDescripcionContable($arRecibo->getComentarios());
-                            $arRegistro->setSucursalRel('');
-                            $arRegistro->setCodigoAreaFk('');
+                            $arRegistro->setDebito($arRecibo->getVrPago());
+                            $arRegistro->setDescripcionContable('BANCO');
                             $em->persist($arRegistro);
                         } else {
-                            $mensajeError = "La cuenta contable de la cuenta bancaria no existe";
+                            $respuesta = "La cuenta contable de la cuenta bancaria no existe";
                             break;
                         }
                     } else {
-                        $mensajeError = "La cuenta contable de la cuenta bancaria no esta configurada";
+                        $respuesta = "La cuenta contable de la cuenta bancaria no esta configurada";
                         break;
                     }
+                    //Detalles
+                    $arReciboDetalles = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
+                    $arReciboDetalles = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoReciboFk' => $codigo));
+                    foreach ($arReciboDetalles as $arReciboDetalle) {
+                        $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaClienteFk();
+                        if ($codigoCuenta) {
+                            $arCuenta = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuenta) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuenta);
+                                $arRegistro->setTerceroRel($arTercero);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setCredito($arReciboDetalle->getVrPagoAfectar());
+                                $arRegistro->setDescripcionContable('');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "La cuenta contable de la cuenta bancaria no existe";
+                                break;
+                            }
+                        } else {
+                            $respuesta = "El tipo de cuenta por cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada una cuenta de cliente";
+                            break;
+                        }
+                    }
+                    //Retencion Iva
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaRetencionIvaFk();
+                    if ($arRecibo->getVrTotalRetencionIva() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaRetencion = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaRetencion) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaRetencion);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalRetencionIva());
+                                $arRegistro->setDescripcionContable('RETENCION IVA');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de retencion IVA";
+                                break;
+                            }
+                        }
+                    }
+                    //Retencion Ica
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaRetencionIcaFk();
+                    if ($arRecibo->getVrTotalRetencionIca() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaRetencion = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaRetencion) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaRetencion);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalRetencionIca());
+                                $arRegistro->setDescripcionContable('RETENCION ICA');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de retencion ICA";
+                                break;
+                            }
+                        }
+                    }
+                    //Retencion fuente
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaRetencionFuenteFk();
+                    if ($arRecibo->getVrTotalRetencionFuente() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaRetencion = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaRetencion) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaRetencion);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalRetencionFuente());
+                                $arRegistro->setDescripcionContable('RETENCION FUENTE');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de retencion fuente";
+                                break;
+                            }
+                        }
+                    }
+                    //Contribuciones
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaContribucionFk();
+                    if ($arRecibo->getVrTotalContribucion() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaContribucion = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaContribucion) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaContribucion);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalContribucion());
+                                $arRegistro->setDescripcionContable('CONTRIBUCIONES');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de contribuciones";
+                                break;
+                            }
+                        }
+                    }
+                    //Estampillas
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaEstampillaFk();
+                    if ($arRecibo->getVrTotalEstampilla() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaEstampilla = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaEstampilla) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaEstampilla);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalEstampilla());
+                                $arRegistro->setDescripcionContable('ESTAMPILLA');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de estampillas";
+                                break;
+                            }
+                        }
+                    }
+                    //Ajuste al peso (positivo inicialmente)
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaAjustePesoFk();
+                    if ($arRecibo->getVrTotalAjustePeso() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaAjustePeso = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaAjustePeso) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaAjustePeso);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalAjustePeso());
+                                $arRegistro->setDescripcionContable('AJUSTE AL PESO');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de ajuste al peso";
+                                break;
+                            }
+                        }
+                    }
+                    //Descuento
+                    $codigoCuenta = $arReciboDetalle->getCuentaCobrarTipoRel()->getCodigoCuentaDescuentoFk();
+                    if ($arRecibo->getVrTotalDescuento() != 0) {
+                        if ($codigoCuenta) {
+                            $arCuentaDescuento = $em->getRepository('BrasaContabilidadBundle:CtbCuenta')->find($codigoCuenta);
+                            if ($arCuentaDescuento) {
+                                $arRegistro = new \Brasa\ContabilidadBundle\Entity\CtbRegistro();
+                                $arRegistro->setComprobanteRel($arComprobanteContable);
+                                $arRegistro->setCuentaRel($arCuentaDescuento);
+                                $arRegistro->setNumero($arRecibo->getNumero());
+                                $arRegistro->setNumeroReferencia($arRecibo->getNumero());
+                                $arRegistro->setFecha($arRecibo->getFecha());
+                                $arRegistro->setDebito($arRecibo->getVrTotalDescuento());
+                                $arRegistro->setDescripcionContable('DESCUENTO');
+                                $em->persist($arRegistro);
+                            } else {
+                                $respuesta = "El tipo de cuenta cobrar" . " " . $arReciboDetalle->getCuentaCobrarTipoRel()->getNombre() . " " . "no tiene configurada la cuenta de descuento";
+                                break;
+                            }
+                        }
+                    }
+                    $arRecibo->setEstadoContabilizado(1);
                 }
             }
+            if ($respuesta == '') {
+                $em->flush();
+            }
         }
+        return $respuesta;
+    }
+    
+    public function contabilizadosRecibosDql($intReciboDesde = 0, $intReciboHasta = 0, $strDesde = "", $strHasta = "") {
+        $em = $this->getEntityManager();
+        $dql = "SELECT r FROM BrasaCarteraBundle:CarRecibo r WHERE r.estadoContabilizado = 1";
+        if ($intReciboDesde != "" || $intReciboDesde != 0) {
+            $dql .= " AND r.numero >= " . $intReciboDesde;
+        }
+        if ($intReciboHasta != "" || $intReciboHasta != 0) {
+            $dql .= " AND r.numero <= " . $intReciboHasta;
+        }
+        if ($strDesde != "" || $strDesde != 0) {
+            $dql .= " AND r.fecha >='" . date_format($strDesde, ('Y-m-d')) . "'";
+        }
+        if ($strHasta != "" || $strHasta != 0) {
+            $dql .= " AND r.fecha <='" . date_format($strHasta, ('Y-m-d')) . "'";
+        }
+
+        $query = $em->createQuery($dql);
+        $arrayResultado = $query->getResult();
+        return $arrayResultado;
     }
 
     public function listaPendienteContabilizarDql($numeroRecibo = "", $boolEstadoAutorizado = "", $strFechaDesde = "", $strFechaHasta = "", $boolEstadoAnulado = "") {

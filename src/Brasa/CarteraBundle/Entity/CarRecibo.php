@@ -114,6 +114,16 @@ class CarRecibo
     private $estadoContabilizado = 0;
     
     /**
+     * @ORM\Column(name="vr_total_contribucion", type="float")
+     */    
+    private $vrTotalContribucion = 0; 
+    
+    /**
+     * @ORM\Column(name="vr_total_estampilla", type="float")
+     */    
+    private $vrTotalEstampilla = 0; 
+    
+    /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
      */    
     private $comentarios;
@@ -803,5 +813,53 @@ class CarRecibo
     public function getEstadoContabilizado()
     {
         return $this->estadoContabilizado;
+    }
+
+    /**
+     * Set vrTotalContribucion
+     *
+     * @param float $vrTotalContribucion
+     *
+     * @return CarRecibo
+     */
+    public function setVrTotalContribucion($vrTotalContribucion)
+    {
+        $this->vrTotalContribucion = $vrTotalContribucion;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalContribucion
+     *
+     * @return float
+     */
+    public function getVrTotalContribucion()
+    {
+        return $this->vrTotalContribucion;
+    }
+
+    /**
+     * Set vrTotalEstampilla
+     *
+     * @param float $vrTotalEstampilla
+     *
+     * @return CarRecibo
+     */
+    public function setVrTotalEstampilla($vrTotalEstampilla)
+    {
+        $this->vrTotalEstampilla = $vrTotalEstampilla;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalEstampilla
+     *
+     * @return float
+     */
+    public function getVrTotalEstampilla()
+    {
+        return $this->vrTotalEstampilla;
     }
 }

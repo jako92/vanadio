@@ -12,7 +12,15 @@ class CarCuentaCobrarTipoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder                                    
-            ->add('nombre', TextType::class, array('required' => true))                                                                  
+            ->add('nombre', TextType::class, array('required' => true))
+            ->add('codigoCuentaDescuentoFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaAjustePesoFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaEstampillaFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaContribucionFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaRetencionFuenteFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaRetencionIvaFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaRetencionIcaFk', TextType::class, array('required' => false))
+            ->add('codigoCuentaClienteFk', TextType::class, array('required' => false))  
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));
     }

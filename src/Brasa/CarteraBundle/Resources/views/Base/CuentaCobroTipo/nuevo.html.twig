@@ -23,11 +23,54 @@
             <div class="panel-heading">Informacion general</div>
             <div class="panel-body">                                                       
                 <div class="form-group form-group-sm">
-                    <label for="form_nombre" class="col-sm-3 control-label">Nombre:</label>
-                    <div class="col-sm-9">
+                    <label for="form_nombre" class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4">
                         {{ form_widget(form.nombre, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
-                    </div>                
-                </div>                                                                      
+                    </div>
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta cliente:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaClienteFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>        
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta retencion IVA:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaRetencionIvaFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta retencion ICA:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaRetencionIcaFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>        
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta retencion fuente:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaRetencionFuenteFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta contribucion:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaContribucionFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>        
+                </div> 
+                <div class="form-group form-group-sm">
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta estampilla:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaEstampillaFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta ajusto al peso:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaAjustePesoFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>        
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_nombre" class="col-sm-2 control-label">Cuenta descuento:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.codigoCuentaDescuentoFk, { 'attr': {'class': 'form-control', 'style':'text-transform:uppercase;','onblur':'javascript:this.value=this.value.toUpperCase()'} }) }}                        
+                    </div>
+                    <label for="form_nombre" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">                    
+                    </div>        
+                </div>   
             </div>
         </div>               
         <div class="modal-footer">

@@ -607,7 +607,9 @@ class ReciboController extends Controller {
                 $arReciboDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();
                 $arReciboDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->find($intCodigo);
                 //Valor que debia pagar                                
-                $valorPagoAfectar = $arrControles['TxtValorPago' . $intCodigo] - $arrControles['TxtVrAjustePeso' . $intCodigo] + $arrControles['TxtVrDescuento' . $intCodigo];
+                $valorPagoAfectar = $arrControles['TxtValorPago' . $intCodigo] + $arrControles['TxtVrAjustePeso' . $intCodigo] + $arrControles['TxtVrDescuento' . $intCodigo] + $arrControles['TxtVrContribucion' . $intCodigo] + $arrControles['TxtVrEstampilla' . $intCodigo] + $arrControles['TxtVrRetencionIva' . $intCodigo] + $arrControles['TxtVrRetencionIca' . $intCodigo] + $arrControles['TxtVrRetencionFuente' . $intCodigo];
+                $arReciboDetalle->setVrContribucion($arrControles['TxtVrContribucion' . $intCodigo]);
+                $arReciboDetalle->setVrEstampilla($arrControles['TxtVrEstampilla' . $intCodigo]);
                 $arReciboDetalle->setVrDescuento($arrControles['TxtVrDescuento' . $intCodigo]);
                 $arReciboDetalle->setVrAjustePeso($arrControles['TxtVrAjustePeso' . $intCodigo]);
                 $arReciboDetalle->setVrRetencionIca($arrControles['TxtVrRetencionIca' . $intCodigo]);

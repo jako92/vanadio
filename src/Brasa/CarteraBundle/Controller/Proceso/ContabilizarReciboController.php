@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -91,7 +92,48 @@ class ContabilizarReciboController extends Controller {
         return $this->render('BrasaCarteraBundle:Proceso/Contabilizar:reciboConfigurar.html.twig', array(
             'arConfiguracion' => $arConfiguracion,
             'form' => $form->createView()));
-    }      
+    }    
+    
+    /**
+     * @Route("/car/proceso/descontabilizar/recibo", name="brs_car_proceso_contabilizar_descontabilizar_recibo")
+     */
+    public function descontabilizarReciboAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();        
+        $session = new Session;
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $form = $this->createFormBuilder()
+            ->add('numeroDesde', NumberType::class, array('label'  => 'Pago desde'))
+            ->add('numeroHasta', NumberType::class, array('label'  => 'Pago hasta'))
+            ->add('fechaDesde',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                
+            ->add('fechaHasta',DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))                                                                            
+            ->add('BtnDescontabilizar', SubmitType::class, array('label'  => 'Descontabilizar',))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            if ($form->get('BtnDescontabilizar')->isClicked()) {
+                $intReciboDesde = $form->get('numeroDesde')->getData();
+                $intReciboHasta = $form->get('numeroHasta')->getData();
+                $dateFechaDesde = $form->get('fechaDesde')->getData();
+                $dateFechaHasta = $form->get('fechaHasta')->getData();                
+                if($intReciboDesde != "" || $intReciboHasta != "" || $dateFechaDesde != "" || $dateFechaHasta != "") {
+                    $arRegistros = new \Brasa\CarteraBundle\Entity\CarRecibo();
+                    $arRegistros = $em->getRepository('BrasaCarteraBundle:CarRecibo')->contabilizadosRecibosDql($intReciboDesde, $intReciboHasta, $dateFechaDesde, $dateFechaHasta);
+                    foreach ($arRegistros as $codigoRegistro) {
+                        $arRegistro = new \Brasa\CarteraBundle\Entity\CarRecibo();
+                        $arRegistro = $em->getRepository('BrasaRecursoHumanoBundle:CarRecibo')->find($codigoRegistro);
+                        $arRegistro->setEstadoContabilizado(0);
+                        $em->persist($arRegistro);
+                    }
+                    $em->flush();
+                    echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+                } else {
+                    $objMensaje->Mensaje('error', 'Debe seleccionar un filtro', $this);
+                }
+            }
+        }
+        return $this->render('BrasaCarteraBundle:Proceso/Contabilizar:descontabilizarRecibo.html.twig', array(
+            'form' => $form->createView()));
+    }
     
     private function lista() {
         $em = $this->getDoctrine()->getManager();

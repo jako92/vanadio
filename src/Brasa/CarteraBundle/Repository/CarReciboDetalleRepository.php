@@ -58,6 +58,8 @@ class CarReciboDetalleRepository extends EntityRepository {
         $intCantidad = 0;        
         $pago = 0;
         $pagoTotal = 0;
+        $floContribucion = 0;
+        $floEstampilla = 0;
         $floDescuento = 0;
         $floAjustePeso = 0;
         $floRetencionIca = 0;
@@ -66,7 +68,9 @@ class CarReciboDetalleRepository extends EntityRepository {
         $arRecibo = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigoRecibo);         
         $arRecibosDetalle = new \Brasa\CarteraBundle\Entity\CarReciboDetalle();        
         $arRecibosDetalle = $em->getRepository('BrasaCarteraBundle:CarReciboDetalle')->findBy(array('codigoReciboFk' => $codigoRecibo));         
-        foreach ($arRecibosDetalle as $arReciboDetalle) {         
+        foreach ($arRecibosDetalle as $arReciboDetalle) {
+            $floContribucion += $arReciboDetalle->getVrContribucion();
+            $floEstampilla += $arReciboDetalle->getVrEstampilla();
             $floDescuento += $arReciboDetalle->getVrDescuento();
             $floAjustePeso += $arReciboDetalle->getVrAjustePeso();
             $floRetencionIca += $arReciboDetalle->getVrRetencionIca();
@@ -77,6 +81,8 @@ class CarReciboDetalleRepository extends EntityRepository {
         }                 
         $arRecibo->setVrPago($pago);
         $arRecibo->setVrPagoTotal($pagoTotal);
+        $arRecibo->setVrTotalContribucion($floContribucion);
+        $arRecibo->setVrTotalEstampilla($floEstampilla);
         $arRecibo->setVrTotalDescuento($floDescuento);
         $arRecibo->setVrTotalAjustePeso($floAjustePeso);
         $arRecibo->setVrTotalRetencionIca($floRetencionIca);

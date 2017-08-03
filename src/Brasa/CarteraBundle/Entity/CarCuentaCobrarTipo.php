@@ -36,7 +36,42 @@ class CarCuentaCobrarTipo
     /**
      * @ORM\Column(name="codigo_cuenta_cliente_fk", type="string", length=20, nullable=true)
      */     
-    private $codigoCuentaClienteFk;     
+    private $codigoCuentaClienteFk; 
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_iva_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaRetencionIvaFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_ica_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaRetencionIcaFk;
+
+    /**
+     * @ORM\Column(name="codigo_cuenta_retencion_fuente_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaRetencionFuenteFk;   
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_contribucion_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaContribucionFk; 
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_estampilla_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaEstampillaFk;
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_ajuste_peso_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaAjustePesoFk; 
+    
+    /**
+     * @ORM\Column(name="codigo_cuenta_descuento_fk", type="string", length=20, nullable=true)
+     */
+    private $codigoCuentaDescuentoFk; 
     
     /**
      * @ORM\OneToMany(targetEntity="CarCuentaCobrar", mappedBy="cuentaCobrarTipoRel")
@@ -352,5 +387,173 @@ class CarCuentaCobrarTipo
     public function getCodigoCuentaClienteFk()
     {
         return $this->codigoCuentaClienteFk;
+    }
+
+    /**
+     * Set codigoCuentaRetencionIvaFk
+     *
+     * @param string $codigoCuentaRetencionIvaFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaRetencionIvaFk($codigoCuentaRetencionIvaFk)
+    {
+        $this->codigoCuentaRetencionIvaFk = $codigoCuentaRetencionIvaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionIvaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionIvaFk()
+    {
+        return $this->codigoCuentaRetencionIvaFk;
+    }
+
+    /**
+     * Set codigoCuentaRetencionIcaFk
+     *
+     * @param string $codigoCuentaRetencionIcaFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaRetencionIcaFk($codigoCuentaRetencionIcaFk)
+    {
+        $this->codigoCuentaRetencionIcaFk = $codigoCuentaRetencionIcaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionIcaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionIcaFk()
+    {
+        return $this->codigoCuentaRetencionIcaFk;
+    }
+
+    /**
+     * Set codigoCuentaRetencionFuenteFk
+     *
+     * @param string $codigoCuentaRetencionFuenteFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaRetencionFuenteFk($codigoCuentaRetencionFuenteFk)
+    {
+        $this->codigoCuentaRetencionFuenteFk = $codigoCuentaRetencionFuenteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaRetencionFuenteFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaRetencionFuenteFk()
+    {
+        return $this->codigoCuentaRetencionFuenteFk;
+    }
+
+    /**
+     * Set codigoCuentaContribucionFk
+     *
+     * @param string $codigoCuentaContribucionFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaContribucionFk($codigoCuentaContribucionFk)
+    {
+        $this->codigoCuentaContribucionFk = $codigoCuentaContribucionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaContribucionFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaContribucionFk()
+    {
+        return $this->codigoCuentaContribucionFk;
+    }
+
+    /**
+     * Set codigoCuentaEstampillaFk
+     *
+     * @param string $codigoCuentaEstampillaFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaEstampillaFk($codigoCuentaEstampillaFk)
+    {
+        $this->codigoCuentaEstampillaFk = $codigoCuentaEstampillaFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaEstampillaFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaEstampillaFk()
+    {
+        return $this->codigoCuentaEstampillaFk;
+    }
+
+    /**
+     * Set codigoCuentaAjustePesoFk
+     *
+     * @param string $codigoCuentaAjustePesoFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaAjustePesoFk($codigoCuentaAjustePesoFk)
+    {
+        $this->codigoCuentaAjustePesoFk = $codigoCuentaAjustePesoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaAjustePesoFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaAjustePesoFk()
+    {
+        return $this->codigoCuentaAjustePesoFk;
+    }
+
+    /**
+     * Set codigoCuentaDescuentoFk
+     *
+     * @param string $codigoCuentaDescuentoFk
+     *
+     * @return CarCuentaCobrarTipo
+     */
+    public function setCodigoCuentaDescuentoFk($codigoCuentaDescuentoFk)
+    {
+        $this->codigoCuentaDescuentoFk = $codigoCuentaDescuentoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCuentaDescuentoFk
+     *
+     * @return string
+     */
+    public function getCodigoCuentaDescuentoFk()
+    {
+        return $this->codigoCuentaDescuentoFk;
     }
 }
