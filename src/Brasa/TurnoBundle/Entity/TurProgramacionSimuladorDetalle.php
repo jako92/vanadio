@@ -341,5 +341,14 @@ class TurProgramacionSimuladorDetalle
     {
         return $this->fesNocExtras;
     }
-}
 
+    /**
+     * Get codigoSimuladorDetallePk
+     *
+     * @return integer
+     */
+    public function getCodigoSimuladorDetallePk()
+    {
+        return $this->codigoSimuladorDetallePk;
+    }
+}

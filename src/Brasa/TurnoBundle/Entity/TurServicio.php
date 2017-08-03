@@ -136,10 +136,10 @@ class TurServicio {
      * @ORM\Column(name="vr_salario_base", type="float", options={"default":0}))
      */
     private $vrSalarioBase = 0;
-    
+
     /**
      * Opción para sumar el aiu
-     * @ORM\Column(name="sumar_aiu", type="boolean", options={"default":false})
+     * @ORM\Column(name="sumar_aiu", type="boolean", options={"default":false}, nullable=true)
      */
     private $sumarAiu = false;
 
@@ -822,7 +822,6 @@ class TurServicio {
         return $this->servicioTipoRel;
     }
 
-
     /**
      * Set cantidadPersonal
      *
@@ -830,8 +829,7 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setCantidadPersonal($cantidadPersonal)
-    {
+    public function setCantidadPersonal($cantidadPersonal) {
         $this->cantidadPersonal = $cantidadPersonal;
 
         return $this;
@@ -842,28 +840,26 @@ class TurServicio {
      *
      * @return integer
      */
-    public function getCantidadPersonal()
-    {
+    public function getCantidadPersonal() {
         return $this->cantidadPersonal;
     }
-    
+
     /**
      * 
      * @return boolean
      */
-    public function getSumarAiu()
-    {
+    public function getSumarAiu() {
         return $this->sumarAiu;
     }
-    
+
     /**
      * 
      * @param boolean $sumarAIU
      * @return $this
      */
-    public function setSumarAiu($sumarAIU)
-    {
+    public function setSumarAiu($sumarAIU) {
         $this->sumarAiu = $sumarAIU;
         return $this;
     }
+
 }

@@ -222,7 +222,7 @@ class TurServicioDetalle
      */
     private $vrSalarioBase = 0;     
     /**
-     * @ORM\Column(name="porcentaje_iva", type="float")
+     * @ORM\Column(name="porcentaje_iva", type="float", nullable=true)
      */
     private $porcentajeIva = 0;
     
