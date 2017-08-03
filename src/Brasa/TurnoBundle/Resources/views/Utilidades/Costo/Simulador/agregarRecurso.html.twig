@@ -1,31 +1,100 @@
 {% extends '::base_sin_menu.html.twig' %}
-{% block title %}Simulador costos - Soga App{% endblock %}
+{% block title %}Buscar recurso - Soga App{% endblock %}
 {% block content %}
     <section class="content-header">
-        <h1>            
-            <small>Agregar recurso</small>
+        <h1>
+            Buscar
+            <small>Recurso</small>
         </h1>
     </section>    
-    <section class="content">  
-        {{form_start(form, {attr: {role:'form', class: 'form-inline'} })}}
+    <section class="content"> 
+        <script language="javascript">
+            function selTercero(codigo)
+            {
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                form.setAttribute("action", "{{path('brs_tur_utilidad_costo_simulador_agregar_recurso')}}");
+                var btnAgregar = document.createElement("input");
+                btnAgregar.setAttribute("type", "hidden");
+                btnAgregar.setAttribute("name", "BtnAgregar");
+                btnAgregar.setAttribute("value", "true");
+                form.appendChild(btnAgregar);
+                var txtCodigo = document.createElement("input");
+                txtCodigo.setAttribute("type", "hidden");
+                txtCodigo.setAttribute("name", "TxtCodigoRecurso");
+                txtCodigo.setAttribute("value", codigo);
+                form.appendChild(txtCodigo);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>    
+        {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}                
         <div class="panel panel-default">
-            <div class="panel-heading">Recurso</div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="col-sm-4">
-                            <label>Código del recurso</label>
-                            <input class="" placeholder="" style="width:100%" type="text" name="TxtCodigoRecurso" id="TxtCodigoRecurso" value="" onkeyup="javascript:this.value = this.value.toUpperCase();" onclick="this.select()"/>
-                        </div>
-                        <div class="col-sm-8">
-                            <label>Código del recurso</label>
-                            <input class="" style="width:90%" name="TxtNombreRecurso" id="TxtNombreRecurso" value="" onkeyup="javascript:this.value = this.value.toUpperCase();" onclick="this.select()"/>
-                            <a href="javascript:abrirVentana3('{{ path('brs_tur_buscar_recurso', {'campoCodigo': 'TxtCodigoRecurso', 'campoNombre': 'TxtNombreRecurso'}) }}', 'AgregarNuevoDetalle', 600, 900)"><img src="{{ asset('imagenes/bootstrap/glyphicons_027_search.png') }}" width=20 height=20 title="Buscar"></a>
-                        </div>
+            <div class="panel-heading">Filtros de busqueda</div>
+            <div class="panel-body">                    
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Nombre:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtNombre, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
                     </div>
-                </div>                
+                    <label class="col-sm-2 control-label">Codigo:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.TxtCodigo, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
+                </div>
+                <div class="form-group form-group-sm">  
+                    <label class="col-sm-2 control-label">Identificacion:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.TxtNumeroIdentificacion, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <label class="col-sm-2 control-label">Inactivos:</label>
+                    <div class="col-sm-4">                  
+                        {{ form_widget(form.inactivos) }}
+                    </div>                    
+                </div>                    
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        {{ form_widget(form.BtnFiltrar, { 'attr': {'class': 'btn btn-default btn-sm', 'style':'float:right'} }) }}
+                    </div>
+                </div>                                                    
             </div>
-        </div>
-        {{form_end(form)}}
+        </div>        
+        <table  class="table table-striped table-bordered table-condensed table-hover">            
+            <tr>
+                <th>{{ knp_pagination_sortable(arRecursos, 'CÓDIGO', 'e.codigoRecursoPk') }}</th>
+                <th>IDENTIFICACION</th>
+                <th>{{ knp_pagination_sortable(arRecursos, 'NOMBRE', 'e.nombreCorto') }}</th>
+                <th>{{ knp_pagination_sortable(arRecursos, 'APODO', 'e.apodo') }}</th>
+                <th>ACT</th>
+                <th></th>
+            </tr>
+            {% for arRecursos in arRecursos %}
+                <tr>
+                    <td><input type="hidden" name="LblCodigo[]" value="{{ arRecursos.codigoRecursoPk }}">{{ arRecursos.codigoRecursoPk }} </td>
+                    <td>{{ arRecursos.numeroIdentificacion  }}</td>
+                    <td>{{ arRecursos.nombreCorto }}</td>
+                    <td>{{ arRecursos.apodo }}</td>
+                    <td>{% if arRecursos.estadoActivo == 1 %} SI {% else %} NO {% endif %}</td>
+                    <td style="text-align: center"><a href="javascript:selTercero('{{ arRecursos.codigoRecursoPk }}')" ><img src="{{ asset('imagenes/bootstrap/glyphicons_198_ok.png') }}" width=20 height=20></a></td>
+                </tr>
+            {% endfor %} 
+        </table>                                         
+
+
+        <!-- Botones Menu Items -->
+        <div class="btn-toolbar">            
+            <div class="btn-group" style="float: left">
+                <div class="btn btn-default btn-sm">Registros <span class="badge">{{ arRecursos.getTotalItemCount }}</span></div>                        
+            </div>        
+            <div class="btn-group btn-sm" style="float: left;margin-left: 0px;padding-top: 0px;">
+                {{ knp_pagination_render(arRecursos) }}       
+            </div>            
+        </div>  
+
+        <!-- Fin Botones Menu Items -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}   
+        <br/><br/><br/><br/>
     </section>
 {% endblock %}

@@ -5,14 +5,17 @@ namespace Brasa\TurnoBundle\Controller\Utilidad\Costo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Brasa\TurnoBundle\UtlProgramacion;
 use Symfony\Component\HttpFoundation\Request;
 use Brasa\TurnoBundle\Entity\TurProgramacionSimulador;
 
 class SimuladorController extends Controller {
+    var $strCodigo = "";
+    var $strNombre = "";
     /**
      * Fecha inicial para la simulación.
      * @var string
@@ -189,8 +192,8 @@ class SimuladorController extends Controller {
         foreach($dias AS $dia=>$turno){
             if(trim($turno) == "") $turno = null;
             $arProgramacionSimulacion->setDia($dia, $turno);
-            $em->persist($arProgramacionSimulacion);
         }
+        $em->persist($arProgramacionSimulacion);
     }
     
     /**
@@ -216,12 +219,60 @@ class SimuladorController extends Controller {
      * @Route("/tur/utilidad/costos/simulador/agregarRecurso", name="brs_tur_utilidad_costo_simulador_agregar_recurso")
      */
     public function agregarRecursoAction(Request $request){
-        $form = $this->formularioAgregarRecurso();
+        $em = $this->getDoctrine()->getManager();
+        $paginator  = $this->get('knp_paginator');
+        $form = $this->formularioLista();
         $form->handleRequest($request);
+        $this->lista();
+        
+        if ($form->isValid()) {
+            if($form->get('BtnFiltrar')->isClicked()) {
+                $this->filtrarLista($form);
+                $this->lista();
+            }
+        }
+        
         $this->guardarNuevoRecurso($form, $request);
+        
+        $arRecurso = $paginator->paginate($em->createQuery($this->strDqlLista), $request->query->get('page', 1), 50);
         return $this->render("BrasaTurnoBundle:Utilidades/Costo/Simulador:agregarRecurso.html.twig", [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'arRecursos' => $arRecurso,
+            'campoCodigo' => '',
+            'campoNombre' => '',
         ]);
+    }
+    
+    public function formularioLista() {
+        $session = new Session();
+        $form = $this->createFormBuilder()
+            ->add('TxtNombre', TextType::class, array('label'  => 'Nombre','data' => $this->strNombre))
+            ->add('TxtCodigo', TextType::class, array('label'  => 'Codigo','data' => $this->strCodigo))
+            ->add('inactivos', CheckboxType::class, array('required'  => false, 'data' => $session->get('filtroTurnoRecursoInactivo')))
+            ->add('TxtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroTurnoNumeroIdentificacion')))
+            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
+            ->getForm();
+        return $form;
+    }
+    
+    public function lista() {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $this->strDqlLista = $em->getRepository('BrasaTurnoBundle:TurRecurso')->buscarDQL(
+                $this->strNombre,
+                $this->strCodigo,
+                "",
+                $session->get('filtroTurnoNumeroIdentificacion'),
+                "", "", $session->get('filtroTurnoRecursoInactivo')
+                );
+    }
+    
+    private function filtrarLista($form) {
+        $session = new Session();
+        $this->strNombre = $form->get('TxtNombre')->getData();
+        $this->strCodigo = $form->get('TxtCodigo')->getData();
+        $session->set('filtroTurnoRecursoInactivo', $form->get('inactivos')->getData());
+        $session->set('filtroTurnoNumeroIdentificacion', $form->get('TxtNumeroIdentificacion')->getData());
     }
     
     /**
@@ -231,7 +282,7 @@ class SimuladorController extends Controller {
      * @return boolean
      */
     private function guardarNuevoRecurso($form, $request){
-        if(!$form->get('BtnAgregar')->isClicked() && $request->get("TxtCodigoRecurso") == "") return false;
+        if(!$form->has('BtnAgregar') && $request->get("TxtCodigoRecurso") == "") return false;
         if($this->validarExistencia($request->get("TxtCodigoRecurso"))){
             echo "<script languaje='javascript' type='text/javascript'>alert('Este recurso ya se encuentra agregado.');</script>";
             return false;
