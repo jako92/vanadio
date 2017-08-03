@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 class TurProgramacionImportarRepository extends EntityRepository {
 
     public function listaDql() {
-        $dql = "SELECT pi FROM BrasaTurnoBundle:TurProgramacionImportar pi WHERE pi.codigoProgramacionImportarPk <> 0 ";
+        $dql = "SELECT pi FROM BrasaTurnoBundle:TurProgramacionImportar pi WHERE pi.codigoProgramacionImportarPk <> 0 AND pi.estadoProgramado = 0";
         $dql .= " ORDER BY pi.codigoPuestoFk, pi.codigoPedidoDetalleFk";
         return $dql;
     }

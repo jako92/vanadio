@@ -14,6 +14,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
     public static $fechaHasta;
     public static $dato;
     public static $codigoCentroCosto;
+    private $filasSeparador = 1;
 
     public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "", $centroCosto = "") {
         ob_clean();
@@ -68,7 +69,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
     }
 
     public function EncabezadoDetalles() {
-        $this->SetXY(10, 53);
+        $this->SetXY(10, 58 + ($this->filasSeparador * 5));
         //$this->Ln(45);
         $header = array('CODIGO', 'CONCEPTO DE PAGO', 'HORAS', 'VR. HORA', '%', 'DEVENGADO', 'DEDUCCION');
         $this->SetFillColor(200, 200, 200);
@@ -217,6 +218,34 @@ class PagoMasivo2 extends \FPDF_FPDF {
             $pdf->SetFont('Arial', '', 7);
             $pdf->SetFillColor(255, 255, 255);
             $pdf->Cell(21, 5, number_format($arPago->getVrSalarioEmpleado(), 0, '.', ','), 1, 0, 'R', 1);
+            //FILA 6  // solo si viene de una programacion
+            $pdf->SetXY(10, $y + 25);
+            $arRecurso = self::$em->getRepository('BrasaTurnoBundle:TurRecurso')->findOneBy(array('codigoEmpleadoFk' => $arPago->getCodigoEmpleadoFk()));
+            if ($arRecurso) {
+                $puestos = array();
+                $anio = $arPago->getFechaHasta()->format('Y');
+                $mes = $arPago->getFechaHasta()->format('m');
+                $arProgramacionesDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
+                $arProgramacionesDetalles = self::$em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findBy(array('codigoRecursoFk' => $arRecurso->getCodigoRecursoPk(), 'anio' => $anio, 'mes' => $mes));
+                if ($arProgramacionesDetalles) {
+                    foreach ($arProgramacionesDetalles as $arProgramacionDetalle) {
+                        $puesto = $arProgramacionDetalle->getPuestoRel()->getNombre();
+                        if ($puesto !== null && !in_array($puesto, $puestos)) {
+                            $puestos[] = $puesto;
+                        }
+                    }
+                }
+                $strPuestos = implode(", ", $puestos);
+                $this->filasSeparador = ceil(strlen($strPuestos) / 113);
+                
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $pdf->SetFillColor(200, 200, 200);
+                $pdf->Cell(22, (5 * $this->filasSeparador), "PUESTO:", 1, 0, 'L', 1);
+                $pdf->SetFont('Arial', '', 6.5);
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->MultiCell(171, 5, implode(", ", $puestos), 1, 'L');
+            }
+
             $pdf->Ln(12);
 
             $totalExtras = 0;
