@@ -221,6 +221,10 @@ class TurServicioDetalle
      * @ORM\Column(name="vr_salario_base", type="float")
      */
     private $vrSalarioBase = 0;     
+    /**
+     * @ORM\Column(name="porcentaje_iva", type="float")
+     */
+    private $porcentajeIva = 0;
     
     /**
      * @ORM\ManyToOne(targetEntity="TurServicio", inversedBy="serviciosDetallesServicioRel")
@@ -1652,5 +1656,24 @@ class TurServicioDetalle
     public function getVrSalarioBase()
     {
         return $this->vrSalarioBase;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
+    }
+    
+    /**
+     * 
+     * @param float $porcentajeIva
+     * @return TurServicioDetalle
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+        return $this;
     }
 }

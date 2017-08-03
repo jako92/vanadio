@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TurServicioType extends AbstractType
 {
@@ -30,6 +31,7 @@ class TurServicioType extends AbstractType
                 'choice_label' => 'nombre',
                 'required' => true))
             ->add('soporte', TextType::class, array('required'=>false))
+            ->add('sumarAiu', CheckboxType::class, array('required'=>false))
             ->add('vrSalarioBase', NumberType::class)
             ->add('cantidadPersonal', NumberType::class, array('required'=>false))                            
             ->add('comentarios', TextareaType::class, array('required' => false))

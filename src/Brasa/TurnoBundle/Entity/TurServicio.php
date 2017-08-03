@@ -136,6 +136,12 @@ class TurServicio {
      * @ORM\Column(name="vr_salario_base", type="float", options={"default":0}))
      */
     private $vrSalarioBase = 0;
+    
+    /**
+     * Opción para sumar el aiu
+     * @ORM\Column(name="sumar_aiu", type="boolean", options={"default":false})
+     */
+    private $sumarAiu = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="serviciosClienteRel")
@@ -839,5 +845,25 @@ class TurServicio {
     public function getCantidadPersonal()
     {
         return $this->cantidadPersonal;
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function getSumarAiu()
+    {
+        return $this->sumarAiu;
+    }
+    
+    /**
+     * 
+     * @param boolean $sumarAIU
+     * @return $this
+     */
+    public function setSumarAiu($sumarAIU)
+    {
+        $this->sumarAiu = $sumarAIU;
+        return $this;
     }
 }

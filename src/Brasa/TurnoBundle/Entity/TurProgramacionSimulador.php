@@ -35,7 +35,7 @@ class TurProgramacionSimulador {
     /************************************************
      *      Atributos para los días del mes         * 
      ************************************************/
-/**
+    /**
     * @var int
     * @ORM\Column(name="dia_1", type="integer", nullable=true)
     */

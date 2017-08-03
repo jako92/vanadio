@@ -23,7 +23,7 @@ class TurServicioDetalleType extends AbstractType
                     ->setParameter('codigoCliente', $options['data']->getServicioRel()->getCodigoClienteFk())
                     ->orderBy('gf.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => false))                             
+                'required' => false))                          
             ->add('puestoRel', EntityType::class, array(
                 'class' => 'BrasaTurnoBundle:TurPuesto',
                 'query_builder' => function (EntityRepository $er) use ($options) {
@@ -40,7 +40,7 @@ class TurServicioDetalleType extends AbstractType
                     ->where('cs.tipo = 1')        
                     ->orderBy('cs.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))               
+                'required' => true))
             ->add('conceptoServicioFacturacionRel', EntityType::class, array(
                 'class' => 'BrasaTurnoBundle:TurConceptoServicio',
                 'query_builder' => function (EntityRepository $er)  {

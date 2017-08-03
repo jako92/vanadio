@@ -138,6 +138,8 @@
             <div class="tab-pane active" id="detalle">
                 <!-- Menu Encabezado Movimiento -->
                 <div id="detalle" style="width: 100%"><br>
+                    <div class="table-responsive">
+                        
                     <table class="table table-striped table-bordered table-condensed">
                         <tr>
                             <th>ID</th>                                                       
@@ -164,6 +166,8 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">BASE</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">P.MINIMO</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio ajustado">P.AJUSTADO</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Base iva">BASE IVA</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Iva">IVA</p></th>
                             <th>SUBTOTAL</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Grupo facturacion">GF</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Servicio compuesto">C</p></th>
@@ -208,12 +212,16 @@
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtValorAjustado{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.vrPrecioAjustado  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                                
                                     {% else %}
                                     <td style="text-align: right">{{ arServicioDetalle.vrPrecioAjustado | number_format(0, '.', ',') }}</td> 
-                                {% endif %}                    
-                                <td style="text-align: right">{{ arServicioDetalle.vrSubTotal | number_format(0, '.', ',') }}</td> 
+                                {% endif %}
+                                <td>
+                                    <input class="input-grid" type="text" name="TxtPorcentajeIva{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.porcentajeIva  }}" size="10" style="text-align: right; width:4p0x" onkeypress="return validarNumeros(event)" onclick="this.select()"/>
+                                </td>
+                                <td style="text-align: right">{{ arServicioDetalle.vrIva | number_format(0, '.', ',') }}</td>
+                                <td style="text-align: right">{{ arServicioDetalle.vrSubTotal | number_format(0, '.', ',') }}</td>
                                 <td>{{ arServicioDetalle.grupoFacturacionRel.abreviatura | default('')  }}</td>                                
                                 <td>{% if arServicioDetalle.compuesto == 1 %} 
                                     <a href="{{ path('brs_tur_movimiento_servicio_compuesto_detalle', { 'codigoServicioDetalle': arServicioDetalle.codigoServicioDetallePk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a>                                                    
-                                    {% else %} 
+                                    {% else %}
                                     NO 
                                     {% endif %}
                                     </td>                                
@@ -222,8 +230,9 @@
                                     <td><input type="checkbox" name="ChkSeleccionar[]" value="{{ arServicioDetalle.codigoServicioDetallePk }}" /></td>
                                 </tr>
                                 {% endfor %}
-                                </table>
-
+                                </table>                        
+                    </div>
+                    <div class="separador-1"></div>
                                 <div class="btn-toolbar" style="float: left">    
                                     <div class="btn-group">
                                         <a  class="btn btn-default btn-sm" href="{{ path('brs_tur_movimiento_servicio') }}">Volver</a>

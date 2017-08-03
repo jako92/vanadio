@@ -104,7 +104,7 @@ class ServicioController extends Controller {
                         $arServicio->setUsuario($arUsuario->getUserName());
                         $em->persist($arServicio);
                         $em->flush();
-
+                        
                         if ($form->get('guardarnuevo')->isClicked()) {
                             return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_nuevo', array('codigoServicio' => 0)));
                         } else {
@@ -410,9 +410,10 @@ class ServicioController extends Controller {
                     $objMensaje->Mensaje("error", "Debe seleccionar un puesto para crear el nuevo servicio");
                 } else {
                     $arServicioDetalle = $form->getData();
+                    $arServicioDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorBaseIva());
                     $em->persist($arServicioDetalle);
                     $em->flush();
-
+                    
                     if ($form->get('guardarnuevo')->isClicked()) {
                         return $this->redirect($this->generateUrl('brs_tur_movimiento_servicio_detalle_nuevo', array('codigoServicio' => $codigoServicio, 'codigoServicioDetalle' => 0)));
                     } else {

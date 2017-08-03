@@ -3,6 +3,7 @@
 namespace Brasa\TurnoBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class TurServicioRepository extends EntityRepository {
 
@@ -70,7 +71,7 @@ class TurServicioRepository extends EntityRepository {
         $totalGeneral = 0;
         $arServiciosDetalle = new \Brasa\TurnoBundle\Entity\TurServicioDetalle();
         $arServiciosDetalle = $em->getRepository('BrasaTurnoBundle:TurServicioDetalle')->findBy(array('codigoServicioFk' => $codigoServicio));
-        foreach ($arServiciosDetalle as $arServicioDetalle) {
+        foreach ($arServiciosDetalle as $arServicioDetalle) {            
             if ($arServicioDetalle->getCompuesto() == 0) {
                 if ($arServicioDetalle->getPeriodoRel()->getCodigoPeriodoPk() == 2) {
                     $intDias = $arServicioDetalle->getFechaDesde()->diff($arServicioDetalle->getFechaHasta());
@@ -194,27 +195,37 @@ class TurServicioRepository extends EntityRepository {
                 $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arServicioDetalle->getModalidadServicioRel()->getPorcentaje() / 100);
                 $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100) / 30) / 16;
                 $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100) / 30) / 8;
-
+                
+                $inputPorcentajeIva = 'TxtPorcentajeIva' . $arServicioDetalleActualizar->getCodigoServicioDetallePk();
+                if(isset($_POST[$inputPorcentajeIva])){
+                    $porcentajeIva = $_POST[$inputPorcentajeIva];
+                    $arServicioDetalleActualizar->setPorcentajeIva($porcentajeIva);
+                } else {
+                    $porcentajeIva = $arServicioDetalle->getPorcentajeIva();
+                }
+            
                 $precio = ($intHorasRealesDiurnas * $floVrHoraDiurna) + ($intHorasRealesNocturnas * $floVrHoraNocturna);
-                $precio = $precio;
                 $floVrMinimoServicio = $precio;
 
                 $floVrServicio = 0;
                 $subTotalDetalle = 0;
+                
                 if ($arServicioDetalleActualizar->getVrPrecioAjustado() != 0) {
                     $floVrServicio = $arServicioDetalleActualizar->getVrPrecioAjustado() * $arServicioDetalle->getCantidad();
                     $precio = $arServicioDetalleActualizar->getVrPrecioAjustado();
                 } else {
                     $floVrServicio = $floVrMinimoServicio * $arServicioDetalle->getCantidad();
                 }
+                
                 $subTotalDetalle = $floVrServicio;
-                $baseAiuDetalle = $subTotalDetalle * 10 / 100;
-                $baseAiuDetalle = $baseAiuDetalle;
-                $ivaDetalle = $baseAiuDetalle * 19 / 100;
-                $ivaDetalle = $ivaDetalle;
+                $baseAiuDetalle = $subTotalDetalle * (doubleval($porcentajeIva) / 100);
+                $ivaDetalle = $baseAiuDetalle * (19 / 100);
                 $totalDetalle = $subTotalDetalle + $ivaDetalle;
-                $totalDetalle = $totalDetalle;
-
+                if($arServicio->getSumarAiu()){
+                    $totalDetalle += $baseAiuDetalle;
+                }
+                $totalDetalle = ceil($totalDetalle);
+                
                 $arServicioDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arServicioDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
                 $arServicioDetalleActualizar->setVrIva($ivaDetalle);
@@ -281,10 +292,6 @@ class TurServicioRepository extends EntityRepository {
         $arServicio->setVrTotalPrecioMinimo($douTotalMinimoServicio);
         $arServicio->setVrTotalOtros($floSubTotalConceptos);
         $arServicio->setVrTotalCosto($douTotalCostoCalculado);
-        //$subtotal = $douTotalServicio + $floSubTotalConceptos;
-        //$baseAiu = $subtotal*10/100;
-        //$iva = $baseAiu*16/100;
-        //$total = $subtotal + $iva;
         $arServicio->setVrSubtotal($subtotalGeneral);
         $arServicio->setVrBaseAiu($baseAuiGeneral);
         $arServicio->setVrIva($ivaGeneral);
