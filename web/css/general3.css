@@ -42,7 +42,7 @@ td.titulo {
     width: 100% !important;
 }
 
-.dia-festivo{
+.dia-festivo, tr.dia-festivo td{
     background-color: rgba(60, 141, 188, 0.62) !important;
     color: white;
 }
@@ -60,4 +60,7 @@ td.titulo {
 }
 .separador-1{
     padding-bottom: 15px;
+}
+.modal-wide-1 .modal-dialog{
+    width: 60%;
 }

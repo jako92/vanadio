@@ -47,12 +47,14 @@
                                     <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>{{dia.nombre|slice(0, 1)|upper}}</th>
                                     {% endfor %}
                                     <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                                 <tr>
                                     <th>Recurso</th>
                                     {% for numero, dia in diasMes %}
                                     <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>{{numero < 10? '0' ~ numero : numero }}</th>
                                     {% endfor %}
+                                    <th>&nbsp;</th>
                                     <th>&nbsp;</th>
                                 </tr>
                                 {% if arProgramacionSimulador|length == 0 %}
@@ -72,9 +74,12 @@
                                         {% endfor %}
                                         {% if mostrarDetalles is defined %}
                                         <td>
-
+                                            
                                         </td>
                                         {% endif %}
+                                        <td>
+                                            <a href="{{path('brs_tur_utilidad_costo_simulador', {simulacionId:arProgramacionSimulador.codigoSimulacionPk})}}"><img src="/vanadio/web/imagenes/bootstrap/glyphicons_152_new_window.png" width="22" height="22"></a>
+                                        </td>
                                         <td>
                                             <input type="checkbox" name="recursosABorrar[]" value="{{arProgramacionSimulador.codigoSimulacionPk}}" />
                                         </td>
@@ -95,13 +100,77 @@
             </div>
         {{form_end(form)}}
     </section>
+        {% if mostrarModal == true %}
+    <div class="modal fade modal-wide-1" id="modal-detalle-recurso">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Detalles del recurso</h4>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-bordered table-condensed table-hover">
+                        <tbody>
+                            <tr>
+                                <th>Dia/Horas</th>
+                                <th>H. Diurnas</th>
+                                <th>H. Diurnas Extra</th>
+                                <th>H. Nocturnas</th>
+                                <th>H. Nocturnas Extra</th>
+                                <th>H. Festivas Diu</th>
+                                <th>H. Festivas Noc</th>
+                                <th>H. Festivas Diu Extra</th>
+                                <th>H. Festivas Noc Extra</th>
+                            </tr>                            
+                            
+                            {% for arDetalle in arrDetalles['horas'] %}
+                            <tr {{arDetalle['esFestivo']? 'class="dia-festivo"' : ''}}>
+                                <td>{{arDetalle['fecha']}}</td>
+                                <td class="text-right">{{arDetalle['ordDiurnas']}}</td>
+                                <td class="text-right">{{arDetalle['ordDiuExtras']}}</td>
+                                <td class="text-right">{{arDetalle['ordNocturnas']}}</td>
+                                <td class="text-right">{{arDetalle['ordNocExtras']}}</td>
+                                <td class="text-right">{{arDetalle['fesDiurnas']}}</td>
+                                <td class="text-right">{{arDetalle['fesDiuExtras']}}</td>
+                                <td class="text-right">{{arDetalle['fesNocturnas']}}</td>
+                                <td class="text-right">{{arDetalle['fesNocExtras']}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th>Total</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_diu']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_noc']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_noc']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_noc_ext']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_fes_diu']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_fes_diu_ext']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_fes_noc']}}</th>
+                                <th class="text-right">{{arrDetalles['totales']['tot_fes_noc_ext']}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endif %}
 {% endblock %}
 {% block javascripts %}
     {{parent()}}
     <script>
         jQuery(function(){
+            
+        {% if mostrarModal == true %}
+            $("#modal-detalle-recurso").modal("show");
+        {% endif %}
+            
             $("#form_BtnAgregar").click(function(){
-                abrirVentana('{{ path('brs_tur_utilidad_costo_simulador_agregar_recurso') }}');
+                abrirVentana('{{ path('brs_tur_utilidad_costo_simulador_agregar') }}');
                 return false;
             });
         });

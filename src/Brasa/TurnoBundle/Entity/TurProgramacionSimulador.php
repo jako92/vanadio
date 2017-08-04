@@ -253,13 +253,10 @@ class TurProgramacionSimulador {
     {   
         $this->codigoRecursoFk = $valor;
         return $this;
-    }
+    }    
     public function getDia($dia){
         if(property_exists($this, "dia{$dia}")) return $this->{"dia{$dia}"};
         return null;
-    }
-    public function setDia($dia, $valor){
-        if(property_exists($this, "dia{$dia}")) $this->{"dia{$dia}"} = $valor;
     }
 
     /**

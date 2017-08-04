@@ -14,8 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Brasa\TurnoBundle\Entity\TurProgramacionSimulador;
 
 class SimuladorController extends Controller {
-    var $strCodigo = "";
-    var $strNombre = "";
+    private $strDqlLista;
+    private $strCodigo = "";
+    private $strNombre = "";
     /**
      * Fecha inicial para la simulación.
      * @var string
@@ -35,15 +36,12 @@ class SimuladorController extends Controller {
      * Turnos guardados en el sistema.
      * @var array
      */
-    private $turnos = [];
+    private $turnos = array();
     /**
      * Festivos del mes.
      * @var array
      */
-    private $festivos = [
-        '2017-07-20',
-        '2017-08-07'
-    ];
+    private $festivos = array();
     
     public function __construct() {
         
@@ -51,9 +49,9 @@ class SimuladorController extends Controller {
     
     /**
      * Esta función es la acción inicial de la aplicación.
-     * @Route("/tur/utilidad/costos/simulador", name="brs_tur_utilidad_costo_simulador")
+     * @Route("/tur/utilidad/costos/simulador/{simulacionId}", defaults={"simulacionId" = null},  name="brs_tur_utilidad_costo_simulador")
      */
-    public function listarAction(Request $request){
+    public function listarAction(Request $request, $simulacionId = null){
         $em = $this->getDoctrine()->getManager();
         $dql = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")
                    ->getDqlConsultaDetalles();
@@ -70,6 +68,7 @@ class SimuladorController extends Controller {
         
         $this->totalDiasMes = UtlProgramacion::Util()->getDiferencia($this->fechaInicial, $this->fechaFinal, UtlProgramacion::DIA);        
         setlocale(LC_ALL, "es_CO.UTF-8");
+        
         $fecha = $this->fechaInicial;
         for($i = 1; $i <= $this->totalDiasMes; $i ++){
             $dia = intval(UtlProgramacion::Util()->getFormato($fecha, "d"));
@@ -90,15 +89,58 @@ class SimuladorController extends Controller {
             if($form->get("BtnSimular")->isClicked()) { $this->ejecutarSimulacion($request, $form); }
             if($form->get("BtnEliminar")->isClicked()) { $this->eliminarRecursos($request); }
         }
-
+        
+        $arrDetalles = array();
+        if($simulacionId != null){
+            $arrDetalles = array(
+                'horas' => array(), 
+                'totales' => array(
+                    'tot_diu' => 0, 
+                    'tot_noc' => 0, 
+                    'tot_diu_ext' => 0, 
+                    'tot_noc_ext' => 0, 
+                    'tot_fes_diu' => 0, 
+                    'tot_fes_noc' => 0, 
+                    'tot_fes_diu_ext' => 0, 
+                    'tot_fes_noc_ext' => 0
+                ),
+            );
+            $arDetalles = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimuladorDetalle")
+                    ->findByCodigoSimulacionFk($simulacionId);
+            foreach($arDetalles AS $arDetalle){
+                $arrDetalles['horas'][] = array(
+                    'esFestivo' => UtlProgramacion::Util()->esFestivo($arDetalle->getFecha()),
+                    'fecha' => $arDetalle->getFecha(),
+                    'ordDiurnas' => $arDetalle->getOrdDiurnas(),
+                    'ordDiuExtras' => $arDetalle->getOrdDiuExtras(),
+                    'ordNocturnas' => $arDetalle->getOrdNocturnas(),
+                    'ordNocExtras' => $arDetalle->getOrdNocExtras(),
+                    'fesDiurnas' => $arDetalle->getFesDiurnas(),
+                    'fesDiuExtras' => $arDetalle->getFesDiuExtras(),
+                    'fesNocturnas' => $arDetalle->getFesNocturnas(),
+                    'fesNocExtras' => $arDetalle->getFesNocExtras(),
+                );
+                $arrDetalles['totales']['tot_diu'] += $arDetalle->getOrdDiurnas();
+                $arrDetalles['totales']['tot_diu_ext'] += $arDetalle->getOrdDiuExtras();
+                $arrDetalles['totales']['tot_noc'] += $arDetalle->getOrdNocturnas();
+                $arrDetalles['totales']['tot_noc_ext'] += $arDetalle->getOrdNocExtras();
+                $arrDetalles['totales']['tot_fes_diu'] += $arDetalle->getFesDiurnas();
+                $arrDetalles['totales']['tot_fes_diu_ext'] += $arDetalle->getFesDiuExtras();
+                $arrDetalles['totales']['tot_fes_noc'] += $arDetalle->getFesNocturnas();
+                $arrDetalles['totales']['tot_fes_noc_ext'] += $arDetalle->getFesNocExtras();
+            }
+        }
         return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
             'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),
-            'form' => $form->createView(),
-            'diasMes' => $diasMes,
+            'form'      => $form->createView(),
+            'diasMes'   => $diasMes,
+            'arrDetalles'  => $arrDetalles,
+            'mostrarModal' => count($arrDetalles) > 0,
         ]);
     }
+    
     /**
-     * 
+     * Esta función permite ejecutar el proceso de simulación.
      * @param Request $request
      * @param \Symfony\Component\Form\Form $form
      */
@@ -113,6 +155,10 @@ class SimuladorController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $turnos = $em->getRepository("BrasaTurnoBundle:TurTurno")->getInformacionTurnos();
         
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("DELETE FROM BrasaTurnoBundle:TurProgramacionSimuladorDetalle");
+        $query->execute();
+        
         foreach($recursos AS $idRecurso=>$diasPeriodo){
             $datos = ['ordDiurnas' => 0, 'ordNocturnas' => 0, 'ordDiuExt' => 0, 'ordNocExt' => 0, 'fesDiurnas' => 0, 'fesNocturnas' => 0, 'fesDiuExt' => 0, 'fesNocExt' => 0 ];
             foreach($diasPeriodo AS $fecha=>$turnoDia){
@@ -121,31 +167,22 @@ class SimuladorController extends Controller {
                 $horas = UtlProgramacion::Util()->calcularHoras($fecha, $turno->desde, $turno->hasta);
                 UtlProgramacion::util()->sumarHoras($horas, $datos);
                 UtlProgramacion::Util()->limpiar();
-                $arProgramacion = new \Brasa\TurnoBundle\Entity\TurProgramacionSimuladorDetalle();
-                $arProgramacion->setCodigoSimulacionFk($idRecurso);
-                $arProgramacion->setFecha($fecha);
-                $arProgramacion->setOrdDiurnas($horas['ordDiurnas']);
-                $arProgramacion->setOrdDiurnas($horas['ordNocturnas']);
-                $arProgramacion->setOrdDiurnas($horas['ordDiuExt']);
-                $arProgramacion->setOrdDiurnas($horas['ordNocExt']);
-                $arProgramacion->setOrdDiurnas($horas['fesDiurnas']);
-                $arProgramacion->setOrdDiurnas($horas['fesNocturnas']);
-                $arProgramacion->setOrdDiurnas($horas['fesDiuExt']);
-                $arProgramacion->setOrdDiurnas($horas['fesNocExt']);
-                $em->persist($arProgramacion);
+                $arProgDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionSimuladorDetalle();
+                $arProgDetalle->setCodigoSimulacionFk($idRecurso);
+                $arProgDetalle->setFecha(new \DateTime(date("Y-m-d H:i:s", strtotime($fecha))));
+                $arProgDetalle->setOrdDiurnas($horas['ordDiurnas']);
+                $arProgDetalle->setOrdNocturnas($horas['ordNocturnas']);
+                $arProgDetalle->setOrdDiuExtras($horas['ordDiuExt']);
+                $arProgDetalle->setOrdNocExtras($horas['ordNocExt']);
+                $arProgDetalle->setFesDiurnas($horas['fesDiurnas']);
+                $arProgDetalle->setFesNocturnas($horas['fesNocturnas']);
+                $arProgDetalle->setFesDiuExtras($horas['fesDiuExt']);
+                $arProgDetalle->setFesNocExtras($horas['fesNocExt']);
+                $em->persist($arProgDetalle);
+                $em->flush();
            }
-        }
-    }
-    
-    /**
-     * Esta función permite guardar el detalle de la simulación.
-     * @param int $idRecurso
-     * @param int $horas
-     * @param int $dia
-     */
-    private function guardarDetalle($idRecurso, $horas, $dia){
-        
-    }
+        }        
+    }   
     
     /**
      * Esta función permite eliminar los recursos seleccionados por el formulario.
@@ -161,7 +198,7 @@ class SimuladorController extends Controller {
                     ->setParameter("ids", $recursos)
                     ->getQuery();
         $query->execute();
-        return $this->redirectToRoute("brs_tur_utilidad_costo_simulador");
+        return $this->get('router')->generate('brs_tur_utilidad_costo_simulador');
     }
     
     /**
@@ -178,8 +215,23 @@ class SimuladorController extends Controller {
             $contador = 1;
             $this->procesarDetalle($em, $arProgramacionSimulacion, $dias, $contador);
             $em->flush();
-        }
+        }       
         return $this->redirectToRoute('brs_tur_utilidad_costo_simulador');
+    }
+    
+    /**
+     * 
+     * @param TurProgramacionSimulador $arProgramadionSimulador Entidad
+     * @param int $dia
+     * @param string $valor
+     * @return boolean
+     */
+    private function setDiaSimulacion(&$arProgramadionSimulador, $dia, $valor) {           
+        if(!method_exists($arProgramadionSimulador, "setDia{$dia}")) {
+            return false;
+        }        
+        # Está función invoca la función del día deseado.
+        call_user_func_array(array($arProgramadionSimulador, "setDia{$dia}"), array($valor));
     }
     
     /**
@@ -189,9 +241,12 @@ class SimuladorController extends Controller {
      * @param int $dias
      */
     private function procesarDetalle(&$em, &$arProgramacionSimulacion, $dias){
-        foreach($dias AS $dia=>$turno){
-            if(trim($turno) == "") $turno = null;
-            $arProgramacionSimulacion->setDia($dia, $turno);
+        foreach($dias AS $dia=>$codigoTurno){
+            if(trim($codigoTurno) == "") {
+                $codigoTurno = null;
+            }
+            $intDia = intval(UtlProgramacion::Util()->getFormato($dia, "d"));
+            $this->setDiaSimulacion($arProgramacionSimulacion, $intDia, $codigoTurno);
         }
         $em->persist($arProgramacionSimulacion);
     }
@@ -216,7 +271,7 @@ class SimuladorController extends Controller {
     
     /**
      * Esta función ejecuta la acción de agregar un recurso a la simulación.
-     * @Route("/tur/utilidad/costos/simulador/agregarRecurso", name="brs_tur_utilidad_costo_simulador_agregar_recurso")
+     * @Route("/tur/utilidad/costos/simulador/recurso/agregar", name="brs_tur_utilidad_costo_simulador_agregar")
      */
     public function agregarRecursoAction(Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -243,6 +298,10 @@ class SimuladorController extends Controller {
         ]);
     }
     
+    /**
+     * Esta función permite obtener el forulario de buscar recurso.
+     * @return \Symfony\Component\Form\FormBuilder
+     */
     public function formularioLista() {
         $session = new Session();
         $form = $this->createFormBuilder()
@@ -255,6 +314,9 @@ class SimuladorController extends Controller {
         return $form;
     }
     
+    /**
+     * Esta función permite obtener el dql para filtrar los registros.
+     */
     public function lista() {
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
@@ -264,9 +326,13 @@ class SimuladorController extends Controller {
                 "",
                 $session->get('filtroTurnoNumeroIdentificacion'),
                 "", "", $session->get('filtroTurnoRecursoInactivo')
-                );
+            );
     }
     
+    /**
+     * Esta función aplica los filtros a la lista.
+     * @param type $form
+     */
     private function filtrarLista($form) {
         $session = new Session();
         $this->strNombre = $form->get('TxtNombre')->getData();
@@ -293,7 +359,8 @@ class SimuladorController extends Controller {
         $detalle->setRecursoRel($arRecurso);
         $em->persist($detalle);
         $em->flush();
-        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
+        $url = $this->generateUrl('brs_tur_utilidad_costo_simulador');
+        echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.href= '{$url}';</script>";
         exit();
     }
     /**

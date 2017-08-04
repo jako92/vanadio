@@ -1663,7 +1663,11 @@ class TurServicioDetalle
      */
     public function getPorcentajeIva()
     {
-        return $this->porcentajeIva;
+        if($this->porcentajeIva == "") {
+            return $this->getConceptoServicioRel()->getPorBaseIva();
+        } else {
+            return $this->porcentajeIva;
+        }
     }
     
     /**
