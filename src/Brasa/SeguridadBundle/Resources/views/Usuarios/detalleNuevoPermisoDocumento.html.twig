@@ -1,6 +1,27 @@
 {% extends '::base_sin_menu.html.twig' %}
 {% block title %}Permiso documento detalle nuevo - Soga App{% endblock %}
 {% block content %}
+    <script type="text/javascript">
+        function ChequearTodos() 
+        {
+            var chks = ["ingreso", "nuevo", "editar","eliminar","autorizar",
+            "desautorizar","aprobar","desaprobar","anular","imprimir","desanular"];
+            var form= "form_"
+            var cant = chks.length;
+            for(i=0;i<cant;i++)
+            {
+                var seleccionar = form.concat(chks[i]);
+                if(document.getElementById(seleccionar).checked == true)
+                {
+                    document.getElementById(seleccionar).checked = false;
+                }
+                else
+                {
+                   document.getElementById(seleccionar).checked = true;
+                }
+            }
+        }
+    </script>
     <section class="content-header">
         <h1>
             Seguridad
@@ -32,62 +53,52 @@
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-3 control-label">
+                        Seleccionar todos:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="ChkSeleccionarTodos" OnClick="ChequearTodos();"/>
+                    </label>
+                </div>
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Ingreso:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.ingreso) }}
                     </div>
-                    <label class="col-sm-2 control-label">Nuevo:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.nuevo) }}
                     </div>                    
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Editar:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.editar) }}
                     </div>
-                    <label class="col-sm-2 control-label">Eliminar:</label>
+                </div>
+                <div class="form-group form-group-sm">  
                     <div class="col-sm-4">                  
                         {{ form_widget(form.eliminar) }}
                     </div>                    
-                </div>
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Autorizar:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.autorizar) }}
                     </div>
-                    <label class="col-sm-2 control-label">Desautorizar:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.desautorizar) }}
-                    </div>                    
-                </div>                
+                    </div>
+                </div>
                 <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Aprobar:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.aprobar) }}
                     </div>
-                    <label class="col-sm-2 control-label">Desaprobar:</label>
                     <div class="col-sm-4">                  
                         {{ form_widget(form.desaprobar) }}
                     </div>                    
-                </div> 
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Anular:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.anular) }}
                     </div>
-                    <label class="col-sm-2 control-label">Imprimir:</label>
+                </div> 
+                <div class="form-group form-group-sm">  
                     <div class="col-sm-4">                  
                         {{ form_widget(form.imprimir) }}
-                    </div>                    
-                </div>  
-                <div class="form-group form-group-sm">  
-                    <label class="col-sm-2 control-label">Desanular:</label>
+                    </div>
                     <div class="col-sm-4">
                         {{ form_widget(form.desanular) }}
-                    </div>                   
-                </div>                
+                    </div>
+                </div>                  
             </div>
         </div>  
         <table class="table table-striped table-bordered table-condensed table-hover">
