@@ -28,7 +28,7 @@ class RhuPrueba
     private $fechaCreacion;
     
     /**
-     * @ORM\Column(name="codigo_empleado_fk", type="integer")
+     * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
      */    
     private $codigoEmpleadoFk;
     
@@ -53,14 +53,31 @@ class RhuPrueba
     private $codigoCobroFk;
     
     /**
+     * @ORM\Column(name="codigo_tipo_identificacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoTipoIdentificacionFk;
+    /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */    
     private $codigoUsuario;
-
+    
+    /**
+     * @ORM\Column(name="nombre_corto", type="string", length=50, nullable=true)
+     */    
+    private $nombreCorto;
+    
+    /**
+     * @ORM\Column(name="numero_identificacion", type="string", length=50, nullable=true)
+     */    
+    private $numeroIdentificacion;
     /**
      * @ORM\Column(name="resultado", type="string", length=50, nullable=true)
      */    
-    private $resultado;        
+    private $resultado;
+    /**
+     * @ORM\Column(name="tipo_persona", type="string", length=50, nullable=true)
+     */    
+    private $tipoPersona;
     
     /**
      * @ORM\Column(name="resultado_cuantitativo", type="integer", nullable=true)
@@ -126,7 +143,12 @@ class RhuPrueba
      * @ORM\JoinColumn(name="codigo_cobro_fk", referencedColumnName="codigo_cobro_pk")
      */
     protected $cobroRel;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhupruebasIdentificacionRel")
+     * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
+     */
+    protected $tipoIdentificacionRel;
 
     /**
      * Get codigoPruebaPk
@@ -235,243 +257,27 @@ class RhuPrueba
     }
 
     /**
-     * Set resultado
+     * Set codigoClienteFk
      *
-     * @param string $resultado
+     * @param integer $codigoClienteFk
      *
      * @return RhuPrueba
      */
-    public function setResultado($resultado)
+    public function setCodigoClienteFk($codigoClienteFk)
     {
-        $this->resultado = $resultado;
+        $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
     }
 
     /**
-     * Get resultado
-     *
-     * @return string
-     */
-    public function getResultado()
-    {
-        return $this->resultado;
-    }
-
-    /**
-     * Set resultadoCuantitativo
-     *
-     * @param integer $resultadoCuantitativo
-     *
-     * @return RhuPrueba
-     */
-    public function setResultadoCuantitativo($resultadoCuantitativo)
-    {
-        $this->resultadoCuantitativo = $resultadoCuantitativo;
-
-        return $this;
-    }
-
-    /**
-     * Get resultadoCuantitativo
+     * Get codigoClienteFk
      *
      * @return integer
      */
-    public function getResultadoCuantitativo()
+    public function getCodigoClienteFk()
     {
-        return $this->resultadoCuantitativo;
-    }
-
-    /**
-     * Set nombreQuienHacePrueba
-     *
-     * @param string $nombreQuienHacePrueba
-     *
-     * @return RhuPrueba
-     */
-    public function setNombreQuienHacePrueba($nombreQuienHacePrueba)
-    {
-        $this->nombreQuienHacePrueba = $nombreQuienHacePrueba;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreQuienHacePrueba
-     *
-     * @return string
-     */
-    public function getNombreQuienHacePrueba()
-    {
-        return $this->nombreQuienHacePrueba;
-    }
-
-    /**
-     * Set comentarios
-     *
-     * @param string $comentarios
-     *
-     * @return RhuPrueba
-     */
-    public function setComentarios($comentarios)
-    {
-        $this->comentarios = $comentarios;
-
-        return $this;
-    }
-
-    /**
-     * Get comentarios
-     *
-     * @return string
-     */
-    public function getComentarios()
-    {
-        return $this->comentarios;
-    }
-
-    /**
-     * Set estadoAutorizado
-     *
-     * @param boolean $estadoAutorizado
-     *
-     * @return RhuPrueba
-     */
-    public function setEstadoAutorizado($estadoAutorizado)
-    {
-        $this->estadoAutorizado = $estadoAutorizado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAutorizado
-     *
-     * @return boolean
-     */
-    public function getEstadoAutorizado()
-    {
-        return $this->estadoAutorizado;
-    }
-
-    /**
-     * Set estadoCerrado
-     *
-     * @param boolean $estadoCerrado
-     *
-     * @return RhuPrueba
-     */
-    public function setEstadoCerrado($estadoCerrado)
-    {
-        $this->estadoCerrado = $estadoCerrado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoCerrado
-     *
-     * @return boolean
-     */
-    public function getEstadoCerrado()
-    {
-        return $this->estadoCerrado;
-    }
-
-    /**
-     * Set vrTotal
-     *
-     * @param float $vrTotal
-     *
-     * @return RhuPrueba
-     */
-    public function setVrTotal($vrTotal)
-    {
-        $this->vrTotal = $vrTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotal
-     *
-     * @return float
-     */
-    public function getVrTotal()
-    {
-        return $this->vrTotal;
-    }
-
-    /**
-     * Set codigoUsuario
-     *
-     * @param string $codigoUsuario
-     *
-     * @return RhuPrueba
-     */
-    public function setCodigoUsuario($codigoUsuario)
-    {
-        $this->codigoUsuario = $codigoUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoUsuario
-     *
-     * @return string
-     */
-    public function getCodigoUsuario()
-    {
-        return $this->codigoUsuario;
-    }
-
-    /**
-     * Set empleadoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
-     *
-     * @return RhuPrueba
-     */
-    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
-    {
-        $this->empleadoRel = $empleadoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get empleadoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
-     */
-    public function getEmpleadoRel()
-    {
-        return $this->empleadoRel;
-    }
-
-    /**
-     * Set pruebaTipoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel
-     *
-     * @return RhuPrueba
-     */
-    public function setPruebaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel = null)
-    {
-        $this->pruebaTipoRel = $pruebaTipoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get pruebaTipoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo
-     */
-    public function getPruebaTipoRel()
-    {
-        return $this->pruebaTipoRel;
+        return $this->codigoClienteFk;
     }
 
     /**
@@ -523,6 +329,246 @@ class RhuPrueba
     }
 
     /**
+     * Set codigoTipoIdentificacionFk
+     *
+     * @param integer $codigoTipoIdentificacionFk
+     *
+     * @return RhuPrueba
+     */
+    public function setCodigoTipoIdentificacionFk($codigoTipoIdentificacionFk)
+    {
+        $this->codigoTipoIdentificacionFk = $codigoTipoIdentificacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTipoIdentificacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoTipoIdentificacionFk()
+    {
+        return $this->codigoTipoIdentificacionFk;
+    }
+
+    /**
+     * Set codigoUsuario
+     *
+     * @param string $codigoUsuario
+     *
+     * @return RhuPrueba
+     */
+    public function setCodigoUsuario($codigoUsuario)
+    {
+        $this->codigoUsuario = $codigoUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoUsuario
+     *
+     * @return string
+     */
+    public function getCodigoUsuario()
+    {
+        return $this->codigoUsuario;
+    }
+
+    /**
+     * Set nombreCorto
+     *
+     * @param string $nombreCorto
+     *
+     * @return RhuPrueba
+     */
+    public function setNombreCorto($nombreCorto)
+    {
+        $this->nombreCorto = $nombreCorto;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreCorto
+     *
+     * @return string
+     */
+    public function getNombreCorto()
+    {
+        return $this->nombreCorto;
+    }
+
+    /**
+     * Set numeroIdentificacion
+     *
+     * @param string $numeroIdentificacion
+     *
+     * @return RhuPrueba
+     */
+    public function setNumeroIdentificacion($numeroIdentificacion)
+    {
+        $this->numeroIdentificacion = $numeroIdentificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroIdentificacion
+     *
+     * @return string
+     */
+    public function getNumeroIdentificacion()
+    {
+        return $this->numeroIdentificacion;
+    }
+
+    /**
+     * Set resultado
+     *
+     * @param string $resultado
+     *
+     * @return RhuPrueba
+     */
+    public function setResultado($resultado)
+    {
+        $this->resultado = $resultado;
+
+        return $this;
+    }
+
+    /**
+     * Get resultado
+     *
+     * @return string
+     */
+    public function getResultado()
+    {
+        return $this->resultado;
+    }
+
+    /**
+     * Set tipoPersona
+     *
+     * @param string $tipoPersona
+     *
+     * @return RhuPrueba
+     */
+    public function setTipoPersona($tipoPersona)
+    {
+        $this->tipoPersona = $tipoPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPersona
+     *
+     * @return string
+     */
+    public function getTipoPersona()
+    {
+        return $this->tipoPersona;
+    }
+
+    /**
+     * Set resultadoCuantitativo
+     *
+     * @param integer $resultadoCuantitativo
+     *
+     * @return RhuPrueba
+     */
+    public function setResultadoCuantitativo($resultadoCuantitativo)
+    {
+        $this->resultadoCuantitativo = $resultadoCuantitativo;
+
+        return $this;
+    }
+
+    /**
+     * Get resultadoCuantitativo
+     *
+     * @return integer
+     */
+    public function getResultadoCuantitativo()
+    {
+        return $this->resultadoCuantitativo;
+    }
+
+    /**
+     * Set nombreQuienHacePrueba
+     *
+     * @param string $nombreQuienHacePrueba
+     *
+     * @return RhuPrueba
+     */
+    public function setNombreQuienHacePrueba($nombreQuienHacePrueba)
+    {
+        $this->nombreQuienHacePrueba = $nombreQuienHacePrueba;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreQuienHacePrueba
+     *
+     * @return string
+     */
+    public function getNombreQuienHacePrueba()
+    {
+        return $this->nombreQuienHacePrueba;
+    }
+
+    /**
+     * Set estadoAutorizado
+     *
+     * @param boolean $estadoAutorizado
+     *
+     * @return RhuPrueba
+     */
+    public function setEstadoAutorizado($estadoAutorizado)
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAutorizado
+     *
+     * @return boolean
+     */
+    public function getEstadoAutorizado()
+    {
+        return $this->estadoAutorizado;
+    }
+
+    /**
+     * Set estadoCerrado
+     *
+     * @param boolean $estadoCerrado
+     *
+     * @return RhuPrueba
+     */
+    public function setEstadoCerrado($estadoCerrado)
+    {
+        $this->estadoCerrado = $estadoCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCerrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCerrado()
+    {
+        return $this->estadoCerrado;
+    }
+
+    /**
      * Set estadoCobrado
      *
      * @param boolean $estadoCobrado
@@ -544,6 +590,126 @@ class RhuPrueba
     public function getEstadoCobrado()
     {
         return $this->estadoCobrado;
+    }
+
+    /**
+     * Set vrTotal
+     *
+     * @param float $vrTotal
+     *
+     * @return RhuPrueba
+     */
+    public function setVrTotal($vrTotal)
+    {
+        $this->vrTotal = $vrTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotal
+     *
+     * @return float
+     */
+    public function getVrTotal()
+    {
+        return $this->vrTotal;
+    }
+
+    /**
+     * Set comentarios
+     *
+     * @param string $comentarios
+     *
+     * @return RhuPrueba
+     */
+    public function setComentarios($comentarios)
+    {
+        $this->comentarios = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return string
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Set empleadoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel
+     *
+     * @return RhuPrueba
+     */
+    public function setEmpleadoRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $empleadoRel = null)
+    {
+        $this->empleadoRel = $empleadoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get empleadoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado
+     */
+    public function getEmpleadoRel()
+    {
+        return $this->empleadoRel;
+    }
+
+    /**
+     * Set pruebaTipoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel
+     *
+     * @return RhuPrueba
+     */
+    public function setPruebaTipoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo $pruebaTipoRel = null)
+    {
+        $this->pruebaTipoRel = $pruebaTipoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pruebaTipoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo
+     */
+    public function getPruebaTipoRel()
+    {
+        return $this->pruebaTipoRel;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
+     *
+     * @return RhuPrueba
+     */
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
     }
 
     /**
@@ -595,50 +761,26 @@ class RhuPrueba
     }
 
     /**
-     * Set codigoClienteFk
+     * Set tipoIdentificacionRel
      *
-     * @param integer $codigoClienteFk
+     * @param \Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel
      *
      * @return RhuPrueba
      */
-    public function setCodigoClienteFk($codigoClienteFk)
+    public function setTipoIdentificacionRel(\Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel = null)
     {
-        $this->codigoClienteFk = $codigoClienteFk;
+        $this->tipoIdentificacionRel = $tipoIdentificacionRel;
 
         return $this;
     }
 
     /**
-     * Get codigoClienteFk
+     * Get tipoIdentificacionRel
      *
-     * @return integer
+     * @return \Brasa\GeneralBundle\Entity\GenTipoIdentificacion
      */
-    public function getCodigoClienteFk()
+    public function getTipoIdentificacionRel()
     {
-        return $this->codigoClienteFk;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
-     *
-     * @return RhuPrueba
-     */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
-     */
-    public function getClienteRel()
-    {
-        return $this->clienteRel;
+        return $this->tipoIdentificacionRel;
     }
 }
