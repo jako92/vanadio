@@ -64,3 +64,8 @@ td.titulo {
 .modal-wide-1 .modal-dialog{
     width: 60%;
 }
+.btn-transparent{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}

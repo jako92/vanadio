@@ -57,9 +57,13 @@ class SimuladorController extends Controller {
                    ->getDqlConsultaDetalles();
         $arProgramacionSimulador = $em->createQuery($dql);
         $form = $this->getFormularioSimulacion();
-        
+        $form->handleRequest($request);
+        if($form->get('hasta')->getData()->format("y-m-d") != ""){
+            $this->fechaInicial = $form->get('desde')->getData()->format("Y-m-d");
+            $this->fechaFinal = $form->get('hasta')->getData()->format("Y-m-d");
+        }
         # Obtenemos un listado de los días del mes.
-        $diasMes = [];       
+        $diasMes = [];
         $arFestivos = $em->getRepository("BrasaGeneralBundle:GenFestivo")
                         ->festivos(date("Y-01-01"), date("Y-12-31"));        
         foreach($arFestivos AS $festivo) { $this->festivos[] = $festivo['fecha']->format("Y-m-d"); }
@@ -81,8 +85,6 @@ class SimuladorController extends Controller {
             $fecha = UtlProgramacion::Util()->sumarAFecha($this->fechaInicial, UtlProgramacion::DIA, $i);
         }
         
-        $form->handleRequest($request);
-        
         # Eventos
         if($form->isSubmitted() && $form->isValid()){
             if($form->get("BtnActualizar")->isClicked()) { $this->actualizar($request); }
@@ -91,22 +93,23 @@ class SimuladorController extends Controller {
         }
         
         $arrDetalles = array();
-        if($simulacionId != null){
+        if($request->request->has("BtnVerDetalle")){
+            $simulacionId = $request->request->get("BtnVerDetalle");
             $arrDetalles = array(
                 'horas' => array(), 
-                'totales' => array(
-                    'tot_diu' => 0, 
-                    'tot_noc' => 0, 
-                    'tot_diu_ext' => 0, 
-                    'tot_noc_ext' => 0, 
-                    'tot_fes_diu' => 0, 
-                    'tot_fes_noc' => 0, 
-                    'tot_fes_diu_ext' => 0, 
-                    'tot_fes_noc_ext' => 0
-                ),
+                'totales' => array('tot_diu' => 0, 'tot_noc' => 0, 'tot_diu_ext' => 0, 'tot_noc_ext' => 0, 'tot_fes_diu' => 0, 'tot_fes_noc' => 0, 'tot_fes_diu_ext' => 0, 'tot_fes_noc_ext' => 0)
             );
+            
             $arDetalles = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimuladorDetalle")
-                    ->findByCodigoSimulacionFk($simulacionId);
+                             ->createQueryBuilder("t")
+                             ->where("t.codigoSimulacionFk = :codigoSimulacionFk")
+                             ->andWhere("t.fecha >= :fechaInicial")
+                             ->andWhere("t.fecha <= :fechaFinal")
+                             ->setParameter("codigoSimulacionFk", $simulacionId)
+                             ->setParameter("fechaInicial", $this->fechaInicial)
+                             ->setParameter("fechaFinal", $this->fechaFinal)
+                             ->getQuery()->getResult();
+            
             foreach($arDetalles AS $arDetalle){
                 $arrDetalles['horas'][] = array(
                     'esFestivo' => UtlProgramacion::Util()->esFestivo($arDetalle->getFecha()),
@@ -130,6 +133,14 @@ class SimuladorController extends Controller {
                 $arrDetalles['totales']['tot_fes_noc_ext'] += $arDetalle->getFesNocExtras();
             }
         }
+        
+//        if($this->get('session')->getFlashBag()->has('turnos-no-encontrados')){
+//            $objMessage = new \Brasa\GeneralBundle\MisClases\Mensajes();
+//            $turnosNoEncontrados = $this->get('session')->getFlashBag()->get('turnos-no-encontrados');
+//            
+////            $objMessage->Mensaje("Turnos", "Los siguientes turnos no están registrados: " . implode(", ", $turnosNoEncontrados[0]));
+//        }
+        
         return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
             'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),
             'form'      => $form->createView(),
@@ -158,7 +169,7 @@ class SimuladorController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery("DELETE FROM BrasaTurnoBundle:TurProgramacionSimuladorDetalle");
         $query->execute();
-        
+        if($recursos == null){ return false; }
         foreach($recursos AS $idRecurso=>$diasPeriodo){
             $datos = ['ordDiurnas' => 0, 'ordNocturnas' => 0, 'ordDiuExt' => 0, 'ordNocExt' => 0, 'fesDiurnas' => 0, 'fesNocturnas' => 0, 'fesDiuExt' => 0, 'fesNocExt' => 0 ];
             foreach($diasPeriodo AS $fecha=>$turnoDia){
@@ -193,6 +204,13 @@ class SimuladorController extends Controller {
         $recursos = $request->get("recursosABorrar");
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
+        # Eliminamos los detalles
+        $query = $qb->delete("BrasaTurnoBundle:TurProgramacionSimuladorDetalle", "b")
+                    ->where("b.codigoSimulacionFk IN(:ids)")
+                    ->setParameter("ids", $recursos)
+                    ->getQuery();
+        $query->execute();
+        # Eliminamos la simulación
         $query = $qb->delete("BrasaTurnoBundle:TurProgramacionSimulador", "b")
                     ->where("b.codigoSimulacionPk IN(:ids)")
                     ->setParameter("ids", $recursos)
@@ -207,15 +225,21 @@ class SimuladorController extends Controller {
      * @return boolean
      */
     private function actualizar(Request $request){
+        $objMessage = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $programaciones = $request->get("dias");
-        if(count($programaciones) == 0) return false;
+        if(count($programaciones) == 0) return false;        
+        $em = $this->getDoctrine()->getManager();
+        $this->turnos = $em->getRepository("BrasaTurnoBundle:TurTurno")->getInformacionTurnos();
+        $turnosNoEncontrados = array();
         foreach ($programaciones aS $idProgramacion=>$dias){
-            $em = $this->getDoctrine()->getManager();
             $arProgramacionSimulacion = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")->find($idProgramacion);
             $contador = 1;
-            $this->procesarDetalle($em, $arProgramacionSimulacion, $dias, $contador);
+            $this->procesarDetalle($em, $arProgramacionSimulacion, $turnosNoEncontrados, $dias);
             $em->flush();
-        }       
+        }
+        if(!is_null($turnosNoEncontrados)){
+            $objMessage->Mensaje("error", "Los siguientes turnos no están registrados: " . implode(", ", $turnosNoEncontrados));
+        }
         return $this->redirectToRoute('brs_tur_utilidad_costo_simulador');
     }
     
@@ -240,10 +264,14 @@ class SimuladorController extends Controller {
      * @param \Brasa\TurnoBundle\Entity\TurProgramacion $arProgramacionSimulacion
      * @param int $dias
      */
-    private function procesarDetalle(&$em, &$arProgramacionSimulacion, $dias){
+    private function procesarDetalle(&$em, &$arProgramacionSimulacion, &$turnosNoEncontrados, $dias){
         foreach($dias AS $dia=>$codigoTurno){
             if(trim($codigoTurno) == "") {
                 $codigoTurno = null;
+            }
+            if(!isset($this->turnos[$codigoTurno])){ 
+                if($codigoTurno != null && !in_array($codigoTurno, $turnosNoEncontrados)) { $turnosNoEncontrados[] = $codigoTurno; }
+                continue;
             }
             $intDia = intval(UtlProgramacion::Util()->getFormato($dia, "d"));
             $this->setDiaSimulacion($arProgramacionSimulacion, $intDia, $codigoTurno);

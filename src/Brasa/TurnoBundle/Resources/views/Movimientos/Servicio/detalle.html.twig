@@ -214,7 +214,11 @@
                                     <td style="text-align: right">{{ arServicioDetalle.vrPrecioAjustado | number_format(0, '.', ',') }}</td> 
                                 {% endif %}
                                 <td>
+                                    {% if arServicio.estadoAutorizado == 0 and arServicioDetalle.compuesto == 0 %}
                                     <input class="input-grid" type="text" name="TxtPorcentajeIva{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.porcentajeIva  }}" size="10" style="text-align: right; width:4p0x" onkeypress="return validarNumeros(event)" onclick="this.select()"/>
+                                    {% else %}
+                                        {{arServicioDetalle.porcentajeIva}}
+                                    {% endif %}    
                                 </td>
                                 <td style="text-align: right">{{ arServicioDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioDetalle.vrSubTotal | number_format(0, '.', ',') }}</td>

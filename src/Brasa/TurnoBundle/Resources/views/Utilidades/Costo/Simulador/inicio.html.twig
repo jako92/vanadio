@@ -52,14 +52,16 @@
                                 <tr>
                                     <th>Recurso</th>
                                     {% for numero, dia in diasMes %}
-                                    <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>{{numero < 10? '0' ~ numero : numero }}</th>
+                                    <th {{dia.esFestivo? 'class="dia-festivo"' : ''}}>
+                                        {{dia.numero < 10? '0' ~ dia.numero : dia.numero }}
+                                    </th>
                                     {% endfor %}
                                     <th>&nbsp;</th>
                                     <th>&nbsp;</th>
                                 </tr>
                                 {% if arProgramacionSimulador|length == 0 %}
                                     <tr>
-                                        <td colspan="{{diasMes|length + 2}}" class="text-center">No hay recursos para la simulación</td>
+                                        <td colspan="{{diasMes|length + 3}}" class="text-center">No hay recursos para la simulación</td>
                                     </tr>
                                 {% else %}
                                     {% set contador = 1000 %}
@@ -78,7 +80,10 @@
                                         </td>
                                         {% endif %}
                                         <td>
-                                            <a href="{{path('brs_tur_utilidad_costo_simulador', {simulacionId:arProgramacionSimulador.codigoSimulacionPk})}}"><img src="/vanadio/web/imagenes/bootstrap/glyphicons_152_new_window.png" width="22" height="22"></a>
+                                            <button class="btn-transparent" name="BtnVerDetalle" value="{{arProgramacionSimulador.codigoSimulacionPk}}">
+                                                <img src="/vanadio/web/imagenes/bootstrap/glyphicons_152_new_window.png" width="22" height="22">    
+                                            </button> 
+{#                                            <a href="{{path('brs_tur_utilidad_costo_simulador', {simulacionId:arProgramacionSimulador.codigoSimulacionPk})}}"><img src="/vanadio/web/imagenes/bootstrap/glyphicons_152_new_window.png" width="22" height="22"></a>#}
                                         </td>
                                         <td>
                                             <input type="checkbox" name="recursosABorrar[]" value="{{arProgramacionSimulador.codigoSimulacionPk}}" />
@@ -167,10 +172,10 @@
             
         {% if mostrarModal == true %}
             $("#modal-detalle-recurso").modal("show");
-        {% endif %}
+        {% endif %}            
             
             $("#form_BtnAgregar").click(function(){
-                abrirVentana('{{ path('brs_tur_utilidad_costo_simulador_agregar') }}');
+                abrirVentana('{{ path('brs_tur_utilidad_costo_simulador_agregar') }}', 600, 900);
                 return false;
             });
         });
