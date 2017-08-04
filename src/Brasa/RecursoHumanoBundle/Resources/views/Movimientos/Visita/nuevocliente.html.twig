@@ -4,7 +4,7 @@
     <section class="content-header">
         <h1>
             Recurso humano
-            <small>Visita: lista</small>
+            <small>Visita: nuevo</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ path('brasa_general_inicio') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -14,25 +14,44 @@
             <li class="active">Nuevo</li>
         </ol>
     </section>    
-    <section class="content">        	
+    <section class="content">   	
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        <section class="content-header">
+            {% for flashMessage in app.session.flashbag.get('informacion') %}
+                <div id="informacion" class="alert alert-info fade in" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p>{{ flashMessage }}</p>
+                </div>                
+            {% endfor %} 
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div id="error" class="alert alert-danger fade in" >
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p>{{ flashMessage }}</p>
+                </div> 
+            {% endfor %}                        
+        </section> 
         {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}           
         <div class="panel panel-default">
             <div class="panel-heading">Información general</div>
             <div class="panel-body">                                    
                 <div class="form-group form-group-sm">
-                    <label for="form_txtNumeroIdentificacion" class="col-sm-2 control-label">Empleado:</label>
+                    <label for="form_txtCodigoCliente" class="col-sm-2 control-label">Cliente:</label>
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-lg-2">
                                 <div class="input-group">
-                                    <input id="form_txtNumeroIdentificacion"  name="form_txtNumeroIdentificacion"  type="text" class="form-control" value="{{ arVisita.empleadoRel.numeroIdentificacion |default('') }}"/>
+                                    <input id="form_txtCodigoCliente"  name="form_txtCodigoCliente"  type="text" class="form-control" value="{{ arVisita.clienteRel.codigoClientePk |default('') }}"/>
                                 </div>
                             </div>
                             <div class="col-lg-10">
                                 <div class="input-group">                                      
-                                    <input id="form_txtNombreCorto"  name="form_txtNombreCorto"  type="text" class="form-control" value="{{ arVisita.empleadoRel.nombreCorto |default('') }}" readOnly="ReadOnly" />
+                                    <input id="form_txtNombreCorto"  name="form_txtNombreCorto"  type="text" class="form-control" value="{{ arVisita.clienteRel.nombreCorto |default('') }}" readOnly="ReadOnly" />
                                     <span class="input-group-btn">                                        
-                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_empleado') }}', 'buscarEmpleado', 600, 900)">Buscar</a>
+                                        <a class="btn btn-default btn-sm" href="javascript:abrirVentana3('{{ path('brs_rhu_buscar_cliente', { 'campoCodigoCliente': 'form_txtCodigoCliente', 'campoNombre': 'form_txtNombreCorto'} ) }}', 'buscarCliente', 600, 900)">Buscar</a>
                                     </span>
                                 </div>
                             </div>
@@ -48,12 +67,31 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.nombreQuienVisita) }}
                     </div>
-                </div>              
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_nombreCorto" class="col-sm-2 control-label">Nombre: </label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.nombreCorto) }}
+                    </div>
+                    <label for="form_nombreCorto" class="col-sm-2 control-label">Tipo identificacion</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.tipoIdentificacionRel) }}
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="form_numeroIdentificacion" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">
+                    </div>
+                    <label for="form_numeroIdentificacion" class="col-sm-2 control-label">Identificacion: </label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.numeroIdentificacion) }}
+                    </div>
+                </div>
                 <div class="form-group form-group-sm">
                     <label for="form_fecha" class="col-sm-2 control-label">Fecha/hora visita:</label>
                     <div class="col-sm-4">
                         {{ form_widget(form.fecha) }}                        
-                    </div>                
+                    </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="form_fechaVence" class="col-sm-2 control-label">Fecha vence:</label>

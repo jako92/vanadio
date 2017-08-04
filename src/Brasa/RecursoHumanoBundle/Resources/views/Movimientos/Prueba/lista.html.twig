@@ -64,8 +64,10 @@
                 <th>TIPO</th>                
                 <th>FECHA</th>                
                 <th>DOCUMENTO</th>
-                <th>{{ knp_pagination_sortable(arPrueba, 'EMPLEADO', 'e.nombreCorto') }}</th>                
+                <th>{{ knp_pagination_sortable(arPrueba, 'NOMBRE', 'e.nombreCorto') }}</th>
                 <th>REALIZA PRUEBA</th>
+                <th>EMPLEADO</th>
+                <th>CLIENTE</th>
                 <th>AUT</th>
                 <th>CER</th>
                 <th>USUARIO</th>
@@ -78,13 +80,23 @@
                     <td><input type="hidden" name="LblCodigo[]" value="{{ arPrueba.codigoPruebaPk }}">{{ arPrueba.codigoPruebaPk }} </td>                
                     <td>{{ arPrueba.pruebaTipoRel.nombre | default('')  }}</td>                
                     <td>{{ arPrueba.fecha |date("Y-m-d")  }}</td>
-                    <td>{{ arPrueba.empleadoRel.numeroIdentificacion  }}</td>
-                    <td>{{ arPrueba.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arPrueba.numeroIdentificacion }}</td>
+                    <td>{{ arPrueba.nombreCorto  }}</td>
                     <td>{{ arPrueba.nombreQuienHacePrueba  }}</td>
+                    {% if arPrueba.tipoPersona == 'empleado' %}
+                        <td>Si</td>
+                    {% else %}
+                        <td>No</td>
+                    {% endif %}
+                    <td>{{ arPrueba.ClienteRel.nombreCorto }}</td>
                     <td>{% if arPrueba.estadoAutorizado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{% if arPrueba.estadoCerrado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{{ arPrueba.codigoUsuario  }}</td>
-                    <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_nuevo', {'codigoPrueba':  arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% if arPrueba.tipoPersona == 'empleado' %}
+                        <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_nuevo_empleado', {'codigoPrueba':  arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% else %}
+                        <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_nuevo_cliente', {'codigoPrueba':  arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% endif%}
                     <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_prueba_detalle', { 'codigoPrueba': arPrueba.codigoPruebaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
                     <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arPrueba.codigoPruebaPk }}" /></td>
                 </tr>
@@ -103,7 +115,10 @@
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_prueba_nuevo', {'codigoPrueba': 0}) }}">Nuevo</a>                
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_prueba_nuevo_empleado', {'codigoPrueba': 0}) }}">Nuevo desde empleado</a>                
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_prueba_nuevo_cliente', {'codigoPrueba': 0}) }}">Nuevo para cliente</a>                
             </div>
             <div class="btn-group">
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm', 'onclick': 'return confirm("Esta seguro de eliminar el registro?")'} }) }}                

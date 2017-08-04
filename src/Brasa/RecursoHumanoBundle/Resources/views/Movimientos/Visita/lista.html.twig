@@ -75,7 +75,9 @@
                 <th>FECHA</th>
                 <th>VENCE</th>                
                 <th>DOCUMENTO</th>
-                <th>{{ knp_pagination_sortable(arVisitas, 'EMPLEADO', 'e.nombreCorto') }}</th>                
+                <th>{{ knp_pagination_sortable(arVisitas, 'NOMBRE', 'e.nombreCorto') }}</th>
+                <th>EMPLEADO</th>                
+                <th>CLIENTE</th>                
                 <th>REALIZA VISITA</th>
                 <th>AUT</th>
                 <th>CER</th>
@@ -90,13 +92,23 @@
                     <td>{{ arVisitas.visitaTipoRel.nombre | default('')  }}</td>                
                     <td>{{ arVisitas.fecha |date("Y-m-d H:i:s")  }}</td>
                     <td>{{ arVisitas.fechaVence |date("Y-m-d")  }}</td>
-                    <td>{{ arVisitas.empleadoRel.numeroIdentificacion  }}</td>
-                    <td>{{ arVisitas.empleadoRel.nombreCorto  }}</td>
+                    <td>{{ arVisitas.numeroIdentificacion  }}</td>
+                    <td>{{ arVisitas.nombreCorto  }}</td>
+                    {% if arVisitas.codigoEmpleadoFk != null %}
+                        <td>SI</td>
+                    {% else %}
+                        <td>NO</td>
+                    {% endif %}
+                    <td>{{ arVisitas.ClienteRel.nombreCorto }}</td>
                     <td>{{ arVisitas.nombreQuienVisita  }}</td>
                     <td>{% if arVisitas.estadoAutorizado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{% if arVisitas.estadoCerrado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{{ arVisitas.codigoUsuario  }}</td>
-                    <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_visita_nuevo', {'codigoVisita':  arVisitas.codigoVisitaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% if arVisitas.codigoEmpleadoFk != null %}
+                        <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_visita_nuevo_empleado', {'codigoVisita':  arVisitas.codigoVisitaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% else %}
+                        <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_visita_nuevo_cliente', {'codigoVisita':  arVisitas.codigoVisitaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_151_edit.png') }}" width=20 height=20 title="Editar el registro"></a></td>
+                    {% endif %}
                     <td style="text-align: center"><a href="{{ path('brs_rhu_movimiento_visita_detalle', { 'codigoVisita': arVisitas.codigoVisitaPk }) }}"><img src="{{ asset('imagenes/bootstrap/glyphicons_152_new_window.png') }}" width=22 height=22></a></td>
                     <td style="text-align: center"><input type="checkbox" name="ChkSeleccionar[]" value="{{ arVisitas.codigoVisitaPk }}" /></td>
                 </tr>
@@ -115,7 +127,10 @@
                 {{ form_widget(form.BtnExcel, { 'attr': {'class': 'btn btn-default btn-sm'} }) }}
             </div>
             <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_visita_nuevo', {'codigoVisita': 0}) }}">Nuevo</a>                
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_visita_nuevo_empleado', {'codigoVisita': 0}) }}">Nuevo desde empleado</a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_movimiento_visita_nuevo_cliente', {'codigoVisita': 0}) }}">Nuevo para cliente</a>
             </div>
             <div class="btn-group">
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm', 'onclick': 'return confirm("Esta seguro de eliminar el registro?")'} }) }}                

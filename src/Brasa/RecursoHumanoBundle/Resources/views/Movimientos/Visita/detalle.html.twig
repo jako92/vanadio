@@ -42,11 +42,11 @@
                     </tr>
                     <tr>
                         <td class="titulo">IDENTIFICACIÓN:</td>
-                        <td class="td-in-well">{{ arVisita.empleadoRel.numeroIdentificacion }}</td>
-                        <td class="titulo">EMPLEADO:</td>
-                        <td class="td-in-well">{{ arVisita.empleadoRel.nombreCorto }}</td>
+                        <td class="td-in-well">{{ arVisita.numeroIdentificacion }}</td>
+                        <td class="titulo">NOMBRE:</td>
+                        <td class="td-in-well">{{ arVisita.nombreCorto }}</td>
                         <td class="titulo">GRUPO PAGO:</td>
-                        <td class="td-in-well">{{ arVisita.empleadoRel.centroCostoRel.nombre | default('')}}</td>                                                
+                        <td class="td-in-well">{{ arVisita.centroCostoRel.nombre | default('')}}</td>                                                
                     </tr>
                     <tr>
                         <td class="titulo">TIPO:</td>
@@ -66,9 +66,13 @@
                     </tr>
                     <tr>
                         <td class="titulo"></td>
-                        <td class="td-in-well"></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="td-in-well"></td>    
+                        <td class="titulo">EMPLEADO</td>
+                        {% if arVisita.codigoEmpleadoFk != null%}
+                            <td class="td-in-well">SI</td>
+                        {% else %}
+                            <td class="td-in-well">NO</td>
+                        {% endif %}
                         <td class="titulo">TOTAL:</td>
                         <td class="td-in-well">{{ arVisita.vrTotal | number_format(0, '.', ',')}}</td>
                     </tr>
