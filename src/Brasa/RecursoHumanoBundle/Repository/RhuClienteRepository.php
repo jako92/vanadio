@@ -11,13 +11,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuClienteRepository extends EntityRepository {                
     
-    public function listaDQL($strNombre = "") {                
+    public function listaDQL($strNombre = "",$strCodigo = "",$strNit = "") 
+    {                
         $dql   = "SELECT c FROM BrasaRecursoHumanoBundle:RhuCliente c WHERE c.codigoClientePk <> 0";
         if($strNombre != "" ) {
             $dql .= " AND c.nombreCorto LIKE '%" . $strNombre . "%'";
-        }                 
+        }
+        if($strCodigo != "" ) {
+            $dql .= " AND c.codigoClientePk LIKE '%" . $strCodigo . "%'";
+        }
+        if($strNit != "" ) {
+            $dql .= " AND c.nit LIKE '%" . $strNit . "%'";
+        }        
         $dql .= " ORDER BY c.nombreCorto";
         return $dql;
-    }                            
-     
+    }
+    
+    public function eliminar($arrSeleccionados) {
+        $em = $this->getEntityManager();
+        if(count($arrSeleccionados) > 0) {
+            foreach ($arrSeleccionados AS $codigo) {
+                $ar = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->find($codigo);
+                $em->remove($ar);
+            }
+            $em->flush();
+        }
+    }
 }

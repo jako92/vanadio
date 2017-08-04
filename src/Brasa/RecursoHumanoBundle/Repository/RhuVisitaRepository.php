@@ -11,13 +11,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class RhuVisitaRepository extends EntityRepository {
 
-    public function listaDQL($strIdentificacion = "", $codigoCentroCosto = "", $codigoVisitaTipo = "", $validarVencimiento = "") {
-        $dql = "SELECT v, e FROM BrasaRecursoHumanoBundle:RhuVisita v JOIN v.empleadoRel e WHERE v.codigoVisitaPk <> 0";
+    public function listaDQL($strIdentificacion = "", $codigoVisitaTipo = "", $validarVencimiento = "") {
+        $dql = 
+              "SELECT v "
+            . "FROM BrasaRecursoHumanoBundle:RhuVisita v "
+            . "WHERE v.codigoVisitaPk <> 0";
         if ($strIdentificacion != "") {
-            $dql .= " AND e.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
-        }
-        if ($codigoCentroCosto != "") {
-            $dql .= " AND e.codigoCentroCostoFk = " . $codigoCentroCosto;
+            $dql .= " AND p.numeroIdentificacion LIKE '%" . $strIdentificacion . "%'";
         }
         if ($codigoVisitaTipo != "") {
             $dql .= " AND v.codigoVisitaTipoFk = " . $codigoVisitaTipo;
