@@ -21,7 +21,7 @@ class RhuPoligrafiaEmpleadoType extends AbstractType {
                                 ->orderBy('pt.nombre', 'ASC');
                     },
                     'choice_label' => 'nombre',
-                    'required' => true))
+                    'required' => false))
                 ->add('fecha', DateTimeType::class)
                 ->add('vrTotal', NumberType::class, array('required' => false))
                 ->add('comentarios', TextareaType::class, array('required' => false, 'attr' => array('cols' => '5', 'rows' => '10')))

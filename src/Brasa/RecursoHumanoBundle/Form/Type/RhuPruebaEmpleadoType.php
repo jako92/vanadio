@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
-class RhuPruebaType extends AbstractType
+class RhuPruebaEmpleadoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -21,7 +21,7 @@ class RhuPruebaType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuPruebaTipo',
                 'choice_label' => 'nombre',
             ))
-            ->add('fecha', DateType::class, array('data' => new \DateTime("now"), 'widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'attr' => array('class' => 'date',)))
+            ->add('fecha', DateType::class)
             ->add('resultado', TextType::class, array('required' => false))
             ->add('resultadoCuantitativo', NumberType::class, array('required' => false))
             ->add('nombreQuienHacePrueba', TextType::class,array('required' => true))

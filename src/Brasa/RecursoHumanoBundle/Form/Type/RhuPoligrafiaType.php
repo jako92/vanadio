@@ -22,7 +22,7 @@ class RhuPoligrafiaType extends AbstractType {
                                 ->orderBy('pt.nombre', 'ASC');
                     },
                     'choice_label' => 'nombre',
-                    'required' => true))
+                    'required' => false))
                 ->add('tipoIdentificacionRel', EntityType::class, array(
                     'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
                     'query_builder' => function (EntityRepository $er) {

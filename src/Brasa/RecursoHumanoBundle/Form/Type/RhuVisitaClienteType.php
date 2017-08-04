@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
-class RhuVisitaType extends AbstractType
+class RhuVisitaClienteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,7 +22,16 @@ class RhuVisitaType extends AbstractType
                 'class' => 'BrasaRecursoHumanoBundle:RhuVisitaTipo',
                 'choice_label' => 'nombre',
             ))
+            ->add('tipoIdentificacionRel', EntityType::class, array(
+                'class' => 'BrasaGeneralBundle:GenTipoIdentificacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ti')
+                    ->orderBy('ti.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true)) 
             ->add('validarVencimiento', CheckboxType::class, array('required'  => false))    
+            ->add('nombreCorto', TextType::class, array('required' => true, 'attr' => array('cols' => '5', 'rows' => '25')))
+            ->add('numeroIdentificacion', TextType::class, array('required' => true, 'attr' => array('cols' => '5', 'rows' => '25')))
             ->add('comentarios', TextareaType::class, array('required' => true, 'attr' => array('cols' => '5', 'rows' => '25')))
             ->add('fecha', DateTimeType::class, array('required' => true, 'data' => new \DateTime('now')))
             ->add('fechaVence', DateType::class, array('required' => true, 'data' => new \DateTime('now')))
