@@ -15,12 +15,14 @@ class GenFormaPago implements FixtureInterface
         $arFormaPago = $manager->getRepository('BrasaGeneralBundle:GenFormaPago')->find(1);
         if(!$arFormaPago) {
             $arFormaPago = new \Brasa\GeneralBundle\Entity\GenFormaPago();
+            $arFormaPago->setCodigoFormaPagoPk(1);
             $arFormaPago->setNombre("CONTADO");
             $manager->persist($arFormaPago);                
         }
         $arFormaPago = $manager->getRepository('BrasaGeneralBundle:GenFormaPago')->find(2);
         if(!$arFormaPago) {
             $arFormaPago = new \Brasa\GeneralBundle\Entity\GenFormaPago();
+            $arFormaPago->setCodigoFormaPagoPk(2);
             $arFormaPago->setNombre("CREDITO");
             $manager->persist($arFormaPago);                
         }

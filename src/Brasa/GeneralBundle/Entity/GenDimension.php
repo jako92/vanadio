@@ -13,7 +13,6 @@ class GenDimension
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_dimension_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */ 
     private $codigoDimensionPk;     
     
@@ -101,5 +100,19 @@ class GenDimension
     public function getTurClientesDimensionRel()
     {
         return $this->turClientesDimensionRel;
+    }
+
+    /**
+     * Set codigoDimensionPk
+     *
+     * @param integer $codigoDimensionPk
+     *
+     * @return GenDimension
+     */
+    public function setCodigoDimensionPk($codigoDimensionPk)
+    {
+        $this->codigoDimensionPk = $codigoDimensionPk;
+
+        return $this;
     }
 }

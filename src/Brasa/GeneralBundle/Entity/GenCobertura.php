@@ -13,7 +13,6 @@ class GenCobertura
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_cobertura_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */ 
     private $codigoCoberturaPk;     
     
@@ -102,5 +101,19 @@ class GenCobertura
     public function getTurClientesCoberturaRel()
     {
         return $this->turClientesCoberturaRel;
+    }
+
+    /**
+     * Set codigoCoberturaPk
+     *
+     * @param integer $codigoCoberturaPk
+     *
+     * @return GenCobertura
+     */
+    public function setCodigoCoberturaPk($codigoCoberturaPk)
+    {
+        $this->codigoCoberturaPk = $codigoCoberturaPk;
+
+        return $this;
     }
 }

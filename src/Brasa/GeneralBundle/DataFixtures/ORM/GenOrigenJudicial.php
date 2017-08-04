@@ -14,12 +14,14 @@ class GenOrigenJudicial implements FixtureInterface {
         $arOrigenJudicial = $manager->getRepository('BrasaGeneralBundle:GenOrigenJudicial')->find(1);
         if (!$arOrigenJudicial) {
             $arOrigenJudicial = new \Brasa\GeneralBundle\Entity\GenOrigenJudicial();
+            $arOrigenJudicial->setCodigoOrigenJudicialPk(1);
             $arOrigenJudicial->setNombre("PERSONA JURIDICA");
             $manager->persist($arOrigenJudicial);
         }
         $arOrigenJudicial = $manager->getRepository('BrasaGeneralBundle:GenOrigenJudicial')->find(2);
         if (!$arOrigenJudicial) {
             $arOrigenJudicial = new \Brasa\GeneralBundle\Entity\GenOrigenJudicial();
+            $arOrigenJudicial->setCodigoOrigenJudicialPk(2);
             $arOrigenJudicial->setNombre("PERSONA NATURAL");
             $manager->persist($arOrigenJudicial);
         }

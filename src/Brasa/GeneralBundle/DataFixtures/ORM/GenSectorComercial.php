@@ -15,6 +15,7 @@ class GenSectorComercial implements FixtureInterface
         $arSectorComercial = $manager->getRepository('BrasaGeneralBundle:GenSectorComercial')->find(1);
         if(!$arSectorComercial) {
             $arSectorComercial = new \Brasa\GeneralBundle\Entity\GenSectorComercial();
+            $arSectorComercial->setCodigoSectorComercialPk(1);
             $arSectorComercial->setNombre("COMERCIAL");
             $manager->persist($arSectorComercial);                
         }

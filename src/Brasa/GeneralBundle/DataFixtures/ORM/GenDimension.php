@@ -14,18 +14,21 @@ class GenDimension implements FixtureInterface {
         $arDimension = $manager->getRepository('BrasaGeneralBundle:GenDimension')->find(1);
         if (!$arDimension) {
             $arDimension = new \Brasa\GeneralBundle\Entity\GenDimension();
+            $arDimension->setCodigoDimensionPk(1);
             $arDimension->setNombre("MEDIANA");
             $manager->persist($arDimension);
         }
         $arDimension = $manager->getRepository('BrasaGeneralBundle:GenDimension')->find(2);
         if (!$arDimension) {
             $arDimension = new \Brasa\GeneralBundle\Entity\GenDimension();
+            $arDimension->setCodigoDimensionPk(2);
             $arDimension->setNombre("PEQUEÑA");
             $manager->persist($arDimension);
         }
         $arDimension = $manager->getRepository('BrasaGeneralBundle:GenDimension')->find(3);
         if (!$arDimension) {
             $arDimension = new \Brasa\GeneralBundle\Entity\GenDimension();
+            $arDimension->setCodigoDimensionPk(3);
             $arDimension->setNombre("GRANDE");
             $manager->persist($arDimension);
         }

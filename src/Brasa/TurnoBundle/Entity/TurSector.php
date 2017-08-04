@@ -13,7 +13,6 @@ class TurSector
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_sector_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoSectorPk;    
     
@@ -279,5 +278,19 @@ class TurSector
     public function getClientesSectorRel()
     {
         return $this->clientesSectorRel;
+    }
+
+    /**
+     * Set codigoSectorPk
+     *
+     * @param integer $codigoSectorPk
+     *
+     * @return TurSector
+     */
+    public function setCodigoSectorPk($codigoSectorPk)
+    {
+        $this->codigoSectorPk = $codigoSectorPk;
+
+        return $this;
     }
 }
