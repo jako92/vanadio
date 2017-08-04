@@ -13,7 +13,6 @@ class GenOrigenJudicial
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_origen_judicial_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */ 
     private $codigoOrigenJudicialPk;     
     
@@ -101,5 +100,19 @@ class GenOrigenJudicial
     public function getTurClientesOrigenJudicialRel()
     {
         return $this->turClientesOrigenJudicialRel;
+    }
+
+    /**
+     * Set codigoOrigenJudicialPk
+     *
+     * @param integer $codigoOrigenJudicialPk
+     *
+     * @return GenOrigenJudicial
+     */
+    public function setCodigoOrigenJudicialPk($codigoOrigenJudicialPk)
+    {
+        $this->codigoOrigenJudicialPk = $codigoOrigenJudicialPk;
+
+        return $this;
     }
 }

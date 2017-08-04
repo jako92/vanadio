@@ -13,7 +13,6 @@ class GenOrigenCapital
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_origen_capital_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */ 
     private $codigoOrigenCapitalPk;     
     
@@ -101,5 +100,19 @@ class GenOrigenCapital
     public function getTurClientesOrigenCapitalRel()
     {
         return $this->turClientesOrigenCapitalRel;
+    }
+
+    /**
+     * Set codigoOrigenCapitalPk
+     *
+     * @param integer $codigoOrigenCapitalPk
+     *
+     * @return GenOrigenCapital
+     */
+    public function setCodigoOrigenCapitalPk($codigoOrigenCapitalPk)
+    {
+        $this->codigoOrigenCapitalPk = $codigoOrigenCapitalPk;
+
+        return $this;
     }
 }

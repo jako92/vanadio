@@ -14,12 +14,14 @@ class GenOrigenCapital implements FixtureInterface {
         $arOrigenCapital = $manager->getRepository('BrasaGeneralBundle:GenOrigenCapital')->find(1);
         if (!$arOrigenCapital) {
             $arOrigenCapital = new \Brasa\GeneralBundle\Entity\GenOrigenCapital();
+            $arOrigenCapital->setCodigoOrigenCapitalPk(1);
             $arOrigenCapital->setNombre("ESTATAL");
             $manager->persist($arOrigenCapital);
         }
         $arOrigenCapital = $manager->getRepository('BrasaGeneralBundle:GenOrigenCapital')->find(2);
         if (!$arOrigenCapital) {
             $arOrigenCapital = new \Brasa\GeneralBundle\Entity\GenOrigenCapital();
+            $arOrigenCapital->setCodigoOrigenCapitalPk(2);
             $arOrigenCapital->setNombre("PRIVADO");
             $manager->persist($arOrigenCapital);
         }

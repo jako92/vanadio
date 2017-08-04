@@ -13,7 +13,6 @@ class GenSectorComercial
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_sector_comercial_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */ 
     private $codigoSectorComercialPk;     
     
@@ -101,5 +100,19 @@ class GenSectorComercial
     public function getTurClientesSectorComercialRel()
     {
         return $this->turClientesSectorComercialRel;
+    }
+
+    /**
+     * Set codigoSectorComercialPk
+     *
+     * @param integer $codigoSectorComercialPk
+     *
+     * @return GenSectorComercial
+     */
+    public function setCodigoSectorComercialPk($codigoSectorComercialPk)
+    {
+        $this->codigoSectorComercialPk = $codigoSectorComercialPk;
+
+        return $this;
     }
 }

@@ -105,7 +105,7 @@ class IngresoPendienteController extends Controller {
                 ->setCategory("Test result file");
         $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        for ($col = 'A'; $col !== 'H'; $col++) {
+        for ($col = 'A'; $col !== 'J'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal('left');
         }
@@ -120,8 +120,10 @@ class IngresoPendienteController extends Controller {
                 ->setCellValue('D1', 'PED_DET')
                 ->setCellValue('E1', 'NIT')
                 ->setCellValue('F1', 'CLIENTE')
-                ->setCellValue('G1', 'SERVICIO')
-                ->setCellValue('H1', 'SUBTOTAL');
+                ->setCellValue('G1', 'C.COSTO')
+                ->setCellValue('H1', 'SERVICIO')
+                ->setCellValue('I1', 'PUESTO')
+                ->setCellValue('J1', 'SUBTOTAL');
 
         $i = 2;
         $query = $em->createQuery($this->strListaDql);
@@ -133,10 +135,12 @@ class IngresoPendienteController extends Controller {
                     ->setCellValue('B' . $i, $arIngresoPendiente->getMes())
                     ->setCellValue('C' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getPedidoRel()->getNumero())
                     ->setCellValue('D' . $i, $arIngresoPendiente->getCodigoPedidoDetalleFk())
-                    ->setCellValue('E' . $i, $arIngresoPendiente->getClienteRel()->getNit())
+                    ->setCellValue('E' . $i, $arIngresoPendiente->getClienteRel()->getNit().'-'.$arIngresoPendiente->getClienteRel()->getDigitoVerificacion())
                     ->setCellValue('F' . $i, $arIngresoPendiente->getClienteRel()->getNombreCorto())
-                    ->setCellValue('G' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getConceptoServicioRel()->getNombre())
-                    ->setCellValue('H' . $i, $arIngresoPendiente->getVrSubtotal());
+                    ->setCellValue('G' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getPuestoRel()->getCodigoCentroCostoContabilidadFk())
+                    ->setCellValue('H' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getConceptoServicioRel()->getNombre())
+                    ->setCellValue('I' . $i, $arIngresoPendiente->getPedidoDetalleRel()->getPuestoRel()->getNombre())
+                    ->setCellValue('J' . $i, $arIngresoPendiente->getVrSubtotal());
             $i++;
         }
 

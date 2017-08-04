@@ -14,7 +14,6 @@ class GenFormaPago
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_forma_pago_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoFormaPagoPk;
 
@@ -267,5 +266,19 @@ class GenFormaPago
     public function getInvTercerosFormaPagoRel()
     {
         return $this->invTercerosFormaPagoRel;
+    }
+
+    /**
+     * Set codigoFormaPagoPk
+     *
+     * @param integer $codigoFormaPagoPk
+     *
+     * @return GenFormaPago
+     */
+    public function setCodigoFormaPagoPk($codigoFormaPagoPk)
+    {
+        $this->codigoFormaPagoPk = $codigoFormaPagoPk;
+
+        return $this;
     }
 }

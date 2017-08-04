@@ -120,7 +120,7 @@ class ContabilizarReciboController extends Controller {
                     $arRegistros = $em->getRepository('BrasaCarteraBundle:CarRecibo')->contabilizadosRecibosDql($intReciboDesde, $intReciboHasta, $dateFechaDesde, $dateFechaHasta);
                     foreach ($arRegistros as $codigoRegistro) {
                         $arRegistro = new \Brasa\CarteraBundle\Entity\CarRecibo();
-                        $arRegistro = $em->getRepository('BrasaRecursoHumanoBundle:CarRecibo')->find($codigoRegistro);
+                        $arRegistro = $em->getRepository('BrasaCarteraBundle:CarRecibo')->find($codigoRegistro);
                         $arRegistro->setEstadoContabilizado(0);
                         $em->persist($arRegistro);
                     }

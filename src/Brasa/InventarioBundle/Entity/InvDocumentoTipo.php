@@ -14,7 +14,6 @@ class InvDocumentoTipo
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_documento_tipo_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoDocumentoTipoPk;
 
@@ -143,5 +142,19 @@ class InvDocumentoTipo
     public function getDocumentosDocumentoTipoRel()
     {
         return $this->documentosDocumentoTipoRel;
+    }
+
+    /**
+     * Set codigoDocumentoTipoPk
+     *
+     * @param integer $codigoDocumentoTipoPk
+     *
+     * @return InvDocumentoTipo
+     */
+    public function setCodigoDocumentoTipoPk($codigoDocumentoTipoPk)
+    {
+        $this->codigoDocumentoTipoPk = $codigoDocumentoTipoPk;
+
+        return $this;
     }
 }
