@@ -17,6 +17,8 @@ class PagoMasivo2 extends \FPDF_FPDF {
 
     public function Generar($em, $codigoProgramacionPago = "", $strRuta = "", $codigoPago = "", $codigoZona = "", $codigoSubzona = "", $porFecha = false, $fechaDesde = "", $fechaHasta = "", $dato = "", $centroCosto = "") {
         ob_clean();
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
         //$em = $miThis->getDoctrine()->getManager();
         self::$em = $em;
         self::$codigoProgramacionPago = $codigoProgramacionPago;
@@ -53,7 +55,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
         $this->SetXY(53, 3);
         $this->Image('imagenes/logos/logo.jpg', 12, 5, 35, 7);
         //INFORMACIÓN EMPRESA
-        $this->Cell(150, 8,$arConfiguracion->getNombreEmpresa() . " NIT:" . $arConfiguracion->getNitEmpresa() . " - " . $arConfiguracion->getDigitoVerificacionEmpresa(). " COMPROBANTE PAGO NOMINA", 0, 0, 'C', 1); //$this->Cell(150, 7, utf8_decode("COMPROBANTE PAGO ". $arPago->getPagoTipoRel()->getNombre().""), 0, 0, 'C', 1);
+        $this->Cell(150, 8, $arConfiguracion->getNombreEmpresa() . " NIT:" . $arConfiguracion->getNitEmpresa() . " - " . $arConfiguracion->getDigitoVerificacionEmpresa() . " COMPROBANTE PAGO NOMINA", 0, 0, 'C', 1); //$this->Cell(150, 7, utf8_decode("COMPROBANTE PAGO ". $arPago->getPagoTipoRel()->getNombre().""), 0, 0, 'C', 1);
         $this->SetXY(53, 5);
         $this->EncabezadoDetalles();
     }
@@ -195,14 +197,16 @@ class PagoMasivo2 extends \FPDF_FPDF {
             $pdf->Cell(22, 5, "PUESTO:", 1, 0, 'L', 1);
             $pdf->SetFont('Arial', '', 6.5);
             $pdf->SetFillColor(255, 255, 255);
-            $puesto= "";
+            $puesto = "";
             $arRecurso = self::$em->getRepository('BrasaTurnoBundle:TurRecurso')->findOneBy(array('codigoEmpleadoFk' => $arPago->getCodigoEmpleadoFk()));
             if ($arRecurso) {
                 $anio = $arPago->getFechaHasta()->format('Y');
                 $mes = $arPago->getFechaHasta()->format('m');
                 $arProgramacionDetalle = new \Brasa\TurnoBundle\Entity\TurProgramacionDetalle();
-                $arProgramacionDetalle = self::$em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findOneBy(array('codigoRecursoFk' => $arRecurso->getCodigoRecursoPk(), 'anio' => $anio, 'mes' => $mes));    
-                $puesto = $arProgramacionDetalle->getPuestoRel()->getNombre();        
+                $arProgramacionDetalle = self::$em->getRepository('BrasaTurnoBundle:TurProgramacionDetalle')->findOneBy(array('codigoRecursoFk' => $arRecurso->getCodigoRecursoPk(), 'anio' => $anio, 'mes' => $mes));
+                if ($arProgramacionDetalle) {
+                    $puesto = $arProgramacionDetalle->getPuestoRel()->getNombre();
+                }
             }
             $pdf->Cell(78, 5, $puesto, 1, 0, 'L', 1);
             $pdf->SetFont('Arial', 'B', 6.5);
@@ -217,7 +221,7 @@ class PagoMasivo2 extends \FPDF_FPDF {
             $pdf->SetFont('Arial', '', 7);
             $pdf->SetFillColor(255, 255, 255);
             $pdf->Cell(21, 5, number_format($arPago->getVrSalarioEmpleado(), 0, '.', ','), 1, 0, 'R', 1);
-            
+
 
             $pdf->Ln(12);
 
