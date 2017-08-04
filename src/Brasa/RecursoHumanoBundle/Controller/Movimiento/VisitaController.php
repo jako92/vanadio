@@ -6,7 +6,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Brasa\RecursoHumanoBundle\Form\Type\RhuVisitaType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuVisitaEmpleadoType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuVisitaClienteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -68,9 +69,9 @@ class VisitaController extends Controller
     }
 
     /**
-     * @Route("/rhu/movimiento/visita/nuevo/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo")
+     * @Route("/rhu/movimiento/visita/nuevoempleado/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo_empleado")
      */
-    public function nuevoAction(Request $request, $codigoVisita = 0) {
+    public function nuevoEmpleadoAction(Request $request, $codigoVisita = 0) {
         
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
@@ -80,7 +81,7 @@ class VisitaController extends Controller
         } else {
             $arVisita->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(RhuVisitaType::class, $arVisita);         
+        $form = $this->createForm(RhuVisitaEmpleadoType::class, $arVisita);         
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
@@ -89,6 +90,7 @@ class VisitaController extends Controller
             if($arrControles['form_txtNumeroIdentificacion'] != '') {
                 $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                 $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
+
                 if(count($arEmpleado) > 0) {
                     $arVisita->setEmpleadoRel($arEmpleado);
                     if($arEmpleado->getCodigoContratoActivoFk() != '') {                                                
@@ -96,7 +98,9 @@ class VisitaController extends Controller
                             $arVisita->setCentroCostoRel($arEmpleado->getCentroCostoRel());
                             $arVisita->setClienteRel($arVisita->getCentroCostoRel()->getClienteRel());
                             $arVisita->setCodigoUsuario($arUsuario->getUserName());                                                                                                                
-                            $arVisita->setFechaCreacion(new \DateTime('now'));                            
+                            $arVisita->setFechaCreacion(new \DateTime('now'));
+                            $arVisita->setNombreCorto($arEmpleado->getNombreCorto());
+                            $arVisita->setNumeroIdentificacion($arEmpleado->getNumeroIdentificacion());
                         }
                         $em->persist($arVisita);
                         $em->flush();
@@ -114,11 +118,64 @@ class VisitaController extends Controller
             }
         }
 
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Visita:nuevo.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Visita:nuevoempleado.html.twig', array(
             'arVisita' => $arVisita,
             'form' => $form->createView()));
     }
-
+    /**
+     * @Route("/rhu/movimiento/visita/nuevocliente/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo_cliente")
+     */
+    public function nuevoClienteAction(Request $request, $codigoVisita) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();    
+        $arVisita->setFecha(new \DateTime('now'));
+        if($codigoVisita != 0) {
+            $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
+        }
+        $form = $this->createForm(RhuVisitaClienteType::class, $arVisita);         
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+            $arrControles = $request->request->All();
+            $arVisita = $form->getData();
+            if($arrControles['form_txtCodigoCliente'] != '') 
+            {                
+                $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
+                $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
+                $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->findOneBy(array('codigoClientePk' => $arrControles['form_txtCodigoCliente']));
+                if(count($arCliente) > 0) 
+                {
+                    $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')
+                        ->findOneBy(array('codigoClienteFk' =>$arCliente->getCodigoClientePk()));
+                    $arVisita->SetClienteRel($arCliente);
+                    if($codigoVisita == 0) 
+                    {
+                        $arVisita->setCentroCostoRel($arCentroCosto);
+                        $arVisita->setCodigoUsuario($arUsuario->getUserName());                                                                                                                
+                        $arVisita->setFechaCreacion(new \DateTime('now'));                       
+                    }
+                    $em->persist($arVisita);
+                    $em->flush();
+                    if($form->get('guardarnuevo')->isClicked()) 
+                    {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_nuevo', array('codigoVisita' => 0 )));
+                    } 
+                    else 
+                    {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk() )));
+                    }
+                }                    
+            }
+            else 
+            {
+                $objMensaje->Mensaje("error", "Debe ingresar un cliente");
+            }                
+        }   
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Visita:nuevocliente.html.twig', array(
+            'arVisita' => $arVisita,
+            'form' => $form->createView()));
+    }
     /**
      * @Route("/rhu/movimiento/visita/detalle/{codigoVisita}", name="brs_rhu_movimiento_visita_detalle")
      */
