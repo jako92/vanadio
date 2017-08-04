@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityRepository;
-use Brasa\RecursoHumanoBundle\Form\Type\RhuPruebaType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuPruebaEmpleadoType;
+use Brasa\RecursoHumanoBundle\Form\Type\RhuPruebaClienteType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,7 +33,7 @@ class PruebaController extends Controller {
         $form->handleRequest($request);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $this->listar();
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $arrSelecionados = $request->request->get('ChkSeleccionar');
             if ($form->get('BtnEliminar')->isClicked()) {
                 if (count($arrSelecionados) > 0) {
@@ -63,63 +64,133 @@ class PruebaController extends Controller {
                 $this->generarExcel();
             }
         }
-
         $arPruebas = $paginator->paginate($em->createQuery($this->strListaDql), $request->query->get('page', 1), 40);
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:lista.html.twig', array('arPrueba' => $arPruebas, 'form' => $form->createView()));
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:lista.html.twig', 
+                array('arPrueba' => $arPruebas, 'form' => $form->createView()));
     }
 
     /**
-     * @Route("/rhu/movimiento/prueba/nuevo/{codigoPrueba}", name="brs_rhu_movimiento_prueba_nuevo")
+     * @Route("/rhu/movimiento/prueba/nuevoempleado/{codigoPrueba}", name="brs_rhu_movimiento_prueba_nuevo_empleado")
      */
-    public function nuevoAction(Request $request, $codigoPrueba = 0) {
+    public function nuevoEmpleadoAction(Request $request, $codigoPrueba) {
 
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $arPrueba = new \Brasa\RecursoHumanoBundle\Entity\RhuPrueba();
+        $arPrueba->setFecha(new \DateTime('now'));
         if ($codigoPrueba != 0) {
             $arPrueba = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrueba')->find($codigoPrueba);
-        } else {
-            $arPrueba->setFecha(new \DateTime('now'));
-        }
-        $form = $this->createForm(RhuPruebaType::class, $arPrueba);
+        } 
+        $form = $this->createForm(RhuPruebaEmpleadoType::class, $arPrueba);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
-            $arrControles = $request->request->All();
-            $arPrueba = $form->getData();
-            if ($arrControles['form_txtNumeroIdentificacion'] != '') {
-                $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
-                $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
-                if (count($arEmpleado) > 0) {
-                    $arPrueba->setEmpleadoRel($arEmpleado);
-                    if ($arEmpleado->getCodigoContratoActivoFk() != '') {
-                        if ($codigoPrueba == 0) {
-                            $arPrueba->setCentroCostoRel($arEmpleado->getCentroCostoRel());
-                            $arPrueba->setClienteRel($arPrueba->getCentroCostoRel()->getClienteRel());
-                            $arPrueba->setCodigoUsuario($arUsuario->getUserName());
-                            $arPrueba->setFechaCreacion(new \DateTime('now'));
-                        }
-                        $em->persist($arPrueba);
-                        $em->flush();
-                        if ($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_nuevo', array('codigoPrueba' => 0)));
+        if ($form->isSubmitted()){ 
+                $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+                $arrControles = $request->request->All();
+                $arPrueba = $form->getData();
+                if ($arrControles['form_txtNumeroIdentificacion'] != '') {
+                    $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
+                    $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
+                    if (count($arEmpleado) > 0) {
+                        $arPrueba->setEmpleadoRel($arEmpleado);
+                        if ($arEmpleado->getCodigoContratoActivoFk() != '') {
+                            if(is_numeric($arPrueba->getResultadoCuantitativo()) == false )
+                            {
+                                $objMensaje->Mensaje("error", "El campo Resultado cauntitativo es numerico");
+                                return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:nuevoempleado.html.twig', array(
+                                'arPrueba' => $arPrueba,
+                                'form' => $form->createView()));
+                            }
+                            if ($codigoPrueba == 0) {
+                                $arPrueba->setCentroCostoRel($arEmpleado->getCentroCostoRel());
+                                $arPrueba->setClienteRel($arPrueba->getCentroCostoRel()->getClienteRel());
+                                $arPrueba->setCodigoUsuario($arUsuario->getUserName());
+                                $arPrueba->setFechaCreacion(new \DateTime('now'));
+                                $arPrueba->setNombreCorto($arEmpleado->getNombreCorto());
+                                $arPrueba->setNumeroIdentificacion($arEmpleado->getNumeroIdentificacion());
+                                $arPrueba->setTipoPersona('empleado');
+                            }
+                            $em->persist($arPrueba);
+                            $em->flush();
+                            if ($form->get('guardarnuevo')->isClicked()) {
+                                return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_nuevo_empleado', array('codigoPrueba' => 0)));
+                            } else {
+                                return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_detalle', array('codigoPrueba' => $arPrueba->getCodigoPruebaPk())));
+                            }
                         } else {
-                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_detalle', array('codigoPrueba' => $arPrueba->getCodigoPruebaPk())));
+                            $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
                         }
                     } else {
-                        $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
+                        $objMensaje->Mensaje("error", "El empleado no existe");
                     }
-                } else {
-                    $objMensaje->Mensaje("error", "El empleado no existe");
                 }
-            }
         }
-
-        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:nuevo.html.twig', array(
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:nuevoempleado.html.twig', array(
                     'arPrueba' => $arPrueba,
                     'form' => $form->createView()));
     }
-
+    /**
+     * @Route("/rhu/movimiento/prueba/nuevocliente/{codigoPrueba}", name="brs_rhu_movimiento_prueba_nuevo_cliente")
+     */
+    public function nuevoClienteAction(Request $request, $codigoPrueba) {
+        $em = $this->getDoctrine()->getManager();
+        $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
+        $arPrueba = new \Brasa\RecursoHumanoBundle\Entity\RhuPrueba();
+        $arPrueba->setFecha(new \DateTime('now'));
+        if($codigoPrueba != 0) {
+            $arPrueba = $em->getRepository('BrasaRecursoHumanoBundle:RhuPrueba')->find($codigoPrueba);
+        } 
+        $form = $this->createForm(RhuPruebaClienteType::class, $arPrueba);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){ 
+            $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
+            $arrControles = $request->request->All();
+            $arPrueba = $form->getData();
+            if ($arrControles['form_txtCodigoCliente'] != '') 
+            {
+                $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
+                $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
+                $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->findOneBy(array('codigoClientePk' => $arrControles['form_txtCodigoCliente']));
+                if (count($arCliente) > 0) 
+                {
+                    if(is_numeric($arPrueba->getResultadoCuantitativo()) == false )
+                    {
+                        $objMensaje->Mensaje("error", "El campo Resultado cauntitativo debe ser numerico");
+                        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:nuevocliente.html.twig', array(
+                        'arPrueba' => $arPrueba,
+                        'form' => $form->createView()));
+                    }
+                    $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')
+                        ->findOneBy(array('codigoClienteFk' =>$arCliente->getCodigoClientePk()));
+                    $arPrueba->SetClienteRel($arCliente);
+                    if ($codigoPrueba == 0) 
+                    {
+                        $arPrueba->setCentroCostoRel($arCentroCosto);
+                        $arPrueba->setCodigoUsuario($arUsuario->getUserName());
+                        $arPrueba->setFechaCreacion(new \DateTime('now'));
+                        $arPrueba->setTipoPersona('no empleado');
+                    }
+                    $em->persist($arPrueba);
+                    $em->flush();
+                    if ($form->get('guardarnuevo')->isClicked()) 
+                    {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_nuevo_cliente', array('codigoPrueba' => 0)));
+                    } 
+                    else 
+                    {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_detalle', array('codigoPrueba' => $arPrueba->getCodigoPruebaPk())));
+                    }
+                }
+            } 
+            else 
+            {
+                $objMensaje->Mensaje("error", "Debe ingresar el cliente");
+            }
+                
+        }
+        return $this->render('BrasaRecursoHumanoBundle:Movimientos/Prueba:nuevocliente.html.twig', array(
+            'arPrueba' => $arPrueba,
+            'form' => $form->createView()));
+    }
     /**
      * @Route("/rhu/movimiento/prueba/detalle/{codigoPrueba}", name="brs_rhu_movimiento_prueba_detalle")
      */
@@ -141,6 +212,14 @@ class PruebaController extends Controller {
             if ($form->get('BtnDesAutorizar')->isClicked()) {
                 if ($arPrueba->getEstadoAutorizado() == 1) {
                     $arPrueba->setEstadoAutorizado(0);
+                    $em->persist($arPrueba);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_detalle', array('codigoPrueba' => $codigoPrueba)));
+                }
+            }
+            if ($form->get('BtnCerrar')->isClicked()) {
+                if ($arPrueba->getEstadoAutorizado() == 1) {
+                    $arPrueba->setEstadoCerrado(1);
                     $em->persist($arPrueba);
                     $em->flush();
                     return $this->redirect($this->generateUrl('brs_rhu_movimiento_prueba_detalle', array('codigoPrueba' => $codigoPrueba)));
@@ -213,10 +292,14 @@ class PruebaController extends Controller {
     private function formularioDetalle($arPrueba) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
+        $arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => true);
         if ($arPrueba->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
+            $arrBotonCerrar['disabled'] = false;
             if ($arPrueba->getEstadoCerrado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
+                $arrBotonCerrar['disabled'] = true;
+                $arrBotonAutorizar['disabled'] = true;
             }
         } else {
             $arrBotonDesAutorizar['disabled'] = true;
@@ -224,6 +307,7 @@ class PruebaController extends Controller {
         $form = $this->createFormBuilder()
                 ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
                 ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
                 ->getForm();
         return $form;
     }
