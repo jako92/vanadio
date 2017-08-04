@@ -61,7 +61,15 @@ class GenTipoIdentificacion {
      * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuCliente", mappedBy="tipoIdentificacionRel")
      */
     protected $rhuClientesTipoIdentificacionRel;
-
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuPrueba", mappedBy="tipoIdentificacionRel")
+     */
+    protected $rhupruebasIdentificacionRel;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Brasa\RecursoHumanoBundle\Entity\RhuVisita", mappedBy="tipoIdentificacionRel")
+     */
+    protected $rhuvisitasIdentificacionRel;
     /**
      * Constructor
      */
@@ -79,7 +87,8 @@ class GenTipoIdentificacion {
      *
      * @return integer
      */
-    public function getCodigoTipoIdentificacionPk() {
+    public function getCodigoTipoIdentificacionPk()
+    {
         return $this->codigoTipoIdentificacionPk;
     }
 
@@ -90,7 +99,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
 
         return $this;
@@ -101,7 +111,8 @@ class GenTipoIdentificacion {
      *
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
@@ -112,7 +123,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function setCodigoInterface($codigoInterface) {
+    public function setCodigoInterface($codigoInterface)
+    {
         $this->codigoInterface = $codigoInterface;
 
         return $this;
@@ -123,7 +135,8 @@ class GenTipoIdentificacion {
      *
      * @return string
      */
-    public function getCodigoInterface() {
+    public function getCodigoInterface()
+    {
         return $this->codigoInterface;
     }
 
@@ -134,7 +147,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addRhuEmpleadosTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $rhuEmpleadosTipoIdentificacionRel) {
+    public function addRhuEmpleadosTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $rhuEmpleadosTipoIdentificacionRel)
+    {
         $this->rhuEmpleadosTipoIdentificacionRel[] = $rhuEmpleadosTipoIdentificacionRel;
 
         return $this;
@@ -145,7 +159,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $rhuEmpleadosTipoIdentificacionRel
      */
-    public function removeRhuEmpleadosTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $rhuEmpleadosTipoIdentificacionRel) {
+    public function removeRhuEmpleadosTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuEmpleado $rhuEmpleadosTipoIdentificacionRel)
+    {
         $this->rhuEmpleadosTipoIdentificacionRel->removeElement($rhuEmpleadosTipoIdentificacionRel);
     }
 
@@ -154,7 +169,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRhuEmpleadosTipoIdentificacionRel() {
+    public function getRhuEmpleadosTipoIdentificacionRel()
+    {
         return $this->rhuEmpleadosTipoIdentificacionRel;
     }
 
@@ -165,7 +181,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addRhuSeleccionesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $rhuSeleccionesTipoIdentificacionRel) {
+    public function addRhuSeleccionesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $rhuSeleccionesTipoIdentificacionRel)
+    {
         $this->rhuSeleccionesTipoIdentificacionRel[] = $rhuSeleccionesTipoIdentificacionRel;
 
         return $this;
@@ -176,7 +193,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $rhuSeleccionesTipoIdentificacionRel
      */
-    public function removeRhuSeleccionesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $rhuSeleccionesTipoIdentificacionRel) {
+    public function removeRhuSeleccionesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $rhuSeleccionesTipoIdentificacionRel)
+    {
         $this->rhuSeleccionesTipoIdentificacionRel->removeElement($rhuSeleccionesTipoIdentificacionRel);
     }
 
@@ -185,7 +203,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRhuSeleccionesTipoIdentificacionRel() {
+    public function getRhuSeleccionesTipoIdentificacionRel()
+    {
         return $this->rhuSeleccionesTipoIdentificacionRel;
     }
 
@@ -196,7 +215,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addCbtTercerosTipoIdentificacionRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $cbtTercerosTipoIdentificacionRel) {
+    public function addCbtTercerosTipoIdentificacionRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $cbtTercerosTipoIdentificacionRel)
+    {
         $this->cbtTercerosTipoIdentificacionRel[] = $cbtTercerosTipoIdentificacionRel;
 
         return $this;
@@ -207,7 +227,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\ContabilidadBundle\Entity\CtbTercero $cbtTercerosTipoIdentificacionRel
      */
-    public function removeCbtTercerosTipoIdentificacionRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $cbtTercerosTipoIdentificacionRel) {
+    public function removeCbtTercerosTipoIdentificacionRel(\Brasa\ContabilidadBundle\Entity\CtbTercero $cbtTercerosTipoIdentificacionRel)
+    {
         $this->cbtTercerosTipoIdentificacionRel->removeElement($cbtTercerosTipoIdentificacionRel);
     }
 
@@ -216,7 +237,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCbtTercerosTipoIdentificacionRel() {
+    public function getCbtTercerosTipoIdentificacionRel()
+    {
         return $this->cbtTercerosTipoIdentificacionRel;
     }
 
@@ -227,7 +249,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addRhuAspirantesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuAspirante $rhuAspirantesTipoIdentificacionRel) {
+    public function addRhuAspirantesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuAspirante $rhuAspirantesTipoIdentificacionRel)
+    {
         $this->rhuAspirantesTipoIdentificacionRel[] = $rhuAspirantesTipoIdentificacionRel;
 
         return $this;
@@ -238,7 +261,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuAspirante $rhuAspirantesTipoIdentificacionRel
      */
-    public function removeRhuAspirantesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuAspirante $rhuAspirantesTipoIdentificacionRel) {
+    public function removeRhuAspirantesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuAspirante $rhuAspirantesTipoIdentificacionRel)
+    {
         $this->rhuAspirantesTipoIdentificacionRel->removeElement($rhuAspirantesTipoIdentificacionRel);
     }
 
@@ -247,7 +271,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRhuAspirantesTipoIdentificacionRel() {
+    public function getRhuAspirantesTipoIdentificacionRel()
+    {
         return $this->rhuAspirantesTipoIdentificacionRel;
     }
 
@@ -258,7 +283,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel) {
+    public function addRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel)
+    {
         $this->rhuPoligrafiasTipoIdentificacionRel[] = $rhuPoligrafiasTipoIdentificacionRel;
 
         return $this;
@@ -269,7 +295,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel
      */
-    public function removeRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel) {
+    public function removeRhuPoligrafiasTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPoligrafia $rhuPoligrafiasTipoIdentificacionRel)
+    {
         $this->rhuPoligrafiasTipoIdentificacionRel->removeElement($rhuPoligrafiasTipoIdentificacionRel);
     }
 
@@ -278,7 +305,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRhuPoligrafiasTipoIdentificacionRel() {
+    public function getRhuPoligrafiasTipoIdentificacionRel()
+    {
         return $this->rhuPoligrafiasTipoIdentificacionRel;
     }
 
@@ -289,7 +317,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addTurClientesTipoIdentificacionRel(\Brasa\TurnoBundle\Entity\TurCliente $turClientesTipoIdentificacionRel) {
+    public function addTurClientesTipoIdentificacionRel(\Brasa\TurnoBundle\Entity\TurCliente $turClientesTipoIdentificacionRel)
+    {
         $this->turClientesTipoIdentificacionRel[] = $turClientesTipoIdentificacionRel;
 
         return $this;
@@ -300,7 +329,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\TurnoBundle\Entity\TurCliente $turClientesTipoIdentificacionRel
      */
-    public function removeTurClientesTipoIdentificacionRel(\Brasa\TurnoBundle\Entity\TurCliente $turClientesTipoIdentificacionRel) {
+    public function removeTurClientesTipoIdentificacionRel(\Brasa\TurnoBundle\Entity\TurCliente $turClientesTipoIdentificacionRel)
+    {
         $this->turClientesTipoIdentificacionRel->removeElement($turClientesTipoIdentificacionRel);
     }
 
@@ -309,7 +339,8 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getTurClientesTipoIdentificacionRel() {
+    public function getTurClientesTipoIdentificacionRel()
+    {
         return $this->turClientesTipoIdentificacionRel;
     }
 
@@ -320,7 +351,8 @@ class GenTipoIdentificacion {
      *
      * @return GenTipoIdentificacion
      */
-    public function addRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel) {
+    public function addRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel)
+    {
         $this->rhuClientesTipoIdentificacionRel[] = $rhuClientesTipoIdentificacionRel;
 
         return $this;
@@ -331,7 +363,8 @@ class GenTipoIdentificacion {
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel
      */
-    public function removeRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel) {
+    public function removeRhuClientesTipoIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $rhuClientesTipoIdentificacionRel)
+    {
         $this->rhuClientesTipoIdentificacionRel->removeElement($rhuClientesTipoIdentificacionRel);
     }
 
@@ -340,8 +373,76 @@ class GenTipoIdentificacion {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRhuClientesTipoIdentificacionRel() {
+    public function getRhuClientesTipoIdentificacionRel()
+    {
         return $this->rhuClientesTipoIdentificacionRel;
     }
 
+    /**
+     * Add rhupruebasIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $rhupruebasIdentificacionRel
+     *
+     * @return GenTipoIdentificacion
+     */
+    public function addRhupruebasIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $rhupruebasIdentificacionRel)
+    {
+        $this->rhupruebasIdentificacionRel[] = $rhupruebasIdentificacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhupruebasIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPrueba $rhupruebasIdentificacionRel
+     */
+    public function removeRhupruebasIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuPrueba $rhupruebasIdentificacionRel)
+    {
+        $this->rhupruebasIdentificacionRel->removeElement($rhupruebasIdentificacionRel);
+    }
+
+    /**
+     * Get rhupruebasIdentificacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhupruebasIdentificacionRel()
+    {
+        return $this->rhupruebasIdentificacionRel;
+    }
+
+    /**
+     * Add rhuvisitasIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $rhuvisitasIdentificacionRel
+     *
+     * @return GenTipoIdentificacion
+     */
+    public function addRhuvisitasIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $rhuvisitasIdentificacionRel)
+    {
+        $this->rhuvisitasIdentificacionRel[] = $rhuvisitasIdentificacionRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove rhuvisitasIdentificacionRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuVisita $rhuvisitasIdentificacionRel
+     */
+    public function removeRhuvisitasIdentificacionRel(\Brasa\RecursoHumanoBundle\Entity\RhuVisita $rhuvisitasIdentificacionRel)
+    {
+        $this->rhuvisitasIdentificacionRel->removeElement($rhuvisitasIdentificacionRel);
+    }
+
+    /**
+     * Get rhuvisitasIdentificacionRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRhuvisitasIdentificacionRel()
+    {
+        return $this->rhuvisitasIdentificacionRel;
+    }
 }
