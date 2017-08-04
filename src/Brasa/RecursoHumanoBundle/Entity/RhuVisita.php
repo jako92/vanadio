@@ -18,6 +18,11 @@ class RhuVisita
     private $codigoVisitaPk;            
     
     /**
+     * @ORM\Column(name="codigo_tipo_identificacion_fk", type="integer", nullable=true)
+     */    
+    private $codigoTipoIdentificacionFk;
+    
+    /**
      * @ORM\Column(name="fecha", type="datetime", nullable=true)
      */    
     private $fecha;                 
@@ -28,7 +33,7 @@ class RhuVisita
     private $fechaCreacion;    
     
     /**
-     * @ORM\Column(name="codigo_empleado_fk", type="integer")
+     * @ORM\Column(name="codigo_empleado_fk", type="integer", nullable=true)
      */    
     private $codigoEmpleadoFk;
     
@@ -71,6 +76,14 @@ class RhuVisita
      * @ORM\Column(name="comentarios", type="text", nullable=true)
      */    
     private $comentarios;    
+    /**
+     * @ORM\Column(name="nombre_corto", type="text", nullable=true)
+     */    
+    private $nombreCorto;    
+    /**
+     * @ORM\Column(name="numero_identificacion", type="text", nullable=true)
+     */    
+    private $numeroIdentificacion;    
        
     
     /**     
@@ -129,6 +142,11 @@ class RhuVisita
      */
     protected $cobroRel;
     
+    /**
+     * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenTipoIdentificacion", inversedBy="rhuvisitasIdentificacionRel")
+     * @ORM\JoinColumn(name="codigo_tipo_identificacion_fk", referencedColumnName="codigo_tipo_identificacion_pk")
+     */
+    protected $tipoIdentificacionRel;
 
     /**
      * Get codigoVisitaPk
@@ -138,6 +156,30 @@ class RhuVisita
     public function getCodigoVisitaPk()
     {
         return $this->codigoVisitaPk;
+    }
+
+    /**
+     * Set codigoTipoIdentificacionFk
+     *
+     * @param integer $codigoTipoIdentificacionFk
+     *
+     * @return RhuVisita
+     */
+    public function setCodigoTipoIdentificacionFk($codigoTipoIdentificacionFk)
+    {
+        $this->codigoTipoIdentificacionFk = $codigoTipoIdentificacionFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoTipoIdentificacionFk
+     *
+     * @return integer
+     */
+    public function getCodigoTipoIdentificacionFk()
+    {
+        return $this->codigoTipoIdentificacionFk;
     }
 
     /**
@@ -162,6 +204,30 @@ class RhuVisita
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return RhuVisita
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
     }
 
     /**
@@ -210,6 +276,78 @@ class RhuVisita
     public function getCodigoVisitaTipoFk()
     {
         return $this->codigoVisitaTipoFk;
+    }
+
+    /**
+     * Set codigoClienteFk
+     *
+     * @param integer $codigoClienteFk
+     *
+     * @return RhuVisita
+     */
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
+        $this->codigoClienteFk = $codigoClienteFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoClienteFk
+     *
+     * @return integer
+     */
+    public function getCodigoClienteFk()
+    {
+        return $this->codigoClienteFk;
+    }
+
+    /**
+     * Set codigoCentroCostoFk
+     *
+     * @param integer $codigoCentroCostoFk
+     *
+     * @return RhuVisita
+     */
+    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
+    {
+        $this->codigoCentroCostoFk = $codigoCentroCostoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCentroCostoFk
+     *
+     * @return integer
+     */
+    public function getCodigoCentroCostoFk()
+    {
+        return $this->codigoCentroCostoFk;
+    }
+
+    /**
+     * Set codigoCobroFk
+     *
+     * @param integer $codigoCobroFk
+     *
+     * @return RhuVisita
+     */
+    public function setCodigoCobroFk($codigoCobroFk)
+    {
+        $this->codigoCobroFk = $codigoCobroFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoCobroFk
+     *
+     * @return integer
+     */
+    public function getCodigoCobroFk()
+    {
+        return $this->codigoCobroFk;
     }
 
     /**
@@ -309,6 +447,54 @@ class RhuVisita
     }
 
     /**
+     * Set nombreCorto
+     *
+     * @param string $nombreCorto
+     *
+     * @return RhuVisita
+     */
+    public function setNombreCorto($nombreCorto)
+    {
+        $this->nombreCorto = $nombreCorto;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreCorto
+     *
+     * @return string
+     */
+    public function getNombreCorto()
+    {
+        return $this->nombreCorto;
+    }
+
+    /**
+     * Set numeroIdentificacion
+     *
+     * @param string $numeroIdentificacion
+     *
+     * @return RhuVisita
+     */
+    public function setNumeroIdentificacion($numeroIdentificacion)
+    {
+        $this->numeroIdentificacion = $numeroIdentificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroIdentificacion
+     *
+     * @return string
+     */
+    public function getNumeroIdentificacion()
+    {
+        return $this->numeroIdentificacion;
+    }
+
+    /**
      * Set estadoAutorizado
      *
      * @param boolean $estadoAutorizado
@@ -354,6 +540,54 @@ class RhuVisita
     public function getEstadoCerrado()
     {
         return $this->estadoCerrado;
+    }
+
+    /**
+     * Set estadoCobrado
+     *
+     * @param boolean $estadoCobrado
+     *
+     * @return RhuVisita
+     */
+    public function setEstadoCobrado($estadoCobrado)
+    {
+        $this->estadoCobrado = $estadoCobrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCobrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCobrado()
+    {
+        return $this->estadoCobrado;
+    }
+
+    /**
+     * Set vrTotal
+     *
+     * @param float $vrTotal
+     *
+     * @return RhuVisita
+     */
+    public function setVrTotal($vrTotal)
+    {
+        $this->vrTotal = $vrTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotal
+     *
+     * @return float
+     */
+    public function getVrTotal()
+    {
+        return $this->vrTotal;
     }
 
     /**
@@ -429,123 +663,27 @@ class RhuVisita
     }
 
     /**
-     * Set fechaCreacion
+     * Set clienteRel
      *
-     * @param \DateTime $fechaCreacion
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
      *
      * @return RhuVisita
      */
-    public function setFechaCreacion($fechaCreacion)
+    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
     {
-        $this->fechaCreacion = $fechaCreacion;
+        $this->clienteRel = $clienteRel;
 
         return $this;
     }
 
     /**
-     * Get fechaCreacion
+     * Get clienteRel
      *
-     * @return \DateTime
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
      */
-    public function getFechaCreacion()
+    public function getClienteRel()
     {
-        return $this->fechaCreacion;
-    }
-
-    /**
-     * Set vrTotal
-     *
-     * @param float $vrTotal
-     *
-     * @return RhuVisita
-     */
-    public function setVrTotal($vrTotal)
-    {
-        $this->vrTotal = $vrTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotal
-     *
-     * @return float
-     */
-    public function getVrTotal()
-    {
-        return $this->vrTotal;
-    }
-
-    /**
-     * Set codigoCentroCostoFk
-     *
-     * @param integer $codigoCentroCostoFk
-     *
-     * @return RhuVisita
-     */
-    public function setCodigoCentroCostoFk($codigoCentroCostoFk)
-    {
-        $this->codigoCentroCostoFk = $codigoCentroCostoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCentroCostoFk
-     *
-     * @return integer
-     */
-    public function getCodigoCentroCostoFk()
-    {
-        return $this->codigoCentroCostoFk;
-    }
-
-    /**
-     * Set codigoCobroFk
-     *
-     * @param integer $codigoCobroFk
-     *
-     * @return RhuVisita
-     */
-    public function setCodigoCobroFk($codigoCobroFk)
-    {
-        $this->codigoCobroFk = $codigoCobroFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoCobroFk
-     *
-     * @return integer
-     */
-    public function getCodigoCobroFk()
-    {
-        return $this->codigoCobroFk;
-    }
-
-    /**
-     * Set estadoCobrado
-     *
-     * @param boolean $estadoCobrado
-     *
-     * @return RhuVisita
-     */
-    public function setEstadoCobrado($estadoCobrado)
-    {
-        $this->estadoCobrado = $estadoCobrado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoCobrado
-     *
-     * @return boolean
-     */
-    public function getEstadoCobrado()
-    {
-        return $this->estadoCobrado;
+        return $this->clienteRel;
     }
 
     /**
@@ -597,50 +735,26 @@ class RhuVisita
     }
 
     /**
-     * Set codigoClienteFk
+     * Set tipoIdentificacionRel
      *
-     * @param integer $codigoClienteFk
+     * @param \Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel
      *
      * @return RhuVisita
      */
-    public function setCodigoClienteFk($codigoClienteFk)
+    public function setTipoIdentificacionRel(\Brasa\GeneralBundle\Entity\GenTipoIdentificacion $tipoIdentificacionRel = null)
     {
-        $this->codigoClienteFk = $codigoClienteFk;
+        $this->tipoIdentificacionRel = $tipoIdentificacionRel;
 
         return $this;
     }
 
     /**
-     * Get codigoClienteFk
+     * Get tipoIdentificacionRel
      *
-     * @return integer
+     * @return \Brasa\GeneralBundle\Entity\GenTipoIdentificacion
      */
-    public function getCodigoClienteFk()
+    public function getTipoIdentificacionRel()
     {
-        return $this->codigoClienteFk;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel
-     *
-     * @return RhuVisita
-     */
-    public function setClienteRel(\Brasa\RecursoHumanoBundle\Entity\RhuCliente $clienteRel = null)
-    {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuCliente
-     */
-    public function getClienteRel()
-    {
-        return $this->clienteRel;
+        return $this->tipoIdentificacionRel;
     }
 }
