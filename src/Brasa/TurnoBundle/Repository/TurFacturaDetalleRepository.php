@@ -130,13 +130,22 @@ class TurFacturaDetalleRepository extends EntityRepository {
         return $dql;
     }
 
-    public function listaConsultaPedidoFacturaComparativoDql($numeroPedido = "", $codigoCliente = "", $strFechaDesde = "", $strFechaHasta = "") {
-        $dql = "SELECT fd FROM BrasaTurnoBundle:TurFacturaDetalle fd JOIN fd.facturaRel f WHERE fd.codigoFacturaDetallePk != 0 AND fd.codigoPedidoDetalleFk != '' AND f.estadoAnulado = 0";
+    public function listaConsultaPedidoFacturaComparativoDql($codigoFacturaTipo = "",$numeroPedido = "", $codigoCliente = "", $strFechaDesde = "", $strFechaHasta = "",$boolEstadoAnulado="") {
+        $dql = "SELECT fd FROM BrasaTurnoBundle:TurFacturaDetalle fd JOIN fd.facturaRel f WHERE fd.codigoFacturaDetallePk != 0 AND fd.codigoPedidoDetalleFk != ''";
+        if ($codigoFacturaTipo != "") {
+            $dql .= " AND f.codigoFacturaTipoFk = " . $codigoFacturaTipo;
+        }
         if ($numeroPedido != "") {
             $dql .= " AND f.numero = " . $numeroPedido;
         }
         if ($codigoCliente != "") {
             $dql .= " AND f.codigoClienteFk = " . $codigoCliente;
+        }
+        if ($boolEstadoAnulado == 1) {
+            $dql .= " AND f.estadoAnulado = 1";
+        }
+        if ($boolEstadoAnulado == 0) {
+            $dql .= " AND f.estadoAnulado = 0";
         }
         if ($strFechaDesde != "") {
             $dql .= " AND f.fecha >= '" . $strFechaDesde . "'";
