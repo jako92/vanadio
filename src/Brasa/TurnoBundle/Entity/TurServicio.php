@@ -43,11 +43,6 @@ class TurServicio {
     private $codigoServicioTipoFk;
 
     /**
-     * @ORM\Column(name="cantidad_personal", type="integer", options={"default":0}, nullable=true)
-     */
-    private $cantidadPersonal = 0;
-
-    /**
      * @ORM\Column(name="estado_autorizado", type="boolean", options={"default":false})
      */
     private $estadoAutorizado = false;
@@ -138,12 +133,6 @@ class TurServicio {
     private $vrSalarioBase = 0;
 
     /**
-     * Opción para sumar el aiu
-     * @ORM\Column(name="sumar_aiu", type="boolean", options={"default":false}, nullable=true)
-     */
-    private $sumarAiu = false;
-
-    /**
      * @ORM\ManyToOne(targetEntity="TurCliente", inversedBy="serviciosClienteRel")
      * @ORM\JoinColumn(name="codigo_cliente_fk", referencedColumnName="codigo_cliente_pk")
      */
@@ -174,7 +163,8 @@ class TurServicio {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->serviciosDetallesServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->serviciosDetallesConceptosServicioRel = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -184,7 +174,8 @@ class TurServicio {
      *
      * @return integer
      */
-    public function getCodigoServicioPk() {
+    public function getCodigoServicioPk()
+    {
         return $this->codigoServicioPk;
     }
 
@@ -195,7 +186,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setFechaGeneracion($fechaGeneracion) {
+    public function setFechaGeneracion($fechaGeneracion)
+    {
         $this->fechaGeneracion = $fechaGeneracion;
 
         return $this;
@@ -206,7 +198,8 @@ class TurServicio {
      *
      * @return \DateTime
      */
-    public function getFechaGeneracion() {
+    public function getFechaGeneracion()
+    {
         return $this->fechaGeneracion;
     }
 
@@ -217,7 +210,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setSoporte($soporte) {
+    public function setSoporte($soporte)
+    {
         $this->soporte = $soporte;
 
         return $this;
@@ -228,7 +222,8 @@ class TurServicio {
      *
      * @return string
      */
-    public function getSoporte() {
+    public function getSoporte()
+    {
         return $this->soporte;
     }
 
@@ -239,7 +234,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setCodigoClienteFk($codigoClienteFk) {
+    public function setCodigoClienteFk($codigoClienteFk)
+    {
         $this->codigoClienteFk = $codigoClienteFk;
 
         return $this;
@@ -250,7 +246,8 @@ class TurServicio {
      *
      * @return integer
      */
-    public function getCodigoClienteFk() {
+    public function getCodigoClienteFk()
+    {
         return $this->codigoClienteFk;
     }
 
@@ -261,7 +258,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setCodigoSectorFk($codigoSectorFk) {
+    public function setCodigoSectorFk($codigoSectorFk)
+    {
         $this->codigoSectorFk = $codigoSectorFk;
 
         return $this;
@@ -272,510 +270,9 @@ class TurServicio {
      *
      * @return integer
      */
-    public function getCodigoSectorFk() {
+    public function getCodigoSectorFk()
+    {
         return $this->codigoSectorFk;
-    }
-
-    /**
-     * Set estadoAutorizado
-     *
-     * @param boolean $estadoAutorizado
-     *
-     * @return TurServicio
-     */
-    public function setEstadoAutorizado($estadoAutorizado) {
-        $this->estadoAutorizado = $estadoAutorizado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoAutorizado
-     *
-     * @return boolean
-     */
-    public function getEstadoAutorizado() {
-        return $this->estadoAutorizado;
-    }
-
-    /**
-     * Set estadoCerrado
-     *
-     * @param boolean $estadoCerrado
-     *
-     * @return TurServicio
-     */
-    public function setEstadoCerrado($estadoCerrado) {
-        $this->estadoCerrado = $estadoCerrado;
-
-        return $this;
-    }
-
-    /**
-     * Get estadoCerrado
-     *
-     * @return boolean
-     */
-    public function getEstadoCerrado() {
-        return $this->estadoCerrado;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param integer $cantidad
-     *
-     * @return TurServicio
-     */
-    public function setCantidad($cantidad) {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return integer
-     */
-    public function getCantidad() {
-        return $this->cantidad;
-    }
-
-    /**
-     * Set horas
-     *
-     * @param integer $horas
-     *
-     * @return TurServicio
-     */
-    public function setHoras($horas) {
-        $this->horas = $horas;
-
-        return $this;
-    }
-
-    /**
-     * Get horas
-     *
-     * @return integer
-     */
-    public function getHoras() {
-        return $this->horas;
-    }
-
-    /**
-     * Set horasDiurnas
-     *
-     * @param integer $horasDiurnas
-     *
-     * @return TurServicio
-     */
-    public function setHorasDiurnas($horasDiurnas) {
-        $this->horasDiurnas = $horasDiurnas;
-
-        return $this;
-    }
-
-    /**
-     * Get horasDiurnas
-     *
-     * @return integer
-     */
-    public function getHorasDiurnas() {
-        return $this->horasDiurnas;
-    }
-
-    /**
-     * Set horasNocturnas
-     *
-     * @param integer $horasNocturnas
-     *
-     * @return TurServicio
-     */
-    public function setHorasNocturnas($horasNocturnas) {
-        $this->horasNocturnas = $horasNocturnas;
-
-        return $this;
-    }
-
-    /**
-     * Get horasNocturnas
-     *
-     * @return integer
-     */
-    public function getHorasNocturnas() {
-        return $this->horasNocturnas;
-    }
-
-    /**
-     * Set vrTotalCosto
-     *
-     * @param float $vrTotalCosto
-     *
-     * @return TurServicio
-     */
-    public function setVrTotalCosto($vrTotalCosto) {
-        $this->vrTotalCosto = $vrTotalCosto;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalCosto
-     *
-     * @return float
-     */
-    public function getVrTotalCosto() {
-        return $this->vrTotalCosto;
-    }
-
-    /**
-     * Set vrTotalOtros
-     *
-     * @param float $vrTotalOtros
-     *
-     * @return TurServicio
-     */
-    public function setVrTotalOtros($vrTotalOtros) {
-        $this->vrTotalOtros = $vrTotalOtros;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalOtros
-     *
-     * @return float
-     */
-    public function getVrTotalOtros() {
-        return $this->vrTotalOtros;
-    }
-
-    /**
-     * Set vrTotalServicio
-     *
-     * @param float $vrTotalServicio
-     *
-     * @return TurServicio
-     */
-    public function setVrTotalServicio($vrTotalServicio) {
-        $this->vrTotalServicio = $vrTotalServicio;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalServicio
-     *
-     * @return float
-     */
-    public function getVrTotalServicio() {
-        return $this->vrTotalServicio;
-    }
-
-    /**
-     * Set vrTotalPrecioAjustado
-     *
-     * @param float $vrTotalPrecioAjustado
-     *
-     * @return TurServicio
-     */
-    public function setVrTotalPrecioAjustado($vrTotalPrecioAjustado) {
-        $this->vrTotalPrecioAjustado = $vrTotalPrecioAjustado;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalPrecioAjustado
-     *
-     * @return float
-     */
-    public function getVrTotalPrecioAjustado() {
-        return $this->vrTotalPrecioAjustado;
-    }
-
-    /**
-     * Set vrTotalPrecioMinimo
-     *
-     * @param float $vrTotalPrecioMinimo
-     *
-     * @return TurServicio
-     */
-    public function setVrTotalPrecioMinimo($vrTotalPrecioMinimo) {
-        $this->vrTotalPrecioMinimo = $vrTotalPrecioMinimo;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotalPrecioMinimo
-     *
-     * @return float
-     */
-    public function getVrTotalPrecioMinimo() {
-        return $this->vrTotalPrecioMinimo;
-    }
-
-    /**
-     * Set vrTotal
-     *
-     * @param float $vrTotal
-     *
-     * @return TurServicio
-     */
-    public function setVrTotal($vrTotal) {
-        $this->vrTotal = $vrTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrTotal
-     *
-     * @return float
-     */
-    public function getVrTotal() {
-        return $this->vrTotal;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param string $usuario
-     *
-     * @return TurServicio
-     */
-    public function setUsuario($usuario) {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return string
-     */
-    public function getUsuario() {
-        return $this->usuario;
-    }
-
-    /**
-     * Set comentarios
-     *
-     * @param string $comentarios
-     *
-     * @return TurServicio
-     */
-    public function setComentarios($comentarios) {
-        $this->comentarios = $comentarios;
-
-        return $this;
-    }
-
-    /**
-     * Get comentarios
-     *
-     * @return string
-     */
-    public function getComentarios() {
-        return $this->comentarios;
-    }
-
-    /**
-     * Set clienteRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurCliente $clienteRel
-     *
-     * @return TurServicio
-     */
-    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null) {
-        $this->clienteRel = $clienteRel;
-
-        return $this;
-    }
-
-    /**
-     * Get clienteRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurCliente
-     */
-    public function getClienteRel() {
-        return $this->clienteRel;
-    }
-
-    /**
-     * Set sectorRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurSector $sectorRel
-     *
-     * @return TurServicio
-     */
-    public function setSectorRel(\Brasa\TurnoBundle\Entity\TurSector $sectorRel = null) {
-        $this->sectorRel = $sectorRel;
-
-        return $this;
-    }
-
-    /**
-     * Get sectorRel
-     *
-     * @return \Brasa\TurnoBundle\Entity\TurSector
-     */
-    public function getSectorRel() {
-        return $this->sectorRel;
-    }
-
-    /**
-     * Add serviciosDetallesServicioRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel
-     *
-     * @return TurServicio
-     */
-    public function addServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel) {
-        $this->serviciosDetallesServicioRel[] = $serviciosDetallesServicioRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove serviciosDetallesServicioRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel
-     */
-    public function removeServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel) {
-        $this->serviciosDetallesServicioRel->removeElement($serviciosDetallesServicioRel);
-    }
-
-    /**
-     * Get serviciosDetallesServicioRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getServiciosDetallesServicioRel() {
-        return $this->serviciosDetallesServicioRel;
-    }
-
-    /**
-     * Add serviciosDetallesConceptosServicioRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel
-     *
-     * @return TurServicio
-     */
-    public function addServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel) {
-        $this->serviciosDetallesConceptosServicioRel[] = $serviciosDetallesConceptosServicioRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove serviciosDetallesConceptosServicioRel
-     *
-     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel
-     */
-    public function removeServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel) {
-        $this->serviciosDetallesConceptosServicioRel->removeElement($serviciosDetallesConceptosServicioRel);
-    }
-
-    /**
-     * Get serviciosDetallesConceptosServicioRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getServiciosDetallesConceptosServicioRel() {
-        return $this->serviciosDetallesConceptosServicioRel;
-    }
-
-    /**
-     * Set vrSubtotal
-     *
-     * @param float $vrSubtotal
-     *
-     * @return TurServicio
-     */
-    public function setVrSubtotal($vrSubtotal) {
-        $this->vrSubtotal = $vrSubtotal;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSubtotal
-     *
-     * @return float
-     */
-    public function getVrSubtotal() {
-        return $this->vrSubtotal;
-    }
-
-    /**
-     * Set vrBaseAiu
-     *
-     * @param float $vrBaseAiu
-     *
-     * @return TurServicio
-     */
-    public function setVrBaseAiu($vrBaseAiu) {
-        $this->vrBaseAiu = $vrBaseAiu;
-
-        return $this;
-    }
-
-    /**
-     * Get vrBaseAiu
-     *
-     * @return float
-     */
-    public function getVrBaseAiu() {
-        return $this->vrBaseAiu;
-    }
-
-    /**
-     * Set vrIva
-     *
-     * @param float $vrIva
-     *
-     * @return TurServicio
-     */
-    public function setVrIva($vrIva) {
-        $this->vrIva = $vrIva;
-
-        return $this;
-    }
-
-    /**
-     * Get vrIva
-     *
-     * @return float
-     */
-    public function getVrIva() {
-        return $this->vrIva;
-    }
-
-    /**
-     * Set vrSalarioBase
-     *
-     * @param float $vrSalarioBase
-     *
-     * @return TurServicio
-     */
-    public function setVrSalarioBase($vrSalarioBase) {
-        $this->vrSalarioBase = $vrSalarioBase;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioBase
-     *
-     * @return float
-     */
-    public function getVrSalarioBase() {
-        return $this->vrSalarioBase;
     }
 
     /**
@@ -785,7 +282,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setCodigoServicioTipoFk($codigoServicioTipoFk) {
+    public function setCodigoServicioTipoFk($codigoServicioTipoFk)
+    {
         $this->codigoServicioTipoFk = $codigoServicioTipoFk;
 
         return $this;
@@ -796,8 +294,489 @@ class TurServicio {
      *
      * @return integer
      */
-    public function getCodigoServicioTipoFk() {
+    public function getCodigoServicioTipoFk()
+    {
         return $this->codigoServicioTipoFk;
+    }
+
+    /**
+     * Set estadoAutorizado
+     *
+     * @param boolean $estadoAutorizado
+     *
+     * @return TurServicio
+     */
+    public function setEstadoAutorizado($estadoAutorizado)
+    {
+        $this->estadoAutorizado = $estadoAutorizado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoAutorizado
+     *
+     * @return boolean
+     */
+    public function getEstadoAutorizado()
+    {
+        return $this->estadoAutorizado;
+    }
+
+    /**
+     * Set estadoCerrado
+     *
+     * @param boolean $estadoCerrado
+     *
+     * @return TurServicio
+     */
+    public function setEstadoCerrado($estadoCerrado)
+    {
+        $this->estadoCerrado = $estadoCerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCerrado
+     *
+     * @return boolean
+     */
+    public function getEstadoCerrado()
+    {
+        return $this->estadoCerrado;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return TurServicio
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * Set horas
+     *
+     * @param integer $horas
+     *
+     * @return TurServicio
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+
+        return $this;
+    }
+
+    /**
+     * Get horas
+     *
+     * @return integer
+     */
+    public function getHoras()
+    {
+        return $this->horas;
+    }
+
+    /**
+     * Set horasDiurnas
+     *
+     * @param integer $horasDiurnas
+     *
+     * @return TurServicio
+     */
+    public function setHorasDiurnas($horasDiurnas)
+    {
+        $this->horasDiurnas = $horasDiurnas;
+
+        return $this;
+    }
+
+    /**
+     * Get horasDiurnas
+     *
+     * @return integer
+     */
+    public function getHorasDiurnas()
+    {
+        return $this->horasDiurnas;
+    }
+
+    /**
+     * Set horasNocturnas
+     *
+     * @param integer $horasNocturnas
+     *
+     * @return TurServicio
+     */
+    public function setHorasNocturnas($horasNocturnas)
+    {
+        $this->horasNocturnas = $horasNocturnas;
+
+        return $this;
+    }
+
+    /**
+     * Get horasNocturnas
+     *
+     * @return integer
+     */
+    public function getHorasNocturnas()
+    {
+        return $this->horasNocturnas;
+    }
+
+    /**
+     * Set vrTotalCosto
+     *
+     * @param float $vrTotalCosto
+     *
+     * @return TurServicio
+     */
+    public function setVrTotalCosto($vrTotalCosto)
+    {
+        $this->vrTotalCosto = $vrTotalCosto;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalCosto
+     *
+     * @return float
+     */
+    public function getVrTotalCosto()
+    {
+        return $this->vrTotalCosto;
+    }
+
+    /**
+     * Set vrTotalOtros
+     *
+     * @param float $vrTotalOtros
+     *
+     * @return TurServicio
+     */
+    public function setVrTotalOtros($vrTotalOtros)
+    {
+        $this->vrTotalOtros = $vrTotalOtros;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalOtros
+     *
+     * @return float
+     */
+    public function getVrTotalOtros()
+    {
+        return $this->vrTotalOtros;
+    }
+
+    /**
+     * Set vrTotalServicio
+     *
+     * @param float $vrTotalServicio
+     *
+     * @return TurServicio
+     */
+    public function setVrTotalServicio($vrTotalServicio)
+    {
+        $this->vrTotalServicio = $vrTotalServicio;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalServicio
+     *
+     * @return float
+     */
+    public function getVrTotalServicio()
+    {
+        return $this->vrTotalServicio;
+    }
+
+    /**
+     * Set vrTotalPrecioAjustado
+     *
+     * @param float $vrTotalPrecioAjustado
+     *
+     * @return TurServicio
+     */
+    public function setVrTotalPrecioAjustado($vrTotalPrecioAjustado)
+    {
+        $this->vrTotalPrecioAjustado = $vrTotalPrecioAjustado;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalPrecioAjustado
+     *
+     * @return float
+     */
+    public function getVrTotalPrecioAjustado()
+    {
+        return $this->vrTotalPrecioAjustado;
+    }
+
+    /**
+     * Set vrTotalPrecioMinimo
+     *
+     * @param float $vrTotalPrecioMinimo
+     *
+     * @return TurServicio
+     */
+    public function setVrTotalPrecioMinimo($vrTotalPrecioMinimo)
+    {
+        $this->vrTotalPrecioMinimo = $vrTotalPrecioMinimo;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotalPrecioMinimo
+     *
+     * @return float
+     */
+    public function getVrTotalPrecioMinimo()
+    {
+        return $this->vrTotalPrecioMinimo;
+    }
+
+    /**
+     * Set vrSubtotal
+     *
+     * @param float $vrSubtotal
+     *
+     * @return TurServicio
+     */
+    public function setVrSubtotal($vrSubtotal)
+    {
+        $this->vrSubtotal = $vrSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSubtotal
+     *
+     * @return float
+     */
+    public function getVrSubtotal()
+    {
+        return $this->vrSubtotal;
+    }
+
+    /**
+     * Set vrIva
+     *
+     * @param float $vrIva
+     *
+     * @return TurServicio
+     */
+    public function setVrIva($vrIva)
+    {
+        $this->vrIva = $vrIva;
+
+        return $this;
+    }
+
+    /**
+     * Get vrIva
+     *
+     * @return float
+     */
+    public function getVrIva()
+    {
+        return $this->vrIva;
+    }
+
+    /**
+     * Set vrBaseAiu
+     *
+     * @param float $vrBaseAiu
+     *
+     * @return TurServicio
+     */
+    public function setVrBaseAiu($vrBaseAiu)
+    {
+        $this->vrBaseAiu = $vrBaseAiu;
+
+        return $this;
+    }
+
+    /**
+     * Get vrBaseAiu
+     *
+     * @return float
+     */
+    public function getVrBaseAiu()
+    {
+        return $this->vrBaseAiu;
+    }
+
+    /**
+     * Set vrTotal
+     *
+     * @param float $vrTotal
+     *
+     * @return TurServicio
+     */
+    public function setVrTotal($vrTotal)
+    {
+        $this->vrTotal = $vrTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get vrTotal
+     *
+     * @return float
+     */
+    public function getVrTotal()
+    {
+        return $this->vrTotal;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param string $usuario
+     *
+     * @return TurServicio
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set comentarios
+     *
+     * @param string $comentarios
+     *
+     * @return TurServicio
+     */
+    public function setComentarios($comentarios)
+    {
+        $this->comentarios = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return string
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurServicio
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
+    }
+
+    /**
+     * Set clienteRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurCliente $clienteRel
+     *
+     * @return TurServicio
+     */
+    public function setClienteRel(\Brasa\TurnoBundle\Entity\TurCliente $clienteRel = null)
+    {
+        $this->clienteRel = $clienteRel;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurCliente
+     */
+    public function getClienteRel()
+    {
+        return $this->clienteRel;
+    }
+
+    /**
+     * Set sectorRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurSector $sectorRel
+     *
+     * @return TurServicio
+     */
+    public function setSectorRel(\Brasa\TurnoBundle\Entity\TurSector $sectorRel = null)
+    {
+        $this->sectorRel = $sectorRel;
+
+        return $this;
+    }
+
+    /**
+     * Get sectorRel
+     *
+     * @return \Brasa\TurnoBundle\Entity\TurSector
+     */
+    public function getSectorRel()
+    {
+        return $this->sectorRel;
     }
 
     /**
@@ -807,7 +786,8 @@ class TurServicio {
      *
      * @return TurServicio
      */
-    public function setServicioTipoRel(\Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel = null) {
+    public function setServicioTipoRel(\Brasa\TurnoBundle\Entity\TurServicioTipo $servicioTipoRel = null)
+    {
         $this->servicioTipoRel = $servicioTipoRel;
 
         return $this;
@@ -818,48 +798,76 @@ class TurServicio {
      *
      * @return \Brasa\TurnoBundle\Entity\TurServicioTipo
      */
-    public function getServicioTipoRel() {
+    public function getServicioTipoRel()
+    {
         return $this->servicioTipoRel;
     }
 
     /**
-     * Set cantidadPersonal
+     * Add serviciosDetallesServicioRel
      *
-     * @param integer $cantidadPersonal
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel
      *
      * @return TurServicio
      */
-    public function setCantidadPersonal($cantidadPersonal) {
-        $this->cantidadPersonal = $cantidadPersonal;
+    public function addServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel)
+    {
+        $this->serviciosDetallesServicioRel[] = $serviciosDetallesServicioRel;
 
         return $this;
     }
 
     /**
-     * Get cantidadPersonal
+     * Remove serviciosDetallesServicioRel
      *
-     * @return integer
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel
      */
-    public function getCantidadPersonal() {
-        return $this->cantidadPersonal;
+    public function removeServiciosDetallesServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalle $serviciosDetallesServicioRel)
+    {
+        $this->serviciosDetallesServicioRel->removeElement($serviciosDetallesServicioRel);
     }
 
     /**
-     * 
-     * @return boolean
+     * Get serviciosDetallesServicioRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSumarAiu() {
-        return $this->sumarAiu;
+    public function getServiciosDetallesServicioRel()
+    {
+        return $this->serviciosDetallesServicioRel;
     }
 
     /**
-     * 
-     * @param boolean $sumarAIU
-     * @return $this
+     * Add serviciosDetallesConceptosServicioRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel
+     *
+     * @return TurServicio
      */
-    public function setSumarAiu($sumarAIU) {
-        $this->sumarAiu = $sumarAIU;
+    public function addServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel)
+    {
+        $this->serviciosDetallesConceptosServicioRel[] = $serviciosDetallesConceptosServicioRel;
+
         return $this;
     }
 
+    /**
+     * Remove serviciosDetallesConceptosServicioRel
+     *
+     * @param \Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel
+     */
+    public function removeServiciosDetallesConceptosServicioRel(\Brasa\TurnoBundle\Entity\TurServicioDetalleConcepto $serviciosDetallesConceptosServicioRel)
+    {
+        $this->serviciosDetallesConceptosServicioRel->removeElement($serviciosDetallesConceptosServicioRel);
+    }
+
+    /**
+     * Get serviciosDetallesConceptosServicioRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciosDetallesConceptosServicioRel()
+    {
+        return $this->serviciosDetallesConceptosServicioRel;
+    }
 }

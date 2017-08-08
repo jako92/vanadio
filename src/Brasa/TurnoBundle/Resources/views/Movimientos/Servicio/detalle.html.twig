@@ -15,17 +15,6 @@
         </ol>
     </section>    
     <section class="content"> 
-        <script>
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-        </script>
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>    
         {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'} }) }}
         {{ form_errors(form) }}
         <div class="btn-toolbar" style="float:left">
@@ -69,8 +58,8 @@
                     <tr>
                         <td class="titulo">TIPO:</td>
                         <td class="td-in-well">{{ arServicio.servicioTipoRel.nombre | default('') }}</td>
-                        <td class="titulo">CANTIDAD PERSONAL</td>
-                        <td class="td-in-well" align="right">{{ arServicio.cantidadPersonal }}</td>                                                
+                        <td class="titulo"></td>
+                        <td class="td-in-well" align="right"></td>                                                
                         <td class="titulo" >TOTAL OTROS:</td>
                         <td align="right">{{ arServicio.vrTotalOtros | number_format(0, '.', ',')}}</td>
                     </tr>                 
@@ -166,7 +155,8 @@
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">BASE</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio minimo">P.MINIMO</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Precio ajustado">P.AJUSTADO</p></th>
-                            <th><p data-toggle="tooltip" data-placement="top" title="Base iva">BASE IVA</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Base iva">B_IVA</p></th>
+                            <th><p data-toggle="tooltip" data-placement="top" title="Porcentaje iva">%IVA</p></th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Iva">IVA</p></th>
                             <th>SUBTOTAL</th>
                             <th><p data-toggle="tooltip" data-placement="top" title="Grupo facturacion">GF</p></th>
@@ -210,16 +200,14 @@
                                 <td style="text-align: right">{{ arServicioDetalle.vrPrecioMinimo | number_format(0, '.', ',') }}</td> 
                                 {% if arServicio.estadoAutorizado == 0 and arServicioDetalle.compuesto == 0 %}
                                     <td style="text-align: right"><input class="input-grid" type="text" name="TxtValorAjustado{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.vrPrecioAjustado  }}" size="10" style="text-align: right; width:60px" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                                
+                                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtPorcentajeBaseIva{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.porcentajeBaseIva  }}" size="10" style="text-align: right; width:4p0x" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                    
+                                    <td style="text-align: right"><input class="input-grid" type="text" name="TxtPorcentajeIva{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.porcentajeIva  }}" size="10" style="text-align: right; width:4p0x" onkeypress="return validarNumeros(event)" onclick="this.select()"/></td>                                    
                                     {% else %}
                                     <td style="text-align: right">{{ arServicioDetalle.vrPrecioAjustado | number_format(0, '.', ',') }}</td> 
+                                    <td style="text-align: right">{{arServicioDetalle.porcentajeBaseIva}}</td>
+                                    <td style="text-align: right">{{arServicioDetalle.porcentajeIva}}</td>
                                 {% endif %}
-                                <td>
-                                    {% if arServicio.estadoAutorizado == 0 and arServicioDetalle.compuesto == 0 %}
-                                    <input class="input-grid" type="text" name="TxtPorcentajeIva{{ arServicioDetalle.codigoServicioDetallePk }}" value="{{ arServicioDetalle.porcentajeIva  }}" size="10" style="text-align: right; width:4p0x" onkeypress="return validarNumeros(event)" onclick="this.select()"/>
-                                    {% else %}
-                                        {{arServicioDetalle.porcentajeIva}}
-                                    {% endif %}    
-                                </td>
+                                                                                                                                                                                                                    
                                 <td style="text-align: right">{{ arServicioDetalle.vrIva | number_format(0, '.', ',') }}</td>
                                 <td style="text-align: right">{{ arServicioDetalle.vrSubTotal | number_format(0, '.', ',') }}</td>
                                 <td>{{ arServicioDetalle.grupoFacturacionRel.abreviatura | default('')  }}</td>                                
