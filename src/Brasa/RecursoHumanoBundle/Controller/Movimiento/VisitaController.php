@@ -1,6 +1,7 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,8 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class VisitaController extends Controller
-{
+class VisitaController extends Controller {
+
     var $strListaDql = "";
 
     /**
@@ -22,41 +23,41 @@ class VisitaController extends Controller
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 120, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 120, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $session = new session;
         $form = $this->formularioFiltro();
         $form->handleRequest($request);
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
         $this->listar();
-        if($form->isValid()) {
+        if ($form->isValid()) {
             $arrSelecionados = $request->request->get('ChkSeleccionar');
-            if($form->get('BtnEliminar')->isClicked()){
-                if(count($arrSelecionados) > 0) {
+            if ($form->get('BtnEliminar')->isClicked()) {
+                if (count($arrSelecionados) > 0) {
                     foreach ($arrSelecionados AS $codigoVisita) {
                         $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
                         $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
-                        if ($arVisita->getEstadoAutorizado() == 1 || $arVisita->getEstadoCerrado() == 1){
-                            $objMensaje->Mensaje("error", "La visita ". $codigoVisita ." ya fue autorizada y/o cerrada, no se pude eliminar");
-                        } else {                            
+                        if ($arVisita->getEstadoAutorizado() == 1 || $arVisita->getEstadoCerrado() == 1) {
+                            $objMensaje->Mensaje("error", "La visita " . $codigoVisita . " ya fue autorizada y/o cerrada, no se pude eliminar");
+                        } else {
                             $em->remove($arVisita);
-                            }
-                        } 
+                        }
                     }
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita'));
                 }
-            
-            if($form->get('BtnFiltrar')->isClicked()) {
+                $em->flush();
+                return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita'));
+            }
+
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
                 $form = $this->formularioFiltro();
                 $this->listar();
             }
 
-            if($form->get('BtnExcel')->isClicked()) {
+            if ($form->get('BtnExcel')->isClicked()) {
                 $this->filtrar($form);
                 $form = $this->formularioFiltro();
                 $this->listar();
@@ -72,161 +73,153 @@ class VisitaController extends Controller
      * @Route("/rhu/movimiento/visita/nuevoempleado/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo_empleado")
      */
     public function nuevoEmpleadoAction(Request $request, $codigoVisita = 0) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();    
-        if($codigoVisita != 0) {
+        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
+        if ($codigoVisita != 0) {
             $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
         } else {
             $arVisita->setFecha(new \DateTime('now'));
         }
-        $form = $this->createForm(RhuVisitaEmpleadoType::class, $arVisita);         
+        $form = $this->createForm(RhuVisitaEmpleadoType::class, $arVisita);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arVisita = $form->getData();
-            if($arrControles['form_txtNumeroIdentificacion'] != '') {
+            if ($arrControles['form_txtNumeroIdentificacion'] != '') {
                 $arEmpleado = new \Brasa\RecursoHumanoBundle\Entity\RhuEmpleado();
                 $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $arrControles['form_txtNumeroIdentificacion']));
 
-                if(count($arEmpleado) > 0) {
+                if (count($arEmpleado) > 0) {
                     $arVisita->setEmpleadoRel($arEmpleado);
-                    if($arEmpleado->getCodigoContratoActivoFk() != '') {                                                
-                        if($codigoVisita == 0) {  
+                    if ($arEmpleado->getCodigoContratoActivoFk() != '') {
+                        if ($codigoVisita == 0) {
                             $arVisita->setCentroCostoRel($arEmpleado->getCentroCostoRel());
                             $arVisita->setClienteRel($arVisita->getCentroCostoRel()->getClienteRel());
-                            $arVisita->setCodigoUsuario($arUsuario->getUserName());                                                                                                                
+                            $arVisita->setCodigoUsuario($arUsuario->getUserName());
                             $arVisita->setFechaCreacion(new \DateTime('now'));
                             $arVisita->setNombreCorto($arEmpleado->getNombreCorto());
                             $arVisita->setNumeroIdentificacion($arEmpleado->getNumeroIdentificacion());
                         }
                         $em->persist($arVisita);
                         $em->flush();
-                        if($form->get('guardarnuevo')->isClicked()) {
-                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_nuevo', array('codigoVisita' => 0 )));
+                        if ($form->get('guardarnuevo')->isClicked()) {
+                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_nuevo', array('codigoVisita' => 0)));
                         } else {
-                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk() )));
-                        }                        
+                            return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk())));
+                        }
                     } else {
                         $objMensaje->Mensaje("error", "El empleado no tiene contrato activo");
-                    }                    
+                    }
                 } else {
                     $objMensaje->Mensaje("error", "El empleado no existe");
-                }                
+                }
             }
         }
 
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Visita:nuevoempleado.html.twig', array(
-            'arVisita' => $arVisita,
-            'form' => $form->createView()));
+                    'arVisita' => $arVisita,
+                    'form' => $form->createView()));
     }
+
     /**
      * @Route("/rhu/movimiento/visita/nuevocliente/{codigoVisita}", name="brs_rhu_movimiento_visita_nuevo_cliente")
      */
     public function nuevoClienteAction(Request $request, $codigoVisita) {
         $em = $this->getDoctrine()->getManager();
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();    
+        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
         $arVisita->setFecha(new \DateTime('now'));
-        if($codigoVisita != 0) {
+        if ($codigoVisita != 0) {
             $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
         }
-        $form = $this->createForm(RhuVisitaClienteType::class, $arVisita);         
+        $form = $this->createForm(RhuVisitaClienteType::class, $arVisita);
         $form->handleRequest($request);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $arUsuario = $this->get('security.token_storage')->getToken()->getUser();
             $arrControles = $request->request->All();
             $arVisita = $form->getData();
-            if($arrControles['form_txtCodigoCliente'] != '') 
-            {                
+            if ($arrControles['form_txtCodigoCliente'] != '') {
                 $arCliente = new \Brasa\RecursoHumanoBundle\Entity\RhuCliente();
                 $arCentroCosto = new \Brasa\RecursoHumanoBundle\Entity\RhuCentroCosto();
                 $arCliente = $em->getRepository('BrasaRecursoHumanoBundle:RhuCliente')->findOneBy(array('codigoClientePk' => $arrControles['form_txtCodigoCliente']));
-                if(count($arCliente) > 0) 
-                {
+                if (count($arCliente) > 0) {
                     $arCentroCosto = $em->getRepository('BrasaRecursoHumanoBundle:RhuCentroCosto')
-                        ->findOneBy(array('codigoClienteFk' =>$arCliente->getCodigoClientePk()));
+                            ->findOneBy(array('codigoClienteFk' => $arCliente->getCodigoClientePk()));
                     $arVisita->SetClienteRel($arCliente);
-                    if($codigoVisita == 0) 
-                    {
+                    if ($codigoVisita == 0) {
                         $arVisita->setCentroCostoRel($arCentroCosto);
-                        $arVisita->setCodigoUsuario($arUsuario->getUserName());                                                                                                                
-                        $arVisita->setFechaCreacion(new \DateTime('now'));                       
+                        $arVisita->setCodigoUsuario($arUsuario->getUserName());
+                        $arVisita->setFechaCreacion(new \DateTime('now'));
                     }
                     $em->persist($arVisita);
                     $em->flush();
-                    if($form->get('guardarnuevo')->isClicked()) 
-                    {
-                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_nuevo', array('codigoVisita' => 0 )));
-                    } 
-                    else 
-                    {
-                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk() )));
+                    if ($form->get('guardarnuevo')->isClicked()) {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_nuevo', array('codigoVisita' => 0)));
+                    } else {
+                        return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $arVisita->getCodigoVisitaPk())));
                     }
-                }                    
-            }
-            else 
-            {
+                }
+            } else {
                 $objMensaje->Mensaje("error", "Debe ingresar un cliente");
-            }                
-        }   
+            }
+        }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Visita:nuevocliente.html.twig', array(
-            'arVisita' => $arVisita,
-            'form' => $form->createView()));
+                    'arVisita' => $arVisita,
+                    'form' => $form->createView()));
     }
+
     /**
      * @Route("/rhu/movimiento/visita/detalle/{codigoVisita}", name="brs_rhu_movimiento_visita_detalle")
      */
     public function detalleAction(Request $request, $codigoVisita) {
         $em = $this->getDoctrine()->getManager();
-        
+
         $objMensaje = new \Brasa\GeneralBundle\MisClases\Mensajes();
-        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();        
+        $arVisita = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
         $arVisita = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->find($codigoVisita);
         $form = $this->formularioDetalle($arVisita);
         $form->handleRequest($request);
-        if($form->isValid()) {
-            if($form->get('BtnAutorizar')->isClicked()) {            
-                if($arVisita->getEstadoAutorizado() == 0) {
+        if ($form->isValid()) {
+            if ($form->get('BtnAutorizar')->isClicked()) {
+                if ($arVisita->getEstadoAutorizado() == 0) {
                     $arVisita->setEstadoAutorizado(1);
                     $em->persist($arVisita);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));                                                
+                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));
                 } else {
-                        $objMensaje->Mensaje("error", "La visita ya esta autorizada");
-                    }    
-                
+                    $objMensaje->Mensaje("error", "La visita ya esta autorizada");
+                }
             }
-            if($form->get('BtnDesAutorizar')->isClicked()) {            
-                if($arVisita->getEstadoAutorizado() == 1) {
+            if ($form->get('BtnDesAutorizar')->isClicked()) {
+                if ($arVisita->getEstadoAutorizado() == 1) {
                     $arVisita->setEstadoAutorizado(0);
                     $em->persist($arVisita);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));                                                
+                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));
                 }
-            }            
-            if($form->get('BtnImprimir')->isClicked()) {
-                if($arVisita->getEstadoAutorizado() == 1) {
+            }
+            if ($form->get('BtnImprimir')->isClicked()) {
+                if ($arVisita->getEstadoAutorizado() == 1) {
                     $objFormatoDotacionDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoVisita();
                     $objFormatoDotacionDetalle->Generar($em, $codigoVisita);
-                }    
+                }
             }
-            
-            
-            if($form->get('BtnCerrar')->isClicked()) {
-                if($arVisita->getEstadoAutorizado() == 1) {
+
+
+            if ($form->get('BtnCerrar')->isClicked()) {
+                if ($arVisita->getEstadoAutorizado() == 1) {
                     $arVisita->setEstadoCerrado(1);
                     $em->persist($arVisita);
                     $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->find($arVisita->getCodigoEmpleadoFk());
                     $arEmpleado->setFechaUltimaVisita($arVisita->getFechaVence());
                     $em->persist($arEmpleado);
                     $em->flush();
-                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));                                                
+                    return $this->redirect($this->generateUrl('brs_rhu_movimiento_visita_detalle', array('codigoVisita' => $codigoVisita)));
                 }
             }
-
         }
         //$arVisitaDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuVisitaDetalle();
         //$arVisitaDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisitaDetalle')->FindBy(array('codigoDotacionFk' => $codigoVisita));
@@ -234,98 +227,96 @@ class VisitaController extends Controller
                     'arVisita' => $arVisita,
                     //'arDotacionDetalles' => $arVisitaDetalles,
                     'form' => $form->createView()
-                    ));
+        ));
     }
-
 
     private function listar() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $this->strListaDql = $em->getRepository('BrasaRecursoHumanoBundle:RhuVisita')->listaDQL(
-                $session->get('filtroIdentificacion'),
-                $session->get('filtroCodigoCentroCosto'),
-                $session->get('filtroCodigoVisitaTipo'),
-                $session->get('filtroValidarVencimiento')
-                );
+                $session->get('filtroIdentificacion'), $session->get('filtroCodigoCentroCosto'), $session->get('filtroCodigoVisitaTipo'), $session->get('filtroValidarVencimiento')
+        );
     }
 
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
         $session = new session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoCentroCosto')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuCentroCosto',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoCentroCosto')) {
             $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuCentroCosto", $session->get('filtroCodigoCentroCosto'));
         }
         $arrayPropiedadesTipo = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuVisitaTipo',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cc')
-                    ->orderBy('cc.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,
-                'empty_data' => "",
-                'placeholder' => "TODOS",
-                'data' => ""
-            );
-        if($session->get('filtroCodigoVisitaTipo')) {
+            'class' => 'BrasaRecursoHumanoBundle:RhuVisitaTipo',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cc')
+                                ->orderBy('cc.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoVisitaTipo')) {
             $arrayPropiedadesTipo['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuVisitaTipo", $session->get('filtroCodigoVisitaTipo'));
         }
         $strNombreEmpleado = "";
-        if($session->get('filtroIdentificacion')) {
+        if ($session->get('filtroIdentificacion')) {
             $arEmpleado = $em->getRepository('BrasaRecursoHumanoBundle:RhuEmpleado')->findOneBy(array('numeroIdentificacion' => $session->get('filtroIdentificacion')));
-            if($arEmpleado) {                
+            if ($arEmpleado) {
                 $strNombreEmpleado = $arEmpleado->getNombreCorto();
-            }  else {
+            } else {
                 $session->set('filtroIdentificacion', null);
-            }          
+            }
         }
         $form = $this->createFormBuilder()
-            ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
-            ->add('visitaTipoRel', EntityType::class, $arrayPropiedadesTipo)
-            ->add('validarVencimiento', ChoiceType::class, array('choices'   => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroValidarVencimiento')))    
-            ->add('txtNumeroIdentificacion', TextType::class, array('label'  => 'Identificacion','data' => $session->get('filtroIdentificacion')))
-            ->add('txtNombreCorto', TextType::class, array('label'  => 'Nombre','data' => $strNombreEmpleado))
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))
-            ->getForm();
+                ->add('centroCostoRel', EntityType::class, $arrayPropiedades)
+                ->add('visitaTipoRel', EntityType::class, $arrayPropiedadesTipo)
+                ->add('validarVencimiento', ChoiceType::class, array('choices' => array('TODOS' => '2', 'SI' => '1', 'NO' => '0'), 'data' => $session->get('filtroValidarVencimiento')))
+                ->add('txtNumeroIdentificacion', TextType::class, array('label' => 'Identificacion', 'data' => $session->get('filtroIdentificacion')))
+                ->add('txtNombreCorto', TextType::class, array('label' => 'Nombre', 'data' => $strNombreEmpleado))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->getForm();
         return $form;
     }
 
-    private function filtrar ($form) {
+    private function filtrar($form) {
         $session = new session;
-        $codigoCentroCosto ="";
-        if($form->get('centroCostoRel')->getData()) {
+        $codigoCentroCosto = "";
+        if ($form->get('centroCostoRel')->getData()) {
             $codigoCentroCosto = $form->get('centroCostoRel')->getData()->getCodigoCentroCostoPk();
         }
-        $codigoVisitaTipo ="";
-        if($form->get('visitaTipoRel')->getData()) {
+        $codigoVisitaTipo = "";
+        if ($form->get('visitaTipoRel')->getData()) {
             $codigoVisitaTipo = $form->get('visitaTipoRel')->getData()->getCodigoVisitaTipoPk();
-        }        
+        }
         $session->set('filtroCodigoCentroCosto', $codigoCentroCosto);
         $session->set('filtroIdentificacion', $form->get('txtNumeroIdentificacion')->getData());
         $session->set('filtroCodigoVisitaTipo', $codigoVisitaTipo);
         $session->set('filtroValidarVencimiento', $form->get('validarVencimiento')->getData());
-    }    
-    
+    }
+
     private function formularioDetalle($arVisita) {
         $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
-        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false); 
+        $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonCerrar = array('label' => 'Cerrar', 'disabled' => false);
-        if($arVisita->getEstadoAutorizado() == 1) {            
+        if ($arVisita->getEstadoAutorizado() == 1) {
             $arrBotonAutorizar['disabled'] = true;
-            if($arVisita->getEstadoCerrado() == 1) {
+            if ($arVisita->getEstadoCerrado() == 1) {
                 $arrBotonDesAutorizar['disabled'] = true;
                 $arrBotonCerrar['disabled'] = true;
             }
@@ -334,15 +325,15 @@ class VisitaController extends Controller
             $arrBotonImprimir['disabled'] = true;
             $arrBotonCerrar['disabled'] = true;
         }
-        $form = $this->createFormBuilder()    
-                    ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
-                    ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)            
-                    ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir) 
-                    ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
-                    ->getForm();  
+        $form = $this->createFormBuilder()
+                ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                ->add('BtnCerrar', SubmitType::class, $arrBotonCerrar)
+                ->getForm();
         return $form;
-    }     
-    
+    }
+
     private function generarExcel() {
         $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
         ob_clean();
@@ -353,73 +344,87 @@ class VisitaController extends Controller
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-                    ->setLastModifiedBy("EMPRESA")
-                    ->setTitle("Office 2007 XLSX Test Document")
-                    ->setSubject("Office 2007 XLSX Test Document")
-                    ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-                    ->setKeywords("office 2007 openxml php")
-                    ->setCategory("Test result file");
-                $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
-                $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true); 
-                for($col = 'A'; $col !== 'Z'; $col++) {
-                    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);                           
-                }
-                $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'CODIGO')
-                            ->setCellValue('B1', 'FECHA')
-                            ->setCellValue('C1', 'TIPO')
-                            ->setCellValue('D1', 'GRUPO PAGO')
-                            ->setCellValue('E1', 'IDENTIFICACION')
-                            ->setCellValue('F1', 'EMPLEADO')
-                            ->setCellValue('G1', 'REALIZA VISITA')
-                            ->setCellValue('H1', 'VENCIMIENTO')
-                            ->setCellValue('I1', 'AUTORIZADO')
-                            ->setCellValue('J1', 'CERRADO')
-                            ->setCellValue('K1', 'USUARIO')
-                            ->setCellValue('L1', 'COMENTARIOS');
-                $i = 2;
-                $query = $em->createQuery($this->strListaDql);
-                $arVisitas = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
-                $arVisitas = $query->getResult();
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'Z'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'CODIGO')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'TIPO')
+                ->setCellValue('D1', 'GRUPO PAGO')
+                ->setCellValue('E1', 'IDENTIFICACION')
+                ->setCellValue('F1', 'EMPLEADO')
+                ->setCellValue('G1', 'REALIZA VISITA')
+                ->setCellValue('H1', 'VENCIMIENTO')
+                ->setCellValue('I1', 'AUTORIZADO')
+                ->setCellValue('J1', 'CERRADO')
+                ->setCellValue('K1', 'ESTADO CONTRATO')
+                ->setCellValue('L1', 'FECHA INGRESO')
+                ->setCellValue('M1', 'FECHA RETIRO')
+                ->setCellValue('N1', 'USUARIO')
+                ->setCellValue('O1', 'COMENTARIOS');
+        $i = 2;
+        $query = $em->createQuery($this->strListaDql);
+        $arVisitas = new \Brasa\RecursoHumanoBundle\Entity\RhuVisita();
+        $arVisitas = $query->getResult();
 
-                foreach ($arVisitas as $arVisita) {
-                    $centroCosto = "";
-                    if ($arVisita->getEmpleadoRel()->getCodigoCentroCostoFk() != null){
-                        $centroCosto = $arVisita->getEmpleadoRel()->getCentroCostoRel()->getNombre();
-                    }
-                    $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue('A' . $i, $arVisita->getCodigoVisitaPk())
-                            ->setCellValue('B' . $i, $arVisita->getFecha()->format('Y/m/d H:i:s'))
-                            ->setCellValue('C' . $i, $arVisita->getVisitaTipoRel()->getNombre())
-                            ->setCellValue('D' . $i, $centroCosto)
-                            ->setCellValue('E' . $i, $arVisita->getEmpleadoRel()->getNumeroIdentificacion())
-                            ->setCellValue('F' . $i, $arVisita->getEmpleadoRel()->getNombreCorto())
-                            ->setCellValue('G' . $i, $arVisita->getNombreQuienVisita())
-                            ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arVisita->getValidarVencimiento()))
-                            ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arVisita->getEstadoAutorizado()))
-                            ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arVisita->getEstadoCerrado()))
-                            ->setCellValue('K' . $i, $arVisita->getCodigoUsuario())
-                            ->setCellValue('L' . $i, $arVisita->getComentarios());
-                    $i++;
-                }
-
-                $objPHPExcel->getActiveSheet()->setTitle('Visitas');
-                $objPHPExcel->setActiveSheetIndex(0);
-
-                // Redirect output to a client’s web browser (Excel2007)
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="Visitas.xlsx"');
-                header('Cache-Control: max-age=0');
-                // If you're serving to IE 9, then the following may be needed
-                header('Cache-Control: max-age=1');
-                // If you're serving to IE over SSL, then the following may be needed
-                header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-                header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-                header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-                header ('Pragma: public'); // HTTP/1.0
-                $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-                $objWriter->save('php://output');
-                exit;
+        foreach ($arVisitas as $arVisita) {
+            $centroCosto = "";
+            if ($arVisita->getEmpleadoRel()->getCodigoCentroCostoFk() != null) {
+                $centroCosto = $arVisita->getEmpleadoRel()->getCentroCostoRel()->getNombre();
             }
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arVisita->getCodigoVisitaPk())
+                    ->setCellValue('B' . $i, $arVisita->getFecha()->format('Y/m/d H:i:s'))
+                    ->setCellValue('C' . $i, $arVisita->getVisitaTipoRel()->getNombre())
+                    ->setCellValue('D' . $i, $centroCosto)
+                    ->setCellValue('E' . $i, $arVisita->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('F' . $i, $arVisita->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('G' . $i, $arVisita->getNombreQuienVisita())
+                    ->setCellValue('H' . $i, $objFunciones->devuelveBoolean($arVisita->getValidarVencimiento()))
+                    ->setCellValue('I' . $i, $objFunciones->devuelveBoolean($arVisita->getEstadoAutorizado()))
+                    ->setCellValue('J' . $i, $objFunciones->devuelveBoolean($arVisita->getEstadoCerrado()))
+                    ->setCellValue('N' . $i, $arVisita->getCodigoUsuario())
+                    ->setCellValue('O' . $i, $arVisita->getComentarios());
+
+            if ($arVisita->getCodigoEmpleadoFk()) {
+                if ($arVisita->getEmpleadoRel()->getEstadoActivo() == 1) {
+                    $strEstadoContrato = 'SI';
+                } else {
+                    $strEstadoContrato = 'NO';
+                }
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $i, $strEstadoContrato)
+                        ->setCellValue('L' . $i, $arVisita->getEmpleadoRel()->getFechaContrato()->format('Y/m/d'))
+                        ->setCellValue('M' . $i, $arVisita->getEmpleadoRel()->getFechaFinalizaContrato()->format('Y/m/d'));
+            }
+            $i++;
+        }
+        
+        $objPHPExcel->getActiveSheet()->setTitle('Visitas');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Visitas.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
 
 }
