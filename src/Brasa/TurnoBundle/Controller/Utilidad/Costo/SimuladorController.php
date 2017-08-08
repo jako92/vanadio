@@ -53,6 +53,7 @@ class SimuladorController extends Controller {
      */
     public function listarAction(Request $request, $simulacionId = null){
         $em = $this->getDoctrine()->getManager();
+        UtlProgramacion::Util()->setEntityManager($em);
         $dql = $em->getRepository("BrasaTurnoBundle:TurProgramacionSimulador")
                    ->getDqlConsultaDetalles();
         $arProgramacionSimulador = $em->createQuery($dql);
@@ -63,13 +64,8 @@ class SimuladorController extends Controller {
             $this->fechaFinal = $form->get('hasta')->getData()->format("Y-m-d");
         }
         # Obtenemos un listado de los días del mes.
-        $diasMes = [];
-        $arFestivos = $em->getRepository("BrasaGeneralBundle:GenFestivo")
-                        ->festivos(date("Y-01-01"), date("Y-12-31"));        
-        foreach($arFestivos AS $festivo) { $this->festivos[] = $festivo['fecha']->format("Y-m-d"); }
-        
-        UtlProgramacion::Util()->setFestivos($this->festivos);
-        
+        $diasMes = [];        
+        UtlProgramacion::Util()->setFestivos($this->festivos);        
         $this->totalDiasMes = UtlProgramacion::Util()->getDiferencia($this->fechaInicial, $this->fechaFinal, UtlProgramacion::DIA);        
         setlocale(LC_ALL, "es_CO.UTF-8");
         
@@ -133,13 +129,6 @@ class SimuladorController extends Controller {
                 $arrDetalles['totales']['tot_fes_noc_ext'] += $arDetalle->getFesNocExtras();
             }
         }
-        
-//        if($this->get('session')->getFlashBag()->has('turnos-no-encontrados')){
-//            $objMessage = new \Brasa\GeneralBundle\MisClases\Mensajes();
-//            $turnosNoEncontrados = $this->get('session')->getFlashBag()->get('turnos-no-encontrados');
-//            
-////            $objMessage->Mensaje("Turnos", "Los siguientes turnos no están registrados: " . implode(", ", $turnosNoEncontrados[0]));
-//        }
         
         return $this->render('BrasaTurnoBundle:Utilidades/Costo/Simulador:inicio.html.twig', [
             'arProgramacionSimulador' => $arProgramacionSimulador->getResult(),

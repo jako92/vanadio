@@ -8,6 +8,11 @@ namespace Brasa\TurnoBundle;
  * @author Jorge Alejandro Quiroz Serna <alejo.jko@gmail.com>
  */
 class UtlProgramacion {
+    /**
+     * Instancia del gestor de conexión a la base de datos.
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
     /********************************
      * 	Constantes para la jornada. *
      ********************************/
@@ -166,13 +171,23 @@ class UtlProgramacion {
     private function __construct() {
         
     }
+    /**
+     * 
+     * @param \Doctrine\ORM\Decorator\EntityManagerDecorator $em
+     */
+    public function setEntityManager($em){
+        $this->em = $em;
+    }
 
     /**
      * Esta función permite cargar los festivos.
-     * @param array $festivos
      */
-    public function setFestivos($festivos) {
-        $this->festivos = $festivos;
+    public function setFestivos(){
+        $arFestivos = $this->em->getRepository("BrasaGeneralBundle:GenFestivo")
+                        ->festivos(date("Y-01-01"), date("Y-12-31"));
+        foreach($arFestivos AS $festivo) { 
+            $this->festivos[] = $festivo['fecha']->format("Y-m-d");             
+        }        
     }
 
     /**
