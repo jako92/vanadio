@@ -196,8 +196,9 @@ class UtlProgramacion {
      */
     public static function Util() {
         static $instance = null;
-        if ($instance == null)
+        if ($instance == null) {
             $instance = new UtlProgramacion();
+        }
         return $instance;
     }
 
@@ -205,8 +206,9 @@ class UtlProgramacion {
         $this->horasLaboradas = $this->getDiferencia("{$dia} {$horaInicial}", "{$dia} {$horaFinal}", self::HORA);
         $this->diaInicio = $dia;
         $this->diaFin = $this->sumarAFecha("{$dia} {$horaInicial}", self::HORA, $this->horasLaboradas);
-        if (intval($this->getFormato($horaFinal, "H")) == 0)
+        if (intval($this->getFormato($horaFinal, "H")) == 0) {
             $this->diaFin = $this->diaInicio;
+        }
         $this->horaInicial = $horaInicial;
         $this->horaFinal = $horaFinal;
         $this->obtenerTipoDeJornada();
@@ -264,8 +266,9 @@ class UtlProgramacion {
      * @return integer|float
      */
     private function getExtras() {
-        if ($this->horasLaboradas > $this->minJornadaTrabajo)
+        if ($this->horasLaboradas > $this->minJornadaTrabajo) {
             return $this->horasLaboradas - $this->minJornadaTrabajo;
+        }
         return 0;
     }
 
@@ -398,13 +401,16 @@ class UtlProgramacion {
 
         $this->sumarAyAsignarA($this->diurnas, $trabajadas, $jornadaA);
         $this->validarDesfase($this->diurnas, $this->minJornadaTrabajo, $this->diurnasExt);
-        if (!$this->cumple($trabajadas))
+        if (!$this->cumple($trabajadas)) {
             $this->sumarAyAsignarA($this->nocturnas, $trabajadas, $jornadaB);
-        if ($trabajadas > $this->minJornadaTrabajo && $this->nocturnas > 0)
+        }
+        if ($trabajadas > $this->minJornadaTrabajo && $this->nocturnas > 0) {
             $this->validarDesfase($trabajadas, $this->minJornadaTrabajo, $this->nocturnasExt);
+        }
         $this->nocturnas -= $this->nocturnasExt;
-        if ($this->cumple($trabajadas) && $trabajadas > $this->minJornadaTrabajo)
+        if ($this->cumple($trabajadas) && $trabajadas > $this->minJornadaTrabajo) {
             $this->sumarAyAsignarA($this->nocturnasExt, $trabajadas, $jornadaB);
+        }
         # Validamos festivos.
         if (!$mismoDia && $this->esFestivo($this->diaInicio) && !$this->esFestivo($this->diaFin)) {
             # Si el día actual es festivo y el siguiente no.
@@ -412,16 +418,18 @@ class UtlProgramacion {
             $this->cambiarValor($this->diurnasExt, $this->diurnasFesExt);
             $this->cambiarValor($this->nocturnas, $this->nocturnasFes);
             $restante = $this->obtenerHorasRestantes($trabajadas);
-            if (!$this->cumple($trabajadas))
+            if (!$this->cumple($trabajadas)) {
                 $this->sumarAyAsignarA($this->nocturnas, $trabajadas, $restante);
+            }
             if ($trabajadas < $this->horasLaboradas) {
                 $diferencia = $this->horasLaboradas - $trabajadas;
                 $this->nocturnasExt += $diferencia;
             }
         } else if (!$mismoDia && $this->esFestivo($this->diaFin) && !$this->esFestivo($this->diaInicio)) {
             # Si el dia actual no es festivo y el siguiente si.
-            if (!$this->cumple($trabajadas))
+            if (!$this->cumple($trabajadas)) {
                 $this->sumarAyAsignarA($this->nocturnasFes, $trabajadas, $nocturnasDiaSiguiente);
+            }
             if ($trabajadas > $this->minJornadaTrabajo) {
                 $diferencia = $trabajadas - $this->minJornadaTrabajo;
                 $this->nocturnasFesExt = $diferencia;
@@ -431,8 +439,9 @@ class UtlProgramacion {
             # Si el día actual y el siguiente son festivos.
             $restante = $this->obtenerHorasRestantes($trabajadas);
             $this->sumarAyAsignarA($this->nocturnas, $trabajadas, $restante);
-            if ($nocturnasDiaSiguiente > 0 && $this->cumple($trabajadas))
+            if ($nocturnasDiaSiguiente > 0 && $this->cumple($trabajadas)) {
                 $this->nocturnasExt += $nocturnasDiaSiguiente - $restante;
+            }
             $this->cambiarValor($this->diurnas, $this->diurnasFes);
             $this->cambiarValor($this->diurnasExt, $this->diurnasFesExt);
             $this->cambiarValor($this->nocturnas, $this->nocturnasFes);
@@ -470,8 +479,9 @@ class UtlProgramacion {
         } else {
             $this->validarDesfase($this->nocturnas, $this->minJornadaTrabajo, $this->nocturnasExt);
         }
-        if ($this->cumple($trabajadas))
+        if ($this->cumple($trabajadas)) {
             $this->sumarAyAsignarA($this->diurnasExt, $trabajadas, $jornadaC);
+        }
 
         # Validamos festivos.
         if (!$mismoDia && $this->esFestivo($this->diaInicio) && !$this->esFestivo($this->diaFin)) {
@@ -518,25 +528,23 @@ class UtlProgramacion {
         $min = $this->minJornadaDiurna;
         $mismoDia = $this->diaInicio == $this->diaFin;
 
-        if ($hi == $hf || $this->horasLaboradas > 12)
-            $mismoDia = false;
-        if ($hi == 0)
-            $hi = 24;
-
-        if ($mismoDia && ($hi != $hf) && ($hi >= $min && $hi < $max) && ($hf <= $max && $hf > $min))
+        if ($hi == $hf || $this->horasLaboradas > 12) { $mismoDia = false; }
+        if ($hi == 0) { $hi = 24; }
+        if ($mismoDia && ($hi != $hf) && ($hi >= $min && $hi < $max) && ($hf <= $max && $hf > $min)){
             $this->tipoDeJornada = self::JORNADA_DIURNA;
-        else if (($hi != $hf) && ($hi >= $max || $hi < $min) && ($hf >= $max || $hf <= $min))
+        } else if (($hi != $hf) && ($hi >= $max || $hi < $min) && ($hf >= $max || $hf <= $min)) {
             $this->tipoDeJornada = self::JORNADA_NOCTURNA;
-        else if (($hi != $hf) && ($hi >= $min && $hi < $max) && ($hf > $max || $hf <= $min))
+        } else if (($hi != $hf) && ($hi >= $min && $hi < $max) && ($hf > $max || $hf <= $min)) {
             $this->tipoDeJornada = self::JORNADA_MIXTA_A;
-        else if (($hi != $hf) && ($hi >= $max || $hi < $min) && ($hf >= $min))
+        } else if (($hi != $hf) && ($hi >= $max || $hi < $min) && ($hf >= $min)) {
             $this->tipoDeJornada = self::JORNADA_MIXTA_B;
-        else if (!$mismoDia && ($hi >= $min && $hi < $max) && ($hf >= $min && $hf <= $max))
+        } else if (!$mismoDia && ($hi >= $min && $hi < $max) && ($hf >= $min && $hf <= $max)) {
             $this->tipoDeJornada = self::JORNADA_MIXTA_C;
-        else if (!$mismoDia && (($hi >= $max && $hi < 24) || ($hi < $min && $hi > 0)) && (($hf >= $max && $hf < 24) || ($hf < $max && $hf > 0)))
+        } else if (!$mismoDia && (($hi >= $max && $hi < 24) || ($hi < $min && $hi > 0)) && (($hf >= $max && $hf < 24) || ($hf < $max && $hf > 0))) {
             $this->tipoDeJornada = self::JORNADA_MIXTA_D;
-        else
+        } else {
             throw new \Exception("Jornada no valida ({$this->horaInicial} - {$this->horaFinal}).");
+        }
     }
 
     /**
@@ -581,8 +589,9 @@ class UtlProgramacion {
     public function getDiferencia($fechaInicial, $fechaFinal, $formatoSalida = null) {
         $desde = strtotime($fechaInicial);
         $hasta = strtotime($fechaFinal);
-        if ($hasta < $desde)
+        if ($hasta < $desde) {
             $hasta = strtotime(date("Y-m-d H:i:s", strtotime("{$fechaFinal} + 1 days")));
+        }
         $diferencia = $hasta - $desde;
         switch ($formatoSalida) {
             case self::DIA: return round($diferencia / 60 / 60 / 24, 2) + 1;

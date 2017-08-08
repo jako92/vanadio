@@ -365,7 +365,9 @@ class SimuladorController extends Controller {
      * @return boolean
      */
     private function guardarNuevoRecurso($form, $request){
-        if(!$form->has('BtnAgregar') && $request->get("TxtCodigoRecurso") == "") return false;
+        if (!$form->has('BtnAgregar') && $request->get("TxtCodigoRecurso") == "") {
+            return false;
+        }
         if($this->validarExistencia($request->get("TxtCodigoRecurso"))){
             echo "<script languaje='javascript' type='text/javascript'>alert('Este recurso ya se encuentra agregado.');</script>";
             return false;
