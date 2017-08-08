@@ -42,7 +42,9 @@
         <table  class="table table-striped table-bordered table-condensed table-hover">
             <tr>
                 <th>{{ knp_pagination_sortable(arIncapacidadPagos, 'CÓDIGO', 'ip.codigoIncapacidadPagoPk') }}</th>
+                <th>FECHA</th>
                 <th>EPS</th>
+                <th>FECHA PAGO</th>
                 <th style="text-align: right">TOTAL</th>
                 <th>COMENTARIOS</th>
                 <th>AUTORIZADO</th>
@@ -52,7 +54,9 @@
             {% for arIncapacidadPagos in arIncapacidadPagos %}
                 <tr>
                     <td>{{ arIncapacidadPagos.codigoIncapacidadPagoPk  }}</td>
-                    <td>{{ arIncapacidadPagos.entidadSaludRel.nombre  }}</td>                
+                    <td>{{ arIncapacidadPagos.fecha |date("Y/m/d") }}</td>                
+                    <td>{{ arIncapacidadPagos.entidadSaludRel.nombre  }}</td> 
+                    <td>{% if arIncapacidadPagos.fechaPago == "" %} {% else %} {{arIncapacidadPagos.fechaPago |date("Y/m/d")}} {% endif %}</td>  
                     <td style="text-align: right">{{ arIncapacidadPagos.vrTotal | number_format(2, '.', ',') }}</td>
                     <td>{{ arIncapacidadPagos.comentarios  }}</td>
                     <td>{% if arIncapacidadPagos.estadoAutorizado == 1 %}SI {% else %} NO {% endif %}</td>
@@ -78,7 +82,6 @@
                 <a class="btn btn-default btn-sm" href="{{ path('brs_rhu_incapacidades_pagos_nuevo', {'codigoIncapacidadPago': 0}) }}">Nuevo</a>                
             </div>
             <div class="btn-group">
-
                 {{ form_widget(form.BtnEliminar, { 'attr': {'class': 'btn btn-danger btn-sm'} }) }}
             </div>
         </div>

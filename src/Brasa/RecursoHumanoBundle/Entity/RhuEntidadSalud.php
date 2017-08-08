@@ -68,6 +68,11 @@ class RhuEntidadSalud
     protected $incapacidadesEntidadSaludRel;
     
     /**
+     * @ORM\OneToMany(targetEntity="RhuLicencia", mappedBy="entidadSaludRel")
+     */
+    protected $licenciasEntidadSaludRel;
+    
+    /**
      * @ORM\OneToMany(targetEntity="RhuTrasladoSalud", mappedBy="entidadSaludAnteriorRel")
      */
     protected $trasladosSaludEntidadSaludAnteriorRel;
@@ -539,5 +544,39 @@ class RhuEntidadSalud
     public function getSsoAportesEntidadSaludRel()
     {
         return $this->ssoAportesEntidadSaludRel;
+    }
+
+    /**
+     * Add licenciasEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
+     *
+     * @return RhuEntidadSalud
+     */
+    public function addLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
+    {
+        $this->licenciasEntidadSaludRel[] = $licenciasEntidadSaludRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove licenciasEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
+     */
+    public function removeLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
+    {
+        $this->licenciasEntidadSaludRel->removeElement($licenciasEntidadSaludRel);
+    }
+
+    /**
+     * Get licenciasEntidadSaludRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLicenciasEntidadSaludRel()
+    {
+        return $this->licenciasEntidadSaludRel;
     }
 }

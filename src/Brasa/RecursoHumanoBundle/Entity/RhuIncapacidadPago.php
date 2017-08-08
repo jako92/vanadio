@@ -40,8 +40,13 @@ class RhuIncapacidadPago
     /**     
      * @ORM\Column(name="estado_autorizado", type="boolean")
      */    
-    private $estadoAutorizado = 0;
+    private $estadoAutorizado = 0;   
     
+    /**
+     * @ORM\Column(name="fecha_pago", type="date", nullable=true)
+     */    
+    private $fechaPago;
+       
     /**
      * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="incapacidadesPagosEntidadSaludRel")
      * @ORM\JoinColumn(name="codigo_entidad_salud_fk", referencedColumnName="codigo_entidad_salud_pk")
@@ -249,5 +254,29 @@ class RhuIncapacidadPago
     public function getIncapacidadesPagosDetallesIncapacidadPagoRel()
     {
         return $this->incapacidadesPagosDetallesIncapacidadPagoRel;
+    }
+
+    /**
+     * Set fechaPago
+     *
+     * @param \DateTime $fechaPago
+     *
+     * @return RhuIncapacidadPago
+     */
+    public function setFechaPago($fechaPago)
+    {
+        $this->fechaPago = $fechaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPago
+     *
+     * @return \DateTime
+     */
+    public function getFechaPago()
+    {
+        return $this->fechaPago;
     }
 }

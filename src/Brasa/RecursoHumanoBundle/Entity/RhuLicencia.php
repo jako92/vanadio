@@ -55,7 +55,12 @@ class RhuLicencia
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
      */    
-    private $codigoCentroCostoFk;          
+    private $codigoCentroCostoFk;  
+    
+    /**
+     * @ORM\Column(name="codigo_entidad_salud_fk", type="integer", nullable=true)
+     */
+    private $codigoEntidadSaludFk;
     
     /**
      * @ORM\Column(name="comentarios", type="string", length=200, nullable=true)
@@ -99,7 +104,13 @@ class RhuLicencia
      * @ORM\ManyToOne(targetEntity="RhuContrato", inversedBy="licenciasContratoRel")
      * @ORM\JoinColumn(name="codigo_contrato_fk", referencedColumnName="codigo_contrato_pk")
      */
-    protected $contratoRel;    
+    protected $contratoRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuEntidadSalud", inversedBy="licenciasEntidadSaludRel")
+     * @ORM\JoinColumn(name="codigo_entidad_salud_fk", referencedColumnName="codigo_entidad_salud_pk")
+     */
+    protected $entidadSaludRel;    
 
     /**
      * @ORM\OneToMany(targetEntity="RhuPagoDetalle", mappedBy="licenciaRel")
@@ -539,5 +550,53 @@ class RhuLicencia
     public function getPagosDetallesLicenciaRel()
     {
         return $this->pagosDetallesLicenciaRel;
+    }
+
+    /**
+     * Set codigoEntidadSaludFk
+     *
+     * @param integer $codigoEntidadSaludFk
+     *
+     * @return RhuLicencia
+     */
+    public function setCodigoEntidadSaludFk($codigoEntidadSaludFk)
+    {
+        $this->codigoEntidadSaludFk = $codigoEntidadSaludFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoEntidadSaludFk
+     *
+     * @return integer
+     */
+    public function getCodigoEntidadSaludFk()
+    {
+        return $this->codigoEntidadSaludFk;
+    }
+
+    /**
+     * Set entidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel
+     *
+     * @return RhuLicencia
+     */
+    public function setEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud $entidadSaludRel = null)
+    {
+        $this->entidadSaludRel = $entidadSaludRel;
+
+        return $this;
+    }
+
+    /**
+     * Get entidadSaludRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuEntidadSalud
+     */
+    public function getEntidadSaludRel()
+    {
+        return $this->entidadSaludRel;
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace Brasa\RecursoHumanoBundle\Controller\Movimiento;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,30 +11,30 @@ use Brasa\RecursoHumanoBundle\Form\Type\RhuPagoIncapacidadType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class PagoIncapacidadController extends Controller
-{
+class PagoIncapacidadController extends Controller {
+
     var $strSqlLista = "";
-    
+
     /**
      * @Route("/rhu/incapacidades/pagos/lista", name="brs_rhu_incapacidades_pagos_lista")
      */
-    public function listaAction(Request $request) {        
+    public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        
-        if(!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 13, 1)) {
-            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));            
+
+        if (!$em->getRepository('BrasaSeguridadBundle:SegPermisoDocumento')->permiso($this->getUser(), 13, 1)) {
+            return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
-        $paginator  = $this->get('knp_paginator');            
+        $paginator = $this->get('knp_paginator');
         $form = $this->formularioFiltro();
-        $form->handleRequest($request);        
-        $this->listar();          
-        if ($form->isValid()) {            
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
-            if ($form->get('BtnEliminar')->isClicked()) {    
+        $form->handleRequest($request);
+        $this->listar();
+        if ($form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->get('BtnEliminar')->isClicked()) {
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->eliminarIncapacidadPagoSeleccionados($arrSeleccionados);
                 return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_lista'));
             }
-            if ($form->get('BtnFiltrar')->isClicked()) {    
+            if ($form->get('BtnFiltrar')->isClicked()) {
                 $this->filtrar($form);
                 $this->listar();
             }
@@ -40,68 +42,70 @@ class PagoIncapacidadController extends Controller
                 $this->filtrar($form);
                 $this->listar();
                 $this->generarExcel();
-            }            
-        }                      
-        $arIncapacidadPagos = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 20);                
+            }
+        }
+        $arIncapacidadPagos = $paginator->paginate($em->createQuery($this->strSqlLista), $request->query->get('page', 1), 20);
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Incapacidades/PagoIncapacidades:lista.html.twig', array('arIncapacidadPagos' => $arIncapacidadPagos, 'form' => $form->createView()));
-    } 
-    
+    }
+
     /**
      * @Route("/rhu/incapacidades/pagos/nuevo/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_nuevo")
      */
     public function nuevoAction(Request $request, $codigoIncapacidadPago) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $arIncapacidadPagos = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
-        if($codigoIncapacidadPago != 0) {
+        if ($codigoIncapacidadPago != 0) {
             $arIncapacidadPagos = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
+        } else {
+            $arIncapacidadPagos->setFechaPago(new \DateTime('now'));
         }
         $form = $this->createForm(RhuPagoIncapacidadType::class, $arIncapacidadPagos);
         $form->handleRequest($request);
-        if ($form->isValid()) {           
+        if ($form->isValid()) {
             $arIncapacidadPagos = $form->getData();
             $arIncapacidadPagos->setFecha(new \DateTime('now'));
-            
+
             $em->persist($arIncapacidadPagos);
             $em->flush();
-            if($form->get('guardarnuevo')->isClicked()) {                                                        
+            if ($form->get('guardarnuevo')->isClicked()) {
                 return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_nuevo', array('codigoIncacidadPago' => 0)));
             } else {
                 return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $arIncapacidadPagos->getCodigoIncapacidadPagoPk())));
-            }                          
+            }
         }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Incapacidades/PagoIncapacidades:nuevo.html.twig', array(
-            'arIncapacidadPagos' => $arIncapacidadPagos,
-            'form' => $form->createView()));
+                    'arIncapacidadPagos' => $arIncapacidadPagos,
+                    'form' => $form->createView()));
     }
-    
+
     /**
      * @Route("/rhu/incapacidades/pagos/detalle/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_detalle")
      */
     public function detalleAction(Request $request, $codigoIncapacidadPago) {
         $em = $this->getDoctrine()->getManager();
-            
-        $objMensaje = $this->get('mensajes_brasa');  
+
+        $objMensaje = $this->get('mensajes_brasa');
         $arIncapacidadPago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
-        $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);        
+        $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
         $form = $this->formularioDetalle($arIncapacidadPago);
         $form->handleRequest($request);
-        if($form->isValid()) {
-            $arrSeleccionados = $request->request->get('ChkSeleccionar');                                                   
-            if($form->get('BtnImprimir')->isClicked()) {
+        if ($form->isValid()) {
+            $arrSeleccionados = $request->request->get('ChkSeleccionar');
+            if ($form->get('BtnImprimir')->isClicked()) {
                 $objFormatoIncapacidadPagoDetalle = new \Brasa\RecursoHumanoBundle\Formatos\FormatoIncapacidadPagoDetalle();
                 $objFormatoIncapacidadPagoDetalle->Generar($em, $codigoIncapacidadPago);
             }
-            if($form->get('BtnDetalleEliminar')->isClicked()) {                
-                $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->eliminarDetallesSeleccionados($arrSeleccionados,$codigoIncapacidadPago);
+            if ($form->get('BtnDetalleEliminar')->isClicked()) {
+                $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->eliminarDetallesSeleccionados($arrSeleccionados, $codigoIncapacidadPago);
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->liquidar($codigoIncapacidadPago);
-                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));           
+                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));
             }
-            if($form->get('BtnAutorizar')->isClicked()) {                
+            if ($form->get('BtnAutorizar')->isClicked()) {
                 $arIncapacidadPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle();
                 $arIncapacidadPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->findBy(array('codigoIncapacidadPagoFk' => $codigoIncapacidadPago));
-                if (count($arIncapacidadPagoDetalles) > 0){
-                    foreach ($arIncapacidadPagoDetalles AS $arIncapacidadPagoDetalle) {                    
+                if (count($arIncapacidadPagoDetalles) > 0) {
+                    foreach ($arIncapacidadPagoDetalles AS $arIncapacidadPagoDetalle) {
                         $arIncapacidad = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
                         $arIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($arIncapacidadPagoDetalle->getCodigoIncapacidadFk());
                         $arIncapacidad->setVrPagado($arIncapacidadPagoDetalle->getVrPago());
@@ -113,143 +117,153 @@ class PagoIncapacidadController extends Controller
                     $arIncapacidadPago->setEstadoAutorizado(1);
                     $em->persist($arIncapacidadPago);
                     $em->flush();
-                    $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->liquidar($codigoIncapacidadPago);                    
-                }                
-                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));           
+                    $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->liquidar($codigoIncapacidadPago);
+                }
+                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));
             }
-            if($form->get('BtnDesAutorizar')->isClicked()) {                
+            if ($form->get('BtnDesAutorizar')->isClicked()) {
                 $arIncapacidadPago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
                 $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
                 $arIncapacidadPago->setEstadoAutorizado(0);
                 $em->persist($arIncapacidadPago);
                 $em->flush();
-                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));           
-            }            
-            
+                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));
+            }
+            if ($form->get('BtnDetalleExcel')->isClicked()) {
+                $this->generarExcelDetalle($codigoIncapacidadPago);
+            }
             if ($form->get('BtnDetalleActualizar')->isClicked()) {
                 $arrControles = $request->request->All();
                 $intIndice = 0;
                 $arIncapacidadPagoDetalles = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle();
                 $arIncapacidadPagoDetalles = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->findBy(array('codigoIncapacidadPagoFk' => $codigoIncapacidadPago));
-                foreach ($arIncapacidadPagoDetalles AS $arIncapacidadPagoDetalle) {                    
+                foreach ($arIncapacidadPagoDetalles AS $arIncapacidadPagoDetalle) {
                     $arIncapacidadPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->find($arIncapacidadPagoDetalle);
                     $intValorPago = $arrControles['TxtValorPago'][$intIndice];
-                    $arIncapacidadPagoDetalle->setVrPago($intValorPago);                                                
+                    $arIncapacidadPagoDetalle->setVrPago($intValorPago);
                     $em->persist($arIncapacidadPagoDetalle);
                     $intIndice++;
                 }
                 $em->flush();
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->liquidar($codigoIncapacidadPago);
 
-                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));                           
+                return $this->redirect($this->generateUrl('brs_rhu_incapacidades_pagos_detalle', array('codigoIncapacidadPago' => $codigoIncapacidadPago)));
             }
-        }                
+        }
         $arIncapacidadPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle();
-        $arIncapacidadPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->findBy(array ('codigoIncapacidadPagoFk' => $codigoIncapacidadPago));
+        $arIncapacidadPagoDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->findBy(array('codigoIncapacidadPagoFk' => $codigoIncapacidadPago));
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Incapacidades/PagoIncapacidades:detalle.html.twig', array(
                     'arIncapacidadPago' => $arIncapacidadPago,
                     'arIncapacidadPagoDetalle' => $arIncapacidadPagoDetalle,
                     'form' => $form->createView()
-                    ));
+        ));
     }
-    
+
     /**
      * @Route("/rhu/incapacidades/pagos/detalle/nuevo/{codigoIncapacidadPago}", name="brs_rhu_incapacidades_pagos_detalle_nuevo")
      */
     public function detalleNuevoAction(Request $request, $codigoIncapacidadPago) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $arIncapacidadPago = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPago();
         $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
         $arIncapacidades = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidad();
         $arIncapacidades = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->listaIncapacidadesEntidadSaludCobrar($arIncapacidadPago->getCodigoEntidadSaludFk());
         $form = $this->createFormBuilder()
-            ->add('BtnGuardar', SubmitType::class, array('label'  => 'Guardar',))
-            ->getForm();
-        $form->handleRequest($request); 
-        if ($form->isValid()) { 
+                ->add('BtnGuardar', SubmitType::class, array('label' => 'Guardar',))
+                ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
             if ($form->get('BtnGuardar')->isClicked()) {
                 $arrSeleccionados = $request->request->get('ChkSeleccionar');
                 $arIncapacidadPago = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->find($codigoIncapacidadPago);
-                if(count($arrSeleccionados) > 0) {
-                    foreach ($arrSeleccionados AS $codigoIncapacidad) {                    
+                if (count($arrSeleccionados) > 0) {
+                    foreach ($arrSeleccionados AS $codigoIncapacidad) {
                         $arIncapacidad = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidad')->find($codigoIncapacidad);
                         $arIncapacidadPagoDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle();
                         $arIncapacidadPagoDetalle->setIncapacidadPagoRel($arIncapacidadPago);
                         $arIncapacidadPagoDetalle->setIncapacidadRel($arIncapacidad);
-                        $arIncapacidadPagoDetalle->setVrPago($arIncapacidad->getVrSaldo());                                                
-                        $em->persist($arIncapacidadPagoDetalle); 
+                        $arIncapacidadPagoDetalle->setVrPago($arIncapacidad->getVrSaldo());
+                        $em->persist($arIncapacidadPagoDetalle);
                     }
                     $em->flush();
                 }
-             
+
                 $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->liquidar($codigoIncapacidadPago);
-            }            
-            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";                
+            }
+            echo "<script languaje='javascript' type='text/javascript'>window.close();window.opener.location.reload();</script>";
         }
         return $this->render('BrasaRecursoHumanoBundle:Movimientos/Incapacidades/PagoIncapacidades:detalleNuevo.html.twig', array(
-            'arIncapacidades' => $arIncapacidades,
-            'form' => $form->createView()));
-    }    
-    
+                    'arIncapacidades' => $arIncapacidades,
+                    'form' => $form->createView()));
+    }
+
     private function listar() {
         $session = new session;
         $em = $this->getDoctrine()->getManager();
         $this->strSqlLista = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPago')->listaDQL(
                 $session->get('filtroCodigoEntidadSalud')
-                );        
+        );
     }
-    
-    private function filtrar ($form) {        
+
+    private function filtrar($form) {
         $session = new session;
         $codigoEntidadSalud = '';
-        if($form->get('entidadSaludRel')->getData()) {
+        if ($form->get('entidadSaludRel')->getData()) {
             $codigoEntidadSalud = $form->get('entidadSaludRel')->getData()->getCodigoEntidadSaludPk();
-        }                 
-        $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);                               
+        }
+        $session->set('filtroCodigoEntidadSalud', $codigoEntidadSalud);
     }
-    
+
     private function generarExcel() {
         ob_clean();
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
-            ->setLastModifiedBy("EMPRESA")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10); 
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'ENTIDAD')
-                    ->setCellValue('C1', 'TOTAL')
-                    ->setCellValue('D1', 'COMENTARIOS')
-                    ->setCellValue('E1', 'AUTORIZADO');
-                    
+                ->setCellValue('A1', 'CÓDIGO')
+                ->setCellValue('B1', 'FECHA')
+                ->setCellValue('C1', 'ENTIDAD')
+                ->setCellValue('D1', 'FECHA PAGO')
+                ->setCellValue('E1', 'TOTAL')
+                ->setCellValue('F1', 'COMENTARIOS')
+                ->setCellValue('G1', 'AUTORIZADO');
+
         $i = 2;
         $query = $em->createQuery($this->strSqlLista);
-        
+
         $arPagoIncapacidades = $query->getResult();
         foreach ($arPagoIncapacidades as $arPagoIncapacidad) {
             $strNombreEntidad = "";
-            if($arPagoIncapacidad->getCodigoEntidadSaludFk() != null) {
+            if ($arPagoIncapacidad->getCodigoEntidadSaludFk() != null) {
                 $strNombreEntidad = $arPagoIncapacidad->getEntidadSaludRel()->getNombre();
             }
-            if ($arPagoIncapacidad->getEstadoAutorizado()== 1){
+            if ($arPagoIncapacidad->getEstadoAutorizado() == 1) {
                 $autorizado = "SI";
-            } else{
+            } else {
                 $autorizado = "NO";
+            }
+            $fechaPago = "";
+            if ($arPagoIncapacidad->getFechaPago() != null) {
+                $fechaPago = $arPagoIncapacidad->getFechaPago()->Format('Y-m-d');
             }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arPagoIncapacidad->getCodigoIncapacidadPagoPk())
-                    ->setCellValue('B' . $i, $strNombreEntidad)
-                    ->setCellValue('C' . $i, $arPagoIncapacidad->getVrTotal())
-                    ->setCellValue('D' . $i, $arPagoIncapacidad->getComentarios())
-                    ->setCellValue('E' . $i, $autorizado);
+                    ->setCellValue('B' . $i, $arPagoIncapacidad->getFecha()->Format('Y-m-d'))
+                    ->setCellValue('C' . $i, $strNombreEntidad)
+                    ->setCellValue('D' . $i, $fechaPago)
+                    ->setCellValue('E' . $i, $arPagoIncapacidad->getVrTotal())
+                    ->setCellValue('F' . $i, $arPagoIncapacidad->getComentarios())
+                    ->setCellValue('G' . $i, $autorizado);
             $i++;
         }
         $objPHPExcel->getActiveSheet()->setTitle('PagoIncapacidades');
@@ -261,64 +275,140 @@ class PagoIncapacidadController extends Controller
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
     }
-    
+
+    private function generarExcelDetalle($codigoIncapacidadPago) {
+        $objFunciones = new \Brasa\GeneralBundle\MisClases\Funciones();
+        ob_clean();
+        $em = $this->getDoctrine()->getManager();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+                ->setLastModifiedBy("EMPRESA")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(9);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'M'; $col !== 'S'; $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+        //Pago incapacidad detalles
+        $objPHPExcel->createSheet(0)->setTitle('ExamenDetalle')
+                ->setCellValue('A1', 'ID')
+                ->setCellValue('B1', 'TIPO')
+                ->setCellValue('C1', 'NUMERO')
+                ->setCellValue('D1', 'IDENTIFICACION')
+                ->setCellValue('E1', 'EMPLEADO')
+                ->setCellValue('F1', 'VALOR');
+
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet(1)->getStyle('1')->getFont()->setBold(true);
+        for ($col = 'A'; $col !== 'I'; $col++) {
+            $objPHPExcel->getActiveSheet(0)->getColumnDimension($col)->setAutoSize(true);
+        }
+        for ($col = 'F'; $col !== 'I'; $col++) {
+            $objPHPExcel->getActiveSheet(0)->getStyle($col)->getAlignment()->setHorizontal('right');
+            $objPHPExcel->getActiveSheet(0)->getStyle($col)->getNumberFormat()->setFormatCode('#,##0');
+        }
+
+        $i = 2;
+        $arPagoIncapacidadDetalle = new \Brasa\RecursoHumanoBundle\Entity\RhuIncapacidadPagoDetalle();
+        $arPagoIncapacidadDetalle = $em->getRepository('BrasaRecursoHumanoBundle:RhuIncapacidadPagoDetalle')->findBy(array('codigoIncapacidadPagoFk' => $codigoIncapacidadPago));
+        foreach ($arPagoIncapacidadDetalle as $arPagoIncapacidadDetalle) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $arPagoIncapacidadDetalle->getCodigoIncapacidadPagoDetallePk())
+                    ->setCellValue('B' . $i, $arPagoIncapacidadDetalle->getIncapacidadRel()->getIncapacidadTipoRel()->getNombre())
+                    ->setCellValue('C' . $i, $arPagoIncapacidadDetalle->getIncapacidadRel()->getNumeroEps())
+                    ->setCellValue('D' . $i, $arPagoIncapacidadDetalle->getIncapacidadRel()->getEmpleadoRel()->getNumeroIdentificacion())
+                    ->setCellValue('E' . $i, $arPagoIncapacidadDetalle->getIncapacidadRel()->getEmpleadoRel()->getNombreCorto())
+                    ->setCellValue('F' . $i, $arPagoIncapacidadDetalle->getVrPago());
+
+            $i++;
+        }
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ExamenDetalle.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+
     private function formularioFiltro() {
         $em = $this->getDoctrine()->getManager();
-        $session = new session;        
+        $session = new session;
         $arrayPropiedades = array(
-                'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('es')                                        
-                    ->orderBy('es.nombre', 'ASC');},
-                'choice_label' => 'nombre',
-                'required' => false,  
-                'empty_data' => "",
-                'placeholder' => "TODOS",    
-                'data' => ""
-            );  
-        if($session->get('filtroCodigoEntidadSalud')) {
-            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadSalud", $session->get('filtroCodigoEntidadSalud'));                                    
-        }        
+            'class' => 'BrasaRecursoHumanoBundle:RhuEntidadSalud',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('es')
+                                ->orderBy('es.nombre', 'ASC');
+            },
+            'choice_label' => 'nombre',
+            'required' => false,
+            'empty_data' => "",
+            'placeholder' => "TODOS",
+            'data' => ""
+        );
+        if ($session->get('filtroCodigoEntidadSalud')) {
+            $arrayPropiedades['data'] = $em->getReference("BrasaRecursoHumanoBundle:RhuEntidadSalud", $session->get('filtroCodigoEntidadSalud'));
+        }
         $form = $this->createFormBuilder()
-            ->add('entidadSaludRel', EntityType::class, $arrayPropiedades)                  
-            ->add('BtnEliminar', SubmitType::class, array('label'  => 'Eliminar',))
-            ->add('BtnExcel', SubmitType::class, array('label'  => 'Excel',))            
-            ->add('BtnFiltrar', SubmitType::class, array('label'  => 'Filtrar'))
-            ->getForm();        
+                ->add('entidadSaludRel', EntityType::class, $arrayPropiedades)
+                ->add('BtnEliminar', SubmitType::class, array('label' => 'Eliminar',))
+                ->add('BtnExcel', SubmitType::class, array('label' => 'Excel',))
+                ->add('BtnFiltrar', SubmitType::class, array('label' => 'Filtrar'))
+                ->getForm();
         return $form;
-    }   
-    
+    }
+
     private function formularioDetalle($ar) {
-        $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);                
+        $arrBotonAutorizar = array('label' => 'Autorizar', 'disabled' => false);
         $arrBotonDesAutorizar = array('label' => 'Des-autorizar', 'disabled' => false);
         $arrBotonImprimir = array('label' => 'Imprimir', 'disabled' => false);
         $arrBotonDetalleEliminar = array('label' => 'Eliminar', 'disabled' => false);
-        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);  
-        if($ar->getEstadoAutorizado() == 1) {            
-            $arrBotonAutorizar['disabled'] = true;                        
-            $arrBotonDetalleEliminar['disabled'] = true;            
-            $arrBotonDetalleActualizar['disabled'] = true;            
+        $arrBotonDetalleActualizar = array('label' => 'Actualizar', 'disabled' => false);
+        $arrBotonDetalleExcel = array('label' => 'Excel', 'disabled' => false);
+        if ($ar->getEstadoAutorizado() == 1) {
+            $arrBotonAutorizar['disabled'] = true;
+            $arrBotonDetalleEliminar['disabled'] = true;
+            $arrBotonDetalleActualizar['disabled'] = true;
         } else {
-            $arrBotonDesAutorizar['disabled'] = true;            
+            $arrBotonDesAutorizar['disabled'] = true;
             $arrBotonImprimir['disabled'] = true;
         }
-        
+
         $form = $this->createFormBuilder()
-            ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)            
-            ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)                             
-            ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
-            ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
-            ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)                  
-            ->getForm();        
+                ->add('BtnDetalleExcel', SubmitType::class, $arrBotonDetalleExcel)
+                ->add('BtnDesAutorizar', SubmitType::class, $arrBotonDesAutorizar)
+                ->add('BtnAutorizar', SubmitType::class, $arrBotonAutorizar)
+                ->add('BtnImprimir', SubmitType::class, $arrBotonImprimir)
+                ->add('BtnDetalleActualizar', SubmitType::class, $arrBotonDetalleActualizar)
+                ->add('BtnDetalleEliminar', SubmitType::class, $arrBotonDetalleEliminar)
+                ->getForm();
         return $form;
-    }    
-        
+    }
+
 }

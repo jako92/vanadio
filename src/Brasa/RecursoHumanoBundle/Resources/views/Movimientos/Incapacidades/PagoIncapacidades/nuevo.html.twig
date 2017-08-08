@@ -21,8 +21,12 @@
             <div class="panel-body">
                 <div class="form-group form-group-sm">
                     <label for="form_entidadSalud" class="col-sm-2 control-label">Entidad salud:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                         {{ form_widget(form.entidadSaludRel, { 'attr': {'class': 'form-control','autofocus':'autofocus'} }) }}
+                    </div>
+                    <label for="form_entidadSalud" class="col-sm-2 control-label">Fecha pago:</label>
+                    <div class="col-sm-4">
+                        {{ form_widget(form.fechaPago) }}
                     </div>
                 </div>
                 <div class="form-group">
