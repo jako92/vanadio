@@ -163,10 +163,14 @@ class TurPedidoDetalle
     private $vrPrecio = 0;     
     
     /**
-     * @ORM\Column(name="porcentaje_iva", type="float")
+     * @ORM\Column(name="porcentaje_iva", type="float", nullable=true)
      */
-    private $porcentajeIva = 0;    
+    private $porcentajeIva = 0;
     
+    /**
+     * @ORM\Column(name="porcentaje_base_iva", type="float", nullable=true)
+     */
+    private $porcentajeBaseIva = 0;        
     /**
      * @ORM\Column(name="vr_subtotal", type="float")
      */
@@ -2317,5 +2321,29 @@ class TurPedidoDetalle
     public function getVrSalarioBase()
     {
         return $this->vrSalarioBase;
+    }
+
+    /**
+     * Set porcentajeBaseIva
+     *
+     * @param float $porcentajeBaseIva
+     *
+     * @return TurPedidoDetalle
+     */
+    public function setPorcentajeBaseIva($porcentajeBaseIva)
+    {
+        $this->porcentajeBaseIva = $porcentajeBaseIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeBaseIva
+     *
+     * @return float
+     */
+    public function getPorcentajeBaseIva()
+    {
+        return $this->porcentajeBaseIva;
     }
 }

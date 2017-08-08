@@ -102,6 +102,7 @@ class TurPedidoRepository extends EntityRepository {
 
     public function liquidar($codigoPedido) {
         $em = $this->getEntityManager();
+        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
         $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();
         $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
         $intCantidad = 0;
@@ -277,11 +278,14 @@ class TurPedidoRepository extends EntityRepository {
                 }
                 $subTotalDetalle = $floVrServicio;
                 $subtotalGeneral += $subTotalDetalle;
-                $baseAiuDetalle = $subTotalDetalle * 10 / 100;
-                $baseAiuDetalle = $baseAiuDetalle;
+                $baseAiuDetalle = $subTotalDetalle * ($arPedidoDetalle->getPorcentajeBaseIva() / 100);
                 $ivaDetalle = $baseAiuDetalle * $arPedidoDetalle->getPorcentajeIva() / 100;
                 $ivaGeneral += $ivaDetalle;
                 $totalDetalle = $subTotalDetalle + $ivaDetalle;
+                if($arConfiguracion->getSumarBaseIva()){
+                    $totalDetalle += $baseAiuDetalle;
+                }
+                $baseAuiGeneral += $baseAiuDetalle;
                 $arPedidoDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arPedidoDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
                 $arPedidoDetalleActualizar->setVrIva($ivaDetalle);
@@ -346,10 +350,9 @@ class TurPedidoRepository extends EntityRepository {
         $arPedido->setVrTotalOtros($floSubTotalConceptos);
         $arPedido->setVrTotalCosto($douTotalCostoCalculado);
         $subtotal = $subtotalGeneral + $floSubTotalConceptos;
-        $baseAiu = $subtotal * 10 / 100;
         $total = $subtotal + $ivaGeneral;
         $arPedido->setVrSubtotal($subtotal);
-        $arPedido->setVrBaseAiu($baseAiu);
+        $arPedido->setVrBaseAiu($baseAuiGeneral);
         $arPedido->setVrIva($ivaGeneral);
         $arPedido->setVrTotal($total);
 

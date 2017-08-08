@@ -481,6 +481,7 @@ class PedidoController extends Controller {
                 }
                 if ($codigoPedidoDetalle == 0) {
                     $arPedidoDetalle->setPorcentajeIva($arPedidoDetalle->getConceptoServicioRel()->getPorIva());
+                    $arPedidoDetalle->setPorcentajeBaseIva($arPedidoDetalle->getConceptoServicioRel()->getPorBaseIva());
                 }
                 $em->persist($arPedidoDetalle);
                 $em->flush();
@@ -1288,8 +1289,15 @@ class PedidoController extends Controller {
                     if ($arrControles['TxtValorAjustado' . $intCodigo] != '') {
                         $arPedidoDetalle->setVrPrecioAjustado($arrControles['TxtValorAjustado' . $intCodigo]);
                     }
+                    if ($arrControles['TxtPorcentajeIva' . $intCodigo] != '') {
+                        $arPedidoDetalle->setPorcentajeIva(($arrControles['TxtPorcentajeIva' . $intCodigo]));
+                    }
+                    if ($arrControles['TxtPorcentajeBaseIva' . $intCodigo] != '') {
+                        $arPedidoDetalle->setPorcentajeBaseIva($arrControles['TxtPorcentajeBaseIva' . $intCodigo]);
+                    }
+                    echo $arrControles['TxtPorcentajeBaseIva' . $intCodigo] . "<br>";
+                    $em->persist($arPedidoDetalle);
                 }
-                $em->persist($arPedidoDetalle);
             }
             $em->flush();
         }
