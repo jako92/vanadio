@@ -694,7 +694,10 @@ class PedidoController extends Controller {
                             $arPedidoDetalle->setDomingo($arServicioDetalle->getDomingo());
                             $arPedidoDetalle->setFestivo($arServicioDetalle->getFestivo());
                             $arPedidoDetalle->setCantidad($arServicioDetalle->getCantidad());
-                            $arPedidoDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorIva());
+                            
+                            $arPedidoDetalle->setPorcentajeIva($arServicioDetalle->getPorcentajeIva());
+                            $arPedidoDetalle->setPorcentajeBaseIva($arServicioDetalle->getPorcentajeBaseIva());
+                            
                             $arPedidoDetalle->setVrPrecioAjustado($arServicioDetalle->getVrPrecioAjustado());
                             $arPedidoDetalle->setFechaIniciaPlantilla($arServicioDetalle->getFechaIniciaPlantilla());                            
                             $arPedidoDetalle->setLiquidarDiasReales($arServicioDetalle->getLiquidarDiasReales());
