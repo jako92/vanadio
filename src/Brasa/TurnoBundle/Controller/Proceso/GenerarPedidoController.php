@@ -113,7 +113,8 @@ class GenerarPedidoController extends Controller {
                                     $arPedidoDetalleNuevo->setDomingo($arServicioDetalle->getDomingo());
                                     $arPedidoDetalleNuevo->setFestivo($arServicioDetalle->getFestivo());
                                     $arPedidoDetalleNuevo->setVrPrecioAjustado($arServicioDetalle->getVrPrecioAjustado());
-                                    $arPedidoDetalleNuevo->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorIva());
+                                    $arPedidoDetalleNuevo->setPorcentajeIva($arServicioDetalle->getPorcentajeIva());
+                                    $arPedidoDetalleNuevo->setPorcentajeBaseIva($arServicioDetalle->getPorcentajeBaseIva());
                                     $arPedidoDetalleNuevo->setFechaIniciaPlantilla($arServicioDetalle->getFechaIniciaPlantilla());                                    
                                     $arPedidoDetalleNuevo->setAnio($anio);
                                     $arPedidoDetalleNuevo->setMes($mes);
