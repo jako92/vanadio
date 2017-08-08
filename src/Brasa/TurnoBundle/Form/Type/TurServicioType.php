@@ -30,10 +30,8 @@ class TurServicioType extends AbstractType
                     ->orderBy('st.codigoServicioTipoPk', 'ASC');},
                 'choice_label' => 'nombre',
                 'required' => true))
-            ->add('soporte', TextType::class, array('required'=>false))
-            ->add('sumarAiu', CheckboxType::class, array('required'=>false))
-            ->add('vrSalarioBase', NumberType::class)
-            ->add('cantidadPersonal', NumberType::class, array('required'=>false))                            
+            ->add('soporte', TextType::class, array('required'=>false))            
+            ->add('vrSalarioBase', NumberType::class)            
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

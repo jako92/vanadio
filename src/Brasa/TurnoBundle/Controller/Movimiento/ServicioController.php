@@ -410,7 +410,11 @@ class ServicioController extends Controller {
                     $objMensaje->Mensaje("error", "Debe seleccionar un puesto para crear el nuevo servicio");
                 } else {
                     $arServicioDetalle = $form->getData();
-                    $arServicioDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorBaseIva());
+                    if ($codigoServicioDetalle == 0) {
+                        $arServicioDetalle->setPorcentajeIva($arServicioDetalle->getConceptoServicioRel()->getPorIva());
+                        $arServicioDetalle->setPorcentajeBaseIva($arServicioDetalle->getConceptoServicioRel()->getPorBaseIva());
+                    }                    
+                    
                     $em->persist($arServicioDetalle);
                     $em->flush();
                     
@@ -878,6 +882,12 @@ class ServicioController extends Controller {
                     if ($arrControles['TxtValorAjustado' . $intCodigo] != '') {
                         $arServicioDetalle->setVrPrecioAjustado($arrControles['TxtValorAjustado' . $intCodigo]);
                     }
+                    if ($arrControles['TxtPorcentajeIva' . $intCodigo] != '') {
+                        $arServicioDetalle->setPorcentajeIva($arrControles['TxtPorcentajeIva' . $intCodigo]);
+                    }                    
+                    if ($arrControles['TxtPorcentajeBaseIva' . $intCodigo] != '') {
+                        $arServicioDetalle->setPorcentajeBaseIva($arrControles['TxtPorcentajeBaseIva' . $intCodigo]);
+                    }                     
                     $em->persist($arServicioDetalle);
                 }
             }

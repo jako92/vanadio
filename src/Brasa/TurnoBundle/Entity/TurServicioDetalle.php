@@ -221,10 +221,16 @@ class TurServicioDetalle
      * @ORM\Column(name="vr_salario_base", type="float")
      */
     private $vrSalarioBase = 0;     
+        
     /**
      * @ORM\Column(name="porcentaje_iva", type="float", nullable=true)
      */
     private $porcentajeIva = 0;
+    
+    /**
+     * @ORM\Column(name="porcentaje_base_iva", type="float", nullable=true)
+     */
+    private $porcentajeBaseIva = 0;    
     
     /**
      * @ORM\ManyToOne(targetEntity="TurServicio", inversedBy="serviciosDetallesServicioRel")
@@ -299,7 +305,6 @@ class TurServicioDetalle
      * @ORM\OneToMany(targetEntity="TurServicioDetalleCompuesto", mappedBy="servicioDetalleRel")
      */
     protected $serviciosDetallesCompuestosServicioDetalleRel;     
-
 
     /**
      * Constructor
@@ -1283,6 +1288,78 @@ class TurServicioDetalle
     }
 
     /**
+     * Set vrSalarioBase
+     *
+     * @param float $vrSalarioBase
+     *
+     * @return TurServicioDetalle
+     */
+    public function setVrSalarioBase($vrSalarioBase)
+    {
+        $this->vrSalarioBase = $vrSalarioBase;
+
+        return $this;
+    }
+
+    /**
+     * Get vrSalarioBase
+     *
+     * @return float
+     */
+    public function getVrSalarioBase()
+    {
+        return $this->vrSalarioBase;
+    }
+
+    /**
+     * Set porcentajeIva
+     *
+     * @param float $porcentajeIva
+     *
+     * @return TurServicioDetalle
+     */
+    public function setPorcentajeIva($porcentajeIva)
+    {
+        $this->porcentajeIva = $porcentajeIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIva
+     *
+     * @return float
+     */
+    public function getPorcentajeIva()
+    {
+        return $this->porcentajeIva;
+    }
+
+    /**
+     * Set porcentajeBaseIva
+     *
+     * @param float $porcentajeBaseIva
+     *
+     * @return TurServicioDetalle
+     */
+    public function setPorcentajeBaseIva($porcentajeBaseIva)
+    {
+        $this->porcentajeBaseIva = $porcentajeBaseIva;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeBaseIva
+     *
+     * @return float
+     */
+    public function getPorcentajeBaseIva()
+    {
+        return $this->porcentajeBaseIva;
+    }
+
+    /**
      * Set servicioRel
      *
      * @param \Brasa\TurnoBundle\Entity\TurServicio $servicioRel
@@ -1632,52 +1709,5 @@ class TurServicioDetalle
     public function getServiciosDetallesCompuestosServicioDetalleRel()
     {
         return $this->serviciosDetallesCompuestosServicioDetalleRel;
-    }
-
-    /**
-     * Set vrSalarioBase
-     *
-     * @param float $vrSalarioBase
-     *
-     * @return TurServicioDetalle
-     */
-    public function setVrSalarioBase($vrSalarioBase)
-    {
-        $this->vrSalarioBase = $vrSalarioBase;
-
-        return $this;
-    }
-
-    /**
-     * Get vrSalarioBase
-     *
-     * @return float
-     */
-    public function getVrSalarioBase()
-    {
-        return $this->vrSalarioBase;
-    }
-    
-    /**
-     * @return float
-     */
-    public function getPorcentajeIva()
-    {
-        if($this->porcentajeIva == "") {
-            return $this->getConceptoServicioRel()->getPorBaseIva();
-        } else {
-            return $this->porcentajeIva;
-        }
-    }
-    
-    /**
-     * 
-     * @param float $porcentajeIva
-     * @return TurServicioDetalle
-     */
-    public function setPorcentajeIva($porcentajeIva)
-    {
-        $this->porcentajeIva = $porcentajeIva;
-        return $this;
     }
 }
