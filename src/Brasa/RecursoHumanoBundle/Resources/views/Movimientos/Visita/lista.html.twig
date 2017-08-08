@@ -99,7 +99,7 @@
                     {% else %}
                         <td>NO</td>
                     {% endif %}
-                    <td>{{ arVisitas.ClienteRel.nombreCorto }}</td>
+                    <td>{{ arVisitas.clienteRel.nombreCorto | default('')}}</td>
                     <td>{{ arVisitas.nombreQuienVisita  }}</td>
                     <td>{% if arVisitas.estadoAutorizado == 1%} SI {% else %} NO {% endif %}</td>
                     <td>{% if arVisitas.estadoCerrado == 1%} SI {% else %} NO {% endif %}</td>
