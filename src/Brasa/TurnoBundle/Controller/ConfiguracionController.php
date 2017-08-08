@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -47,6 +48,7 @@ class ConfiguracionController extends Controller {
                 ->add('codigoConceptoHorasExtrasFestivasDiurnasFk', NumberType::class, array('data' => $arConfiguracion->getCodigoConceptoHorasExtrasFestivasDiurnasFk(), 'required' => false))
                 ->add('codigoConceptoHorasExtrasFestivasNocturnasFk', NumberType::class, array('data' => $arConfiguracion->getCodigoConceptoHorasExtrasFestivasNocturnasFk(), 'required' => false))
                 ->add('horaInicioNocturna', NumberType::class, array('data' => $arConfiguracion->getHoraInicioNocturna(), 'required' => false))
+                ->add('sumarBaseIva', CheckboxType::class, array( 'data' => $arConfiguracion->getSumarBaseIva(), 'required' => false))
                 ->add('guardar', SubmitType::class, array('label' => 'Actualizar'))
                 ->getForm();
         $formConfiguracion->handleRequest($request);
@@ -72,6 +74,11 @@ class ConfiguracionController extends Controller {
             $arConfiguracion->setCodigoConceptoHorasExtrasFestivasDiurnasFk($controles['codigoConceptoHorasExtrasFestivasDiurnasFk']);
             $arConfiguracion->setCodigoConceptoHorasExtrasFestivasNocturnasFk($controles['codigoConceptoHorasExtrasFestivasNocturnasFk']);
             $arConfiguracion->setHoraInicioNocturna($controles['horaInicioNocturna']);
+            if(isset($controles['sumarBaseIva'])){
+                $arConfiguracion->setSumarBaseIva($controles['sumarBaseIva']);
+            } else {
+                $arConfiguracion->setSumarBaseIva(0);
+            }
             $arrControles = $request->request->All();
             $intIndiceConsecutivo = 0;
             foreach ($arrControles['LblCodigo'] as $intCodigo) {

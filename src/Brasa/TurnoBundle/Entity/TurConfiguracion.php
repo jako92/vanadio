@@ -154,9 +154,9 @@ class TurConfiguracion {
     private $contabilizarFacturaIngresoCentroCosto = false;
 
     /**
-     * @ORM\Column(name="sumar_sumar_base_iva", type="boolean", nullable=true)
+     * @ORM\Column(name="sumar_base_iva", type="boolean", nullable=true)
      */
-    private $sumarBaseIva = false;    
+    private $sumarBaseIva = false;
     
 
 
