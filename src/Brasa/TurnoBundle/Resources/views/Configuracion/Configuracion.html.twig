@@ -26,6 +26,7 @@
             <li class="active"><a href="#configuracion" data-toggle="tab">Configuración</a></li>
             <li><a href="#consecutivo" data-toggle="tab">Consecutivo</a></li>
             <li><a href="#nomina" data-toggle="tab">Nomina</a></li>
+            <li><a href="#servicios" data-toggle="tab">Servicios</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="configuracion">
@@ -160,6 +161,17 @@
                         </div>
                     </div>            
                 </div> 
+            </div>
+            <div class="tab-pane" id="servicios">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Información nomina</div>
+                    <div class="panel-body">
+                        <label class="col-sm-3 control-label">Sumar base iva:</label>
+                        <div class="col-sm-9">
+                            {{ form_widget(formConfiguracion.sumarBaseIva, {'label' : false}) }}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">      
                 {{ form_widget(formConfiguracion.guardar, { 'attr': {'class': 'btn btn-primary btn-sm'} }) }}
