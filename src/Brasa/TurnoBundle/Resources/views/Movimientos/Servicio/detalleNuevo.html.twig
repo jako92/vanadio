@@ -38,8 +38,12 @@
                         {{ form_widget(form.puestoRel, { 'attr': {'class': 'form-control'} }) }}   
                     </div>
                     <label class="col-sm-2 control-label">Cantidad:</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-1">
                         {{ form_widget(form.cantidad, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
+                    <label class="col-sm-2 control-label">Precio (Ajustado):</label>
+                    <div class="col-sm-1">
+                        {{ form_widget(form.vrPrecioAjustado, { 'attr': {'class': 'form-control'} }) }}
                     </div>                    
                 </div>                     
                 <div class="form-group form-group-sm">
@@ -47,8 +51,12 @@
                     <div class="col-sm-4">
                         {{ form_widget(form.fechaDesde) }}                        
                     </div>  
+                    <label class="col-sm-2 control-label">Base (IVA):</label>
+                    <div class="col-sm-1">
+                        {{ form_widget(form.porcentajeBaseIva, { 'attr': {'class': 'form-control'} }) }}
+                    </div>                    
                     <label class="col-sm-2 control-label">Salario base (Liquidacion):</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-1">
                         {{ form_widget(form.vrSalarioBase, { 'attr': {'class': 'form-control'} }) }}
                     </div>                                          
                 </div>     

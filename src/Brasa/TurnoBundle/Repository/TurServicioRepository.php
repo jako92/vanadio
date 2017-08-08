@@ -55,6 +55,8 @@ class TurServicioRepository extends EntityRepository {
 
     public function liquidar($codigoServicio) {
         $em = $this->getEntityManager();
+        $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();        
+        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);        
         $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();
         $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
         $intCantidad = 0;
@@ -194,15 +196,7 @@ class TurServicioRepository extends EntityRepository {
                 $floValorBaseServicio = $arServicioDetalle->getVrSalarioBase() * $arServicio->getSectorRel()->getPorcentaje();
                 $floValorBaseServicioMes = $floValorBaseServicio + ($floValorBaseServicio * $arServicioDetalle->getModalidadServicioRel()->getPorcentaje() / 100);
                 $floVrHoraDiurna = ((($floValorBaseServicioMes * 59.7) / 100) / 30) / 16;
-                $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100) / 30) / 8;
-                
-                $inputPorcentajeIva = 'TxtPorcentajeIva' . $arServicioDetalleActualizar->getCodigoServicioDetallePk();
-                if(isset($_POST[$inputPorcentajeIva])){
-                    $porcentajeIva = $_POST[$inputPorcentajeIva];
-                    $arServicioDetalleActualizar->setPorcentajeIva($porcentajeIva);
-                } else {
-                    $porcentajeIva = $arServicioDetalle->getPorcentajeIva();
-                }
+                $floVrHoraNocturna = ((($floValorBaseServicioMes * 40.3) / 100) / 30) / 8;                
             
                 $precio = ($intHorasRealesDiurnas * $floVrHoraDiurna) + ($intHorasRealesNocturnas * $floVrHoraNocturna);
                 $floVrMinimoServicio = $precio;
@@ -218,13 +212,13 @@ class TurServicioRepository extends EntityRepository {
                 }
                 
                 $subTotalDetalle = $floVrServicio;
-                $baseAiuDetalle = $subTotalDetalle * (doubleval($porcentajeIva) / 100);
-                $ivaDetalle = $baseAiuDetalle * (19 / 100);
+                $baseAiuDetalle = $subTotalDetalle * ($arServicioDetalle->getPorcentajeBaseIva() / 100);
+                $ivaDetalle = $baseAiuDetalle * ($arServicioDetalle->getPorcentajeIva() / 100);
                 $totalDetalle = $subTotalDetalle + $ivaDetalle;
-                if($arServicio->getSumarAiu()){
+                if($arConfiguracion->getSumarBaseIva()){
                     $totalDetalle += $baseAiuDetalle;
                 }
-                $totalDetalle = ceil($totalDetalle);
+                $totalDetalle = round($totalDetalle);
                 
                 $arServicioDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arServicioDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
