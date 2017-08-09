@@ -13,7 +13,6 @@ class RhuTipoTiempo
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_tipo_tiempo_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoTipoTiempoPk;
     
@@ -53,6 +52,21 @@ class RhuTipoTiempo
     public function __construct()
     {
         $this->contratosTipoTiempoRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->empleadosTipoTiempoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoTipoTiempoPk
+     *
+     * @param integer $codigoTipoTiempoPk
+     *
+     * @return RhuTipoTiempo
+     */
+    public function setCodigoTipoTiempoPk($codigoTipoTiempoPk)
+    {
+        $this->codigoTipoTiempoPk = $codigoTipoTiempoPk;
+
+        return $this;
     }
 
     /**
@@ -87,6 +101,78 @@ class RhuTipoTiempo
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set factor
+     *
+     * @param integer $factor
+     *
+     * @return RhuTipoTiempo
+     */
+    public function setFactor($factor)
+    {
+        $this->factor = $factor;
+
+        return $this;
+    }
+
+    /**
+     * Get factor
+     *
+     * @return integer
+     */
+    public function getFactor()
+    {
+        return $this->factor;
+    }
+
+    /**
+     * Set factorHorasDia
+     *
+     * @param integer $factorHorasDia
+     *
+     * @return RhuTipoTiempo
+     */
+    public function setFactorHorasDia($factorHorasDia)
+    {
+        $this->factorHorasDia = $factorHorasDia;
+
+        return $this;
+    }
+
+    /**
+     * Get factorHorasDia
+     *
+     * @return integer
+     */
+    public function getFactorHorasDia()
+    {
+        return $this->factorHorasDia;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return RhuTipoTiempo
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 
     /**
@@ -155,101 +241,5 @@ class RhuTipoTiempo
     public function getEmpleadosTipoTiempoRel()
     {
         return $this->empleadosTipoTiempoRel;
-    }
-
-    /**
-     * Set factor
-     *
-     * @param integer $factor
-     *
-     * @return RhuTipoTiempo
-     */
-    public function setFactor($factor)
-    {
-        $this->factor = $factor;
-
-        return $this;
-    }
-
-    /**
-     * Get factor
-     *
-     * @return integer
-     */
-    public function getFactor()
-    {
-        return $this->factor;
-    }
-
-    /**
-     * Set factorHoras
-     *
-     * @param integer $factorHoras
-     *
-     * @return RhuTipoTiempo
-     */
-    public function setFactorHoras($factorHoras)
-    {
-        $this->factorHoras = $factorHoras;
-
-        return $this;
-    }
-
-    /**
-     * Get factorHoras
-     *
-     * @return integer
-     */
-    public function getFactorHoras()
-    {
-        return $this->factorHoras;
-    }
-
-    /**
-     * Set factorHorasDia
-     *
-     * @param integer $factorHorasDia
-     *
-     * @return RhuTipoTiempo
-     */
-    public function setFactorHorasDia($factorHorasDia)
-    {
-        $this->factorHorasDia = $factorHorasDia;
-
-        return $this;
-    }
-
-    /**
-     * Get factorHorasDia
-     *
-     * @return integer
-     */
-    public function getFactorHorasDia()
-    {
-        return $this->factorHorasDia;
-    }
-
-    /**
-     * Set abreviatura
-     *
-     * @param string $abreviatura
-     *
-     * @return RhuTipoTiempo
-     */
-    public function setAbreviatura($abreviatura)
-    {
-        $this->abreviatura = $abreviatura;
-
-        return $this;
-    }
-
-    /**
-     * Get abreviatura
-     *
-     * @return string
-     */
-    public function getAbreviatura()
-    {
-        return $this->abreviatura;
     }
 }

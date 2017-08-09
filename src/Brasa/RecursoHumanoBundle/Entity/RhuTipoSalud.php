@@ -13,7 +13,6 @@ class RhuTipoSalud
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_tipo_salud_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoTipoSaludPk;
     
@@ -52,8 +51,6 @@ class RhuTipoSalud
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="tipoSaludRel")
      */
     protected $empleadosTipoSaludRel;     
-    
-
     /**
      * Constructor
      */
@@ -61,6 +58,20 @@ class RhuTipoSalud
     {
         $this->contratosTipoSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosTipoSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoTipoSaludPk
+     *
+     * @param integer $codigoTipoSaludPk
+     *
+     * @return RhuTipoSalud
+     */
+    public function setCodigoTipoSaludPk($codigoTipoSaludPk)
+    {
+        $this->codigoTipoSaludPk = $codigoTipoSaludPk;
+
+        return $this;
     }
 
     /**

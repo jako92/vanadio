@@ -13,7 +13,6 @@ class RhuEntidadRiesgoProfesional
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_entidad_riesgo_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoEntidadRiesgoPk;
     
@@ -51,8 +50,6 @@ class RhuEntidadRiesgoProfesional
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadRiesgoProfesionalRel")
      */
     protected $ssoAportesEntidadRiesgoProfesionalRel;     
-    
-
     /**
      * Constructor
      */
@@ -60,6 +57,20 @@ class RhuEntidadRiesgoProfesional
     {
         $this->accidentesTrabajoEntidadRiesgoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoAportesEntidadRiesgoProfesionalRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoEntidadRiesgoPk
+     *
+     * @param integer $codigoEntidadRiesgoPk
+     *
+     * @return RhuEntidadRiesgoProfesional
+     */
+    public function setCodigoEntidadRiesgoPk($codigoEntidadRiesgoPk)
+    {
+        $this->codigoEntidadRiesgoPk = $codigoEntidadRiesgoPk;
+
+        return $this;
     }
 
     /**

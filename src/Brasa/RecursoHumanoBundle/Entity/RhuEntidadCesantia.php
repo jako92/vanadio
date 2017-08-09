@@ -13,7 +13,6 @@ class RhuEntidadCesantia
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_entidad_cesantia_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoEntidadCesantiaPk;
     
@@ -62,10 +61,6 @@ class RhuEntidadCesantia
      */
     protected $trasladosPensionesEntidadPensionNuevaRel;
 
-        
-
-    
-    
     /**
      * Constructor
      */
@@ -75,6 +70,20 @@ class RhuEntidadCesantia
         $this->contratosEntidadCesantiaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosPensionesEntidadPensionNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoEntidadCesantiaPk
+     *
+     * @param integer $codigoEntidadCesantiaPk
+     *
+     * @return RhuEntidadCesantia
+     */
+    public function setCodigoEntidadCesantiaPk($codigoEntidadCesantiaPk)
+    {
+        $this->codigoEntidadCesantiaPk = $codigoEntidadCesantiaPk;
+
+        return $this;
     }
 
     /**
