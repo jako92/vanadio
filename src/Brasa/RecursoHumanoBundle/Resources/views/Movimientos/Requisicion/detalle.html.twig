@@ -177,10 +177,10 @@
                     <tr>
                         <td class="titulo">CLIENTE REFERENCIA:</td>
                         <td class="td-in-well">{{ arRequisicion.clienteReferencia|default('') }}</td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
-                        <td class="titulo"></td>
-                        <td class="td-in-well"></td>
+                        <td class="titulo">FECHA POSIBLE CONTRATACION:</td>
+                        <td class="td-in-well">{{ arRequisicion.fechaPosibleContratacion|date('Y/m/d') }}</td>
+                        <td class="titulo">PORCENTAJE ARL</td>
+                        <td class="td-in-well">{{ arRequisicion.porcentajeArl|default('') }}%</td>
                     </tr>
                     <tr>
                         <td class="titulo">COMENTARIOS:</td>

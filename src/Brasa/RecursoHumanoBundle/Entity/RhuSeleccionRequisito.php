@@ -164,6 +164,16 @@ class RhuSeleccionRequisito {
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
      */
     private $codigoUsuario;
+    
+    /**
+     * @ORM\Column(name="fecha_posible_contratacion", type="date", nullable=true)
+     */
+    private $fechaPosibleContratacion;
+    
+    /**
+     * @ORM\Column(name="porcentaje_arl", type="float")
+     */
+    private $porcentajeArl;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="seleccionesRequisitosCentroCostoRel")
@@ -1195,5 +1205,53 @@ class RhuSeleccionRequisito {
     public function getSeleccionesRequisicionesAspirantesSeleccionRequisitoRel()
     {
         return $this->seleccionesRequisicionesAspirantesSeleccionRequisitoRel;
+    }
+
+    /**
+     * Set fechaPosibleContratacion
+     *
+     * @param \DateTime $fechaPosibleContratacion
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setFechaPosibleContratacion($fechaPosibleContratacion)
+    {
+        $this->fechaPosibleContratacion = $fechaPosibleContratacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPosibleContratacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaPosibleContratacion()
+    {
+        return $this->fechaPosibleContratacion;
+    }
+
+    /**
+     * Set porcentajeArl
+     *
+     * @param float $porcentajeArl
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setPorcentajeArl($porcentajeArl)
+    {
+        $this->porcentajeArl = $porcentajeArl;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeArl
+     *
+     * @return float
+     */
+    public function getPorcentajeArl()
+    {
+        return $this->porcentajeArl;
     }
 }
