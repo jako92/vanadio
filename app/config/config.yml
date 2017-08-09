@@ -122,6 +122,7 @@ sonata_admin:
                 icon: '<i class="fa fa-group"></i>'
                 items:
                     - admin.recursohumano.incapacidadtipo
+                    - admin.recursohumano.seleccionrequisicionmotivo
                     - admin.recursohumano.requisitotipo
                     - admin.recursohumano.poligrafiatipo
                     - admin.recursohumano.facturaconcepto
