@@ -1085,7 +1085,7 @@ class SegPermisoEspecial implements FixtureInterface {
         $arSegPermisoEspecial = $manager->getRepository('BrasaSeguridadBundle:SegPermisoEspecial')->find(120);
         if (!$arSegPermisoEspecial) {
             $arSegPermisoEspecial = new \Brasa\SeguridadBundle\Entity\SegPermisoEspecial();
-            $arSegPermisoEspecial->setCodigoPermisoEspecialPk(119);
+            $arSegPermisoEspecial->setCodigoPermisoEspecialPk(120);
             $arSegPermisoEspecial->setNombre("FACTURA VS PEDIDO");
             $arSegPermisoEspecial->setTipo("CONSULTA");
             $arSegPermisoEspecial->setModulo("TURNOS");
