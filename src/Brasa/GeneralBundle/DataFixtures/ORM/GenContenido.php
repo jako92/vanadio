@@ -124,6 +124,18 @@ class GenContenido implements FixtureInterface {
                                        #3 = IDENTIFICACION EMPLEADO
                                        #4 = CIUDAD EXPEDIDICON");
         }
+        
+        $arContenido = $manager->getRepository('BrasaGeneralBundle:GenContenido')->find(6);
+        if (!$arContenido) {
+            $arContenido = new \Brasa\GeneralBundle\Entity\GenContenido();
+            $arContenido->setCodigoContenidoPk(6);
+            $arContenido->setTitulo("ORDEN DE EXAMEN MEDICO");
+            $arContenido->setNombre("ORDEN DE EXAMEN MEDICO");
+            $manager->persist($arContenido);
+        } else {
+            $arContenido->setTitulo("CERTIFICADO LABORAL HISTORICO");
+            $arContenido->setNombre("CERTIFICADO LABORAL HISTORICO");
+        }
 
         $manager->flush();
     }

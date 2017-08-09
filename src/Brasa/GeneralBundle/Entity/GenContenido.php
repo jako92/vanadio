@@ -52,7 +52,7 @@ class GenContenido
     private $fechaVersion;
     
     /**
-     * @ORM\Column(name="requiere_formato_iso", type="boolean")
+     * @ORM\Column(name="requiere_formato_iso", type="boolean", nullable=true)
      */    
     private $requiereFormatoIso = false;                
     
