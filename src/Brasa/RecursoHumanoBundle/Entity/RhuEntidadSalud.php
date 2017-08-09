@@ -13,7 +13,6 @@ class RhuEntidadSalud
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_entidad_salud_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoEntidadSaludPk;
     
@@ -91,9 +90,6 @@ class RhuEntidadSalud
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadSaludRel")
      */
     protected $ssoAportesEntidadSaludRel;    
-    
-    
-
     /**
      * Constructor
      */
@@ -104,10 +100,25 @@ class RhuEntidadSalud
         $this->empleadosFamiliasEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesPagosEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incapacidadesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->licenciasEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludAnteriorRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trasladosSaludEntidadSaludNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoAportesEntidadSaludRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoEntidadSaludPk
+     *
+     * @param integer $codigoEntidadSaludPk
+     *
+     * @return RhuEntidadSalud
+     */
+    public function setCodigoEntidadSaludPk($codigoEntidadSaludPk)
+    {
+        $this->codigoEntidadSaludPk = $codigoEntidadSaludPk;
+
+        return $this;
     }
 
     /**
@@ -411,6 +422,40 @@ class RhuEntidadSalud
     }
 
     /**
+     * Add licenciasEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
+     *
+     * @return RhuEntidadSalud
+     */
+    public function addLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
+    {
+        $this->licenciasEntidadSaludRel[] = $licenciasEntidadSaludRel;
+
+        return $this;
+    }
+
+    /**
+     * Remove licenciasEntidadSaludRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
+     */
+    public function removeLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
+    {
+        $this->licenciasEntidadSaludRel->removeElement($licenciasEntidadSaludRel);
+    }
+
+    /**
+     * Get licenciasEntidadSaludRel
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLicenciasEntidadSaludRel()
+    {
+        return $this->licenciasEntidadSaludRel;
+    }
+
+    /**
      * Add trasladosSaludEntidadSaludAnteriorRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuTrasladoSalud $trasladosSaludEntidadSaludAnteriorRel
@@ -544,39 +589,5 @@ class RhuEntidadSalud
     public function getSsoAportesEntidadSaludRel()
     {
         return $this->ssoAportesEntidadSaludRel;
-    }
-
-    /**
-     * Add licenciasEntidadSaludRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
-     *
-     * @return RhuEntidadSalud
-     */
-    public function addLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
-    {
-        $this->licenciasEntidadSaludRel[] = $licenciasEntidadSaludRel;
-
-        return $this;
-    }
-
-    /**
-     * Remove licenciasEntidadSaludRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel
-     */
-    public function removeLicenciasEntidadSaludRel(\Brasa\RecursoHumanoBundle\Entity\RhuLicencia $licenciasEntidadSaludRel)
-    {
-        $this->licenciasEntidadSaludRel->removeElement($licenciasEntidadSaludRel);
-    }
-
-    /**
-     * Get licenciasEntidadSaludRel
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLicenciasEntidadSaludRel()
-    {
-        return $this->licenciasEntidadSaludRel;
     }
 }

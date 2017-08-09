@@ -70,7 +70,7 @@ services:
         class: Brasa\RecursoHumanoBundle\Admin\SeleccionRequisitoMotivoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion motivo }
+            - { name: sonata.admin, manager_type: orm, label: Seleccion motivo requerimiento }
             
     admin.recursohumano.seleccionentrevistatipo:
         class: Brasa\RecursoHumanoBundle\Admin\SeleccionEntrevistaTipoAdmin

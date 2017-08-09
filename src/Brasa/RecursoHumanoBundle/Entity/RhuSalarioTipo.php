@@ -13,7 +13,6 @@ class RhuSalarioTipo
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_salario_tipo_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoSalarioTipoPk;        
     
@@ -27,13 +26,26 @@ class RhuSalarioTipo
      */
     protected $contratosSalarioTipoRel;    
     
-
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->contratosSalarioTipoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoSalarioTipoPk
+     *
+     * @param integer $codigoSalarioTipoPk
+     *
+     * @return RhuSalarioTipo
+     */
+    public function setCodigoSalarioTipoPk($codigoSalarioTipoPk)
+    {
+        $this->codigoSalarioTipoPk = $codigoSalarioTipoPk;
+
+        return $this;
     }
 
     /**

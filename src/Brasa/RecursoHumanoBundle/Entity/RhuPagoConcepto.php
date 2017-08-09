@@ -13,7 +13,6 @@ class RhuPagoConcepto
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_pago_concepto_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoPagoConceptoPk;
 
@@ -267,6 +266,20 @@ class RhuPagoConcepto
         $this->vacacionesAdicionalesPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosConceptosCuentasPagoConceptoRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contratoAdicionRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoPagoConceptoPk
+     *
+     * @param integer $codigoPagoConceptoPk
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setCodigoPagoConceptoPk($codigoPagoConceptoPk)
+    {
+        $this->codigoPagoConceptoPk = $codigoPagoConceptoPk;
+
+        return $this;
     }
 
     /**
@@ -685,6 +698,54 @@ class RhuPagoConcepto
     public function getConceptoComision()
     {
         return $this->conceptoComision;
+    }
+
+    /**
+     * Set conceptoCesantia
+     *
+     * @param boolean $conceptoCesantia
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoCesantia($conceptoCesantia)
+    {
+        $this->conceptoCesantia = $conceptoCesantia;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoCesantia
+     *
+     * @return boolean
+     */
+    public function getConceptoCesantia()
+    {
+        return $this->conceptoCesantia;
+    }
+
+    /**
+     * Set conceptoRetencion
+     *
+     * @param boolean $conceptoRetencion
+     *
+     * @return RhuPagoConcepto
+     */
+    public function setConceptoRetencion($conceptoRetencion)
+    {
+        $this->conceptoRetencion = $conceptoRetencion;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoRetencion
+     *
+     * @return boolean
+     */
+    public function getConceptoRetencion()
+    {
+        return $this->conceptoRetencion;
     }
 
     /**
@@ -1473,77 +1534,5 @@ class RhuPagoConcepto
     public function getContratoAdicionRel()
     {
         return $this->contratoAdicionRel;
-    }
-
-    /**
-     * Set conceptoCesantias
-     *
-     * @param boolean $conceptoCesantias
-     *
-     * @return RhuPagoConcepto
-     */
-    public function setConceptoCesantias($conceptoCesantias)
-    {
-        $this->conceptoCesantias = $conceptoCesantias;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoCesantias
-     *
-     * @return boolean
-     */
-    public function getConceptoCesantias()
-    {
-        return $this->conceptoCesantias;
-    }
-
-    /**
-     * Set conceptoCesantia
-     *
-     * @param boolean $conceptoCesantia
-     *
-     * @return RhuPagoConcepto
-     */
-    public function setConceptoCesantia($conceptoCesantia)
-    {
-        $this->conceptoCesantia = $conceptoCesantia;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoCesantia
-     *
-     * @return boolean
-     */
-    public function getConceptoCesantia()
-    {
-        return $this->conceptoCesantia;
-    }
-
-    /**
-     * Set conceptoRetencion
-     *
-     * @param boolean $conceptoRetencion
-     *
-     * @return RhuPagoConcepto
-     */
-    public function setConceptoRetencion($conceptoRetencion)
-    {
-        $this->conceptoRetencion = $conceptoRetencion;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoRetencion
-     *
-     * @return boolean
-     */
-    public function getConceptoRetencion()
-    {
-        return $this->conceptoRetencion;
     }
 }

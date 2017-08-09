@@ -13,7 +13,6 @@ class RhuTipoPension
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_tipo_pension_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoTipoPensionPk;
     
@@ -63,8 +62,6 @@ class RhuTipoPension
      * @ORM\OneToMany(targetEntity="RhuEmpleado", mappedBy="tipoPensionRel")
      */
     protected $empleadosTipoPensionRel;             
-    
-
     /**
      * Constructor
      */
@@ -72,6 +69,20 @@ class RhuTipoPension
     {
         $this->contratosTipoPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadosTipoPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoTipoPensionPk
+     *
+     * @param integer $codigoTipoPensionPk
+     *
+     * @return RhuTipoPension
+     */
+    public function setCodigoTipoPensionPk($codigoTipoPensionPk)
+    {
+        $this->codigoTipoPensionPk = $codigoTipoPensionPk;
+
+        return $this;
     }
 
     /**
@@ -181,6 +192,30 @@ class RhuTipoPension
     }
 
     /**
+     * Set codigoPagoConceptoFondoFk
+     *
+     * @param integer $codigoPagoConceptoFondoFk
+     *
+     * @return RhuTipoPension
+     */
+    public function setCodigoPagoConceptoFondoFk($codigoPagoConceptoFondoFk)
+    {
+        $this->codigoPagoConceptoFondoFk = $codigoPagoConceptoFondoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPagoConceptoFondoFk
+     *
+     * @return integer
+     */
+    public function getCodigoPagoConceptoFondoFk()
+    {
+        return $this->codigoPagoConceptoFondoFk;
+    }
+
+    /**
      * Set pagoConceptoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoRel
@@ -202,6 +237,30 @@ class RhuTipoPension
     public function getPagoConceptoRel()
     {
         return $this->pagoConceptoRel;
+    }
+
+    /**
+     * Set pagoConceptoFondoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoFondoRel
+     *
+     * @return RhuTipoPension
+     */
+    public function setPagoConceptoFondoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoFondoRel = null)
+    {
+        $this->pagoConceptoFondoRel = $pagoConceptoFondoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoConceptoFondoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto
+     */
+    public function getPagoConceptoFondoRel()
+    {
+        return $this->pagoConceptoFondoRel;
     }
 
     /**
@@ -270,53 +329,5 @@ class RhuTipoPension
     public function getEmpleadosTipoPensionRel()
     {
         return $this->empleadosTipoPensionRel;
-    }
-
-    /**
-     * Set codigoPagoConceptoFondoFk
-     *
-     * @param integer $codigoPagoConceptoFondoFk
-     *
-     * @return RhuTipoPension
-     */
-    public function setCodigoPagoConceptoFondoFk($codigoPagoConceptoFondoFk)
-    {
-        $this->codigoPagoConceptoFondoFk = $codigoPagoConceptoFondoFk;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoPagoConceptoFondoFk
-     *
-     * @return integer
-     */
-    public function getCodigoPagoConceptoFondoFk()
-    {
-        return $this->codigoPagoConceptoFondoFk;
-    }
-
-    /**
-     * Set pagoConceptoFondoRel
-     *
-     * @param \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoFondoRel
-     *
-     * @return RhuTipoPension
-     */
-    public function setPagoConceptoFondoRel(\Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto $pagoConceptoFondoRel = null)
-    {
-        $this->pagoConceptoFondoRel = $pagoConceptoFondoRel;
-
-        return $this;
-    }
-
-    /**
-     * Get pagoConceptoFondoRel
-     *
-     * @return \Brasa\RecursoHumanoBundle\Entity\RhuPagoConcepto
-     */
-    public function getPagoConceptoFondoRel()
-    {
-        return $this->pagoConceptoFondoRel;
     }
 }

@@ -13,7 +13,6 @@ class RhuIncapacidadDiagnostico
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_incapacidad_diagnostico_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoIncapacidadDiagnosticoPk;                        
     
@@ -38,6 +37,20 @@ class RhuIncapacidadDiagnostico
     public function __construct()
     {
         $this->incapacidadesIncapacidadDiagnosticoRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoIncapacidadDiagnosticoPk
+     *
+     * @param integer $codigoIncapacidadDiagnosticoPk
+     *
+     * @return RhuIncapacidadDiagnostico
+     */
+    public function setCodigoIncapacidadDiagnosticoPk($codigoIncapacidadDiagnosticoPk)
+    {
+        $this->codigoIncapacidadDiagnosticoPk = $codigoIncapacidadDiagnosticoPk;
+
+        return $this;
     }
 
     /**

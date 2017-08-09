@@ -13,7 +13,6 @@ class RhuEntidadPension
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_entidad_pension_pk", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoEntidadPensionPk;
     
@@ -71,8 +70,6 @@ class RhuEntidadPension
      * @ORM\OneToMany(targetEntity="RhuSsoAporte", mappedBy="entidadPensionRel")
      */
     protected $ssoAportesEntidadPensionRel;    
-    
-    
     /**
      * Constructor
      */
@@ -84,6 +81,20 @@ class RhuEntidadPension
         $this->trasladosPensionesEntidadPensionNuevaRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pagosEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ssoAportesEntidadPensionRel = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set codigoEntidadPensionPk
+     *
+     * @param integer $codigoEntidadPensionPk
+     *
+     * @return RhuEntidadPension
+     */
+    public function setCodigoEntidadPensionPk($codigoEntidadPensionPk)
+    {
+        $this->codigoEntidadPensionPk = $codigoEntidadPensionPk;
+
+        return $this;
     }
 
     /**
