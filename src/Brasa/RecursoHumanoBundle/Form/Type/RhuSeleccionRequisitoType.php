@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class RhuSeleccionRequisitoType extends AbstractType
 {
@@ -60,7 +61,14 @@ class RhuSeleccionRequisitoType extends AbstractType
                     return $er->createQueryBuilder('z')
                     ->orderBy('z.nombre', 'ASC');},
                 'choice_label' => 'nombre',
-                'required' => true))                             
+                'required' => true))
+            ->add('seleccionRequisitoMotivoRel', EntityType::class, array(
+                'class' => 'BrasaRecursoHumanoBundle:RhuSeleccionRequisitoMotivo',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('srm')
+                    ->orderBy('srm.nombre', 'ASC');},
+                'choice_label' => 'nombre',
+                'required' => true))                              
             ->add('codigoDisponibilidadFk', ChoiceType::class, array('choices'   => array('TIEMPO COMPLETO' => '1', 'MEDIO TIEMPO' => '2', 'POR HORAS' => '3','DESDE CASA' => '4', 'PRACTICAS' => '5', 'NO APLICA' => '0')))
             //->add('codigoExperienciaFk', 'choice', array('choices'   => array('1 AÑO' => '1', '2 AÑOS' => '2', '3-4 AÑOS' => '3','5-10 AÑOS' => '4', 'GRADUADO' => '5', 'SIN EXPERIENCIA' => '6')))
             ->add('codigoSexoFk', ChoiceType::class, array('choices'   => array('MASCULINO' => 'M', 'FEMENINO' => 'F', 'INDIFERENTE' => 'I')))
@@ -74,9 +82,12 @@ class RhuSeleccionRequisitoType extends AbstractType
             ->add('codigoReligionFk', ChoiceType::class, array('choices'   => array('CATOLICO' => '1', 'CRISTIANO' => '1', 'PROTESTANTE' => '3', 'INDIFERENTE' => '4')))
             ->add('cantidadSolicitada', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
             ->add('vrSalario', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
+            ->add('vrNoSalarial', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => false))
+            ->add('porcentajeArl', NumberType::class, array('required' => false))
             ->add('salarioFijo', CheckboxType::class, array('required'  => false))
             ->add('salarioVariable', CheckboxType::class, array('required'  => false))
             ->add('clienteReferencia', TextType::class, array('required' => true))
+            ->add('fechaPosibleContratacion', DateType::class, array('required' => false))
             ->add('comentarios', TextareaType::class, array('required' => false))
             ->add('guardar', SubmitType::class)
             ->add('guardarnuevo', SubmitType::class, array('label'  => 'Guardar y Nuevo'));

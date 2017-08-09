@@ -1,218 +1,237 @@
 <?php
 
 namespace Brasa\RecursoHumanoBundle\Entity;
-use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="rhu_seleccion_requisito")
  * @ORM\Entity(repositoryClass="Brasa\RecursoHumanoBundle\Repository\RhuSeleccionRequisitoRepository")
  */
-class RhuSeleccionRequisito
-{
+class RhuSeleccionRequisito {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_seleccion_requisito_pk", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $codigoSeleccionRequisitoPk;        
-    
+    private $codigoSeleccionRequisitoPk;
+
     /**
      * @ORM\Column(name="fecha", type="date")
-     */ 
-    
-    private $fecha;                   
-    
-    /**     
+     */
+    private $fecha;
+
+    /**
      * @ORM\Column(name="nombre", type="string")
      * @Assert\NotBlank(message="Este campo no puede estar vacio")
-     */    
-    
-    private $nombre;           
-                
-    /**     
+     */
+    private $nombre;
+
+    /**
      * @ORM\Column(name="cantidad_solicitada", type="integer")
      * @Assert\NotBlank(message="Este campo no puede estar vacio")
-     */    
+     */
     private $cantidadSolicitada;
-    
+
     /**
      * @ORM\Column(name="fecha_pruebas", type="datetime", nullable=true)
-     */ 
-    
-    private $fechaPruebas;                     
-    
+     */
+    private $fechaPruebas;
+
     /**
      * @ORM\Column(name="estado_cerrado", type="boolean")
      */
-    private $estadoCerrado = false;     
-    
+    private $estadoCerrado = false;
+
     /**
      * @ORM\Column(name="codigo_centro_costo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCentroCostoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_ciudad_fk", type="integer", nullable=true)
      */
     private $codigoCiudadFk;
-    
+
     /**
      * @ORM\Column(name="codigo_cargo_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoCargoFk;
-    
+
     /**
      * @ORM\Column(name="edad_minima", type="string", length=20, nullable=true)
      */
     private $edadMinima;
-    
+
     /**
      * @ORM\Column(name="edad_maxima", type="string", length=20, nullable=true)
      */
     private $edadMaxima;
-    
+
     /**
      * @ORM\Column(name="numero_hijos", type="integer", nullable=true)
      */
     private $numeroHijos;
-    
+
     /**
      * @ORM\Column(name="codigo_estado_civil_fk", type="string", length=1, nullable=true)
      */
     private $codigoEstadoCivilFk;
-    
+
     /**
      * @ORM\Column(name="codigo_estudio_tipo_fk", type="integer", length=4, nullable=true)
-     */    
+     */
     private $codigoEstudioTipoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_sexo_fk", type="string", length=1, nullable=true)
      */
     private $codigoSexoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_religion_fk", type="string", length=20, nullable=true)
      */
     private $codigoReligionFk;
-    
+
     /**
      * @ORM\Column(name="codigo_experiencia_requisicion_fk", type="integer", nullable=true)
      */
     private $codigoExperienciaRequisicionFk;
-    
+
     /**
      * @ORM\Column(name="codigo_disponibilidad_fk", type="string", length=30, nullable=true)
      */
     private $codigoDisponibilidadFk;
-    
+
     /**
      * @ORM\Column(name="codigo_tipo_vehiculo_fk", type="string", length=2, nullable=true)
      */
     private $codigoTipoVehiculoFk;
-    
+
     /**
      * @ORM\Column(name="codigo_licencia_carro_fk", type="string", length=30, nullable=true)
      */
     private $codigoLicenciaCarroFk;
-    
+
     /**
      * @ORM\Column(name="codigo_licencia_moto_fk", type="string", length=30, nullable=true)
      */
     private $codigoLicenciaMotoFk;
-    
+
     /**
      * @ORM\Column(name="comentarios", type="string", length=300, nullable=true)
-     */    
+     */
     private $comentarios;
-    
+
     /**
      * @ORM\Column(name="cliente_referencia", type="string", length=100, nullable=true)
-     */    
+     */
     private $clienteReferencia;
-    
+
+    /**
+     * @ORM\Column(name="vr_no_salarial", type="float", nullable=true)
+     */
+    private $VrNoSalarial = 0;
+
     /**
      * @ORM\Column(name="vr_salario", type="float")
      */
-    private $VrSalario = 0;    
-    
-    /**     
-     * @ORM\Column(name="salario_fijo", type="boolean")
-     */    
-    private $salarioFijo= false; 
+    private $VrSalario = 0;
 
-    /**     
+    /**
+     * @ORM\Column(name="salario_fijo", type="boolean")
+     */
+    private $salarioFijo = false;
+
+    /**
      * @ORM\Column(name="salario_variable", type="boolean")
-     */    
-    private $salarioVariable= false;       
-    
+     */
+    private $salarioVariable = false;
+
     /**
      * @ORM\Column(name="codigo_zona_fk", type="integer", nullable=true)
-     */    
+     */
     private $codigoZonaFk;
 
     /**
+     * @ORM\Column(name="codigo_seleccion_requisito_motivo_fk", type="integer", nullable=true)
+     */
+    private $codigoSeleccionRequisitoMotivoFk;
+
+    /**
      * @ORM\Column(name="codigo_usuario", type="string", length=50, nullable=true)
-     */    
+     */
     private $codigoUsuario;
     
+    /**
+     * @ORM\Column(name="fecha_posible_contratacion", type="date", nullable=true)
+     */
+    private $fechaPosibleContratacion;
+    
+    /**
+     * @ORM\Column(name="porcentaje_arl", type="float", nullable=true)
+     */
+    private $porcentajeArl = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="seleccionesRequisitosCentroCostoRel")
      * @ORM\JoinColumn(name="codigo_centro_costo_fk", referencedColumnName="codigo_centro_costo_pk")
      */
     protected $centroCostoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuCargo", inversedBy="seleccionesRequisitosCargoRel")
      * @ORM\JoinColumn(name="codigo_cargo_fk", referencedColumnName="codigo_cargo_pk")
      */
     protected $cargoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuSeleccionRequisicionExperiencia", inversedBy="seleccionesRequisitosSeleccionRequisicionExperienciaRel")
      * @ORM\JoinColumn(name="codigo_experiencia_requisicion_fk", referencedColumnName="codigo_experiencia_requisicion_pk")
      */
     protected $experienciaRequisicionRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEstadoCivil", inversedBy="seleccionesRequisitosEstadoCivilRel")
      * @ORM\JoinColumn(name="codigo_estado_civil_fk", referencedColumnName="codigo_estado_civil_pk")
      */
     protected $estadoCivilRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Brasa\GeneralBundle\Entity\GenCiudad", inversedBy="rhuSeleccionesRequisitosCiudadRel")
      * @ORM\JoinColumn(name="codigo_ciudad_fk", referencedColumnName="codigo_ciudad_pk")
      */
     protected $ciudadRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuEmpleadoEstudioTipo", inversedBy="seleccionesRequisitosEmpleadoEstudioTipoRel")
      * @ORM\JoinColumn(name="codigo_estudio_tipo_fk", referencedColumnName="codigo_empleado_estudio_tipo_pk")
      */
     protected $estudioTipoRel;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="RhuZona", inversedBy="seleccionesRequisitosZonaRel")
      * @ORM\JoinColumn(name="codigo_zona_fk", referencedColumnName="codigo_zona_pk")
      */
-    protected $zonaRel;    
-    
+    protected $zonaRel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RhuSeleccionRequisitoMotivo", inversedBy="seleccionesRequisitosMotivoRel")
+     * @ORM\JoinColumn(name="codigo_seleccion_requisito_motivo_fk", referencedColumnName="codigo_seleccion_requisito_motivo_pk")
+     */
+    protected $seleccionRequisitoMotivoRel;
+
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccion", mappedBy="seleccionRequisitoRel")
      */
     protected $seleccionesSeleccionRequisitoRel;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="RhuSeleccionRequisicionAspirante", mappedBy="seleccionRequisitoRel")
      */
     protected $seleccionesRequisicionesAspirantesSeleccionRequisitoRel;
-    
-
-    
-
     /**
      * Constructor
      */
@@ -761,6 +780,30 @@ class RhuSeleccionRequisito
     }
 
     /**
+     * Set vrNoSalarial
+     *
+     * @param float $vrNoSalarial
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setVrNoSalarial($vrNoSalarial)
+    {
+        $this->VrNoSalarial = $vrNoSalarial;
+
+        return $this;
+    }
+
+    /**
+     * Get vrNoSalarial
+     *
+     * @return float
+     */
+    public function getVrNoSalarial()
+    {
+        return $this->VrNoSalarial;
+    }
+
+    /**
      * Set vrSalario
      *
      * @param float $vrSalario
@@ -854,6 +897,30 @@ class RhuSeleccionRequisito
     public function getCodigoZonaFk()
     {
         return $this->codigoZonaFk;
+    }
+
+    /**
+     * Set codigoSeleccionRequisitoMotivoFk
+     *
+     * @param integer $codigoSeleccionRequisitoMotivoFk
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setCodigoSeleccionRequisitoMotivoFk($codigoSeleccionRequisitoMotivoFk)
+    {
+        $this->codigoSeleccionRequisitoMotivoFk = $codigoSeleccionRequisitoMotivoFk;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoSeleccionRequisitoMotivoFk
+     *
+     * @return integer
+     */
+    public function getCodigoSeleccionRequisitoMotivoFk()
+    {
+        return $this->codigoSeleccionRequisitoMotivoFk;
     }
 
     /**
@@ -1049,6 +1116,30 @@ class RhuSeleccionRequisito
     }
 
     /**
+     * Set seleccionRequisitoMotivoRel
+     *
+     * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo $seleccionRequisitoMotivoRel
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setSeleccionRequisitoMotivoRel(\Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo $seleccionRequisitoMotivoRel = null)
+    {
+        $this->seleccionRequisitoMotivoRel = $seleccionRequisitoMotivoRel;
+
+        return $this;
+    }
+
+    /**
+     * Get seleccionRequisitoMotivoRel
+     *
+     * @return \Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo
+     */
+    public function getSeleccionRequisitoMotivoRel()
+    {
+        return $this->seleccionRequisitoMotivoRel;
+    }
+
+    /**
      * Add seleccionesSeleccionRequisitoRel
      *
      * @param \Brasa\RecursoHumanoBundle\Entity\RhuSeleccion $seleccionesSeleccionRequisitoRel
@@ -1114,5 +1205,53 @@ class RhuSeleccionRequisito
     public function getSeleccionesRequisicionesAspirantesSeleccionRequisitoRel()
     {
         return $this->seleccionesRequisicionesAspirantesSeleccionRequisitoRel;
+    }
+
+    /**
+     * Set fechaPosibleContratacion
+     *
+     * @param \DateTime $fechaPosibleContratacion
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setFechaPosibleContratacion($fechaPosibleContratacion)
+    {
+        $this->fechaPosibleContratacion = $fechaPosibleContratacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPosibleContratacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaPosibleContratacion()
+    {
+        return $this->fechaPosibleContratacion;
+    }
+
+    /**
+     * Set porcentajeArl
+     *
+     * @param float $porcentajeArl
+     *
+     * @return RhuSeleccionRequisito
+     */
+    public function setPorcentajeArl($porcentajeArl)
+    {
+        $this->porcentajeArl = $porcentajeArl;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeArl
+     *
+     * @return float
+     */
+    public function getPorcentajeArl()
+    {
+        return $this->porcentajeArl;
     }
 }
