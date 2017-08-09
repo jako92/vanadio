@@ -83,7 +83,7 @@ class RhuSeleccionRequisitoType extends AbstractType
             ->add('cantidadSolicitada', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
             ->add('vrSalario', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => true))
             ->add('vrNoSalarial', NumberType::class, array('label' => 'Cantidad Solicitada', 'required' => false))
-            ->add('porcentajeArl', NumberType::class, array('required' => true))
+            ->add('porcentajeArl', NumberType::class, array('required' => false))
             ->add('salarioFijo', CheckboxType::class, array('required'  => false))
             ->add('salarioVariable', CheckboxType::class, array('required'  => false))
             ->add('clienteReferencia', TextType::class, array('required' => true))
