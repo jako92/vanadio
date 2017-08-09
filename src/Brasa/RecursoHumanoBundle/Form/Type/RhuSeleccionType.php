@@ -99,6 +99,7 @@ class RhuSeleccionType extends AbstractType
             ->add('apellido1', TextType::class, array('required' => true))
             ->add('apellido2', TextType::class, array('required' => false))
             ->add('correo', TextType::class, array('required' => false))
+            ->add('barrio', TextType::class, array('required' => false))
             ->add('telefono', TextType::class, array('required' => false))
             ->add('celular', TextType::class, array('required' => false))
             ->add('direccion', TextType::class, array('required' => false))
