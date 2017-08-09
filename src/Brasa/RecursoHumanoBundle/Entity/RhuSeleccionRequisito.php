@@ -171,9 +171,9 @@ class RhuSeleccionRequisito {
     private $fechaPosibleContratacion;
     
     /**
-     * @ORM\Column(name="porcentaje_arl", type="float")
+     * @ORM\Column(name="porcentaje_arl", type="float", nullable=true)
      */
-    private $porcentajeArl;
+    private $porcentajeArl = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="RhuCentroCosto", inversedBy="seleccionesRequisitosCentroCostoRel")
