@@ -103,6 +103,7 @@ class TurPedidoRepository extends EntityRepository {
     public function liquidar($codigoPedido) {
         $em = $this->getEntityManager();
         $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();
+        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
         $arPedido = new \Brasa\TurnoBundle\Entity\TurPedido();
         $arPedido = $em->getRepository('BrasaTurnoBundle:TurPedido')->find($codigoPedido);
         $intCantidad = 0;
@@ -281,11 +282,12 @@ class TurPedidoRepository extends EntityRepository {
                 $baseAiuDetalle = $subTotalDetalle * ($arPedidoDetalle->getPorcentajeBaseIva() / 100);
                 $ivaDetalle = $baseAiuDetalle * $arPedidoDetalle->getPorcentajeIva() / 100;
                 $ivaGeneral += $ivaDetalle;
-                $totalDetalle = $subTotalDetalle + $ivaDetalle;
+                $totalDetalle = $subTotalDetalle + $ivaDetalle;   
                 if($arConfiguracion->getSumarBaseIva()){
                     $totalDetalle += $baseAiuDetalle;
                 }
                 $baseAuiGeneral += $baseAiuDetalle;
+                $totalGeneral += $totalDetalle;
                 $arPedidoDetalleActualizar->setVrSubtotal($subTotalDetalle);
                 $arPedidoDetalleActualizar->setVrBaseAiu($baseAiuDetalle);
                 $arPedidoDetalleActualizar->setVrIva($ivaDetalle);
@@ -302,7 +304,7 @@ class TurPedidoRepository extends EntityRepository {
                 $arPedidoDetalleActualizar->setHorasDiurnas($intHorasRealesDiurnas);
                 $arPedidoDetalleActualizar->setHorasNocturnas($intHorasRealesNocturnas);
                 $arPedidoDetalleActualizar->setDias($intDias);
-
+                
                 $em->persist($arPedidoDetalleActualizar);
                 $douTotalHoras += $douHoras;
                 $douTotalHorasDiurnas += $intHorasRealesDiurnas;
@@ -350,11 +352,11 @@ class TurPedidoRepository extends EntityRepository {
         $arPedido->setVrTotalOtros($floSubTotalConceptos);
         $arPedido->setVrTotalCosto($douTotalCostoCalculado);
         $subtotal = $subtotalGeneral + $floSubTotalConceptos;
-        $total = $subtotal + $ivaGeneral;
+        
         $arPedido->setVrSubtotal($subtotal);
         $arPedido->setVrBaseAiu($baseAuiGeneral);
         $arPedido->setVrIva($ivaGeneral);
-        $arPedido->setVrTotal($total);
+        $arPedido->setVrTotal(round($totalGeneral));
 
         $em->persist($arPedido);
         $em->flush();

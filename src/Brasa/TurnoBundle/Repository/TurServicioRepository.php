@@ -56,7 +56,7 @@ class TurServicioRepository extends EntityRepository {
     public function liquidar($codigoServicio) {
         $em = $this->getEntityManager();
         $arConfiguracion = new \Brasa\TurnoBundle\Entity\TurConfiguracion();        
-        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);        
+        $arConfiguracion = $em->getRepository('BrasaTurnoBundle:TurConfiguracion')->find(1);
         $arServicio = new \Brasa\TurnoBundle\Entity\TurServicio();
         $arServicio = $em->getRepository('BrasaTurnoBundle:TurServicio')->find($codigoServicio);
         $intCantidad = 0;

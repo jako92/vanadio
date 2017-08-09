@@ -1298,7 +1298,6 @@ class PedidoController extends Controller {
                     if ($arrControles['TxtPorcentajeBaseIva' . $intCodigo] != '') {
                         $arPedidoDetalle->setPorcentajeBaseIva($arrControles['TxtPorcentajeBaseIva' . $intCodigo]);
                     }
-                    echo $arrControles['TxtPorcentajeBaseIva' . $intCodigo] . "<br>";
                     $em->persist($arPedidoDetalle);
                 }
             }
