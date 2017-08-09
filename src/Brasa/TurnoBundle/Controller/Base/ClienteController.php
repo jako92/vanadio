@@ -90,6 +90,7 @@ class ClienteController extends Controller {
                 $arCliente->setDigitoVerificacion($digito);
                 }
                 $arCliente->setUsuario($arUsuario->getUserName());
+                $arCliente->setFechaIngreso(new \DateTime());
                 $em->persist($arCliente);
                 $em->flush();
                 if ($form->get('guardarnuevo')->isClicked()) {
@@ -586,7 +587,7 @@ class ClienteController extends Controller {
                 ->setCellValue('F1', 'nombre2')
                 ->setCellValue('G1', 'apellido1')
                 ->setCellValue('H1', 'apellido2')
-                ->setCellValue('H1', 'direccion')
+                ->setCellValue('I1', 'direccion')
                 ->setCellValue('J1', 'email')
                 ->setCellValue('K1', 'tel1')
                 ->setCellValue('L1', 'tel2')
@@ -619,7 +620,7 @@ class ClienteController extends Controller {
                     ->setCellValue('J' . $i, $arCliente->getEmail())
                     ->setCellValue('K' . $i, $arCliente->getTelefono())
                     ->setCellValue('L' . $i, $arCliente->getCelular())
-                    ->setCellValue('M' . $i, $fecha->format('Y/m/d'))
+                    ->setCellValue('M' . $i, $arCliente->getFechaIngreso()->format('Y/m/d'))
                     ->setCellValue('N' . $i, '0')
                     ->setCellValue('O' . $i, $arCliente->getCiudadRel()->getCodigoInterface())
                     ->setCellValue('P' . $i, '0')
@@ -628,7 +629,7 @@ class ClienteController extends Controller {
                     ->setCellValue('S' . $i, 'N')
                     ->setCellValue('T' . $i, 'S')
                     ->setCellValue('U' . $i, 'S')
-                    ->setCellValue('V' . $i, PHPExcel_Shared_Date::PHPToExcel(gmmktime(0, 0, 0, $fecha->format('m'), $fecha->format('d'), $fecha->format('Y'))));
+                    ->setCellValue('V' . $i, $arCliente->getFechaIngreso()->format('Y/m/d'));
                     if ($arCliente->getCodigoOrigenJudicialFk()){
                         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $i, $arCliente->getOrigenJudicialRel()->getNombre());
                     }

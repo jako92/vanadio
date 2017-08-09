@@ -243,6 +243,11 @@ class TurCliente
     private $retencionFuente = false;        
     
     /**
+     * @ORM\Column(name="fecha_ingreso", type="date", nullable=true)
+     */
+    private $fechaIngreso;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="TurSector", inversedBy="clientesSectorRel")
      * @ORM\JoinColumn(name="codigo_sector_fk", referencedColumnName="codigo_sector_pk")
      * @Assert\NotNull(message="Seleccione un elemento")
@@ -2397,5 +2402,29 @@ class TurCliente
     public function getClienteContactosClienteRel()
     {
         return $this->clienteContactosClienteRel;
+    }
+
+    /**
+     * Set fechaIngreso
+     *
+     * @param \DateTime $fechaIngreso
+     *
+     * @return TurCliente
+     */
+    public function setFechaIngreso($fechaIngreso)
+    {
+        $this->fechaIngreso = $fechaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaIngreso
+     *
+     * @return \DateTime
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
     }
 }
