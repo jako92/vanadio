@@ -608,6 +608,11 @@ class ClienteController extends Controller {
         $arClientes = $query->getResult();
         $fecha = new \DateTime('now');
         foreach ($arClientes as $arCliente) {
+            if($arCliente->getFechaIngreso() !== null){
+                $fechaIngreso = $arCliente->getFechaIngreso()->format("Y/m/d");
+            } else {
+                $fechaIngreso = "";
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $arCliente->getNit() . "-" . $arCliente->getDigitoVerificacion())
                     ->setCellValue('B' . $i, $arCliente->getCodigoTipoIdentificacionFk())
@@ -620,7 +625,7 @@ class ClienteController extends Controller {
                     ->setCellValue('J' . $i, $arCliente->getEmail())
                     ->setCellValue('K' . $i, $arCliente->getTelefono())
                     ->setCellValue('L' . $i, $arCliente->getCelular())
-                    ->setCellValue('M' . $i, $arCliente->getFechaIngreso()->format('Y/m/d'))
+                    ->setCellValue('M' . $i, $fechaIngreso)
                     ->setCellValue('N' . $i, '0')
                     ->setCellValue('O' . $i, $arCliente->getCiudadRel()->getCodigoInterface())
                     ->setCellValue('P' . $i, '0')
@@ -629,7 +634,7 @@ class ClienteController extends Controller {
                     ->setCellValue('S' . $i, 'N')
                     ->setCellValue('T' . $i, 'S')
                     ->setCellValue('U' . $i, 'S')
-                    ->setCellValue('V' . $i, $arCliente->getFechaIngreso()->format('Y/m/d'));
+                    ->setCellValue('V' . $i, $fechaIngreso);
                     if ($arCliente->getCodigoOrigenJudicialFk()){
                         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $i, $arCliente->getOrigenJudicialRel()->getNombre());
                     }
