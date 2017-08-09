@@ -66,6 +66,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion experiencia }
             
+    admin.recursohumano.seleccionrequisicionmotivo:
+        class: Brasa\RecursoHumanoBundle\Admin\SeleccionRequisitoMotivoAdmin
+        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion motivo }
+            
     admin.recursohumano.requisitotipo:
         class: Brasa\RecursoHumanoBundle\Admin\RequisitoTipoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo, ~]
