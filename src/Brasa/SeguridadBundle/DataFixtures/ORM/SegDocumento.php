@@ -1290,15 +1290,6 @@ class SegDocumento implements FixtureInterface
             $arSegDocumento->setModulo("RECURSO HUMANO");
             $manager->persist($arSegDocumento);                
         }
-        $arSegDocumento = $manager->getRepository('BrasaSeguridadBundle:SegDocumento')->find(143);
-        if(!$arSegDocumento) {
-            $arSegDocumento = new \Brasa\SeguridadBundle\Entity\SegDocumento();          
-            $arSegDocumento->setCodigoDocumentoPk(143);
-            $arSegDocumento->setNombre("FACTURA VS PEDIDO");
-            $arSegDocumento->setTipo("CONSULTA");
-            $arSegDocumento->setModulo("TURNOS");
-            $manager->persist($arSegDocumento);                
-        }
         $manager->flush();
     }
     

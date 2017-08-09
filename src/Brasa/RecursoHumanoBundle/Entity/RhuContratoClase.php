@@ -13,6 +13,7 @@ class RhuContratoClase
     /**
      * @ORM\Id
      * @ORM\Column(name="codigo_contrato_clase_pk", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $codigoContratoClasePk;        
     
@@ -40,28 +41,13 @@ class RhuContratoClase
      * @ORM\OneToMany(targetEntity="RhuContratoAdicionTipo", mappedBy="contratoClaseRel")
      */
     protected $contratosAdicionesTiposContratoClaseRel;
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->contratosTiposContratoClaseRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->contratosContratoClaseRel = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->contratosAdicionesTiposContratoClaseRel = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Set codigoContratoClasePk
-     *
-     * @param integer $codigoContratoClasePk
-     *
-     * @return RhuContratoClase
-     */
-    public function setCodigoContratoClasePk($codigoContratoClasePk)
-    {
-        $this->codigoContratoClasePk = $codigoContratoClasePk;
-
-        return $this;
     }
 
     /**
@@ -96,30 +82,6 @@ class RhuContratoClase
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Set indefinido
-     *
-     * @param boolean $indefinido
-     *
-     * @return RhuContratoClase
-     */
-    public function setIndefinido($indefinido)
-    {
-        $this->indefinido = $indefinido;
-
-        return $this;
-    }
-
-    /**
-     * Get indefinido
-     *
-     * @return boolean
-     */
-    public function getIndefinido()
-    {
-        return $this->indefinido;
     }
 
     /**
@@ -222,5 +184,29 @@ class RhuContratoClase
     public function getContratosAdicionesTiposContratoClaseRel()
     {
         return $this->contratosAdicionesTiposContratoClaseRel;
+    }
+
+    /**
+     * Set indefinido
+     *
+     * @param boolean $indefinido
+     *
+     * @return RhuContratoClase
+     */
+    public function setIndefinido($indefinido)
+    {
+        $this->indefinido = $indefinido;
+
+        return $this;
+    }
+
+    /**
+     * Get indefinido
+     *
+     * @return boolean
+     */
+    public function getIndefinido()
+    {
+        return $this->indefinido;
     }
 }

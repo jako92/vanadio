@@ -56,6 +56,10 @@
                         <td class="td-in-well">{{ arRequisicion.cargoRel().nombre|default('') }}</td>
                     </tr>
                     <tr>
+                        <td class="titulo">CLIENTE REFERENCIA:</td>
+                        <td class="td-in-well">{{ arRequisicion.clienteReferencia|default('') }}</td>
+                        <td class="titulo">SALARIO:</td>
+                        <td class="td-in-well">{{ arRequisicion.vrSalario }}</td>
                         <td class="titulo">TIPO SALARIO:</td>
                         {% if arRequisicion.salarioFijo == 1 %}
                         <td class="td-in-well">FIJO</td>
@@ -63,10 +67,6 @@
                         {% if arRequisicion.salarioVariable == 1 %}
                         <td class="td-in-well">VARIABLE</td>
                         {% endif%}
-                        <td class="titulo">SALARIO:</td>
-                        <td class="td-in-well">{{ arRequisicion.vrSalario }}</td>
-                        <td class="titulo">NO SALARIAL:</td>
-                        <td class="td-in-well">{{ arRequisicion.vrNoSalarial }}</td>
                     </tr>
                     <tr>
                         <td class="titulo">CANTIDAD SOLICITADA:</td>
@@ -142,8 +142,8 @@
                         {% endif%}
                     </tr>
                     <tr>
-                        <td class="titulo">MOTIVO REQUERIMIENTO</td>
-                        <td class="td-in-well">{{arRequisicion.seleccionRequisitoMotivoRel.nombre | default('')}}</td>
+                        <td class="titulo"></td>
+                        <td class="td-in-well"></td>
                         <td class="titulo">DISPONIBILIDAD</td>
                         {% if arRequisicion.codigoDisponibilidadFk == 1 %}
                             <td class="td-in-well">TIEMPO COMPLETO</td>
@@ -173,14 +173,6 @@
                         {% if arRequisicion.codigoLicenciaMotoFk == 0 %}
                             <td class="td-in-well">NO APLICA</td>
                         {% endif%}
-                    </tr>
-                    <tr>
-                        <td class="titulo">CLIENTE REFERENCIA:</td>
-                        <td class="td-in-well">{{ arRequisicion.clienteReferencia|default('') }}</td>
-                        <td class="titulo">FECHA POSIBLE CONTRATACION:</td>
-                        <td class="td-in-well">{{ arRequisicion.fechaPosibleContratacion|date('Y/m/d') }}</td>
-                        <td class="titulo">PORCENTAJE ARL</td>
-                        <td class="td-in-well">{{ arRequisicion.porcentajeArl|default('') }}%</td>
                     </tr>
                     <tr>
                         <td class="titulo">COMENTARIOS:</td>

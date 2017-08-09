@@ -121,19 +121,15 @@ sonata_admin:
                 label_catalogue: Brasa\RecursoHumanoBundle
                 icon: '<i class="fa fa-group"></i>'
                 items:
-                    - admin.recursohumano.estudiotipo
+                    - admin.recursohumano.incapacidadtipo
+                    - admin.recursohumano.requisitotipo
+                    - admin.recursohumano.poligrafiatipo
                     - admin.recursohumano.facturaconcepto
                     - admin.recursohumano.facturatipo
                     - admin.recursohumano.facturaservicio
-                    - admin.recursohumano.incapacidadtipo
-                    - admin.recursohumano.poligrafiatipo
-                    - admin.recursohumano.pruebatipo
-                    - admin.recursohumano.requisitotipo
-                    - admin.recursohumano.reclamoconcepto
+                    - admin.recursohumano.estudiotipo
                     - admin.recursohumano.seleccionrequisicionexperiencia
-                    - admin.recursohumano.seleccionrequisicionmotivo
-                    - admin.recursohumano.selecciontiporeferencia
-                    - admin.recursohumano.seleccionentrevistatipo
+                    - admin.recursohumano.reclamoconcepto
                     
             app.admin.group.turno:
                 label: Programacion turno
@@ -141,20 +137,19 @@ sonata_admin:
                 icon: '<i class="fa fa-calendar"></i>'
                 items:
                     - admin.turno.centrooperacion
-                    - admin.turno.compensaciontipo
-                    - admin.turno.controlpuestodetalletiponovedad
                     - admin.turno.modalidadservicio
                     - admin.turno.serviciotipo
+                    - admin.turno.compensaciontipo
+                    - admin.turno.controlpuestodetalletiponovedad
                     
             app.admin.group.inventario:
                 label: Inventario
                 label_catalogue: Brasa\InventarioBundle
                 icon: '<i class="fa fa-cube"></i>'
                 items:
-                    
-                    - admin.inventario.area
-                    - admin.inventario.item
                     - admin.inventario.marca 
+                    - admin.inventario.item
+                    - admin.inventario.area
                     
             app.admin.group.contabilidad:
                 label: Contabilidad
@@ -168,15 +163,15 @@ sonata_admin:
                 label_catalogue: Brasa\GeneralBundle
                 icon: '<i class="fa fa-bookmark"></i>'
                 items:
+                    - admin.general.sectorcomercial
+                    - admin.general.sectoreconomico
                     - admin.general.cobertura
-                    - admin.general.ciudad
-                    - admin.general.departamento
                     - admin.general.dimension
                     - admin.general.origencapital
                     - admin.general.origenjudicial
                     - admin.general.pais
-                    - admin.general.sectorcomercial
-                    - admin.general.sectoreconomico
+                    - admin.general.departamento
+                    - admin.general.ciudad
                     
             app.admin.group.seguridad:
                 label: Seguridad

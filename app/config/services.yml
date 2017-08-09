@@ -66,47 +66,23 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion experiencia }
             
-    admin.recursohumano.seleccionrequisicionmotivo:
-        class: Brasa\RecursoHumanoBundle\Admin\SeleccionRequisitoMotivoAdmin
-        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuSeleccionRequisitoMotivo, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Seleccion requisicion motivo }
-            
-    admin.recursohumano.seleccionentrevistatipo:
-        class: Brasa\RecursoHumanoBundle\Admin\SeleccionEntrevistaTipoAdmin
-        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuSeleccionEntrevistaTipo, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Seleccion entrevista tipo }
-            
     admin.recursohumano.requisitotipo:
         class: Brasa\RecursoHumanoBundle\Admin\RequisitoTipoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuRequisitoTipo, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Requisito tipo }
             
-    admin.recursohumano.selecciontiporeferencia:
-        class: Brasa\RecursoHumanoBundle\Admin\SeleccionTipoReferenciaAdmin
-        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuSeleccionTipoReferencia, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Seleccion tipo referencia }
-            
     admin.recursohumano.poligrafiatipo:
         class: Brasa\RecursoHumanoBundle\Admin\PoligrafiaTipoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuPoligrafiaTipo, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Poligrafia tipo }
-            
-    admin.recursohumano.pruebatipo:
-        class: Brasa\RecursoHumanoBundle\Admin\PruebaTipoAdmin
-        arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuPruebaTipo, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Prueba tipo }
 
     admin.recursohumano.reclamoconcepto:
         class: Brasa\RecursoHumanoBundle\Admin\ReclamoConceptoAdmin
         arguments: [~, Brasa\RecursoHumanoBundle\Entity\RhuReclamoConcepto, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Reclamo concepto }
+            - { name: sonata.admin, manager_type: orm, label: Reclamo concepto }          
             
     # .................. administracion modulo programacion de turnos .................................................................
     
