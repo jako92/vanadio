@@ -19,11 +19,11 @@ class PedidoFacturaComparativoController extends Controller {
     var $strListaDql = "";
 
     /**
-     * @Route("/tur/consulta/pedidos/factura/comparativo", name="brs_tur_consulta_pedidos_factura_comparativo")
+     * @Route("/tur/consulta/factura/pedidos/comparativo", name="brs_tur_consulta_facturas_pedidos_comparativo")
      */
     public function listaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 89)) {
+        if (!$em->getRepository('BrasaSeguridadBundle:SegUsuarioPermisoEspecial')->permisoEspecial($this->getUser(), 120)) {
             return $this->redirect($this->generateUrl('brs_seg_error_permiso_especial'));
         }
         $paginator = $this->get('knp_paginator');

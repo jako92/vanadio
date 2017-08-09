@@ -1294,7 +1294,7 @@ class SegDocumento implements FixtureInterface
         if(!$arSegDocumento) {
             $arSegDocumento = new \Brasa\SeguridadBundle\Entity\SegDocumento();          
             $arSegDocumento->setCodigoDocumentoPk(143);
-            $arSegDocumento->setNombre("FACTURA/PEDIDO COMPARATIVO");
+            $arSegDocumento->setNombre("FACTURA VS PEDIDO");
             $arSegDocumento->setTipo("CONSULTA");
             $arSegDocumento->setModulo("TURNOS");
             $manager->persist($arSegDocumento);                
